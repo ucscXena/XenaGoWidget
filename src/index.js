@@ -8,6 +8,9 @@ export default class Example extends Component {
     return <div>
       <h2>Cohorts</h2>
       <CohortSelector cohorts={ExampleCohortsData}/>
+
+      {/*<TissueView*/}
+
     </div>
   }
 }

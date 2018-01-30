@@ -9,9 +9,6 @@ export class CohortSelector extends Component{
 
     render(){
         const {cohorts} = this.props;
-
-        console.log(this.props)
-        console.log(cohorts)
         return <select>
             {
                 cohorts.map(function(c){
@@ -23,5 +20,5 @@ export class CohortSelector extends Component{
     }
 }
 CohortSelector.propTypes = {
-    cohorts: PropTypes.array,
+    cohorts: PropTypes.array.isRequired,
 };
