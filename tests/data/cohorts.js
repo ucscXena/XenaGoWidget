@@ -1,4 +1,4 @@
-[
+export default [
 'TCGA Ovarian Cancer (OV)',
 'TCGA Kidney Clear Cell Carcinoma (KIRC)',
 'TCGA Lower Grade Glioma (LGG)',
