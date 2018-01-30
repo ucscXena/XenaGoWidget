@@ -3,6 +3,7 @@ import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import CanvasDrawing from "./CanvasDrawing";
 import TissueView from "./components/TissueView";
+import ExampleTGACData from "../tests/data/tgac";
 
 
 export default class Example extends Component {
@@ -11,7 +12,7 @@ export default class Example extends Component {
       <h2>Cohorts</h2>
       <CohortSelector cohorts={ExampleCohortsData}/>
 
-      <TissueView width="100" height="100"/>
+      <TissueView width="400" height="400" data={ExampleTGACData}/>
 
       {/*<CanvasDrawing width={100} height={100}/>*/}
 
