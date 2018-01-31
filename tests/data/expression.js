@@ -1,4 +1,4 @@
-[{
+export default [{
     "rows": [{
         "sample": "TCGA-29-1764-01",
         "chr": "chr7",

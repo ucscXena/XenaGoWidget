@@ -42,7 +42,7 @@ export default class CanvasDrawing extends Component{
         let {width, height,wrapperProps} = this.props;
         return (
             <div ref='div' {...wrapperProps} style={{...styles.wrapper, width, height}}>
-                <canvas style={styles.canvas} ref='canvas'/>
+                <canvas style={styles.canvas} ref='canvas' width={width} height={height}/>
                 <div style={{...styles.labels, top: -height, width, height}} ref='labels'/>
             </div>
         );

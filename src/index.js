@@ -1,20 +1,26 @@
 import React, {Component} from 'react'
 import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
-import CanvasDrawing from "./CanvasDrawing";
 import TissueView from "./components/TissueView";
-import ExampleTGACData from "../tests/data/tgac";
+import ExamplePathWays from "../tests/data/tgac";
+import ExampleExpression from "../tests/data/expression";
+import ExampleSamples from "../tests/data/samples";
 
 
 export default class Example extends Component {
+
   render() {
+    let data = {
+      expression: ExampleExpression,
+        pathways: ExamplePathWays,
+        samples: ExampleSamples,
+    };
+
     return <div>
       <h2>Cohorts</h2>
       <CohortSelector cohorts={ExampleCohortsData}/>
 
-      <TissueView width="400" height="400" data={ExampleTGACData}/>
-
-      {/*<CanvasDrawing width={100} height={100}/>*/}
+      <TissueView width="400" height="400" data={data}/>
 
     </div>
   }
