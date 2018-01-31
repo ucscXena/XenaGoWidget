@@ -3,12 +3,13 @@ import CanvasDrawing from "../CanvasDrawing";
 import PropTypes from 'prop-types';
 
 
+let labelHeight = 150 ;
+
 function drawPathwayLabels(vg,width,height,pathways){
     let pathwayCount = pathways.length;
     // console.log('drawing pathaways');
     // console.log(pathways)
     let pixelsPerPathway = width / pathwayCount;
-    let labelHeight = 150 ;
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0 ;
@@ -31,24 +32,38 @@ function drawPathwayLabels(vg,width,height,pathways){
 
 function drawExpressionData(vg, width, height, data) {
     let pathwayCount = data.length;
-    let pixelsPerPathway = width / pathwayCount;
-    let labelHeight = 50 ;
+    let tissueCount = data[0].length;
+    let pixelsPerPathway = Math.round(width / pathwayCount);
+    let pixelsPerTissue = Math.round(height / tissueCount);
+    console.log(data[0])
+    console.log(data[1])
 
-    vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
-    let pixelCount = 0 ;
-    for(let d of data){
-        // console.log(d)
-        vg.fillRect(pixelCount,0,pixelsPerPathway,labelHeight);
-        vg.strokeRect(pixelCount,0,pixelsPerPathway,labelHeight);
-        pixelCount += pixelsPerPathway;
+
+    let maxScore = 5 ;
+
+    let xPixel= 0 ;
+    let yPixel ;
+    vg.save();
+    for(let pathwayIndex in data){
+        yPixel = labelHeight ;
+        for(let tissueIndex in data[pathwayIndex]){
+            let colorScore = data[pathwayIndex][tissueIndex]   ;
+            colorScore = Math.min(Math.round(colorScore / maxScore * 256),256)  ;
+            vg.fillStyle  = 'rgb(0,'+colorScore+',0)';
+            vg.fillRect(xPixel,yPixel,pixelsPerPathway,pixelsPerTissue);
+            yPixel += pixelsPerTissue;
+        }
+        xPixel += pixelsPerPathway;
     }
+    vg.restore();
 }
 
 function getPathwayIndicesForGene(gene,pathways) {
     let indices = [];
     for(let p in pathways){
         let pathway = pathways[p];
-        if(gene.indexOf(pathway.gene)){
+        let indexOfGeneInPathway = pathway.gene.indexOf(gene);
+        if(indexOfGeneInPathway>=0){
             indices.push(p)
         }
     }
@@ -76,12 +91,12 @@ function associateData(expression, pathways, samples) {
             returnArray[p][s] = 0 ;
         }
     }
-    console.log( returnArray);
 
 
     for(let expr of expression){
         let gene = expr.rows[0].gene;
         let pathwayIndices = getPathwayIndicesForGene(gene,pathways);
+        // console.log(pathwayIndices)
 
         if(pathwayIndices){
             for(let row of expr.rows){
@@ -92,8 +107,6 @@ function associateData(expression, pathways, samples) {
             }
         }
     }
-
-
 
 
     return returnArray ;
@@ -108,7 +121,7 @@ function drawTissueView(vg,props) {
     let associatedData = associateData(expression,pathways,samples)
 
 
-    // drawExpressionData(vg,width,height,expression,pathways,samples);
+    drawExpressionData(vg,width,height,associatedData);
     // drawPathwayHeader(vg,width,height,data);
     // vg.fillStyle = 'rgb(200,0,0)'; // sets the color to fill in the rectangle with
     // vg.fillRect(0,0,20,30)

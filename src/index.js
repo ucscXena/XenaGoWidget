@@ -20,7 +20,7 @@ export default class Example extends Component {
       <h2>Cohorts</h2>
       <CohortSelector cohorts={ExampleCohortsData}/>
 
-      <TissueView width="400" height="400" data={data}/>
+      <TissueView width="400" height="800" data={data}/>
 
     </div>
   }
