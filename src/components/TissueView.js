@@ -35,8 +35,6 @@ function drawExpressionData(vg, width, height, data) {
     let tissueCount = data[0].length;
     let pixelsPerPathway = Math.round(width / pathwayCount);
     let pixelsPerTissue = Math.round(height / tissueCount);
-    console.log(data[0])
-    console.log(data[1])
 
 
     let maxScore = 5 ;
@@ -49,7 +47,7 @@ function drawExpressionData(vg, width, height, data) {
         for(let tissueIndex in data[pathwayIndex]){
             let colorScore = data[pathwayIndex][tissueIndex]   ;
             colorScore = Math.min(Math.round(colorScore / maxScore * 256),256)  ;
-            vg.fillStyle  = 'rgb(0,'+colorScore+',0)';
+            vg.fillStyle  = 'rgb('+(256-colorScore)+','+(256-colorScore)+','+(256-colorScore)+')';
             vg.fillRect(xPixel,yPixel,pixelsPerPathway,pixelsPerTissue);
             yPixel += pixelsPerTissue;
         }
@@ -75,6 +73,7 @@ function getSampleIndex(sample, samples) {
     return samples.indexOf(sample);
 }
 
+let ignoreList = [];
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
@@ -83,7 +82,7 @@ function getSampleIndex(sample, samples) {
  * @param samples
  * @returns {any[]}
  */
-function associateData(expression, pathways, samples) {
+function associateData(expression, pathways, samples,ignoreList) {
     let returnArray = new Array(pathways.length);
     for(let p in pathways){
         returnArray[p] = new Array(samples.lenth);
@@ -95,14 +94,17 @@ function associateData(expression, pathways, samples) {
 
     for(let expr of expression){
         let gene = expr.rows[0].gene;
-        let pathwayIndices = getPathwayIndicesForGene(gene,pathways);
-        // console.log(pathwayIndices)
+        let effect = expr.rows[0].effect;
+        if(ignoreList.indexOf(effect)<0){
+            let pathwayIndices = getPathwayIndicesForGene(gene,pathways);
+            // console.log(pathwayIndices)
 
-        if(pathwayIndices){
-            for(let row of expr.rows){
-                let sampleIndex = getSampleIndex(row.sample,samples);
-                for(let index of pathwayIndices){
-                    returnArray[index][sampleIndex] += 1 ;
+            if(pathwayIndices){
+                for(let row of expr.rows){
+                    let sampleIndex = getSampleIndex(row.sample,samples);
+                    for(let index of pathwayIndices){
+                        returnArray[index][sampleIndex] += 1 ;
+                    }
                 }
             }
         }
@@ -118,7 +120,7 @@ function drawTissueView(vg,props) {
     let {width,height,data:{expression,pathways,samples}} = props ;
     drawPathwayLabels(vg,width,height,pathways);
 
-    let associatedData = associateData(expression,pathways,samples)
+    let associatedData = associateData(expression,pathways,samples,ignoreList);
 
 
     drawExpressionData(vg,width,height,associatedData);
