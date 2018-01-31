@@ -44,11 +44,70 @@ function drawExpressionData(vg, width, height, data) {
     }
 }
 
+function getPathwayIndicesForGene(gene,pathways) {
+    let indices = [];
+    for(let p in pathways){
+        let pathway = pathways[p];
+        if(gene.indexOf(pathway.gene)){
+            indices.push(p)
+        }
+    }
+    return indices;
+
+}
+
+function getSampleIndex(sample, samples) {
+    return samples.indexOf(sample);
+}
+
+/**
+ * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
+ *
+ * @param expression
+ * @param pathways
+ * @param samples
+ * @returns {any[]}
+ */
+function associateData(expression, pathways, samples) {
+    let returnArray = new Array(pathways.length);
+    for(let p in pathways){
+        returnArray[p] = new Array(samples.lenth);
+        for(let s in samples){
+            returnArray[p][s] = 0 ;
+        }
+    }
+    console.log( returnArray);
+
+
+    for(let expr of expression){
+        let gene = expr.rows[0].gene;
+        let pathwayIndices = getPathwayIndicesForGene(gene,pathways);
+
+        if(pathwayIndices){
+            for(let row of expr.rows){
+                let sampleIndex = getSampleIndex(row.sample,samples);
+                for(let index of pathwayIndices){
+                    returnArray[index][sampleIndex] += 1 ;
+                }
+            }
+        }
+    }
+
+
+
+
+    return returnArray ;
+}
+
 function drawTissueView(vg,props) {
     console.log('ttisue data viewing ')
     console.log(props)
     let {width,height,data:{expression,pathways,samples}} = props ;
     drawPathwayLabels(vg,width,height,pathways);
+
+    let associatedData = associateData(expression,pathways,samples)
+
+
     // drawExpressionData(vg,width,height,expression,pathways,samples);
     // drawPathwayHeader(vg,width,height,data);
     // vg.fillStyle = 'rgb(200,0,0)'; // sets the color to fill in the rectangle with
