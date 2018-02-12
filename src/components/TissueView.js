@@ -8,7 +8,7 @@ let labelHeight = 150 ;
 function drawPathwayLabels(vg,width,height,pathways){
     let pathwayCount = pathways.length;
     // console.log('drawing pathaways');
-    // console.log(pathways)
+    console.log(pathways)
     let pixelsPerPathway = width / pathwayCount;
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
@@ -23,8 +23,17 @@ function drawPathwayLabels(vg,width,height,pathways){
         vg.save();
         vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
         vg.rotate(-Math.PI/2);
+        vg.font="10px Courier";
         vg.translate(-labelHeight,pixelCount,labelHeight);
-        vg.fillText(d.golabel,3,10);
+        let labelString = '('+d.gene.length+')';
+        // pad for 1000, so 4 + 2 parans
+        while(labelString.length < 6){
+            labelString += ' ';
+        }
+
+        labelString += d.golabel;
+
+        vg.fillText(labelString,3,10);
         vg.restore();
         pixelCount += pixelsPerPathway;
     }
