@@ -27,7 +27,7 @@ function drawPathwayLabels(vg,width,height,pathways){
         vg.translate(-labelHeight,pixelCount,labelHeight);
         let labelString = '('+d.gene.length+')';
         // pad for 1000, so 4 + 2 parans
-        while(labelString.length < 6){
+        while(labelString.length < 5){
             labelString += ' ';
         }
 
