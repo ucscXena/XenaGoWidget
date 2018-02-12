@@ -47,7 +47,7 @@ function drawExpressionData(vg, width, height, data) {
         for(let tissueIndex in data[pathwayIndex]){
             let colorScore = data[pathwayIndex][tissueIndex]   ;
             colorScore = Math.min(Math.round(colorScore / maxScore * 256),256)  ;
-            vg.fillStyle  = 'rgb('+(256-colorScore)+','+(256-colorScore)+','+(256-colorScore)+')';
+            vg.fillStyle  = 'rgb('+(256)+','+(256-colorScore)+','+(256-colorScore)+')';
             vg.fillRect(xPixel,yPixel,pixelsPerPathway,pixelsPerTissue);
             yPixel += pixelsPerTissue;
         }
