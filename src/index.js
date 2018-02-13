@@ -9,7 +9,7 @@ import ExampleSamples from "../tests/data/samples";
 
 export default class Example extends Component {
 
-  render() {
+ render() {
     let data = {
       expression: ExampleExpression,
         pathways: ExamplePathWays,
