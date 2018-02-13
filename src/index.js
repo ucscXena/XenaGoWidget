@@ -3,7 +3,8 @@ import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueView from "./components/TissueView";
 import ExamplePathWays from "../tests/data/tgac";
-import ExampleExpression from "../tests/data/expression";
+// import ExampleExpression from "../tests/data/expression";
+import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
 
 

@@ -92,6 +92,18 @@ function getSampleIndex(sample, samples) {
 }
 
 /**
+ * https://github.com/nathandunn/XenaGoWidget/issues/5
+ * https://github.com/ucscXena/ucsc-xena-client/blob/master/js/models/mutationVector.js#L67
+ Can use the scores directly or just count everything that is 4-2, and lincRNA, Complex Substitution, RNA which are all 0.
+ * @param effect
+ * @returns {*}
+ */
+function getMutationScore(effect){
+
+    return mutationScores[effect]
+}
+
+/**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
  * @param expression
@@ -109,23 +121,16 @@ function associateData(expression, pathways, samples) {
     }
 
 
-    for (let expr of expression) {
-        let gene = expr.rows[0].gene;
+    for (let row of expression.rows) {
+        let gene = row.gene;
+        let effect = row.effect;
+        let effectValue = getMutationScore(effect);
         let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
-
-        if (pathwayIndices) {
-            for (let row of expr.rows) {
-                let gene = row.gene;
-                let effect = row.effect;
-                let effectValue = mutationScores[effect];
-                let sampleIndex = getSampleIndex(row.sample, samples);
-                for (let index of pathwayIndices) {
-                    returnArray[index][sampleIndex] += effectValue;
-                }
-            }
+        let sampleIndex = getSampleIndex(row.sample, samples);
+        for (let index of pathwayIndices) {
+            returnArray[index][sampleIndex] += effectValue;
         }
     }
-
 
     return returnArray;
 }

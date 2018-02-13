@@ -64,8 +64,10 @@ export default {
     'stop_retained_variant': 1,
 
     //mutations effect we don't know
-    'lincRNA': 0,
-    'RNA': 0,
+    // 'lincRNA': 0,
+    'lincRNA': 1, // set per GH issue
+    // 'RNA': 0,
+    'RNA': 1, // set per GH issue
     'exon_variant': 0,
     'upstream_gene_variant': 0,
     'downstream_gene_variant': 0,
@@ -75,7 +77,8 @@ export default {
     "5'UTR": 0,
     '5_prime_UTR_variant': 0,
     '3_prime_UTR_variant': 0,
-    'Complex Substitution': 0,
+    // 'Complex Substitution': 0,
+    'Complex Substitution': 1, // set per GH issue
     'intron_variant': 0,
     'intron': 0,
     'Intron': 0,
