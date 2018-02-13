@@ -111,18 +111,16 @@ function associateData(expression, pathways, samples) {
 
     for (let expr of expression) {
         let gene = expr.rows[0].gene;
-        let effect = expr.rows[0].effect;
-        let effectValue = mutationScores[effect];
-        if (effectValue) {
-            let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
-            // console.log(pathwayIndices)
+        let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
 
-            if (pathwayIndices) {
-                for (let row of expr.rows) {
-                    let sampleIndex = getSampleIndex(row.sample, samples);
-                    for (let index of pathwayIndices) {
-                        returnArray[index][sampleIndex] += effectValue;
-                    }
+        if (pathwayIndices) {
+            for (let row of expr.rows) {
+                let gene = row.gene;
+                let effect = row.effect;
+                let effectValue = mutationScores[effect];
+                let sampleIndex = getSampleIndex(row.sample, samples);
+                for (let index of pathwayIndices) {
+                    returnArray[index][sampleIndex] += effectValue;
                 }
             }
         }
