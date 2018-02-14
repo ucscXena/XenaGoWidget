@@ -40,6 +40,14 @@ function drawPathwayLabels(vg, width, height, pathways) {
     }
 }
 
+function getMousePos(canvas, evt) {
+    let rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
 function drawExpressionData(vg, width, height, data) {
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -72,6 +80,35 @@ function drawExpressionData(vg, width, height, data) {
     }
     vg.restore();
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
+
+    // alert(vg.canvas);
+    vg.canvas.addEventListener("click", function (event) {
+        console.log('cliecked ' + JSON.stringify(event));
+    }, false);
+
+    // vg.canvas.addEventListener("mouseover", function(event) {
+    //     console.log('hovered ' + JSON.stringify(event));
+    //     console.log(event.screenX);
+    //     console.log(event.clientX);
+    // }, false);
+
+
+    let canvas = vg.canvas ;
+    canvas.addEventListener("mousemove", function (event) {
+        console.log('moved' + JSON.stringify(event));
+        let mousePos = getMousePos(canvas,event);
+        
+        console.log(mousePos);
+    }, false);
+
+// alert(this.refs.canvas);
+// document.getElementById('expressionOverview').addEventListeneriover(function(){
+//     alert('ouch');
+// });
+// $('vg.[rectangle]').hover(function(this){
+//     this.fillStyle = 'red';
+//     this.fill();
+// });
 }
 
 function getPathwayIndicesForGene(gene, pathways) {
@@ -98,7 +135,7 @@ function getSampleIndex(sample, samples) {
  * @param effect
  * @returns {*}
  */
-function getMutationScore(effect){
+function getMutationScore(effect) {
 
     return mutationScores[effect]
 }
