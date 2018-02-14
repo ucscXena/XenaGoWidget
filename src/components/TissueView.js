@@ -86,29 +86,13 @@ function drawExpressionData(vg, width, height, data) {
         console.log('cliecked ' + JSON.stringify(event));
     }, false);
 
-    // vg.canvas.addEventListener("mouseover", function(event) {
-    //     console.log('hovered ' + JSON.stringify(event));
-    //     console.log(event.screenX);
-    //     console.log(event.clientX);
-    // }, false);
-
-
     let canvas = vg.canvas ;
     canvas.addEventListener("mousemove", function (event) {
         console.log('moved' + JSON.stringify(event));
         let mousePos = getMousePos(canvas,event);
-        
+
         console.log(mousePos);
     }, false);
-
-// alert(this.refs.canvas);
-// document.getElementById('expressionOverview').addEventListeneriover(function(){
-//     alert('ouch');
-// });
-// $('vg.[rectangle]').hover(function(this){
-//     this.fillStyle = 'red';
-//     this.fill();
-// });
 }
 
 function getPathwayIndicesForGene(gene, pathways) {
