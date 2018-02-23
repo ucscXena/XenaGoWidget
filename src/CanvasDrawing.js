@@ -38,10 +38,10 @@ export default class CanvasDrawing extends Component{
     }
     shouldComponentUpdate() {return false}
     render() {
-        console.log('render ')
+        console.log('render ');
         let {width, height,wrapperProps} = this.props;
         return (
-            <div ref='div' {...wrapperProps} style={{...styles.wrapper, width, height}}>
+            <div ref='div' {...wrapperProps} style={{...styles.wrapperProps, width, height}}>
                 <canvas id='expressionOverview' style={styles.canvas} ref='canvas' width={width} height={height}/>
                 <div style={{...styles.labels, top: -height, width, height}} ref='labels'/>
             </div>

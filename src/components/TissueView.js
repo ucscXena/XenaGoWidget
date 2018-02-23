@@ -88,7 +88,7 @@ function drawExpressionData(vg, width, height, data) {
 
     let canvas = vg.canvas ;
     canvas.addEventListener("mousemove", function (event) {
-        console.log('moved' + JSON.stringify(event));
+        console.log('moved ' + JSON.stringify(event));
         let mousePos = getMousePos(canvas,event);
 
         console.log(mousePos);
@@ -166,9 +166,6 @@ function drawTissueView(vg, props) {
 
 
     drawExpressionData(vg, width, height, associatedData);
-    // drawPathwayHeader(vg,width,height,data);
-    // vg.fillStyle = 'rgb(200,0,0)'; // sets the color to fill in the rectangle with
-    // vg.fillRect(0,0,20,30)
 }
 
 export default class TissueView extends Component {
@@ -178,8 +175,8 @@ export default class TissueView extends Component {
     }
 
     render() {
-        console.log('render')
-        console.log(this.props)
+        console.log('render');
+        console.log(this.props);
         const {width, height, data} = this.props;
         return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data}/>
     }

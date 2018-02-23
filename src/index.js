@@ -6,9 +6,11 @@ import ExamplePathWays from "../tests/data/tgac";
 // import ExampleExpression from "../tests/data/expression";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
+import ExampleStyle from "../tests/example.css";
 
 
 export default class Example extends Component {
+    exampleWidth = 'width:400px;';
 
  render() {
     let data = {
@@ -17,7 +19,7 @@ export default class Example extends Component {
         samples: ExampleSamples,
     };
 
-    return <div>
+    return <div className={ExampleStyle.exampleStyle}>
       <h2>Cohorts</h2>
       <CohortSelector cohorts={ExampleCohortsData}/>
 

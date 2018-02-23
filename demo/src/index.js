@@ -5,7 +5,7 @@ import Example from '../../src'
 
 class Demo extends Component {
   render() {
-    return <div>
+    return <div width="400px;">
       <h1>XenaGoWidget Demo</h1>
       <Example/>
     </div>
