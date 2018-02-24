@@ -42,7 +42,17 @@ export default class CanvasDrawing extends Component{
         let {width, height,wrapperProps} = this.props;
         return (
             <div ref='div' {...wrapperProps} style={{...styles.wrapperProps, width, height}}>
-                <canvas id='expressionOverview' style={styles.canvas} ref='canvas' width={width} height={height}/>
+                <canvas id='expressionOverview'
+                        style={styles.canvas}
+                        ref='canvas'
+                        width={width} height={height}
+                        // className='Tooltip-target'
+                        // onMouseMove={this.on.mousemove}
+                        // onMouseOut={this.on.mouseout}
+                        // onMouseOver={this.on.mouseover}
+                        onClick={this.props.onClick}
+                        // onDblClick={this.props.onDblClick}
+                />
                 <div style={{...styles.labels, top: -height, width, height}} ref='labels'/>
             </div>
         );
@@ -91,6 +101,8 @@ CanvasDrawing.propTypes = {
     draw: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
+    // onMouseOver: PropTypes.any,
+    onClick: PropTypes.any,
 };
 
 // module.exports = CanvasDrawing;

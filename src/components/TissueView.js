@@ -83,7 +83,9 @@ function drawExpressionData(vg, width, height, data) {
 
     // alert(vg.canvas);
     vg.canvas.addEventListener("click", function (event) {
-        console.log('cliecked ' + JSON.stringify(event));
+        alert('cliecked ' + JSON.stringify(event));
+        // alert(event.clientX + ' '  + evet.clientY )
+
     }, false);
 
     let canvas = vg.canvas ;
@@ -177,8 +179,8 @@ export default class TissueView extends Component {
     render() {
         console.log('render');
         console.log(this.props);
-        const {width, height, data} = this.props;
-        return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data}/>
+        const {width, height, data,onClick} = this.props;
+        return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick}/>
     }
 }
 TissueView.propTypes = {
