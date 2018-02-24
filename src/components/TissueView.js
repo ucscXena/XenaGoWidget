@@ -82,17 +82,19 @@ function drawExpressionData(vg, width, height, data) {
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 
     // alert(vg.canvas);
-    vg.canvas.addEventListener("click", function (event) {
-        alert('cliecked ' + JSON.stringify(event));
+    let canvas = vg.canvas ;
+    canvas.addEventListener("click", function (event) {
+        // console.log(event)
+        let mousePos = getMousePos(vg.canvas,event);
+        console.log(mousePos);
+        alert('cliecked ' + JSON.stringify(mousePos));
         // alert(event.clientX + ' '  + evet.clientY )
 
     }, false);
 
-    let canvas = vg.canvas ;
-    canvas.addEventListener("mousemove", function (event) {
+    vg.canvas.addEventListener("mousemove", function (event) {
         console.log('moved ' + JSON.stringify(event));
-        let mousePos = getMousePos(canvas,event);
-
+        let mousePos = getMousePos(vg.canvas,event);
         console.log(mousePos);
     }, false);
 }
