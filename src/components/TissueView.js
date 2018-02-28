@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import CanvasDrawing from "../CanvasDrawing";
 import PropTypes from 'prop-types';
 import mutationScores from '../mutationVector'
+import HoverView from "./HoverView";
 
 
 let labelHeight = 150;
@@ -48,7 +49,7 @@ function getMousePos(canvas, evt) {
     };
 }
 
-function drawExpressionData(vg, width, height, data) {
+function drawExpressionData(vg, width, height, data,onClick,onHover) {
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
     let pixelsPerPathway = Math.round(width / pathwayCount);
@@ -88,6 +89,7 @@ function drawExpressionData(vg, width, height, data) {
         let mousePos = getMousePos(vg.canvas,event);
         console.log(mousePos);
         alert('cliecked ' + JSON.stringify(mousePos));
+        if(onClick) onClick();
         // alert(event.clientX + ' '  + evet.clientY )
 
     }, false);
@@ -96,6 +98,8 @@ function drawExpressionData(vg, width, height, data) {
         console.log('moved ' + JSON.stringify(event));
         let mousePos = getMousePos(vg.canvas,event);
         console.log(mousePos);
+        console.log(onHover)
+        if(onHover) onHover();
     }, false);
 }
 
@@ -163,13 +167,13 @@ function associateData(expression, pathways, samples) {
 function drawTissueView(vg, props) {
     console.log('ttisue data viewing ')
     console.log(props)
-    let {width, height, data: {expression, pathways, samples}} = props;
+    let {width, height, onClick,onHover, data: {expression, pathways, samples}} = props;
     drawPathwayLabels(vg, width, height, pathways);
 
     let associatedData = associateData(expression, pathways, samples);
 
 
-    drawExpressionData(vg, width, height, associatedData);
+    drawExpressionData(vg, width, height, associatedData,onClick,onHover);
 }
 
 export default class TissueView extends Component {
@@ -179,16 +183,18 @@ export default class TissueView extends Component {
     }
 
     render() {
-        console.log('render');
+        console.log('render in TissueView');
         console.log(this.props);
-        const {width, height, data,onClick} = this.props;
-        return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick}/>
+        const {width, height, data,onClick,onHover} = this.props;
+        return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick} onHover={onHover}/>
     }
 }
 TissueView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    onClick: PropTypes.any.isRequired,
+    onHover: PropTypes.any.isRequired,
     id: PropTypes.any,
 };
 
