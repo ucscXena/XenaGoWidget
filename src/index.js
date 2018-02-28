@@ -7,25 +7,35 @@ import ExamplePathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
 import ExampleStyle from "../tests/example.css";
+import HoverView from "./components/HoverView"
 
 
 export default class Example extends Component {
-    exampleWidth = 'width:400px;';
 
- render() {
-    let data = {
-      expression: ExampleExpression,
-        pathways: ExamplePathWays,
-        samples: ExampleSamples,
-    };
+    constructor(props) {
+        super(props);
+    }
 
-    return <div className={ExampleStyle.exampleStyle}>
-      <h2>Cohorts</h2>
-      <CohortSelector cohorts={ExampleCohortsData}/>
 
-      <TissueView width="400" height="800" data={data}/>
+    render() {
+        let data = {
+            expression: ExampleExpression,
+            pathways: ExamplePathWays,
+            samples: ExampleSamples,
+        };
 
-    </div>
-  }
+        return <div>
+            <div style={ExampleStyle.column1}>
+                <h2>Cohorts</h2>
+                <CohortSelector cohorts={ExampleCohortsData}/>
+                <TissueView id="pathwayViewId" width="400" height="800" data={data}/>
+                <HoverView id="hoverPathwayViewId"/>
+            </div>
+            <div className={ExampleStyle.column2}>
+                <TissueView id="geneViewId" width="400" height="800" data={data}/>
+                <HoverView id="hoverGeneViewId" width="400" height="800" data={data}/>
+            </div>
+        </div>
+    }
 }
 

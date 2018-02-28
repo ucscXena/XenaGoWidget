@@ -1,4 +1,9 @@
 
-.exampleStyle {
+.column1 {
     width: 400px;
+    padding-left: 0;
+}
+.column2 {
+    width: 400px;
+    padding-left: 400px;
 }

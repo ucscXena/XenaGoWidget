@@ -189,5 +189,6 @@ TissueView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    id: PropTypes.any,
 };
 
