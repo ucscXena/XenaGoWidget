@@ -87,19 +87,27 @@ function drawExpressionData(vg, width, height, data,onClick,onHover) {
     canvas.addEventListener("click", function (event) {
         // console.log(event)
         let mousePos = getMousePos(vg.canvas,event);
-        console.log(mousePos);
-        alert('cliecked ' + JSON.stringify(mousePos));
-        if(onClick) onClick();
+        // console.log(mousePos);
+        // alert('cliecked ' + JSON.stringify(mousePos));
+        let clickData = {
+            x:mousePos.x,
+            y:mousePos.y,
+        };
+        if(onClick) onClick(clickData);
         // alert(event.clientX + ' '  + evet.clientY )
 
     }, false);
 
     vg.canvas.addEventListener("mousemove", function (event) {
-        console.log('moved ' + JSON.stringify(event));
+        // console.log('moved ' + JSON.stringify(event));
         let mousePos = getMousePos(vg.canvas,event);
-        console.log(mousePos);
-        console.log(onHover)
-        if(onHover) onHover();
+        // console.log(mousePos);
+        // console.log(onHover)
+        let hoverData = {
+            x:mousePos.x,
+            y:mousePos.y,
+        };
+        if(onHover) onHover(hoverData);
     }, false);
 }
 
