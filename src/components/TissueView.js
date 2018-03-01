@@ -2,16 +2,19 @@ import React, {Component} from 'react'
 import CanvasDrawing from "../CanvasDrawing";
 import PropTypes from 'prop-types';
 import mutationScores from '../mutationVector'
-import HoverView from "./HoverView";
 
 
 let labelHeight = 150;
 
+let pixelsPerPathway, pixelsPerTissue, pathwayCount , tissueCount ;
+
+let associatedData ;
+
 function drawPathwayLabels(vg, width, height, pathways) {
-    let pathwayCount = pathways.length;
+    pathwayCount = pathways.length;
     // console.log('drawing pathaways');
-    console.log(pathways)
-    let pixelsPerPathway = width / pathwayCount;
+    // console.log(pathways)
+    pixelsPerPathway = Math.round(width / pathwayCount);
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
@@ -49,11 +52,23 @@ function getMousePos(canvas, evt) {
     };
 }
 
+function getPathwayForXPosition(x){
+    
+}
+
+function getTissueForYPosition(y){
+
+}
+
+function getExpressionForDataPoint(x,y){
+    // return data[]
+}
+
 function drawExpressionData(vg, width, height, data,onClick,onHover) {
-    let pathwayCount = data.length;
-    let tissueCount = data[0].length;
-    let pixelsPerPathway = Math.round(width / pathwayCount);
-    let pixelsPerTissue = Math.round(height / tissueCount);
+    pathwayCount = data.length;
+    tissueCount = data[0].length;
+    pixelsPerPathway = Math.round(width / pathwayCount);
+    pixelsPerTissue = Math.round(height / tissueCount);
 
 
     let thresholdScore = 5;
@@ -89,11 +104,17 @@ function drawExpressionData(vg, width, height, data,onClick,onHover) {
         let mousePos = getMousePos(vg.canvas,event);
         // console.log(mousePos);
         // alert('cliecked ' + JSON.stringify(mousePos));
-        let clickData = {
+        let pathway = getPathwayForXPosition(mousePos.x);
+        let tissue = getTissueForYPosition(mousePos.y);
+        let expression = getExpressionForDataPoint(mousePos.x,mousePos.y);
+        let pointData = {
             x:mousePos.x,
             y:mousePos.y,
+            pathway: pathway,
+            tissue: tissue,
+            expression: expression,
         };
-        if(onClick) onClick(clickData);
+        if(onClick) onClick(pointData);
         // alert(event.clientX + ' '  + evet.clientY )
 
     }, false);
@@ -103,11 +124,17 @@ function drawExpressionData(vg, width, height, data,onClick,onHover) {
         let mousePos = getMousePos(vg.canvas,event);
         // console.log(mousePos);
         // console.log(onHover)
-        let hoverData = {
+        let pathway = getPathwayForXPosition(mousePos.x);
+        let tissue = getTissueForYPosition(mousePos.y);
+        let expression = getExpressionForDataPoint(mousePos.x,mousePos.y);
+        let pointData = {
             x:mousePos.x,
             y:mousePos.y,
+            pathway: pathway,
+            tissue: tissue,
+            expression: expression,
         };
-        if(onHover) onHover(hoverData);
+        if(onHover) onHover(pointData);
     }, false);
 }
 
@@ -178,8 +205,7 @@ function drawTissueView(vg, props) {
     let {width, height, onClick,onHover, data: {expression, pathways, samples}} = props;
     drawPathwayLabels(vg, width, height, pathways);
 
-    let associatedData = associateData(expression, pathways, samples);
-
+    associatedData = associateData(expression, pathways, samples);
 
     drawExpressionData(vg, width, height, associatedData,onClick,onHover);
 }

@@ -21,10 +21,16 @@ export default class HoverView extends Component {
             <h4>{this.props.title}</h4>
             <ul>
                 <li>
-                    X: {this.state.data.x}
+                    ({this.state.data.x},{this.state.data.y})
                 </li>
                 <li>
-                    Y: {this.state.data.y}
+                    Pathway: {this.state.data.pathway}
+                </li>
+                <li>
+                    Tissue: {this.state.data.tissue}
+                </li>
+                <li>
+                    Expression: {this.state.data.expression}
                 </li>
             </ul>
         </div>
