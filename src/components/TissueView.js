@@ -68,6 +68,23 @@ function getTissueForYPosition(y){
 function getExpressionForDataPoint(x,y){
     let pathwayIndex = Math.round(x / pixelsPerPathway) ;
     let tissueIndex = Math.round(y / pixelsPerTissue) ;
+
+    let convertedHeight = y - labelHeight;
+    if(convertedHeight<0){
+        let totalExpression = 0 ;
+        let pathwayArray = associatedData[pathwayIndex];
+
+        for(let p of pathwayArray){
+            // console.log(p)
+            totalExpression += parseInt(p) ;
+            // const reducer = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
+            // return associatedData.reduce(reducer)
+        }
+
+        return totalExpression;
+    }
+
+
     // console.log(pathwayIndex + ' ' + tissueIndex);
     if(associatedData[pathwayIndex]){
         if(valueArray[pathwayIndex][tissueIndex].length>0){
