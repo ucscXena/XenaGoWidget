@@ -18,16 +18,13 @@ export default class HoverView extends Component {
 
     render() {
         return <div>
-            <h4>Hover Box</h4>
+            <h4>{this.props.title}</h4>
             <ul>
                 <li>
                     X: {this.state.data.x}
                 </li>
                 <li>
                     Y: {this.state.data.y}
-                </li>
-                <li>
-                    Test Value: {this.state.data.aaa}
                 </li>
             </ul>
         </div>
@@ -36,4 +33,5 @@ export default class HoverView extends Component {
 
     HoverView.propTypes = {
         data: PropTypes.any.isRequired,
+        title: PropTypes.any.isRequired,
     };
