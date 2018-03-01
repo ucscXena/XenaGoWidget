@@ -6,9 +6,9 @@ import mutationScores from '../mutationVector'
 
 let labelHeight = 150;
 
-let pixelsPerPathway, pixelsPerTissue, pathwayCount , tissueCount ;
+let pixelsPerPathway, pixelsPerTissue, pathwayCount, tissueCount;
 
-let associatedData , valueArray ;
+let associatedData, valueArray;
 let pathwayData, expressionData, sampleData;
 
 function drawPathwayLabels(vg, width, height, pathways) {
@@ -53,30 +53,30 @@ function getMousePos(canvas, evt) {
     };
 }
 
-function getPathwayForXPosition(x){
-     let pathwayIndex = Math.round(x / pixelsPerPathway) ;
+function getPathwayForXPosition(x) {
+    let pathwayIndex = Math.round(x / pixelsPerPathway);
     return pathwayData[pathwayIndex];
 }
 
-function getTissueForYPosition(y){
+function getTissueForYPosition(y) {
     let convertedHeight = y - labelHeight;
-    if(convertedHeight<0) return 'Header' ;
-    let tissueIndex = Math.round((convertedHeight) / pixelsPerTissue) ;
+    if (convertedHeight < 0) return 'Header';
+    let tissueIndex = Math.round((convertedHeight) / pixelsPerTissue);
     return sampleData[tissueIndex];
 }
 
-function getExpressionForDataPoint(x,y){
-    let pathwayIndex = Math.round(x / pixelsPerPathway) ;
-    let tissueIndex = Math.round(y / pixelsPerTissue) ;
+function getExpressionForDataPoint(x, y) {
+    let pathwayIndex = Math.round(x / pixelsPerPathway);
+    let tissueIndex = Math.round(y / pixelsPerTissue);
 
     let convertedHeight = y - labelHeight;
-    if(convertedHeight<0){
-        let totalExpression = 0 ;
+    if (convertedHeight < 0) {
+        let totalExpression = 0;
         let pathwayArray = associatedData[pathwayIndex];
 
-        for(let p of pathwayArray){
+        for (let p of pathwayArray) {
             // console.log(p)
-            totalExpression += parseInt(p) ;
+            totalExpression += parseInt(p);
             // const reducer = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
             // return associatedData.reduce(reducer)
         }
@@ -86,17 +86,17 @@ function getExpressionForDataPoint(x,y){
 
 
     // console.log(pathwayIndex + ' ' + tissueIndex);
-    if(associatedData[pathwayIndex]){
-        if(valueArray[pathwayIndex][tissueIndex].length>0){
+    if (associatedData[pathwayIndex]) {
+        if (valueArray[pathwayIndex][tissueIndex].length > 0) {
             console.log(valueArray[pathwayIndex][tissueIndex]);
         }
         // return associatedData[pathwayIndex][tissueIndex] + ' -> ' + JSON.stringify(valueArray[pathwayIndex][tissueIndex]);
         return associatedData[pathwayIndex][tissueIndex];
     }
-    return 0 ;
+    return 0;
 }
 
-function drawExpressionData(vg, width, height, data,onClick,onHover) {
+function drawExpressionData(vg, width, height, data, onClick, onHover) {
     pathwayCount = data.length;
     tissueCount = data[0].length;
     pixelsPerPathway = Math.round(width / pathwayCount);
@@ -130,43 +130,43 @@ function drawExpressionData(vg, width, height, data,onClick,onHover) {
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 
     // alert(vg.canvas);
-    let canvas = vg.canvas ;
+    let canvas = vg.canvas;
     canvas.addEventListener("click", function (event) {
         // console.log(event)
-        let mousePos = getMousePos(vg.canvas,event);
+        let mousePos = getMousePos(vg.canvas, event);
         // console.log(mousePos);
         // alert('cliecked ' + JSON.stringify(mousePos));
         let pathway = getPathwayForXPosition(mousePos.x);
         let tissue = getTissueForYPosition(mousePos.y);
-        let expression = getExpressionForDataPoint(mousePos.x,mousePos.y);
+        let expression = getExpressionForDataPoint(mousePos.x, mousePos.y);
         let pointData = {
-            x:mousePos.x,
-            y:mousePos.y,
+            x: mousePos.x,
+            y: mousePos.y,
             pathway: pathway,
             tissue: tissue,
             expression: expression,
         };
-        if(onClick) onClick(pointData);
+        if (onClick) onClick(pointData);
         // alert(event.clientX + ' '  + evet.clientY )
 
     }, false);
 
     vg.canvas.addEventListener("mousemove", function (event) {
         // console.log('moved ' + JSON.stringify(event));
-        let mousePos = getMousePos(vg.canvas,event);
+        let mousePos = getMousePos(vg.canvas, event);
         // console.log(mousePos);
         // console.log(onHover)
         let pathway = getPathwayForXPosition(mousePos.x);
         let tissue = getTissueForYPosition(mousePos.y);
-        let expression = getExpressionForDataPoint(mousePos.x,mousePos.y);
+        let expression = getExpressionForDataPoint(mousePos.x, mousePos.y);
         let pointData = {
-            x:mousePos.x,
-            y:mousePos.y,
+            x: mousePos.x,
+            y: mousePos.y,
             pathway: pathway,
             tissue: tissue,
             expression: expression,
         };
-        if(onHover) onHover(pointData);
+        if (onHover) onHover(pointData);
     }, false);
 }
 
@@ -238,35 +238,48 @@ function associateData(expression, pathways, samples) {
 function drawTissueView(vg, props) {
     // console.log('ttisue data viewing ');
     // console.log(props);
-    let {width, height, onClick,onHover, data: {expression, pathways, samples}} = props;
-    pathwayData = pathways ;
-    expressionData = expression ;
-    sampleData = samples ;
+    let {width, height, onClick, onHover, data: {expression, pathways, samples}} = props;
+    pathwayData = pathways;
+    expressionData = expression;
+    sampleData = samples;
 
     drawPathwayLabels(vg, width, height, pathways);
 
     associatedData = associateData(expression, pathways, samples);
 
-    drawExpressionData(vg, width, height, associatedData,onClick,onHover);
+    drawExpressionData(vg, width, height, associatedData, onClick, onHover);
 }
 
-export default class TissueView extends Component {
+export default class TissueExpressionView extends Component {
 
     constructor(props) {
         super(props)
     }
 
     render() {
-        // console.log('render in TissueView');
+        // console.log('render in TissueExpressionView');
         // console.log(this.props);
-        const {width, height, data,onClick,onHover} = this.props;
-        return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick} onHover={onHover}/>
+        const {width, height, data, onClick, onHover, titleText,selected} = this.props;
+        let titleString  = titleText ? titleText : '';
+        if(selected){
+            // alert(JSON.stringify(title))
+            titleString = selected.golabel + ' ('+selected.goid + ')';
+        }
+        return (
+            <div>
+                <h3>{titleString}</h3>
+                <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick}
+                               onHover={onHover}/>
+            </div>
+        );
     }
 }
-TissueView.propTypes = {
+TissueExpressionView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    selected: PropTypes.any,
+    titleText: PropTypes.string,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     id: PropTypes.any,

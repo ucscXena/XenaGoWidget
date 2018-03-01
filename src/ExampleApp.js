@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
-import TissueView from "./components/TissueView";
+import TissueExpressionView from "./components/TissueExpressionView";
 import ExamplePathWays from "../tests/data/tgac";
 // import ExampleExpression from "../tests/data/expression";
 import ExampleExpression from "../tests/data/bulkExpression";
@@ -77,9 +77,27 @@ export default class SampleApp extends Component {
     clickPathway(props) {
         if (props && props.x) {
             this.setState({pathwayClickData: props});
-            this.setState({geneData: this.state.pathwayData});
 
-            console.log(this.state.pathwayClickData)
+            console.log("click");
+            console.log(this.state.pathwayClickData);
+            // console.log("data form");
+            // console.log(this.state.pathwayData);
+
+            let convertedGeneData = this.state.pathwayData;
+            convertedGeneData.expression = this.state.pathwayData.expression;
+
+            console.log('pathway data: ');
+            console.log(this.state.pathwayData.pathways);
+
+            convertedGeneData.pathways = this.state.pathwayData.pathways;
+
+            // this won't change
+            convertedGeneData.samples = this.state.pathwayData.samples;
+            convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+
+            // alert(JSON.stringify(this.state.pathwayClickData));
+
+            this.setState({geneData: convertedGeneData});
         }
     }
 
@@ -127,8 +145,8 @@ export default class SampleApp extends Component {
                         <td>
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
-                            <TissueView id="pathwayViewId" width="400" height="800" data={this.state.pathwayData}
-                                        onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                            <TissueExpressionView id="pathwayViewId" width="400" height="800" data={this.state.pathwayData} titleText="Expression"
+                                                  onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
                             <HoverView title="Hover" data={this.state.pathwayHoverData}/>
@@ -136,8 +154,8 @@ export default class SampleApp extends Component {
                         </td>
                         { this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <td style={geneAlignment}>
-                                <TissueView id="geneViewId" width="400" height="800" data={this.state.geneData}
-                                            onClick={this.clickGene} onHover={this.hoverGene}/>
+                                <TissueExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData} selected={this.state.geneData.selectedPathway}
+                                                      onClick={this.clickGene} onHover={this.hoverGene}/>
                             </td>
                         }
                         <td style={alignTop}>
