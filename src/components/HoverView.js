@@ -18,41 +18,48 @@ export default class HoverView extends Component {
     }
 
     render() {
-        return <div>
-            <h4>{this.props.title}</h4>
-            {this.state.data.tissue !== 'Header' &&
-            <ul>
-                {/*{this.state.data.x &&*/}
-                {/*<li>*/}
-                {/*({this.state.data.x},{this.state.data.y})*/}
-                {/*</li>*/}
-                {/*}*/}
-                {this.state.data.pathway &&
-                <li>
-                    Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
-                    Genes ({this.state.data.pathway.gene.length})
-                </li>
-                }
-                {this.state.data.tissue &&
-                <li>
-                    Tissue: {this.state.data.tissue}
-                </li>
-                }
-                {this.state.data.expression != null &&
-                <li>
-                    Expression: {this.state.data.expression}
-                </li>
-                }
-            </ul>
-            }
-            {this.state.data.tissue === 'Header' &&
-            <div>
-                Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
-                Genes ({this.state.data.pathway.gene.length}) <br/>
-                Total Expression: {this.state.data.expression}
-            </div>
-            }
-        </div>
+        if(this.state.data.tissue){
+            return (
+                <div>
+                    <h4>{this.props.title}</h4>
+                    {this.state.data.tissue !== 'Header' &&
+                    <ul>
+                        {/*{this.state.data.x &&*/}
+                        {/*<li>*/}
+                        {/*({this.state.data.x},{this.state.data.y})*/}
+                        {/*</li>*/}
+                        {/*}*/}
+                        {this.state.data.pathway &&
+                        <li>
+                            Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
+                            Genes ({this.state.data.pathway.gene.length})
+                        </li>
+                        }
+                        {this.state.data.tissue &&
+                        <li>
+                            Tissue: {this.state.data.tissue}
+                        </li>
+                        }
+                        {this.state.data.expression != null &&
+                        <li>
+                            Expression: {this.state.data.expression}
+                        </li>
+                        }
+                    </ul>
+                    }
+                    {this.state.data.tissue === 'Header' &&
+                    <div>
+                        Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
+                        Genes ({this.state.data.pathway.gene.length}) <br/>
+                        Total Expression: {this.state.data.expression}
+                    </div>
+                    }
+                </div>
+            );
+        }
+        else{
+            return <div></div>
+        }
     }
 }
 

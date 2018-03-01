@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import Example from '../../src'
+import SampleApp from '../../src/ExampleApp'
 
 class Demo extends Component {
   render() {
     return <div>
       <h1>XenaGoWidget Demo</h1>
-      <Example/>
+      <SampleApp/>
     </div>
   }
 }

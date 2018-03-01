@@ -7,3 +7,7 @@
     width: 400px;
     padding-left: 400px;
 }
+
+.alignTop{
+    verticalAlign: top;
+}
