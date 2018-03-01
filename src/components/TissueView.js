@@ -8,7 +8,7 @@ let labelHeight = 150;
 
 let pixelsPerPathway, pixelsPerTissue, pathwayCount , tissueCount ;
 
-let associatedData ;
+let associatedData , valueArray ;
 let pathwayData, expressionData, sampleData;
 
 function drawPathwayLabels(vg, width, height, pathways) {
@@ -59,16 +59,24 @@ function getPathwayForXPosition(x){
 }
 
 function getTissueForYPosition(y){
-    let tissueIndex = Math.round(y / pixelsPerTissue) ;
+    let convertedHeight = y - labelHeight;
+    if(convertedHeight<0) return 'Header' ;
+    let tissueIndex = Math.round((convertedHeight) / pixelsPerTissue) ;
     return sampleData[tissueIndex];
 }
 
 function getExpressionForDataPoint(x,y){
     let pathwayIndex = Math.round(x / pixelsPerPathway) ;
     let tissueIndex = Math.round(y / pixelsPerTissue) ;
-    console.log(pathwayIndex + ' ' + tissueIndex)
-    console.log(expressionData)
-    return expressionData[pathwayIndex,tissueIndex];
+    // console.log(pathwayIndex + ' ' + tissueIndex);
+    if(associatedData[pathwayIndex]){
+        if(valueArray[pathwayIndex][tissueIndex].length>0){
+            console.log(valueArray[pathwayIndex][tissueIndex]);
+        }
+        // return associatedData[pathwayIndex][tissueIndex] + ' -> ' + JSON.stringify(valueArray[pathwayIndex][tissueIndex]);
+        return associatedData[pathwayIndex][tissueIndex];
+    }
+    return 0 ;
 }
 
 function drawExpressionData(vg, width, height, data,onClick,onHover) {
@@ -184,10 +192,13 @@ function getMutationScore(effect) {
  */
 function associateData(expression, pathways, samples) {
     let returnArray = new Array(pathways.length);
+    valueArray = new Array(pathways.length);
     for (let p in pathways) {
         returnArray[p] = new Array(samples.lenth);
+        valueArray[p] = new Array(samples.lenth);
         for (let s in samples) {
             returnArray[p][s] = 0;
+            valueArray[p][s] = [];
         }
     }
 
@@ -200,6 +211,7 @@ function associateData(expression, pathways, samples) {
         let sampleIndex = getSampleIndex(row.sample, samples);
         for (let index of pathwayIndices) {
             returnArray[index][sampleIndex] += effectValue;
+            valueArray[index][sampleIndex].push(row);
         }
     }
 
@@ -207,8 +219,8 @@ function associateData(expression, pathways, samples) {
 }
 
 function drawTissueView(vg, props) {
-    console.log('ttisue data viewing ');
-    console.log(props);
+    // console.log('ttisue data viewing ');
+    // console.log(props);
     let {width, height, onClick,onHover, data: {expression, pathways, samples}} = props;
     pathwayData = pathways ;
     expressionData = expression ;
@@ -228,8 +240,8 @@ export default class TissueView extends Component {
     }
 
     render() {
-        console.log('render in TissueView');
-        console.log(this.props);
+        // console.log('render in TissueView');
+        // console.log(this.props);
         const {width, height, data,onClick,onHover} = this.props;
         return <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick} onHover={onHover}/>
     }

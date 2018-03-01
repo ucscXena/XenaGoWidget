@@ -5,8 +5,8 @@ export default class HoverView extends Component {
 
     constructor(props) {
         super(props);
-        console.log('consturtor hvoerveiew');
-        console.log(props)
+        // console.log('consturtor hvoerveiew');
+        // console.log(props)
         // data: props.data;
         this.state = {
             data: props.data
@@ -37,11 +37,9 @@ export default class HoverView extends Component {
                     Tissue: {this.state.data.tissue}
                 </li>
                 }
-                {this.state.data.expression &&
                 <li>
                     Expression: {this.state.data.expression}
                 </li>
-                }
             </ul>
         </div>
     }

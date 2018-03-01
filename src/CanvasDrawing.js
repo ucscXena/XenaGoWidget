@@ -31,14 +31,14 @@ let styles = {
 
 export default class CanvasDrawing extends Component{
     componentWillReceiveProps(newProps) {
-        console.log('will recieve')
+        // console.log('will recieve')
         if (this.vg && !underscore.isEqual(newProps, this.props)) {
             this.draw(newProps);
         }
     }
     shouldComponentUpdate() {return false}
     render() {
-        console.log('render ');
+        // console.log('render ');
         let {width, height,wrapperProps} = this.props;
         return (
             <div ref='div' {...wrapperProps} style={{...styles.wrapperProps, width, height}}>
@@ -58,11 +58,11 @@ export default class CanvasDrawing extends Component{
         );
     }
     componentDidMount() {
-        console.log('did')
+        // console.log('did')
         let {width, height} = this.props;
         let canvas = ReactDOM.findDOMNode(this.refs.canvas);
         this.vg = canvas.getContext('2d');
-        console.log('found vg: '+this.vg);
+        // console.log('found vg: '+this.vg);
         // this.vg = vgmixed(ReactDOM.findDOMNode(this.refs.canvas), width, height, ReactDOM.findDOMNode(this.refs.labels));
         this.draw(this.props);
     }
