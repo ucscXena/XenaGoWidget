@@ -71,11 +71,18 @@ export default class SampleApp extends Component {
         const alignTop = {
             marginLeft: '40px',
             paddingLeft: '40px',
-            // border: '5px solid pink',
-            // textColor: 'red',
-            verticalAlign: 'top'
+            verticalAlign: 'top',
+            width: '100px'
         };
 
+        const geneAlignment = {
+            paddingTop: '100px',
+            marginTop: '100px',
+            marginLeft: '40px',
+            paddingLeft: '40px',
+            verticalAlign: 'top',
+            width: '100px'
+        };
 
         return (
             <div>
@@ -85,6 +92,14 @@ export default class SampleApp extends Component {
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
                             <TissueView id="pathwayViewId" width="400" height="800" data={data}
+                                        onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                        </td>
+                        <td style={alignTop}>
+                            <HoverView title="Hover" data={this.state.hoverData}/>
+                            <HoverView title="Clicked" data={this.state.clickData}/>
+                        </td>
+                        <td style={geneAlignment}>
+                            <TissueView id="geneViewId" width="400" height="800" data={geneData}
                                         onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
