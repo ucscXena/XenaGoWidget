@@ -12,32 +12,42 @@ export default class HoverView extends Component {
             data: props.data
         };
     }
+
     componentWillReceiveProps(nextProps) {
-        this.setState({ data: nextProps.data });
+        this.setState({data: nextProps.data});
     }
 
     render() {
         return <div>
             <h4>{this.props.title}</h4>
             <ul>
+                {this.state.data.x &&
                 <li>
                     ({this.state.data.x},{this.state.data.y})
                 </li>
+                }
+                {this.state.data.pathway &&
                 <li>
-                    Pathway: {this.state.data.pathway}
+                    Genes ({this.state.data.pathway.gene.length}) <br/>
+                    Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid})
                 </li>
+                }
+                {this.state.data.tissue &&
                 <li>
                     Tissue: {this.state.data.tissue}
                 </li>
+                }
+                {this.state.data.expression &&
                 <li>
                     Expression: {this.state.data.expression}
                 </li>
+                }
             </ul>
         </div>
     }
-    }
+}
 
-    HoverView.propTypes = {
-        data: PropTypes.any.isRequired,
-        title: PropTypes.any.isRequired,
-    };
+HoverView.propTypes = {
+    data: PropTypes.any.isRequired,
+    title: PropTypes.any.isRequired,
+};

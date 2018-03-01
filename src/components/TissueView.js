@@ -9,6 +9,7 @@ let labelHeight = 150;
 let pixelsPerPathway, pixelsPerTissue, pathwayCount , tissueCount ;
 
 let associatedData ;
+let pathwayData, expressionData, sampleData;
 
 function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
@@ -53,15 +54,21 @@ function getMousePos(canvas, evt) {
 }
 
 function getPathwayForXPosition(x){
-    
+     let pathwayIndex = Math.round(x / pixelsPerPathway) ;
+    return pathwayData[pathwayIndex];
 }
 
 function getTissueForYPosition(y){
-
+    let tissueIndex = Math.round(y / pixelsPerTissue) ;
+    return sampleData[tissueIndex];
 }
 
 function getExpressionForDataPoint(x,y){
-    // return data[]
+    let pathwayIndex = Math.round(x / pixelsPerPathway) ;
+    let tissueIndex = Math.round(y / pixelsPerTissue) ;
+    console.log(pathwayIndex + ' ' + tissueIndex)
+    console.log(expressionData)
+    return expressionData[pathwayIndex,tissueIndex];
 }
 
 function drawExpressionData(vg, width, height, data,onClick,onHover) {
@@ -200,9 +207,13 @@ function associateData(expression, pathways, samples) {
 }
 
 function drawTissueView(vg, props) {
-    console.log('ttisue data viewing ')
-    console.log(props)
+    console.log('ttisue data viewing ');
+    console.log(props);
     let {width, height, onClick,onHover, data: {expression, pathways, samples}} = props;
+    pathwayData = pathways ;
+    expressionData = expression ;
+    sampleData = samples ;
+
     drawPathwayLabels(vg, width, height, pathways);
 
     associatedData = associateData(expression, pathways, samples);
