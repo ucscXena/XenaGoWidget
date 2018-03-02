@@ -79,43 +79,44 @@ export default class SampleApp extends Component {
     clickPathway(props) {
         if (props && props.x) {
 
-            const dataProps = props;
-
-            const newState = update(this.state, {
-                pathwayClickData: dataProps,
-                pathwayData : {
-
-                }
-            });
-
-
-            // this.setState({pathwayClickData: props});
-            this.setState(newState);
-
-
-            // let selectedGenes = this.state.pathwayClickData.pathway.gene;
-            // let convertedGeneData = this.state.pathwayData;
-            // convertedGeneData.expression = this.state.pathwayData.expression;
+            // const dataProps = props;
             //
-            // // this won't change
-            // convertedGeneData.samples = this.state.pathwayData.samples;
-            // convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+            // const newState = update(this.state, {
+            //     pathwayClickData: dataProps,
+            //     pathwayData : {
             //
-            //
-            // // create a single gene and label for each one (will want the gene ID at some point)
-            // let pathwayData = [];
-            // for(let gene of selectedGenes){
-            //     let datum = {
-            //         golabel: convertedGeneData.selectedPathway.golabel,
-            //         goid: convertedGeneData.selectedPathway.goid,
-            //         gene: [gene]
-            //     };
-            //     pathwayData.push(datum);
-            // }
-            // convertedGeneData.pathways = pathwayData;
+            //     }
+            // });
+
+
+            this.setState({pathwayClickData: props});
+            // this.setState(newState);
+
+
+            let selectedGenes = this.state.pathwayClickData.pathway.gene;
+            let convertedGeneData = JSON.parse(JSON.stringify(this.state.pathwayData));
+            convertedGeneData.expression = this.state.pathwayData.expression;
+
+            // this won't change
+            convertedGeneData.samples = this.state.pathwayData.samples;
+            convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+
+
+            // create a single gene and label for each one (will want the gene ID at some point)
+            let pathwayData = [];
+            for(let gene of selectedGenes){
+                let datum = {
+                    golabel: convertedGeneData.selectedPathway.golabel,
+                    goid: convertedGeneData.selectedPathway.goid,
+                    gene: [gene]
+                };
+                pathwayData.push(datum);
+            }
+            convertedGeneData.pathways = pathwayData;
+            let myNewState = JSON.parse(JSON.stringify(convertedGeneData));
 
             // alert(JSON.stringify(this.state.pathwayClickData));
-            // this.setState({geneData: convertedGeneData});
+            this.setState({geneData: myNewState});
         }
     }
 
