@@ -79,21 +79,9 @@ export default class SampleApp extends Component {
         if (props && props.x) {
             this.setState({pathwayClickData: props});
 
-            console.log('selected pathway data: ');
-            console.log(this.state.pathwayClickData);
-
             let selectedGenes = this.state.pathwayClickData.pathway.gene;
-
-            console.log("selected genes");
-            console.log(selectedGenes);
-
             let convertedGeneData = this.state.pathwayData;
             convertedGeneData.expression = this.state.pathwayData.expression;
-
-            console.log('pathway data: ');
-            console.log(this.state.pathwayData.pathways);
-
-
 
             // this won't change
             convertedGeneData.samples = this.state.pathwayData.samples;
@@ -110,9 +98,6 @@ export default class SampleApp extends Component {
                 };
                 pathwayData.push(datum);
             }
-            console.log(pathwayData) ;
-            console.log('vs');
-            console.log(this.state.pathwayData) ;
             convertedGeneData.pathways = pathwayData;
 
             // alert(JSON.stringify(this.state.pathwayClickData));

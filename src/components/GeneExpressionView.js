@@ -37,6 +37,7 @@ function drawPathwayLabels(vg, width, height, pathways) {
             labelString += ' ';
         }
 
+        // TODO: add expression or the gene CURIE?
         // labelString += d.golabel;
 
         vg.fillText(labelString, 3, 10);
