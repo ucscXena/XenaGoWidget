@@ -2,13 +2,14 @@ import React, {Component} from 'react'
 import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/TissueExpressionView";
+import GeneExpressionView from "./components/GeneExpressionView";
 import ExamplePathWays from "../tests/data/tgac";
 // import ExampleExpression from "../tests/data/expression";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
 import ExampleStyle from "../demo/src/example.css";
 import HoverView from "./components/HoverView"
-import {Col, Grid, Row} from "react-bootstrap";
+import HoverGeneView from "./components/HoverGeneView";
 
 
 export default class SampleApp extends Component {
@@ -78,10 +79,13 @@ export default class SampleApp extends Component {
         if (props && props.x) {
             this.setState({pathwayClickData: props});
 
-            console.log("click");
+            console.log('selected pathway data: ');
             console.log(this.state.pathwayClickData);
-            // console.log("data form");
-            // console.log(this.state.pathwayData);
+
+            let selectedGenes = this.state.pathwayClickData.pathway.gene;
+
+            console.log("selected genes");
+            console.log(selectedGenes);
 
             let convertedGeneData = this.state.pathwayData;
             convertedGeneData.expression = this.state.pathwayData.expression;
@@ -89,11 +93,27 @@ export default class SampleApp extends Component {
             console.log('pathway data: ');
             console.log(this.state.pathwayData.pathways);
 
-            convertedGeneData.pathways = this.state.pathwayData.pathways;
+
 
             // this won't change
             convertedGeneData.samples = this.state.pathwayData.samples;
             convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+
+
+            // create a single gene and label for each one (will want the gene ID at some point)
+            let pathwayData = [];
+            for(let gene of selectedGenes){
+                let datum = {
+                    golabel: convertedGeneData.selectedPathway.golabel,
+                    goid: convertedGeneData.selectedPathway.goid,
+                    gene: [gene]
+                };
+                pathwayData.push(datum);
+            }
+            console.log(pathwayData) ;
+            console.log('vs');
+            console.log(this.state.pathwayData) ;
+            convertedGeneData.pathways = pathwayData;
 
             // alert(JSON.stringify(this.state.pathwayClickData));
 
@@ -154,13 +174,13 @@ export default class SampleApp extends Component {
                         </td>
                         { this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <td style={geneAlignment}>
-                                <TissueExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData} selected={this.state.geneData.selectedPathway}
+                                <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData} selected={this.state.geneData.selectedPathway}
                                                       onClick={this.clickGene} onHover={this.hoverGene}/>
                             </td>
                         }
                         <td style={alignTop}>
-                            <HoverView title="Hover" data={this.state.geneHoverData}/>
-                            <HoverView title="Clicked" data={this.state.geneClickData}/>
+                            <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
+                            <HoverGeneView title="Clicked" data={this.state.geneClickData}/>
                         </td>
                     </tr>
                     </tbody>

@@ -31,13 +31,13 @@ function drawPathwayLabels(vg, width, height, pathways) {
         vg.rotate(-Math.PI / 2);
         vg.font = "10px Courier";
         vg.translate(-labelHeight, pixelCount, labelHeight);
-        let labelString = '(' + d.gene.length + ')';
+        let labelString = d.gene[0];
         // pad for 1000, so 4 + 2 parans
         while (labelString.length < 5) {
             labelString += ' ';
         }
 
-        labelString += d.golabel;
+        // labelString += d.golabel;
 
         vg.fillText(labelString, 3, 10);
         vg.restore();
@@ -250,17 +250,17 @@ function drawTissueView(vg, props) {
     drawExpressionData(vg, width, height, associatedData, onClick, onHover);
 }
 
-export default class TissueExpressionView extends Component {
+export default class GeneExpressionView extends Component {
 
     constructor(props) {
         super(props)
     }
 
     render() {
-        // console.log('render in TissueExpressionView');
+        // console.log('render in GeneExpressionView');
         // console.log(this.props);
-        const {width, height, data, onClick, onHover, titleText} = this.props;
-        let titleString  = titleText ? titleText : '';
+        const {width, height, data, onClick, onHover, selected} = this.props;
+        let titleString = selected.golabel + ' ('+selected.goid + ')';
         return (
             <div>
                 <h3>{titleString}</h3>
@@ -270,11 +270,11 @@ export default class TissueExpressionView extends Component {
         );
     }
 }
-TissueExpressionView.propTypes = {
+GeneExpressionView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
-    titleText: PropTypes.string,
+    selected: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     id: PropTypes.any,
