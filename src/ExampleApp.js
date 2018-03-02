@@ -10,6 +10,7 @@ import ExampleSamples from "../tests/data/samples";
 import ExampleStyle from "../demo/src/example.css";
 import HoverView from "./components/HoverView"
 import HoverGeneView from "./components/HoverGeneView";
+import update from 'immutability-helper';
 
 
 export default class SampleApp extends Component {
@@ -77,32 +78,44 @@ export default class SampleApp extends Component {
 
     clickPathway(props) {
         if (props && props.x) {
-            this.setState({pathwayClickData: props});
 
-            let selectedGenes = this.state.pathwayClickData.pathway.gene;
-            let convertedGeneData = this.state.pathwayData;
-            convertedGeneData.expression = this.state.pathwayData.expression;
+            const dataProps = props;
 
-            // this won't change
-            convertedGeneData.samples = this.state.pathwayData.samples;
-            convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+            const newState = update(this.state, {
+                pathwayClickData: dataProps,
+                pathwayData : {
+
+                }
+            });
 
 
-            // create a single gene and label for each one (will want the gene ID at some point)
-            let pathwayData = [];
-            for(let gene of selectedGenes){
-                let datum = {
-                    golabel: convertedGeneData.selectedPathway.golabel,
-                    goid: convertedGeneData.selectedPathway.goid,
-                    gene: [gene]
-                };
-                pathwayData.push(datum);
-            }
-            convertedGeneData.pathways = pathwayData;
+            // this.setState({pathwayClickData: props});
+            this.setState(newState);
+
+
+            // let selectedGenes = this.state.pathwayClickData.pathway.gene;
+            // let convertedGeneData = this.state.pathwayData;
+            // convertedGeneData.expression = this.state.pathwayData.expression;
+            //
+            // // this won't change
+            // convertedGeneData.samples = this.state.pathwayData.samples;
+            // convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
+            //
+            //
+            // // create a single gene and label for each one (will want the gene ID at some point)
+            // let pathwayData = [];
+            // for(let gene of selectedGenes){
+            //     let datum = {
+            //         golabel: convertedGeneData.selectedPathway.golabel,
+            //         goid: convertedGeneData.selectedPathway.goid,
+            //         gene: [gene]
+            //     };
+            //     pathwayData.push(datum);
+            // }
+            // convertedGeneData.pathways = pathwayData;
 
             // alert(JSON.stringify(this.state.pathwayClickData));
-
-            this.setState({geneData: convertedGeneData});
+            // this.setState({geneData: convertedGeneData});
         }
     }
 
@@ -150,18 +163,20 @@ export default class SampleApp extends Component {
                         <td>
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
-                            <TissueExpressionView id="pathwayViewId" width="400" height="800" data={this.state.pathwayData} titleText="Expression"
+                            <TissueExpressionView id="pathwayViewId" width="400" height="800"
+                                                  data={this.state.pathwayData} titleText="Expression"
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
                             <HoverView title="Hover" data={this.state.pathwayHoverData}/>
                             <HoverView title="Clicked" data={this.state.pathwayClickData}/>
                         </td>
-                        { this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td style={geneAlignment}>
-                                <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData} selected={this.state.geneData.selectedPathway}
-                                                      onClick={this.clickGene} onHover={this.hoverGene}/>
-                            </td>
+                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <td style={geneAlignment}>
+                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
+                                                selected={this.state.geneData.selectedPathway}
+                                                onClick={this.clickGene} onHover={this.hoverGene}/>
+                        </td>
                         }
                         <td style={alignTop}>
                             <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
