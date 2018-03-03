@@ -47,7 +47,9 @@ function drawPathwayLabels(vg, width, height, pathways) {
 
         labelString += d.golabel;
 
-        vg.fillText(labelString, 3, 10);
+        if (pixelsPerPathway >= 10) {
+            vg.fillText(labelString, 3, 10);
+        }
         vg.restore();
         pixelCount += pixelsPerPathway;
     }

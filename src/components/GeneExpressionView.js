@@ -24,6 +24,7 @@ function drawPathwayLabels(vg, width, height, pathways) {
     // console.log(pathways)
     pixelsPerPathway = Math.round(width / pathwayCount);
 
+
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
@@ -46,8 +47,9 @@ function drawPathwayLabels(vg, width, height, pathways) {
 
         // TODO: add expression or the gene CURIE?
         // labelString += d.golabel;
-
-        vg.fillText(labelString, 3, 10);
+        if (pixelsPerPathway >= 10) {
+            vg.fillText(labelString, 3, 10);
+        }
         vg.restore();
         pixelCount += pixelsPerPathway;
     }
@@ -251,7 +253,7 @@ function drawTissueView(vg, props) {
     expressionData = expression;
     sampleData = samples;
 
-    clearScreen(vg,width,height);
+    clearScreen(vg, width, height);
 
     drawPathwayLabels(vg, width, height, pathways);
 
@@ -270,7 +272,7 @@ export default class GeneExpressionView extends Component {
         // console.log('render in GeneExpressionView');
         // console.log(this.props);
         const {width, height, data, onClick, onHover, selected} = this.props;
-        let titleString = selected.golabel + ' ('+selected.goid + ')';
+        let titleString = selected.golabel + ' (' + selected.goid + ')';
         return (
             <div>
                 <h3>{titleString}</h3>
