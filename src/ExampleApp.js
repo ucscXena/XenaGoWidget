@@ -113,9 +113,16 @@ export default class SampleApp extends Component {
                 pathwayData.push(datum);
             }
             convertedGeneData.pathways = pathwayData;
-            let myNewState = JSON.parse(JSON.stringify(convertedGeneData));
 
-            // alert(JSON.stringify(this.state.pathwayClickData));
+            // TODO: use update instead of the hacky JSON stringify to parse
+            //  let geneData = this.state.geneData;
+            //
+            // // do filtering stuff
+            // let filteredPathways = filterData(geneData); // function filtering the pathways
+            //
+            //  let newData = update(geneData.pathways, filteredPathways );
+            //  this.setState({geneData: newData});
+            let myNewState = JSON.parse(JSON.stringify(convertedGeneData));
             this.setState({geneData: myNewState});
         }
     }
