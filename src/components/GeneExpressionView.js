@@ -11,6 +11,13 @@ let pixelsPerPathway, pixelsPerTissue, pathwayCount, tissueCount;
 let associatedData, valueArray;
 let pathwayData, expressionData, sampleData;
 
+function clearScreen(vg, width, height) {
+    vg.save();
+    vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
+    vg.strokeStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
+    vg.fillRect(0, 0, width, height);
+}
+
 function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
     // console.log('drawing pathaways');
@@ -243,6 +250,8 @@ function drawTissueView(vg, props) {
     pathwayData = pathways;
     expressionData = expression;
     sampleData = samples;
+
+    clearScreen(vg,width,height);
 
     drawPathwayLabels(vg, width, height, pathways);
 
