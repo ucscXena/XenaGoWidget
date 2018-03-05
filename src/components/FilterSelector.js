@@ -5,7 +5,9 @@ export class FilterSelector extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: props.selected};
+        this.state = {
+            value: props.selected
+        };
 
         this.setSelected = this.setSelected.bind(this);
     }
@@ -18,6 +20,8 @@ export class FilterSelector extends Component {
         else {
             this.setState({value: null});
         }
+        console.log('calling change: '+targetValue);
+        this.props.onChange(targetValue);
     }
 
     render() {
@@ -45,5 +49,6 @@ export class FilterSelector extends Component {
 
 FilterSelector.propTypes = {
     filters: PropTypes.object.isRequired,
+    onChange: PropTypes.any,
     selected: PropTypes.any,
 };

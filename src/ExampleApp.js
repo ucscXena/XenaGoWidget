@@ -26,8 +26,8 @@ export default class SampleApp extends Component {
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
             },
-            tissueExpressionFilter:'',
-            geneExpressionFilter:'',
+            tissueExpressionFilter: '',
+            geneExpressionFilter: '',
             geneData: {
                 expression: [],
                 pathways: [],
@@ -77,6 +77,8 @@ export default class SampleApp extends Component {
         this.hoverGene = this.hoverGene.bind(this);
         this.clickGene = this.clickGene.bind(this);
 
+        this.filterTissueType = this.filterTissueType.bind(this);
+        this.filterGeneType = this.filterGeneType.bind(this);
 
     }
 
@@ -108,7 +110,7 @@ export default class SampleApp extends Component {
 
             // create a single gene and label for each one (will want the gene ID at some point)
             let pathwayData = [];
-            for(let gene of selectedGenes){
+            for (let gene of selectedGenes) {
                 let datum = {
                     golabel: convertedGeneData.selectedPathway.golabel,
                     goid: convertedGeneData.selectedPathway.goid,
@@ -149,6 +151,15 @@ export default class SampleApp extends Component {
         }
     }
 
+    filterTissueType(filter) {
+        this.setState({tissueExpressionFilter: filter});
+    }
+
+    filterGeneType(filter) {
+        console.log('filtering egene :'+filter)
+        this.setState({geneExpressionFilter: filter});
+    }
+
     render() {
 
         const alignTop = {
@@ -176,9 +187,11 @@ export default class SampleApp extends Component {
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
                             <h2>Mutation Type</h2>
-                            <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}/>
+                            <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}
+                                            onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
-                                                  data={this.state.pathwayData} titleText="Expression" filter={this.state.tissueExpressionFilter}
+                                                  data={this.state.pathwayData} titleText="Expression"
+                                                  filter={this.state.tissueExpressionFilter}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
@@ -188,9 +201,11 @@ export default class SampleApp extends Component {
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <td style={geneAlignment}>
                             <h2>Mutation Type</h2>
-                            <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}/>
-                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}  filter={this.state.geneExpressionFilter}
+                            <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}
+                                            onChange={this.filterGeneType}/>
+                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
                                                 selected={this.state.geneData.selectedPathway}
+                                                filter={this.state.geneExpressionFilter}
                                                 onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>
                         }
