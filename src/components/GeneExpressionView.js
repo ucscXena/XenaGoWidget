@@ -20,15 +20,19 @@ function clearScreen(vg, width, height) {
 
 function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
-    // console.log('drawing pathaways');
-    // console.log(pathways)
-    pixelsPerPathway = Math.round(width / pathwayCount);
+    pixelsPerPathway = Math.trunc(width / pathwayCount);
 
+    if(pixelsPerPathway<=1){
+        vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
+        vg.fillRect(0, 0, width, labelHeight);
+        return ;
+    }
+
+    console.log('label pixelsPerPathway: ' + pixelsPerPathway)
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
-        // console.log(d)
         vg.fillRect(pixelCount, 0, pixelsPerPathway, labelHeight);
         vg.strokeRect(pixelCount, 0, pixelsPerPathway, labelHeight);
 
@@ -46,7 +50,6 @@ function drawPathwayLabels(vg, width, height, pathways) {
         }
 
         // TODO: add expression or the gene CURIE?
-        // labelString += d.golabel;
         if (pixelsPerPathway >= 10) {
             vg.fillText(labelString, 3, 10);
         }
@@ -64,20 +67,22 @@ function getMousePos(canvas, evt) {
 }
 
 function getPathwayForXPosition(x) {
-    let pathwayIndex = Math.round(x / pixelsPerPathway);
+    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
     return pathwayData[pathwayIndex];
 }
 
 function getTissueForYPosition(y) {
     let convertedHeight = y - labelHeight;
     if (convertedHeight < 0) return 'Header';
-    let tissueIndex = Math.round((convertedHeight) / pixelsPerTissue);
+    let tissueIndex = Math.trunc((convertedHeight) / pixelsPerTissue);
     return sampleData[tissueIndex];
 }
 
 function getExpressionForDataPoint(x, y) {
-    let pathwayIndex = Math.round(x / pixelsPerPathway);
-    let tissueIndex = Math.round(y / pixelsPerTissue);
+    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
+    let tissueIndex = Math.trunc(y / pixelsPerTissue);
+
+    // console.log('data length: ' + associateData.length);
 
     let convertedHeight = y - labelHeight;
     if (convertedHeight < 0) {
@@ -85,22 +90,14 @@ function getExpressionForDataPoint(x, y) {
         let pathwayArray = associatedData[pathwayIndex];
 
         for (let p of pathwayArray) {
-            // console.log(p)
             totalExpression += parseInt(p);
-            // const reducer = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
-            // return associatedData.reduce(reducer)
         }
 
         return totalExpression;
     }
 
 
-    // console.log(pathwayIndex + ' ' + tissueIndex);
     if (associatedData[pathwayIndex]) {
-        if (valueArray[pathwayIndex][tissueIndex].length > 0) {
-            console.log(valueArray[pathwayIndex][tissueIndex]);
-        }
-        // return associatedData[pathwayIndex][tissueIndex] + ' -> ' + JSON.stringify(valueArray[pathwayIndex][tissueIndex]);
         return associatedData[pathwayIndex][tissueIndex];
     }
     return 0;
@@ -109,8 +106,8 @@ function getExpressionForDataPoint(x, y) {
 function drawExpressionData(vg, width, height, data, onClick, onHover) {
     pathwayCount = data.length;
     tissueCount = data[0].length;
-    pixelsPerPathway = Math.round(width / pathwayCount);
-    pixelsPerTissue = Math.round(height / tissueCount);
+    pixelsPerPathway = Math.trunc(width / pathwayCount);
+    pixelsPerTissue = Math.trunc(height / tissueCount);
 
 
     let thresholdScore = 5;

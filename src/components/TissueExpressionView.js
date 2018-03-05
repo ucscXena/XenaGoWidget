@@ -15,15 +15,12 @@ function clearScreen(vg, width, height) {
     vg.save();
     vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
     vg.strokeStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
-    // vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
     vg.fillRect(0, 0, width, height);
 }
 
 function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
-    // console.log('drawing pathaways');
-    // console.log(pathways)
-    pixelsPerPathway = Math.round(width / pathwayCount);
+    pixelsPerPathway = Math.trunc(width / pathwayCount);
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
@@ -64,20 +61,20 @@ function getMousePos(canvas, evt) {
 }
 
 function getPathwayForXPosition(x) {
-    let pathwayIndex = Math.round(x / pixelsPerPathway);
+    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
     return pathwayData[pathwayIndex];
 }
 
 function getTissueForYPosition(y) {
     let convertedHeight = y - labelHeight;
     if (convertedHeight < 0) return 'Header';
-    let tissueIndex = Math.round((convertedHeight) / pixelsPerTissue);
+    let tissueIndex = Math.trunc((convertedHeight) / pixelsPerTissue);
     return sampleData[tissueIndex];
 }
 
 function getExpressionForDataPoint(x, y) {
-    let pathwayIndex = Math.round(x / pixelsPerPathway);
-    let tissueIndex = Math.round(y / pixelsPerTissue);
+    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
+    let tissueIndex = Math.trunc(y / pixelsPerTissue);
 
     let convertedHeight = y - labelHeight;
     if (convertedHeight < 0) {
@@ -109,8 +106,9 @@ function getExpressionForDataPoint(x, y) {
 function drawExpressionData(vg, width, height, data, onClick, onHover) {
     pathwayCount = data.length;
     tissueCount = data[0].length;
-    pixelsPerPathway = Math.round(width / pathwayCount);
-    pixelsPerTissue = Math.round(height / tissueCount);
+    pixelsPerPathway = Math.trunc(width / pathwayCount);
+    pixelsPerTissue = Math.trunc(height / tissueCount);
+    pixelsPerTissue = Math.trunc(height / tissueCount);
 
 
     let thresholdScore = 5;
