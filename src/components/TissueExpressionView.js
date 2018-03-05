@@ -94,9 +94,9 @@ function getExpressionForDataPoint(x, y) {
 
     // console.log(pathwayIndex + ' ' + tissueIndex);
     if (associatedData[pathwayIndex]) {
-        if (valueArray[pathwayIndex][tissueIndex].length > 0) {
-            console.log(valueArray[pathwayIndex][tissueIndex]);
-        }
+        // if (valueArray[pathwayIndex][tissueIndex].length > 0) {
+        //     console.log(valueArray[pathwayIndex][tissueIndex]);
+        // }
         // return associatedData[pathwayIndex][tissueIndex] + ' -> ' + JSON.stringify(valueArray[pathwayIndex][tissueIndex]);
         return associatedData[pathwayIndex][tissueIndex];
     }

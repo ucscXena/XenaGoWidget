@@ -28,8 +28,6 @@ function drawPathwayLabels(vg, width, height, pathways) {
         return ;
     }
 
-    console.log('label pixelsPerPathway: ' + pixelsPerPathway)
-
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
@@ -89,8 +87,13 @@ function getExpressionForDataPoint(x, y) {
         let totalExpression = 0;
         let pathwayArray = associatedData[pathwayIndex];
 
-        for (let p of pathwayArray) {
-            totalExpression += parseInt(p);
+        if(pathwayArray){
+            for (let p of pathwayArray) {
+                totalExpression += parseInt(p);
+            }
+        }
+        else{
+            console.log('problem finding pathway for index: '+pathwayIndex + ' of length: '+ associateData.length)
         }
 
         return totalExpression;
