@@ -24,14 +24,8 @@ export default class HoverGeneView extends Component {
                     <h4>{this.props.title}</h4>
                     {this.state.data.tissue !== 'Header' &&
                     <ul>
-                        {/*{this.state.data.x &&*/}
-                        {/*<li>*/}
-                        {/*({this.state.data.x},{this.state.data.y})*/}
-                        {/*</li>*/}
-                        {/*}*/}
                         {this.state.data.pathway &&
                         <li>
-                            {/*Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>*/}
                             Gene: ({this.state.data.pathway.gene[0]})
                         </li>
                         }

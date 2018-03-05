@@ -22,10 +22,10 @@ function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
     pixelsPerPathway = Math.trunc(width / pathwayCount);
 
-    if(pixelsPerPathway<=1){
+    if (pixelsPerPathway <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
         vg.fillRect(0, 0, width, labelHeight);
-        return ;
+        return;
     }
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
@@ -87,13 +87,13 @@ function getExpressionForDataPoint(x, y) {
         let totalExpression = 0;
         let pathwayArray = associatedData[pathwayIndex];
 
-        if(pathwayArray){
+        if (pathwayArray) {
             for (let p of pathwayArray) {
                 totalExpression += parseInt(p);
             }
         }
-        else{
-            console.log('problem finding pathway for index: '+pathwayIndex + ' of length: '+ associateData.length)
+        else {
+            console.log('problem finding pathway for index: ' + pathwayIndex + ' of length: ' + associateData.length)
         }
 
         return totalExpression;
@@ -217,7 +217,9 @@ function getMutationScore(effect) {
  * @param samples
  * @returns {any[]}
  */
-function associateData(expression, pathways, samples) {
+function associateData(expression, pathways, samples, filter) {
+    console.log('assicating data with filter: ' + filter);
+    filter = filter === 'All' ? '' : filter;
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -233,7 +235,7 @@ function associateData(expression, pathways, samples) {
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
-        let effectValue = getMutationScore(effect);
+        let effectValue = (!filter || effect === filter) ? getMutationScore(effect) : 0;
         let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
         let sampleIndex = getSampleIndex(row.sample, samples);
         for (let index of pathwayIndices) {
@@ -248,7 +250,7 @@ function associateData(expression, pathways, samples) {
 function drawTissueView(vg, props) {
     // console.log('ttisue data viewing ');
     // console.log(props);
-    let {width, height, onClick, onHover, data: {expression, pathways, samples}} = props;
+    let {width, height, onClick, onHover, filter, data: {expression, pathways, samples}} = props;
     pathwayData = pathways;
     expressionData = expression;
     sampleData = samples;
@@ -257,7 +259,7 @@ function drawTissueView(vg, props) {
 
     drawPathwayLabels(vg, width, height, pathways);
 
-    associatedData = associateData(expression, pathways, samples);
+    associatedData = associateData(expression, pathways, samples, filter);
 
     drawExpressionData(vg, width, height, associatedData, onClick, onHover);
 }
@@ -271,12 +273,13 @@ export default class GeneExpressionView extends Component {
     render() {
         // console.log('render in GeneExpressionView');
         // console.log(this.props);
-        const {width, height, data, onClick, onHover, selected} = this.props;
+        const {width, height, data, onClick, onHover, selected, filter} = this.props;
         let titleString = selected.golabel + ' (' + selected.goid + ')';
         return (
             <div>
                 <h3>{titleString}</h3>
-                <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick}
+                <CanvasDrawing width={width} height={height} filter={filter} draw={drawTissueView} data={data}
+                               onClick={onClick}
                                onHover={onHover}/>
             </div>
         );
@@ -289,6 +292,7 @@ GeneExpressionView.propTypes = {
     selected: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
+    filter: PropTypes.any,
     id: PropTypes.any,
 };
 
