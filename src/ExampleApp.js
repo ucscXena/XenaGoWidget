@@ -26,8 +26,8 @@ export default class SampleApp extends Component {
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
             },
-            tissueExpressionFilter:null,
-            geneExpressionFilter:null,
+            tissueExpressionFilter:'',
+            geneExpressionFilter:'',
             geneData: {
                 expression: [],
                 pathways: [],

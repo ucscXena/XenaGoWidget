@@ -259,12 +259,10 @@ function drawTissueView(vg, props) {
 export default class TissueExpressionView extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     render() {
-        // console.log('render in TissueExpressionView');
-        // console.log(this.props);
         const {width, height, data, onClick, onHover, titleText,filter} = this.props;
         let titleString  = titleText ? titleText : '';
         return (
