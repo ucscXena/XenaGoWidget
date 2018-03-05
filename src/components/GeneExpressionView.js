@@ -137,7 +137,7 @@ function drawExpressionData(vg, width, height, data, onClick, onHover) {
         xPixel += pixelsPerPathway;
     }
     vg.restore();
-    console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
+    // console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 
     // alert(vg.canvas);
     let canvas = vg.canvas;

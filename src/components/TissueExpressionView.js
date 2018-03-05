@@ -81,23 +81,19 @@ function getExpressionForDataPoint(x, y) {
         let totalExpression = 0;
         let pathwayArray = associatedData[pathwayIndex];
 
-        for (let p of pathwayArray) {
-            // console.log(p)
-            totalExpression += parseInt(p);
-            // const reducer = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
-            // return associatedData.reduce(reducer)
+        if(pathwayArray){
+            for (let p of pathwayArray) {
+                totalExpression += parseInt(p);
+            }
+        }
+        else{
+            console.log("Not pathway data at "+pathwayIndex + " for "+associateData.length);
         }
 
         return totalExpression;
     }
 
-
-    // console.log(pathwayIndex + ' ' + tissueIndex);
     if (associatedData[pathwayIndex]) {
-        // if (valueArray[pathwayIndex][tissueIndex].length > 0) {
-        //     console.log(valueArray[pathwayIndex][tissueIndex]);
-        // }
-        // return associatedData[pathwayIndex][tissueIndex] + ' -> ' + JSON.stringify(valueArray[pathwayIndex][tissueIndex]);
         return associatedData[pathwayIndex][tissueIndex];
     }
     return 0;
@@ -203,7 +199,6 @@ function getSampleIndex(sample, samples) {
  * @returns {*}
  */
 function getMutationScore(effect) {
-
     return mutationScores[effect]
 }
 
@@ -215,7 +210,7 @@ function getMutationScore(effect) {
  * @param samples
  * @returns {any[]}
  */
-function associateData(expression, pathways, samples) {
+function associateData(expression, pathways, samples, filter) {
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -231,7 +226,7 @@ function associateData(expression, pathways, samples) {
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
-        let effectValue = getMutationScore(effect);
+        let effectValue = (!filter || effect===filter) ? getMutationScore(effect) : 0 ;
         let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
         let sampleIndex = getSampleIndex(row.sample, samples);
         for (let index of pathwayIndices) {
@@ -247,7 +242,7 @@ function associateData(expression, pathways, samples) {
 function drawTissueView(vg, props) {
     // console.log('ttisue data viewing ');
     // console.log(props);
-    let {width, height, onClick, onHover, data: {expression, pathways, samples}} = props;
+    let {width, height, filter, onClick, onHover, data: {expression, pathways, samples}} = props;
     pathwayData = pathways;
     expressionData = expression;
     sampleData = samples;
@@ -256,7 +251,7 @@ function drawTissueView(vg, props) {
 
     drawPathwayLabels(vg, width, height, pathways);
 
-    associatedData = associateData(expression, pathways, samples);
+    associatedData = associateData(expression, pathways, samples,filter);
 
     drawExpressionData(vg, width, height, associatedData, onClick, onHover);
 }
@@ -270,12 +265,12 @@ export default class TissueExpressionView extends Component {
     render() {
         // console.log('render in TissueExpressionView');
         // console.log(this.props);
-        const {width, height, data, onClick, onHover, titleText} = this.props;
+        const {width, height, data, onClick, onHover, titleText,filter} = this.props;
         let titleString  = titleText ? titleText : '';
         return (
             <div>
                 <h3>{titleString}</h3>
-                <CanvasDrawing width={width} height={height} draw={drawTissueView} data={data} onClick={onClick}
+                <CanvasDrawing width={width} height={height} filter={filter} draw={drawTissueView} data={data} onClick={onClick}
                                onHover={onHover}/>
             </div>
         );
@@ -288,6 +283,7 @@ TissueExpressionView.propTypes = {
     titleText: PropTypes.string,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
+    filter: PropTypes.any,
     id: PropTypes.any,
 };
 

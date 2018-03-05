@@ -11,6 +11,8 @@ import ExampleStyle from "../demo/src/example.css";
 import HoverView from "./components/HoverView"
 import HoverGeneView from "./components/HoverGeneView";
 import update from 'immutability-helper';
+import mutationVector from "./mutationVector";
+import {FilterSelector} from "./components/FilterSelector";
 
 
 export default class SampleApp extends Component {
@@ -24,6 +26,8 @@ export default class SampleApp extends Component {
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
             },
+            tissueExpressionFilter:null,
+            geneExpressionFilter:null,
             geneData: {
                 expression: [],
                 pathways: [],
@@ -171,8 +175,10 @@ export default class SampleApp extends Component {
                         <td>
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
+                            <h2>Mutation Type</h2>
+                            <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
-                                                  data={this.state.pathwayData} titleText="Expression"
+                                                  data={this.state.pathwayData} titleText="Expression" filter={this.state.tissueExpressionFilter}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
@@ -181,7 +187,9 @@ export default class SampleApp extends Component {
                         </td>
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <td style={geneAlignment}>
-                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
+                            <h2>Mutation Type</h2>
+                            <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}/>
+                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}  filter={this.state.geneExpressionFilter}
                                                 selected={this.state.geneData.selectedPathway}
                                                 onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>

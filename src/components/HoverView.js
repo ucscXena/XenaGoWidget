@@ -47,7 +47,7 @@ export default class HoverView extends Component {
                         }
                     </ul>
                     }
-                    {this.state.data.tissue === 'Header' &&
+                    {this.state.data.tissue === 'Header' && this.state.data.pathway &&
                     <div>
                         Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
                         Genes ({this.state.data.pathway.gene.length}) <br/>
