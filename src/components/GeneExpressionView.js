@@ -80,8 +80,6 @@ function getExpressionForDataPoint(x, y) {
     let pathwayIndex = Math.trunc(x / pixelsPerPathway);
     let tissueIndex = Math.trunc(y / pixelsPerTissue);
 
-    // console.log('data length: ' + associateData.length);
-
     let convertedHeight = y - labelHeight;
     if (convertedHeight < 0) {
         let totalExpression = 0;
@@ -219,7 +217,7 @@ function getMutationScore(effect) {
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
-    console.log('assicating data with filter: ' + filter);
+    // console.log('assicating data with filter: ' + filter);
     filter = filter === 'All' ? '' : filter;
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
