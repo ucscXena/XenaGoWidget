@@ -20,7 +20,7 @@ export class FilterSelector extends Component {
         else {
             this.setState({value: null});
         }
-        console.log('calling change: '+targetValue);
+        // console.log('calling change: '+targetValue);
         this.props.onChange(targetValue);
     }
 
@@ -49,6 +49,7 @@ export class FilterSelector extends Component {
 
 FilterSelector.propTypes = {
     filters: PropTypes.object.isRequired,
+    pathwayData: PropTypes.any.isRequired,
     onChange: PropTypes.any,
     selected: PropTypes.any,
 };
