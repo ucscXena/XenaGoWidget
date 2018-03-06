@@ -208,6 +208,7 @@ function getMutationScore(effect) {
  * @param expression
  * @param pathways
  * @param samples
+ * @param filter
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
@@ -240,8 +241,6 @@ function associateData(expression, pathways, samples, filter) {
 
 
 function drawTissueView(vg, props) {
-    // console.log('ttisue data viewing ');
-    // console.log(props);
     let {width, height, filter, onClick, onHover, data: {expression, pathways, samples}} = props;
     pathwayData = pathways;
     expressionData = expression;
@@ -274,6 +273,7 @@ export default class TissueExpressionView extends Component {
         );
     }
 }
+
 TissueExpressionView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
