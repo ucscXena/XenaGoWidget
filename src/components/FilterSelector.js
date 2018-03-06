@@ -61,14 +61,14 @@ export class FilterSelector extends Component {
     }
 
     render() {
-        const {filters} = this.props;
+        const {filters,pathwayData,selected} = this.props;
         let filterArray = [];
 
         for (let f in filters) {
             filterArray.push(f);
         }
 
-        let labeledObject = this.compileData(filterArray, this.state.pathwayData);
+        let labeledObject = this.compileData(filterArray, pathwayData);
 
         filterArray = filterArray.sort(function (a, b) {
             return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -81,7 +81,7 @@ export class FilterSelector extends Component {
             labeledArray.push(labeledObject[f]);
         }
 
-        return <select onChange={this.setSelected} value={this.state.value}>
+        return <select onChange={this.setSelected} value={selected}>
             <option key='null'>All ({total})</option>
             {
                 labeledArray.map(function (f) {
