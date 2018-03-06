@@ -5,7 +5,6 @@ export class FilterSelector extends Component {
 
     constructor(props) {
         super(props);
-        console.log(props)
         this.state = {
             value: props.selected,
             pathwayData: props.pathwayData,
@@ -22,12 +21,12 @@ export class FilterSelector extends Component {
         else {
             this.setState({value: null});
         }
-        // console.log('calling change: '+targetValue);
         this.props.onChange(targetValue);
     }
 
     compileData(filteredArray, data) {
         let returnArray = {};
+
 
         for (let type of filteredArray) {
             let returnObject = {
@@ -37,13 +36,28 @@ export class FilterSelector extends Component {
             returnArray[type] = returnObject;
         }
 
+
+        let genes = this.getGenes(data.pathways);
+
         for (let row of data.expression.rows) {
             let filteredObject = returnArray[row.effect] ;
-            filteredObject.count = filteredObject.count + 1;
+            if(genes.indexOf(row.gene)>=0){
+                filteredObject.count = filteredObject.count + 1;
+            }
         }
 
-
         return returnArray;
+    }
+
+    getGenes(pathways) {
+        let genes = [] ;
+        for(let p of pathways){
+            for(let g of p.gene){
+                genes.push(g);
+            }
+        }
+
+        return genes ;
     }
 
     render() {
@@ -63,13 +77,9 @@ export class FilterSelector extends Component {
         let labeledArray = [];
         let total = 0 ;
         for(let f of filterArray){
-            // console.log(labeledObject[f]);
             total = total + labeledObject[f].count ;
             labeledArray.push(labeledObject[f]);
         }
-
-        // console.log(labeledArray);
-        // console.log(filterArray);
 
         return <select onChange={this.setSelected} value={this.state.value}>
             <option key='null'>All ({total})</option>
