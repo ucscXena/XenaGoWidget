@@ -5,9 +5,6 @@ export default class HoverGeneView extends Component {
 
     constructor(props) {
         super(props);
-        // console.log('consturtor hvoerveiew');
-        // console.log(props)
-        // data: props.data;
         this.state = {
             data: props.data
         };

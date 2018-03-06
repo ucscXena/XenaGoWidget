@@ -188,6 +188,7 @@ export default class SampleApp extends Component {
                             <CohortSelector cohorts={ExampleCohortsData}/>
                             <h2>Mutation Type</h2>
                             <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}
+                                            pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
                                                   data={this.state.pathwayData} titleText="Expression"
@@ -202,6 +203,7 @@ export default class SampleApp extends Component {
                         <td style={geneAlignment}>
                             <h2>Mutation Type</h2>
                             <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}
+                                            pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
                             <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
                                                 selected={this.state.geneData.selectedPathway}
