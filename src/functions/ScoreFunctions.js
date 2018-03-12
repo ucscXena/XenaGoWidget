@@ -29,7 +29,6 @@ function drawPathwayLabels(vg, width, height, pathways) {
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
-        // console.log(d)
         vg.fillRect(pixelCount, 0, pixelsPerPathway, labelHeight);
         vg.strokeRect(pixelCount, 0, pixelsPerPathway, labelHeight);
 
@@ -146,11 +145,7 @@ function drawExpressionData(vg, width, height, data, pathways,samples, onClick, 
     // alert(vg.canvas);
     let canvas = vg.canvas;
     canvas.addEventListener("click", function (event) {
-        // console.log(event)
         let mousePos = getMousePos(vg.canvas, event);
-        // console.log(mousePos);
-        // alert('cliecked ' + JSON.stringify(mousePos));
-        // console.log(data)
         let pixelsPerPathway = Math.trunc(width / pathwayCount);
         let pixelsPerTissue = Math.trunc(height / tissueCount);
         let pathway = getPathwayForXPosition(mousePos.x,pixelsPerPathway,pathways);
@@ -169,10 +164,7 @@ function drawExpressionData(vg, width, height, data, pathways,samples, onClick, 
     }, false);
 
     vg.canvas.addEventListener("mousemove", function (event) {
-        // console.log('moved ' + JSON.stringify(event));
         let mousePos = getMousePos(vg.canvas, event);
-        // console.log(mousePos);
-        // console.log(onHover)
         let pixelsPerPathway = Math.trunc(width / pathwayCount);
         let pixelsPerTissue = Math.trunc(height / tissueCount);
         let pathway = getPathwayForXPosition(mousePos.x,pixelsPerPathway,pathways);
@@ -256,7 +248,7 @@ function associateData(expression, pathways, samples, filter) {
 
 
 
-function pruneSamples(data,pathways){
+function pruneEmptySamples(data,pathways){
     let columnScores = [];
     for(let i = 0 ; i < pathways.length ; i++){
         columnScores[i] = 0 ;
@@ -275,16 +267,12 @@ function pruneSamples(data,pathways){
     let prunedPathways = [];
     let prunedAssociations = [];
 
-    console.log(columnScores);
     for(let col in columnScores){
-        console.log(columnScores[col]);
         if(columnScores[col]>0){
             prunedPathways.push(pathways[col]);
             prunedAssociations.push(data[col]);
         }
     }
-    console.log(prunedPathways)
-    console.log(prunedAssociations)
 
     return {
         'data':prunedAssociations,
@@ -296,22 +284,14 @@ export default {
 
     drawTissueView(vg, props) {
         let {width, height, filter, onClick, onHover, data: {expression, pathways, samples}} = props;
-        // let pathwayData = pathways;
-        // let expressionData = expression;
-        // let sampleData = samples;
-
         clearScreen(vg, width, height);
-
-        drawPathwayLabels(vg, width, height, pathways);
 
         let associatedData = associateData(expression, pathways, samples, filter);
 
-        let returnedValue  = pruneSamples(associatedData,pathways);
+        let returnedValue  = pruneEmptySamples(associatedData,pathways);
         let filteredPathways = returnedValue.pathways;
         let filteredData = returnedValue.data;
-        console.log(returnedValue)
-        console.log(filteredPathways)
-        console.log(filteredData)
+        drawPathwayLabels(vg, width, height, filteredPathways);
 
         drawExpressionData(vg, width, height, filteredData, filteredPathways,samples,  onClick, onHover);
     }
