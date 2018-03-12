@@ -72,73 +72,33 @@ export default class SampleApp extends Component {
 
     }
 
-    clickPathway(props) {
-        if (props && props.x) {
+    clickPathway(pathwayClickData) {
+        var {expression, samples} = this.state.pathwayData;
+        var {goid, golabel, gene} = pathwayClickData.pathway;
 
-            // const dataProps = props;
-            //
-            // const newState = update(this.state, {
-            //     pathwayClickData: dataProps,
-            //     pathwayData : {
-            //
-            //     }
-            // });
+        var pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
-
-            this.setState({pathwayClickData: props});
-            // this.setState(newState);
-
-
-            let selectedGenes = this.state.pathwayClickData.pathway.gene;
-            let convertedGeneData = JSON.parse(JSON.stringify(this.state.pathwayData));
-            convertedGeneData.expression = this.state.pathwayData.expression;
-
-            // this won't change
-            convertedGeneData.samples = this.state.pathwayData.samples;
-            convertedGeneData.selectedPathway = this.state.pathwayClickData.pathway;
-
-
-            // create a single gene and label for each one (will want the gene ID at some point)
-            let pathwayData = [];
-            for (let gene of selectedGenes) {
-                let datum = {
-                    golabel: convertedGeneData.selectedPathway.golabel,
-                    goid: convertedGeneData.selectedPathway.goid,
-                    gene: [gene]
-                };
-                pathwayData.push(datum);
+        this.setState({
+            pathwayClickData,
+            geneData: {
+                expression,
+                samples,
+                pathways,
+                selectedPathway: pathwayClickData.pathway
             }
-            convertedGeneData.pathways = pathwayData;
-
-            // TODO: use update instead of the hacky JSON stringify to parse
-            //  let geneData = this.state.geneData;
-            //
-            // // do filtering stuff
-            // let filteredPathways = filterData(geneData); // function filtering the pathways
-            //
-            //  let newData = update(geneData.pathways, filteredPathways );
-            //  this.setState({geneData: newData});
-            let myNewState = JSON.parse(JSON.stringify(convertedGeneData));
-            this.setState({geneData: myNewState});
-        }
+        });
     }
 
     hoverPathway(props) {
-        if (props && props.x) {
-            this.setState({pathwayHoverData: props});
-        }
+		this.setState({pathwayHoverData: props});
     }
 
     clickGene(props) {
-        if (props && props.x) {
-            this.setState({geneClickData: props});
-        }
+		this.setState({geneClickData: props});
     }
 
     hoverGene(props) {
-        if (props && props.x) {
-            this.setState({geneHoverData: props});
-        }
+		this.setState({geneHoverData: props});
     }
 
     filterTissueType(filter) {

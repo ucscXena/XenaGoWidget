@@ -1,5 +1,3 @@
-import mutationScores from '../data/mutationVector';
-
 let labelHeight = 150;
 
 // let pixelsPerPathway, pixelsPerTissue, pathwayCount, tissueCount;
@@ -63,53 +61,6 @@ function drawPathwayLabels(vg, width, height, pathways) {
     }
 }
 
-function getMousePos(canvas, evt) {
-    let rect = canvas.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
-}
-
-function getPathwayForXPosition(x,pixelsPerPathway,pathwayData) {
-    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
-    return pathwayData[pathwayIndex];
-}
-
-function getTissueForYPosition(y,pixelsPerTissue,sampleData) {
-    let convertedHeight = y - labelHeight;
-    if (convertedHeight < 0) return 'Header';
-    let tissueIndex = Math.trunc((convertedHeight) / pixelsPerTissue);
-    return sampleData[tissueIndex];
-}
-
-function getExpressionForDataPoint(x, y,pixelsPerPathway,pixelsPerTissue,associatedData) {
-    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
-    let tissueIndex = Math.trunc(y / pixelsPerTissue);
-
-    let convertedHeight = y - labelHeight;
-    if (convertedHeight < 0) {
-        let totalExpression = 0;
-        let pathwayArray = associatedData[pathwayIndex];
-
-        if (pathwayArray) {
-            for (let p of pathwayArray) {
-                totalExpression += parseInt(p);
-            }
-        }
-        else {
-            console.log("Not pathway data at " + pathwayIndex + " for " + associateData.length);
-        }
-
-        return totalExpression;
-    }
-
-    if (associatedData[pathwayIndex]) {
-        return associatedData[pathwayIndex][tissueIndex];
-    }
-    return 0;
-}
-
 function drawExpressionData(vg, width, height, data, pathways,samples, onClick, onHover) {
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -141,159 +92,19 @@ function drawExpressionData(vg, width, height, data, pathways,samples, onClick, 
     }
     vg.restore();
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
-
-    // alert(vg.canvas);
-    let canvas = vg.canvas;
-    canvas.addEventListener("click", function (event) {
-        let mousePos = getMousePos(vg.canvas, event);
-        let pixelsPerPathway = Math.trunc(width / pathwayCount);
-        let pixelsPerTissue = Math.trunc(height / tissueCount);
-        let pathway = getPathwayForXPosition(mousePos.x,pixelsPerPathway,pathways);
-        let tissue = getTissueForYPosition(mousePos.y,pixelsPerTissue,samples);
-        let expression = getExpressionForDataPoint(mousePos.x, mousePos.y,pixelsPerPathway,pixelsPerPathway,data);
-        let pointData = {
-            x: mousePos.x,
-            y: mousePos.y,
-            pathway: pathway,
-            tissue: tissue,
-            expression: expression,
-        };
-        if (onClick) onClick(pointData);
-        // alert(event.clientX + ' '  + evet.clientY )
-
-    }, false);
-
-    vg.canvas.addEventListener("mousemove", function (event) {
-        let mousePos = getMousePos(vg.canvas, event);
-        let pixelsPerPathway = Math.trunc(width / pathwayCount);
-        let pixelsPerTissue = Math.trunc(height / tissueCount);
-        let pathway = getPathwayForXPosition(mousePos.x,pixelsPerPathway,pathways);
-        let tissue = getTissueForYPosition(mousePos.y,pixelsPerTissue,samples);
-        let expression = getExpressionForDataPoint(mousePos.x, mousePos.y,pixelsPerPathway,pixelsPerTissue,data);
-        let pointData = {
-            x: mousePos.x,
-            y: mousePos.y,
-            pathway: pathway,
-            tissue: tissue,
-            expression: expression,
-        };
-        if (onHover) onHover(pointData);
-    }, false);
-}
-
-function getPathwayIndicesForGene(gene, pathways) {
-    let indices = [];
-    for (let p in pathways) {
-        let pathway = pathways[p];
-        let indexOfGeneInPathway = pathway.gene.indexOf(gene);
-        if (indexOfGeneInPathway >= 0) {
-            indices.push(p);
-        }
-    }
-    return indices;
-}
-
-function getSampleIndex(sample, samples) {
-    return samples.indexOf(sample);
-}
-
-/**
- * https://github.com/nathandunn/XenaGoWidget/issues/5
- * https://github.com/ucscXena/ucsc-xena-client/blob/master/js/models/mutationVector.js#L67
- Can use the scores directly or just count everything that is 4-2, and lincRNA, Complex Substitution, RNA which are all 0.
- * @param effect
- * @returns {*}
- */
-function getMutationScore(effect) {
-    return mutationScores[effect]
-}
-
-/**
- * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
- *
- * @param expression
- * @param pathways
- * @param samples
- * @param filter
- * @returns {any[]}
- */
-function associateData(expression, pathways, samples, filter) {
-    filter = filter === 'All' ? '' : filter;
-    let returnArray = new Array(pathways.length);
-    let valueArray = new Array(pathways.length);
-    for (let p in pathways) {
-        returnArray[p] = new Array(samples.length);
-        valueArray[p] = new Array(samples.length);
-        for (let s in samples) {
-            returnArray[p][s] = 0;
-            valueArray[p][s] = [];
-        }
-    }
-
-
-    for (let row of expression.rows) {
-        let gene = row.gene;
-        let effect = row.effect;
-        let effectValue = (!filter || effect === filter) ? getMutationScore(effect) : 0;
-        let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
-        let sampleIndex = getSampleIndex(row.sample, samples);
-        for (let index of pathwayIndices) {
-            returnArray[index][sampleIndex] += effectValue;
-            valueArray[index][sampleIndex].push(row);
-        }
-    }
-
-    return returnArray;
 }
 
 
-
-function pruneEmptySamples(data,pathways){
-    let columnScores = [];
-    for(let i = 0 ; i < pathways.length ; i++){
-        columnScores[i] = 0 ;
-    }
-
-    for( let col in data){
-        // console.log(col);
-        for(let row in data[col]){
-            // console.log(row);
-            let val = data[col][row];
-            if(val){
-                columnScores[col] += val ;
-            }
-        }
-    }
-    let prunedPathways = [];
-    let prunedAssociations = [];
-
-    for(let col in columnScores){
-        if(columnScores[col]>0){
-            prunedPathways.push(pathways[col]);
-            prunedAssociations.push(data[col]);
-        }
-    }
-
-    return {
-        'data':prunedAssociations,
-        'pathways':prunedPathways
-    };
-}
 
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, filter, onClick, onHover, data: {expression, pathways, samples}} = props;
+        let {width, height, filter, onClick, onHover, associateData, data: {expression, pathways, samples}} = props;
+
         clearScreen(vg, width, height);
 
-        let associatedData = associateData(expression, pathways, samples, filter);
+        drawPathwayLabels(vg, width, height, pathways);
 
-        let returnedValue  = pruneEmptySamples(associatedData,pathways);
-        let filteredPathways = returnedValue.pathways;
-        let filteredData = returnedValue.data;
-        drawPathwayLabels(vg, width, height, filteredPathways);
-
-        drawExpressionData(vg, width, height, filteredData, filteredPathways,samples,  onClick, onHover);
+        drawExpressionData(vg, width, height, associateData, pathways,samples,  onClick, onHover);
     }
 }
-

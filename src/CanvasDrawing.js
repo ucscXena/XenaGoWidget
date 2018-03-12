@@ -47,7 +47,7 @@ export default class CanvasDrawing extends Component{
                         ref='canvas'
                         width={width} height={height}
                         // className='Tooltip-target'
-                        // onMouseMove={this.on.mousemove}
+                        onMouseMove={this.props.onMouseMove}
                         // onMouseOut={this.on.mouseout}
                         // onMouseOver={this.on.mouseover}
                         onClick={this.props.onClick}
