@@ -1,17 +1,15 @@
 import React, {Component} from 'react'
 import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
-import TissueExpressionView from "./components/TissueExpressionView";
-import GeneExpressionView from "./components/GeneExpressionView";
+import TissueExpressionView from "./components/PathwayScoresView";
 import ExamplePathWays from "../tests/data/tgac";
-// import ExampleExpression from "../tests/data/expression";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
-import ExampleStyle from "../demo/src/example.css";
-import HoverView from "./components/HoverView"
+// import ExampleStyle from "../demo/src/example.css";
+import HoverPathwayView from "./components/HoverPathwayView"
 import HoverGeneView from "./components/HoverGeneView";
-import update from 'immutability-helper';
-import mutationVector from "./mutationVector";
+// import update from 'immutability-helper';
+import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 
 
@@ -34,8 +32,6 @@ export default class SampleApp extends Component {
                 samples: [],
             },
             pathwayHoverData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -43,8 +39,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             pathwayClickData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -52,8 +46,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             geneHoverData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -61,8 +53,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             geneClickData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -191,13 +181,13 @@ export default class SampleApp extends Component {
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
-                                                  data={this.state.pathwayData} titleText="Expression"
+                                                  data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
-                            <HoverView title="Hover" data={this.state.pathwayHoverData}/>
-                            <HoverView title="Clicked" data={this.state.pathwayClickData}/>
+                            <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
+                            <HoverPathwayView title="Clicked" data={this.state.pathwayClickData}/>
                         </td>
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <td style={geneAlignment}>
@@ -205,7 +195,7 @@ export default class SampleApp extends Component {
                             <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}
                                             pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
-                            <GeneExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
+                            <TissueExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
                                                 selected={this.state.geneData.selectedPathway}
                                                 filter={this.state.geneExpressionFilter}
                                                 onClick={this.clickGene} onHover={this.hoverGene}/>

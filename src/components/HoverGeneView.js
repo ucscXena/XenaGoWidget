@@ -33,7 +33,7 @@ export default class HoverGeneView extends Component {
                         }
                         {this.state.data.expression != null &&
                         <li>
-                            Expression: {this.state.data.expression}
+                            Mutation Score: {this.state.data.expression}
                         </li>
                         }
                     </ul>
@@ -41,7 +41,7 @@ export default class HoverGeneView extends Component {
                     {this.state.data.tissue === 'Header' && this.state.data.pathway &&
                     <div>
                         Gene: {this.state.data.pathway.gene[0]} <br/>
-                        Expression: {this.state.data.expression}
+                        Total Mutation Score: {this.state.data.expression}
                     </div>
                     }
                 </div>
