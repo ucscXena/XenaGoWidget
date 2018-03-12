@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import SampleApp from '../../src/ExampleApp'
+import XenaGoApp from '../../src/XenaGoApp'
 
 class Demo extends Component {
   render() {
     return <div>
       <h3>XenaGoWidget Demo</h3>
-      <SampleApp/>
+      <XenaGoApp/>
     </div>
   }
 }
 
-render(<Demo/>, document.querySelector('#demo'))
+render(<Demo/>, document.querySelector('#demo'));

@@ -163,16 +163,14 @@ function getPathwayIndicesForGene(gene, pathways) {
     return indices;
 }
 
-function pruneEmptySamples(data,pathways){
+function pruneSamples(data,pathways,min){
     let columnScores = [];
     for(let i = 0 ; i < pathways.length ; i++){
         columnScores[i] = 0 ;
     }
 
     for( let col in data){
-        // console.log(col);
         for(let row in data[col]){
-            // console.log(row);
             let val = data[col][row];
             if(val){
                 columnScores[col] += val ;
@@ -183,7 +181,7 @@ function pruneEmptySamples(data,pathways){
     let prunedAssociations = [];
 
     for(let col in columnScores){
-        if(columnScores[col]>0){
+        if(columnScores[col]>=min){
             prunedPathways.push(pathways[col]);
             prunedAssociations.push(data[col]);
         }
@@ -235,9 +233,12 @@ function associateData(expression, pathways, samples, filter) {
 
 export default class AssociatedDataCache extends Component {
 	render() {
-		var {filter, data: {expression, pathways, samples}} = this.props;
+		let {filter, data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter);
-        let returnedValue = pruneEmptySamples(associatedData,pathways);
+        let filterPercentage = 0.005 ;
+        let filterMin = Math.trunc(filterPercentage * samples.length);
+
+        let returnedValue = pruneSamples(associatedData,pathways,filterMin);
 		return (
 			<TissueExpressionView
 				{...this.props}

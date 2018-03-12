@@ -13,7 +13,7 @@ import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 
 
-export default class SampleApp extends Component {
+export default class XenaGoApp extends Component {
 
     constructor(props) {
         super(props);

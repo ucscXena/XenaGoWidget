@@ -99,7 +99,7 @@ function drawExpressionData(vg, width, height, data, pathways,samples, onClick, 
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, filter, onClick, onHover, associateData, data: {expression, pathways, samples}} = props;
+        let {width, height, onClick, onHover, associateData, data: {pathways, samples}} = props;
 
         clearScreen(vg, width, height);
 
