@@ -254,6 +254,44 @@ function associateData(expression, pathways, samples, filter) {
     return returnArray;
 }
 
+
+
+function pruneSamples(data,pathways){
+    let columnScores = [];
+    for(let i = 0 ; i < pathways.length ; i++){
+        columnScores[i] = 0 ;
+    }
+
+    for( let col in data){
+        // console.log(col);
+        for(let row in data[col]){
+            // console.log(row);
+            let val = data[col][row];
+            if(val){
+                columnScores[col] += val ;
+            }
+        }
+    }
+    let prunedPathways = [];
+    let prunedAssociations = [];
+
+    console.log(columnScores);
+    for(let col in columnScores){
+        console.log(columnScores[col]);
+        if(columnScores[col]>0){
+            prunedPathways.push(pathways[col]);
+            prunedAssociations.push(data[col]);
+        }
+    }
+    console.log(prunedPathways)
+    console.log(prunedAssociations)
+
+    return {
+        'data':prunedAssociations,
+        'pathways':prunedPathways
+    };
+}
+
 export default {
 
     drawTissueView(vg, props) {
@@ -268,7 +306,14 @@ export default {
 
         let associatedData = associateData(expression, pathways, samples, filter);
 
-        drawExpressionData(vg, width, height, associatedData, pathways,samples,  onClick, onHover);
+        let returnedValue  = pruneSamples(associatedData,pathways);
+        let filteredPathways = returnedValue.pathways;
+        let filteredData = returnedValue.data;
+        console.log(returnedValue)
+        console.log(filteredPathways)
+        console.log(filteredData)
+
+        drawExpressionData(vg, width, height, filteredData, filteredPathways,samples,  onClick, onHover);
     }
 }
 
