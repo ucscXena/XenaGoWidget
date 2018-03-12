@@ -42,7 +42,7 @@ export default class HoverPathwayView extends Component {
                         }
                         {this.state.data.expression != null &&
                         <li>
-                            Expression: {this.state.data.expression}
+                            Mutation Score: {this.state.data.expression}
                         </li>
                         }
                     </ul>
@@ -51,7 +51,7 @@ export default class HoverPathwayView extends Component {
                     <div>
                         Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
                         Genes ({this.state.data.pathway.gene.length}) <br/>
-                        Total Expression: {this.state.data.expression}
+                        Total Mutation Score: {this.state.data.expression}
                     </div>
                     }
                 </div>

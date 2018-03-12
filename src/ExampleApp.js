@@ -32,8 +32,6 @@ export default class SampleApp extends Component {
                 samples: [],
             },
             pathwayHoverData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -41,8 +39,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             pathwayClickData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -50,8 +46,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             geneHoverData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -59,8 +53,6 @@ export default class SampleApp extends Component {
                 score: null
             },
             geneClickData: {
-                aaa: 'aaaaValue',
-                bbb: 'bbbbValue',
                 x: null,
                 y: null,
                 tissue: null,
@@ -189,7 +181,7 @@ export default class SampleApp extends Component {
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
-                                                  data={this.state.pathwayData} titleText="Expression"
+                                                  data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
