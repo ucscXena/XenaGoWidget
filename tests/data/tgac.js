@@ -308,5 +308,17 @@ export default [
             "MUC1", "ZNF385B", "PTTG1IP", "MDM2", "CD44", "RNF34", "ING4", "RPF2",
             "BAG6", "RRP8", "USP10", "HIPK2", "CDK5RAP3", "PYCARD", "PYHIN1", "RPS6KA6",
             "AEN", "URS000039ED8D_9606", "RFFL", "DYRK2"]
+    },
+    {
+        "goid":"Pancan Atlas RTK RAS",
+        "golabel":"Pancan Atlas RTK RAS",
+        "gene":["ABL1","EGFR","ERBB2","ERBB3","ERBB4","PDGFRA","PDGFRB","MET","FGFR1","FGFR2","FGFR3","FGFR4",
+            "FLT3","ALK","RET","ROS1","KIT","IGF1R","NTRK1","NTRK2","NTRK3","SOS1","GRB2","PTPN11","KRAS",
+            "HRAS","NRAS","RIT1","ARAF","BRAF","RAF1","RAC1","MAP2K1","MAP2K2","MAPK1","NF1","RASA1","CBL",
+            "ERRFI1","CBLB","CBLC","INSR","INSRR","IRS1","SOS2","SHC1","SHC2","SHC3","SHC4","RASGRP1",
+            "RASGRP2","RASGRP3","RASGRP4","RAPGEF1","RAPGEF2","RASGRF1","RASGRF2","FNTA","FNTB","RCE1","ICMT",
+            "MRAS","PLXNB1","MAPK3","ARHGAP35","RASA2","RASA3","RASAL1","RASAL2","RASAL3","SPRED1","SPRED2",
+            "SPRED3","DAB2IP","SHOC2","PPP1CA","SCRIB","PIN1","KSR1","KSR2","PEBP1","ERF","PEA15","JAK2",
+            "IRS2"]
     }
 ];
