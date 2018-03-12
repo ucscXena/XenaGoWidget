@@ -1,8 +1,4 @@
-import React, {Component} from 'react'
-import CanvasDrawing from "../CanvasDrawing";
-import PropTypes from 'prop-types';
-import mutationScores from '../data/mutationVector'
-
+import mutationScores from '../data/mutationVector';
 
 let labelHeight = 150;
 
@@ -10,6 +6,7 @@ let pixelsPerPathway, pixelsPerTissue, pathwayCount, tissueCount;
 
 let associatedData, valueArray;
 let pathwayData, expressionData, sampleData;
+
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -19,18 +16,14 @@ function clearScreen(vg, width, height) {
 }
 
 function drawPathwayLabels(vg, width, height, pathways) {
+
     pathwayCount = pathways.length;
     pixelsPerPathway = Math.trunc(width / pathwayCount);
-
-    if (pixelsPerPathway <= 1) {
-        vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
-        vg.fillRect(0, 0, width, labelHeight);
-        return;
-    }
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
+        // console.log(d)
         vg.fillRect(pixelCount, 0, pixelsPerPathway, labelHeight);
         vg.strokeRect(pixelCount, 0, pixelsPerPathway, labelHeight);
 
@@ -41,13 +34,14 @@ function drawPathwayLabels(vg, width, height, pathways) {
         vg.rotate(-Math.PI / 2);
         vg.font = "10px Courier";
         vg.translate(-labelHeight, pixelCount, labelHeight);
-        let labelString = d.gene[0];
+        let labelString = '(' + d.gene.length + ')';
         // pad for 1000, so 4 + 2 parans
         while (labelString.length < 5) {
             labelString += ' ';
         }
 
-        // TODO: add expression or the gene CURIE?
+        labelString += d.golabel;
+
         if (pixelsPerPathway >= 10) {
             vg.fillText(labelString, 3, 10);
         }
@@ -91,12 +85,11 @@ function getExpressionForDataPoint(x, y) {
             }
         }
         else {
-            console.log('problem finding pathway for index: ' + pathwayIndex + ' of length: ' + associateData.length)
+            console.log("Not pathway data at " + pathwayIndex + " for " + associateData.length);
         }
 
         return totalExpression;
     }
-
 
     if (associatedData[pathwayIndex]) {
         return associatedData[pathwayIndex][tissueIndex];
@@ -108,6 +101,7 @@ function drawExpressionData(vg, width, height, data, onClick, onHover) {
     pathwayCount = data.length;
     tissueCount = data[0].length;
     pixelsPerPathway = Math.trunc(width / pathwayCount);
+    pixelsPerTissue = Math.trunc(height / tissueCount);
     pixelsPerTissue = Math.trunc(height / tissueCount);
 
 
@@ -135,7 +129,7 @@ function drawExpressionData(vg, width, height, data, onClick, onHover) {
         xPixel += pixelsPerPathway;
     }
     vg.restore();
-    // console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
+    console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 
     // alert(vg.canvas);
     let canvas = vg.canvas;
@@ -188,7 +182,6 @@ function getPathwayIndicesForGene(gene, pathways) {
         }
     }
     return indices;
-
 }
 
 function getSampleIndex(sample, samples) {
@@ -203,7 +196,6 @@ function getSampleIndex(sample, samples) {
  * @returns {*}
  */
 function getMutationScore(effect) {
-
     return mutationScores[effect]
 }
 
@@ -217,13 +209,11 @@ function getMutationScore(effect) {
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
-    // console.log('assicating data with filter: ' + filter);
-    filter = filter === 'All' ? '' : filter;
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
     for (let p in pathways) {
-        returnArray[p] = new Array(samples.lenth);
-        valueArray[p] = new Array(samples.lenth);
+        returnArray[p] = new Array(samples.length);
+        valueArray[p] = new Array(samples.length);
         for (let s in samples) {
             returnArray[p][s] = 0;
             valueArray[p][s] = [];
@@ -246,49 +236,21 @@ function associateData(expression, pathways, samples, filter) {
     return returnArray;
 }
 
-function drawTissueView(vg, props) {
-    let {width, height, onClick, onHover, filter, data: {expression, pathways, samples}} = props;
-    pathwayData = pathways;
-    expressionData = expression;
-    sampleData = samples;
+export default {
 
-    clearScreen(vg, width, height);
+    drawTissueView(vg, props) {
+        let {width, height, filter, onClick, onHover, data: {expression, pathways, samples}} = props;
+        pathwayData = pathways;
+        expressionData = expression;
+        sampleData = samples;
 
-    drawPathwayLabels(vg, width, height, pathways);
+        clearScreen(vg, width, height);
 
-    associatedData = associateData(expression, pathways, samples, filter);
+        drawPathwayLabels(vg, width, height, pathways);
 
-    drawExpressionData(vg, width, height, associatedData, onClick, onHover);
-}
+        associatedData = associateData(expression, pathways, samples, filter);
 
-export default class GeneExpressionView extends Component {
-
-    constructor(props) {
-        super(props)
-    }
-
-    render() {
-        const {width, height, data, onClick, onHover, selected, filter} = this.props;
-        let titleString = selected.golabel + ' (' + selected.goid + ')';
-        let filterString = filter.indexOf('All')===0 ? '' : filter ;
-        return (
-            <div>
-                <h3>{titleString}</h3>
-                <CanvasDrawing width={width} height={height} filter={filterString} draw={drawTissueView} data={data}
-                               onClick={onClick}
-                               onHover={onHover}/>
-            </div>
-        );
+        drawExpressionData(vg, width, height, associatedData, onClick, onHover);
     }
 }
-GeneExpressionView.propTypes = {
-    width: PropTypes.string.isRequired,
-    height: PropTypes.string.isRequired,
-    data: PropTypes.object.isRequired,
-    selected: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
-    onHover: PropTypes.any.isRequired,
-    filter: PropTypes.any,
-    id: PropTypes.any,
-};
 

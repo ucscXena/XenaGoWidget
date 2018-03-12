@@ -11,7 +11,7 @@ import ExampleStyle from "../demo/src/example.css";
 import HoverView from "./components/HoverView"
 import HoverGeneView from "./components/HoverGeneView";
 import update from 'immutability-helper';
-import mutationVector from "./mutationVector";
+import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 
 
