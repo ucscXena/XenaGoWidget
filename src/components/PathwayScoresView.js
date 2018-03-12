@@ -12,9 +12,18 @@ export default class TissueExpressionView extends Component {
     }
 
     render() {
-        const {width, height, data, onClick, onHover, titleText,filter} = this.props;
-        let titleString  = titleText ? titleText : '';
-        let filterString = filter.indexOf('All')===0 ? '' : filter ;
+        const {width, height, data, onClick, onHover, titleText,selected,filter} = this.props;
+
+        let titleString, filterString ;
+        if(selected){
+            titleString = selected.golabel + ' (' + selected.goid + ')';
+            filterString = filter.indexOf('All')===0 ? '' : filter ;
+        }
+        else{
+            titleString  = titleText ? titleText : '';
+            filterString = filter.indexOf('All')===0 ? '' : filter ;
+        }
+
         return (
             <div>
                 <h3>{titleString}</h3>
@@ -29,6 +38,7 @@ TissueExpressionView.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    selected: PropTypes.any,
     titleText: PropTypes.string,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,

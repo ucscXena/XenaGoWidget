@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
-export default class HoverView extends Component {
+export default class HoverPathwayView extends Component {
 
     constructor(props) {
         super(props);
@@ -63,7 +63,7 @@ export default class HoverView extends Component {
     }
 }
 
-HoverView.propTypes = {
+HoverPathwayView.propTypes = {
     data: PropTypes.any.isRequired,
     title: PropTypes.any.isRequired,
 };
