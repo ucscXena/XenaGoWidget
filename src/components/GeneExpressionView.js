@@ -222,8 +222,8 @@ function associateData(expression, pathways, samples, filter) {
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
     for (let p in pathways) {
-        returnArray[p] = new Array(samples.lenth);
-        valueArray[p] = new Array(samples.lenth);
+        returnArray[p] = new Array(samples.length);
+        valueArray[p] = new Array(samples.length);
         for (let s in samples) {
             returnArray[p][s] = 0;
             valueArray[p][s] = [];

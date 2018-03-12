@@ -20,6 +20,12 @@ function drawPathwayLabels(vg, width, height, pathways) {
     pathwayCount = pathways.length;
     pixelsPerPathway = Math.trunc(width / pathwayCount);
 
+    if (pixelsPerPathway <= 1) {
+        vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
+        vg.fillRect(0, 0, width, labelHeight);
+        return;
+    }
+
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
     for (let d of pathways) {
@@ -34,13 +40,21 @@ function drawPathwayLabels(vg, width, height, pathways) {
         vg.rotate(-Math.PI / 2);
         vg.font = "10px Courier";
         vg.translate(-labelHeight, pixelCount, labelHeight);
-        let labelString = '(' + d.gene.length + ')';
-        // pad for 1000, so 4 + 2 parans
-        while (labelString.length < 5) {
-            labelString += ' ';
-        }
 
-        labelString += d.golabel;
+        let geneLength = d.gene.length ;
+        let labelString ;
+        if(geneLength===1){
+            labelString = d.gene[0];
+        }
+        else{
+            labelString = '(' + d.gene.length + ')';
+            // pad for 1000, so 4 + 2 parans
+            while (labelString.length < 5) {
+                labelString += ' ';
+            }
+
+            labelString += d.golabel;
+        }
 
         if (pixelsPerPathway >= 10) {
             vg.fillText(labelString, 3, 10);
@@ -178,7 +192,7 @@ function getPathwayIndicesForGene(gene, pathways) {
         let pathway = pathways[p];
         let indexOfGeneInPathway = pathway.gene.indexOf(gene);
         if (indexOfGeneInPathway >= 0) {
-            indices.push(p)
+            indices.push(p);
         }
     }
     return indices;
@@ -209,6 +223,7 @@ function getMutationScore(effect) {
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
+    filter = filter === 'All' ? '' : filter;
     let returnArray = new Array(pathways.length);
     valueArray = new Array(pathways.length);
     for (let p in pathways) {
