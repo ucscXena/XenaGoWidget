@@ -14,7 +14,6 @@ export class CohortSelector extends PureComponent {
     onChange = (event) => {
         this.setState({selectedCohort: event.target.value});
         let {onChange} = this.props;
-        console.log('changing: ' + onChange);
         if (onChange) {
             console.log('on change method: ' + event.target.value)
             onChange(event.target.value);

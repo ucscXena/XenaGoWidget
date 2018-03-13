@@ -14,6 +14,7 @@ import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 // import {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} from 'ucsc-xena-client';
 var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+var {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} = xenaQuery;
 // var Rx = require('ucsc-xena-client/dist/rx');
 
 
@@ -146,29 +147,42 @@ export default class XenaGoApp extends PureComponent {
         this.setState({selectedCohort: selected});
         cohortSamples('https://tcga.xenahubs.net', this.state.selectedCohort, null)
             .flatMap((sampleList) => {
-                console.log('sample list size: ' + sampleList.length);
-                console.log(sampleList);
+                // console.log('sample list size: ' + sampleList.length);
+                // console.log(sampleList);
                 let geneList = this.getGenesForPathway(ExamplePathWays);
+                console.log(geneList)
+                let dataSetId = this.getSelectedDataSetId();
+                console.log('found dataset id: '+ dataSetId);
                 // document.getElementById("samples").innerHTML= JSON.stringify(sampleList)
-                return sparseData('https://tcga.xenahubs.net', dataSetIdDemo, sampleList, geneList)
+                return sparseData('https://tcga.xenahubs.net', dataSetId, sampleList, geneList)
             })
             .subscribe(resp => {
-                console.log('resp')
+                console.log('resp');
                 console.log(resp)
                 // document.getElementById("output").innerHTML= JSON.stringify(resp)
                 // console.log(resp)
             });
     };
 
+
+    getSelectedDataSetId() {
+        for(let cohort of this.state.cohortData){
+            if(cohort.name===this.state.selectedCohort){
+                return cohort.mutationDataSetId;
+            }
+        }
+        return null ;
+    }
+
     getGenesForPathway(pathways) {
-        let geneList = [];
-        console.log(pathways)
-        for (p of pathways) {
-            console.log(p)
-            geneList.push(p)
+        let geneList = new Set();
+        for(let p of pathways){
+            for(let g of p.gene){
+                geneList.add(g)
+            }
         }
 
-        return geneList;
+        return new Array(geneList);
     }
 
     render() {
