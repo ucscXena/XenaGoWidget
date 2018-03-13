@@ -96,12 +96,12 @@ export default {
     drawTissueView(vg, props) {
         let {width, height, onClick, onHover, associateData, data: {pathways, samples}} = props;
 
+        clearScreen(vg, width, height);
+
         if(associateData.length===0){
             console.log('Clicked on an empty cell?');
             return ;
         }
-
-        clearScreen(vg, width, height);
 
         drawPathwayLabels(vg, width, height, pathways);
 

@@ -84,8 +84,8 @@ class TissueExpressionView extends PureComponent {
     }
 
     onClick = (event) => {
-        let {onClick} = this.props;
-        if (onClick) {
+        let {onClick, associateData} = this.props;
+        if (associateData.length && onClick) {
             onClick(getPointData(event, this.props))
         }
     };
