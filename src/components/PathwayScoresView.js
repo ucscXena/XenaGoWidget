@@ -16,9 +16,9 @@ function getMousePos(evt) {
 
 function getExpressionForDataPoint(x, y,pixelsPerPathway,pixelsPerTissue,associatedData) {
     let pathwayIndex = Math.trunc(x / pixelsPerPathway);
-    let tissueIndex = Math.trunc(y / pixelsPerTissue);
 
     let convertedHeight = y - labelHeight;
+    // if we are in the label area
     if (convertedHeight < 0) {
         let totalExpression = 0;
         let pathwayArray = associatedData[pathwayIndex];
@@ -35,10 +35,14 @@ function getExpressionForDataPoint(x, y,pixelsPerPathway,pixelsPerTissue,associa
         return totalExpression;
     }
 
+    let tissueIndex = Math.trunc(convertedHeight / pixelsPerTissue);
+
     if (associatedData[pathwayIndex]) {
         return associatedData[pathwayIndex][tissueIndex];
     }
-    return 0;
+    else{
+        return 0 ;
+    }
 }
 
 function getTissueForYPosition(y,pixelsPerTissue,sampleData) {
@@ -63,7 +67,7 @@ function getPointData(event, props) {
     let pixelsPerTissue = Math.trunc(height / tissueCount);
     let pathway = getPathwayForXPosition(mousePos.x, pixelsPerPathway, pathways);
     let tissue = getTissueForYPosition(mousePos.y, pixelsPerTissue, samples);
-    let expression = getExpressionForDataPoint(mousePos.x, mousePos.y, pixelsPerPathway, pixelsPerPathway, associateData);
+    let expression = getExpressionForDataPoint(mousePos.x, mousePos.y, pixelsPerPathway, pixelsPerTissue, associateData);
 
     return {
         x: mousePos.x,
