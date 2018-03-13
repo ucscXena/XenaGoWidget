@@ -1,10 +1,5 @@
+
 let labelHeight = 150;
-
-// let pixelsPerPathway, pixelsPerTissue, pathwayCount, tissueCount;
-
-// let associatedData, valueArray;
-// let pathwayData, expressionData, sampleData;
-
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -61,7 +56,7 @@ function drawPathwayLabels(vg, width, height, pathways) {
     }
 }
 
-function drawExpressionData(vg, width, height, data, pathways,samples, onClick, onHover) {
+function drawExpressionData(vg, width, height, data) {
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
     let pixelsPerPathway = Math.trunc(width / pathwayCount);
@@ -100,6 +95,11 @@ export default {
 
     drawTissueView(vg, props) {
         let {width, height, onClick, onHover, associateData, data: {pathways, samples}} = props;
+
+        if(associateData.length===0){
+            console.log('Clicked on an empty cell?');
+            return ;
+        }
 
         clearScreen(vg, width, height);
 

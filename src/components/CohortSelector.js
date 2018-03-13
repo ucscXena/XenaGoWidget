@@ -1,21 +1,21 @@
-import React, {Component} from 'react'
+import React from 'react'
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 
-export class CohortSelector extends Component {
+export class CohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort
         };
-
     }
 
     onChange = (event) => {
         let {onChange} = this.props;
-        console.log('changing: '+onChange);
+        console.log('changing: ' + onChange);
         if (onChange) {
-            console.log('on change method: '+event.target.value)
+            console.log('on change method: ' + event.target.value)
             onChange(event.target.value);
         }
     };
@@ -37,7 +37,8 @@ export class CohortSelector extends Component {
     }
 }
 
-CohortSelector.propTypes = {
+CohortSelector
+    .propTypes = {
     cohorts: PropTypes.array.isRequired,
     selectedCohort: PropTypes.string.isRequired,
     onChange: PropTypes.any.isRequired,

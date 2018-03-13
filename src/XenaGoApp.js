@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React from 'react'
+import PureComponent from './components/PureComponent';
 import ExampleCohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/PathwayScoresView";
@@ -13,7 +14,7 @@ import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 
 
-export default class XenaGoApp extends Component {
+export default class XenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -33,29 +34,21 @@ export default class XenaGoApp extends Component {
                 samples: [],
             },
             pathwayHoverData: {
-                x: null,
-                y: null,
                 tissue: null,
                 pathway: null,
                 score: null
             },
             pathwayClickData: {
-                x: null,
-                y: null,
                 tissue: null,
                 pathway: null,
                 score: null
             },
             geneHoverData: {
-                x: null,
-                y: null,
                 tissue: null,
                 gene: null,
                 score: null
             },
             geneClickData: {
-                x: null,
-                y: null,
                 tissue: null,
                 pathway: null,
                 score: null
@@ -78,7 +71,7 @@ export default class XenaGoApp extends Component {
         let {expression, samples} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
 
-        var pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
+        let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
         this.setState({
             pathwayClickData,

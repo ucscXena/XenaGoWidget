@@ -1,57 +1,44 @@
-import React, {Component} from 'react'
+import React from 'react';
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 
-export default class HoverPathwayView extends Component {
-
-    constructor(props) {
-        super(props);
-        // console.log('consturtor hvoerveiew');
-        // console.log(props)
-        // data: props.data;
-        this.state = {
-            data: props.data
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({data: nextProps.data});
-    }
-
+export default class HoverPathwayView extends PureComponent {
     render() {
-        if(this.state.data.tissue){
+        var {data, title} = this.props;
+        if(data.tissue){
             return (
                 <div>
-                    <h4>{this.props.title}</h4>
-                    {this.state.data.tissue !== 'Header' &&
+                    <h4>{title}</h4>
+                    {data.tissue !== 'Header' &&
                     <ul>
-                        {/*{this.state.data.x &&*/}
+                        {/*{data.x &&*/}
                         {/*<li>*/}
-                        {/*({this.state.data.x},{this.state.data.y})*/}
+                        {/*({data.x},{data.y})*/}
                         {/*</li>*/}
                         {/*}*/}
-                        {this.state.data.pathway &&
+                        {data.pathway &&
                         <li>
-                            Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
-                            Genes ({this.state.data.pathway.gene.length})
+                            Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
+                            Genes ({data.pathway.gene.length})
                         </li>
                         }
-                        {this.state.data.tissue &&
+                        {data.tissue &&
                         <li>
-                            Tissue: {this.state.data.tissue}
+                            Tissue: {data.tissue}
                         </li>
                         }
-                        {this.state.data.expression != null &&
+                        {data.expression != null &&
                         <li>
-                            Mutation Score: {this.state.data.expression}
+                            Mutation Score: {data.expression}
                         </li>
                         }
                     </ul>
                     }
-                    {this.state.data.tissue === 'Header' && this.state.data.pathway &&
+                    {data.tissue === 'Header' && data.pathway &&
                     <div>
-                        Pathway: {this.state.data.pathway.golabel} ({this.state.data.pathway.goid}) <br/>
-                        Genes ({this.state.data.pathway.gene.length}) <br/>
-                        Total Mutation Score: {this.state.data.expression}
+                        Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
+                        Genes ({data.pathway.gene.length}) <br/>
+                        Total Mutation Score: {data.expression}
                     </div>
                     }
                 </div>
