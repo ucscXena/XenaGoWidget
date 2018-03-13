@@ -15,7 +15,6 @@ export default [
 'TCGA Prostate Cancer (PRAD)',
 'TCGA Lung Cancer (LUNG)',
 'TCGA Liver Cancer (LIHC)',
-'(unassigned)',
 'TCGA Kidney Chromophobe (KICH)',
 'TCGA Head and Neck Cancer (HNSC)',
 'TCGA Pheochromocytoma & Paraganglioma (PCPG)',

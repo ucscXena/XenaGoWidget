@@ -1,6 +1,6 @@
 import React from 'react'
 import PureComponent from './components/PureComponent';
-import ExampleCohortsData from '../tests/data/cohorts'
+// import CohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/PathwayScoresView";
 import ExamplePathWays from "../tests/data/tgac";
@@ -12,6 +12,9 @@ import HoverGeneView from "./components/HoverGeneView";
 // import update from 'immutability-helper';
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
+// import {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} from 'ucsc-xena-client';
+var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+// var Rx = require('ucsc-xena-client/dist/rx');
 
 
 export default class XenaGoApp extends PureComponent {
@@ -25,7 +28,9 @@ export default class XenaGoApp extends PureComponent {
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
             },
-            selectedCohort:'',
+            loadState: 'loading',
+            selectedCohort: 'TCGA Ovarian Cancer (OV)',
+            cohortData: {},
             tissueExpressionFilter: '',
             geneExpressionFilter: '',
             minFilter: 2,
@@ -58,18 +63,9 @@ export default class XenaGoApp extends PureComponent {
 
         };
 
-        this.hoverPathway = this.hoverPathway.bind(this);
-        this.clickPathway = this.clickPathway.bind(this);
-        this.hoverGene = this.hoverGene.bind(this);
-        this.clickGene = this.clickGene.bind(this);
-
-        this.filterTissueType = this.filterTissueType.bind(this);
-        this.filterGeneType = this.filterGeneType.bind(this);
-        this.selectCohort = this.selectCohort.bind(this);
-
     }
 
-    clickPathway(pathwayClickData) {
+    clickPathway = (pathwayClickData) => {
         let {expression, samples} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
 
@@ -86,29 +82,93 @@ export default class XenaGoApp extends PureComponent {
         });
     }
 
-    hoverPathway(props) {
-		this.setState({pathwayHoverData: props});
-    }
+    hoverPathway = (props) => {
+        this.setState({pathwayHoverData: props});
+    };
 
-    clickGene(props) {
-		this.setState({geneClickData: props});
-    }
+    clickGene = (props) => {
+        this.setState({geneClickData: props});
+    };
 
-    hoverGene(props) {
-		this.setState({geneHoverData: props});
-    }
+    hoverGene = (props) => {
+        this.setState({geneHoverData: props});
+    };
 
-    filterTissueType(filter) {
+    filterTissueType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-    }
+    };
 
-    filterGeneType(filter) {
+    filterGeneType = (filter) => {
         this.setState({geneExpressionFilter: filter});
+    };
+
+    componentWillMount() {
+        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
+        fetch(cohortPreferredURL)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response;
+            })
+            .then((response) => {
+                response.json().then(data => {
+                    // alert(JSON.stringify(data));
+                    let filteredCohorts = [];
+                    for (let cohort in data) {
+                        if (cohort.indexOf('TCGA') === 0) {
+                            let cohortValue = {
+                                name: cohort
+                            };
+                            if (data[cohort]['simple somatic mutation']) {
+                                cohortValue.mutationDataSetId = data[cohort]['simple somatic mutation'].dataset;
+                                filteredCohorts.push(cohortValue)
+                            }
+                        }
+                    }
+                    this.setState({
+                        loadState: 'loaded'
+                        , cohortData: filteredCohorts
+                    });
+                    return data;
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    loadState: 'error'
+                });
+            });
+
     }
 
-    selectCohort(selected) {
-        console.log(selected)
+    selectCohort = (selected) => {
+        console.log(selected);
         this.setState({selectedCohort: selected});
+        cohortSamples('https://tcga.xenahubs.net', this.state.selectedCohort, null)
+            .flatMap((sampleList) => {
+                console.log('sample list size: ' + sampleList.length);
+                console.log(sampleList);
+                let geneList = this.getGenesForPathway(ExamplePathWays);
+                // document.getElementById("samples").innerHTML= JSON.stringify(sampleList)
+                return sparseData('https://tcga.xenahubs.net', dataSetIdDemo, sampleList, geneList)
+            })
+            .subscribe(resp => {
+                console.log('resp')
+                console.log(resp)
+                // document.getElementById("output").innerHTML= JSON.stringify(resp)
+                // console.log(resp)
+            });
+    };
+
+    getGenesForPathway(pathways) {
+        let geneList = [];
+        console.log(pathways)
+        for (p of pathways) {
+            console.log(p)
+            geneList.push(p)
+        }
+
+        return geneList;
     }
 
     render() {
@@ -129,29 +189,33 @@ export default class XenaGoApp extends PureComponent {
             width: '100px'
         };
 
-        function filterMutationVector(inputData,minFilter) {
+        function filterMutationVector(inputData, minFilter) {
             let filteredMutationVector = {};
-            for(let v in inputData){
+            for (let v in inputData) {
                 let value = inputData[v];
-                if(value >= minFilter){
-                    filteredMutationVector[v] = value ;
+                if (value >= minFilter) {
+                    filteredMutationVector[v] = value;
                 }
             }
             return filteredMutationVector;
         }
 
-        let filteredMutationVector = filterMutationVector(mutationVector,this.state.minFilter);
+        let filteredMutationVector = filterMutationVector(mutationVector, this.state.minFilter);
 
         return (
             <div>
+                {this.state.loadState === 'loading' ? 'Loading' : ''}
+                {this.state.loadState === 'loaded' &&
                 <table>
                     <tbody>
                     <tr>
                         <td>
                             <h2>Cohorts</h2>
-                            <CohortSelector cohorts={ExampleCohortsData} selectedCohort={ExampleCohortsData[0]} onChange={this.selectCohort}/>
+                            <CohortSelector cohorts={this.state.cohortData} selectedCohort={this.state.selectedCohort}
+                                            onChange={this.selectCohort}/>
                             <h2>Mutation Type</h2>
-                            <FilterSelector filters={filteredMutationVector} selected={this.state.tissueExpressionFilter}
+                            <FilterSelector filters={filteredMutationVector}
+                                            selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
@@ -171,10 +235,10 @@ export default class XenaGoApp extends PureComponent {
                                             pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
                             <TissueExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
-                                                selected={this.state.geneData.selectedPathway}
-                                                filter={this.state.geneExpressionFilter}
-                                                filterPercentage={this.state.filterPercentage}
-                                                onClick={this.clickGene} onHover={this.hoverGene}/>
+                                                  selected={this.state.geneData.selectedPathway}
+                                                  filter={this.state.geneExpressionFilter}
+                                                  filterPercentage={this.state.filterPercentage}
+                                                  onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>
                         }
                         <td style={alignTop}>
@@ -184,6 +248,7 @@ export default class XenaGoApp extends PureComponent {
                     </tr>
                     </tbody>
                 </table>
+                }
             </div>
         );
     }

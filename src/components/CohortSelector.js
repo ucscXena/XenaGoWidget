@@ -27,16 +27,15 @@ export class CohortSelector extends PureComponent {
         return <select value={this.state.selectedCohort} onChange={this.onChange}>
             {
                 cohorts.map(function (c) {
-                    return <option key={c}
-                                   value={c}>{c}</option>;
+                    return <option key={c.name}
+                                   value={c.name}>{c.name}</option>;
                 })
             }
         </select>
     }
 }
 
-CohortSelector
-    .propTypes = {
+CohortSelector.propTypes = {
     cohorts: PropTypes.array.isRequired,
     selectedCohort: PropTypes.string.isRequired,
     onChange: PropTypes.any.isRequired,

@@ -21,7 +21,8 @@
   "dependencies": {
     "immutability-helper": "^2.6.5",
     "react-bootstrap": "^0.32.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "ucsc-xena-client": "^2.42.0"
   },
   "peerDependencies": {
     "react": "15.x"
