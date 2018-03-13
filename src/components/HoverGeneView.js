@@ -2,46 +2,35 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
 export default class HoverGeneView extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: props.data
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({data: nextProps.data});
-    }
-
     render() {
-        if(this.state.data.tissue){
+        var {data, title} = this.props;
+        if(data.tissue){
             return (
                 <div>
-                    <h4>{this.props.title}</h4>
-                    {this.state.data.tissue !== 'Header' &&
+                    <h4>{title}</h4>
+                    {data.tissue !== 'Header' &&
                     <ul>
-                        {this.state.data.pathway &&
+                        {data.pathway &&
                         <li>
-                            Gene: ({this.state.data.pathway.gene[0]})
+                            Gene: ({data.pathway.gene[0]})
                         </li>
                         }
-                        {this.state.data.tissue &&
+                        {data.tissue &&
                         <li>
-                            Tissue: {this.state.data.tissue}
+                            Tissue: {data.tissue}
                         </li>
                         }
-                        {this.state.data.expression != null &&
+                        {data.expression != null &&
                         <li>
-                            Mutation Score: {this.state.data.expression}
+                            Mutation Score: {data.expression}
                         </li>
                         }
                     </ul>
                     }
-                    {this.state.data.tissue === 'Header' && this.state.data.pathway &&
+                    {data.tissue === 'Header' && data.pathway &&
                     <div>
-                        Gene: {this.state.data.pathway.gene[0]} <br/>
-                        Total Mutation Score: {this.state.data.expression}
+                        Gene: {data.pathway.gene[0]} <br/>
+                        Total Mutation Score: {data.expression}
                     </div>
                     }
                 </div>
