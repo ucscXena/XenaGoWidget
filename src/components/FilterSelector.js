@@ -1,6 +1,30 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
+import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
+
+function lowerCaseCompare(a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+}
+
+function sum(arr) {
+    let total = 0;
+    for (let i = 0; i < arr.length; ++i) {
+        total += arr[i];
+    }
+    return total;
+}
+
+function compileData(filteredEffects, data) {
+    let {pathways, expression: {rows}} = data;
+
+    let genes = new Set(flatten(pluck(pathways, 'gene')));
+    let hasGene = row => genes.has(row.gene);
+    let effects = groupBy(rows.filter(hasGene), 'effect');
+    return mapObject(pick(effects, filteredEffects),
+                     list => list.length);
+}
+
 
 export class FilterSelector extends PureComponent {
 
@@ -10,11 +34,9 @@ export class FilterSelector extends PureComponent {
             value: props.selected,
             pathwayData: props.pathwayData,
         };
-
-        this.setSelected = this.setSelected.bind(this);
     }
 
-    setSelected(event) {
+    setSelected = (event) => {
         let targetValue = event.target.value;
         if (targetValue) {
             this.setState({value: targetValue});
@@ -25,77 +47,21 @@ export class FilterSelector extends PureComponent {
         this.props.onChange(targetValue);
     }
 
-    compileData(filteredArray, data) {
-        let returnArray = {};
-
-
-        for (let type of filteredArray) {
-            let returnObject = {
-                name: type,
-                count: 0
-            };
-            returnArray[type] = returnObject;
-        }
-
-
-        let genes = this.getGenes(data.pathways);
-
-        for (let row of data.expression.rows) {
-            let filteredObject = returnArray[row.effect] ;
-            if(filteredObject && genes.indexOf(row.gene)>=0){
-                filteredObject.count = filteredObject.count + 1;
-            }
-        }
-
-        return returnArray;
-    }
-
-    getGenes(pathways) {
-        let genes = [] ;
-        for(let p of pathways){
-            for(let g of p.gene){
-                genes.push(g);
-            }
-        }
-
-        return genes ;
-    }
-
     render() {
         const {filters,pathwayData,selected} = this.props;
-        let filterArray = [];
 
-        for (let f in filters) {
-            filterArray.push(f);
-        }
+        let counts = compileData(Object.keys(filters), pathwayData);
+        let labels = Object.keys(counts).sort(lowerCaseCompare);
+        let total = sum(Object.values(counts));
 
-        let labeledObject = this.compileData(filterArray, pathwayData);
-
-        filterArray = filterArray.sort(function (a, b) {
-            return a.toLowerCase().localeCompare(b.toLowerCase());
-        });
-
-        let labeledArray = [];
-        let total = 0 ;
-        for(let f of filterArray){
-            total = total + labeledObject[f].count ;
-            labeledArray.push(labeledObject[f]);
-        }
-
-        return <select onChange={this.setSelected} value={selected}>
-            <option key='null'>All ({total})</option>
-            {
-                labeledArray.map(function (f) {
-                    if(f.count){
-                        return <option key={f.name} value={f.name}>{f.name} ({f.count})</option>;
-                    }
-                })
-            }
-            }
-        </select>
+        return (
+            <select onChange={this.setSelected} value={selected}>
+                <option key='null'>All ({total})</option>
+                {
+                    labels.map(label => <option key={label} value={label}>{label} ({counts[label]})</option>)
+                }
+            </select>);
     }
-
-
 }
 
 FilterSelector.propTypes = {
