@@ -12,6 +12,7 @@ export class CohortSelector extends PureComponent {
     }
 
     onChange = (event) => {
+        this.setState({selectedCohort: event.target.value});
         let {onChange} = this.props;
         console.log('changing: ' + onChange);
         if (onChange) {
@@ -20,9 +21,6 @@ export class CohortSelector extends PureComponent {
         }
     };
 
-    // onChange() {
-    //     console.log('asdfadsf')
-    // }
 
     render() {
         const {cohorts} = this.props;
