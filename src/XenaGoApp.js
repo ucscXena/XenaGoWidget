@@ -152,7 +152,7 @@ export default class XenaGoApp extends PureComponent {
                 let geneList = this.getGenesForPathway(ExamplePathWays);
                 console.log(geneList)
                 let dataSetId = this.getSelectedDataSetId();
-                console.log('found dataset id: '+ dataSetId);
+                console.log('found dataset id: ' + dataSetId);
                 // document.getElementById("samples").innerHTML= JSON.stringify(sampleList)
                 return sparseData('https://tcga.xenahubs.net', dataSetId, sampleList, geneList)
             })
@@ -166,23 +166,26 @@ export default class XenaGoApp extends PureComponent {
 
 
     getSelectedDataSetId() {
-        for(let cohort of this.state.cohortData){
-            if(cohort.name===this.state.selectedCohort){
+        for (let cohort of this.state.cohortData) {
+            if (cohort.name === this.state.selectedCohort) {
                 return cohort.mutationDataSetId;
             }
         }
-        return null ;
+        return null;
     }
 
     getGenesForPathway(pathways) {
         let geneList = new Set();
-        for(let p of pathways){
-            for(let g of p.gene){
+        for (let p of pathways) {
+            for (let g of p.gene) {
                 geneList.add(g)
             }
         }
-
-        return new Array(geneList);
+        let returnArray = [];
+        for (let p of geneList) {
+            returnArray.push(p)
+        }
+        return returnArray
     }
 
     render() {
