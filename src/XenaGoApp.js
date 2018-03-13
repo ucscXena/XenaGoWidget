@@ -17,6 +17,11 @@ var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 var {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} = xenaQuery;
 // var Rx = require('ucsc-xena-client/dist/rx');
 
+var mutationKey = 'simple somatic mutation';
+
+function lowerCaseCompareName(a, b) {
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+}
 
 export default class XenaGoApp extends PureComponent {
 
@@ -115,21 +120,13 @@ export default class XenaGoApp extends PureComponent {
             .then((response) => {
                 response.json().then(data => {
                     // alert(JSON.stringify(data));
-                    let filteredCohorts = [];
-                    for (let cohort in data) {
-                        if (cohort.indexOf('TCGA') === 0) {
-                            let cohortValue = {
-                                name: cohort
-                            };
-                            if (data[cohort]['simple somatic mutation']) {
-                                cohortValue.mutationDataSetId = data[cohort]['simple somatic mutation'].dataset;
-                                filteredCohorts.push(cohortValue)
-                            }
-                        }
-                    }
+                    let cohortData = Object.keys(data)
+                        .filter(cohort => cohort.indexOf('TCGA') === 0 && data[cohort][mutationKey])
+                        .map(cohort => ({name: cohort, mutationDataSetId: data[cohort][mutationKey].dataset}))
+                        .sort(lowerCaseCompareName);
                     this.setState({
-                        loadState: 'loaded'
-                        , cohortData: filteredCohorts
+                        loadState: 'loaded',
+                        cohortData
                     });
                     return data;
                 });
