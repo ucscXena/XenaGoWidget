@@ -81,7 +81,7 @@ export default class XenaGoApp extends PureComponent {
                 selectedPathway: pathwayClickData.pathway
             }
         });
-    }
+    };
 
     hoverPathway = (props) => {
         this.setState({pathwayHoverData: props});
@@ -143,24 +143,29 @@ export default class XenaGoApp extends PureComponent {
     }
 
     selectCohort = (selected) => {
-        console.log(selected);
         this.setState({selectedCohort: selected});
-        cohortSamples('https://tcga.xenahubs.net', this.state.selectedCohort, null)
+        let samples ;
+        cohortSamples('https://tcga.xenahubs.net', selected, null)
             .flatMap((sampleList) => {
-                // console.log('sample list size: ' + sampleList.length);
-                // console.log(sampleList);
+                samples = sampleList;
                 let geneList = this.getGenesForPathway(ExamplePathWays);
-                console.log(geneList)
                 let dataSetId = this.getSelectedDataSetId();
-                console.log('found dataset id: ' + dataSetId);
-                // document.getElementById("samples").innerHTML= JSON.stringify(sampleList)
                 return sparseData('https://tcga.xenahubs.net', dataSetId, sampleList, geneList)
             })
             .subscribe(resp => {
-                console.log('resp');
-                console.log(resp)
-                // document.getElementById("output").innerHTML= JSON.stringify(resp)
-                // console.log(resp)
+                this.setState({
+                    pathwayData : {
+                        expression: resp,
+                        pathways: ExamplePathWays,
+                        samples: samples,
+                    },
+                    geneData: {
+                        expression: [],
+                        pathways: [],
+                        samples: [],
+                    },
+                })
+
             });
     };
 
@@ -186,7 +191,7 @@ export default class XenaGoApp extends PureComponent {
             returnArray.push(p)
         }
         return returnArray
-    }
+    };
 
     render() {
 
