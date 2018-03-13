@@ -7,9 +7,16 @@ export class CohortSelector extends Component{
         super(props)
     }
 
+    onChange = (event) => {
+        let {onChange} = this.props;
+        if (onChange) {
+            onChange(event.target.value);
+        }
+    };
+
     render(){
         const {cohorts} = this.props;
-        return <select>
+        return <select onChange={this.onChange}>
             {
                 cohorts.map(function(c){
                     return <option key={c}
@@ -21,4 +28,5 @@ export class CohortSelector extends Component{
 }
 CohortSelector.propTypes = {
     cohorts: PropTypes.array.isRequired,
+    onChange: PropTypes.any.isRequired,
 };
