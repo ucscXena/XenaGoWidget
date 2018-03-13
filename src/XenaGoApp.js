@@ -19,12 +19,12 @@ export default class XenaGoApp extends Component {
         super(props);
 
         this.state = {
-            selectedCohort:null,
             pathwayData: {
                 expression: ExampleExpression,
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
             },
+            selectedCohort:'',
             tissueExpressionFilter: '',
             geneExpressionFilter: '',
             geneData: {
@@ -70,6 +70,7 @@ export default class XenaGoApp extends Component {
 
         this.filterTissueType = this.filterTissueType.bind(this);
         this.filterGeneType = this.filterGeneType.bind(this);
+        this.selectCohort = this.selectCohort.bind(this);
 
     }
 
@@ -112,7 +113,7 @@ export default class XenaGoApp extends Component {
     }
 
     selectCohort(selected) {
-        // console.log(selected)
+        console.log(selected)
         this.setState({selectedCohort: selected});
     }
 
@@ -141,7 +142,7 @@ export default class XenaGoApp extends Component {
                     <tr>
                         <td>
                             <h2>Cohorts</h2>
-                            <CohortSelector cohorts={ExampleCohortsData} onChange={this.selectCohort}/>
+                            <CohortSelector cohorts={ExampleCohortsData} selectedCohort={ExampleCohortsData[0]} onChange={this.selectCohort}/>
                             <h2>Mutation Type</h2>
                             <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
