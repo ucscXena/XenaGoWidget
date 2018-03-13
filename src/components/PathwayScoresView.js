@@ -206,7 +206,7 @@ function pruneSamples(data,pathways,min){
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
-    filter = filter === 'All' ? '' : filter;
+    filter = filter.indexOf('All')===0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     let valueArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -236,9 +236,8 @@ function associateData(expression, pathways, samples, filter) {
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-		let {filter, data: {expression, pathways, samples}} = this.props;
+		let {filter, filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter);
-        let filterPercentage = 0.005 ;
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let returnedValue = pruneSamples(associatedData,pathways,filterMin);
