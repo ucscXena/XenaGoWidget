@@ -59,7 +59,7 @@ function getPathwayForXPosition(x,pixelsPerPathway,pathwayData) {
 }
 
 function getPointData(event, props) {
-    var {associateData, width, height, data: {pathways, samples}} = props;
+    let {associateData, width, height, data: {pathways, samples}} = props;
 
     let mousePos = getMousePos(event);
     let pathwayCount = associateData.length;
@@ -84,21 +84,21 @@ class TissueExpressionView extends PureComponent {
     }
 
     onClick = (event) => {
-        var {onClick} = this.props;
+        let {onClick} = this.props;
         if (onClick) {
             onClick(getPointData(event, this.props))
-        };
-    }
+        }
+    };
 
     onHover = (event) => {
-        var {onHover} = this.props;
+        let {onHover} = this.props;
         if (onHover) {
             onHover(getPointData(event, this.props));
         };
     }
 
     render() {
-        const {width, height, data, onClick, onHover, associateData, titleText,selected,filter} = this.props;
+        const {width, height, data, associateData, titleText,selected,filter} = this.props;
 
         let titleString, filterString ;
         if(selected){
