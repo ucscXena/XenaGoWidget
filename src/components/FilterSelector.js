@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 
-export class FilterSelector extends Component {
+export class FilterSelector extends PureComponent {
 
     constructor(props) {
         super(props);

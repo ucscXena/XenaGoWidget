@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react';
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 
-export default class HoverGeneView extends Component {
+export default class HoverGeneView extends PureComponent {
     render() {
         var {data, title} = this.props;
         if(data.tissue){

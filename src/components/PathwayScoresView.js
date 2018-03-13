@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React from 'react';
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import CanvasDrawing from "../CanvasDrawing";
 import ScoreFunctions from '../functions/ScoreFunctions';
@@ -70,15 +71,13 @@ function getPointData(event, props) {
     let expression = getExpressionForDataPoint(mousePos.x, mousePos.y, pixelsPerPathway, pixelsPerTissue, associateData);
 
     return {
-        x: mousePos.x,
-        y: mousePos.y,
         pathway: pathway,
         tissue: tissue,
         expression: expression,
     };
 }
 
-class TissueExpressionView extends Component {
+class TissueExpressionView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -235,7 +234,7 @@ function associateData(expression, pathways, samples, filter) {
     return returnArray;
 }
 
-export default class AssociatedDataCache extends Component {
+export default class AssociatedDataCache extends PureComponent {
 	render() {
 		let {filter, data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter);

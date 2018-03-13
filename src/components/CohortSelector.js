@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
+import React from 'react'
+import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 
-export class CohortSelector extends Component{
+export class CohortSelector extends PureComponent {
 
     constructor(props){
         super(props)
