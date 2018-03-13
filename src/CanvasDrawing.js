@@ -11,6 +11,7 @@ import underscore from 'underscore'
 
 let styles = {
     canvas: {
+        cursor: 'crosshair',
         position: 'relative',
         left: 0,
         top: 0,
