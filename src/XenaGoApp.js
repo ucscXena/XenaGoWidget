@@ -24,6 +24,8 @@ export default class XenaGoApp extends PureComponent {
         super(props);
 
         this.state = {
+            sortPathwayName:null,
+            sortPathwayOrder:null,
             pathwayData: {
                 expression: ExampleExpression,
                 pathways: ExamplePathWays,
@@ -72,8 +74,29 @@ export default class XenaGoApp extends PureComponent {
 
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
+        let sortPathwayName = this.state.sortPathwayName ;
+        let sortPathwayOrder = this.state.sortPathwayOrder ;
+        console.log('WAS set to ');
+        console.log(sortPathwayName);
+        console.log(sortPathwayOrder);
+        if(pathwayClickData.tissue==='Header'){
+            if(sortPathwayName===pathwayClickData.pathway.golabel){
+                // switch the order
+                sortPathwayOrder = sortPathwayOrder === 'desc' ? 'asc' : 'desc';
+            }
+            else{
+                sortPathwayName = pathwayClickData.pathway.golabel;
+                sortPathwayOrder = 'desc';
+            }
+        }
+        console.log('set to ');
+        console.log(sortPathwayName);
+        console.log(sortPathwayOrder);
+
         this.setState({
             pathwayClickData,
+            sortPathwayName: sortPathwayName,
+            sortPathwayOrder: sortPathwayOrder,
             geneData: {
                 expression,
                 samples,
