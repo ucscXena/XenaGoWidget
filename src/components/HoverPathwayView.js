@@ -38,7 +38,7 @@ export default class HoverPathwayView extends PureComponent {
                     <div>
                         Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
                         Genes ({data.pathway.gene.length}) <br/>
-                        Total Mutation Score: {data.expression}
+                        Tissue Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
                     </div>
                     }
                 </div>

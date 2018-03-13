@@ -33,7 +33,7 @@ function getExpressionForDataPoint(x, y,pixelsPerPathway,pixelsPerTissue,associa
             console.log("Not pathway data at " + pathwayIndex + " for " + associateData.length);
         }
 
-        return totalExpression;
+        return (totalExpression / associatedData[0].length) ;
     }
 
     let tissueIndex = Math.trunc(convertedHeight / pixelsPerTissue);
@@ -144,6 +144,7 @@ TissueExpressionView.propTypes = {
  * https://github.com/ucscXena/ucsc-xena-client/blob/master/js/models/mutationVector.js#L67
  Can use the scores directly or just count everything that is 4-2, and lincRNA, Complex Substitution, RNA which are all 0.
  * @param effect
+ * @param min
  * @returns {*}
  */
 function getMutationScore(effect,min) {
@@ -204,6 +205,7 @@ function pruneColumns(data,pathways,min){
  * @param pathways
  * @param samples
  * @param filter
+ * @param min
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter,min) {

@@ -31,7 +31,7 @@ export default class HoverGeneView extends PureComponent {
                     {data.tissue === 'Header' && data.pathway &&
                     <div>
                         Gene: {data.pathway.gene[0]} <br/>
-                        Total Mutation Score: {data.expression}
+                        Tissue Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
                     </div>
                     }
                 </div>
