@@ -146,8 +146,9 @@ TissueExpressionView.propTypes = {
  * @param effect
  * @returns {*}
  */
-function getMutationScore(effect) {
-    return mutationScores[effect]
+function getMutationScore(effect,min) {
+    return (mutationScores[effect]>=min) ? 1 : 0 ;
+    // return mutationScores[effect]
 }
 
 function getSampleIndex(sample, samples) {
@@ -166,7 +167,7 @@ function getPathwayIndicesForGene(gene, pathways) {
     return indices;
 }
 
-function pruneSamples(data,pathways,min){
+function pruneColumns(data,pathways,min){
     let columnScores = [];
     for(let i = 0 ; i < pathways.length ; i++){
         columnScores[i] = 0 ;
@@ -205,7 +206,7 @@ function pruneSamples(data,pathways,min){
  * @param filter
  * @returns {any[]}
  */
-function associateData(expression, pathways, samples, filter) {
+function associateData(expression, pathways, samples, filter,min) {
     filter = filter.indexOf('All')===0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     let valueArray = new Array(pathways.length);
@@ -222,11 +223,11 @@ function associateData(expression, pathways, samples, filter) {
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
-        let effectValue = (!filter || effect === filter) ? getMutationScore(effect) : 0;
+        let effectValue = (!filter || effect === filter) ? getMutationScore(effect,min) : 0;
         let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
         let sampleIndex = getSampleIndex(row.sample, samples);
         for (let index of pathwayIndices) {
-            returnArray[index][sampleIndex] += effectValue;
+            returnArray[index][sampleIndex] += effectValue ;
             valueArray[index][sampleIndex].push(row);
         }
     }
@@ -236,11 +237,11 @@ function associateData(expression, pathways, samples, filter) {
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-		let {filter, filterPercentage,data: {expression, pathways, samples}} = this.props;
-        let associatedData = associateData(expression, pathways, samples, filter);
+		let {min, filter, filterPercentage,data: {expression, pathways, samples}} = this.props;
+        let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
-        let returnedValue = pruneSamples(associatedData,pathways,filterMin);
+        let returnedValue = pruneColumns(associatedData,pathways,filterMin);
 		return (
 			<TissueExpressionView
 				{...this.props}

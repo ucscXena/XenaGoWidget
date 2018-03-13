@@ -244,6 +244,7 @@ export default class XenaGoApp extends PureComponent {
                                                   data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
+                                                  min={this.state.minFilter}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
@@ -260,6 +261,7 @@ export default class XenaGoApp extends PureComponent {
                                                   selected={this.state.geneData.selectedPathway}
                                                   filter={this.state.geneExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
+                                                  min={this.state.minFilter}
                                                   onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>
                         }
