@@ -27,6 +27,8 @@ export default class XenaGoApp extends PureComponent {
             },
             tissueExpressionFilter: '',
             geneExpressionFilter: '',
+            minFilter: 2,
+            filterPercentage: 0.005,
             geneData: {
                 expression: [],
                 pathways: [],
@@ -120,6 +122,19 @@ export default class XenaGoApp extends PureComponent {
             width: '100px'
         };
 
+        function filterMutationVector(inputData,minFilter) {
+            let filteredMutationVector = {};
+            for(let v in inputData){
+                let value = inputData[v];
+                if(value >= minFilter){
+                    filteredMutationVector[v] = value ;
+                }
+            }
+            return filteredMutationVector;
+        }
+
+        let filteredMutationVector = filterMutationVector(mutationVector,this.state.minFilter);
+
         return (
             <div>
                 <table>
@@ -129,12 +144,13 @@ export default class XenaGoApp extends PureComponent {
                             <h2>Cohorts</h2>
                             <CohortSelector cohorts={ExampleCohortsData}/>
                             <h2>Mutation Type</h2>
-                            <FilterSelector filters={mutationVector} selected={this.state.tissueExpressionFilter}
+                            <FilterSelector filters={filteredMutationVector} selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
                             <TissueExpressionView id="pathwayViewId" width="400" height="800"
                                                   data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
+                                                  filterPercentage={this.state.filterPercentage}
                                                   onClick={this.clickPathway} onHover={this.hoverPathway}/>
                         </td>
                         <td style={alignTop}>
@@ -144,12 +160,13 @@ export default class XenaGoApp extends PureComponent {
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <td style={geneAlignment}>
                             <h2>Mutation Type</h2>
-                            <FilterSelector filters={mutationVector} selected={this.state.geneExpressionFilter}
+                            <FilterSelector filters={filteredMutationVector} selected={this.state.geneExpressionFilter}
                                             pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
                             <TissueExpressionView id="geneViewId" width="400" height="800" data={this.state.geneData}
                                                 selected={this.state.geneData.selectedPathway}
                                                 filter={this.state.geneExpressionFilter}
+                                                filterPercentage={this.state.filterPercentage}
                                                 onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>
                         }

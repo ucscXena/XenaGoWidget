@@ -236,9 +236,8 @@ function associateData(expression, pathways, samples, filter) {
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-		let {filter, data: {expression, pathways, samples}} = this.props;
+		let {filter, filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter);
-        let filterPercentage = 0.005 ;
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let returnedValue = pruneSamples(associatedData,pathways,filterMin);

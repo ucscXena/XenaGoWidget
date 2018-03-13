@@ -42,7 +42,7 @@ export class FilterSelector extends PureComponent {
 
         for (let row of data.expression.rows) {
             let filteredObject = returnArray[row.effect] ;
-            if(genes.indexOf(row.gene)>=0){
+            if(filteredObject && genes.indexOf(row.gene)>=0){
                 filteredObject.count = filteredObject.count + 1;
             }
         }
