@@ -206,7 +206,7 @@ function pruneSamples(data,pathways,min){
  * @returns {any[]}
  */
 function associateData(expression, pathways, samples, filter) {
-    filter = filter === 'All' ? '' : filter;
+    filter = filter.indexOf('All')===0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     let valueArray = new Array(pathways.length);
     for (let p in pathways) {

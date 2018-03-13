@@ -99,7 +99,6 @@ export default class XenaGoApp extends PureComponent {
     }
 
     filterGeneType(filter) {
-        console.log('filtering egene :'+filter)
         this.setState({geneExpressionFilter: filter});
     }
 
