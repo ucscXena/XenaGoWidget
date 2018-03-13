@@ -237,13 +237,83 @@ function associateData(expression, pathways, samples, filter,min) {
     return returnArray;
 }
 
+function defaultSort(data){
+    return data ;
+}
+
+function getColumnIndex(data, sortColumn) {
+
+    for(let p in data.pathways){
+        if(data.pathways[p].golabel===sortColumn){
+            return p
+        }
+    }
+    return null ;
+}
+
+function transpose(a)
+{
+    // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
+    // or in more modern dialect
+    return a[0].map((_, c) => a.map(r => r[c]));
+}
+
+/**
+ *
+ * @param data
+ * @param sortColumn
+ * @param sortOrder
+ * @returns {undefined}
+ */
+function sortColumns(data, sortColumn, sortOrder) {
+    if(!sortColumn) return defaultSort(data) ;
+
+
+    // sort tissues by the column in the sort order specified
+    let columnIndex = getColumnIndex(data,sortColumn);
+    let sortPathway = data.data[columnIndex];
+    let sortedColumnIndices = [];
+    for(let i = 0 ; i < sortPathway.length ; i++){
+        sortedColumnIndices.push( {
+                index: i,
+                value: sortPathway[i]
+            }
+        );
+        sortedColumnIndices.value = i ;
+    }
+
+    sortedColumnIndices.sort(function(a,b){
+        if(sortOrder==='desc'){
+            return b.value-a.value ;
+        }
+        else{
+            return a.value-b.value ;
+        }
+    });
+
+    let renderedData = transpose(data.data);
+
+    // console.log(sortColumn)
+    renderedData = renderedData.sort(function(a,b){
+        let returnValue = a[columnIndex]-b[columnIndex];
+        return sortOrder==='desc' ? -returnValue : returnValue ;
+    });
+
+    renderedData = transpose(renderedData);
+
+    data.data = renderedData ;
+
+    return data ;
+}
+
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-		let {min, filter, filterPercentage,data: {expression, pathways, samples}} = this.props;
+		let {min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
-        let returnedValue = pruneColumns(associatedData,pathways,filterMin);
+        let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
+        let returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
 		return (
 			<TissueExpressionView
 				{...this.props}
