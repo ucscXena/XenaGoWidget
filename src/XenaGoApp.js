@@ -104,6 +104,8 @@ export default class XenaGoApp extends PureComponent {
             pathwayClickData,
             sortPathwayName: sortPathwayName,
             sortPathwayOrder: sortPathwayOrder,
+            sortGeneName:null,
+            sortGeneOrder:null,
             geneData: {
                 expression,
                 samples,
@@ -135,6 +137,8 @@ export default class XenaGoApp extends PureComponent {
             geneClickData: props,
             sortGeneName:sortGeneName,
             sortGeneOrder:sortGeneOrder,
+            sortPathwayName: this.state.sortPathwayName,
+            sortPathwayOrder: this.state.sortPathwayOrder,
         });
     };
 
