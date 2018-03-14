@@ -283,7 +283,7 @@ export default class XenaGoApp extends PureComponent {
                                             selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
-                            <TissueExpressionView id="pathwayViewId" width="400" height="800"
+                            <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                                   data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
@@ -302,7 +302,7 @@ export default class XenaGoApp extends PureComponent {
                             <FilterSelector filters={filteredMutationVector} selected={this.state.geneExpressionFilter}
                                             pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
-                            <TissueExpressionView id="geneViewId" width="400" height="800"
+                            <TissueExpressionView id="geneViewId" width={400} height={800}
                                                   data={this.state.geneData}
                                                   selected={this.state.geneData.selectedPathway}
                                                   filter={this.state.geneExpressionFilter}

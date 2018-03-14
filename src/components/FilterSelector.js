@@ -2,17 +2,10 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
+import {sum} from '../functions/util';
 
 function lowerCaseCompare(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());
-}
-
-function sum(arr) {
-    let total = 0;
-    for (let i = 0; i < arr.length; ++i) {
-        total += arr[i];
-    }
-    return total;
 }
 
 function compileData(filteredEffects, data) {

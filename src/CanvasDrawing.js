@@ -54,7 +54,6 @@ export default class CanvasDrawing extends Component{
                         onClick={this.props.onClick}
                         // onDblClick={this.props.onDblClick}
                 />
-                <div style={{...styles.labels, top: -height, width, height}} ref='labels'/>
             </div>
         );
     }
