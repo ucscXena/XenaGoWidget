@@ -26,6 +26,8 @@ export default class XenaGoApp extends PureComponent {
         this.state = {
             sortPathwayName:null,
             sortPathwayOrder:null,
+            sortGeneName:null,
+            sortGeneOrder:null,
             pathwayData: {
                 expression: ExampleExpression,
                 pathways: ExamplePathWays,
@@ -111,7 +113,24 @@ export default class XenaGoApp extends PureComponent {
     };
 
     clickGene = (props) => {
-        this.setState({geneClickData: props});
+        let sortGeneName = this.state.sortGeneName ;
+        let sortGeneOrder = this.state.sortGeneOrder ;
+        if(props.tissue==='Header'){
+            let geneValue = props.pathway.gene[0];
+            if(sortGeneName===geneValue){
+                // switch the order
+                sortGeneOrder = sortGeneOrder === 'desc' ? 'asc' : 'desc';
+            }
+            else{
+                sortGeneName = geneValue;
+                sortGeneOrder = 'desc';
+            }
+        }
+        this.setState({
+            geneClickData: props,
+            sortGeneName:sortGeneName,
+            sortGeneOrder:sortGeneOrder,
+        });
     };
 
     hoverGene = (props) => {
@@ -288,6 +307,8 @@ export default class XenaGoApp extends PureComponent {
                                                   filter={this.state.geneExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
                                                   min={this.state.minFilter}
+                                                  sortColumn={this.state.sortGeneName}
+                                                  sortOrder={this.state.sortGeneOrder}
                                                   onClick={this.clickGene} onHover={this.hoverGene}/>
                         </td>
                         }

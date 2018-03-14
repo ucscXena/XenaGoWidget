@@ -248,6 +248,11 @@ function getColumnIndex(data, sortColumn) {
             return p
         }
     }
+    for(let p in data.pathways){
+        if(data.pathways[p].gene[0]===sortColumn){
+            return p
+        }
+    }
     return null ;
 }
 
@@ -270,8 +275,11 @@ function sortColumns(data, sortColumn, sortOrder) {
 
 
     // sort tissues by the column in the sort order specified
+    console.log(sortColumn);
     let columnIndex = getColumnIndex(data,sortColumn);
+    console.log(columnIndex);
     let sortPathway = data.data[columnIndex];
+    console.log(sortPathway);
     let sortedColumnIndices = [];
     for(let i = 0 ; i < sortPathway.length ; i++){
         sortedColumnIndices.push( {
