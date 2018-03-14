@@ -128,8 +128,8 @@ class TissueExpressionView extends PureComponent {
 }
 
 TissueExpressionView.propTypes = {
-    width: PropTypes.string.isRequired,
-    height: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
     selected: PropTypes.any,
     titleText: PropTypes.string,
