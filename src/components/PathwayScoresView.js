@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import CanvasDrawing from "../CanvasDrawing";
 import ScoreFunctions from '../functions/ScoreFunctions';
 import mutationScores from '../data/mutationVector';
+import {memoize, range} from 'underscore';
 
 let labelHeight = 150;
 
@@ -152,21 +153,11 @@ function getMutationScore(effect,min) {
     // return mutationScores[effect]
 }
 
-function getSampleIndex(sample, samples) {
-    return samples.indexOf(sample);
-}
-
-function getPathwayIndicesForGene(gene, pathways) {
-    let indices = [];
-    for (let p in pathways) {
-        let pathway = pathways[p];
-        let indexOfGeneInPathway = pathway.gene.indexOf(gene);
-        if (indexOfGeneInPathway >= 0) {
-            indices.push(p);
-        }
-    }
-    return indices;
-}
+let getGenePathwayLookup = pathways => {
+    var sets = pathways.map(p => new Set(p.gene)),
+        idxs = range(sets.length);
+    return memoize(gene => idxs.filter(i => sets[i].has(gene)));
+};
 
 function pruneColumns(data,pathways,min){
     let columnScores = [];
@@ -211,26 +202,24 @@ function pruneColumns(data,pathways,min){
 function associateData(expression, pathways, samples, filter,min) {
     filter = filter.indexOf('All')===0 ? '' : filter;
     let returnArray = new Array(pathways.length);
-    let valueArray = new Array(pathways.length);
     for (let p in pathways) {
         returnArray[p] = new Array(samples.length);
-        valueArray[p] = new Array(samples.length);
         for (let s in samples) {
             returnArray[p][s] = 0;
-            valueArray[p][s] = [];
         }
     }
 
+    var sampleIndex = new Map(samples.map((v, i) => [v, i]));
+    var genePathwayLookup = getGenePathwayLookup(pathways);
 
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
         let effectValue = (!filter || effect === filter) ? getMutationScore(effect,min) : 0;
-        let pathwayIndices = getPathwayIndicesForGene(gene, pathways);
-        let sampleIndex = getSampleIndex(row.sample, samples);
+        let pathwayIndices = genePathwayLookup(gene);
+
         for (let index of pathwayIndices) {
-            returnArray[index][sampleIndex] += effectValue ;
-            valueArray[index][sampleIndex].push(row);
+            returnArray[index][sampleIndex.get(row.sample)] += effectValue ;
         }
     }
 
