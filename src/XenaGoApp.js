@@ -15,6 +15,7 @@ import {FilterSelector} from "./components/FilterSelector";
 // import {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} from 'ucsc-xena-client';
 var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 var {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} = xenaQuery;
+import {pick, pluck, flatten} from 'underscore';
 // var Rx = require('ucsc-xena-client/dist/rx');
 
 var mutationKey = 'simple somatic mutation';
@@ -212,17 +213,7 @@ export default class XenaGoApp extends PureComponent {
     };
 
     getGenesForPathway(pathways) {
-        let geneList = new Set();
-        for (let p of pathways) {
-            for (let g of p.gene) {
-                geneList.add(g)
-            }
-        }
-        let returnArray = [];
-        for (let p of geneList) {
-            returnArray.push(p)
-        }
-        return returnArray
+        return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
     };
 
     render() {
@@ -243,19 +234,8 @@ export default class XenaGoApp extends PureComponent {
             width: '100px'
         };
 
-        function filterMutationVector(inputData, minFilter) {
-            let filteredMutationVector = {};
-            for (let v in inputData) {
-                let value = inputData[v];
-                if (value >= minFilter) {
-                    filteredMutationVector[v] = value;
-                }
-            }
-            return filteredMutationVector;
-        }
-
-        let filteredMutationVector = filterMutationVector(mutationVector, this.state.minFilter);
-
+        let filteredMutationVector = pick(mutationVector,
+                                          v => v >= this.state.minFilter);
         return (
             <div>
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
