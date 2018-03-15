@@ -163,7 +163,7 @@ function drawExpressionData2(vg, width, height, data) {
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, onClick, onHover, associateData, data: {pathways, samples}} = props;
+        let {width, height, associateData, data: {pathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -172,7 +172,7 @@ export default {
             return ;
         }
 
-        drawExpressionData(vg, width, height, associateData, pathways,samples,  onClick, onHover);
+        drawExpressionData(vg, width, height, associateData);
         drawPathwayLabels(vg, width, height, pathways);
     }
 }
