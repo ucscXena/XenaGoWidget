@@ -7,6 +7,7 @@ import ExamplePathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
 // import ExampleStyle from "../demo/src/example.css";
+import './base.css';
 import HoverPathwayView from "./components/HoverPathwayView"
 import HoverGeneView from "./components/HoverGeneView";
 // import update from 'immutability-helper';

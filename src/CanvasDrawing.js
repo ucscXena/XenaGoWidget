@@ -15,7 +15,8 @@ let styles = {
         position: 'relative',
         left: 0,
         top: 0,
-        zIndex: 1
+        zIndex: 1,
+        boxShadow: '0 2px 2px 0 rgba(0, 0, 0, .14)'
     },
     labels: {
         position: 'relative',
