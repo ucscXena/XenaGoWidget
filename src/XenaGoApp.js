@@ -35,6 +35,7 @@ export default class XenaGoApp extends PureComponent {
             sortGeneName:null,
             sortGeneOrder:null,
             pathwayData: {
+                cohort: 'TCGA Ovarian Cancer (OV)',
                 expression: ExampleExpression,
                 pathways: ExamplePathWays,
                 samples: ExampleSamples,
@@ -200,6 +201,7 @@ export default class XenaGoApp extends PureComponent {
                     pathwayData: {
                         expression: mutations,
                         pathways: ExamplePathWays,
+                        cohort: cohort.name,
                         samples
                     },
                     geneData: {
@@ -208,7 +210,6 @@ export default class XenaGoApp extends PureComponent {
                         samples: [],
                     },
                 })
-
             });
     };
 
@@ -236,6 +237,9 @@ export default class XenaGoApp extends PureComponent {
 
         let filteredMutationVector = pick(mutationVector,
                                           v => v >= this.state.minFilter);
+
+        let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
+
         return (
             <div>
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
@@ -256,6 +260,7 @@ export default class XenaGoApp extends PureComponent {
                                                   data={this.state.pathwayData} titleText="Mutation Score"
                                                   filter={this.state.tissueExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
+                                                  loading={cohortLoading}
                                                   min={this.state.minFilter}
                                                   sortColumn={this.state.sortPathwayName}
                                                   sortOrder={this.state.sortPathwayOrder}
@@ -276,6 +281,7 @@ export default class XenaGoApp extends PureComponent {
                                                   selected={this.state.geneData.selectedPathway}
                                                   filter={this.state.geneExpressionFilter}
                                                   filterPercentage={this.state.filterPercentage}
+                                                  loading={cohortLoading}
                                                   min={this.state.minFilter}
                                                   sortColumn={this.state.sortGeneName}
                                                   sortOrder={this.state.sortGeneOrder}

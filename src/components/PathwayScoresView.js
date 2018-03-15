@@ -6,6 +6,7 @@ import ScoreFunctions from '../functions/ScoreFunctions';
 import mutationScores from '../data/mutationVector';
 import {memoize, range} from 'underscore';
 import {partition, sum} from  '../functions/util';
+import spinner from './ajax-loader.gif';
 
 let labelHeight = 150;
 
@@ -51,6 +52,17 @@ function getPointData(event, props) {
     };
 }
 
+const style = {
+    fadeIn: {
+        opacity: 1,
+        transition: 'opacity 0.5s ease-out'
+    },
+    fadeOut: {
+        opacity: 0.6,
+        transition: 'opacity 1s ease'
+    }
+}
+
 class TissueExpressionView extends PureComponent {
 
     constructor(props) {
@@ -72,7 +84,8 @@ class TissueExpressionView extends PureComponent {
     };
 
     render() {
-        const {width, height, layout, data, associateData, titleText,selected,filter} = this.props;
+        const {loading, width, height, layout, data, associateData,
+            titleText,selected,filter} = this.props;
 
         let titleString, filterString ;
         if(selected){
@@ -84,13 +97,15 @@ class TissueExpressionView extends PureComponent {
             filterString = filter.indexOf('All')===0 ? '' : filter ;
         }
 
+        let stat = loading ? <img src={spinner}/> : null;
+
         return (
-            <div>
-                <h3>{titleString}</h3>
+            <div style={loading ? style.fadeOut : style.fadeIn}>
+                <h3>{titleString} {stat}</h3>
                 <CanvasDrawing
                     width={width}
                     height={height}
-					layout={layout}
+                    layout={layout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
                     associateData={associateData}
