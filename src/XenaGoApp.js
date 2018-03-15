@@ -187,20 +187,19 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
-        let samples ;
+        let cohort = this.state.cohortData.find(c => c.name === selected);
         cohortSamples('https://tcga.xenahubs.net', selected, null)
-            .flatMap((sampleList) => {
-                samples = sampleList;
+            .flatMap((samples) => {
                 let geneList = this.getGenesForPathway(ExamplePathWays);
-                let dataSetId = this.getSelectedDataSetId();
-                return sparseData('https://tcga.xenahubs.net', dataSetId, sampleList, geneList)
+                return sparseData('https://tcga.xenahubs.net', cohort.mutationDataSetId, samples, geneList)
+                    .map(mutations => ({mutations, samples}));
             })
-            .subscribe(resp => {
+            .subscribe(({mutations, samples}) => {
                 this.setState({
-                    pathwayData : {
-                        expression: resp,
+                    pathwayData: {
+                        expression: mutations,
                         pathways: ExamplePathWays,
-                        samples: samples,
+                        samples
                     },
                     geneData: {
                         expression: [],
@@ -211,16 +210,6 @@ export default class XenaGoApp extends PureComponent {
 
             });
     };
-
-
-    getSelectedDataSetId() {
-        for (let cohort of this.state.cohortData) {
-            if (cohort.name === this.state.selectedCohort) {
-                return cohort.mutationDataSetId;
-            }
-        }
-        return null;
-    }
 
     getGenesForPathway(pathways) {
         let geneList = new Set();
