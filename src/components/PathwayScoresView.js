@@ -5,6 +5,7 @@ import CanvasDrawing from "../CanvasDrawing";
 import ScoreFunctions from '../functions/ScoreFunctions';
 import mutationScores from '../data/mutationVector';
 import {memoize, range} from 'underscore';
+import {partition, sum} from  '../functions/util';
 
 let labelHeight = 150;
 
@@ -16,65 +17,37 @@ function getMousePos(evt) {
     };
 }
 
-function getExpressionForDataPoint(x, y,pixelsPerPathway,pixelsPerTissue,associatedData) {
-    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
-
-    let convertedHeight = y - labelHeight;
-    // if we are in the label area
-    if (convertedHeight < 0) {
-        let totalExpression = 0;
-        let pathwayArray = associatedData[pathwayIndex];
-
-        if (pathwayArray) {
-            for (let p of pathwayArray) {
-                totalExpression += parseInt(p);
-            }
-        }
-        else {
-            console.log("Not pathway data at " + pathwayIndex + " for " + associateData.length);
-        }
-
-        return (totalExpression / associatedData[0].length) ;
+function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
+    let pathwayArray = associatedData[pathwayIndex];
+    if (!pathwayArray) {
+        console.log("No pathway data at " + pathwayIndex + " for " + associateData.length);
+        return 0;
     }
 
-    let tissueIndex = Math.trunc(convertedHeight / pixelsPerTissue);
-
-    if (associatedData[pathwayIndex]) {
-        return associatedData[pathwayIndex][tissueIndex];
-    }
-    else{
-        return 0 ;
-    }
+    return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
+        pathwayArray[tissueIndex]; // sample
 }
 
-function getTissueForYPosition(y,pixelsPerTissue,sampleData) {
-    let convertedHeight = y - labelHeight;
-    if (convertedHeight < 0) return 'Header';
-    let tissueIndex = Math.trunc((convertedHeight) / pixelsPerTissue);
-    return sampleData[tissueIndex];
-}
+let tissueIndexFromY = (y, height, count) =>
+    y < labelHeight ? -1 :
+        Math.trunc((y - labelHeight) * count / (height - labelHeight));
 
-function getPathwayForXPosition(x,pixelsPerPathway,pathwayData) {
-    let pathwayIndex = Math.trunc(x / pixelsPerPathway);
-    return pathwayData[pathwayIndex];
-}
+let pathwayIndexFromX = (x, layout) =>
+    layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, width, height, data: {pathways, samples}} = props;
+    let {associateData, width, height, layout, data: {pathways, samples}} = props;
 
-    let mousePos = getMousePos(event);
-    let pathwayCount = associateData.length;
-    let tissueCount = associateData[0].length;
-    let pixelsPerPathway = Math.trunc(width / pathwayCount);
-    let pixelsPerTissue = Math.trunc(height / tissueCount);
-    let pathway = getPathwayForXPosition(mousePos.x, pixelsPerPathway, pathways);
-    let tissue = getTissueForYPosition(mousePos.y, pixelsPerTissue, samples);
-    let expression = getExpressionForDataPoint(mousePos.x, mousePos.y, pixelsPerPathway, pixelsPerTissue, associateData);
+    let {x, y} = getMousePos(event);
+    let pathwayIndex = pathwayIndexFromX(x, layout);
+    let tissueIndex = tissueIndexFromY(y, height, samples.length);
+
+    let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
     return {
-        pathway: pathway,
-        tissue: tissue,
-        expression: expression,
+        pathway: pathways[pathwayIndex],
+        tissue: tissueIndex < 0 ? 'Header': samples[tissueIndex],
+        expression
     };
 }
 
@@ -99,7 +72,7 @@ class TissueExpressionView extends PureComponent {
     };
 
     render() {
-        const {width, height, data, associateData, titleText,selected,filter} = this.props;
+        const {width, height, layout, data, associateData, titleText,selected,filter} = this.props;
 
         let titleString, filterString ;
         if(selected){
@@ -117,6 +90,7 @@ class TissueExpressionView extends PureComponent {
                 <CanvasDrawing
                     width={width}
                     height={height}
+					layout={layout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
                     associateData={associateData}
@@ -303,9 +277,11 @@ function sortColumns(data, sortColumn, sortOrder) {
     return data ;
 }
 
+let layout = (width, {length = 0} = {}) => partition(width, length);
+
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-		let {min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
+        let {min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
@@ -314,6 +290,7 @@ export default class AssociatedDataCache extends PureComponent {
 		return (
 			<TissueExpressionView
 				{...this.props}
+				layout={layout(width, returnedValue.data)}
 				data={{expression, pathways: returnedValue.pathways, samples}}
 				associateData={returnedValue.data}/>
 		);

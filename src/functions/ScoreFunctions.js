@@ -10,12 +10,8 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
-function drawPathwayLabels(vg, width, height, pathways) {
-
-    let pathwayCount = pathways.length;
-    let pixelsPerPathway = Math.trunc(width / pathwayCount);
-
-    if (pixelsPerPathway <= 1) {
+function drawPathwayLabels(vg, width, height, layout, pathways) {
+    if (layout[0].size <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
         vg.fillRect(0, 0, width, labelHeight);
         return;
@@ -23,9 +19,11 @@ function drawPathwayLabels(vg, width, height, pathways) {
 
     vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
     let pixelCount = 0;
-    for (let d of pathways) {
-        vg.fillRect(pixelCount, 0, pixelsPerPathway, labelHeight);
-        vg.strokeRect(pixelCount, 0, pixelsPerPathway, labelHeight);
+    layout.forEach((el, i) => {
+        let {start, size} = el;
+        let d = pathways[i];
+        vg.fillRect(el.start, 0, el.size, labelHeight);
+        vg.strokeRect(el.start, 0, el.size, labelHeight);
 
 
         // draw the text
@@ -33,7 +31,7 @@ function drawPathwayLabels(vg, width, height, pathways) {
         vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
         vg.rotate(-Math.PI / 2);
         vg.font = "10px Courier";
-        vg.translate(-labelHeight, pixelCount, labelHeight);
+        vg.translate(-labelHeight, el.start, labelHeight);
 
         let geneLength = d.gene.length ;
         let labelString ;
@@ -50,12 +48,11 @@ function drawPathwayLabels(vg, width, height, pathways) {
             labelString += d.golabel;
         }
 
-        if (pixelsPerPathway >= 10) {
+        if (el.size >= 10) {
             vg.fillText(labelString, 3, 10);
         }
         vg.restore();
-        pixelCount += pixelsPerPathway;
-    }
+    });
 }
 
 function findRegions(index, height, count) {
@@ -81,23 +78,12 @@ function regionColor(data) {
     return  [255, c, c];
 }
 
-function drawExpressionData(ctx, width, totalHeight, data) {
+function drawExpressionData(ctx, width, totalHeight, layout, data) {
     let height = totalHeight - labelHeight;
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
     let regions = findRegions(0, height, tissueCount);
     let img = ctx.createImageData(width, totalHeight);
-    let pixelsPerPathway = Math.trunc(width / pathwayCount);
-    // Computing pixelsPerPathway is problematic. Truncation error accumulates,
-    // so total width is less than canvas width.
-    // We could instead to partition the available pixels. This requires
-    // updating pixel allocations for labels & event handlers, as well, e.g.
-    // by moving 'layout' computation up the component stack.
-    let layout = times(pathwayCount, i => ({
-        start : i * pixelsPerPathway,
-        size: pixelsPerPathway
-    }));
-    //partition(width, pathwayCount); // partition fn example
 
     layout.forEach(function (el, i) {
         var rowData = data[i];
@@ -163,7 +149,7 @@ function drawExpressionData2(vg, width, height, data) {
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, associateData, data: {pathways}} = props;
+        let {width, height, layout, associateData, data: {pathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -172,7 +158,7 @@ export default {
             return ;
         }
 
-        drawExpressionData(vg, width, height, associateData);
-        drawPathwayLabels(vg, width, height, pathways);
+        drawExpressionData(vg, width, height, layout, associateData);
+        drawPathwayLabels(vg, width, height, layout, pathways);
     }
 }
