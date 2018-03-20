@@ -268,9 +268,24 @@ function scoreColumnDensities(prunedColumns) {
 }
 
 function sortTissuesByDensity(prunedColumns) {
+
+    console.log('input data: ');
+    console.log(prunedColumns.data);
+    let renderedData = transpose(prunedColumns.data);
+    console.log('transposed data: ');
+    console.log(renderedData);
+
+    // renderedData = renderedData.sort(function(a,b){
+    //     let returnValue = a[columnIndex]-b[columnIndex];
+    //     return sortOrder==='desc' ? -returnValue : returnValue ;
+    // });
     // for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
-    //     prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
+        //     prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
     // }
+
+    renderedData = transpose(renderedData);
+
+    prunedColumns.data = renderedData;
 }
 
 /**
