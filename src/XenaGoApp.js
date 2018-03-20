@@ -88,9 +88,6 @@ export default class XenaGoApp extends PureComponent {
 
         let sortPathwayName = this.state.sortPathwayName;
         let sortPathwayOrder = this.state.sortPathwayOrder;
-        console.log('WAS set to ');
-        console.log(sortPathwayName);
-        console.log(sortPathwayOrder);
         if (pathwayClickData.tissue === 'Header') {
             if (sortPathwayName === pathwayClickData.pathway.golabel) {
                 // switch the order
@@ -101,9 +98,6 @@ export default class XenaGoApp extends PureComponent {
                 sortPathwayOrder = 'desc';
             }
         }
-        console.log('set to ');
-        console.log(sortPathwayName);
-        console.log(sortPathwayOrder);
 
         this.setState({
             pathwayClickData,

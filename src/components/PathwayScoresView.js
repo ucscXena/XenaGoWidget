@@ -5,10 +5,12 @@ import CanvasDrawing from "../CanvasDrawing";
 import ScoreFunctions from '../functions/ScoreFunctions';
 import mutationScores from '../data/mutationVector';
 import {memoize, range} from 'underscore';
-import {partition, sum} from  '../functions/util';
+import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 
 let labelHeight = 150;
+
+const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -25,7 +27,9 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
         return 0;
     }
 
-    return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
+    // return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
+    //     pathwayArray[tissueIndex]; // sample
+    return (tissueIndex < 0) ? sumInstances(pathwayArray) / associatedData[0].length : // pathway
         pathwayArray[tissueIndex]; // sample
 }
 
@@ -37,7 +41,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, width, height, layout, data: {pathways, samples}} = props;
+    let {associateData, height, layout, data: {pathways, samples}} = props;
 
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
@@ -61,7 +65,7 @@ const style = {
         opacity: 0.6,
         transition: 'opacity 1s ease'
     }
-}
+};
 
 class TissueExpressionView extends PureComponent {
 
@@ -243,7 +247,6 @@ function transpose(a)
 }
 
 
-const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
 
 /**
  * Populates density for each column
@@ -251,7 +254,7 @@ const instanceCounter = (accumulator, currentValue) => accumulator + ( currentVa
  */
 function scoreColumnDensities(prunedColumns) {
     for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
-        prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter);
+        prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
         prunedColumns.pathways[index].index = index ;
     }
 
@@ -276,9 +279,6 @@ function sortTissuesByOverall(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    console.log('returned data: ');
-    console.log(renderedData);
-
     prunedColumns.data = renderedData;
 }
 function sortTissuesByClusterDensity(prunedColumns) {
@@ -296,9 +296,6 @@ function sortTissuesByClusterDensity(prunedColumns) {
     });
 
     renderedData = transpose(renderedData);
-
-    console.log('returned data: ');
-    console.log(renderedData);
 
     prunedColumns.data = renderedData;
 }
@@ -342,11 +339,8 @@ function sortColumns(data, sortColumn, sortOrder) {
 
 
     // sort tissues by the column in the sort order specified
-    console.log(sortColumn);
     let columnIndex = getColumnIndex(data,sortColumn);
-    console.log(columnIndex);
     let sortPathway = data.data[columnIndex];
-    console.log(sortPathway);
     let sortedColumnIndices = [];
     for(let i = 0 ; i < sortPathway.length ; i++){
         sortedColumnIndices.push( {
