@@ -270,18 +270,20 @@ function scoreColumnDensities(prunedColumns) {
 
 }
 
-function sortTissuesByOverall(prunedColumns) {
-    let renderedData = transpose(prunedColumns.data);
-
-    renderedData = renderedData.sort(function(a,b){
-        return sum(b)-sum(a)
-    });
-
-    renderedData = transpose(renderedData);
-
-    prunedColumns.data = renderedData;
-}
-function sortTissuesByClusterDensity(prunedColumns) {
+/**
+ * Sort by column density followed by row.
+ * https://github.com/nathandunn/XenaGoWidget/issues/67
+ *
+ * 1. find density for each column
+ * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
+ *
+ * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
+ *
+ * @param prunedColumns
+ * @returns {undefined}
+ */
+function clusterSort(prunedColumns) {
+    scoreColumnDensities(prunedColumns);
 
     let renderedData = transpose(prunedColumns.data);
 
@@ -298,31 +300,44 @@ function sortTissuesByClusterDensity(prunedColumns) {
     renderedData = transpose(renderedData);
 
     prunedColumns.data = renderedData;
+
+    return prunedColumns;
 }
 
-/**
- * Sort by column density followed by row.
- * https://github.com/nathandunn/XenaGoWidget/issues/67
- *
- * 1. find density for each column
- * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
- *
- * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
- *
- * @param prunedColumns
- * @returns {undefined}
- */
-function clusterSort(prunedColumns) {
-    scoreColumnDensities(prunedColumns);
+function densitySort(prunedColumns) {
+    // scoreColumnDensities(prunedColumns);
 
-    sortTissuesByClusterDensity(prunedColumns);
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        for(let index = 0 ; index < a.length ; ++index){
+            if(a[index]!==b[index]){
+                return b[index]-a[index];
+            }
+        }
+        // return 0 ;
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    prunedColumns.data = renderedData;
 
     return prunedColumns;
 }
 
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
-    sortTissuesByOverall(prunedColumns);
+
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    prunedColumns.data = renderedData;
 
     return prunedColumns;
 }
@@ -388,6 +403,9 @@ export default class AssociatedDataCache extends PureComponent {
         switch (selectedSort) {
             case 'Overall':
                 returnedValue = overallSort(prunedColumns);
+                break ;
+            case 'Density':
+                returnedValue = densitySort(prunedColumns);
                 break ;
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
