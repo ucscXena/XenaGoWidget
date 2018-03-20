@@ -126,6 +126,7 @@ TissueExpressionView.propTypes = {
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
+    selectedSort: PropTypes.any,
     id: PropTypes.any,
 };
 
@@ -143,7 +144,7 @@ function getMutationScore(effect,min) {
 }
 
 let getGenePathwayLookup = pathways => {
-    var sets = pathways.map(p => new Set(p.gene)),
+    let sets = pathways.map(p => new Set(p.gene)),
         idxs = range(sets.length);
     return memoize(gene => idxs.filter(i => sets[i].has(gene)));
 };
@@ -198,8 +199,8 @@ function associateData(expression, pathways, samples, filter,min) {
         }
     }
 
-    var sampleIndex = new Map(samples.map((v, i) => [v, i]));
-    var genePathwayLookup = getGenePathwayLookup(pathways);
+    let sampleIndex = new Map(samples.map((v, i) => [v, i]));
+    let genePathwayLookup = getGenePathwayLookup(pathways);
 
     for (let row of expression.rows) {
         let gene = row.gene;
@@ -241,6 +242,94 @@ function transpose(a)
     return a[0].map((_, c) => a.map(r => r[c]));
 }
 
+
+const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function scoreColumnDensities(prunedColumns) {
+    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+        prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter);
+        prunedColumns.pathways[index].index = index ;
+    }
+
+    prunedColumns.pathways.sort(  (a,b) => b.density - a.density );
+
+    // refilter data by index
+    let renderedArray = [];
+    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+        renderedArray[index] =  prunedColumns.data[prunedColumns.pathways[index].index];
+
+    }
+    prunedColumns.data = renderedArray;
+
+}
+
+function sortTissuesByOverall(prunedColumns) {
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    console.log('returned data: ');
+    console.log(renderedData);
+
+    prunedColumns.data = renderedData;
+}
+function sortTissuesByClusterDensity(prunedColumns) {
+
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        for(let index = 0 ; index < a.length ; ++index){
+            if(a[index]!==b[index]){
+                return b[index]-a[index];
+            }
+        }
+        // return 0 ;
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    console.log('returned data: ');
+    console.log(renderedData);
+
+    prunedColumns.data = renderedData;
+}
+
+/**
+ * Sort by column density followed by row.
+ * https://github.com/nathandunn/XenaGoWidget/issues/67
+ *
+ * 1. find density for each column
+ * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
+ *
+ * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
+ *
+ * @param prunedColumns
+ * @returns {undefined}
+ */
+function clusterSort(prunedColumns) {
+    scoreColumnDensities(prunedColumns);
+
+    sortTissuesByClusterDensity(prunedColumns);
+
+    return prunedColumns;
+}
+
+function overallSort(prunedColumns) {
+    scoreColumnDensities(prunedColumns);
+    sortTissuesByOverall(prunedColumns);
+
+    return prunedColumns;
+}
+
 /**
  *
  * @param data
@@ -279,7 +368,6 @@ function sortColumns(data, sortColumn, sortOrder) {
 
     let renderedData = transpose(data.data);
 
-    // console.log(sortColumn)
     renderedData = renderedData.sort(function(a,b){
         let returnValue = a[columnIndex]-b[columnIndex];
         return sortOrder==='desc' ? -returnValue : returnValue ;
@@ -296,12 +384,25 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-        let {min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
+        let {selectedSort,min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
-        let returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
+        let returnedValue ;
+
+        switch (selectedSort) {
+            case 'Overall':
+                returnedValue = overallSort(prunedColumns);
+                break ;
+            case 'Cluster':
+                returnedValue = clusterSort(prunedColumns);
+                break ;
+            default:
+                returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
+                break ;
+        }
+
 		return (
 			<TissueExpressionView
 				{...this.props}
@@ -310,4 +411,6 @@ export default class AssociatedDataCache extends PureComponent {
 				associateData={returnedValue.data}/>
 		);
 	}
+
+
 }
