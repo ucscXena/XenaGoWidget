@@ -126,6 +126,7 @@ TissueExpressionView.propTypes = {
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
+    selectedSort: PropTypes.any,
     id: PropTypes.any,
 };
 
@@ -296,12 +297,22 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-        let {min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
+        let {selectedSort,min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
-        let returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
+        let returnedValue ;
+
+        switch (selectedSort) {
+            case 'Cluster':
+
+                break ;
+            default:
+                returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
+                break ;
+        }
+
 		return (
 			<TissueExpressionView
 				{...this.props}

@@ -17,6 +17,7 @@ import {FilterSelector} from "./components/FilterSelector";
 var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 var {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
+import {SortSelector} from "./components/SortSelector";
 // var Rx = require('ucsc-xena-client/dist/rx');
 
 var mutationKey = 'simple somatic mutation';
@@ -31,10 +32,12 @@ export default class XenaGoApp extends PureComponent {
         super(props);
 
         this.state = {
-            sortPathwayName:null,
-            sortPathwayOrder:null,
-            sortGeneName:null,
-            sortGeneOrder:null,
+            sortPathwayName: null,
+            sortPathwayOrder: null,
+            sortGeneName: null,
+            sortGeneOrder: null,
+            selectedSort: 'Default',
+            sortTypes:['Default','Cluster'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
                 expression: ExampleExpression,
@@ -84,17 +87,17 @@ export default class XenaGoApp extends PureComponent {
 
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
-        let sortPathwayName = this.state.sortPathwayName ;
-        let sortPathwayOrder = this.state.sortPathwayOrder ;
+        let sortPathwayName = this.state.sortPathwayName;
+        let sortPathwayOrder = this.state.sortPathwayOrder;
         console.log('WAS set to ');
         console.log(sortPathwayName);
         console.log(sortPathwayOrder);
-        if(pathwayClickData.tissue==='Header'){
-            if(sortPathwayName===pathwayClickData.pathway.golabel){
+        if (pathwayClickData.tissue === 'Header') {
+            if (sortPathwayName === pathwayClickData.pathway.golabel) {
                 // switch the order
                 sortPathwayOrder = sortPathwayOrder === 'desc' ? 'asc' : 'desc';
             }
-            else{
+            else {
                 sortPathwayName = pathwayClickData.pathway.golabel;
                 sortPathwayOrder = 'desc';
             }
@@ -107,8 +110,8 @@ export default class XenaGoApp extends PureComponent {
             pathwayClickData,
             sortPathwayName: sortPathwayName,
             sortPathwayOrder: sortPathwayOrder,
-            sortGeneName:null,
-            sortGeneOrder:null,
+            sortGeneName: null,
+            sortGeneOrder: null,
             geneData: {
                 expression,
                 samples,
@@ -123,23 +126,23 @@ export default class XenaGoApp extends PureComponent {
     };
 
     clickGene = (props) => {
-        let sortGeneName = this.state.sortGeneName ;
-        let sortGeneOrder = this.state.sortGeneOrder ;
-        if(props.tissue==='Header'){
+        let sortGeneName = this.state.sortGeneName;
+        let sortGeneOrder = this.state.sortGeneOrder;
+        if (props.tissue === 'Header') {
             let geneValue = props.pathway.gene[0];
-            if(sortGeneName===geneValue){
+            if (sortGeneName === geneValue) {
                 // switch the order
                 sortGeneOrder = sortGeneOrder === 'desc' ? 'asc' : 'desc';
             }
-            else{
+            else {
                 sortGeneName = geneValue;
                 sortGeneOrder = 'desc';
             }
         }
         this.setState({
             geneClickData: props,
-            sortGeneName:sortGeneName,
-            sortGeneOrder:sortGeneOrder,
+            sortGeneName: sortGeneName,
+            sortGeneOrder: sortGeneOrder,
             sortPathwayName: this.state.sortPathwayName,
             sortPathwayOrder: this.state.sortPathwayOrder,
         });
@@ -151,6 +154,10 @@ export default class XenaGoApp extends PureComponent {
 
     filterTissueType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
+    };
+
+    sortType = (sortString) => {
+        this.setState({selectedSort: sortString});
     };
 
     filterGeneType = (filter) => {
@@ -237,7 +244,7 @@ export default class XenaGoApp extends PureComponent {
         };
 
         let filteredMutationVector = pick(mutationVector,
-                                          v => v >= this.state.minFilter);
+            v => v >= this.state.minFilter);
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
 
@@ -245,57 +252,67 @@ export default class XenaGoApp extends PureComponent {
             <div>
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
-                <table>
-                    <tbody>
-                    <tr>
-                        <td>
-                            <h2>Cohorts</h2>
-                            <CohortSelector cohorts={this.state.cohortData} selectedCohort={this.state.selectedCohort}
-                                            onChange={this.selectCohort}/>
-                            <h2>Mutation Type</h2>
-                            <FilterSelector filters={filteredMutationVector}
-                                            selected={this.state.tissueExpressionFilter}
-                                            pathwayData={this.state.pathwayData}
-                                            onChange={this.filterTissueType}/>
-                            <TissueExpressionView id="pathwayViewId" width={400} height={800}
-                                                  data={this.state.pathwayData} titleText="Mutation Score"
-                                                  filter={this.state.tissueExpressionFilter}
-                                                  filterPercentage={this.state.filterPercentage}
-                                                  loading={cohortLoading}
-                                                  min={this.state.minFilter}
-                                                  sortColumn={this.state.sortPathwayName}
-                                                  sortOrder={this.state.sortPathwayOrder}
-                                                  onClick={this.clickPathway} onHover={this.hoverPathway}/>
-                        </td>
-                        <td style={alignTop}>
-                            <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
-                            <HoverPathwayView title="Clicked" data={this.state.pathwayClickData}/>
-                        </td>
-                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                        <td style={geneAlignment}>
-                            <h2>Mutation Type</h2>
-                            <FilterSelector filters={filteredMutationVector} selected={this.state.geneExpressionFilter}
-                                            pathwayData={this.state.geneData}
-                                            onChange={this.filterGeneType}/>
-                            <TissueExpressionView id="geneViewId" width={400} height={800}
-                                                  data={this.state.geneData}
-                                                  selected={this.state.geneData.selectedPathway}
-                                                  filter={this.state.geneExpressionFilter}
-                                                  filterPercentage={this.state.filterPercentage}
-                                                  loading={cohortLoading}
-                                                  min={this.state.minFilter}
-                                                  sortColumn={this.state.sortGeneName}
-                                                  sortOrder={this.state.sortGeneOrder}
-                                                  onClick={this.clickGene} onHover={this.hoverGene}/>
-                        </td>
-                        }
-                        <td style={alignTop}>
-                            <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
-                            <HoverGeneView title="Clicked" data={this.state.geneClickData}/>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div>
+                    <h2>Cohorts</h2>
+                    <CohortSelector cohorts={this.state.cohortData}
+                                    selectedCohort={this.state.selectedCohort}
+                                    onChange={this.selectCohort}/>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <h2>Sort Type</h2>
+                                <SortSelector sortTypes={this.state.sortTypes}
+                                                selected={this.state.selectedSort}
+                                                onChange={this.sortType}/>
+                                <h2>Mutation Type</h2>
+                                <FilterSelector filters={filteredMutationVector}
+                                                selected={this.state.tissueExpressionFilter}
+                                                pathwayData={this.state.pathwayData}
+                                                onChange={this.filterTissueType}/>
+                                <TissueExpressionView id="pathwayViewId" width={400} height={800}
+                                                      data={this.state.pathwayData} titleText="Mutation Score"
+                                                      filter={this.state.tissueExpressionFilter}
+                                                      filterPercentage={this.state.filterPercentage}
+                                                      loading={cohortLoading}
+                                                      min={this.state.minFilter}
+                                                      sortColumn={this.state.sortPathwayName}
+                                                      sortOrder={this.state.sortPathwayOrder}
+                                                      selectedSort = {this.state.selectedSort}
+                                                      onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                            </td>
+                            <td style={alignTop}>
+                                <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
+                                <HoverPathwayView title="Clicked" data={this.state.pathwayClickData}/>
+                            </td>
+                            {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                            <td style={geneAlignment}>
+                                <h2>Mutation Type</h2>
+                                <FilterSelector filters={filteredMutationVector}
+                                                selected={this.state.geneExpressionFilter}
+                                                pathwayData={this.state.geneData}
+                                                onChange={this.filterGeneType}/>
+                                <TissueExpressionView id="geneViewId" width={400} height={800}
+                                                      data={this.state.geneData}
+                                                      selected={this.state.geneData.selectedPathway}
+                                                      filter={this.state.geneExpressionFilter}
+                                                      filterPercentage={this.state.filterPercentage}
+                                                      loading={cohortLoading}
+                                                      min={this.state.minFilter}
+                                                      sortColumn={this.state.sortGeneName}
+                                                      sortOrder={this.state.sortGeneOrder}
+                                                      selectedSort = {this.state.selectedSort}
+                                                      onClick={this.clickGene} onHover={this.hoverGene}/>
+                            </td>
+                            }
+                            <td style={alignTop}>
+                                <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
+                                <HoverGeneView title="Clicked" data={this.state.geneClickData}/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 }
             </div>
         );
