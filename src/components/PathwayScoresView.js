@@ -275,15 +275,14 @@ function sortTissuesByDensity(prunedColumns) {
     console.log('transposed data: ');
     console.log(renderedData);
 
-    // renderedData = renderedData.sort(function(a,b){
-    //     let returnValue = a[columnIndex]-b[columnIndex];
-    //     return sortOrder==='desc' ? -returnValue : returnValue ;
-    // });
-    // for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
-        //     prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
-    // }
+    renderedData = renderedData.sort(function(a,b){
+        return sum(b)-sum(a)
+    });
 
     renderedData = transpose(renderedData);
+
+    console.log('returned data: ');
+    console.log(renderedData);
 
     prunedColumns.data = renderedData;
 }
