@@ -267,15 +267,31 @@ function scoreColumnDensities(prunedColumns) {
 
 }
 
-function sortTissuesByDensity(prunedColumns) {
-
-    console.log('input data: ');
-    console.log(prunedColumns.data);
+function sortTissuesByOverall(prunedColumns) {
     let renderedData = transpose(prunedColumns.data);
-    console.log('transposed data: ');
-    console.log(renderedData);
 
     renderedData = renderedData.sort(function(a,b){
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    console.log('returned data: ');
+    console.log(renderedData);
+
+    prunedColumns.data = renderedData;
+}
+function sortTissuesByClusterDensity(prunedColumns) {
+
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        for(let index = 0 ; index < a.length ; ++index){
+            if(a[index]!==b[index]){
+                return b[index]-a[index];
+            }
+        }
+        // return 0 ;
         return sum(b)-sum(a)
     });
 
@@ -302,7 +318,14 @@ function sortTissuesByDensity(prunedColumns) {
 function clusterSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
-    sortTissuesByDensity(prunedColumns);
+    sortTissuesByClusterDensity(prunedColumns);
+
+    return prunedColumns;
+}
+
+function overallSort(prunedColumns) {
+    scoreColumnDensities(prunedColumns);
+    sortTissuesByOverall(prunedColumns);
 
     return prunedColumns;
 }
@@ -369,10 +392,11 @@ export default class AssociatedDataCache extends PureComponent {
         let returnedValue ;
 
         switch (selectedSort) {
+            case 'Overall':
+                returnedValue = overallSort(prunedColumns);
+                break ;
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
-                console.log('Clustered columns');
-                console.log(returnedValue);
                 break ;
             default:
                 returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
