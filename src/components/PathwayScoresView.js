@@ -144,7 +144,7 @@ function getMutationScore(effect,min) {
 }
 
 let getGenePathwayLookup = pathways => {
-    var sets = pathways.map(p => new Set(p.gene)),
+    let sets = pathways.map(p => new Set(p.gene)),
         idxs = range(sets.length);
     return memoize(gene => idxs.filter(i => sets[i].has(gene)));
 };
@@ -199,8 +199,8 @@ function associateData(expression, pathways, samples, filter,min) {
         }
     }
 
-    var sampleIndex = new Map(samples.map((v, i) => [v, i]));
-    var genePathwayLookup = getGenePathwayLookup(pathways);
+    let sampleIndex = new Map(samples.map((v, i) => [v, i]));
+    let genePathwayLookup = getGenePathwayLookup(pathways);
 
     for (let row of expression.rows) {
         let gene = row.gene;
@@ -251,11 +251,23 @@ const instanceCounter = (accumulator, currentValue) => accumulator + ( currentVa
  */
 function scoreColumnDensities(prunedColumns) {
     for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
-        prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
+        prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter);
+        prunedColumns.pathways[index].index = index ;
     }
+
+    prunedColumns.pathways.sort(  (a,b) => b.density - a.density );
+
+    // refilter data by index
+    let renderedArray = [];
+    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+        renderedArray[index] =  prunedColumns.data[prunedColumns.pathways[index].index];
+
+    }
+    prunedColumns.data = renderedArray;
+
 }
 
-function sortColumnIndicesCluster(prunedColumns) {
+function sortTissuesByDensity(prunedColumns) {
     // for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
     //     prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
     // }
@@ -276,7 +288,7 @@ function sortColumnIndicesCluster(prunedColumns) {
 function clusterSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
-    sortColumnIndicesCluster(prunedColumns);
+    sortTissuesByDensity(prunedColumns);
 
     return prunedColumns;
 }
@@ -319,7 +331,6 @@ function sortColumns(data, sortColumn, sortOrder) {
 
     let renderedData = transpose(data.data);
 
-    // console.log(sortColumn)
     renderedData = renderedData.sort(function(a,b){
         let returnValue = a[columnIndex]-b[columnIndex];
         return sortOrder==='desc' ? -returnValue : returnValue ;

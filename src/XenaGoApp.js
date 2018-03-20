@@ -13,12 +13,10 @@ import HoverGeneView from "./components/HoverGeneView";
 // import update from 'immutability-helper';
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
-// import {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} from 'ucsc-xena-client';
 var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-var {allCohorts, cohortSamples, fetchCohortPreferred, sparseData} = xenaQuery;
+var { cohortSamples,  sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
-// var Rx = require('ucsc-xena-client/dist/rx');
 
 var mutationKey = 'simple somatic mutation';
 
