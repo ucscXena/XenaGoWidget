@@ -242,6 +242,45 @@ function transpose(a)
     return a[0].map((_, c) => a.map(r => r[c]));
 }
 
+
+const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function scoreColumnDensities(prunedColumns) {
+    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+        prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
+    }
+}
+
+function sortColumnIndicesCluster(prunedColumns) {
+    // for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+    //     prunedColumns.pathways[index].density = prunedColumns.data[index].reduce(instanceCounter)
+    // }
+}
+
+/**
+ * Sort by column density followed by row.
+ * https://github.com/nathandunn/XenaGoWidget/issues/67
+ *
+ * 1. find density for each column
+ * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
+ *
+ * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
+ *
+ * @param prunedColumns
+ * @returns {undefined}
+ */
+function clusterSort(prunedColumns) {
+    scoreColumnDensities(prunedColumns);
+
+    sortColumnIndicesCluster(prunedColumns);
+
+    return prunedColumns;
+}
+
 /**
  *
  * @param data
@@ -306,7 +345,9 @@ export default class AssociatedDataCache extends PureComponent {
 
         switch (selectedSort) {
             case 'Cluster':
-
+                returnedValue = clusterSort(prunedColumns);
+                console.log('Clustered columns');
+                console.log(returnedValue);
                 break ;
             default:
                 returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
@@ -321,4 +362,6 @@ export default class AssociatedDataCache extends PureComponent {
 				associateData={returnedValue.data}/>
 		);
 	}
+
+
 }

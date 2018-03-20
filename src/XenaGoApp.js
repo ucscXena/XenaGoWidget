@@ -36,7 +36,8 @@ export default class XenaGoApp extends PureComponent {
             sortPathwayOrder: null,
             sortGeneName: null,
             sortGeneOrder: null,
-            selectedSort: 'Default',
+            // selectedSort: 'Default',
+            selectedSort: 'Cluster',
             sortTypes:['Default','Cluster'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
