@@ -34,8 +34,8 @@ export default class XenaGoApp extends PureComponent {
             sortPathwayOrder: null,
             sortGeneName: null,
             sortGeneOrder: null,
-            // selectedSort: 'Default',
-            selectedSort: 'Cluster',
+            selectedTissueSort: 'Cluster',
+            selectedGeneSort: 'Cluster',
             sortTypes:['Default','Cluster','Overall'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
@@ -155,8 +155,12 @@ export default class XenaGoApp extends PureComponent {
         this.setState({tissueExpressionFilter: filter});
     };
 
-    sortType = (sortString) => {
-        this.setState({selectedSort: sortString});
+    sortTissueType = (sortString) => {
+        this.setState({selectedTissueSort: sortString});
+    };
+
+    sortGeneType = (sortString) => {
+        this.setState({selectedGeneSort: sortString});
     };
 
     filterGeneType = (filter) => {
@@ -262,8 +266,8 @@ export default class XenaGoApp extends PureComponent {
                             <td>
                                 <h2>Sort Type</h2>
                                 <SortSelector sortTypes={this.state.sortTypes}
-                                                selected={this.state.selectedSort}
-                                                onChange={this.sortType}/>
+                                                selected={this.state.selectedTissueSort}
+                                                onChange={this.sortTissueType}/>
                                 <h2>Mutation Type</h2>
                                 <FilterSelector filters={filteredMutationVector}
                                                 selected={this.state.tissueExpressionFilter}
@@ -277,7 +281,7 @@ export default class XenaGoApp extends PureComponent {
                                                       min={this.state.minFilter}
                                                       sortColumn={this.state.sortPathwayName}
                                                       sortOrder={this.state.sortPathwayOrder}
-                                                      selectedSort = {this.state.selectedSort}
+                                                      selectedSort = {this.state.selectedTissueSort}
                                                       onClick={this.clickPathway} onHover={this.hoverPathway}/>
                             </td>
                             <td style={alignTop}>
@@ -286,6 +290,10 @@ export default class XenaGoApp extends PureComponent {
                             </td>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <td style={geneAlignment}>
+                                <h2>Sort Type</h2>
+                                <SortSelector sortTypes={this.state.sortTypes}
+                                              selected={this.state.selectedGeneSort}
+                                              onChange={this.sortGeneType}/>
                                 <h2>Mutation Type</h2>
                                 <FilterSelector filters={filteredMutationVector}
                                                 selected={this.state.geneExpressionFilter}
@@ -300,7 +308,7 @@ export default class XenaGoApp extends PureComponent {
                                                       min={this.state.minFilter}
                                                       sortColumn={this.state.sortGeneName}
                                                       sortOrder={this.state.sortGeneOrder}
-                                                      selectedSort = {this.state.selectedSort}
+                                                      selectedSort = {this.state.selectedGeneSort}
                                                       onClick={this.clickGene} onHover={this.hoverGene}/>
                             </td>
                             }
