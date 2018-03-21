@@ -243,7 +243,7 @@ function transpose(a)
 {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
     // or in more modern dialect
-    return a[0].map((_, c) => a.map(r => r[c]));
+    return a.length === 0 ? a : a[0].map((_, c) => a.map(r => r[c]));
 }
 
 
