@@ -391,14 +391,18 @@ function sortColumns(data, sortColumn, sortOrder) {
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
 
+let minWidth = 400;
+let minColWidth = 12;
+
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-        let {selectedSort,min, width, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
+        let {selectedSort,min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
         let associatedData = associateData(expression, pathways, samples, filter,min);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
-        let returnedValue ;
+        let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
+        let returnedValue;
 
         switch (selectedSort) {
             case 'Overall':
@@ -418,6 +422,7 @@ export default class AssociatedDataCache extends PureComponent {
 		return (
 			<TissueExpressionView
 				{...this.props}
+                width={width}
 				layout={layout(width, returnedValue.data)}
 				data={{expression, pathways: returnedValue.pathways, samples}}
 				associateData={returnedValue.data}/>

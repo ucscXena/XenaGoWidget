@@ -67,30 +67,21 @@ export default class CanvasDrawing extends Component{
         // this.vg = vgmixed(ReactDOM.findDOMNode(this.refs.canvas), width, height, ReactDOM.findDOMNode(this.refs.labels));
         this.draw(this.props);
     }
-    setHeight(height) {
-        this.vg.height(height);
-        this.refs.div.style.height = `${height}px`;
-        this.refs.labels.style.height = `${height}px`;
-        this.refs.labels.style.top = `-${height}px`;
-    }
-    setWidth(width) {
-        this.vg.width(width);
-        this.refs.div.style.width = `${width}px`;
-        this.refs.labels.style.width = `${width}px`;
-    }
     draw(props) {
         let {draw, ...drawProps} = props,
             {height, width} = drawProps,
+            el = ReactDOM.findDOMNode(this.refs.canvas),
             vg = this.vg;
+
         // console.log('draing '+ vg)
         // vg.getContext()
         //
-        if (vg.width !== width) {
-            vg.width = width;
+        if (el.width !== width) {
+            el.width = width;
         }
 
-        if (vg.height !== height) {
-            vg.height = height;
+        if (el.height !== height) {
+            el.height = height;
         }
 
         // vg.fillRect(0,0,20,30)
