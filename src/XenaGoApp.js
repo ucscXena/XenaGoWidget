@@ -3,7 +3,7 @@ import PureComponent from './components/PureComponent';
 // import CohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/PathwayScoresView";
-import ExamplePathWays from "../tests/data/tgac";
+import PathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleSamples from "../tests/data/samples";
 // import ExampleStyle from "../demo/src/example.css";
@@ -40,7 +40,7 @@ export default class XenaGoApp extends PureComponent {
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
                 expression: ExampleExpression,
-                pathways: ExamplePathWays,
+                pathways: PathWays,
                 samples: ExampleSamples,
             },
             loadState: 'loading',
@@ -197,7 +197,7 @@ export default class XenaGoApp extends PureComponent {
         let cohort = this.state.cohortData.find(c => c.name === selected);
         datasetSamples('https://tcga.xenahubs.net', cohort.mutationDataSetId, null)
             .flatMap((samples) => {
-                let geneList = this.getGenesForPathway(ExamplePathWays);
+                let geneList = this.getGenesForPathway(PathWays);
                 return sparseData('https://tcga.xenahubs.net', cohort.mutationDataSetId, samples, geneList)
                     .map(mutations => ({mutations, samples}));
             })
@@ -205,7 +205,7 @@ export default class XenaGoApp extends PureComponent {
                 this.setState({
                     pathwayData: {
                         expression: mutations,
-                        pathways: ExamplePathWays,
+                        pathways: PathWays,
                         cohort: cohort.name,
                         samples
                     },
