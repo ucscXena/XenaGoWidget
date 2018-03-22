@@ -414,6 +414,9 @@ export default class AssociatedDataCache extends PureComponent {
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
                 break ;
+            case 'Per Column':
+                returnedValue = clusterSort(prunedColumns);
+                break ;
             default:
                 returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
                 break ;
