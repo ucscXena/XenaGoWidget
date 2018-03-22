@@ -14,7 +14,7 @@ import HoverGeneView from "./components/HoverGeneView";
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-var { cohortSamples,  sparseData} = xenaQuery;
+var {datasetSamples,  sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 
@@ -195,7 +195,7 @@ export default class XenaGoApp extends PureComponent {
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        cohortSamples('https://tcga.xenahubs.net', selected, null)
+        datasetSamples('https://tcga.xenahubs.net', cohort.mutationDataSetId, null)
             .flatMap((samples) => {
                 let geneList = this.getGenesForPathway(ExamplePathWays);
                 return sparseData('https://tcga.xenahubs.net', cohort.mutationDataSetId, samples, geneList)
