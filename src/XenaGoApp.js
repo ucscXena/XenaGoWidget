@@ -17,6 +17,7 @@ var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 var {datasetSamples,  sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
+import Button from "react-toolbox/lib/button/Button";
 
 var mutationKey = 'simple somatic mutation';
 
@@ -250,6 +251,7 @@ export default class XenaGoApp extends PureComponent {
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
                 <div>
+                    <Button>What Up</Button>
                     <h2>Cohorts</h2>
                     <CohortSelector cohorts={this.state.cohortData}
                                     selectedCohort={this.state.selectedCohort}
