@@ -13,13 +13,13 @@ import HoverGeneView from "./components/HoverGeneView";
 // import update from 'immutability-helper';
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
-var xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-var {datasetSamples,  sparseData} = xenaQuery;
+let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+let {datasetSamples,  sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import Button from "react-toolbox/lib/button/Button";
 
-var mutationKey = 'simple somatic mutation';
+let mutationKey = 'simple somatic mutation';
 
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -251,7 +251,7 @@ export default class XenaGoApp extends PureComponent {
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
                 <div>
-                    <Button>What Up</Button>
+                    <Button raised>What Up</Button>
                     <h2>Cohorts</h2>
                     <CohortSelector cohorts={this.state.cohortData}
                                     selectedCohort={this.state.selectedCohort}
@@ -282,7 +282,7 @@ export default class XenaGoApp extends PureComponent {
                             </td>
                             <td style={alignTop}>
                                 <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
-                                <HoverPathwayView title="Clicked" data={this.state.pathwayClickData}/>
+                                {/*<HoverPathwayView title="Clicked" data={this.state.pathwayClickData}/>*/}
                             </td>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <td style={geneAlignment}>
@@ -305,12 +305,13 @@ export default class XenaGoApp extends PureComponent {
                                                       sortColumn={this.state.sortGeneName}
                                                       sortOrder={this.state.sortGeneOrder}
                                                       selectedSort = {this.state.selectedGeneSort}
-                                                      onClick={this.clickGene} onHover={this.hoverGene}/>
+                                                      onClick={this.clickGene}
+                                                      onHover={this.hoverGene}/>
                             </td>
                             }
                             <td style={alignTop}>
                                 <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
-                                <HoverGeneView title="Clicked" data={this.state.geneClickData}/>
+                                {/*<HoverGeneView title="Clicked" data={this.state.geneClickData}/>*/}
                             </td>
                         </tr>
                         </tbody>
