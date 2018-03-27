@@ -308,12 +308,14 @@ function clusterSort(prunedColumns) {
 function hierarchicalSort(prunedColumns) {
     // scoreColumnDensities(prunedColumns);
 
+    // let kmeans = new Clustering.OPTICS();
+    let kmeans = new Clustering.KMEANS();
+    // let clusteredOrder = kmeans.run(prunedColumns.data,2,5);
     let renderedData = transpose(prunedColumns.data);
 
-    let kmeans = new Clustering.KMEANS();
     // let kmeans = new Clustering.DBSCAN(); // DBSCAN
     // let kmeans = new Clustering.OPTICS();
-    let clusteredOrder = kmeans.run(renderedData,10,1);
+    let clusteredOrder = kmeans.run(renderedData,2,5);
 
     console.log(clusteredOrder);
 
@@ -324,12 +326,11 @@ function hierarchicalSort(prunedColumns) {
             flattenedArray.push(c);
         }
     }
-    console.log(flattenedArray);
 
     let sortedData = [] ;
 
     for(let flattenedIndex in flattenedArray){
-        console.log(flattenedIndex + ' -> ' + flattenedArray[flattenedIndex])
+        // console.log(flattenedIndex + ' -> ' + flattenedArray[flattenedIndex])
         let flattenedValue = flattenedArray[flattenedIndex];
         sortedData[flattenedValue] = renderedData[flattenedIndex];
     }
