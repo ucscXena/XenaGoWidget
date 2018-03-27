@@ -313,6 +313,7 @@ function hierarchicalSort(prunedColumns) {
     // let clusteredOrder = kmeans.run(prunedColumns.data,2,5);
     let renderedData = transpose(prunedColumns.data);
 
+    console.log(renderedData);
     // let kmeans = new Clustering.DBSCAN(); // DBSCAN
     // let kmeans = new Clustering.OPTICS();
     let clusteredOrder = kmeans.run(renderedData,2,5);
