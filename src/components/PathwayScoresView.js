@@ -304,6 +304,28 @@ function clusterSort(prunedColumns) {
     return prunedColumns;
 }
 
+function hierarchicalSort(prunedColumns) {
+    // scoreColumnDensities(prunedColumns);
+
+    let renderedData = transpose(prunedColumns.data);
+
+    renderedData = renderedData.sort(function(a,b){
+        for(let index = 0 ; index < a.length ; ++index){
+            if(a[index]!==b[index]){
+                return b[index]-a[index];
+            }
+        }
+        // return 0 ;
+        return sum(b)-sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+
+    prunedColumns.data = renderedData;
+
+    return prunedColumns;
+}
+
 function densitySort(prunedColumns) {
     // scoreColumnDensities(prunedColumns);
 
@@ -410,6 +432,9 @@ export default class AssociatedDataCache extends PureComponent {
                 break ;
             case 'Density':
                 returnedValue = densitySort(prunedColumns);
+                break ;
+            case 'Hierarchical':
+                returnedValue = hierarchicalSort(prunedColumns);
                 break ;
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
