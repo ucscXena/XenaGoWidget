@@ -7,10 +7,11 @@ import mutationScores from '../data/mutationVector';
 import {memoize, range} from 'underscore';
 import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
+import Clustering from 'density-clustering';
 
 let labelHeight = 150;
 
-const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
+// const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -309,17 +310,31 @@ function hierarchicalSort(prunedColumns) {
 
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort(function(a,b){
-        for(let index = 0 ; index < a.length ; ++index){
-            if(a[index]!==b[index]){
-                return b[index]-a[index];
-            }
-        }
-        // return 0 ;
-        return sum(b)-sum(a)
-    });
+    let kmeans = new Clustering.KMEANS();
+    // let kmeans = new Clustering.DBSCAN(); // DBSCAN
+    // let kmeans = new Clustering.OPTICS();
+    let clusteredOrder = kmeans.run(renderedData,10,1);
 
-    renderedData = transpose(renderedData);
+    console.log(clusteredOrder);
+
+    let flattenedArray = [] ;
+
+    for(let cluster of clusteredOrder){
+        for(let c of cluster){
+            flattenedArray.push(c);
+        }
+    }
+    console.log(flattenedArray);
+
+    let sortedData = [] ;
+
+    for(let flattenedIndex in flattenedArray){
+        console.log(flattenedIndex + ' -> ' + flattenedArray[flattenedIndex])
+        let flattenedValue = flattenedArray[flattenedIndex];
+        sortedData[flattenedValue] = renderedData[flattenedIndex];
+    }
+
+    renderedData = transpose(sortedData);
 
     prunedColumns.data = renderedData;
 
