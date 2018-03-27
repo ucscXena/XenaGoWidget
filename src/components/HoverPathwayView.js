@@ -24,7 +24,7 @@ export default class HoverPathwayView extends PureComponent {
                         }
                         {data.tissue &&
                         <li>
-                            Tissue: {data.tissue}
+                            Sample: {data.tissue}
                         </li>
                         }
                         {data.expression != null &&
@@ -38,7 +38,7 @@ export default class HoverPathwayView extends PureComponent {
                     <div>
                         Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
                         Genes ({data.pathway.gene.length}) <br/>
-                        Tissue Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
+                        Samples Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
                     </div>
                     }
                 </div>
