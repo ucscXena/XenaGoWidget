@@ -14,16 +14,29 @@ import HoverGeneView from "./components/HoverGeneView";
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples,  sparseData} = xenaQuery;
+let {datasetSamples,  datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import Button from "react-toolbox/lib/button/Button";
+var Rx = require('ucsc-xena-client/dist/rx');
 
 let mutationKey = 'simple somatic mutation';
+let tcgaHub = 'https://tcga.xenahubs.net';
 
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 }
+
+// This is horrible. We don't have metadata identifying
+// this dataset type, so we locate it by string name.
+let gisticDSFromMutation = mutDsID =>
+	mutDsID.replace(/[/].*/, '/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes');
+
+function intersection(a, b) {
+    var sa = new Set(a);
+    return b.filter(x => sa.has(x));
+}
+
 
 export default class XenaGoApp extends PureComponent {
 
@@ -198,15 +211,20 @@ export default class XenaGoApp extends PureComponent {
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        datasetSamples('https://tcga.xenahubs.net', cohort.mutationDataSetId, null)
+        Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
+                          datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
+                          intersection)
             .flatMap((samples) => {
                 let geneList = this.getGenesForPathway(PathWays);
-                return sparseData('https://tcga.xenahubs.net', cohort.mutationDataSetId, samples, geneList)
-                    .map(mutations => ({mutations, samples}));
+                return Rx.Observable.zip(
+                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList).map(mutations => ({mutations, samples})),
+                    datasetFetch(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
+                    (mutData, copyNumber) => ({copyNumber, ...mutData}))
             })
-            .subscribe(({mutations, samples}) => {
+            .subscribe(({mutations, samples, copyNumber}) => {
                 this.setState({
                     pathwayData: {
+                        copyNumber,
                         expression: mutations,
                         pathways: PathWays,
                         cohort: cohort.name,
