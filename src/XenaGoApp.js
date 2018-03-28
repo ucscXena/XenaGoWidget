@@ -17,8 +17,8 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples,  datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
-import Button from "react-toolbox/lib/button/Button";
-var Rx = require('ucsc-xena-client/dist/rx');
+import {Button} from "react-toolbox/lib/button";
+import RTButtonTheme from "./RTButtonTheme.css"
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
@@ -271,7 +271,7 @@ export default class XenaGoApp extends PureComponent {
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
                 <div>
-                    <Button raised>What Up</Button>
+                    <Button theme={RTButtonTheme} raised>What Up</Button>
                     <h2>Cohorts</h2>
                     <CohortSelector cohorts={this.state.cohortData}
                                     selectedCohort={this.state.selectedCohort}
