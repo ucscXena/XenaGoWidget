@@ -1,6 +1,10 @@
+let path = require('path');
+
+// Customize global RT settings here
 let reactToolboxVariables = {
     'button-height': '30px'
 };
+
 module.exports = {
     type: 'react-component',
     webpack: {
@@ -8,7 +12,7 @@ module.exports = {
             css: [
                 // Create a rule which provides the specific setup react-toolbox v2 needs
                 {
-                    include: /react-toolbox/,
+                    include: [/react-toolbox/, path.join(__dirname, 'src')],
                     // css-loader options
                     css: {
                         modules: true,
@@ -28,10 +32,11 @@ module.exports = {
                         ]
                     }
                 },
+                // XXX This is interfering with the rule above.
                 // Create a catch-all rule for other CSS
-                {
-                    exclude: /react-toolbox/
-                }
+//                {
+//                    exclude: [/react-toolbox/, path.join(__dirname, 'src')]
+//                }
             ]
         }
     },
