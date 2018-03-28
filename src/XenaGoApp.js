@@ -20,6 +20,8 @@ import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import {Button} from "react-toolbox/lib/button";
 import RTButtonTheme from "./RTButtonTheme.css"
+import {Card, Layout} from "react-toolbox";
+import {Panel} from "react-bootstrap";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
@@ -271,12 +273,11 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
 
         return (
-            <div>
+            <Layout>
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
-                <div>
-                    <Button theme={RTButtonTheme} raised>What Up</Button>
-                    <h2>Cohorts</h2>
+                <Panel width='normal'>
+                    <Card width='normal'>
                     <CohortSelector cohorts={this.state.cohortData}
                                     selectedCohort={this.state.selectedCohort}
                                     onChange={this.selectCohort}/>
@@ -289,6 +290,9 @@ export default class XenaGoApp extends PureComponent {
                                     selected={this.state.tissueExpressionFilter}
                                     pathwayData={this.state.pathwayData}
                                     onChange={this.filterTissueType}/>
+                        <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
+                    </Card>
+                    <Card>
                     <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                           data={this.state.pathwayData} titleText="Mutation Score"
                                           filter={this.state.tissueExpressionFilter}
@@ -299,10 +303,10 @@ export default class XenaGoApp extends PureComponent {
                                           sortOrder={this.state.sortPathwayOrder}
                                           selectedSort={this.state.selectedTissueSort}
                                           onClick={this.clickPathway} onHover={this.hoverPathway}/>
-                    <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
-                </div>}
+                    </Card>
+                </Panel>}
                 {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                <div>
+                <Panel>
                     <h2>Sort Type</h2>
                     <SortSelector sortTypes={this.state.sortTypes}
                                   selected={this.state.selectedGeneSort}
@@ -325,11 +329,10 @@ export default class XenaGoApp extends PureComponent {
                                           onClick={this.clickGene}
                                           onHover={this.hoverGene}/>
                     <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
-                </div>
-                }
+                </Panel>
                 }
 
-            </div>
+            </Layout>
         );
     }
 }
