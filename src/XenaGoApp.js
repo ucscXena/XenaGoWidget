@@ -14,7 +14,8 @@ import HoverGeneView from "./components/HoverGeneView";
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples,  datasetFetch, sparseData} = xenaQuery;
+let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
+let Rx = require('ucsc-xena-client/dist/rx');
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import {Button} from "react-toolbox/lib/button";
@@ -217,9 +218,9 @@ export default class XenaGoApp extends PureComponent {
             .flatMap((samples) => {
                 let geneList = this.getGenesForPathway(PathWays);
                 return Rx.Observable.zip(
-                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList).map(mutations => ({mutations, samples})),
+                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
-                    (mutData, copyNumber) => ({copyNumber, ...mutData}))
+                    (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
                 this.setState({
