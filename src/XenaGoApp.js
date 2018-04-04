@@ -221,12 +221,9 @@ export default class XenaGoApp extends PureComponent {
             .flatMap((samples) => {
                 let geneList = this.getGenesForPathway(PathWays);
                 return Rx.Observable.zip(
-                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList).map(mutations => ({
-                        mutations,
-                        samples
-                    })),
+                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
-                    (mutData, copyNumber) => ({copyNumber, ...mutData}))
+                    (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
                 this.setState({

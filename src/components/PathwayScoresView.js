@@ -94,7 +94,7 @@ class TissueExpressionView extends PureComponent {
 
         let titleString, filterString ;
         if(selected){
-            titleString = selected.golabel + ' (' + selected.goid + ')';
+            titleString = selected.golabel + (selected.goid ? ' (' + selected.goid + ')' : '');
             filterString = filter.indexOf('All')===0 ? '' : filter ;
         }
         else{

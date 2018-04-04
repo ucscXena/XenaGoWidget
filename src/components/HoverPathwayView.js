@@ -18,7 +18,9 @@ export default class HoverPathwayView extends PureComponent {
                         {/*}*/}
                         {data.pathway &&
                         <li>
-                            Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
+                            Pathway: {data.pathway.golabel}
+                            {data.pathway.goid ? '(' + data.pathway.goid+')' : ''}
+                            <br/>
                             Genes ({data.pathway.gene.length})
                         </li>
                         }
@@ -36,7 +38,9 @@ export default class HoverPathwayView extends PureComponent {
                     }
                     {data.tissue === 'Header' && data.pathway &&
                     <div>
-                        Pathway: {data.pathway.golabel} ({data.pathway.goid}) <br/>
+                        Pathway: {data.pathway.golabel}
+                        {data.pathway.goid ? '(' + data.pathway.goid+')' : ''}
+                        <br/>
                         Genes ({data.pathway.gene.length}) <br/>
                         Samples Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
                     </div>
