@@ -25,6 +25,7 @@ import {Panel} from "react-bootstrap";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
+let Rx = require('ucsc-xena-client/dist/rx');
 
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -278,31 +279,31 @@ export default class XenaGoApp extends PureComponent {
                 {this.state.loadState === 'loaded' &&
                 <Panel width='normal'>
                     <Card width='normal'>
-                    <CohortSelector cohorts={this.state.cohortData}
-                                    selectedCohort={this.state.selectedCohort}
-                                    onChange={this.selectCohort}/>
-                    <h2>Sort Type</h2>
-                    <SortSelector sortTypes={this.state.sortTypes}
-                                  selected={this.state.selectedTissueSort}
-                                  onChange={this.sortTissueType}/>
-                    <h2>Mutation Type</h2>
-                    <FilterSelector filters={filteredMutationVector}
-                                    selected={this.state.tissueExpressionFilter}
-                                    pathwayData={this.state.pathwayData}
-                                    onChange={this.filterTissueType}/>
+                        <CohortSelector cohorts={this.state.cohortData}
+                                        selectedCohort={this.state.selectedCohort}
+                                        onChange={this.selectCohort}/>
+                        <h2>Sort Type</h2>
+                        <SortSelector sortTypes={this.state.sortTypes}
+                                      selected={this.state.selectedTissueSort}
+                                      onChange={this.sortTissueType}/>
+                        <h2>Mutation Type</h2>
+                        <FilterSelector filters={filteredMutationVector}
+                                        selected={this.state.tissueExpressionFilter}
+                                        pathwayData={this.state.pathwayData}
+                                        onChange={this.filterTissueType}/>
                         <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
                     </Card>
                     <Card>
-                    <TissueExpressionView id="pathwayViewId" width={400} height={800}
-                                          data={this.state.pathwayData} titleText="Mutation Score"
-                                          filter={this.state.tissueExpressionFilter}
-                                          filterPercentage={this.state.filterPercentage}
-                                          loading={cohortLoading}
-                                          min={this.state.minFilter}
-                                          sortColumn={this.state.sortPathwayName}
-                                          sortOrder={this.state.sortPathwayOrder}
-                                          selectedSort={this.state.selectedTissueSort}
-                                          onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                        <TissueExpressionView id="pathwayViewId" width={400} height={800}
+                                              data={this.state.pathwayData} titleText="Mutation Score"
+                                              filter={this.state.tissueExpressionFilter}
+                                              filterPercentage={this.state.filterPercentage}
+                                              loading={cohortLoading}
+                                              min={this.state.minFilter}
+                                              sortColumn={this.state.sortPathwayName}
+                                              sortOrder={this.state.sortPathwayOrder}
+                                              selectedSort={this.state.selectedTissueSort}
+                                              onClick={this.clickPathway} onHover={this.hoverPathway}/>
                     </Card>
                 </Panel>}
                 {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
