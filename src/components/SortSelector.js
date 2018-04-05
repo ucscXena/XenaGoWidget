@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
+import {Dropdown} from "react-toolbox";
 
 
 export class SortSelector extends PureComponent {
@@ -14,8 +15,7 @@ export class SortSelector extends PureComponent {
         };
     }
 
-    setSelected = (event) => {
-        let targetValue = event.target.value;
+    setSelected = (targetValue) => {
         if (targetValue) {
             this.setState({selectedSort: targetValue});
         }
@@ -28,12 +28,10 @@ export class SortSelector extends PureComponent {
     render() {
         // const {sortTypes,selected} = this.props;
         return (
-            <select onChange={this.setSelected} value={this.state.selectedSort}>
-                {/*<option key='null'>None</option>*/}
-                {
-                    this.state.sortTypes.map(label => <option key={label} value={label}>{label}</option>)
-                }
-            </select>);
+            <Dropdown label='Sort' onChange={this.setSelected} value={this.state.selectedSort}
+            source={this.state.sortTypes.map(type => ({label:type,value:type}))}
+            >
+            </Dropdown >);
     }
 }
 
