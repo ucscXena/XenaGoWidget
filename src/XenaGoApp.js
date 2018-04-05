@@ -328,7 +328,7 @@ export default class XenaGoApp extends PureComponent {
                                             selected={this.state.geneExpressionFilter}
                                             pathwayData={this.state.geneData}
                                             onChange={this.filterGeneType}/>
-                            <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
+                            <HoverGeneView data={this.state.geneHoverData}/>
                         </Card>
                     </Col>
                     <Col md={this.state.uiControls.gene.expressionColumns}>
