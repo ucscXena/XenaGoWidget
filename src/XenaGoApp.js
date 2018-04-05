@@ -22,11 +22,12 @@ import {Button} from "react-toolbox/lib/button";
 import RTButtonTheme from "./RTButtonTheme.css"
 import {Card, Layout} from "react-toolbox";
 import {Panel} from "react-bootstrap";
-import {Col, Row} from "react-flexbox-grid";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
 let Rx = require('ucsc-xena-client/dist/rx');
+import {Grid, Row, Col} from 'react-material-responsive-grid';
+
 
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -284,10 +285,10 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
 
         return (
-            <Layout>
-                {this.state.loadState === 'loading' ? 'Loading' : ''}
-                {this.state.loadState === 'loaded' &&
+            <Grid>
                 <Row>
+                    {this.state.loadState === 'loading' ? 'Loading' : ''}
+                    {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.columns}>
                         <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
@@ -300,9 +301,11 @@ export default class XenaGoApp extends PureComponent {
                                             selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
-                            <HoverPathwayView  data={this.state.pathwayHoverData}/>
+                            <HoverPathwayView data={this.state.pathwayHoverData}/>
                         </Card>
                     </Col>
+                    }
+                    {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
                         <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                               data={this.state.pathwayData} titleText=""
@@ -315,10 +318,8 @@ export default class XenaGoApp extends PureComponent {
                                               selectedSort={this.state.selectedTissueSort}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}/>
                     </Col>
-                </Row>
-                }
-                {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                <Row>
+                    }
+                    {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.columns}>
                         <Card style={{width: this.state.uiControls.gene.columnWidth}}>
                             <SortSelector sortTypes={this.state.sortTypes}
@@ -331,8 +332,9 @@ export default class XenaGoApp extends PureComponent {
                             <HoverGeneView data={this.state.geneHoverData}/>
                         </Card>
                     </Col>
+                    }
+                    {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.expressionColumns}>
-
                         <TissueExpressionView id="geneViewId" height={800}
                                               data={this.state.geneData}
                                               selected={this.state.geneData.selectedPathway}
@@ -346,9 +348,9 @@ export default class XenaGoApp extends PureComponent {
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}/>
                     </Col>
+                    }
                 </Row>
-                }
-            </Layout>
+            </Grid>
         );
     }
 }

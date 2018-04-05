@@ -12,7 +12,7 @@ module.exports = {
             css: [
                 // Create a rule which provides the specific setup react-toolbox v2 needs
                 {
-                    include: [/react-toolbox/,/flexboxgrid/, path.join(__dirname, 'src')],
+                    include: [/react-toolbox/,/node_modules/, path.join(__dirname, 'src')],
                     // css-loader options
                     css: {
                         modules: true,
