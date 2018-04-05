@@ -5,6 +5,7 @@ import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/PathwayScoresView";
 import PathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
+import ExampleCopyNumber from "../tests/data/bulkCopyNumber";
 import ExampleSamples from "../tests/data/samples";
 // import ExampleStyle from "../demo/src/example.css";
 import './base.css';
@@ -63,6 +64,7 @@ export default class XenaGoApp extends PureComponent {
             sortTypes: ['Cluster', 'Density', 'Hierarchical', 'Overall', 'Per Column'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
+                copyNumber: ExampleCopyNumber,
                 expression: ExampleExpression,
                 pathways: PathWays,
                 samples: ExampleSamples,
@@ -75,6 +77,7 @@ export default class XenaGoApp extends PureComponent {
             minFilter: 2,
             filterPercentage: 0.005,
             geneData: {
+                copyNumber: [],
                 expression: [],
                 pathways: [],
                 samples: [],
@@ -272,26 +275,36 @@ export default class XenaGoApp extends PureComponent {
         this.setState({selectedCohort: selected});
         this.closeGeneView();
         let cohort = this.state.cohortData.find(c => c.name === selected);
+        let geneList = this.getGenesForPathway(PathWays);
         Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
             datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
             intersection)
             .flatMap((samples) => {
-                let geneList = this.getGenesForPathway(PathWays);
                 return Rx.Observable.zip(
                     sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
+                console.log('samples: ');
+                console.log(samples);
+                console.log('mutations: ');
+                console.log(mutations);
+                console.log('geneList: ');
+                console.log(geneList);
+                console.log('copyNumber: ');
+                console.log(copyNumber);
                 this.setState({
                     pathwayData: {
                         copyNumber,
+                        geneList,
                         expression: mutations,
                         pathways: PathWays,
                         cohort: cohort.name,
                         samples
                     },
                     geneData: {
+                        copyNumber:[],
                         expression: [],
                         pathways: [],
                         samples: [],

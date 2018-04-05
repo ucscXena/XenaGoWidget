@@ -10,7 +10,9 @@ function lowerCaseCompare(a, b) {
 }
 
 function compileData(filteredEffects, data) {
-    let {pathways, expression: {rows}} = data;
+    console.log('compiling data')
+    console.log(data);
+    let {pathways, copyNumber,expression: {rows}} = data;
 
     let genes = new Set(flatten(pluck(pathways, 'gene')));
     let hasGene = row => genes.has(row.gene);
@@ -38,7 +40,7 @@ export class FilterSelector extends PureComponent {
             this.setState({value: null});
         }
         this.props.onChange(targetValue);
-    }
+    };
 
     render() {
         const {filters,pathwayData,selected} = this.props;
