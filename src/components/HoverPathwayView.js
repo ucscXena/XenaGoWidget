@@ -11,6 +11,10 @@ export default class HoverPathwayView extends PureComponent {
                 <div>
                     {data.tissue !== 'Header' &&
                     <List>
+                        {title &&
+                        <ListSubHeader caption={title}/>
+                        }
+
                         {data.pathway &&
                         <ListItem
                             caption={data.pathway.golabel}
@@ -18,7 +22,7 @@ export default class HoverPathwayView extends PureComponent {
                         />
                             &&
                         <ListItem
-                            caption={data.pathway.gene.length}
+                            caption={data.pathway.gene.length.toString()}
                             legend='Genes'
                             />
                         }
@@ -42,26 +46,25 @@ export default class HoverPathwayView extends PureComponent {
                             legend={data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}
                         />
                         <ListItem
-                            caption={data.pathway.gene.length}
+                            caption={data.pathway.gene.length.toString()}
                             legend='Genes'
                         />
                         <ListItem
                             caption={Number.parseFloat(data.expression * 100.0).toFixed(0)}
                             legend='Samples Affected (%)'
                         />
-
                     </List>
                     }
                 </div>
             );
         }
         else {
-            return <div></div>
+            return <div/>
         }
     }
 }
 
 HoverPathwayView.propTypes = {
     data: PropTypes.any.isRequired,
-    title: PropTypes.any.isRequired,
+    title: PropTypes.any,
 };

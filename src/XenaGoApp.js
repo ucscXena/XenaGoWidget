@@ -300,7 +300,7 @@ export default class XenaGoApp extends PureComponent {
                                             selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
                                             onChange={this.filterTissueType}/>
-                            <HoverPathwayView title="" data={this.state.pathwayHoverData}/>
+                            <HoverPathwayView  data={this.state.pathwayHoverData}/>
                         </Card>
                     </Col>
                     <Col md={this.state.uiControls.pathway.expressionColumns}>

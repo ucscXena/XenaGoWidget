@@ -1,10 +1,11 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
+import {List,ListItem,ListSubHeader} from "react-toolbox";
 
 export default class HoverGeneView extends PureComponent {
     render() {
-        var {data, title} = this.props;
+        let {data, title} = this.props;
         if(data.tissue){
             return (
                 <div>
