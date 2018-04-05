@@ -23,7 +23,7 @@ export default class HoverGeneView extends PureComponent {
                         {data.expression != null &&
                         <ListItem
                             caption={data.expression.toString()}
-                            legend='Score'/>
+                            legend='Hits'/>
                         }
                         {data.tissue &&
                         <ListItem
