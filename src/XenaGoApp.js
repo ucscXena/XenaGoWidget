@@ -166,7 +166,7 @@ export default class XenaGoApp extends PureComponent {
     };
 
 
-    closeGeneView = (props) =>{
+    closeGeneView = (props) => {
         this.setState({
             uiControls: {
                 pathway: {
@@ -270,6 +270,7 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
+        this.closeGeneView();
         let cohort = this.state.cohortData.find(c => c.name === selected);
         Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
             datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
@@ -350,16 +351,18 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
                         <Card style={{width: this.state.uiControls.pathway.expressionWidth}}>
-                        <TissueExpressionView id="pathwayViewId" width={400} height={800}
-                                              data={this.state.pathwayData} titleText=""
-                                              filter={this.state.tissueExpressionFilter}
-                                              filterPercentage={this.state.filterPercentage}
-                                              loading={cohortLoading}
-                                              min={this.state.minFilter}
-                                              sortColumn={this.state.sortPathwayName}
-                                              sortOrder={this.state.sortPathwayOrder}
-                                              selectedSort={this.state.selectedTissueSort}
-                                              onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                            <TissueExpressionView id="pathwayViewId" width={400} height={800}
+                                                  data={this.state.pathwayData} titleText=""
+                                                  filter={this.state.tissueExpressionFilter}
+                                                  filterPercentage={this.state.filterPercentage}
+                                                  loading={cohortLoading}
+                                                  min={this.state.minFilter}
+                                                  sortColumn={this.state.sortPathwayName}
+                                                  sortOrder={this.state.sortPathwayOrder}
+                                                  selectedSort={this.state.selectedTissueSort}
+                                                  onClick={this.clickPathway} onHover={this.hoverPathway}
+                                                  title='Pathways'
+                            />
                         </Card>
                     </Col>
                     }
@@ -385,18 +388,20 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.expressionColumns}>
                         <Card style={{width: this.state.uiControls.gene.expressionWidth}}>
-                        <TissueExpressionView id="geneViewId" height={800}
-                                              data={this.state.geneData}
-                                              selected={this.state.geneData.selectedPathway}
-                                              filter={this.state.geneExpressionFilter}
-                                              filterPercentage={this.state.filterPercentage}
-                                              loading={cohortLoading}
-                                              min={this.state.minFilter}
-                                              sortColumn={this.state.sortGeneName}
-                                              sortOrder={this.state.sortGeneOrder}
-                                              selectedSort={this.state.selectedGeneSort}
-                                              onClick={this.clickGene}
-                                              onHover={this.hoverGene}/>
+                            <TissueExpressionView id="geneViewId" height={800}
+                                                  data={this.state.geneData}
+                                                  selected={this.state.geneData.selectedPathway}
+                                                  filter={this.state.geneExpressionFilter}
+                                                  filterPercentage={this.state.filterPercentage}
+                                                  loading={cohortLoading}
+                                                  min={this.state.minFilter}
+                                                  sortColumn={this.state.sortGeneName}
+                                                  sortOrder={this.state.sortGeneOrder}
+                                                  selectedSort={this.state.selectedGeneSort}
+                                                  onClick={this.clickGene}
+                                                  onHover={this.hoverGene}
+                                                  title='Genes'
+                            />
                         </Card>
                     </Col>
                     }

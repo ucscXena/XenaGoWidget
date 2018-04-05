@@ -106,9 +106,7 @@ class TissueExpressionView extends PureComponent {
 
         return (
             <div style={loading ? style.fadeOut : style.fadeIn}>
-                {titleString &&
                 <h3>{titleString} {stat}</h3>
-                }
                 <CanvasDrawing
                     width={width}
                     height={height}
