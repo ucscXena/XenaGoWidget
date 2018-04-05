@@ -22,7 +22,7 @@ import {SortSelector} from "./components/SortSelector";
 import {Button, IconButton} from 'react-toolbox/lib/button';
 
 import RTButtonTheme from "./RTButtonTheme.css"
-import {Card, Layout} from "react-toolbox";
+import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {Panel} from "react-bootstrap";
 
 let mutationKey = 'simple somatic mutation';
@@ -390,16 +390,26 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.columns}>
                         <Card style={{width: this.state.uiControls.gene.columnWidth}}>
-                            <Button label='&lArr; Close' raised primary onClick={this.closeGeneView}
-                                    className={style.buttonStyle}/>
-                            <SortSelector sortTypes={this.state.sortTypes}
-                                          selected={this.state.selectedGeneSort}
-                                          onChange={this.sortGeneType}/>
-                            <FilterSelector filters={filteredMutationVector}
-                                            selected={this.state.geneExpressionFilter}
-                                            pathwayData={this.state.geneData}
-                                            onChange={this.filterGeneType}/>
-                            <HoverGeneView data={this.state.geneHoverData}/>
+                            <CardActions>
+                                <Button label='&lArr; Close' raised primary onClick={this.closeGeneView}
+                                        className={style.buttonStyle}/>
+                            </CardActions>
+
+                            <CardTitle
+                                title={this.state.selectedCohort}
+                                subtitle='Cohort'
+                              />
+
+                            <CardMedia>
+                                <SortSelector sortTypes={this.state.sortTypes}
+                                              selected={this.state.selectedGeneSort}
+                                              onChange={this.sortGeneType}/>
+                                <FilterSelector filters={filteredMutationVector}
+                                                selected={this.state.geneExpressionFilter}
+                                                pathwayData={this.state.geneData}
+                                                onChange={this.filterGeneType}/>
+                                <HoverGeneView data={this.state.geneHoverData}/>
+                            </CardMedia>
                         </Card>
                     </Col>
                     }
@@ -418,7 +428,7 @@ export default class XenaGoApp extends PureComponent {
                                               selectedSort={this.state.selectedGeneSort}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}
-                                              title='Genes'
+                                              title='Pathway'
                         />
                         {/*</Card>*/}
                     </Col>
