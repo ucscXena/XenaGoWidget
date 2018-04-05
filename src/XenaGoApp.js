@@ -41,7 +41,7 @@ let gisticDSFromMutation = mutDsID =>
     mutDsID.replace(/[/].*/, '/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes');
 
 function intersection(a, b) {
-    var sa = new Set(a);
+    let sa = new Set(a);
     return b.filter(x => sa.has(x));
 }
 
@@ -52,13 +52,41 @@ const style = {
         padding: 10,
     },
     fadeIn: {
-        opacity: 1,
-        transition: 'opacity 0.5s ease-out'
+        visibility: visible,
+        opacity: 0,
+        transition: 'visibility 0s, opacity 0.5s ease-out'
     },
     fadeOut: {
-        opacity: 0.6,
+        visibility: hidden,
         transition: 'opacity 1s ease'
-    }
+    },
+
+    showGeneControls:{
+
+    },
+    hideGeneControls:{
+
+    },
+    showGeneExpression:{
+
+    },
+    hideGeneExpression:{
+
+    },
+
+
+    showPathwayControls:{
+
+    },
+    hidePathwayControls:{
+
+    },
+    showPathwayExpression:{
+
+    },
+    hidePathwayExpression:{
+
+    },
 };
 
 export default class XenaGoApp extends PureComponent {
