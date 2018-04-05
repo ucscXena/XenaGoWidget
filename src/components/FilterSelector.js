@@ -3,6 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
 import {sum} from '../functions/util';
+import {Dropdown} from "react-toolbox";
 
 function lowerCaseCompare(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -29,8 +30,7 @@ export class FilterSelector extends PureComponent {
         };
     }
 
-    setSelected = (event) => {
-        let targetValue = event.target.value;
+    setSelected = (targetValue) => {
         if (targetValue) {
             this.setState({value: targetValue});
         }
@@ -47,13 +47,16 @@ export class FilterSelector extends PureComponent {
         let labels = Object.keys(counts).sort(lowerCaseCompare);
         let total = sum(Object.values(counts));
 
+        const labelValues = labels.map(label => ( {label:label+ ' ('+ counts[label]+')',value:label}));
+        labelValues.unshift({label:'All ('+total+')',value:'All'});
+
+        const filterLabel = 'Filter ('+total+')';
+
         return (
-            <select onChange={this.setSelected} value={selected}>
-                <option key='null'>All ({total})</option>
-                {
-                    labels.map(label => <option key={label} value={label}>{label} ({counts[label]})</option>)
-                }
-            </select>);
+            <Dropdown label={filterLabel} onChange={this.setSelected} value={selected}
+                      source={labelValues} >
+            </Dropdown>
+        );
     }
 }
 

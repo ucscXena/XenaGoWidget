@@ -279,11 +279,9 @@ export default class XenaGoApp extends PureComponent {
                         <CohortSelector cohorts={this.state.cohortData}
                                         selectedCohort={this.state.selectedCohort}
                                         onChange={this.selectCohort}/>
-                        <h2>Sort Type</h2>
                         <SortSelector sortTypes={this.state.sortTypes}
                                       selected={this.state.selectedTissueSort}
                                       onChange={this.sortTissueType}/>
-                        <h2>Mutation Type</h2>
                         <FilterSelector filters={filteredMutationVector}
                                         selected={this.state.tissueExpressionFilter}
                                         pathwayData={this.state.pathwayData}
@@ -305,11 +303,9 @@ export default class XenaGoApp extends PureComponent {
                 </Panel>}
                 {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                 <Panel>
-                    <h2>Sort Type</h2>
                     <SortSelector sortTypes={this.state.sortTypes}
                                   selected={this.state.selectedGeneSort}
                                   onChange={this.sortGeneType}/>
-                    <h2>Mutation Type</h2>
                     <FilterSelector filters={filteredMutationVector}
                                     selected={this.state.geneExpressionFilter}
                                     pathwayData={this.state.geneData}
