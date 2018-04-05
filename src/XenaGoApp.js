@@ -18,7 +18,9 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
-import {Button} from "react-toolbox/lib/button";
+// import {Button} from "react-toolbox/lib/button";
+import {Button, IconButton} from 'react-toolbox/lib/button';
+
 import RTButtonTheme from "./RTButtonTheme.css"
 import {Card, Layout} from "react-toolbox";
 import {Panel} from "react-bootstrap";
@@ -102,11 +104,13 @@ export default class XenaGoApp extends PureComponent {
                     columns: 2,
                     columnWidth: 200,
                     expressionColumns: 8,
+                    expressionWidth: 700,
                 },
                 gene: {
                     columns: 2,
                     columnWidth: 200,
                     expressionColumns: 8,
+                    expressionWidth: 700,
                 },
             }
 
@@ -144,7 +148,45 @@ export default class XenaGoApp extends PureComponent {
                 samples,
                 pathways,
                 selectedPathway: pathwayClickData.pathway
+            },
+            uiControls: {
+                pathway: {
+                    columns: 1,
+                    columnWidth: 100,
+                    expressionColumns: 1,
+                },
+                gene: {
+                    columns: 2,
+                    columnWidth: 200,
+                    expressionColumns: 7,
+                    expressionWidth: 800,
+                },
             }
+        });
+    };
+
+
+    closeGeneView = (props) =>{
+        this.setState({
+            uiControls: {
+                pathway: {
+                    columns: 2,
+                    columnWidth: 200,
+                    expressionColumns: 8,
+                    expressionWidth: 700,
+                },
+                gene: {
+                    columns: 2,
+                    columnWidth: 200,
+                    expressionColumns: 7,
+                    expressionWidth: 700,
+                },
+            },
+            geneData: {
+                expression: [],
+                pathways: [],
+                samples: [],
+            },
         });
     };
 
@@ -307,6 +349,7 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
+                        <Card style={{width: this.state.uiControls.pathway.expressionWidth}}>
                         <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                               data={this.state.pathwayData} titleText=""
                                               filter={this.state.tissueExpressionFilter}
@@ -317,6 +360,12 @@ export default class XenaGoApp extends PureComponent {
                                               sortOrder={this.state.sortPathwayOrder}
                                               selectedSort={this.state.selectedTissueSort}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                        </Card>
+                    </Col>
+                    }
+                    {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                    <Col md={1}>
+                        <Button label='Close' raised primary onClick={this.closeGeneView}/>
                     </Col>
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -335,6 +384,7 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.expressionColumns}>
+                        <Card style={{width: this.state.uiControls.gene.expressionWidth}}>
                         <TissueExpressionView id="geneViewId" height={800}
                                               data={this.state.geneData}
                                               selected={this.state.geneData.selectedPathway}
@@ -347,6 +397,7 @@ export default class XenaGoApp extends PureComponent {
                                               selectedSort={this.state.selectedGeneSort}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}/>
+                        </Card>
                     </Col>
                     }
                 </Row>
