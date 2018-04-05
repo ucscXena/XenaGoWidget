@@ -1,54 +1,61 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
+import {List,ListItem,ListSubHeader} from "react-toolbox";
 
 export default class HoverPathwayView extends PureComponent {
     render() {
         var {data, title} = this.props;
-        if(data.tissue){
+        if (data.tissue) {
             return (
                 <div>
-                    <h4>{title}</h4>
                     {data.tissue !== 'Header' &&
-                    <ul>
-                        {/*{data.x &&*/}
-                        {/*<li>*/}
-                        {/*({data.x},{data.y})*/}
-                        {/*</li>*/}
-                        {/*}*/}
+                    <List>
                         {data.pathway &&
-                        <li>
-                            Pathway: {data.pathway.golabel}
-                            {data.pathway.goid ? '(' + data.pathway.goid+')' : ''}
-                            <br/>
-                            Genes ({data.pathway.gene.length})
-                        </li>
+                        <ListItem
+                            caption={data.pathway.golabel}
+                            legend={data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}
+                        />
+                            &&
+                        <ListItem
+                            caption={data.pathway.gene.length}
+                            legend='Genes'
+                            />
                         }
                         {data.tissue &&
-                        <li>
-                            Sample: {data.tissue}
-                        </li>
+                        <ListItem
+                            caption={data.tissue}
+                            legend='Sample'
+                        />
                         }
                         {data.expression != null &&
-                        <li>
-                            Mutation Score: {data.expression}
-                        </li>
+                        <ListItem
+                            caption={data.expression.toString()}
+                            legend='Score'/>
                         }
-                    </ul>
+                    </List>
                     }
                     {data.tissue === 'Header' && data.pathway &&
-                    <div>
-                        Pathway: {data.pathway.golabel}
-                        {data.pathway.goid ? '(' + data.pathway.goid+')' : ''}
-                        <br/>
-                        Genes ({data.pathway.gene.length}) <br/>
-                        Samples Affected: { Number.parseFloat(data.expression * 100.0).toFixed(0) }%
-                    </div>
+                    <List>
+                        <ListItem
+                            caption={data.pathway.golabel}
+                            legend={data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}
+                        />
+                        <ListItem
+                            caption={data.pathway.gene.length}
+                            legend='Genes'
+                        />
+                        <ListItem
+                            caption={Number.parseFloat(data.expression * 100.0).toFixed(0)}
+                            legend='Samples Affected (%)'
+                        />
+
+                    </List>
                     }
                 </div>
             );
         }
-        else{
+        else {
             return <div></div>
         }
     }

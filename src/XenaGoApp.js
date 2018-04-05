@@ -283,70 +283,71 @@ export default class XenaGoApp extends PureComponent {
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
 
-        let tissueFilterWidth=2 ;
-
         return (
             <Layout>
                 {this.state.loadState === 'loading' ? 'Loading' : ''}
                 {this.state.loadState === 'loaded' &&
-                <Panel width='normal'>
-                    <Row>
-                        <Col md={this.state.uiControls.pathway.columns}>
-                            <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
-                                <CohortSelector cohorts={this.state.cohortData}
-                                                selectedCohort={this.state.selectedCohort}
-                                                onChange={this.selectCohort}/>
-                                <SortSelector sortTypes={this.state.sortTypes}
-                                              selected={this.state.selectedTissueSort}
-                                              onChange={this.sortTissueType}/>
-                                <FilterSelector filters={filteredMutationVector}
-                                                selected={this.state.tissueExpressionFilter}
-                                                pathwayData={this.state.pathwayData}
-                                                onChange={this.filterTissueType}/>
-                                <HoverPathwayView title="Hover" data={this.state.pathwayHoverData}/>
-                            </Card>
-                        </Col>
-                        <Col md={this.state.uiControls.pathway.expressionColumns}>
-                            {/*<Card>*/}
-                                <TissueExpressionView id="pathwayViewId" width={400} height={800}
-                                                      data={this.state.pathwayData} titleText=""
-                                                      filter={this.state.tissueExpressionFilter}
-                                                      filterPercentage={this.state.filterPercentage}
-                                                      loading={cohortLoading}
-                                                      min={this.state.minFilter}
-                                                      sortColumn={this.state.sortPathwayName}
-                                                      sortOrder={this.state.sortPathwayOrder}
-                                                      selectedSort={this.state.selectedTissueSort}
-                                                      onClick={this.clickPathway} onHover={this.hoverPathway}/>
-                            {/*</Card>*/}
-                        </Col>
-                    </Row>
-                </Panel>}
-                {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                <Panel>
-                    <SortSelector sortTypes={this.state.sortTypes}
-                                  selected={this.state.selectedGeneSort}
-                                  onChange={this.sortGeneType}/>
-                    <FilterSelector filters={filteredMutationVector}
-                                    selected={this.state.geneExpressionFilter}
-                                    pathwayData={this.state.geneData}
-                                    onChange={this.filterGeneType}/>
-                    <TissueExpressionView id="geneViewId" height={800}
-                                          data={this.state.geneData}
-                                          selected={this.state.geneData.selectedPathway}
-                                          filter={this.state.geneExpressionFilter}
-                                          filterPercentage={this.state.filterPercentage}
-                                          loading={cohortLoading}
-                                          min={this.state.minFilter}
-                                          sortColumn={this.state.sortGeneName}
-                                          sortOrder={this.state.sortGeneOrder}
-                                          selectedSort={this.state.selectedGeneSort}
-                                          onClick={this.clickGene}
-                                          onHover={this.hoverGene}/>
-                    <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
-                </Panel>
+                <Row>
+                    <Col md={this.state.uiControls.pathway.columns}>
+                        <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
+                            <CohortSelector cohorts={this.state.cohortData}
+                                            selectedCohort={this.state.selectedCohort}
+                                            onChange={this.selectCohort}/>
+                            <SortSelector sortTypes={this.state.sortTypes}
+                                          selected={this.state.selectedTissueSort}
+                                          onChange={this.sortTissueType}/>
+                            <FilterSelector filters={filteredMutationVector}
+                                            selected={this.state.tissueExpressionFilter}
+                                            pathwayData={this.state.pathwayData}
+                                            onChange={this.filterTissueType}/>
+                            <HoverPathwayView title="" data={this.state.pathwayHoverData}/>
+                        </Card>
+                    </Col>
+                    <Col md={this.state.uiControls.pathway.expressionColumns}>
+                        <TissueExpressionView id="pathwayViewId" width={400} height={800}
+                                              data={this.state.pathwayData} titleText=""
+                                              filter={this.state.tissueExpressionFilter}
+                                              filterPercentage={this.state.filterPercentage}
+                                              loading={cohortLoading}
+                                              min={this.state.minFilter}
+                                              sortColumn={this.state.sortPathwayName}
+                                              sortOrder={this.state.sortPathwayOrder}
+                                              selectedSort={this.state.selectedTissueSort}
+                                              onClick={this.clickPathway} onHover={this.hoverPathway}/>
+                    </Col>
+                </Row>
                 }
+                {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                <Row>
+                    <Col md={this.state.uiControls.gene.columns}>
+                        <Card style={{width: this.state.uiControls.gene.columnWidth}}>
+                            <SortSelector sortTypes={this.state.sortTypes}
+                                          selected={this.state.selectedGeneSort}
+                                          onChange={this.sortGeneType}/>
+                            <FilterSelector filters={filteredMutationVector}
+                                            selected={this.state.geneExpressionFilter}
+                                            pathwayData={this.state.geneData}
+                                            onChange={this.filterGeneType}/>
+                            <HoverGeneView title="Hover" data={this.state.geneHoverData}/>
+                        </Card>
+                    </Col>
+                    <Col md={this.state.uiControls.gene.expressionColumns}>
 
+                        <TissueExpressionView id="geneViewId" height={800}
+                                              data={this.state.geneData}
+                                              selected={this.state.geneData.selectedPathway}
+                                              filter={this.state.geneExpressionFilter}
+                                              filterPercentage={this.state.filterPercentage}
+                                              loading={cohortLoading}
+                                              min={this.state.minFilter}
+                                              sortColumn={this.state.sortGeneName}
+                                              sortOrder={this.state.sortGeneOrder}
+                                              selectedSort={this.state.selectedGeneSort}
+                                              onClick={this.clickGene}
+                                              onHover={this.hoverGene}/>
+                    </Col>
+                </Row>
+                }
             </Layout>
         );
     }
