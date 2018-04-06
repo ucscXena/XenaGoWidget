@@ -17,11 +17,19 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
         return;
     }
 
-    vg.fillStyle = 'rgb(0,200,0)'; // sets the color to fill in the rectangle with
-    let pixelCount = 0;
+    let maxColor = 256;
+
+    // find the max
+    let highestScore = 0;
+    pathways.forEach(p => {
+        highestScore = p.density > highestScore ? p.density : highestScore;
+    });
+
     layout.forEach((el, i) => {
-        let {start, size} = el;
         let d = pathways[i];
+
+        let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
+        vg.fillStyle = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
         vg.fillRect(el.start, 0, el.size, labelHeight);
         vg.strokeRect(el.start, 0, el.size, labelHeight);
 
@@ -33,12 +41,12 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
         vg.font = "10px Courier";
         vg.translate(-labelHeight, el.start, labelHeight);
 
-        let geneLength = d.gene.length ;
-        let labelString ;
-        if(geneLength===1){
+        let geneLength = d.gene.length;
+        let labelString;
+        if (geneLength === 1) {
             labelString = d.gene[0];
         }
-        else{
+        else {
             labelString = '(' + d.gene.length + ')';
             // pad for 1000, so 4 + 2 parans
             while (labelString.length < 5) {
@@ -60,8 +68,8 @@ function findRegions(index, height, count) {
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
     // range of samples in the region.
     let regions = reduceByKey(range(count),
-                              i => ~~(i * height / count),
-                              (i, y, r) => r ? {...r, end: i} : {y, start: i, end: i});
+        i => ~~(i * height / count),
+        (i, y, r) => r ? {...r, end: i} : {y, start: i, end: i});
     let starts = Array.from(regions.keys());
     let se = partitionN(starts, 2, 1, [height]);
 
@@ -75,7 +83,7 @@ function regionColor(data) {
     let p = sum(data) / data.length;
     let scale = 5;
     let c = 255 - 255 * p / scale;
-    return  [255, c, c];
+    return [255, c, c];
 }
 
 function drawExpressionData(ctx, width, totalHeight, layout, data) {
@@ -97,8 +105,8 @@ function drawExpressionData(ctx, width, totalHeight, layout, data) {
 
             for (let y = rs + labelHeight; y < rs + r.height + labelHeight; ++y) {
                 let pxRow = y * width,
-                buffStart = (pxRow + el.start) * 4,
-                buffEnd = (pxRow + el.start + el.size) * 4;
+                    buffStart = (pxRow + el.start) * 4,
+                    buffEnd = (pxRow + el.start + el.size) * 4;
                 for (let l = buffStart; l < buffEnd; l += 4) {
                     img.data[l] = color[0];
                     img.data[l + 1] = color[1];
@@ -153,9 +161,9 @@ export default {
 
         clearScreen(vg, width, height);
 
-        if(associateData.length===0){
+        if (associateData.length === 0) {
             console.log('Clicked on an empty cell?');
-            return ;
+            return;
         }
 
         drawExpressionData(vg, width, height, layout, associateData);
