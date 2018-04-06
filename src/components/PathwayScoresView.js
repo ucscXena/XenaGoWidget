@@ -8,6 +8,7 @@ import {memoize, range} from 'underscore';
 import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import Clustering from 'density-clustering';
+import {pick, pluck, flatten} from 'underscore';
 
 let labelHeight = 150;
 
@@ -184,17 +185,21 @@ function pruneColumns(data,pathways,min){
     };
 }
 
+function getGenesForPathway(pathways) {
+    return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
+}
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
  * @param expression
+ * @param copyNumber
  * @param pathways
  * @param samples
  * @param filter
  * @param min
  * @returns {any[]}
  */
-function associateData(expression, pathways, samples, filter,min) {
+function associateData(expression, copyNumber, pathways, samples, filter,min) {
     filter = filter.indexOf('All')===0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -217,6 +222,21 @@ function associateData(expression, pathways, samples, filter,min) {
             returnArray[index][sampleIndex.get(row.sample)] += effectValue ;
         }
     }
+
+    let geneList = getGenesForPathway(pathways);
+
+
+    console.log('gene list');
+    console.log(geneList);
+
+    // TODO: copy number for each gene needs to be pushed back into the appropriate pathway
+    // this is typically 1315
+    // should be the identical sample numbers, though
+    console.log('copy numbers');
+    console.log(copyNumber);
+
+    console.log('into returnArray ');
+    console.log(returnArray);
 
     return returnArray;
 }
@@ -437,8 +457,12 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
 	render() {
-        let {selectedSort,min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples}} = this.props;
-        let associatedData = associateData(expression, pathways, samples, filter,min);
+        console.log('associate dat')
+	    console.log(this.props)
+        let {selectedSort,min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples,copyNumber}} = this.props;
+        let associatedData = associateData(expression,copyNumber, pathways, samples, filter,min);
+        // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
+
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
