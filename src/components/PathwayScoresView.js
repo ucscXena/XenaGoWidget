@@ -42,7 +42,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, data: {pathways, samples}} = props;
+    let {associateData, height, layout, data: {pathways, samples,sortedSamples}} = props;
 
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
@@ -52,7 +52,7 @@ function getPointData(event, props) {
 
     return {
         pathway: pathways[pathwayIndex],
-        tissue: tissueIndex < 0 ? 'Header': samples[tissueIndex],
+        tissue: tissueIndex < 0 ? 'Header': sortedSamples[tissueIndex],
         expression
     };
 }
@@ -285,7 +285,7 @@ function scoreColumnDensities(prunedColumns) {
  */
 function clusterSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
-
+    prunedColumns.data.push(prunedColumns.samples) ;
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort(function(a,b){
@@ -294,13 +294,11 @@ function clusterSort(prunedColumns) {
                 return b[index]-a[index];
             }
         }
-        // return 0 ;
         return sum(b)-sum(a)
     });
-
     renderedData = transpose(renderedData);
-
-    prunedColumns.data = renderedData;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
+    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
 
     return prunedColumns;
 }
@@ -344,11 +342,10 @@ function hierarchicalSort(prunedColumns) {
 }
 
 function densitySort(prunedColumns) {
-    // scoreColumnDensities(prunedColumns);
-
+    prunedColumns.data.push(prunedColumns.samples) ;
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort(function(a,b){
+    renderedData = renderedData.sort( (a,b) => {
         for(let index = 0 ; index < a.length ; ++index){
             if(a[index]!==b[index]){
                 return b[index]-a[index];
@@ -360,7 +357,8 @@ function densitySort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.data = renderedData;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
+    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
 
     return prunedColumns;
 }
@@ -368,6 +366,7 @@ function densitySort(prunedColumns) {
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
+    prunedColumns.data.push(prunedColumns.samples) ;
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort(function(a,b){
@@ -376,7 +375,8 @@ function overallSort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.data = renderedData;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
+    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
 
     return prunedColumns;
 }
@@ -414,6 +414,7 @@ function sortColumns(data, sortColumn, sortOrder) {
         }
     });
 
+    data.data.push(data.samples) ;
     let renderedData = transpose(data.data);
 
     renderedData = renderedData.sort(function(a,b){
@@ -423,7 +424,8 @@ function sortColumns(data, sortColumn, sortOrder) {
 
     renderedData = transpose(renderedData);
 
-    data.data = renderedData ;
+    data.sortedSamples = renderedData[renderedData.length-1];
+    data.data = renderedData.slice(0,data.data.length-1);
 
     return data ;
 }
@@ -440,6 +442,7 @@ export default class AssociatedDataCache extends PureComponent {
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
+        prunedColumns.samples = samples ;
         let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
@@ -469,7 +472,7 @@ export default class AssociatedDataCache extends PureComponent {
 				{...this.props}
                 width={width}
 				layout={layout(width, returnedValue.data)}
-				data={{expression, pathways: returnedValue.pathways, samples}}
+				data={{expression, pathways: returnedValue.pathways, samples,sortedSamples:returnedValue.sortedSamples}}
 				associateData={returnedValue.data}/>
 		);
 	}
