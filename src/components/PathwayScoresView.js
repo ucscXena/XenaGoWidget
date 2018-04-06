@@ -31,7 +31,7 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
 
     // return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
     //     pathwayArray[tissueIndex]; // sample
-    return (tissueIndex < 0) ? { affected: sumInstances(pathwayArray) , total: associatedData[0].length}   : // pathway
+    return (tissueIndex < 0) ? {affected: sumInstances(pathwayArray), total: associatedData[0].length} : // pathway
         pathwayArray[tissueIndex]; // sample
 }
 
@@ -43,7 +43,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, data: {pathways, samples,sortedSamples}} = props;
+    let {associateData, height, layout, data: {pathways, samples, sortedSamples}} = props;
 
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
@@ -53,7 +53,7 @@ function getPointData(event, props) {
 
     return {
         pathway: pathways[pathwayIndex],
-        tissue: tissueIndex < 0 ? 'Header': sortedSamples[tissueIndex],
+        tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
         expression
     };
 }
@@ -90,17 +90,19 @@ class TissueExpressionView extends PureComponent {
     };
 
     render() {
-        const {loading, width, height, layout, data, associateData,
-            titleText,selected,filter} = this.props;
+        const {
+            loading, width, height, layout, data, associateData,
+            titleText, selected, filter
+        } = this.props;
 
-        let titleString, filterString ;
-        if(selected){
+        let titleString, filterString;
+        if (selected) {
             titleString = selected.golabel + (selected.goid ? ' (' + selected.goid + ')' : '');
-            filterString = filter.indexOf('All')===0 ? '' : filter ;
+            filterString = filter.indexOf('All') === 0 ? '' : filter;
         }
-        else{
-            titleString  = titleText ? titleText : '';
-            filterString = filter.indexOf('All')===0 ? '' : filter ;
+        else {
+            titleString = titleText ? titleText : '';
+            filterString = filter.indexOf('All') === 0 ? '' : filter;
         }
 
         let stat = loading ? <img src={spinner}/> : null;
@@ -144,8 +146,8 @@ TissueExpressionView.propTypes = {
  * @param min
  * @returns {*}
  */
-function getMutationScore(effect,min) {
-    return (mutationScores[effect]>=min) ? 1 : 0 ;
+function getMutationScore(effect, min) {
+    return (mutationScores[effect] >= min) ? 1 : 0;
     // return mutationScores[effect]
 }
 
@@ -155,39 +157,44 @@ let getGenePathwayLookup = pathways => {
     return memoize(gene => idxs.filter(i => sets[i].has(gene)));
 };
 
-function pruneColumns(data,pathways,min){
+function pruneColumns(data, pathways, min) {
     let columnScores = [];
-    for(let i = 0 ; i < pathways.length ; i++){
-        columnScores[i] = 0 ;
+    for (let i = 0; i < pathways.length; i++) {
+        columnScores[i] = 0;
     }
 
-    for( let col in data){
-        for(let row in data[col]){
+    for (let col in data) {
+        for (let row in data[col]) {
             let val = data[col][row];
-            if(val){
-                columnScores[col] += val ;
+            if (val) {
+                columnScores[col] += val;
             }
         }
     }
     let prunedPathways = [];
     let prunedAssociations = [];
 
-    for(let col in columnScores){
-        if(columnScores[col]>=min){
+    for (let col in columnScores) {
+        if (columnScores[col] >= min) {
             prunedPathways.push(pathways[col]);
             prunedAssociations.push(data[col]);
         }
     }
 
     return {
-        'data':prunedAssociations,
-        'pathways':prunedPathways
+        'data': prunedAssociations,
+        'pathways': prunedPathways
     };
 }
 
 function getGenesForPathway(pathways) {
     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
 }
+
+function getCopyNumberValue(copyNumberValue) {
+    return (!isNaN(copyNumberValue) && copyNumberValue !== 0) ? 1 : 0;
+}
+
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
@@ -199,8 +206,8 @@ function getGenesForPathway(pathways) {
  * @param min
  * @returns {any[]}
  */
-function associateData(expression, copyNumber, pathways, samples, filter,min) {
-    filter = filter.indexOf('All')===0 ? '' : filter;
+function associateData(expression, copyNumber, pathways, samples, filter, min) {
+    filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     for (let p in pathways) {
         returnArray[p] = new Array(samples.length);
@@ -215,15 +222,29 @@ function associateData(expression, copyNumber, pathways, samples, filter,min) {
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
-        let effectValue = (!filter || effect === filter) ? getMutationScore(effect,min) : 0;
+        let effectValue = (!filter || effect === filter) ? getMutationScore(effect, min) : 0;
         let pathwayIndices = genePathwayLookup(gene);
 
         for (let index of pathwayIndices) {
-            returnArray[index][sampleIndex.get(row.sample)] += effectValue ;
+            returnArray[index][sampleIndex.get(row.sample)] += effectValue;
         }
     }
 
     let geneList = getGenesForPathway(pathways);
+    if(true || filter==='copyNumber'){
+
+
+        for (let geneIndex in copyNumber) {
+            let gene = geneList[geneIndex];
+            let pathwayIndices = genePathwayLookup(gene);
+            let sampleEntries = copyNumber[geneIndex];
+            for (let sampleEntryIndex in sampleEntries[geneIndex]) {
+                for (let index of pathwayIndices) {
+                    returnArray[index][sampleEntryIndex] += getCopyNumberValue(copyNumber[geneIndex][sampleEntryIndex]);
+                }
+            }
+        }
+    }
 
 
     console.log('gene list');
@@ -241,32 +262,30 @@ function associateData(expression, copyNumber, pathways, samples, filter,min) {
     return returnArray;
 }
 
-function defaultSort(data){
-    return data ;
+function defaultSort(data) {
+    return data;
 }
 
 function getColumnIndex(data, sortColumn) {
 
-    for(let p in data.pathways){
-        if(data.pathways[p].golabel===sortColumn){
+    for (let p in data.pathways) {
+        if (data.pathways[p].golabel === sortColumn) {
             return p
         }
     }
-    for(let p in data.pathways){
-        if(data.pathways[p].gene[0]===sortColumn){
+    for (let p in data.pathways) {
+        if (data.pathways[p].gene[0] === sortColumn) {
             return p
         }
     }
-    return null ;
+    return null;
 }
 
-function transpose(a)
-{
+function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
     // or in more modern dialect
     return a.length === 0 ? a : a[0].map((_, c) => a.map(r => r[c]));
 }
-
 
 
 /**
@@ -274,17 +293,17 @@ function transpose(a)
  * @param prunedColumns
  */
 function scoreColumnDensities(prunedColumns) {
-    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
+    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
         prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
-        prunedColumns.pathways[index].index = index ;
+        prunedColumns.pathways[index].index = index;
     }
 
-    prunedColumns.pathways.sort(  (a,b) => b.density - a.density );
+    prunedColumns.pathways.sort((a, b) => b.density - a.density);
 
     // refilter data by index
     let renderedArray = [];
-    for(let index = 0 ; index < prunedColumns.pathways.length ; ++index){
-        renderedArray[index] =  prunedColumns.data[prunedColumns.pathways[index].index];
+    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
+        renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
 
     }
     prunedColumns.data = renderedArray;
@@ -305,20 +324,20 @@ function scoreColumnDensities(prunedColumns) {
  */
 function clusterSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
-    prunedColumns.data.push(prunedColumns.samples) ;
+    prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort(function(a,b){
-        for(let index = 0 ; index < a.length ; ++index){
-            if(a[index]!==b[index]){
-                return b[index]-a[index];
+    renderedData = renderedData.sort(function (a, b) {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
             }
         }
-        return sum(b)-sum(a)
+        return sum(b) - sum(a)
     });
     renderedData = transpose(renderedData);
-    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
-    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
+    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
+    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
     return prunedColumns;
 }
@@ -334,21 +353,21 @@ function hierarchicalSort(prunedColumns) {
     console.log(renderedData);
     // let kmeans = new Clustering.DBSCAN(); // DBSCAN
     // let kmeans = new Clustering.OPTICS();
-    let clusteredOrder = kmeans.run(renderedData,2,5);
+    let clusteredOrder = kmeans.run(renderedData, 2, 5);
 
     console.log(clusteredOrder);
 
-    let flattenedArray = [] ;
+    let flattenedArray = [];
 
-    for(let cluster of clusteredOrder){
-        for(let c of cluster){
+    for (let cluster of clusteredOrder) {
+        for (let c of cluster) {
             flattenedArray.push(c);
         }
     }
 
-    let sortedData = [] ;
+    let sortedData = [];
 
-    for(let flattenedIndex in flattenedArray){
+    for (let flattenedIndex in flattenedArray) {
         // console.log(flattenedIndex + ' -> ' + flattenedArray[flattenedIndex])
         let flattenedValue = flattenedArray[flattenedIndex];
         sortedData[flattenedValue] = renderedData[flattenedIndex];
@@ -362,23 +381,23 @@ function hierarchicalSort(prunedColumns) {
 }
 
 function densitySort(prunedColumns) {
-    prunedColumns.data.push(prunedColumns.samples) ;
+    prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort( (a,b) => {
-        for(let index = 0 ; index < a.length ; ++index){
-            if(a[index]!==b[index]){
-                return b[index]-a[index];
+    renderedData = renderedData.sort((a, b) => {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
             }
         }
         // return 0 ;
-        return sum(b)-sum(a)
+        return sum(b) - sum(a)
     });
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
-    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
+    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
+    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
     return prunedColumns;
 }
@@ -386,17 +405,17 @@ function densitySort(prunedColumns) {
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
-    prunedColumns.data.push(prunedColumns.samples) ;
+    prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort(function(a,b){
-        return sum(b)-sum(a)
+    renderedData = renderedData.sort(function (a, b) {
+        return sum(b) - sum(a)
     });
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
-    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
+    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
+    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
     return prunedColumns;
 }
@@ -409,45 +428,45 @@ function overallSort(prunedColumns) {
  * @returns {undefined}
  */
 function sortColumns(data, sortColumn, sortOrder) {
-    if(!sortColumn) return defaultSort(data) ;
+    if (!sortColumn) return defaultSort(data);
 
 
     // sort tissues by the column in the sort order specified
-    let columnIndex = getColumnIndex(data,sortColumn);
+    let columnIndex = getColumnIndex(data, sortColumn);
     let sortPathway = data.data[columnIndex];
     let sortedColumnIndices = [];
-    for(let i = 0 ; i < sortPathway.length ; i++){
-        sortedColumnIndices.push( {
+    for (let i = 0; i < sortPathway.length; i++) {
+        sortedColumnIndices.push({
                 index: i,
                 value: sortPathway[i]
             }
         );
-        sortedColumnIndices.value = i ;
+        sortedColumnIndices.value = i;
     }
 
-    sortedColumnIndices.sort(function(a,b){
-        if(sortOrder==='desc'){
-            return b.value-a.value ;
+    sortedColumnIndices.sort(function (a, b) {
+        if (sortOrder === 'desc') {
+            return b.value - a.value;
         }
-        else{
-            return a.value-b.value ;
+        else {
+            return a.value - b.value;
         }
     });
 
-    data.data.push(data.samples) ;
+    data.data.push(data.samples);
     let renderedData = transpose(data.data);
 
-    renderedData = renderedData.sort(function(a,b){
-        let returnValue = a[columnIndex]-b[columnIndex];
-        return sortOrder==='desc' ? -returnValue : returnValue ;
+    renderedData = renderedData.sort(function (a, b) {
+        let returnValue = a[columnIndex] - b[columnIndex];
+        return sortOrder === 'desc' ? -returnValue : returnValue;
     });
 
     renderedData = transpose(renderedData);
 
-    data.sortedSamples = renderedData[renderedData.length-1];
-    data.data = renderedData.slice(0,data.data.length-1);
+    data.sortedSamples = renderedData[renderedData.length - 1];
+    data.data = renderedData.slice(0, data.data.length - 1);
 
-    return data ;
+    return data;
 }
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
@@ -456,50 +475,55 @@ let minWidth = 400;
 let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
-	render() {
+    render() {
         console.log('associate dat')
-	    console.log(this.props)
-        let {selectedSort,min, filter, sortColumn,sortOrder,filterPercentage,data: {expression, pathways, samples,copyNumber}} = this.props;
-        let associatedData = associateData(expression,copyNumber, pathways, samples, filter,min);
+        console.log(this.props)
+        let {selectedSort, min, filter, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let associatedData = associateData(expression, copyNumber, pathways, samples, filter, min);
         // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
-        let prunedColumns = pruneColumns(associatedData,pathways,filterMin);
-        prunedColumns.samples = samples ;
+        let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
+        prunedColumns.samples = samples;
         let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
         switch (selectedSort) {
             case 'Overall':
                 returnedValue = overallSort(prunedColumns);
-                break ;
+                break;
             case 'Density':
                 returnedValue = densitySort(prunedColumns);
-                break ;
+                break;
             case 'Hierarchical':
                 returnedValue = hierarchicalSort(prunedColumns);
-                break ;
+                break;
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
-                break ;
+                break;
             case 'Per Column':
-                returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
-                break ;
+                returnedValue = sortColumns(prunedColumns, sortColumn, sortOrder);
+                break;
             default:
                 returnedValue = clusterSort(prunedColumns);
-                break ;
+                break;
         }
 
-		return (
-			<TissueExpressionView
-				{...this.props}
+        return (
+            <TissueExpressionView
+                {...this.props}
                 width={width}
-				layout={layout(width, returnedValue.data)}
-				data={{expression, pathways: returnedValue.pathways, samples,sortedSamples:returnedValue.sortedSamples}}
-				associateData={returnedValue.data}/>
-		);
-	}
+                layout={layout(width, returnedValue.data)}
+                data={{
+                    expression,
+                    pathways: returnedValue.pathways,
+                    samples,
+                    sortedSamples: returnedValue.sortedSamples
+                }}
+                associateData={returnedValue.data}/>
+        );
+    }
 
 
 }
