@@ -4,6 +4,15 @@ import PropTypes from 'prop-types';
 import {List, ListItem, ListSubHeader} from "react-toolbox";
 
 export default class HoverGeneView extends PureComponent {
+
+    getRatio(data){
+        let returnString = data.expression.affected + '/' + data.expression.total;
+        returnString += '  (';
+        returnString +=  ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total))*100.0).toFixed(0);
+        returnString += '%)';
+        return returnString ;
+    }
+
     render() {
         let {data, title} = this.props;
         if (data.tissue) {
@@ -40,8 +49,8 @@ export default class HoverGeneView extends PureComponent {
                             legend='Gene'
                         />
                         <ListItem
-                            caption={Number.parseFloat(data.expression * 100.0).toFixed(0)}
-                            legend='Samples Affected (%)'
+                            caption={this.getRatio(data)}
+                            legend='Samples Affected'
                         />
                     </List>
                     }

@@ -52,12 +52,12 @@ const style = {
         padding: 10,
     },
     fadeIn: {
-        visibility: visible,
+        visibility: 'visible',
         opacity: 0,
         transition: 'visibility 0s, opacity 0.5s ease-out'
     },
     fadeOut: {
-        visibility: hidden,
+        visibility: 'hidden',
         transition: 'opacity 1s ease'
     },
 
@@ -419,8 +419,7 @@ export default class XenaGoApp extends PureComponent {
                     <Col md={this.state.uiControls.gene.columns}>
                         <Card style={{width: this.state.uiControls.gene.columnWidth}}>
                             <CardActions>
-                                <Button label='&lArr; Close' raised primary onClick={this.closeGeneView}
-                                        className={style.buttonStyle}/>
+                                <Button label='&lArr; Close' raised primary onClick={this.closeGeneView} />
                             </CardActions>
 
                             <CardTitle

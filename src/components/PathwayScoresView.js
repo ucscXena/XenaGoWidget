@@ -30,7 +30,7 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
 
     // return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
     //     pathwayArray[tissueIndex]; // sample
-    return (tissueIndex < 0) ? sumInstances(pathwayArray) / associatedData[0].length : // pathway
+    return (tissueIndex < 0) ? { affected: sumInstances(pathwayArray) , total: associatedData[0].length}   : // pathway
         pathwayArray[tissueIndex]; // sample
 }
 

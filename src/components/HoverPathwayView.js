@@ -4,8 +4,17 @@ import PropTypes from 'prop-types';
 import {List, ListItem, ListSubHeader} from "react-toolbox";
 
 export default class HoverPathwayView extends PureComponent {
+
+    getRatio(data){
+        let returnString = data.expression.affected + '/' + data.expression.total;
+        returnString += '  (';
+        returnString +=  ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total))*100.0).toFixed(0);
+        returnString += '%)';
+        return returnString ;
+    }
+
     render() {
-        var {data, title} = this.props;
+        let {data, title} = this.props;
         if (data.tissue) {
             return (
                 <div>
@@ -52,8 +61,8 @@ export default class HoverPathwayView extends PureComponent {
                                 legend='Genes'
                             />
                             <ListItem
-                                caption={Number.parseFloat(data.expression * 100.0).toFixed(0)}
-                                legend='Samples Affected (%)'
+                                caption={this.getRatio(data)}
+                                legend='Samples Affected'
                             />
                         </List>
                     }
