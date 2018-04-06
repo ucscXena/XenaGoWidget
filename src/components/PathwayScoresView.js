@@ -42,9 +42,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    console.log('getting point for props')
-    console.log(props)
-    let {associateData, height, layout, data: {pathways, samples}} = props;
+    let {associateData, height, layout, data: {pathways, samples,sortedSamples}} = props;
 
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
@@ -54,7 +52,7 @@ function getPointData(event, props) {
 
     return {
         pathway: pathways[pathwayIndex],
-        tissue: tissueIndex < 0 ? 'Header': samples[tissueIndex],
+        tissue: tissueIndex < 0 ? 'Header': sortedSamples[tissueIndex],
         expression
     };
 }
@@ -286,50 +284,21 @@ function scoreColumnDensities(prunedColumns) {
  * @returns {undefined}
  */
 function clusterSort(prunedColumns) {
-    console.log('custer sort')
-    console.log(prunedColumns)
     scoreColumnDensities(prunedColumns);
     prunedColumns.data.push(prunedColumns.samples) ;
-
-    console.log('altered')
-    console.log(prunedColumns.data)
-
     let renderedData = transpose(prunedColumns.data);
-    console.log('transposed')
-    console.log(renderedData)
-
-
 
     renderedData = renderedData.sort(function(a,b){
         for(let index = 0 ; index < a.length ; ++index){
             if(a[index]!==b[index]){
-                // if(isNaN(a[index])) return 1 ;
-                // if(isNaN(b[index])) return -1 ;
-
                 return b[index]-a[index];
             }
         }
-        // return 0 ;
         return sum(b)-sum(a)
     });
-
-    console.log('sorted')
-    console.log(renderedData)
-
     renderedData = transpose(renderedData);
-
-    console.log('untransposed')
-    console.log(renderedData)
-
-    let sortedSamples = renderedData[renderedData.length-1];
-    console.log('sortedSamples')
-    console.log(sortedSamples)
-
-    prunedColumns.sortedSamples = sortedSamples;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
     prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
-
-    console.log('reset')
-    console.log(prunedColumns)
 
     return prunedColumns;
 }
@@ -373,9 +342,7 @@ function hierarchicalSort(prunedColumns) {
 }
 
 function densitySort(prunedColumns) {
-    // scoreColumnDensities(prunedColumns);
-
-    console.log(prunedColumns)
+    prunedColumns.data.push(prunedColumns.samples) ;
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort( (a,b) => {
@@ -390,7 +357,8 @@ function densitySort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.data = renderedData;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
+    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
 
     return prunedColumns;
 }
@@ -398,6 +366,7 @@ function densitySort(prunedColumns) {
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
+    prunedColumns.data.push(prunedColumns.samples) ;
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort(function(a,b){
@@ -406,7 +375,8 @@ function overallSort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.data = renderedData;
+    prunedColumns.sortedSamples = renderedData[renderedData.length-1];
+    prunedColumns.data = renderedData.slice(0,prunedColumns.data.length-1);
 
     return prunedColumns;
 }
@@ -444,6 +414,7 @@ function sortColumns(data, sortColumn, sortOrder) {
         }
     });
 
+    data.data.push(data.samples) ;
     let renderedData = transpose(data.data);
 
     renderedData = renderedData.sort(function(a,b){
@@ -453,7 +424,8 @@ function sortColumns(data, sortColumn, sortOrder) {
 
     renderedData = transpose(renderedData);
 
-    data.data = renderedData ;
+    data.sortedSamples = renderedData[renderedData.length-1];
+    data.data = renderedData.slice(0,data.data.length-1);
 
     return data ;
 }
@@ -485,13 +457,7 @@ export default class AssociatedDataCache extends PureComponent {
                 returnedValue = hierarchicalSort(prunedColumns);
                 break ;
             case 'Cluster':
-                console.log('input cluster pruned columns')
-                console.log(prunedColumns)
                 returnedValue = clusterSort(prunedColumns);
-                console.log('cluster pruned columns')
-                console.log(prunedColumns)
-                console.log('cluster result value')
-                console.log(returnedValue)
                 break ;
             case 'Per Column':
                 returnedValue = sortColumns(prunedColumns,sortColumn,sortOrder);
@@ -506,7 +472,7 @@ export default class AssociatedDataCache extends PureComponent {
 				{...this.props}
                 width={width}
 				layout={layout(width, returnedValue.data)}
-				data={{expression, pathways: returnedValue.pathways, samples}}
+				data={{expression, pathways: returnedValue.pathways, samples,sortedSamples:returnedValue.sortedSamples}}
 				associateData={returnedValue.data}/>
 		);
 	}
