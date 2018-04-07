@@ -192,7 +192,7 @@ function getGenesForPathway(pathways) {
 }
 
 function getCopyNumberValue(copyNumberValue) {
-    console.log('calcauting from: '+copyNumberValue + ' => '+ !isNaN(copyNumberValue));
+    console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
     return (!isNaN(copyNumberValue) && copyNumberValue !== 0) ? 1 : 0;
 }
 
@@ -231,25 +231,47 @@ function associateData(expression, copyNumber, pathways, samples, filter, min) {
         }
     }
 
+    function getSum(total, num) {
+        return total + num;
+    }
+
+    // console.log('input')
+    // console.log(returnArray)
+    // returnArray.forEach(a => {
+    //     console.log(a.reduce(getSum))
+    // });
+
     let geneList = getGenesForPathway(pathways);
-    if(true || filter==='copyNumber'){
+    if (true || filter === 'copyNumber') {
 
 
         for (let geneIndex in copyNumber) {
+            // console.log('gene index: ' + geneIndex)
             let gene = geneList[geneIndex];
+            // console.log('gene : ' + gene)
             let pathwayIndices = genePathwayLookup(gene);
             let sampleEntries = copyNumber[geneIndex];
-            for (let sampleEntryIndex in sampleEntries[geneIndex]) {
+            // console.log('sample entries for : ' + geneIndex)
+            // console.log(sampleEntries)
+            for (let sampleEntryIndex in sampleEntries) {
                 for (let index of pathwayIndices) {
-                    console.log('gene index: '+geneIndex);
-                    console.log('sample entry index: '+sampleEntryIndex);
                     let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
-                    console.log('input value: '+ returnValue)
-                    returnArray[index][sampleEntryIndex] += returnValue;
+                    if (returnValue > 0) {
+                        // console.log('input valud: ' + returnArray[index][sampleEntryIndex])
+                        // console.log('index: ' + index)
+                        // console.log('sampleEntryIndex: ' + sampleEntryIndex)
+                        returnArray[index][sampleEntryIndex] += returnValue;
+                        // console.log('outputvalud: ' + returnArray[index][sampleEntryIndex])
+                    }
                 }
             }
         }
     }
+    // console.log('output')
+    // console.log(returnArray)
+    // returnArray.forEach(a => {
+    //     console.log(a.reduce(getSum))
+    // });
 
 
     console.log('gene list');
