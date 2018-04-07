@@ -19,4 +19,5 @@ React widget for analyzing expression of tissue samples within a pathway.
 ## To Run
 
    npm install
+
    npm start
