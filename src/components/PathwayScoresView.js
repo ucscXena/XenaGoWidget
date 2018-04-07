@@ -192,6 +192,7 @@ function getGenesForPathway(pathways) {
 }
 
 function getCopyNumberValue(copyNumberValue) {
+    console.log('calcauting from: '+copyNumberValue + ' => '+ !isNaN(copyNumberValue));
     return (!isNaN(copyNumberValue) && copyNumberValue !== 0) ? 1 : 0;
 }
 
@@ -240,7 +241,11 @@ function associateData(expression, copyNumber, pathways, samples, filter, min) {
             let sampleEntries = copyNumber[geneIndex];
             for (let sampleEntryIndex in sampleEntries[geneIndex]) {
                 for (let index of pathwayIndices) {
-                    returnArray[index][sampleEntryIndex] += getCopyNumberValue(copyNumber[geneIndex][sampleEntryIndex]);
+                    console.log('gene index: '+geneIndex);
+                    console.log('sample entry index: '+sampleEntryIndex);
+                    let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
+                    console.log('input value: '+ returnValue)
+                    returnArray[index][sampleEntryIndex] += returnValue;
                 }
             }
         }
