@@ -115,8 +115,8 @@ export default class XenaGoApp extends PureComponent {
             loadState: 'loading',
             selectedCohort: 'TCGA Ovarian Cancer (OV)',
             cohortData: {},
-            tissueExpressionFilter: '',
-            geneExpressionFilter: '',
+            tissueExpressionFilter: 'All',
+            geneExpressionFilter: 'All',
             minFilter: 2,
             filterPercentage: 0.005,
             geneData: {
