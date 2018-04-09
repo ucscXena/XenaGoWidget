@@ -17,7 +17,7 @@ export default class HoverPathwayView extends PureComponent {
         let {data, title} = this.props;
         if (data.tissue) {
             return (
-                <div>
+                <div style={{height:'500px'}}>
                     {data.tissue !== 'Header' &&
                     <List>
                         {title &&
@@ -70,7 +70,7 @@ export default class HoverPathwayView extends PureComponent {
             );
         }
         else {
-            return (<div style={{height: '300px'}}>
+            return (<div style={{height: '500px'}}>
                 <List>
                     <ListItem caption='Hover over pathway'/>
                 </List>
