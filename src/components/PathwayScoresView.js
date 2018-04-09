@@ -210,10 +210,6 @@ function pruneColumns(data, pathways, min) {
  * @returns {any[]}
  */
 function associateData(expression, copyNumber, geneList, pathways, samples, filter, min) {
-    // console.log('inptut pathways')
-    // console.log(pathways)
-    // console.log('gene list')
-    // console.log(geneList)
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -242,36 +238,14 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
     }
 
 
-    // console.log('pathways: ')
-    // console.log(pathways)
-
-    // let geneList = getGenesForPathway(pathways);
-
-    // console.log('geneList: ')
-    // console.log(geneList)
-
     if (!filter || filter === 'Copy Number') {
 
         for (let pathwayIndex in pathways) {
             let p = pathways[pathwayIndex];
-            // console.log('pathways: ')
-            // console.log(p)
             for (let gene of p.gene) {
-                // let gene = p.gene[0];
-                // console.log(gene)
                 let geneIndex = geneList.indexOf(gene);
-                // console.log(geneIndex)
-
-                // let copyNumberData = copyNumber[geneIndex]
-                // // copyNumberData = copyNumberData.forEach(number => getCopyNumberValue(number))
-                // console.log('for gene index: '+geneIndex);
-                // console.log(samples.length)
-                // console.log(copyNumberData.length)
-                // console.log(copyNumberData)
 
                 let pathwayIndices = genePathwayLookup(gene);
-                // console.log(gene)
-                // console.log(pathwayIndices)
                 let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
                 for (let sampleEntryIndex in sampleEntries) {
                     // we retrieve proper indices from the pathway to put back in the right place
