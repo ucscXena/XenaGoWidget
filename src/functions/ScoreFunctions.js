@@ -39,7 +39,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
         vg.save();
         vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
         vg.rotate(-Math.PI / 2);
-        vg.font = "10px Courier";
+        vg.font = "10px Arial";
         vg.translate(-labelHeight, el.start, labelHeight);
 
         let geneLength = d.gene.length;
