@@ -83,6 +83,8 @@ export default {
     'intron': 0,
     'Intron': 0,
     'intergenic_region': 0,
-    'IGR': 0
+    'IGR': 0,
+
+    'Copy Number':1,
 };
 

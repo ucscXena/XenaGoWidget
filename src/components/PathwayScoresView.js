@@ -9,6 +9,7 @@ import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import Clustering from 'density-clustering';
 import {pick, pluck, flatten} from 'underscore';
+import {getCopyNumberValue} from "../functions/ScoreFunctions";
 
 let labelHeight = 150;
 
@@ -191,10 +192,10 @@ function getGenesForPathway(pathways) {
     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
 }
 
-function getCopyNumberValue(copyNumberValue) {
-    console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
-    return (!isNaN(copyNumberValue) && copyNumberValue !== 0) ? 1 : 0;
-}
+// function getCopyNumberValue(copyNumberValue) {
+//     // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
+//     return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2 ) ? 1 : 0;
+// }
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -242,7 +243,7 @@ function associateData(expression, copyNumber, pathways, samples, filter, min) {
     // });
 
     let geneList = getGenesForPathway(pathways);
-    if (true || filter === 'copyNumber') {
+    if (!filter || filter === 'Copy Number') {
 
 
         for (let geneIndex in copyNumber) {

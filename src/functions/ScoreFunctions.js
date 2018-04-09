@@ -10,6 +10,7 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
+
 function drawPathwayLabels(vg, width, height, layout, pathways) {
     if (layout[0].size <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
@@ -153,6 +154,12 @@ function drawExpressionData2(vg, width, height, data) {
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 }
 
+
+
+export function getCopyNumberValue(copyNumberValue) {
+    // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
+    return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2) ? 1 : 0;
+}
 
 export default {
 
