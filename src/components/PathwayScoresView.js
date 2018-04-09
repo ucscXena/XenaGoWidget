@@ -238,39 +238,45 @@ function associateData(expression, copyNumber,geneList, pathways, samples, filte
     }
 
 
-    console.log('pathways: ')
-    console.log(pathways)
+    // console.log('pathways: ')
+    // console.log(pathways)
 
     // let geneList = getGenesForPathway(pathways);
 
-    console.log('geneList: ')
-    console.log(geneList)
+    // console.log('geneList: ')
+    // console.log(geneList)
 
     if (!filter || filter === 'Copy Number') {
 
         for(let pathwayIndex in pathways){
             let p = pathways[pathwayIndex];
-            let gene = p.gene[0];
-            // console.log(gene)
-            let geneIndex = geneList.indexOf(gene);
-            // console.log(geneIndex)
+            // console.log('pathways: ')
+            // console.log(p)
+            for(let gene of p.gene){
+                // let gene = p.gene[0];
+                // console.log(gene)
+                let geneIndex = geneList.indexOf(gene);
+                // console.log(geneIndex)
 
-            // let copyNumberData = copyNumber[geneIndex]
-            // // copyNumberData = copyNumberData.forEach(number => getCopyNumberValue(number))
-            // console.log('for gene index: '+geneIndex);
-            // console.log(samples.length)
-            // console.log(copyNumberData.length)
-            // console.log(copyNumberData)
+                // let copyNumberData = copyNumber[geneIndex]
+                // // copyNumberData = copyNumberData.forEach(number => getCopyNumberValue(number))
+                // console.log('for gene index: '+geneIndex);
+                // console.log(samples.length)
+                // console.log(copyNumberData.length)
+                // console.log(copyNumberData)
 
-            let pathwayIndices = genePathwayLookup(gene);
-            // console.log(pathwayIndices)
-            let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
-            for (let sampleEntryIndex in sampleEntries) {
-                for (let index of pathwayIndices) {
-                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
-                    // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
-                    if (returnValue > 0) {
-                        returnArray[index][sampleEntryIndex] += returnValue;
+                let pathwayIndices = genePathwayLookup(gene);
+                // console.log(gene)
+                // console.log(pathwayIndices)
+                let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
+                for (let sampleEntryIndex in sampleEntries) {
+                    // we retrieve proper indices from the pathway to put back in the right place
+                    for (let index of pathwayIndices) {
+                        let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
+                        // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
+                        if (returnValue > 0) {
+                            returnArray[index][sampleEntryIndex] += returnValue;
+                        }
                     }
                 }
             }
