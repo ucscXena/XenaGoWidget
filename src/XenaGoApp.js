@@ -167,12 +167,14 @@ export default class XenaGoApp extends PureComponent {
     }
 
     clickPathway = (pathwayClickData) => {
-        let {expression, samples,copyNumber,geneList} = this.state.pathwayData;
+        let {expression, samples,copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
 
-        console.log('clicking on pathwaydata: '+ this.state.pathwayData)
+        let pathways = gene.map(gene => ({goid, golabel, gene: [gene] }));
+        console.log('seleecxted pathways')
+        console.log(pathways)
 
-        let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
+
 
         let sortPathwayName = this.state.sortPathwayName;
         let sortPathwayOrder = this.state.sortPathwayOrder;
@@ -197,8 +199,7 @@ export default class XenaGoApp extends PureComponent {
                 expression,
                 samples,
                 pathways,
-                geneList:geneList,
-                copyNumber: copyNumber,
+                copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
             uiControls: {
@@ -341,14 +342,6 @@ export default class XenaGoApp extends PureComponent {
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
-                console.log('samples: ');
-                console.log(samples);
-                console.log('mutations: ');
-                console.log(mutations);
-                console.log('geneList: ');
-                console.log(geneList);
-                console.log('copyNumber: ');
-                console.log(copyNumber);
                 this.setState({
                     pathwayData: {
                         copyNumber,
@@ -397,6 +390,7 @@ export default class XenaGoApp extends PureComponent {
         // console.log(filteredMutationVector)
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
+        let geneList = this.getGenesForPathway(PathWays);
 
         return (
             <Grid>
@@ -426,6 +420,7 @@ export default class XenaGoApp extends PureComponent {
                                               data={this.state.pathwayData} titleText=""
                                               filter={this.state.tissueExpressionFilter}
                                               filterPercentage={this.state.filterPercentage}
+                                              geneList={geneList}
                                               loading={cohortLoading}
                                               min={this.state.minFilter}
                                               sortColumn={this.state.sortPathwayName}
@@ -470,6 +465,7 @@ export default class XenaGoApp extends PureComponent {
                                               selected={this.state.geneData.selectedPathway}
                                               filter={this.state.geneExpressionFilter}
                                               filterPercentage={this.state.filterPercentage}
+                                              geneList={geneList}
                                               loading={cohortLoading}
                                               min={this.state.minFilter}
                                               sortColumn={this.state.sortGeneName}

@@ -13,20 +13,15 @@ export class CohortSelector extends PureComponent {
     }
 
     onChange = (event) => {
-        console.log(event);
         this.setState({selectedCohort: event});
         let {onChange} = this.props;
         if (onChange) {
-            console.log('on change method: ' + event);
             onChange(event);
         }
     };
 
 
-
     render() {
-        const {cohorts} = this.props;
-        console.log(this.props.cohorts)
         return (
             <Dropdown label={'Select Cohort'} value={this.state.selectedCohort} onChange={this.onChange}
                       source={this.props.cohorts.map(c => ( {label:c.name,value:c.name} ))} />

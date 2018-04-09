@@ -188,9 +188,9 @@ function pruneColumns(data, pathways, min) {
     };
 }
 
-function getGenesForPathway(pathways) {
-    return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-}
+// function getGenesForPathway(pathways) {
+//     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
+// }
 
 // function getCopyNumberValue(copyNumberValue) {
 //     // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
@@ -208,7 +208,11 @@ function getGenesForPathway(pathways) {
  * @param min
  * @returns {any[]}
  */
-function associateData(expression, copyNumber, pathways, samples, filter, min) {
+function associateData(expression, copyNumber,geneList, pathways, samples, filter, min) {
+    console.log('inptut pathways')
+    console.log(pathways)
+    console.log('gene list')
+    console.log(geneList)
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     for (let p in pathways) {
@@ -221,6 +225,7 @@ function associateData(expression, copyNumber, pathways, samples, filter, min) {
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
+    // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     for (let row of expression.rows) {
         let gene = row.gene;
         let effect = row.effect;
@@ -232,60 +237,61 @@ function associateData(expression, copyNumber, pathways, samples, filter, min) {
         }
     }
 
-    function getSum(total, num) {
-        return total + num;
-    }
 
-    // console.log('input')
-    // console.log(returnArray)
-    // returnArray.forEach(a => {
-    //     console.log(a.reduce(getSum))
-    // });
+    console.log('pathways: ')
+    console.log(pathways)
 
-    let geneList = getGenesForPathway(pathways);
+    // let geneList = getGenesForPathway(pathways);
+
+    console.log('geneList: ')
+    console.log(geneList)
+
     if (!filter || filter === 'Copy Number') {
 
+        for(let pathwayIndex in pathways){
+            let p = pathways[pathwayIndex];
+            let gene = p.gene[0];
+            // console.log(gene)
+            let geneIndex = geneList.indexOf(gene);
+            // console.log(geneIndex)
 
-        for (let geneIndex in copyNumber) {
-            // console.log('gene index: ' + geneIndex)
-            let gene = geneList[geneIndex];
-            // console.log('gene : ' + gene)
+            // let copyNumberData = copyNumber[geneIndex]
+            // // copyNumberData = copyNumberData.forEach(number => getCopyNumberValue(number))
+            // console.log('for gene index: '+geneIndex);
+            // console.log(samples.length)
+            // console.log(copyNumberData.length)
+            // console.log(copyNumberData)
+
             let pathwayIndices = genePathwayLookup(gene);
-            let sampleEntries = copyNumber[geneIndex];
-            // console.log('sample entries for : ' + geneIndex)
-            // console.log(sampleEntries)
+            // console.log(pathwayIndices)
+            let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
             for (let sampleEntryIndex in sampleEntries) {
                 for (let index of pathwayIndices) {
-                    let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
+                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
+                    // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
                     if (returnValue > 0) {
-                        // console.log('input valud: ' + returnArray[index][sampleEntryIndex])
-                        // console.log('index: ' + index)
-                        // console.log('sampleEntryIndex: ' + sampleEntryIndex)
                         returnArray[index][sampleEntryIndex] += returnValue;
-                        // console.log('outputvalud: ' + returnArray[index][sampleEntryIndex])
                     }
                 }
             }
+
+
         }
+
+        // for (let geneIndex in copyNumber) {
+        //     let gene = geneList[geneIndex];
+        //     let pathwayIndices = genePathwayLookup(gene);
+        //     let sampleEntries = copyNumber[geneIndex];
+        //     for (let sampleEntryIndex in sampleEntries) {
+        //         for (let index of pathwayIndices) {
+        //             let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
+        //             if (returnValue > 0) {
+        //                 returnArray[index][sampleEntryIndex] += returnValue;
+        //             }
+        //         }
+        //     }
+        // }
     }
-    // console.log('output')
-    // console.log(returnArray)
-    // returnArray.forEach(a => {
-    //     console.log(a.reduce(getSum))
-    // });
-
-
-    console.log('gene list');
-    console.log(geneList);
-
-    // TODO: copy number for each gene needs to be pushed back into the appropriate pathway
-    // this is typically 1315
-    // should be the identical sample numbers, though
-    console.log('copy numbers');
-    console.log(copyNumber);
-
-    console.log('into returnArray ');
-    console.log(returnArray);
 
     return returnArray;
 }
@@ -504,10 +510,8 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        console.log('associate dat')
-        console.log(this.props)
-        let {selectedSort, min, filter, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
-        let associatedData = associateData(expression, copyNumber, pathways, samples, filter, min);
+        let {selectedSort, min, filter, geneList,sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let associatedData = associateData(expression, copyNumber, geneList,pathways, samples, filter, min);
         // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);

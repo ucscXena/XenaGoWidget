@@ -12,26 +12,15 @@ function lowerCaseCompare(a, b) {
 
 
 function compileData(filteredEffects, data) {
-    console.log('compiling data')
-    console.log(data);
     let {pathways, copyNumber,expression: {rows}} = data;
-    console.log('copyNumber')
-    console.log(copyNumber)
 
     let genes = new Set(flatten(pluck(pathways, 'gene')));
     let hasGene = row => genes.has(row.gene);
     let effects = groupBy(rows.filter(hasGene), 'effect');
 
-    console.log('effects')
-    console.log(effects)
-
-
-
 
     let returnObject = mapObject(pick(effects, filteredEffects),
                      list => list.length);
-    console.log('return object');
-    console.log(returnObject);
 
     let copyNumberTotal = 0 ;
     for(let c of copyNumber){
@@ -70,11 +59,6 @@ export class FilterSelector extends PureComponent {
     render() {
         const {filters,pathwayData,selected} = this.props;
 
-        console.log('filters: ');
-        console.log(filters)
-
-        console.log('pathwayData: ');
-        console.log(pathwayData)
         let counts = compileData(Object.keys(filters), pathwayData);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
