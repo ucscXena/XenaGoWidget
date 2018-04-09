@@ -433,7 +433,7 @@ export default class XenaGoApp extends PureComponent {
                     <Col md={this.state.uiControls.gene.columns}>
                         <Card style={{width: this.state.uiControls.gene.columnWidth}}>
                             <CardActions>
-                                <Button label='&lArr; Close' raised primary onClick={this.closeGeneView} />
+                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView} />
                             </CardActions>
 
                             <CardTitle
