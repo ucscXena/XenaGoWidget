@@ -387,8 +387,8 @@ export default class XenaGoApp extends PureComponent {
         let filteredMutationVector = pick(mutationVector,
             v => v >= this.state.minFilter);
         filteredMutationVector['Copy Number'] = 1 ;
-        console.log('filtered mutation vector');
-        console.log(filteredMutationVector)
+        // console.log('filtered mutation vector');
+        // console.log(filteredMutationVector)
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
 

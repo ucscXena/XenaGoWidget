@@ -5,12 +5,12 @@ import {List, ListItem, ListSubHeader} from "react-toolbox";
 
 export default class HoverPathwayView extends PureComponent {
 
-    getRatio(data){
+    getRatio(data) {
         let returnString = data.expression.affected + '/' + data.expression.total;
         returnString += '  (';
-        returnString +=  ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total))*100.0).toFixed(0);
+        returnString += ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
         returnString += '%)';
-        return returnString ;
+        return returnString;
     }
 
     render() {
@@ -70,7 +70,11 @@ export default class HoverPathwayView extends PureComponent {
             );
         }
         else {
-            return <div/>
+            return (<div style={{height: '300px'}}>
+                <List>
+                    <ListItem caption='Hover over pathway'/>
+                </List>
+            </div>);
         }
     }
 }
