@@ -227,7 +227,7 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
         for (let row of expression.rows) {
             let gene = row.gene;
             let effect = row.effect;
-            let effectValue =  getMutationScore(effect, min) ;
+            let effectValue = getMutationScore(effect, min);
             // let effectValue = (!filter || effect === filter) ? getMutationScore(effect, min) : 0;
             let pathwayIndices = genePathwayLookup(gene);
 
@@ -240,22 +240,27 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
 
     if (!filter || filter === 'Copy Number') {
 
+        let processedGenes = [];
+
         for (let pathwayIndex in pathways) {
             let p = pathways[pathwayIndex];
             for (let gene of p.gene) {
-                let geneIndex = geneList.indexOf(gene);
+                if (processedGenes.indexOf(gene) < 0) {
+                    let geneIndex = geneList.indexOf(gene);
 
-                let pathwayIndices = genePathwayLookup(gene);
-                let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
-                for (let sampleEntryIndex in sampleEntries) {
+                    let pathwayIndices = genePathwayLookup(gene);
+                    let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
                     // we retrieve proper indices from the pathway to put back in the right place
                     for (let index of pathwayIndices) {
-                        let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
-                        // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
-                        if (returnValue > 0) {
-                            returnArray[index][sampleEntryIndex] += returnValue;
+                        for (let sampleEntryIndex in sampleEntries) {
+                            let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
+                            // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
+                            if (returnValue > 0) {
+                                returnArray[index][sampleEntryIndex] += returnValue;
+                            }
                         }
                     }
+                    processedGenes.push(gene)
                 }
             }
 
