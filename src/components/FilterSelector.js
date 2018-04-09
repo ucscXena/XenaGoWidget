@@ -21,13 +21,6 @@ function compileData(filteredEffects, data,geneList) {
     let returnObject = mapObject(pick(effects, filteredEffects),
                      list => list.length);
 
-    // console.log('genes')
-    // console.log(genes)
-    // console.log('pathways')
-    // console.log(pathways)
-    // console.log('geneList')
-    // console.log(geneList)
-
     let copyNumberTotal = 0 ;
     for(let gene of genes){
         let geneIndex = geneList.indexOf(gene)
@@ -88,7 +81,7 @@ export class FilterSelector extends PureComponent {
         let total = sum(Object.values(counts));
 
         const labelValues = labels.map(label => ( {label:label+ ' ('+ counts[label]+')',value:label}));
-        labelValues.unshift({label:'All ('+total+')',value:'All'});
+        labelValues.unshift({label:'CNV + Mutation ('+total+')',value:'All'});
         // labelValues.unshift({label:'Copy Number ('+copyNumberCount+')',value:'CopyNumber'});
 
         const filterLabel = 'Filter ('+total+')';
