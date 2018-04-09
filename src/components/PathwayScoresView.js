@@ -310,6 +310,42 @@ function transpose(a) {
  * Populates density for each column
  * @param prunedColumns
  */
+function sortColumnHierarchical(prunedColumns) {
+    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
+        prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
+        prunedColumns.pathways[index].index = index;
+    }
+
+
+    // // // let kmeans = new Clustering.OPTICS();
+    let kmeans = new Clustering.KMEANS();
+    console.log(prunedColumns.pathways)
+    // let clusteredOrders = kmeans.run(prunedColumns.pathways.density,1,1);
+    // console.log(prunedColumns)
+    // console.log(clusteredOrders)
+
+    // prunedColumns.pathways.sort((a, b) => b.density - a.density);
+    // prunedColumns.pathways.sort((a, b) => b.density - a.density);
+    //
+    // // refilter data by index
+    // let renderedArray = [];
+    // for (let index = 0; index < prunedColumns.pathways.length; ++index) {
+    //     renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
+    //
+    // }
+    let renderedArray = [];
+    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
+        renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
+
+    }
+    prunedColumns.data = renderedArray;
+
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
 function scoreColumnDensities(prunedColumns) {
     for (let index = 0; index < prunedColumns.pathways.length; ++index) {
         prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
@@ -325,7 +361,6 @@ function scoreColumnDensities(prunedColumns) {
 
     }
     prunedColumns.data = renderedArray;
-
 }
 
 /**
@@ -361,39 +396,23 @@ function clusterSort(prunedColumns) {
 }
 
 function hierarchicalSort(prunedColumns) {
-    // scoreColumnDensities(prunedColumns);
+    sortColumnHierarchical(prunedColumns);
 
-    // let kmeans = new Clustering.OPTICS();
-    let kmeans = new Clustering.KMEANS();
-    // let clusteredOrder = kmeans.run(prunedColumns.data,2,5);
+    // scoreColumnDensities(prunedColumns);
+    prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    console.log(renderedData);
-    // let kmeans = new Clustering.DBSCAN(); // DBSCAN
-    // let kmeans = new Clustering.OPTICS();
-    let clusteredOrder = kmeans.run(renderedData, 2, 5);
-
-    console.log(clusteredOrder);
-
-    let flattenedArray = [];
-
-    for (let cluster of clusteredOrder) {
-        for (let c of cluster) {
-            flattenedArray.push(c);
+    renderedData = renderedData.sort(function (a, b) {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
+            }
         }
-    }
-
-    let sortedData = [];
-
-    for (let flattenedIndex in flattenedArray) {
-        // console.log(flattenedIndex + ' -> ' + flattenedArray[flattenedIndex])
-        let flattenedValue = flattenedArray[flattenedIndex];
-        sortedData[flattenedValue] = renderedData[flattenedIndex];
-    }
-
-    renderedData = transpose(sortedData);
-
-    prunedColumns.data = renderedData;
+        return sum(b) - sum(a)
+    });
+    renderedData = transpose(renderedData);
+    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
+    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
     return prunedColumns;
 }
