@@ -209,10 +209,10 @@ function pruneColumns(data, pathways, min) {
  * @returns {any[]}
  */
 function associateData(expression, copyNumber,geneList, pathways, samples, filter, min) {
-    console.log('inptut pathways')
-    console.log(pathways)
-    console.log('gene list')
-    console.log(geneList)
+    // console.log('inptut pathways')
+    // console.log(pathways)
+    // console.log('gene list')
+    // console.log(geneList)
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = new Array(pathways.length);
     for (let p in pathways) {

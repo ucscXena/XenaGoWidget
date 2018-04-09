@@ -11,7 +11,7 @@ function lowerCaseCompare(a, b) {
 }
 
 
-function compileData(filteredEffects, data) {
+function compileData(filteredEffects, data,geneList) {
     let {pathways, copyNumber,expression: {rows}} = data;
 
     let genes = new Set(flatten(pluck(pathways, 'gene')));
@@ -22,10 +22,23 @@ function compileData(filteredEffects, data) {
     let returnObject = mapObject(pick(effects, filteredEffects),
                      list => list.length);
 
+    // console.log('genes')
+    // console.log(genes)
+    // console.log('pathways')
+    // console.log(pathways)
+    // console.log('geneList')
+    // console.log(geneList)
+
     let copyNumberTotal = 0 ;
-    for(let c of copyNumber){
-        for(let g of c){
-            copyNumberTotal += getCopyNumberValue(g)
+    for(let gene of genes){
+        let geneIndex = geneList.indexOf(gene)
+        // console.log(gene + ' => '+ geneIndex)
+        let copyNumberData = copyNumber[geneIndex]
+        // console.log(copyNumberData)
+        for(let c of copyNumberData){
+            // for(let g of c){
+                copyNumberTotal += getCopyNumberValue(c)
+            // }
         }
     }
 
@@ -57,9 +70,9 @@ export class FilterSelector extends PureComponent {
     };
 
     render() {
-        const {filters,pathwayData,selected} = this.props;
+        const {filters,pathwayData,selected,geneList} = this.props;
 
-        let counts = compileData(Object.keys(filters), pathwayData);
+        let counts = compileData(Object.keys(filters), pathwayData,geneList);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
         let total = sum(Object.values(counts));
@@ -81,6 +94,7 @@ export class FilterSelector extends PureComponent {
 FilterSelector.propTypes = {
     filters: PropTypes.object.isRequired,
     pathwayData: PropTypes.any,
+    geneList: PropTypes.any,
     onChange: PropTypes.any,
     selected: PropTypes.any,
 };

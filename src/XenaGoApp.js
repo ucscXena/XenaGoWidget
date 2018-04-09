@@ -408,6 +408,7 @@ export default class XenaGoApp extends PureComponent {
                             <FilterSelector filters={filteredMutationVector}
                                             selected={this.state.tissueExpressionFilter}
                                             pathwayData={this.state.pathwayData}
+                                            geneList={geneList}
                                             onChange={this.filterTissueType}/>
                             <HoverPathwayView data={this.state.pathwayHoverData}/>
                         </Card>
@@ -451,6 +452,7 @@ export default class XenaGoApp extends PureComponent {
                                 <FilterSelector filters={filteredMutationVector}
                                                 selected={this.state.geneExpressionFilter}
                                                 pathwayData={this.state.geneData}
+                                                geneList={geneList}
                                                 onChange={this.filterGeneType}/>
                                 <HoverGeneView data={this.state.geneHoverData}/>
                             </CardMedia>
