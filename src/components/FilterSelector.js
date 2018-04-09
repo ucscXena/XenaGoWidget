@@ -18,7 +18,6 @@ function compileData(filteredEffects, data,geneList) {
     let hasGene = row => genes.has(row.gene);
     let effects = groupBy(rows.filter(hasGene), 'effect');
 
-
     let returnObject = mapObject(pick(effects, filteredEffects),
                      list => list.length);
 
@@ -42,10 +41,21 @@ function compileData(filteredEffects, data,geneList) {
         }
     }
 
-    returnObject['Copy Number'] = copyNumberTotal;
+    let filterObject = {};
+    filterObject['Copy Number'] = copyNumberTotal;
+
+    // console.log('return objects');
+    //
+    // console.log(returnObject)
+    let totalMutations = 0 ;
+    for(let obj in returnObject){
+        totalMutations += returnObject[obj];
+    }
+
+    filterObject['Mutation'] = totalMutations;
 
 
-    return returnObject ;
+    return filterObject;
 }
 
 

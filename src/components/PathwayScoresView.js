@@ -202,13 +202,14 @@ function pruneColumns(data, pathways, min) {
  *
  * @param expression
  * @param copyNumber
+ * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @param min
  * @returns {any[]}
  */
-function associateData(expression, copyNumber,geneList, pathways, samples, filter, min) {
+function associateData(expression, copyNumber, geneList, pathways, samples, filter, min) {
     // console.log('inptut pathways')
     // console.log(pathways)
     // console.log('gene list')
@@ -226,14 +227,17 @@ function associateData(expression, copyNumber,geneList, pathways, samples, filte
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-    for (let row of expression.rows) {
-        let gene = row.gene;
-        let effect = row.effect;
-        let effectValue = (!filter || effect === filter) ? getMutationScore(effect, min) : 0;
-        let pathwayIndices = genePathwayLookup(gene);
+    if (!filter || filter === 'Mutation') {
+        for (let row of expression.rows) {
+            let gene = row.gene;
+            let effect = row.effect;
+            let effectValue =  getMutationScore(effect, min) ;
+            // let effectValue = (!filter || effect === filter) ? getMutationScore(effect, min) : 0;
+            let pathwayIndices = genePathwayLookup(gene);
 
-        for (let index of pathwayIndices) {
-            returnArray[index][sampleIndex.get(row.sample)] += effectValue;
+            for (let index of pathwayIndices) {
+                returnArray[index][sampleIndex.get(row.sample)] += effectValue;
+            }
         }
     }
 
@@ -248,11 +252,11 @@ function associateData(expression, copyNumber,geneList, pathways, samples, filte
 
     if (!filter || filter === 'Copy Number') {
 
-        for(let pathwayIndex in pathways){
+        for (let pathwayIndex in pathways) {
             let p = pathways[pathwayIndex];
             // console.log('pathways: ')
             // console.log(p)
-            for(let gene of p.gene){
+            for (let gene of p.gene) {
                 // let gene = p.gene[0];
                 // console.log(gene)
                 let geneIndex = geneList.indexOf(gene);
@@ -516,8 +520,8 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedSort, min, filter, geneList,sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
-        let associatedData = associateData(expression, copyNumber, geneList,pathways, samples, filter, min);
+        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
         // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
