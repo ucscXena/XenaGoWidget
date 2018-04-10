@@ -7,9 +7,10 @@ import mutationScores from '../data/mutationVector';
 import {memoize, range} from 'underscore';
 import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
-import Clustering from 'density-clustering';
 import {pick, pluck, flatten} from 'underscore';
 import {getCopyNumberValue} from "../functions/ScoreFunctions";
+import cluster from 'hierarchical-clustering';
+
 
 let labelHeight = 150;
 
@@ -310,6 +311,21 @@ function transpose(a) {
     return a.length === 0 ? a : a[0].map((_, c) => a.map(r => r[c]));
 }
 
+// Euclidean distance
+function distance(a, b) {
+    let d = 0;
+    for (let i = 0; i < a.length; i++) {
+        d += Math.pow(a[i] - b[i], 2);
+    }
+    return Math.sqrt(d);
+}
+
+function linkage(distances) {
+// Single-linkage clustering
+//     return Math.min.apply(null, distances);
+    // complete-linkage clustering?
+    return Math.max.apply(null, distances);
+}
 
 /**
  * Populates density for each column
@@ -322,9 +338,32 @@ function sortColumnHierarchical(prunedColumns) {
     }
 
 
+    let levels = cluster({
+        input: prunedColumns.data,
+        distance: distance,
+        linkage: linkage,
+    });
+
+    console.log('PRUNES')
+    console.log(prunedColumns)
     // // // let kmeans = new Clustering.OPTICS();
-    let kmeans = new Clustering.KMEANS();
-    console.log(prunedColumns.pathways)
+    // console.log(prunedColumns.pathways)
+    console.log(levels)
+
+    let clusters = levels[levels.length - 1].clusters;
+    console.log('final cluster');
+    console.log(clusters);
+// => [ [ 2 ], [ 3, 1, 0 ] ]
+    clusters = clusters.map(function (cluster) {
+        return cluster.map(function (index) {
+            return prunedColumns.data[index];
+        });
+    });
+    console.log('mapped cluster');
+    console.log(clusters[0]);
+// => [ [ [ 250, 255, 253 ] ],
+// => [ [ 100, 54, 255 ], [ 22, 22, 90 ], [ 20, 20, 80 ] ] ]
+
     // let clusteredOrders = kmeans.run(prunedColumns.pathways.density,1,1);
     // console.log(prunedColumns)
     // console.log(clusteredOrders)
@@ -343,7 +382,9 @@ function sortColumnHierarchical(prunedColumns) {
         renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
 
     }
-    prunedColumns.data = renderedArray;
+    console.log('vs rendered array');
+    console.log(renderedArray);
+    prunedColumns.data = clusters[0];
 
 }
 

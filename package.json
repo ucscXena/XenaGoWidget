@@ -19,7 +19,7 @@
     "test:watch": "nwb test-react --server"
   },
   "dependencies": {
-    "density-clustering": "^1.3.0",
+    "hierarchical-clustering": "^1.1.0",
     "immutability-helper": "^2.6.5",
     "material-responsive-grid": "^1.1.1",
     "postcss": "^6.0.21",
