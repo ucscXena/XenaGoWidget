@@ -463,14 +463,14 @@ function hierarchicalSort(prunedColumns) {
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
-            }
-        }
-        return sum(b) - sum(a)
-    });
+    // renderedData = renderedData.sort(function (a, b) {
+    //     for (let index = 0; index < a.length; ++index) {
+    //         if (a[index] !== b[index]) {
+    //             return b[index] - a[index];
+    //         }
+    //     }
+    //     return sum(b) - sum(a)
+    // });
     renderedData = transpose(renderedData);
     prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
     prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);

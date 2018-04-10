@@ -39,7 +39,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
         vg.save();
         vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
         vg.rotate(-Math.PI / 2);
-        vg.font = "10px Arial";
+        vg.font = "bold 10px Arial";
         vg.translate(-labelHeight, el.start, labelHeight);
 
         let geneLength = d.gene.length;
@@ -48,7 +48,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
             labelString = d.gene[0];
         }
         else {
-            labelString = '(' + d.gene.length + ')';
+            labelString = '(' + d.gene.length + ') ';
             // pad for 1000, so 4 + 2 parans
             while (labelString.length < 5) {
                 labelString += ' ';
