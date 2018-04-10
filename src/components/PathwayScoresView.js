@@ -416,23 +416,25 @@ function hierarchicalSort(prunedColumns) {
     sortColumnHierarchical(prunedColumns);
 
     // scoreColumnDensities(prunedColumns);
+    let inputData  = transpose(prunedColumns.data);
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
     let levels = cluster({
-        input: renderedData,
+        input: inputData,
         distance: distance,
         linkage: linkage,
     });
 
-    let clusters = levels[levels.length - 1].clusters;
-    clusters.map(function (c) {
-        return c.map(function (index) {
-            return renderedData[index];
-        });
-    });
+    let clusters = levels[levels.length - 1].clusters[0];
 
-    renderedData = transpose(renderedData);
+    let returnData = [];
+    for(let cIndex in clusters){
+        returnData[cIndex] = renderedData[clusters[cIndex]];
+    }
+
+
+    renderedData = transpose(returnData);
     prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
     prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
