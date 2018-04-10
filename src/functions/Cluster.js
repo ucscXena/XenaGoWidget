@@ -52,20 +52,31 @@ Cluster.prototype.reduce = function () {
  */
 let shownOnce = 0;
 
+Cluster.prototype.createHash = function(a,b){
+    // a = parseInt(a)
+    // b = parseInt(b)
+    return  1/2*(a+b)*(a+b+1)+b;
+}
+
 Cluster.prototype.linkageOf = function (clusterA, clusterB) {
 // function linkageOf(clusterA, clusterB) {
-//     var hash = clusterA.length > clusterB.length
+//     let hash = clusterA.length > clusterB.length
 //         ? ('' + clusterA + '-' + clusterB)
 //         : ('' + clusterB + '-' + clusterA)
     if (shownOnce < 10 || (shownOnce > 250000 && shownOnce < 250010)) {
         console.log(shownOnce)
         console.log(clusterA)
         console.log(clusterB)
+        console.log(clusterA.length)
+        console.log(clusterB.length)
     }
     // var hash = clusterA.length > clusterB.length ? [clusterA, clusterB] : [clusterB, clusterA]
-    let links = this.links
+    let links = this.links;
     // let hash = clusterA[0] > clusterB[0] ? clusterA[0]*15661 + clusterB[0]*15667 : clusterA[0]*15667 + clusterB[0]*15661;
-    let hash = clusterA[0]*104543 + clusterB[0]*104659 ;
+    // let hash = clusterA[0]*104543 + clusterB[0]*156617;
+    // let hash = clusterA[0]*104543 + clusterB[0]*104659;
+    let hash = this.createHash(clusterA[0],clusterB[0]);
+    // let hash = clusterA[0] > clusterB[0] ? this.createHash(clusterA[0],clusterB[0]) : this.createHash(clusterB[0],clusterA[0])
     if (hash in links) return links[hash]
 
     // grab all the distances
