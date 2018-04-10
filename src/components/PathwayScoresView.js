@@ -419,14 +419,19 @@ function hierarchicalSort(prunedColumns) {
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
-    // renderedData = renderedData.sort(function (a, b) {
-    //     for (let index = 0; index < a.length; ++index) {
-    //         if (a[index] !== b[index]) {
-    //             return b[index] - a[index];
-    //         }
-    //     }
-    //     return sum(b) - sum(a)
-    // });
+    let levels = cluster({
+        input: renderedData,
+        distance: distance,
+        linkage: linkage,
+    });
+
+    let clusters = levels[levels.length - 1].clusters;
+    clusters.map(function (c) {
+        return c.map(function (index) {
+            return renderedData[index];
+        });
+    });
+
     renderedData = transpose(renderedData);
     prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
     prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);

@@ -47,48 +47,6 @@ function intersection(a, b) {
 }
 
 
-const style = {
-    buttonStyle: {
-        margin: 10,
-        padding: 10,
-    },
-    fadeIn: {
-        visibility: 'visible',
-        opacity: 0,
-        transition: 'visibility 0s, opacity 0.5s ease-out'
-    },
-    fadeOut: {
-        visibility: 'hidden',
-        transition: 'opacity 1s ease'
-    },
-
-    showGeneControls:{
-
-    },
-    hideGeneControls:{
-
-    },
-    showGeneExpression:{
-
-    },
-    hideGeneExpression:{
-
-    },
-
-
-    showPathwayControls:{
-
-    },
-    hidePathwayControls:{
-
-    },
-    showPathwayExpression:{
-
-    },
-    hidePathwayExpression:{
-
-    },
-};
 
 export default class XenaGoApp extends PureComponent {
 
@@ -100,10 +58,10 @@ export default class XenaGoApp extends PureComponent {
             sortPathwayOrder: null,
             sortGeneName: null,
             sortGeneOrder: null,
-            selectedTissueSort: 'Hierarchical',
-            selectedGeneSort: 'Hierarchical',
-            // selectedTissueSort: 'Cluster',
-            // selectedGeneSort: 'Cluster',
+            // selectedTissueSort: 'Hierarchical',
+            // selectedGeneSort: 'Hierarchical',
+            selectedTissueSort: 'Cluster',
+            selectedGeneSort: 'Cluster',
             sortTypes: ['Cluster', 'Density', 'Hierarchical','Overall', 'Per Column'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
