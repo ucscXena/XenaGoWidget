@@ -315,16 +315,23 @@ function transpose(a) {
 function distance(a, b) {
     let d = 0;
     for (let i = 0; i < a.length; i++) {
-        d += Math.pow(a[i] - b[i], 2);
+        d += Math.abs(a[i] - b[i]);
+        // d += sum ;
+        // d += Math.pow(a[i] - b[i], 2);
     }
-    return Math.sqrt(d);
+    // return Math.sqrt(d);
+    return d;
 }
 
 function linkage(distances) {
 // Single-linkage clustering
 //     return Math.min.apply(null, distances);
     // complete-linkage clustering?
-    return Math.max.apply(null, distances);
+    let max = 0;
+    for (let d of distances) {
+        max = d > max ? d : max;
+    }
+    return max;
 }
 
 /**
@@ -375,8 +382,6 @@ function scoreColumnDensities(prunedColumns) {
         renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
 
     }
-    console.log('vs rendered array');
-    console.log(renderedArray);
     prunedColumns.data = renderedArray;
 }
 
@@ -416,7 +421,7 @@ function hierarchicalSort(prunedColumns) {
     sortColumnHierarchical(prunedColumns);
 
     // scoreColumnDensities(prunedColumns);
-    let inputData  = transpose(prunedColumns.data);
+    let inputData = transpose(prunedColumns.data);
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
@@ -429,7 +434,7 @@ function hierarchicalSort(prunedColumns) {
     let clusters = levels[levels.length - 1].clusters[0];
 
     let returnData = [];
-    for(let cIndex in clusters){
+    for (let cIndex in clusters) {
         returnData[cIndex] = renderedData[clusters[cIndex]];
     }
 
