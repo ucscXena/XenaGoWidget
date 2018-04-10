@@ -64,7 +64,8 @@ Cluster.prototype.linkageOf = function (clusterA, clusterB) {
     }
     // var hash = clusterA.length > clusterB.length ? [clusterA, clusterB] : [clusterB, clusterA]
     let links = this.links
-    let hash = clusterA[0] > clusterB[0] ? clusterA[0]*15661 + clusterB[0]*15667 : clusterA[0]*15667 + clusterB[0]*15661;
+    // let hash = clusterA[0] > clusterB[0] ? clusterA[0]*15661 + clusterB[0]*15667 : clusterA[0]*15667 + clusterB[0]*15661;
+    let hash = clusterA[0]*104543 + clusterB[0]*104659 ;
     if (hash in links) return links[hash]
 
     // grab all the distances
