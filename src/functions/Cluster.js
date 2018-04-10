@@ -50,22 +50,31 @@ Cluster.prototype.reduce = function () {
 /**
  * Calculate the linkage between two clusters.
  */
+let shownOnce = 0;
 
 Cluster.prototype.linkageOf = function (clusterA, clusterB) {
 // function linkageOf(clusterA, clusterB) {
-    var hash = clusterA.length > clusterB.length
-        ? ('' + clusterA + '-' + clusterB)
-        : ('' + clusterB + '-' + clusterA)
-    var links = this.links
+//     var hash = clusterA.length > clusterB.length
+//         ? ('' + clusterA + '-' + clusterB)
+//         : ('' + clusterB + '-' + clusterA)
+    if (shownOnce < 10 || (shownOnce > 250000 && shownOnce < 250010)) {
+        console.log(shownOnce)
+        console.log(clusterA)
+        console.log(clusterB)
+    }
+    // var hash = clusterA.length > clusterB.length ? [clusterA, clusterB] : [clusterB, clusterA]
+    let links = this.links
+    let hash = clusterA[0] > clusterB[0] ? clusterA[0]*15661 + clusterB[0]*15667 : clusterA[0]*15667 + clusterB[0]*15661;
     if (hash in links) return links[hash]
 
     // grab all the distances
-    var distances = [];
-    for (var k = 0; k < clusterA.length; k++) {
-        for (var h = 0; h < clusterB.length; h++) {
+    let distances = [];
+    for (let k = 0; k < clusterA.length; k++) {
+        for (let h = 0; h < clusterB.length; h++) {
             distances.push(this.distanceOf(clusterA[k], clusterB[h]))
         }
     }
+    ++shownOnce;
 
     // cache and return the linkage
     return links[hash] = this.linkage(distances)
@@ -75,7 +84,7 @@ Cluster.prototype.linkageOf = function (clusterA, clusterB) {
  * Calculate the distance between two inputs.
  */
 
-Cluster.prototype.distanceOf = function(i, j) {
+Cluster.prototype.distanceOf = function (i, j) {
     if (i > j) return this.distances[i][j]
     return this.distances[j][i]
 }
