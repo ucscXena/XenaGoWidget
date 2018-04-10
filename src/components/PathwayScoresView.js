@@ -350,17 +350,24 @@ function sortColumnHierarchical(prunedColumns) {
     // console.log(prunedColumns.pathways)
     console.log(levels)
 
-    let clusters = levels[levels.length - 1].clusters;
+    let clusterIndices = levels[levels.length - 1].clusters[0];
     console.log('final cluster');
-    console.log(clusters);
+    console.log(clusterIndices);
 // => [ [ 2 ], [ 3, 1, 0 ] ]
-    clusters = clusters.map(function (cluster) {
-        return cluster.map(function (index) {
-            return prunedColumns.data[index];
-        });
-    });
-    console.log('mapped cluster');
-    console.log(clusters[0]);
+//     let clusterOutput = clusters.map(function (cluster) {
+//         return cluster.map(function (index) {
+//             return prunedColumns.data[index];
+//         });
+//     });
+//     let pathwayIndices = clusters.map(function (cluster) {
+//         return cluster.map(function (index) {
+//             return prunedColumns.pathways[index];
+//         });
+//     })[0];
+//     console.log('cluster output')
+//     console.log(clusterOutput)
+//     console.log('pathway indices')
+//     console.log(pathwayIndices)
 // => [ [ [ 250, 255, 253 ] ],
 // => [ [ 100, 54, 255 ], [ 22, 22, 90 ], [ 20, 20, 80 ] ] ]
 
@@ -378,13 +385,19 @@ function sortColumnHierarchical(prunedColumns) {
     //
     // }
     let renderedArray = [];
-    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-        renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
+    // let clusterData = clusterOutput[0];
 
+    // console.log('mapped cluster');
+    // console.log(clusterData);
+
+    for (let index = 0; index < clusterIndices.length; ++index) {
+        console.log('index')
+        // console.log(pathwayIndices[index])
+        renderedArray[index] = prunedColumns.data[clusterIndices[index]];
     }
     console.log('vs rendered array');
     console.log(renderedArray);
-    prunedColumns.data = clusters[0];
+    prunedColumns.data = renderedArray;
 
 }
 
@@ -406,6 +419,8 @@ function scoreColumnDensities(prunedColumns) {
         renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
 
     }
+    console.log('vs rendered array');
+    console.log(renderedArray);
     prunedColumns.data = renderedArray;
 }
 
@@ -488,7 +503,7 @@ function densitySort(prunedColumns) {
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
-    prunedColumns.data.push(prunedColumns.samples);
+    // prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort(function (a, b) {
@@ -497,8 +512,9 @@ function overallSort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
-    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    // prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
+    // prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    prunedColumns.data = renderedData;
 
     return prunedColumns;
 }
