@@ -9,7 +9,8 @@ import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
 import {getCopyNumberValue} from "../functions/ScoreFunctions";
-import cluster from 'hierarchical-clustering';
+// import cluster from 'hierarchical-clustering';
+import cluster from '../functions/Cluster';
 
 
 let labelHeight = 150;
@@ -424,6 +425,7 @@ function hierarchicalSort(prunedColumns) {
     let inputData = transpose(prunedColumns.data);
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
+
 
     let levels = cluster({
         input: inputData,
