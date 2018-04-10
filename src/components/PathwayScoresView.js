@@ -344,60 +344,16 @@ function sortColumnHierarchical(prunedColumns) {
         linkage: linkage,
     });
 
-    console.log('PRUNES')
-    console.log(prunedColumns)
-    // // // let kmeans = new Clustering.OPTICS();
-    // console.log(prunedColumns.pathways)
-    console.log(levels)
-
     let clusterIndices = levels[levels.length - 1].clusters[0];
-    console.log('final cluster');
-    console.log(clusterIndices);
-// => [ [ 2 ], [ 3, 1, 0 ] ]
-//     let clusterOutput = clusters.map(function (cluster) {
-//         return cluster.map(function (index) {
-//             return prunedColumns.data[index];
-//         });
-//     });
-//     let pathwayIndices = clusters.map(function (cluster) {
-//         return cluster.map(function (index) {
-//             return prunedColumns.pathways[index];
-//         });
-//     })[0];
-//     console.log('cluster output')
-//     console.log(clusterOutput)
-//     console.log('pathway indices')
-//     console.log(pathwayIndices)
-// => [ [ [ 250, 255, 253 ] ],
-// => [ [ 100, 54, 255 ], [ 22, 22, 90 ], [ 20, 20, 80 ] ] ]
 
-    // let clusteredOrders = kmeans.run(prunedColumns.pathways.density,1,1);
-    // console.log(prunedColumns)
-    // console.log(clusteredOrders)
-
-    // prunedColumns.pathways.sort((a, b) => b.density - a.density);
-    // prunedColumns.pathways.sort((a, b) => b.density - a.density);
-    //
-    // // refilter data by index
-    // let renderedArray = [];
-    // for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-    //     renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
-    //
-    // }
     let renderedArray = [];
-    // let clusterData = clusterOutput[0];
-
-    // console.log('mapped cluster');
-    // console.log(clusterData);
-
+    let renderedIndices = [];
     for (let index = 0; index < clusterIndices.length; ++index) {
-        console.log('index')
-        // console.log(pathwayIndices[index])
         renderedArray[index] = prunedColumns.data[clusterIndices[index]];
+        renderedIndices[index] = prunedColumns.pathways[clusterIndices[index]];
     }
-    console.log('vs rendered array');
-    console.log(renderedArray);
     prunedColumns.data = renderedArray;
+    prunedColumns.pathways = renderedIndices;
 
 }
 
