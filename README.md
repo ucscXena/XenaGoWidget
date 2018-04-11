@@ -27,9 +27,8 @@ React widget for analyzing expression of tissue samples within a pathway.
    npm run build
 
 
-## Must TODO
+## TODO
 
-- improve / fix clustering for accuracy and performance  (add a custom library)
 - integrate as new Xena page 
 
 
