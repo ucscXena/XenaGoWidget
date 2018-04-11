@@ -17,28 +17,28 @@ module.exports = Cluster
  */
 
 Cluster.prototype.reduce = function () {
-    var clusters = this.clusters
-    var min
+    var clusters = this.clusters,
+        minLinkage = Infinity,
+        minI,
+        minJ;
     for (var i = 0; i < clusters.length; i++) {
         for (var j = 0; j < i; j++) {
             var linkage = this.linkageOf(clusters[i], clusters[j])
 
             // set the linkage as the min
-            if (!min || linkage < min.linkage) {
-                min = {
-                    linkage: linkage,
-                    i: i,
-                    j: j,
-                }
+            if (linkage < minLinkage) {
+                minLinkage = linkage;
+                minI = i;
+                minJ = j;
             }
         }
     }
 
     clusters = this.clusters = clusters.slice()
-    clusters[min.i] = clusters[min.i].concat(clusters[min.j])
-    clusters.splice(min.j, 1)
+    clusters[minI] = clusters[minI].concat(clusters[minJ])
+    clusters.splice(minJ, 1)
     var level = {
-        linkage: min.linkage,
+        linkage: minLinkage,
         clusters: clusters,
         from: j,
         to: i,
@@ -50,35 +50,8 @@ Cluster.prototype.reduce = function () {
 /**
  * Calculate the linkage between two clusters.
  */
-let shownOnce = 0;
-
-Cluster.prototype.createHash = function(a,b){
-    // a = parseInt(a)
-    // b = parseInt(b)
-    return  1/2*(a+b)*(a+b+1)+b;
-}
 
 Cluster.prototype.linkageOf = function (clusterA, clusterB) {
-// function linkageOf(clusterA, clusterB) {
-//     let hash = clusterA.length > clusterB.length
-//         ? ('' + clusterA + '-' + clusterB)
-//         : ('' + clusterB + '-' + clusterA)
-    if (shownOnce < 10 || (shownOnce > 250000 && shownOnce < 250010)) {
-        console.log(shownOnce)
-        console.log(clusterA)
-        console.log(clusterB)
-        console.log(clusterA.length)
-        console.log(clusterB.length)
-    }
-    // var hash = clusterA.length > clusterB.length ? [clusterA, clusterB] : [clusterB, clusterA]
-    let links = this.links;
-    // let hash = clusterA[0] > clusterB[0] ? clusterA[0]*15661 + clusterB[0]*15667 : clusterA[0]*15667 + clusterB[0]*15661;
-    // let hash = clusterA[0]*104543 + clusterB[0]*156617;
-    // let hash = clusterA[0]*104543 + clusterB[0]*104659;
-    let hash = this.createHash(clusterA[0],clusterB[0]);
-    // let hash = clusterA[0] > clusterB[0] ? this.createHash(clusterA[0],clusterB[0]) : this.createHash(clusterB[0],clusterA[0])
-    if (hash in links) return links[hash]
-
     // grab all the distances
     let distances = [];
     for (let k = 0; k < clusterA.length; k++) {
@@ -86,10 +59,8 @@ Cluster.prototype.linkageOf = function (clusterA, clusterB) {
             distances.push(this.distanceOf(clusterA[k], clusterB[h]))
         }
     }
-    ++shownOnce;
 
-    // cache and return the linkage
-    return links[hash] = this.linkage(distances)
+    return this.linkage(distances)
 }
 
 /**
