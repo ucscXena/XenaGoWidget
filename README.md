@@ -48,7 +48,6 @@ React widget for analyzing expression of tissue samples within a pathway.
    - provide combined statistics matches
    - (allow visible selection of fields)
    - put a control / display canvas on top of another one? 
-
 - allow selection of multiple cohorts (displayed vertically)
 - allow selection of different criteria for scoring 
 - add different (drill-down) filters for scores, etc. 
