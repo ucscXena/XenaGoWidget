@@ -29,8 +29,10 @@ React widget for analyzing expression of tissue samples within a pathway.
 
 ## TODO
 
-- integrate as new Xena page 
-
+- add a view in Xena to new Tab
+- put gene selection below pathway selection (and then only show the tissue view for genes)
+- side-by-side comparison of different analysis
+   - provide statistics for comparisons
 
 ## Data TODO
 
@@ -42,13 +44,11 @@ React widget for analyzing expression of tissue samples within a pathway.
 
 ## Possible TODO
 
-- put gene selection below pathway selection (and then only show the tissue view for genes)
 - allow multiple selection of genes / pathways with statistics (gene enrichment)
    - provide combined statistics matches
    - (allow visible selection of fields)
    - put a control / display canvas on top of another one? 
-- side-by-side comparison of different analysis
-   - provide statistics for comparisons
+
 - allow selection of multiple cohorts (displayed vertically)
 - allow selection of different criteria for scoring 
 - add different (drill-down) filters for scores, etc. 
@@ -58,6 +58,7 @@ React widget for analyzing expression of tissue samples within a pathway.
 - show trees for hierarchical clustering 
 - show camplot
 - show annotations for hovered / selected (are these the functional annotations?)
+- integrate as new Xena page 
 
 
 
