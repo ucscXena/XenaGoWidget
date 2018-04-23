@@ -29,11 +29,11 @@ React widget for analyzing expression of tissue samples within a pathway.
 
 Demo: http://xenademo.berkeleybop.io/xena/
 
-![Bladder example][images/bladder1.png]
+![Bladder example](images/bladder1.png)
 
-![BRCA example][images/brca1.png]
+![BRCA example](images/brca1.png)
 
-![MESO example][images/meso1.png]
+![MESO example](images/meso1.png)
 
 
 
