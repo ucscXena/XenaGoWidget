@@ -19,12 +19,22 @@ React widget for analyzing expression of tissue samples within a pathway.
 ## To Run
 
    npm install
-
    npm start
 
 ## To Build
 
    npm run build
+
+## Examples
+
+Demo: http://xenademo.berkeleybop.io/xena/
+
+![Bladder example][images/bladder1.png]
+
+![BRCA example][images/brca1.png]
+
+![MESO example][images/meso1.png]
+
 
 
 ## TODO
