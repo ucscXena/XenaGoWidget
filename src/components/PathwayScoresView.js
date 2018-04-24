@@ -9,13 +9,10 @@ import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
 import {getCopyNumberValue} from "../functions/ScoreFunctions";
-// import cluster from 'hierarchical-clustering';
 import cluster from '../functions/Cluster';
 
 
 const labelHeight = 150;
-
-// const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -32,8 +29,6 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
         return 0;
     }
 
-    // return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
-    //     pathwayArray[tissueIndex]; // sample
     return (tissueIndex < 0) ? {affected: sumInstances(pathwayArray), total: associatedData[0].length} : // pathway
         pathwayArray[tissueIndex]; // sample
 }
@@ -76,6 +71,8 @@ class TissueExpressionView extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log('constructor');
+        console.log(props)
     }
 
     onClick = (event) => {
@@ -137,6 +134,7 @@ TissueExpressionView.propTypes = {
     selected: PropTypes.any,
     titleText: PropTypes.string,
     hideTitle: PropTypes.bool,
+    referencePathways: PropTypes.any,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
@@ -527,7 +525,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
         // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
@@ -567,6 +565,7 @@ export default class AssociatedDataCache extends PureComponent {
                 data={{
                     expression,
                     pathways: returnedValue.pathways,
+                    referencePathways,
                     samples,
                     sortedSamples: returnedValue.sortedSamples
                 }}
