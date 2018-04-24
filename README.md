@@ -45,7 +45,7 @@ Demo: http://xenademo.berkeleybop.io/xena/
 
 ## TODO
 
-- add a view in Xena to new Tab
+- add a view in Xena to new Tab #1
 - put gene selection below pathway selection (and then only show the tissue view for genes)
 - side-by-side comparison of different analysis
    - provide statistics for comparisons
