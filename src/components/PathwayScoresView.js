@@ -112,7 +112,9 @@ class TissueExpressionView extends PureComponent {
 
         return (
             <div style={loading ? style.fadeOut : style.fadeIn}>
+                {!this.props.hideTitle &&
                 <h3>{titleString} {stat}</h3>
+                }
                 <CanvasDrawing
                     width={width}
                     height={height}
@@ -134,6 +136,7 @@ TissueExpressionView.propTypes = {
     data: PropTypes.object.isRequired,
     selected: PropTypes.any,
     titleText: PropTypes.string,
+    hideTitle: PropTypes.bool,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,

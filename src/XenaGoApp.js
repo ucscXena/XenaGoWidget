@@ -350,7 +350,7 @@ export default class XenaGoApp extends PureComponent {
             <Grid>
                 <Row>
                     {this.state.loadState === 'loading' ? 'Loading' : ''}
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show &&
+                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
                     <Col md={this.state.uiControls.pathway.columns}>
                         <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
@@ -368,7 +368,7 @@ export default class XenaGoApp extends PureComponent {
                         </Card>
                     </Col>
                     }
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show &&
+                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
                         {/*<Card style={{width: this.state.uiControls.pathway.expressionWidth}}>*/}
                         <TissueExpressionView id="pathwayViewId" width={400} height={800}
@@ -382,7 +382,7 @@ export default class XenaGoApp extends PureComponent {
                                               sortOrder={this.state.sortPathwayOrder}
                                               selectedSort={this.state.selectedTissueSort}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}
-                                              title='Pathways'
+                                              hideTitle={true}
                         />
                         {/*</Card>*/}
                     </Col>
@@ -429,7 +429,7 @@ export default class XenaGoApp extends PureComponent {
                                               selectedSort={this.state.selectedGeneSort}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}
-                                              title='Pathway'
+                                              hideTitle={true}
                         />
                         {/*</Card>*/}
                     </Col>
