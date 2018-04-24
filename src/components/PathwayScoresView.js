@@ -13,7 +13,7 @@ import {getCopyNumberValue} from "../functions/ScoreFunctions";
 import cluster from '../functions/Cluster';
 
 
-let labelHeight = 150;
+const labelHeight = 150;
 
 // const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
 
@@ -193,14 +193,6 @@ function pruneColumns(data, pathways, min) {
     };
 }
 
-// function getGenesForPathway(pathways) {
-//     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-// }
-
-// function getCopyNumberValue(copyNumberValue) {
-//     // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
-//     return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2 ) ? 1 : 0;
-// }
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -272,19 +264,6 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
 
         }
 
-        // for (let geneIndex in copyNumber) {
-        //     let gene = geneList[geneIndex];
-        //     let pathwayIndices = genePathwayLookup(gene);
-        //     let sampleEntries = copyNumber[geneIndex];
-        //     for (let sampleEntryIndex in sampleEntries) {
-        //         for (let index of pathwayIndices) {
-        //             let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
-        //             if (returnValue > 0) {
-        //                 returnArray[index][sampleEntryIndex] += returnValue;
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     return returnArray;
