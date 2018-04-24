@@ -164,7 +164,7 @@ export function getCopyNumberValue(copyNumberValue) {
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, layout, associateData, data: {pathways}} = props;
+        let {width, height, layout, associateData, data: {pathways,referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -173,7 +173,15 @@ export default {
             return;
         }
 
-        drawExpressionData(vg, width, height, layout, associateData);
-        drawPathwayLabels(vg, width, height, layout, pathways);
+
+        if(referencePathways){
+            drawExpressionData(vg, width, height, layout, associateData);
+            drawPathwayLabels(vg, width, height, layout, pathways);
+        }
+        else{
+            drawExpressionData(vg, width, height, layout, associateData);
+            drawPathwayLabels(vg, width, height, layout, pathways);
+        }
+
     }
 }
