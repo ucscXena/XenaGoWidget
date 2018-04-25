@@ -422,7 +422,7 @@ export default class XenaGoApp extends PureComponent {
                                               sortColumn={this.state.sortGeneName}
                                               sortOrder={this.state.sortGeneOrder}
                                               selectedSort={this.state.selectedGeneSort}
-                                              referencePathways={PathWays}
+                                              referencePathways={this.state.pathwayData}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}
                                               hideTitle={true}
