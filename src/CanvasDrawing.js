@@ -81,6 +81,7 @@ export default class CanvasDrawing extends Component {
         let {draw, drawOverlay, ...drawProps} = props,
             {height, width} = drawProps,
             el = ReactDOM.findDOMNode(this.refs.canvas),
+            overlayDiv = ReactDOM.findDOMNode(this.refs.overlay),
             vg = this.vg;
 
         if (el.width !== width) {
@@ -92,11 +93,12 @@ export default class CanvasDrawing extends Component {
         }
 
         draw(vg, drawProps);
-        drawOverlay(vg, drawProps);
+        drawOverlay(overlayDiv, drawProps);
     }
 }
 CanvasDrawing.propTypes = {
     draw: PropTypes.any,
+    drawOverlay: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
     // onMouseOver: PropTypes.any,

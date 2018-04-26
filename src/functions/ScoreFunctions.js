@@ -1,5 +1,7 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range, times} from 'underscore';
+import React from "react";
+import ReactDOM from 'react-dom';
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -10,6 +12,9 @@ function clearScreen(vg, width, height) {
 
 // TODO: review vgmixed
 function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, labelOffset) {
+    console.log('parent div')
+    console.log(div)
+
     if (layout[0].size <= 1) {
         // div.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
         // div.fillRect(0, labelOffset, width, labelHeight);
@@ -33,7 +38,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
             let d = pathways[i];
 
             let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
-            // div.fillStyle = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+            let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
             // div.fillRect(el.start, labelOffset, el.size, labelHeight);
             // div.strokeRect(el.start, labelOffset, el.size, labelHeight);
 
@@ -45,26 +50,62 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
             // div.font = "bold 10px Arial";
             // div.translate(-labelHeight-labelOffset, el.start, labelHeight);
 
-            let geneLength = d.gene.length;
-            let labelString;
-            if (geneLength === 1) {
-                labelString = d.gene[0];
+            if (false && el.size < 10) {
+                return (
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: el.start,
+                        height: labelHeight,
+                        width: el.size,
+                        color: 'green',
+                        strokeWidth: 1
+                    }}>
+                        return (
+                        <p>dogs</p>
+                        )
+                    </div>
+                );
             }
             else {
-                labelString = '(' + d.gene.length + ') ';
-                // pad for 1000, so 4 + 2 parans
-                while (labelString.length < 5) {
-                    labelString += ' ';
+                let geneLength = d.gene.length;
+                let labelString;
+                if (geneLength === 1) {
+                    labelString = d.gene[0];
                 }
+                else {
+                    labelString = '(' + d.gene.length + ') ';
+                    // pad for 1000, so 4 + 2 parans
+                    while (labelString.length < 5) {
+                        labelString += ' ';
+                    }
 
-                labelString += d.golabel;
+                    labelString += d.golabel;
+                }
+                return (
+                    <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: el.start,
+                        height: labelHeight,
+                        width: el.size,
+                        color: 'green',
+                        strokeWidth: 1
+                    }}>
+                        <p className='ColumnLabel' style={{
+                            fontSize: `10px`,
+                            fontFamily: 'Arial',
+                            fontStyle: 'bold',
+                        }}>
+                            {labelString}
+                        </p>
+                    </div>
+                )
             }
 
-            if (el.size >= 10) {
-                // div.fillText(labelString, 3, 10);
-            }
-            // div.restore();
+
         });
+        ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
     }
 }
 
