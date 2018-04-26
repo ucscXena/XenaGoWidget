@@ -34,7 +34,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
     console.log(layout)
     console.log(pathways)
     if (pathways.length === layout.length) {
-        layout.forEach((el, i) => {
+        let labels = layout.map((el, i) => {
             let d = pathways[i];
 
             let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
@@ -105,7 +105,10 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
 
 
         });
-        ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
+        console.log('output labels')
+        console.log(labels)
+        ReactDOM.render(<div style={{textAlign:'center'}}>{labels}</div>, div);
+        // ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
     }
 }
 
