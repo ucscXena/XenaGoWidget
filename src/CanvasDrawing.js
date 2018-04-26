@@ -1,9 +1,5 @@
 // React component to manages redrawing a canvas element.
 
-// 'use strict';
-
-// var vgmixed = require('./vgmixed');
-// var React = require('react');
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
@@ -59,12 +55,8 @@ export default class CanvasDrawing extends Component{
         );
     }
     componentDidMount() {
-        // console.log('did')
-        let {width, height} = this.props;
         let canvas = ReactDOM.findDOMNode(this.refs.canvas);
         this.vg = canvas.getContext('2d');
-        // console.log('found vg: '+this.vg);
-        // this.vg = vgmixed(ReactDOM.findDOMNode(this.refs.canvas), width, height, ReactDOM.findDOMNode(this.refs.labels));
         this.draw(this.props);
     }
     draw(props) {
@@ -73,9 +65,6 @@ export default class CanvasDrawing extends Component{
             el = ReactDOM.findDOMNode(this.refs.canvas),
             vg = this.vg;
 
-        // console.log('draing '+ vg)
-        // vg.getContext()
-        //
         if (el.width !== width) {
             el.width = width;
         }
@@ -83,8 +72,6 @@ export default class CanvasDrawing extends Component{
         if (el.height !== height) {
             el.height = height;
         }
-
-        // vg.fillRect(0,0,20,30)
 
         draw(vg, drawProps);
     }
@@ -97,4 +84,3 @@ CanvasDrawing.propTypes = {
     onClick: PropTypes.any,
 };
 
-// module.exports = CanvasDrawing;

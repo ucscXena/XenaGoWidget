@@ -1,8 +1,6 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range, times} from 'underscore';
 
-let labelHeight = 150;
-
 function clearScreen(vg, width, height) {
     vg.save();
     vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
@@ -11,10 +9,10 @@ function clearScreen(vg, width, height) {
 }
 
 
-function drawPathwayLabels(vg, width, height, layout, pathways) {
+function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,labelOffset) {
     if (layout[0].size <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
-        vg.fillRect(0, 0, width, labelHeight);
+        vg.fillRect(0, labelOffset, width, labelHeight);
         return;
     }
 
@@ -26,42 +24,48 @@ function drawPathwayLabels(vg, width, height, layout, pathways) {
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
-    layout.forEach((el, i) => {
-        let d = pathways[i];
+    console.log(layout.length + ' vs ' + pathways.length)
+    console.log('output layout -> pathway ')
+    console.log(layout)
+    console.log(pathways)
+    if(pathways.length===layout.length){
+        layout.forEach((el, i) => {
+            let d = pathways[i];
 
-        let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
-        vg.fillStyle = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
-        vg.fillRect(el.start, 0, el.size, labelHeight);
-        vg.strokeRect(el.start, 0, el.size, labelHeight);
+            let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
+            vg.fillStyle = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+            vg.fillRect(el.start, labelOffset, el.size, labelHeight);
+            vg.strokeRect(el.start, labelOffset, el.size, labelHeight);
 
 
-        // draw the text
-        vg.save();
-        vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
-        vg.rotate(-Math.PI / 2);
-        vg.font = "bold 10px Arial";
-        vg.translate(-labelHeight, el.start, labelHeight);
+            // draw the text
+            vg.save();
+            vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
+            vg.rotate(-Math.PI / 2);
+            vg.font = "bold 10px Arial";
+            vg.translate(-labelHeight-labelOffset, el.start, labelHeight);
 
-        let geneLength = d.gene.length;
-        let labelString;
-        if (geneLength === 1) {
-            labelString = d.gene[0];
-        }
-        else {
-            labelString = '(' + d.gene.length + ') ';
-            // pad for 1000, so 4 + 2 parans
-            while (labelString.length < 5) {
-                labelString += ' ';
+            let geneLength = d.gene.length;
+            let labelString;
+            if (geneLength === 1) {
+                labelString = d.gene[0];
+            }
+            else {
+                labelString = '(' + d.gene.length + ') ';
+                // pad for 1000, so 4 + 2 parans
+                while (labelString.length < 5) {
+                    labelString += ' ';
+                }
+
+                labelString += d.golabel;
             }
 
-            labelString += d.golabel;
-        }
-
-        if (el.size >= 10) {
-            vg.fillText(labelString, 3, 10);
-        }
-        vg.restore();
-    });
+            if (el.size >= 10) {
+                vg.fillText(labelString, 3, 10);
+            }
+            vg.restore();
+        });
+    }
 }
 
 function findRegions(index, height, count) {
@@ -87,7 +91,7 @@ function regionColor(data) {
     return [255, c, c];
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data) {
+function drawExpressionData(ctx, width, totalHeight, layout, data,labelHeight) {
     let height = totalHeight - labelHeight;
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -164,7 +168,9 @@ export function getCopyNumberValue(copyNumberValue) {
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, layout, associateData, data: {pathways}} = props;
+        console.log('input props')
+        console.log(props)
+        let {width, height, layout, referenceLayout, associateData, data: {pathways,referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -173,7 +179,19 @@ export default {
             return;
         }
 
-        drawExpressionData(vg, width, height, layout, associateData);
-        drawPathwayLabels(vg, width, height, layout, pathways);
+
+        if(referencePathways){
+            console.log('doing the reference')
+            console.log(referenceLayout);
+            console.log(referencePathways);
+            drawExpressionData(vg, width, height, layout, associateData,300);
+            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways,150,0);
+            drawPathwayLabels(vg, width, height, layout, pathways,150,150);
+        }
+        else{
+            drawExpressionData(vg, width, height, layout, associateData,150);
+            drawPathwayLabels(vg, width, height, layout, pathways,150,0);
+        }
+
     }
 }

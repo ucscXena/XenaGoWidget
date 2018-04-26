@@ -9,13 +9,10 @@ import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
 import {getCopyNumberValue} from "../functions/ScoreFunctions";
-// import cluster from 'hierarchical-clustering';
 import cluster from '../functions/Cluster';
 
 
-let labelHeight = 150;
-
-// const instanceCounter = (accumulator, currentValue) => accumulator + ( currentValue > 0 ? 1 : 0) ;
+const labelHeight = 150;
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -32,8 +29,6 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
         return 0;
     }
 
-    // return (tissueIndex < 0) ? sum(pathwayArray) / associatedData[0].length : // pathway
-    //     pathwayArray[tissueIndex]; // sample
     return (tissueIndex < 0) ? {affected: sumInstances(pathwayArray), total: associatedData[0].length} : // pathway
         pathwayArray[tissueIndex]; // sample
 }
@@ -76,6 +71,8 @@ class TissueExpressionView extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log('constructor');
+        console.log(props)
     }
 
     onClick = (event) => {
@@ -95,7 +92,7 @@ class TissueExpressionView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData,
-            titleText, selected, filter
+            titleText, selected, filter, referenceLayout
         } = this.props;
 
         let titleString, filterString;
@@ -112,11 +109,14 @@ class TissueExpressionView extends PureComponent {
 
         return (
             <div style={loading ? style.fadeOut : style.fadeIn}>
+                {!this.props.hideTitle &&
                 <h3>{titleString} {stat}</h3>
+                }
                 <CanvasDrawing
                     width={width}
                     height={height}
                     layout={layout}
+                    referenceLayout={referenceLayout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
                     associateData={associateData}
@@ -134,6 +134,8 @@ TissueExpressionView.propTypes = {
     data: PropTypes.object.isRequired,
     selected: PropTypes.any,
     titleText: PropTypes.string,
+    hideTitle: PropTypes.bool,
+    referencePathways: PropTypes.any,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
@@ -190,14 +192,6 @@ function pruneColumns(data, pathways, min) {
     };
 }
 
-// function getGenesForPathway(pathways) {
-//     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-// }
-
-// function getCopyNumberValue(copyNumberValue) {
-//     // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
-//     return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2 ) ? 1 : 0;
-// }
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -269,19 +263,6 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
 
         }
 
-        // for (let geneIndex in copyNumber) {
-        //     let gene = geneList[geneIndex];
-        //     let pathwayIndices = genePathwayLookup(gene);
-        //     let sampleEntries = copyNumber[geneIndex];
-        //     for (let sampleEntryIndex in sampleEntries) {
-        //         for (let index of pathwayIndices) {
-        //             let returnValue = getCopyNumberValue(copyNumber[sampleEntryIndex][geneIndex]);
-        //             if (returnValue > 0) {
-        //                 returnArray[index][sampleEntryIndex] += returnValue;
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     return returnArray;
@@ -545,9 +526,8 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
-        // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
@@ -577,19 +557,47 @@ export default class AssociatedDataCache extends PureComponent {
                 break;
         }
 
-        return (
-            <TissueExpressionView
-                {...this.props}
-                width={width}
-                layout={layout(width, returnedValue.data)}
-                data={{
-                    expression,
-                    pathways: returnedValue.pathways,
-                    samples,
-                    sortedSamples: returnedValue.sortedSamples
-                }}
-                associateData={returnedValue.data}/>
-        );
+        if(referencePathways){
+            let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
+            let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
+            let layoutData = layout(width, returnedValue.data);
+            // console.log('ref width')
+            // console.log(referenceWidth)
+            // console.log('ref layout')
+            // console.log(referenceLayout)
+            // console.log('layout')
+            // console.log(layoutData)
+            return (
+                <TissueExpressionView
+                    {...this.props}
+                    width={width}
+                    layout={layoutData}
+                    referenceLayout={referenceLayout}
+                    data={{
+                        expression,
+                        pathways: returnedValue.pathways,
+                        referencePathways,
+                        samples,
+                        sortedSamples: returnedValue.sortedSamples
+                    }}
+                    associateData={returnedValue.data}/>
+            );
+        }
+        else{
+            return (
+                <TissueExpressionView
+                    {...this.props}
+                    width={width}
+                    layout={layout(width, returnedValue.data)}
+                    data={{
+                        expression,
+                        pathways: returnedValue.pathways,
+                        samples,
+                        sortedSamples: returnedValue.sortedSamples
+                    }}
+                    associateData={returnedValue.data}/>
+            );
+        }
     }
 
 

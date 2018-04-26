@@ -1,17 +1,14 @@
 import React from 'react'
 import PureComponent from './components/PureComponent';
-// import CohortsData from '../tests/data/cohorts'
 import {CohortSelector} from "./components/CohortSelector";
 import TissueExpressionView from "./components/PathwayScoresView";
 import PathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleCopyNumber from "../tests/data/bulkCopyNumber";
 import ExampleSamples from "../tests/data/samples";
-// import ExampleStyle from "../demo/src/example.css";
 import './base.css';
 import HoverPathwayView from "./components/HoverPathwayView"
 import HoverGeneView from "./components/HoverGeneView";
-// import update from 'immutability-helper';
 import mutationVector from "./data/mutationVector";
 import {FilterSelector} from "./components/FilterSelector";
 
@@ -153,6 +150,7 @@ export default class XenaGoApp extends PureComponent {
                 expression,
                 samples,
                 pathways,
+                referencePathways: PathWays,
                 copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
@@ -350,7 +348,7 @@ export default class XenaGoApp extends PureComponent {
             <Grid>
                 <Row>
                     {this.state.loadState === 'loading' ? 'Loading' : ''}
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show &&
+                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
                     <Col md={this.state.uiControls.pathway.columns}>
                         <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
@@ -368,9 +366,8 @@ export default class XenaGoApp extends PureComponent {
                         </Card>
                     </Col>
                     }
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show &&
+                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
-                        {/*<Card style={{width: this.state.uiControls.pathway.expressionWidth}}>*/}
                         <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                               data={this.state.pathwayData} titleText=""
                                               filter={this.state.tissueExpressionFilter}
@@ -382,9 +379,8 @@ export default class XenaGoApp extends PureComponent {
                                               sortOrder={this.state.sortPathwayOrder}
                                               selectedSort={this.state.selectedTissueSort}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}
-                                              title='Pathways'
+                                              hideTitle={true}
                         />
-                        {/*</Card>*/}
                     </Col>
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -415,7 +411,6 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.expressionColumns}>
-                        {/*<Card style={{width: this.state.uiControls.gene.expressionWidth}}>*/}
                         <TissueExpressionView id="geneViewId" height={800}
                                               data={this.state.geneData}
                                               selected={this.state.geneData.selectedPathway}
@@ -427,11 +422,11 @@ export default class XenaGoApp extends PureComponent {
                                               sortColumn={this.state.sortGeneName}
                                               sortOrder={this.state.sortGeneOrder}
                                               selectedSort={this.state.selectedGeneSort}
+                                              referencePathways={this.state.pathwayData}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}
-                                              title='Pathway'
+                                              hideTitle={true}
                         />
-                        {/*</Card>*/}
                     </Col>
                     }
                 </Row>
