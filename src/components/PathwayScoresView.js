@@ -92,7 +92,7 @@ class TissueExpressionView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData,
-            titleText, selected, filter
+            titleText, selected, filter, referenceLayout
         } = this.props;
 
         let titleString, filterString;
@@ -116,6 +116,7 @@ class TissueExpressionView extends PureComponent {
                     width={width}
                     height={height}
                     layout={layout}
+                    referenceLayout={referenceLayout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
                     associateData={associateData}
@@ -527,7 +528,6 @@ export default class AssociatedDataCache extends PureComponent {
     render() {
         let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
-        // let copyNumberData = getCopyNumberData(samples,pathways,copyNumber)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
@@ -557,20 +557,47 @@ export default class AssociatedDataCache extends PureComponent {
                 break;
         }
 
-        return (
-            <TissueExpressionView
-                {...this.props}
-                width={width}
-                layout={layout(width, returnedValue.data)}
-                data={{
-                    expression,
-                    pathways: returnedValue.pathways,
-                    referencePathways,
-                    samples,
-                    sortedSamples: returnedValue.sortedSamples
-                }}
-                associateData={returnedValue.data}/>
-        );
+        if(referencePathways){
+            let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
+            let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
+            let layoutData = layout(width, returnedValue.data);
+            // console.log('ref width')
+            // console.log(referenceWidth)
+            // console.log('ref layout')
+            // console.log(referenceLayout)
+            // console.log('layout')
+            // console.log(layoutData)
+            return (
+                <TissueExpressionView
+                    {...this.props}
+                    width={width}
+                    layout={layoutData}
+                    referenceLayout={referenceLayout}
+                    data={{
+                        expression,
+                        pathways: returnedValue.pathways,
+                        referencePathways,
+                        samples,
+                        sortedSamples: returnedValue.sortedSamples
+                    }}
+                    associateData={returnedValue.data}/>
+            );
+        }
+        else{
+            return (
+                <TissueExpressionView
+                    {...this.props}
+                    width={width}
+                    layout={layout(width, returnedValue.data)}
+                    data={{
+                        expression,
+                        pathways: returnedValue.pathways,
+                        samples,
+                        sortedSamples: returnedValue.sortedSamples
+                    }}
+                    associateData={returnedValue.data}/>
+            );
+        }
     }
 
 

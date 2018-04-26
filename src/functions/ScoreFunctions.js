@@ -24,6 +24,10 @@ function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,label
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
+    console.log(layout.length + ' vs ' + pathways.length)
+    console.log('output layout -> pathway ')
+    console.log(layout)
+    console.log(pathways)
     if(pathways.length===layout.length){
         layout.forEach((el, i) => {
             let d = pathways[i];
@@ -164,7 +168,9 @@ export function getCopyNumberValue(copyNumberValue) {
 export default {
 
     drawTissueView(vg, props) {
-        let {width, height, layout, associateData, data: {pathways,referencePathways}} = props;
+        console.log('input props')
+        console.log(props)
+        let {width, height, layout, referenceLayout, associateData, data: {pathways,referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -175,8 +181,11 @@ export default {
 
 
         if(referencePathways){
+            console.log('doing the reference')
+            console.log(referenceLayout);
+            console.log(referencePathways);
             drawExpressionData(vg, width, height, layout, associateData,300);
-            drawPathwayLabels(vg, width, height, layout, referencePathways,150,0);
+            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways,150,0);
             drawPathwayLabels(vg, width, height, layout, pathways,150,150);
         }
         else{
