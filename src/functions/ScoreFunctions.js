@@ -8,8 +8,67 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
+// TODO: review vgmixed
+function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, labelOffset) {
+    if (layout[0].size <= 1) {
+        // div.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
+        // div.fillRect(0, labelOffset, width, labelHeight);
+        return;
+    }
 
-function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,labelOffset) {
+    let maxColor = 256;
+
+    // find the max
+    let highestScore = 0;
+    pathways.forEach(p => {
+        highestScore = p.density > highestScore ? p.density : highestScore;
+    });
+
+    console.log(layout.length + ' vs ' + pathways.length)
+    console.log('output layout -> pathway ')
+    console.log(layout)
+    console.log(pathways)
+    if (pathways.length === layout.length) {
+        layout.forEach((el, i) => {
+            let d = pathways[i];
+
+            let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
+            // div.fillStyle = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+            // div.fillRect(el.start, labelOffset, el.size, labelHeight);
+            // div.strokeRect(el.start, labelOffset, el.size, labelHeight);
+
+
+            // draw the text
+            // div.save();
+            // div.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
+            // div.rotate(-Math.PI / 2);
+            // div.font = "bold 10px Arial";
+            // div.translate(-labelHeight-labelOffset, el.start, labelHeight);
+
+            let geneLength = d.gene.length;
+            let labelString;
+            if (geneLength === 1) {
+                labelString = d.gene[0];
+            }
+            else {
+                labelString = '(' + d.gene.length + ') ';
+                // pad for 1000, so 4 + 2 parans
+                while (labelString.length < 5) {
+                    labelString += ' ';
+                }
+
+                labelString += d.golabel;
+            }
+
+            if (el.size >= 10) {
+                // div.fillText(labelString, 3, 10);
+            }
+            // div.restore();
+        });
+    }
+}
+
+function drawPathwayLabels(vg, width, height, layout, pathways, labelHeight, labelOffset) {
     if (layout[0].size <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
         vg.fillRect(0, labelOffset, width, labelHeight);
@@ -28,7 +87,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,label
     console.log('output layout -> pathway ')
     console.log(layout)
     console.log(pathways)
-    if(pathways.length===layout.length){
+    if (pathways.length === layout.length) {
         layout.forEach((el, i) => {
             let d = pathways[i];
 
@@ -43,7 +102,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,label
             vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
             vg.rotate(-Math.PI / 2);
             vg.font = "bold 10px Arial";
-            vg.translate(-labelHeight-labelOffset, el.start, labelHeight);
+            vg.translate(-labelHeight - labelOffset, el.start, labelHeight);
 
             let geneLength = d.gene.length;
             let labelString;
@@ -91,7 +150,7 @@ function regionColor(data) {
     return [255, c, c];
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data,labelHeight) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) {
     let height = totalHeight - labelHeight;
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -158,19 +217,14 @@ function drawExpressionData2(vg, width, height, data) {
     console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 }
 
-
-
 export function getCopyNumberValue(copyNumberValue) {
-    // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
     return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2) ? 1 : 0;
 }
 
 export default {
 
     drawTissueView(vg, props) {
-        console.log('input props')
-        console.log(props)
-        let {width, height, layout, referenceLayout, associateData, data: {pathways,referencePathways}} = props;
+        let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
@@ -179,18 +233,32 @@ export default {
             return;
         }
 
-
-        if(referencePathways){
-            console.log('doing the reference')
-            console.log(referenceLayout);
-            console.log(referencePathways);
-            drawExpressionData(vg, width, height, layout, associateData,300);
-            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways,150,0);
-            drawPathwayLabels(vg, width, height, layout, pathways,150,150);
+        if (referencePathways) {
+            drawExpressionData(vg, width, height, layout, associateData, 300);
+            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
+            drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
         }
-        else{
-            drawExpressionData(vg, width, height, layout, associateData,150);
-            drawPathwayLabels(vg, width, height, layout, pathways,150,0);
+        else {
+            drawExpressionData(vg, width, height, layout, associateData, 150);
+            drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
+        }
+
+    },
+
+    drawTissueOverlay(div, props) {
+        let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
+
+        if (associateData.length === 0) {
+            console.log('Clicked on an empty cell?');
+            return;
+        }
+
+        if (referencePathways) {
+            drawOverviewLabels(div, width, height, referenceLayout, referencePathways, 150, 0);
+            drawOverviewLabels(div, width, height, layout, pathways, 150, 150);
+        }
+        else {
+            drawOverviewLabels(div, width, height, layout, pathways, 150, 0);
         }
 
     }

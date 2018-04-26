@@ -119,6 +119,7 @@ class TissueExpressionView extends PureComponent {
                     referenceLayout={referenceLayout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
+                    drawOverlay={ScoreFunctions.drawTissueOverlay}
                     associateData={associateData}
                     data={data}
                     onClick={this.onClick}
