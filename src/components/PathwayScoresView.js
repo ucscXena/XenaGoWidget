@@ -12,7 +12,7 @@ import {getCopyNumberValue} from "../functions/ScoreFunctions";
 import cluster from '../functions/Cluster';
 
 
-const labelHeight = 150;
+const REFERENCE_LABEL_HEIGHT = 150;
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -33,7 +33,7 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
         pathwayArray[tissueIndex]; // sample
 }
 
-let tissueIndexFromY = (y, height, count) =>
+let tissueIndexFromY = (y, height, labelHeight, count) =>
     y < labelHeight ? -1 :
         Math.trunc((y - labelHeight) * count / (height - labelHeight));
 
@@ -41,19 +41,48 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, data: {pathways, samples, sortedSamples}} = props;
+    let {associateData, height, layout, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
 
-    let {x, y} = getMousePos(event);
-    let pathwayIndex = pathwayIndexFromX(x, layout);
-    let tissueIndex = tissueIndexFromY(y, height, samples.length);
+    // if reference pathways and layouts exists
+    if (referenceLayout && referencePathways) {
+        let {x, y} = getMousePos(event);
+        let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
+        let pathwayIndex;
+        let expression;
+        // if a reference pathway
+        if (tissueIndex < 0) {
+            pathwayIndex = pathwayIndexFromX(x, referenceLayout);
+            expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+            return {
+                pathway: referencePathways[pathwayIndex],
+                tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+                expression
+            };
+        }
+        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT * 2, samples.length);
+        pathwayIndex = pathwayIndexFromX(x, layout);
+        expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
-    let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+        return {
+            pathway: pathways[pathwayIndex],
+            tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+            expression
+        };
 
-    return {
-        pathway: pathways[pathwayIndex],
-        tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression
-    };
+    }
+    else {
+        let {x, y} = getMousePos(event);
+        let pathwayIndex = pathwayIndexFromX(x, layout);
+        let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
+        let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+
+        return {
+            pathway: pathways[pathwayIndex],
+            tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+            expression
+        };
+    }
+
 }
 
 const style = {
@@ -253,7 +282,6 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
                     for (let index of pathwayIndices) {
                         for (let sampleEntryIndex in sampleEntries) {
                             let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
-                            // console.log(sampleEntries[sampleEntryIndex] + ' -> '+ returnValue);
                             if (returnValue > 0) {
                                 returnArray[index][sampleEntryIndex] += returnValue;
                             }
@@ -442,7 +470,6 @@ function densitySort(prunedColumns) {
                 return b[index] - a[index];
             }
         }
-        // return 0 ;
         return sum(b) - sum(a)
     });
 
@@ -457,7 +484,6 @@ function densitySort(prunedColumns) {
 function overallSort(prunedColumns) {
     scoreColumnDensities(prunedColumns);
 
-    // prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);
 
     renderedData = renderedData.sort(function (a, b) {
@@ -465,9 +491,6 @@ function overallSort(prunedColumns) {
     });
 
     renderedData = transpose(renderedData);
-
-    // prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
-    // prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
     prunedColumns.data = renderedData;
 
     return prunedColumns;
@@ -529,7 +552,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let { selectedPathways, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
+        let {selectedPathways, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -560,17 +583,10 @@ export default class AssociatedDataCache extends PureComponent {
                 break;
         }
 
-        if(referencePathways){
+        if (referencePathways) {
             let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
             let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
             let layoutData = layout(width, returnedValue.data);
-            // console.log('ref width')
-            // console.log(referenceWidth)
-            // console.log('ref layout')
-            // console.log(referenceLayout)
-            // console.log('layout')
-            // console.log(layoutData)
-            console.log(selectedPathways)
             return (
                 <TissueExpressionView
                     {...this.props}
@@ -588,7 +604,7 @@ export default class AssociatedDataCache extends PureComponent {
                     associateData={returnedValue.data}/>
             );
         }
-        else{
+        else {
             return (
                 <TissueExpressionView
                     {...this.props}

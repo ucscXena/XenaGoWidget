@@ -36,7 +36,6 @@ export class HeaderLabel extends PureComponent {
         colorString += (colorMask[0]===0  ? 256 : color) + ',' ;
         colorString += (colorMask[1]===0  ? 256 : color) + ',' ;
         colorString += (colorMask[2]===0  ? 256 : color) + ')' ;
-        console.log(colorString)
 
 
         if (this.state.selected) {
