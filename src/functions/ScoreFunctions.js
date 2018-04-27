@@ -94,11 +94,12 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         backgroundColor: 'white',
                         strokeWidth: 1
                     }}
+                         title={labelString}
                     >
                         <svg>
                             {/*<circle cx={50} cy={50} r={10} fill="red" />*/}
-                            <text x={2} y={-2} fontFamily='Arial' fontSize={10}
-                            transform='rotate(90)'
+                            <text x={-labelHeight+2} y={10} fontFamily='Arial' fontSize={10}
+                            transform='rotate(-90)'
                             >
                                 {labelString}
                             </text>
