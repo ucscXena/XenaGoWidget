@@ -90,7 +90,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         labelOffset={labelOffset}
                         colorString={colorString}
                         left={el.start}
-                        top={el.size}
+                        width={el.size}
                         labelString={labelString}
                     />
                 )

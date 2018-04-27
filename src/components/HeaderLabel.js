@@ -7,26 +7,54 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        // this.state = {
-        //     selectedCohort: props.selectedCohort
-        // };
+        this.state = {
+            hovered:false
+        };
     }
 
+    onMouseOver = (item) => {
+        this.setState({ hovered:true });
+    }
+
+    onMouseOut = (item) => {
+        this.setState({ hovered:false });
+    }
+
+    style(){
+        let { labelOffset, left,width,labelHeight,colorString } = this.props;
+        if(this.state.hovered){
+            return {
+                position: 'absolute',
+                top: labelOffset,
+                left: left,
+                height: labelHeight,
+                width: width,
+                color: 'red',
+                backgroundColor: 'yellow',
+                strokeWidth: 1,
+            }
+        }
+        else{
+            return {
+                position: 'absolute',
+                top: labelOffset,
+                left: left,
+                height: labelHeight,
+                width: width,
+                color: 'black',
+                backgroundColor: colorString,
+                strokeWidth: 1,
+            }
+        }
+    }
 
     render() {
-        let { labelOffset, top,left,width,labelString,labelHeight,colorString } = this.props;
+        let { labelString,labelHeight } = this.props;
         return (
             <svg
-                style={{
-                    position: 'absolute',
-                    top: labelOffset,
-                    left: left,
-                    height: labelHeight,
-                    width: width,
-                    color: 'black',
-                    backgroundColor: colorString,
-                    strokeWidth: 1,
-                }}
+                style={this.style()}
+                onMouseOver={this.onMouseOver}
+                onMouseOut={this.onMouseOut}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10}
                       transform='rotate(-90)'
