@@ -2,6 +2,7 @@ import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range, times} from 'underscore';
 import React from "react";
 import ReactDOM from 'react-dom';
+import {HeaderLabel} from "../components/HeaderLabel";
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -59,11 +60,11 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         height: labelHeight,
                         width: el.size,
                         color: 'black',
-                        backgroundColor: {colorString},
-                        strokeWidth: 1
+                        backgroundColor: colorString,
+                        strokeWidth: 1,
                     }}>
                         return (
-                        <p></p>
+                        <p>None</p>
                         )
                     </div>
                 );
@@ -84,24 +85,14 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                     labelString += d.golabel;
                 }
                 return (
-                    <svg
-                        style={{
-                            position: 'absolute',
-                            top: labelOffset,
-                            left: el.start,
-                            height: labelHeight,
-                            width: el.size,
-                            color: 'black',
-                            backgroundColor: colorString,
-                            strokeWidth: 1
-                        }}
-                    >
-                        <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10}
-                              transform='rotate(-90)'
-                        >
-                            {labelString}
-                        </text>
-                    </svg>
+                    <HeaderLabel
+                        labelHeight={labelHeight}
+                        labelOffset={labelOffset}
+                        colorString={colorString}
+                        left={el.start}
+                        top={el.size}
+                        labelString={labelString}
+                    />
                 )
             }
 
@@ -204,7 +195,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) 
     let img = ctx.createImageData(width, totalHeight);
 
     layout.forEach(function (el, i) {
-        var rowData = data[i];
+        let rowData = data[i];
 
         // XXX watch for poor iterator performance in this for...of.
         for (let rs of regions.keys()) {

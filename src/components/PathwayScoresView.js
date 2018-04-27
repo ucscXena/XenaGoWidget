@@ -92,7 +92,7 @@ class TissueExpressionView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData,
-            titleText, selected, filter, referenceLayout, selectedHover
+            titleText, selected, filter, referenceLayout
         } = this.props;
 
         let titleString, filterString;
@@ -121,7 +121,6 @@ class TissueExpressionView extends PureComponent {
                     draw={ScoreFunctions.drawTissueView}
                     drawOverlay={ScoreFunctions.drawTissueOverlay}
                     associateData={associateData}
-                    selectedHover={selectedHover}
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}/>
@@ -142,7 +141,6 @@ TissueExpressionView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
-    selectedHover: PropTypes.any,
     id: PropTypes.any,
 };
 
@@ -529,7 +527,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedHover, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
+        let { selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -597,7 +595,6 @@ export default class AssociatedDataCache extends PureComponent {
                         pathways: returnedValue.pathways,
                         samples,
                         sortedSamples: returnedValue.sortedSamples,
-                        selectedHover: selectedHover,
                     }}
                     associateData={returnedValue.data}/>
             );
