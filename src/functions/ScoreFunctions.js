@@ -63,7 +63,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         strokeWidth: 1
                     }}>
                         return (
-                        <p>dogs</p>
+                        <p></p>
                         )
                     </div>
                 );
@@ -84,56 +84,25 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                     labelString += d.golabel;
                 }
                 return (
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: el.start,
-                        height: labelHeight,
-                        width: el.size,
-                        color: 'black',
-                        backgroundColor: 'white',
-                        strokeWidth: 1
-                    }}
-                         title={labelString}
+                    <svg
+                        style={{
+                            position: 'absolute',
+                            top: labelOffset,
+                            left: el.start,
+                            height: labelHeight,
+                            width: el.size,
+                            color: 'black',
+                            backgroundColor: 'white',
+                            strokeWidth: 1
+                        }}
                     >
-                        <svg>
-                            {/*<circle cx={50} cy={50} r={10} fill="red" />*/}
-                            <text x={-labelHeight+2} y={10} fontFamily='Arial' fontSize={10}
-                            transform='rotate(-90)'
-                            >
-                                {labelString}
-                            </text>
-                        </svg>
-                        {/*<label style={{*/}
-                            {/*fontSize: `9px`,*/}
-                            {/*fontFamily: 'Arial',*/}
-                            {/*fontStyle: 'bold',*/}
-                            {/*border: 1,*/}
-                            {/*borderStyle: 'solid',*/}
-                            {/*borderColor: 'red',*/}
-                            {/*// display: 'flex',*/}
-                            {/*// borderWidth: 2,*/}
-                            {/*strokeWidth: 1,*/}
-                            {/*// textOverflow:'wrap',*/}
-                            {/*// height: labelHeight,*/}
-                            {/*// position: 'absolute',*/}
-                            {/*textAlign: 'left',*/}
-                            {/*verticalAlign: 'bottom',*/}
-                            {/*float: 'left',*/}
-                            {/*width: 10,*/}
-                            {/*// marginTop: '60px',*/}
-                            {/*display: 'inline-block',*/}
-                            {/*position: 'absolute',*/}
-                            {/*// width: `50px`,*/}
-                            {/*// width: '30px',*/}
-                            {/*// transform: 'translate(0px,50px) rotate(-90deg)',*/}
-                            {/*x: 0,*/}
-                            {/*y: 0,*/}
-                            {/*transform: 'scale(0.1) rotate(-90deg) translate(-50px)  scale(10)',*/}
-                        {/*}}*/}
-                        {/*>*/}
-                        {/*</label>*/}
-                    </div>
+                        {/*<circle cx={50} cy={50} r={10} fill="red" />*/}
+                        <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10}
+                              transform='rotate(-90)'
+                        >
+                            {labelString}
+                        </text>
+                    </svg>
                 )
             }
 
@@ -141,7 +110,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
         });
         console.log('output labels')
         console.log(labels)
-        ReactDOM.render(<div style={{textAlign:'center'}}>{labels}</div>, div);
+        ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
         // ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
     }
 }
@@ -332,8 +301,8 @@ export default {
         }
 
         if (referencePathways) {
-            drawOverviewLabels(div, width, height, referenceLayout, referencePathways, 150, 0);
             drawOverviewLabels(div, width, height, layout, pathways, 150, 150);
+            drawOverviewLabels(div, width, height, referenceLayout, referencePathways, 150, 0);
         }
         else {
             drawOverviewLabels(div, width, height, layout, pathways, 150, 0);
