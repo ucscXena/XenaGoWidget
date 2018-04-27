@@ -92,6 +92,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         left={el.start}
                         width={el.size}
                         labelString={labelString}
+                        label={d.golabel}
                     />
                 )
             }

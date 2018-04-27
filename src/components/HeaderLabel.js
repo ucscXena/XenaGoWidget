@@ -7,21 +7,38 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log(this.props.label)
+        let label = this.props.label ;
         this.state = {
-            hovered:false
+            hovered:false,
+            selected:label==='DNA strand break joining'
         };
     }
 
     onMouseOver = (item) => {
         this.setState({ hovered:true });
-    }
+    };
 
     onMouseOut = (item) => {
         this.setState({ hovered:false });
-    }
+    };
 
     style(){
         let { labelOffset, left,width,labelHeight,colorString } = this.props;
+
+        if(this.state.selected){
+            return {
+                position: 'absolute',
+                top: labelOffset,
+                left: left,
+                height: labelHeight,
+                width: width,
+                backgroundColor: 'blue',
+                strokeWidth: 1,
+                cursor: 'pointer'
+            }
+        }
+        else
         if(this.state.hovered){
             return {
                 position: 'absolute',
@@ -29,7 +46,6 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                color: 'red',
                 backgroundColor: 'yellow',
                 strokeWidth: 1,
                 cursor: 'pointer'
@@ -42,11 +58,20 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                color: 'black',
                 backgroundColor: colorString,
                 strokeWidth: 1,
             }
         }
+    }
+
+    fontColor(){
+        if(this.state.hovered){
+            return 'brown';
+        }
+        if(this.state.selected ){
+            return 'white';
+        }
+        return 'black';
     }
 
     render() {
@@ -57,7 +82,7 @@ export class HeaderLabel extends PureComponent {
                 onMouseOver={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
             >
-                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10}
+                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
                       transform='rotate(-90)'
                 >
                     {labelString}
@@ -74,4 +99,5 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
+    label: PropTypes.string,
 };
