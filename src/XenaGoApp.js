@@ -210,6 +210,12 @@ export default class XenaGoApp extends PureComponent {
     };
 
     clickGene = (props) => {
+        // alert(JSON.stringify(props))
+        // let {expression, samples,copyNumber} = this.state.pathwayData;
+        // let {goid, golabel, gene} = props.pathway;
+        // console.log('selected path')
+        // alert(golabel)
+
         let sortGeneName = this.state.sortGeneName;
         let sortGeneOrder = this.state.sortGeneOrder;
         if (props.tissue === 'Header') {

@@ -12,13 +12,9 @@ function clearScreen(vg, width, height) {
 }
 
 // TODO: review vgmixed
-function drawOverviewLabels(div, width, height, layout, pathways, selectedPathways, labelHeight, labelOffset) {
-    // console.log('parent div')
-    // console.log(div)
+function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset) {
 
     if (layout[0].size <= 1) {
-        // div.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
-        // div.fillRect(0, labelOffset, width, labelHeight);
         return;
     }
 
@@ -30,27 +26,12 @@ function drawOverviewLabels(div, width, height, layout, pathways, selectedPathwa
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
-    // console.log(layout.length + ' vs ' + pathways.length)
-    // console.log('output layout -> pathway ')
-    // console.log(layout)
-    // console.log(pathways)
     if (pathways.length === layout.length) {
         let labels = layout.map((el, i) => {
             let d = pathways[i];
 
             let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
             let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
-            // div.fillRect(el.start, labelOffset, el.size, labelHeight);
-            // div.strokeRect(el.start, labelOffset, el.size, labelHeight);
-
-
-            // draw the text
-            // div.save();
-            // div.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
-            // div.rotate(-Math.PI / 2);
-            // div.font = "bold 10px Arial";
-            // div.translate(-labelHeight-labelOffset, el.start, labelHeight);
-
             if (false && el.size < 10) {
                 return (
                     <div style={{
@@ -97,13 +78,8 @@ function drawOverviewLabels(div, width, height, layout, pathways, selectedPathwa
                     />
                 )
             }
-
-
         });
-        // console.log('output labels')
-        // console.log(labels)
-        ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
-        // ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
+        return labels ;
     }
 }
 
@@ -295,13 +271,16 @@ export default {
             return;
         }
 
+        let labels ;
         if (referencePathways) {
-            drawOverviewLabels(div, width, height, layout, pathways, selectedPathways, 150, 150);
-            drawOverviewLabels(div, width, height, referenceLayout, referencePathways,selectedPathways, 150, 0);
+            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways,selectedPathways, 150, 0);
+            let l2 = drawOverviewLabels( width, height, layout, pathways, selectedPathways, 150, 150);
+            labels = [...l1,...l2];
         }
         else {
-            drawOverviewLabels(div, width, height, layout, pathways, selectedPathways,150, 0);
+            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways,150, 0);
         }
+        ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
 
     }
 }
