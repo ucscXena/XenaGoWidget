@@ -12,13 +12,12 @@ function clearScreen(vg, width, height) {
 }
 
 // TODO: review vgmixed
-function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset) {
+function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset,colorMask) {
 
     if (layout[0].size <= 1) {
         return;
     }
 
-    let maxColor = 256;
 
     // find the max
     let highestScore = 0;
@@ -27,59 +26,40 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
     });
 
     if (pathways.length === layout.length) {
-        let labels = layout.map((el, i) => {
+        return layout.map((el, i) => {
             let d = pathways[i];
 
-            let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
-            let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
-            if (false && el.size < 10) {
-                return (
-                    <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: el.start,
-                        height: labelHeight,
-                        width: el.size,
-                        color: 'black',
-                        backgroundColor: colorString,
-                        strokeWidth: 1,
-                    }}>
-                        return (
-                        <p>None</p>
-                        )
-                    </div>
-                );
+            // let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
+            // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+            let geneLength = d.gene.length;
+            let labelString;
+            if (geneLength === 1) {
+                labelString = d.gene[0];
             }
             else {
-                let geneLength = d.gene.length;
-                let labelString;
-                if (geneLength === 1) {
-                    labelString = d.gene[0];
+                labelString = '(' + d.gene.length + ') ';
+                // pad for 1000, so 4 + 2 parans
+                while (labelString.length < 5) {
+                    labelString += ' ';
                 }
-                else {
-                    labelString = '(' + d.gene.length + ') ';
-                    // pad for 1000, so 4 + 2 parans
-                    while (labelString.length < 5) {
-                        labelString += ' ';
-                    }
 
-                    labelString += d.golabel;
-                }
-                let selected = selectedPathways.indexOf(d.golabel)>=0;
-                return (
-                    <HeaderLabel
-                        labelHeight={labelHeight}
-                        labelOffset={labelOffset}
-                        colorString={colorString}
-                        left={el.start}
-                        width={el.size}
-                        labelString={labelString}
-                        selected={selected}
-                    />
-                )
+                labelString += d.golabel;
             }
+            let selected = selectedPathways.indexOf(d.golabel) >= 0;
+            return (
+                <HeaderLabel
+                    labelHeight={labelHeight}
+                    labelOffset={labelOffset}
+                    score = {d.density}
+                    highScore = {highestScore}
+                    left={el.start}
+                    width={el.size}
+                    labelString={labelString}
+                    selected={selected}
+                    colorMask={colorMask}
+                />
+            )
         });
-        return labels ;
     }
 }
 
@@ -261,7 +241,7 @@ export default {
     },
 
     drawTissueOverlay(div, props) {
-        let {width, height, layout, referenceLayout, associateData, data: {selectedPathways,pathways, referencePathways}} = props;
+        let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
 
         console.log('selected overlay')
         console.log(selectedPathways)
@@ -271,14 +251,14 @@ export default {
             return;
         }
 
-        let labels ;
+        let labels;
         if (referencePathways) {
-            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways,selectedPathways, 150, 0);
-            let l2 = drawOverviewLabels( width, height, layout, pathways, selectedPathways, 150, 150);
-            labels = [...l1,...l2];
+            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways, selectedPathways, 150, 0,[0,1,1]);
+            let l2 = drawOverviewLabels(width, height, layout, pathways, [], 150, 150,[1,0,0]);
+            labels = [...l1, ...l2];
         }
         else {
-            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways,150, 0);
+            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0,[0,1,1]);
         }
         ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
 

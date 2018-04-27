@@ -5,28 +5,41 @@ import {Dropdown} from "react-toolbox";
 
 export class HeaderLabel extends PureComponent {
 
+    maxColor = 256;
+
     constructor(props) {
         super(props);
         // console.log(this.props.label)
         // let label = this.props.label ;
         this.state = {
-            hovered:false,
-            selected:this.props.selected,
+            hovered: false,
+            selected: this.props.selected,
         };
     }
 
     onMouseOver = (item) => {
-        this.setState({ hovered:true });
+        this.setState({hovered: true});
     };
 
     onMouseOut = (item) => {
-        this.setState({ hovered:false });
+        this.setState({hovered: false});
     };
 
-    style(){
-        let { labelOffset, left,width,labelHeight,colorString } = this.props;
+    style() {
+        let {score,highScore,labelOffset, left, width, labelHeight,colorMask} = this.props;
 
-        if(this.state.selected){
+        let color = Math.round(this.maxColor * (1.0 - (score / highScore)));
+        // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+
+
+        let colorString = 'rgb(' ;
+        colorString += (colorMask[0]===0  ? 256 : color) + ',' ;
+        colorString += (colorMask[1]===0  ? 256 : color) + ',' ;
+        colorString += (colorMask[2]===0  ? 256 : color) + ')' ;
+        console.log(colorString)
+
+
+        if (this.state.selected) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -38,8 +51,7 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-        else
-        if(this.state.hovered){
+        else if (this.state.hovered) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -51,7 +63,7 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-        else{
+        else {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -64,18 +76,18 @@ export class HeaderLabel extends PureComponent {
         }
     }
 
-    fontColor(){
-        if(this.state.hovered){
+    fontColor() {
+        if (this.state.hovered) {
             return 'brown';
         }
-        if(this.state.selected ){
+        if (this.state.selected) {
             return 'white';
         }
         return 'black';
     }
 
     render() {
-        let { labelString,labelHeight } = this.props;
+        let {width, labelString, labelHeight} = this.props;
         return (
             <svg
                 style={this.style()}
@@ -85,7 +97,7 @@ export class HeaderLabel extends PureComponent {
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
                       transform='rotate(-90)'
                 >
-                    {labelString}
+                    {width < 10 ? '' : labelString}
                 </text>
             </svg>
         );
@@ -99,5 +111,8 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
+    score: PropTypes.number,
+    highScore: PropTypes.number,
     selected: PropTypes.any,
+    colorMask: PropTypes.any,
 };
