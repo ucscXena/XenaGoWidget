@@ -58,7 +58,8 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         left: el.start,
                         height: labelHeight,
                         width: el.size,
-                        color: 'green',
+                        color: 'black',
+                        backgroundColor: 'white',
                         strokeWidth: 1
                     }}>
                         return (
@@ -89,14 +90,23 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         left: el.start,
                         height: labelHeight,
                         width: el.size,
-                        color: 'green',
+                        color: 'black',
+                        backgroundColor: 'white',
                         strokeWidth: 1
-                    }}>
-                        <p className='ColumnLabel' style={{
-                            fontSize: `10px`,
+                    }}
+                    >
+                        <p style={{
+                            fontSize: `9px`,
                             fontFamily: 'Arial',
                             fontStyle: 'bold',
-                        }}>
+                            border: 1,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            strokeWidth: 1,
+                            width: {labelHeight},
+                            transform: 'rotate(-90deg)  translate(-80px,0px)',
+                        }}
+                        >
                             {labelString}
                         </p>
                     </div>

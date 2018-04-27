@@ -31,9 +31,9 @@ let styles = {
         // ,width:'25px !important'
         , display: 'block'
         , zIndex: 9999
-        , color: 'green'
-        , backgroundColor: 'blue'
-        , opacity: 0.5
+        // , color: 'green'
+        // , backgroundColor: 'blue'
+        , opacity: 1
     }
 };
 
