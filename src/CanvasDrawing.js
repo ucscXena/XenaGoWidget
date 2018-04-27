@@ -23,7 +23,7 @@ let styles = {
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
-        backgroundColor: 'gray'
+        backgroundColor: 'white'
     }
     , overlay: {
         position: 'absolute'
