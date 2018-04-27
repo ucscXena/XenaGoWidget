@@ -92,7 +92,7 @@ class TissueExpressionView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData,
-            titleText, selected, filter, referenceLayout
+            titleText, selected, filter, referenceLayout, selectedHover
         } = this.props;
 
         let titleString, filterString;
@@ -121,6 +121,7 @@ class TissueExpressionView extends PureComponent {
                     draw={ScoreFunctions.drawTissueView}
                     drawOverlay={ScoreFunctions.drawTissueOverlay}
                     associateData={associateData}
+                    selectedHover={selectedHover}
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}/>
@@ -141,6 +142,7 @@ TissueExpressionView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
+    selectedHover: PropTypes.any,
     id: PropTypes.any,
 };
 
@@ -527,7 +529,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
+        let {selectedHover, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -594,7 +596,8 @@ export default class AssociatedDataCache extends PureComponent {
                         expression,
                         pathways: returnedValue.pathways,
                         samples,
-                        sortedSamples: returnedValue.sortedSamples
+                        sortedSamples: returnedValue.sortedSamples,
+                        selectedHover: selectedHover,
                     }}
                     associateData={returnedValue.data}/>
             );

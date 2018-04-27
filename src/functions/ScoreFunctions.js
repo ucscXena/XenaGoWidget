@@ -12,8 +12,8 @@ function clearScreen(vg, width, height) {
 
 // TODO: review vgmixed
 function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, labelOffset) {
-    console.log('parent div')
-    console.log(div)
+    // console.log('parent div')
+    // console.log(div)
 
     if (layout[0].size <= 1) {
         // div.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
@@ -29,10 +29,10 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
-    console.log(layout.length + ' vs ' + pathways.length)
-    console.log('output layout -> pathway ')
-    console.log(layout)
-    console.log(pathways)
+    // console.log(layout.length + ' vs ' + pathways.length)
+    // console.log('output layout -> pathway ')
+    // console.log(layout)
+    // console.log(pathways)
     if (pathways.length === layout.length) {
         let labels = layout.map((el, i) => {
             let d = pathways[i];
@@ -59,7 +59,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         height: labelHeight,
                         width: el.size,
                         color: 'black',
-                        backgroundColor: 'white',
+                        backgroundColor: {colorString},
                         strokeWidth: 1
                     }}>
                         return (
@@ -92,11 +92,10 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                             height: labelHeight,
                             width: el.size,
                             color: 'black',
-                            backgroundColor: 'white',
+                            backgroundColor: colorString,
                             strokeWidth: 1
                         }}
                     >
-                        {/*<circle cx={50} cy={50} r={10} fill="red" />*/}
                         <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10}
                               transform='rotate(-90)'
                         >
@@ -108,8 +107,8 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
 
 
         });
-        console.log('output labels')
-        console.log(labels)
+        // console.log('output labels')
+        // console.log(labels)
         ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
         // ReactDOM.render(<div style={{color:'blue',fontSize:100}}>PUPPIES</div>, div);
     }
@@ -130,10 +129,10 @@ function drawPathwayLabels(vg, width, height, layout, pathways, labelHeight, lab
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
-    console.log(layout.length + ' vs ' + pathways.length)
-    console.log('output layout -> pathway ')
-    console.log(layout)
-    console.log(pathways)
+    // console.log(layout.length + ' vs ' + pathways.length)
+    // console.log('output layout -> pathway ')
+    // console.log(layout)
+    // console.log(pathways)
     if (pathways.length === layout.length) {
         layout.forEach((el, i) => {
             let d = pathways[i];
@@ -261,7 +260,7 @@ function drawExpressionData2(vg, width, height, data) {
         xPixel += pixelsPerPathway;
     }
     vg.restore();
-    console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
+    // console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 }
 
 export function getCopyNumberValue(copyNumberValue) {
@@ -276,18 +275,18 @@ export default {
         clearScreen(vg, width, height);
 
         if (associateData.length === 0) {
-            console.log('Clicked on an empty cell?');
+            // console.log('Clicked on an empty cell?');
             return;
         }
 
         if (referencePathways) {
             drawExpressionData(vg, width, height, layout, associateData, 300);
-            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
-            drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
+            // drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
+            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
         }
         else {
             drawExpressionData(vg, width, height, layout, associateData, 150);
-            drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
+            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
         }
 
     },
@@ -296,7 +295,7 @@ export default {
         let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
-            console.log('Clicked on an empty cell?');
+            // console.log('Clicked on an empty cell?');
             return;
         }
 
