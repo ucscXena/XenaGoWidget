@@ -32,6 +32,7 @@ export class HeaderLabel extends PureComponent {
                 color: 'red',
                 backgroundColor: 'yellow',
                 strokeWidth: 1,
+                cursor: 'pointer'
             }
         }
         else{
