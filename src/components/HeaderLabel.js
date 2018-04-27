@@ -7,11 +7,11 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log(this.props.label)
-        let label = this.props.label ;
+        // console.log(this.props.label)
+        // let label = this.props.label ;
         this.state = {
             hovered:false,
-            selected:label==='DNA strand break joining'
+            selected:this.props.selected,
         };
     }
 
@@ -99,5 +99,5 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
-    label: PropTypes.string,
+    selected: PropTypes.any,
 };

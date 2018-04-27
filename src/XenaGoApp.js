@@ -59,6 +59,7 @@ export default class XenaGoApp extends PureComponent {
             // selectedGeneSort: 'Hierarchical',
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
+            selectedPathways:[],
             sortTypes: ['Cluster', 'Density', 'Hierarchical','Overall', 'Per Column'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
@@ -125,6 +126,7 @@ export default class XenaGoApp extends PureComponent {
         let {expression, samples,copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
         console.log('selected path')
+        console.log(golabel)
 
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene] }));
 
@@ -147,6 +149,7 @@ export default class XenaGoApp extends PureComponent {
             sortPathwayOrder: sortPathwayOrder,
             sortGeneName: null,
             sortGeneOrder: null,
+            selectedPathways: [golabel],
             geneData: {
                 expression,
                 samples,
@@ -379,6 +382,7 @@ export default class XenaGoApp extends PureComponent {
                                               sortColumn={this.state.sortPathwayName}
                                               sortOrder={this.state.sortPathwayOrder}
                                               selectedSort={this.state.selectedTissueSort}
+                                              selectedPathways={this.state.selectedPathways}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}
                                               hideTitle={true}
                         />
@@ -424,6 +428,7 @@ export default class XenaGoApp extends PureComponent {
                                               sortOrder={this.state.sortGeneOrder}
                                               selectedSort={this.state.selectedGeneSort}
                                               referencePathways={this.state.pathwayData}
+                                              selectedPathways={this.state.selectedPathways}
                                               onClick={this.clickGene}
                                               onHover={this.hoverGene}
                                               hideTitle={true}

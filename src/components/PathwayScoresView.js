@@ -92,7 +92,7 @@ class TissueExpressionView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData,
-            titleText, selected, filter, referenceLayout
+            titleText, selected, filter, referenceLayout, selectedPathways
         } = this.props;
 
         let titleString, filterString;
@@ -120,6 +120,7 @@ class TissueExpressionView extends PureComponent {
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
                     drawOverlay={ScoreFunctions.drawTissueOverlay}
+                    selectedPathways={selectedPathways}
                     associateData={associateData}
                     data={data}
                     onClick={this.onClick}
@@ -137,6 +138,7 @@ TissueExpressionView.propTypes = {
     titleText: PropTypes.string,
     hideTitle: PropTypes.bool,
     referencePathways: PropTypes.any,
+    selectedPathways: PropTypes.any,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
@@ -527,7 +529,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let { selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
+        let { selectedPathways, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber,referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -568,6 +570,7 @@ export default class AssociatedDataCache extends PureComponent {
             // console.log(referenceLayout)
             // console.log('layout')
             // console.log(layoutData)
+            console.log(selectedPathways)
             return (
                 <TissueExpressionView
                     {...this.props}
@@ -579,6 +582,7 @@ export default class AssociatedDataCache extends PureComponent {
                         pathways: returnedValue.pathways,
                         referencePathways,
                         samples,
+                        selectedPathways,
                         sortedSamples: returnedValue.sortedSamples
                     }}
                     associateData={returnedValue.data}/>
@@ -594,6 +598,7 @@ export default class AssociatedDataCache extends PureComponent {
                         expression,
                         pathways: returnedValue.pathways,
                         samples,
+                        selectedPathways,
                         sortedSamples: returnedValue.sortedSamples,
                     }}
                     associateData={returnedValue.data}/>

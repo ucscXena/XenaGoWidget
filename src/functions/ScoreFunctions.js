@@ -12,7 +12,7 @@ function clearScreen(vg, width, height) {
 }
 
 // TODO: review vgmixed
-function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, labelOffset) {
+function drawOverviewLabels(div, width, height, layout, pathways, selectedPathways, labelHeight, labelOffset) {
     // console.log('parent div')
     // console.log(div)
 
@@ -84,6 +84,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
 
                     labelString += d.golabel;
                 }
+                let selected = selectedPathways.indexOf(d.golabel)>=0;
                 return (
                     <HeaderLabel
                         labelHeight={labelHeight}
@@ -92,7 +93,7 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         left={el.start}
                         width={el.size}
                         labelString={labelString}
-                        label={d.golabel}
+                        selected={selected}
                     />
                 )
             }
@@ -284,7 +285,10 @@ export default {
     },
 
     drawTissueOverlay(div, props) {
-        let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
+        let {width, height, layout, referenceLayout, associateData, data: {selectedPathways,pathways, referencePathways}} = props;
+
+        console.log('selected overlay')
+        console.log(selectedPathways)
 
         if (associateData.length === 0) {
             // console.log('Clicked on an empty cell?');
@@ -292,11 +296,11 @@ export default {
         }
 
         if (referencePathways) {
-            drawOverviewLabels(div, width, height, layout, pathways, 150, 150);
-            drawOverviewLabels(div, width, height, referenceLayout, referencePathways, 150, 0);
+            drawOverviewLabels(div, width, height, layout, pathways, selectedPathways, 150, 150);
+            drawOverviewLabels(div, width, height, referenceLayout, referencePathways,selectedPathways, 150, 0);
         }
         else {
-            drawOverviewLabels(div, width, height, layout, pathways, 150, 0);
+            drawOverviewLabels(div, width, height, layout, pathways, selectedPathways,150, 0);
         }
 
     }
