@@ -95,20 +95,43 @@ function drawOverviewLabels(div, width, height, layout, pathways, labelHeight, l
                         strokeWidth: 1
                     }}
                     >
-                        <p style={{
-                            fontSize: `9px`,
-                            fontFamily: 'Arial',
-                            fontStyle: 'bold',
-                            border: 1,
-                            borderColor: 'red',
-                            borderWidth: 2,
-                            strokeWidth: 1,
-                            width: {labelHeight},
-                            transform: 'rotate(-90deg)  translate(-80px,0px)',
-                        }}
-                        >
-                            {labelString}
-                        </p>
+                        <svg>
+                            {/*<circle cx={50} cy={50} r={10} fill="red" />*/}
+                            <text x={2} y={-2} fontFamily='Arial' fontSize={10}
+                            transform='rotate(90)'
+                            >
+                                {labelString}
+                            </text>
+                        </svg>
+                        {/*<label style={{*/}
+                            {/*fontSize: `9px`,*/}
+                            {/*fontFamily: 'Arial',*/}
+                            {/*fontStyle: 'bold',*/}
+                            {/*border: 1,*/}
+                            {/*borderStyle: 'solid',*/}
+                            {/*borderColor: 'red',*/}
+                            {/*// display: 'flex',*/}
+                            {/*// borderWidth: 2,*/}
+                            {/*strokeWidth: 1,*/}
+                            {/*// textOverflow:'wrap',*/}
+                            {/*// height: labelHeight,*/}
+                            {/*// position: 'absolute',*/}
+                            {/*textAlign: 'left',*/}
+                            {/*verticalAlign: 'bottom',*/}
+                            {/*float: 'left',*/}
+                            {/*width: 10,*/}
+                            {/*// marginTop: '60px',*/}
+                            {/*display: 'inline-block',*/}
+                            {/*position: 'absolute',*/}
+                            {/*// width: `50px`,*/}
+                            {/*// width: '30px',*/}
+                            {/*// transform: 'translate(0px,50px) rotate(-90deg)',*/}
+                            {/*x: 0,*/}
+                            {/*y: 0,*/}
+                            {/*transform: 'scale(0.1) rotate(-90deg) translate(-50px)  scale(10)',*/}
+                        {/*}}*/}
+                        {/*>*/}
+                        {/*</label>*/}
                     </div>
                 )
             }
