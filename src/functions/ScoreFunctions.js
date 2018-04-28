@@ -1,5 +1,8 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range, times} from 'underscore';
+import React from "react";
+import ReactDOM from 'react-dom';
+import {HeaderLabel} from "../components/HeaderLabel";
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -8,8 +11,59 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
+// TODO: review vgmixed
+function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset,colorMask) {
 
-function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,labelOffset) {
+    if (layout[0].size <= 1) {
+        return;
+    }
+
+
+    // find the max
+    let highestScore = 0;
+    pathways.forEach(p => {
+        highestScore = p.density > highestScore ? p.density : highestScore;
+    });
+
+    if (pathways.length === layout.length) {
+        return layout.map((el, i) => {
+            let d = pathways[i];
+
+            // let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
+            // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
+            let geneLength = d.gene.length;
+            let labelString;
+            if (geneLength === 1) {
+                labelString = d.gene[0];
+            }
+            else {
+                labelString = '(' + d.gene.length + ') ';
+                // pad for 1000, so 4 + 2 parans
+                while (labelString.length < 5) {
+                    labelString += ' ';
+                }
+
+                labelString += d.golabel;
+            }
+            let selected = selectedPathways.indexOf(d.golabel) >= 0;
+            return (
+                <HeaderLabel
+                    labelHeight={labelHeight}
+                    labelOffset={labelOffset}
+                    score = {d.density}
+                    highScore = {highestScore}
+                    left={el.start}
+                    width={el.size}
+                    labelString={labelString}
+                    selected={selected}
+                    colorMask={colorMask}
+                />
+            )
+        });
+    }
+}
+
+function drawPathwayLabels(vg, width, height, layout, pathways, labelHeight, labelOffset) {
     if (layout[0].size <= 1) {
         vg.fillStyle = 'rgb(100,200,100)'; // sets the color to fill in the rectangle with
         vg.fillRect(0, labelOffset, width, labelHeight);
@@ -24,11 +78,11 @@ function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,label
         highestScore = p.density > highestScore ? p.density : highestScore;
     });
 
-    console.log(layout.length + ' vs ' + pathways.length)
-    console.log('output layout -> pathway ')
-    console.log(layout)
-    console.log(pathways)
-    if(pathways.length===layout.length){
+    // console.log(layout.length + ' vs ' + pathways.length)
+    // console.log('output layout -> pathway ')
+    // console.log(layout)
+    // console.log(pathways)
+    if (pathways.length === layout.length) {
         layout.forEach((el, i) => {
             let d = pathways[i];
 
@@ -43,7 +97,7 @@ function drawPathwayLabels(vg, width, height, layout, pathways,labelHeight,label
             vg.fillStyle = 'rgb(0,0,0)'; // sets the color to fill in the rectangle with
             vg.rotate(-Math.PI / 2);
             vg.font = "bold 10px Arial";
-            vg.translate(-labelHeight-labelOffset, el.start, labelHeight);
+            vg.translate(-labelHeight - labelOffset, el.start, labelHeight);
 
             let geneLength = d.gene.length;
             let labelString;
@@ -91,7 +145,7 @@ function regionColor(data) {
     return [255, c, c];
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data,labelHeight) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) {
     let height = totalHeight - labelHeight;
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -99,7 +153,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data,labelHeight) {
     let img = ctx.createImageData(width, totalHeight);
 
     layout.forEach(function (el, i) {
-        var rowData = data[i];
+        let rowData = data[i];
 
         // XXX watch for poor iterator performance in this for...of.
         for (let rs of regions.keys()) {
@@ -155,43 +209,58 @@ function drawExpressionData2(vg, width, height, data) {
         xPixel += pixelsPerPathway;
     }
     vg.restore();
-    console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
+    // console.log('max: ' + maxColorScore + ' total scores: ' + colorScoreCount + ' total: ' + totalColorScore + ' avg: ' + (totalColorScore / colorScoreCount));
 }
 
-
-
 export function getCopyNumberValue(copyNumberValue) {
-    // console.log('calcauting from: ' + copyNumberValue + ' => ' + !isNaN(copyNumberValue));
     return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2) ? 1 : 0;
 }
 
 export default {
 
     drawTissueView(vg, props) {
-        console.log('input props')
-        console.log(props)
-        let {width, height, layout, referenceLayout, associateData, data: {pathways,referencePathways}} = props;
+        let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
         if (associateData.length === 0) {
-            console.log('Clicked on an empty cell?');
+            // console.log('Clicked on an empty cell?');
             return;
         }
 
+        if (referencePathways) {
+            drawExpressionData(vg, width, height, layout, associateData, 300);
+            // drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
+            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
+        }
+        else {
+            drawExpressionData(vg, width, height, layout, associateData, 150);
+            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
+        }
 
-        if(referencePathways){
-            console.log('doing the reference')
-            console.log(referenceLayout);
-            console.log(referencePathways);
-            drawExpressionData(vg, width, height, layout, associateData,300);
-            drawPathwayLabels(vg, width, height, referenceLayout, referencePathways,150,0);
-            drawPathwayLabels(vg, width, height, layout, pathways,150,150);
+    },
+
+    drawTissueOverlay(div, props) {
+        let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
+
+        console.log('selected overlay')
+        console.log(selectedPathways)
+
+        if (associateData.length === 0) {
+            // console.log('Clicked on an empty cell?');
+            return;
         }
-        else{
-            drawExpressionData(vg, width, height, layout, associateData,150);
-            drawPathwayLabels(vg, width, height, layout, pathways,150,0);
+
+        let labels;
+        if (referencePathways) {
+            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways, selectedPathways, 150, 0,[0,1,1]);
+            let l2 = drawOverviewLabels(width, height, layout, pathways, [], 150, 150,[1,0,0]);
+            labels = [...l1, ...l2];
         }
+        else {
+            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0,[0,1,1]);
+        }
+        ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
 
     }
 }
