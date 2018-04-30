@@ -13,52 +13,61 @@ let styles = {
         top: 0,
         zIndex: 1,
         boxShadow: '0 2px 2px 0 rgba(0, 0, 0, .14)'
-    },
-    labels: {
+    }
+    , labels: {
         position: 'relative',
         left: 0,
         zIndex: 2
-    },
-    wrapper: {
+    }
+    , wrapper: {
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
-        backgroundColor: 'gray'
+        backgroundColor: 'white'
+    }
+    , overlay: {
+        position: 'absolute'
+        , top: 0
+        // ,width:'25px !important'
+        , display: 'block'
+        , zIndex: 9999
+        // , color: 'green'
+        // , backgroundColor: 'blue'
+        , opacity: 1
     }
 };
 
-export default class CanvasDrawing extends Component{
+export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
         // console.log('will recieve')
         if (this.vg && !underscore.isEqual(newProps, this.props)) {
             this.draw(newProps);
         }
     }
-    shouldComponentUpdate() {return false}
+
+    shouldComponentUpdate() {
+        return false
+    }
+
     render() {
-        // console.log('render ');
-        let {width, height,wrapperProps} = this.props;
+        console.log('render props: ');
+        console.log(this.props);
+        let {width, height} = this.props;
         return (
-            <div ref='div' {...wrapperProps} style={{...styles.wrapperProps, width, height}}>
-                <canvas id='expressionOverview'
-                        style={styles.canvas}
-                        ref='canvas'
-                        width={width} height={height}
-                        // className='Tooltip-target'
-                        onMouseMove={this.props.onMouseMove}
-                        // onMouseOut={this.on.mouseout}
-                        // onMouseOver={this.on.mouseover}
-                        onClick={this.props.onClick}
-                        // onDblClick={this.props.onDblClick}
-                />
-            </div>
+            <canvas id='expressionOverview'
+                    style={styles.canvas}
+                    ref='canvas'
+                    width={width} height={height}
+            />
         );
     }
+
     componentDidMount() {
         let canvas = ReactDOM.findDOMNode(this.refs.canvas);
         this.vg = canvas.getContext('2d');
         this.draw(this.props);
     }
+
     draw(props) {
         let {draw, ...drawProps} = props,
             {height, width} = drawProps,
@@ -81,6 +90,6 @@ CanvasDrawing.propTypes = {
     width: PropTypes.any,
     height: PropTypes.any,
     // onMouseOver: PropTypes.any,
-    onClick: PropTypes.any,
+    // onClick: PropTypes.any,
 };
 
