@@ -54,21 +54,11 @@ export default class CanvasDrawing extends Component {
         console.log(this.props);
         let {width, height} = this.props;
         return (
-            <div ref='div' style={{...styles.wrapper, width, height}}>
-                <canvas id='expressionOverview'
-                        style={styles.canvas}
-                        ref='canvas'
-                        width={width} height={height}
-                />
-                <div id="expressionOverlay"
-                     ref="overlay"
-                     style={{...styles.overlay,width,height}}
-                     onMouseMove={this.props.onMouseMove}
-                     onClick={this.props.onClick}
-                >This div is over the canvas
-                </div>
-
-            </div>
+            <canvas id='expressionOverview'
+                    style={styles.canvas}
+                    ref='canvas'
+                    width={width} height={height}
+            />
         );
     }
 
@@ -79,10 +69,9 @@ export default class CanvasDrawing extends Component {
     }
 
     draw(props) {
-        let {draw, drawOverlay, ...drawProps} = props,
+        let {draw, ...drawProps} = props,
             {height, width} = drawProps,
             el = ReactDOM.findDOMNode(this.refs.canvas),
-            overlayDiv = ReactDOM.findDOMNode(this.refs.overlay),
             vg = this.vg;
 
         if (el.width !== width) {
@@ -94,15 +83,13 @@ export default class CanvasDrawing extends Component {
         }
 
         draw(vg, drawProps);
-        drawOverlay(overlayDiv, drawProps);
     }
 }
 CanvasDrawing.propTypes = {
     draw: PropTypes.any,
-    drawOverlay: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
     // onMouseOver: PropTypes.any,
-    onClick: PropTypes.any,
+    // onClick: PropTypes.any,
 };
 

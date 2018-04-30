@@ -10,6 +10,7 @@ import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
 import {getCopyNumberValue} from "../functions/ScoreFunctions";
 import cluster from '../functions/Cluster';
+import SVGLabels from "./SVGLabels";
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -89,10 +90,16 @@ const style = {
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
-    },
-    fadeOut: {
+    }
+    , fadeOut: {
         opacity: 0.6,
         transition: 'opacity 1s ease'
+    }
+    , wrapper: {
+        position: 'relative',
+        zIndex: 1,
+        overflow: 'hidden',
+        backgroundColor: 'white'
     }
 };
 
@@ -137,7 +144,7 @@ class TissueExpressionView extends PureComponent {
         let stat = loading ? <img src={spinner}/> : null;
 
         return (
-            <div style={loading ? style.fadeOut : style.fadeIn}>
+            <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
                 {!this.props.hideTitle &&
                 <h3>{titleString} {stat}</h3>
                 }
@@ -148,12 +155,22 @@ class TissueExpressionView extends PureComponent {
                     referenceLayout={referenceLayout}
                     filter={filterString}
                     draw={ScoreFunctions.drawTissueView}
+                    selectedPathways={selectedPathways}
+                    associateData={associateData}
+                    data={data}
+                />
+                <SVGLabels
+                    width={width}
+                    height={height}
+                    layout={layout}
+                    referenceLayout={referenceLayout}
                     drawOverlay={ScoreFunctions.drawTissueOverlay}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     data={data}
                     onClick={this.onClick}
-                    onMouseMove={this.onHover}/>
+                    onMouseMove={this.onHover}
+                />
             </div>
         );
     }
