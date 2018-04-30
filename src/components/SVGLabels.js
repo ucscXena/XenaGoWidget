@@ -39,7 +39,7 @@ export default class SVGLabels extends PureComponent {
                  style={{...styles.overlay, width, height}}
                  onMouseMove={this.props.onMouseMove}
                  onClick={this.props.onClick}
-            >This div is over the canvas
+            >
             </div>
         )
     }

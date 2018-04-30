@@ -11,6 +11,10 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
+function selectPathway(item){
+   // alert(JSON.stringify(item))
+}
+
 // TODO: review vgmixed
 function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset,colorMask) {
 
@@ -45,18 +49,18 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
 
                 labelString += d.golabel;
             }
-            let selected = selectedPathways.indexOf(d.golabel) >= 0;
             return (
                 <HeaderLabel
                     labelHeight={labelHeight}
                     labelOffset={labelOffset}
-                    score = {d.density}
                     highScore = {highestScore}
                     left={el.start}
                     width={el.size}
+                    item={d}
+                    selectedPathways={selectedPathways}
                     labelString={labelString}
-                    selected={selected}
                     colorMask={colorMask}
+                    onMouseClick={selectPathway}
                 />
             )
         });

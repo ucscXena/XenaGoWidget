@@ -9,11 +9,8 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        // console.log(this.props.label)
-        // let label = this.props.label ;
         this.state = {
             hovered: false,
-            selected: this.props.selected,
         };
     }
 
@@ -26,9 +23,9 @@ export class HeaderLabel extends PureComponent {
     };
 
     style() {
-        let {score,highScore,labelOffset, left, width, labelHeight,colorMask} = this.props;
+        let {item :{density,golabel},selectedPathways,highScore,labelOffset, left, width, labelHeight,colorMask} = this.props;
 
-        let color = Math.round(this.maxColor * (1.0 - (score / highScore)));
+        let color = Math.round(this.maxColor * (1.0 - (density/ highScore)));
         // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
 
 
@@ -37,8 +34,9 @@ export class HeaderLabel extends PureComponent {
         colorString += (colorMask[1]===0  ? 256 : color) + ',' ;
         colorString += (colorMask[2]===0  ? 256 : color) + ')' ;
 
+        let selected = selectedPathways.indexOf(golabel)>=0;
 
-        if (this.state.selected) {
+        if (selected) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -86,12 +84,13 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight} = this.props;
+        let {width, labelString, labelHeight, onMouseClick,item} = this.props;
         return (
             <svg
                 style={this.style()}
                 onMouseOver={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
+                onMouseUp={onMouseClick(item)}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
                       transform='rotate(-90)'
@@ -110,8 +109,9 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
-    score: PropTypes.number,
     highScore: PropTypes.number,
-    selected: PropTypes.any,
+    item:PropTypes.any,
+    selectedPathways: PropTypes.any,
     colorMask: PropTypes.any,
+    onMouseClick: PropTypes.any,
 };
