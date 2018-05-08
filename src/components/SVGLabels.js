@@ -24,15 +24,9 @@ export default class SVGLabels extends PureComponent {
         this.draw(this.props);
     }
 
-    draw(props) {
-        let {drawOverlay, ...drawProps} = props,
-            overlayDiv = ReactDOM.findDOMNode(this.refs.overlay);
-
-        drawOverlay(overlayDiv, drawProps);
-    }
-
     render() {
-        const { width, height } = this.props;
+        const { width, height ,drawOverlay,...drawProps} = this.props;
+        let overlayDiv = ReactDOM.findDOMNode(this.refs.overlay);
         return (
             <div id="expressionOverlay"
                  ref="overlay"
@@ -40,6 +34,7 @@ export default class SVGLabels extends PureComponent {
                  onMouseMove={this.props.onMouseMove}
                  onClick={this.props.onClick}
             >
+                { drawOverlay(overlayDiv,drawProps) }
             </div>
         )
     }

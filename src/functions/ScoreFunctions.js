@@ -176,7 +176,7 @@ export default {
         else {
             labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0,[0,1,1]);
         }
-        ReactDOM.render(<div style={{textAlign: 'center'}}>{labels}</div>, div);
+        return labels;
 
     }
 }
