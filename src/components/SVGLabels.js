@@ -32,10 +32,6 @@ export default class SVGLabels extends PureComponent {
         }
     }
 
-    componentDidMount() {
-        this.draw(this.props);
-    }
-
     render() {
         const { width, height ,drawOverlay,onClick,onMouseMove} = this.props;
         let overlayDiv = ReactDOM.findDOMNode(this.refs.overlay);
