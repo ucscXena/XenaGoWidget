@@ -1,7 +1,6 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range, times} from 'underscore';
 import React from "react";
-import ReactDOM from 'react-dom';
 import {HeaderLabel} from "../components/HeaderLabel";
 
 function clearScreen(vg, width, height) {

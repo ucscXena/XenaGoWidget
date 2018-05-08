@@ -450,7 +450,6 @@ function clusterSort(prunedColumns) {
 function hierarchicalSort(prunedColumns) {
     sortColumnHierarchical(prunedColumns);
 
-    // scoreColumnDensities(prunedColumns);
     let inputData = transpose(prunedColumns.data);
     prunedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(prunedColumns.data);

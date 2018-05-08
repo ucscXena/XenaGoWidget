@@ -16,12 +16,9 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
-// import {Button} from "react-toolbox/lib/button";
-import {Button, IconButton} from 'react-toolbox/lib/button';
+import {Button} from 'react-toolbox/lib/button';
 
-import RTButtonTheme from "./RTButtonTheme.css"
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
-import {Panel} from "react-bootstrap";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
@@ -44,7 +41,6 @@ function intersection(a, b) {
 }
 
 
-
 export default class XenaGoApp extends PureComponent {
 
     constructor(props) {
@@ -59,8 +55,8 @@ export default class XenaGoApp extends PureComponent {
             // selectedGeneSort: 'Hierarchical',
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
-            selectedPathways:[],
-            sortTypes: ['Cluster', 'Density', 'Hierarchical','Overall', 'Per Column'],
+            selectedPathways: [],
+            sortTypes: ['Cluster', 'Density', 'Hierarchical', 'Overall', 'Per Column'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
                 copyNumber: ExampleCopyNumber,
@@ -123,12 +119,12 @@ export default class XenaGoApp extends PureComponent {
     }
 
     clickPathway = (pathwayClickData) => {
-        let {expression, samples,copyNumber} = this.state.pathwayData;
+        let {expression, samples, copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
-        console.log('selected path')
-        console.log(golabel)
+        // console.log('selected path')
+        // console.log(golabel)
 
-        let pathways = gene.map(gene => ({goid, golabel, gene: [gene] }));
+        let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
         let sortPathwayName = this.state.sortPathwayName;
         let sortPathwayOrder = this.state.sortPathwayOrder;
@@ -199,8 +195,8 @@ export default class XenaGoApp extends PureComponent {
                 expression: [],
                 pathways: [],
                 samples: [],
-                geneList:[],
-                copyNumber:[],
+                geneList: [],
+                copyNumber: [],
             },
         });
     };
@@ -310,7 +306,7 @@ export default class XenaGoApp extends PureComponent {
                         samples
                     },
                     geneData: {
-                        copyNumber:[],
+                        copyNumber: [],
                         expression: [],
                         pathways: [],
                         samples: [],
@@ -343,7 +339,7 @@ export default class XenaGoApp extends PureComponent {
 
         let filteredMutationVector = pick(mutationVector,
             v => v >= this.state.minFilter);
-        filteredMutationVector['Copy Number'] = 1 ;
+        filteredMutationVector['Copy Number'] = 1;
         // console.log('filtered mutation vector');
         // console.log(filteredMutationVector)
 
@@ -394,13 +390,13 @@ export default class XenaGoApp extends PureComponent {
                     <Col md={this.state.uiControls.gene.columns}>
                         <Card style={{width: this.state.uiControls.gene.columnWidth}}>
                             <CardActions>
-                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView} />
+                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView}/>
                             </CardActions>
 
                             <CardTitle
                                 title={this.state.selectedCohort}
                                 subtitle='Cohort'
-                              />
+                            />
 
                             <CardMedia>
                                 <SortSelector sortTypes={this.state.sortTypes}
