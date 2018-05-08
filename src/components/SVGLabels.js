@@ -20,21 +20,33 @@ let styles = {
 
 export default class SVGLabels extends PureComponent {
 
+    constructor(props){
+        super(props);
+        const { width, height ,drawOverlay,...drawProps} = this.props;
+
+        this.state = {
+            width: width,
+            height: height,
+            drawOverlay: drawOverlay,
+            drawProps: drawProps,
+        }
+    }
+
     componentDidMount() {
         this.draw(this.props);
     }
 
     render() {
-        const { width, height ,drawOverlay,...drawProps} = this.props;
+        const { width, height ,drawOverlay,onClick,onMouseMove} = this.props;
         let overlayDiv = ReactDOM.findDOMNode(this.refs.overlay);
         return (
             <div id="expressionOverlay"
                  ref="overlay"
                  style={{...styles.overlay, width, height}}
-                 onMouseMove={this.props.onMouseMove}
-                 onClick={this.props.onClick}
+                 onMouseMove={onMouseMove}
+                 onClick={onClick}
             >
-                { drawOverlay(overlayDiv,drawProps) }
+                { drawOverlay(overlayDiv,this.state.drawProps) }
             </div>
         )
     }
