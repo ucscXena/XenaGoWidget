@@ -11,8 +11,8 @@ function clearScreen(vg, width, height) {
 }
 
 function selectPathway(item){
-    console.log('selected pathway: ');
-    console.log(item);
+    // console.log('selected pathway: ');
+    // console.log(item);
    // alert(JSON.stringify(item))
 }
 
