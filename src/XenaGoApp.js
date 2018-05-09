@@ -47,16 +47,10 @@ export default class XenaGoApp extends PureComponent {
         super(props);
 
         this.state = {
-            sortPathwayName: null,
-            sortPathwayOrder: null,
-            sortGeneName: null,
-            sortGeneOrder: null,
-            // selectedTissueSort: 'Hierarchical',
-            // selectedGeneSort: 'Hierarchical',
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
             selectedPathways: [],
-            sortTypes: ['Cluster', 'Density', 'Hierarchical', 'Overall', 'Per Column'],
+            sortTypes: ['Cluster', 'Density', 'Hierarchical', 'Overall'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
                 copyNumber: ExampleCopyNumber,
@@ -377,8 +371,6 @@ export default class XenaGoApp extends PureComponent {
                                               geneList={geneList}
                                               loading={cohortLoading}
                                               min={this.state.minFilter}
-                                              sortColumn={this.state.sortPathwayName}
-                                              sortOrder={this.state.sortPathwayOrder}
                                               selectedSort={this.state.selectedTissueSort}
                                               selectedPathways={this.state.selectedPathways}
                                               onClick={this.clickPathway} onHover={this.hoverPathway}
@@ -422,8 +414,6 @@ export default class XenaGoApp extends PureComponent {
                                               geneList={geneList}
                                               loading={cohortLoading}
                                               min={this.state.minFilter}
-                                              sortColumn={this.state.sortGeneName}
-                                              sortOrder={this.state.sortGeneOrder}
                                               selectedSort={this.state.selectedGeneSort}
                                               referencePathways={this.state.pathwayData}
                                               selectedPathways={this.state.selectedPathways}

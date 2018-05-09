@@ -417,10 +417,13 @@ function clusterSort(prunedColumns) {
         return sum(b) - sum(a)
     });
     renderedData = transpose(renderedData);
-    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
-    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = prunedColumns.samples;
+    returnColumns.pathways = prunedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
-    return prunedColumns;
+    return returnColumns;
 }
 
 function hierarchicalSort(prunedColumns) {
@@ -446,10 +449,14 @@ function hierarchicalSort(prunedColumns) {
 
 
     renderedData = transpose(returnData);
-    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
-    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
-    return prunedColumns;
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = prunedColumns.samples;
+    returnColumns.pathways = prunedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+
+    return returnColumns;
 }
 
 function densitySort(prunedColumns) {
@@ -467,10 +474,13 @@ function densitySort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    prunedColumns.sortedSamples = renderedData[renderedData.length - 1];
-    prunedColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = prunedColumns.samples;
+    returnColumns.pathways = prunedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
 
-    return prunedColumns;
+    return returnColumns;
 }
 
 function overallSort(prunedColumns) {
@@ -483,59 +493,14 @@ function overallSort(prunedColumns) {
     });
 
     renderedData = transpose(renderedData);
-    prunedColumns.data = renderedData;
 
-    return prunedColumns;
+    let returnColumns = {};
+
+    returnColumns.data = renderedData;
+
+    return returnColumns;
 }
 
-/**
- *
- * @param data
- * @param sortColumn
- * @param sortOrder
- * @returns {undefined}
- */
-function sortColumns(data, sortColumn, sortOrder) {
-    if (!sortColumn) return defaultSort(data);
-
-
-    // sort tissues by the column in the sort order specified
-    let columnIndex = getColumnIndex(data, sortColumn);
-    let sortPathway = data.data[columnIndex];
-    let sortedColumnIndices = [];
-    for (let i = 0; i < sortPathway.length; i++) {
-        sortedColumnIndices.push({
-                index: i,
-                value: sortPathway[i]
-            }
-        );
-        sortedColumnIndices.value = i;
-    }
-
-    sortedColumnIndices.sort(function (a, b) {
-        if (sortOrder === 'desc') {
-            return b.value - a.value;
-        }
-        else {
-            return a.value - b.value;
-        }
-    });
-
-    data.data.push(data.samples);
-    let renderedData = transpose(data.data);
-
-    renderedData = renderedData.sort(function (a, b) {
-        let returnValue = a[columnIndex] - b[columnIndex];
-        return sortOrder === 'desc' ? -returnValue : returnValue;
-    });
-
-    renderedData = transpose(renderedData);
-
-    data.sortedSamples = renderedData[renderedData.length - 1];
-    data.data = renderedData.slice(0, data.data.length - 1);
-
-    return data;
-}
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
 
@@ -566,9 +531,6 @@ export default class AssociatedDataCache extends PureComponent {
                 break;
             case 'Cluster':
                 returnedValue = clusterSort(prunedColumns);
-                break;
-            case 'Per Column':
-                returnedValue = sortColumns(prunedColumns, sortColumn, sortOrder);
                 break;
             default:
                 returnedValue = clusterSort(prunedColumns);
