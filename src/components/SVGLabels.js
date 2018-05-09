@@ -1,7 +1,6 @@
 import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
-import React, {Component} from 'react'
-import ReactDOM from 'react-dom';
+import React from 'react'
 
 
 let styles = {

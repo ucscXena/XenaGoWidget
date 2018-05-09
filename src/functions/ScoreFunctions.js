@@ -62,6 +62,7 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
                     labelString={labelString}
                     colorMask={colorMask}
                     onMouseClick={selectPathway}
+                    key={labelString}
                 />
             )
         });
