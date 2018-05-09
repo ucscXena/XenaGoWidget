@@ -212,28 +212,10 @@ let getGenePathwayLookup = pathways => {
 };
 
 function pruneColumns(data, pathways, min) {
-    let columnScores = [];
-    for (let i = 0; i < pathways.length; i++) {
-        columnScores[i] = 0;
-    }
+    let columnScores = data.map(sum);
 
-    for (let col in data) {
-        for (let row in data[col]) {
-            let val = data[col][row];
-            if (val) {
-                columnScores[col] += val;
-            }
-        }
-    }
-    let prunedPathways = [];
-    let prunedAssociations = [];
-
-    for (let col in columnScores) {
-        if (columnScores[col] >= min) {
-            prunedPathways.push(pathways[col]);
-            prunedAssociations.push(data[col]);
-        }
-    }
+    let prunedPathways = pathways.filter( (el,i) => columnScores[i]>=min );
+    let prunedAssociations = data.filter( (el,i) => columnScores[i]>=min );
 
     return {
         'data': prunedAssociations,
