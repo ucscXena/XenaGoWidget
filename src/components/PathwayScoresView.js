@@ -332,14 +332,20 @@ function linkage(distances) {
  * @param prunedColumns
  */
 function sortColumnHierarchical(prunedColumns) {
-    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-        prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
-        prunedColumns.pathways[index].index = index;
-    }
+    let sortedPathways = prunedColumns.pathways.map( (el,index) => {
+        let pathway = JSON.parse(JSON.stringify(el));
+        pathway.density = sumInstances(prunedColumns.data[index]);
+        pathway.index = index ;
+        return pathway;
+    }) ;
+    let sortedColumns = {};
+    sortedColumns.pathways = sortedPathways;
+    sortedColumns.samples = prunedColumns.samples;
+    sortedColumns.data = prunedColumns.data;
 
 
     let levels = cluster({
-        input: prunedColumns.data,
+        input: sortedColumns.data,
         distance: distance,
         linkage: linkage,
     });
@@ -349,12 +355,13 @@ function sortColumnHierarchical(prunedColumns) {
     let renderedArray = [];
     let renderedIndices = [];
     for (let index = 0; index < clusterIndices.length; ++index) {
-        renderedArray[index] = prunedColumns.data[clusterIndices[index]];
-        renderedIndices[index] = prunedColumns.pathways[clusterIndices[index]];
+        renderedArray[index] = sortedColumns.data[clusterIndices[index]];
+        renderedIndices[index] = sortedColumns.pathways[clusterIndices[index]];
     }
-    prunedColumns.data = renderedArray;
-    prunedColumns.pathways = renderedIndices;
+    sortedColumns.data = renderedArray;
+    sortedColumns.pathways = renderedIndices;
 
+    return sortedColumns;
 }
 
 /**
@@ -363,6 +370,7 @@ function sortColumnHierarchical(prunedColumns) {
  */
 function scoreColumnDensities(prunedColumns) {
 
+
     let sortedPathways = prunedColumns.pathways.map( (el,index) => {
         let pathway = JSON.parse(JSON.stringify(el));
         pathway.density = sumInstances(prunedColumns.data[index]);
@@ -370,15 +378,10 @@ function scoreColumnDensities(prunedColumns) {
         return pathway;
     }) ;
 
-    let sortedColumns = {};
+    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = sortedPathways;
-    sortedColumns.samples = prunedColumns.samples;
-    sortedColumns.data = prunedColumns.data;
-
-    // for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-    //     prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
-    //     prunedColumns.pathways[index].index = index;
-    // }
+    // sortedColumns.samples = prunedColumns.samples;
+    // sortedColumns.data = prunedColumns.data;
 
     sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
@@ -438,11 +441,11 @@ function clusterSort(prunedColumns) {
 }
 
 function hierarchicalSort(prunedColumns) {
-    sortColumnHierarchical(prunedColumns);
+    let sortedColumns = sortColumnHierarchical(prunedColumns);
 
-    let inputData = transpose(prunedColumns.data);
-    prunedColumns.data.push(prunedColumns.samples);
-    let renderedData = transpose(prunedColumns.data);
+    let inputData = transpose(sortedColumns.data);
+    sortedColumns.data.push(sortedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
 
 
     let levels = cluster({
@@ -463,15 +466,15 @@ function hierarchicalSort(prunedColumns) {
 
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = prunedColumns.samples;
-    returnColumns.pathways = prunedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
 
     return returnColumns;
 }
 
 function densitySort(prunedColumns) {
-    let returnColumns = JSON.parse(JSON.stringify(prunedColumns));
+    let returnColumns = scoreColumnDensities(prunedColumns);
     returnColumns.data.push(returnColumns.samples);
     let renderedData = transpose(returnColumns.data);
 
@@ -545,6 +548,9 @@ export default class AssociatedDataCache extends PureComponent {
                 returnedValue = clusterSort(prunedColumns);
                 break;
         }
+
+        console.log('sorted pathways');
+        console.log(returnedValue.pathways)
 
         if (referencePathways) {
             let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
