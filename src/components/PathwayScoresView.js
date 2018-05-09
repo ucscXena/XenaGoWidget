@@ -362,20 +362,40 @@ function sortColumnHierarchical(prunedColumns) {
  * @param prunedColumns
  */
 function scoreColumnDensities(prunedColumns) {
-    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-        prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
-        prunedColumns.pathways[index].index = index;
-    }
 
-    prunedColumns.pathways.sort((a, b) => b.density - a.density);
+    let sortedPathways = prunedColumns.pathways.map( (el,index) => {
+        let pathway = JSON.parse(JSON.stringify(el));
+        pathway.density = sumInstances(prunedColumns.data[index]);
+        pathway.index = index ;
+        return pathway;
+    }) ;
+
+    let sortedColumns = {};
+    sortedColumns.pathways = sortedPathways;
+    sortedColumns.samples = prunedColumns.samples;
+    sortedColumns.data = prunedColumns.data;
+
+    // for (let index = 0; index < prunedColumns.pathways.length; ++index) {
+    //     prunedColumns.pathways[index].density = sumInstances(prunedColumns.data[index]);
+    //     prunedColumns.pathways[index].index = index;
+    // }
+
+    sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
     // refilter data by index
     let renderedArray = [];
-    for (let index = 0; index < prunedColumns.pathways.length; ++index) {
-        renderedArray[index] = prunedColumns.data[prunedColumns.pathways[index].index];
+    for (let index = 0; index < sortedColumns.pathways.length; ++index) {
+        renderedArray[index] = sortedColumns.data[sortedColumns.pathways[index].index];
 
     }
-    prunedColumns.data = renderedArray;
+    sortedColumns.data = renderedArray;
+    sortedColumns.samples = prunedColumns.samples;
+
+    console.log('abcd')
+    console.log(prunedColumns)
+    console.log(sortedColumns)
+
+    return sortedColumns;
 }
 
 /**
@@ -391,9 +411,13 @@ function scoreColumnDensities(prunedColumns) {
  * @returns {undefined}
  */
 function clusterSort(prunedColumns) {
-    scoreColumnDensities(prunedColumns);
-    prunedColumns.data.push(prunedColumns.samples);
-    let renderedData = transpose(prunedColumns.data);
+    let sortedColumns = scoreColumnDensities(prunedColumns);
+    console.log('cluster sort vs');
+    // console.log(sortedColumns);
+    console.log(prunedColumns);
+
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
@@ -406,9 +430,9 @@ function clusterSort(prunedColumns) {
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = prunedColumns.samples;
-    returnColumns.pathways = prunedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
 
     return returnColumns;
 }
@@ -447,8 +471,9 @@ function hierarchicalSort(prunedColumns) {
 }
 
 function densitySort(prunedColumns) {
-    prunedColumns.data.push(prunedColumns.samples);
-    let renderedData = transpose(prunedColumns.data);
+    let returnColumns = JSON.parse(JSON.stringify(prunedColumns));
+    returnColumns.data.push(returnColumns.samples);
+    let renderedData = transpose(returnColumns.data);
 
     renderedData = renderedData.sort((a, b) => {
         for (let index = 0; index < a.length; ++index) {
@@ -461,19 +486,18 @@ function densitySort(prunedColumns) {
 
     renderedData = transpose(renderedData);
 
-    let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = prunedColumns.samples;
-    returnColumns.pathways = prunedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, prunedColumns.data.length - 1);
+    // returnColumns.samples = returnColumns.samples;
+    // returnColumns.pathways = returnColumns.pathways;
+    returnColumns.data = renderedData.slice(0, returnColumns.data.length - 1);
 
     return returnColumns;
 }
 
 function overallSort(prunedColumns) {
-    scoreColumnDensities(prunedColumns);
+    let sortedColumns = scoreColumnDensities(prunedColumns);
 
-    let renderedData = transpose(prunedColumns.data);
+    let renderedData = transpose(sortedColumns.data);
 
     renderedData = renderedData.sort(function (a, b) {
         return sum(b) - sum(a)

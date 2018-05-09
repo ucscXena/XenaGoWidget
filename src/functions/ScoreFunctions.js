@@ -16,7 +16,6 @@ function selectPathway(item){
    // alert(JSON.stringify(item))
 }
 
-// TODO: review vgmixed
 function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset,colorMask) {
 
     if (layout[0].size <= 1) {

@@ -23,18 +23,18 @@ export class HeaderLabel extends PureComponent {
     };
 
     style() {
-        let {item :{density,golabel},selectedPathways,highScore,labelOffset, left, width, labelHeight,colorMask} = this.props;
+        let {item: {density, golabel}, selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
-        let color = Math.round(this.maxColor * (1.0 - (density/ highScore)));
+        let color = Math.round(this.maxColor * (1.0 - (density / highScore)));
         // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
 
 
-        let colorString = 'rgb(' ;
-        colorString += (colorMask[0]===0  ? 256 : color) + ',' ;
-        colorString += (colorMask[1]===0  ? 256 : color) + ',' ;
-        colorString += (colorMask[2]===0  ? 256 : color) + ')' ;
+        let colorString = 'rgb(';
+        colorString += (colorMask[0] === 0 ? 256 : color) + ',';
+        colorString += (colorMask[1] === 0 ? 256 : color) + ',';
+        colorString += (colorMask[2] === 0 ? 256 : color) + ')';
 
-        let selected = selectedPathways.indexOf(golabel)>=0;
+        let selected = selectedPathways.indexOf(golabel) >= 0;
 
         if (selected) {
             return {
@@ -84,7 +84,7 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, onMouseClick,item} = this.props;
+        let {width, labelString, labelHeight, onMouseClick, item} = this.props;
         return (
             <svg
                 style={this.style()}
@@ -110,7 +110,7 @@ HeaderLabel.propTypes = {
     width: PropTypes.any,
     labelString: PropTypes.string,
     highScore: PropTypes.number,
-    item:PropTypes.any,
+    item: PropTypes.any,
     selectedPathways: PropTypes.any,
     colorMask: PropTypes.any,
     onMouseClick: PropTypes.any,
