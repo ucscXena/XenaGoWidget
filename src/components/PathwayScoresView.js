@@ -298,19 +298,6 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
     return returnArray;
 }
 
-function defaultSort(data) {
-    return data;
-}
-
-function getColumnIndex(data, sortColumn) {
-
-    let index = data.pathways.findIndex(  (obj) => { return obj.golabel === sortColumn });
-    if(index<0){
-        index = data.pathways.findIndex(  (obj) => { return obj.gene[0] === sortColumn });
-    }
-    return index < 0 ? null : index ;
-}
-
 function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
     // or in more modern dialect
@@ -509,7 +496,7 @@ let minColWidth = 12;
 
 export default class AssociatedDataCache extends PureComponent {
     render() {
-        let {selectedPathways, selectedSort, min, filter, geneList, sortColumn, sortOrder, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -530,8 +517,6 @@ export default class AssociatedDataCache extends PureComponent {
                 returnedValue = hierarchicalSort(prunedColumns);
                 break;
             case 'Cluster':
-                returnedValue = clusterSort(prunedColumns);
-                break;
             default:
                 returnedValue = clusterSort(prunedColumns);
                 break;
