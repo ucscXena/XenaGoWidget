@@ -304,17 +304,11 @@ function defaultSort(data) {
 
 function getColumnIndex(data, sortColumn) {
 
-    for (let p in data.pathways) {
-        if (data.pathways[p].golabel === sortColumn) {
-            return p
-        }
+    let index = data.pathways.findIndex(  (obj) => { return obj.golabel === sortColumn });
+    if(index<0){
+        index = data.pathways.findIndex(  (obj) => { return obj.gene[0] === sortColumn });
     }
-    for (let p in data.pathways) {
-        if (data.pathways[p].gene[0] === sortColumn) {
-            return p
-        }
-    }
-    return null;
+    return index < 0 ? null : index ;
 }
 
 function transpose(a) {
