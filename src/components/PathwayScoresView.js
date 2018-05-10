@@ -104,7 +104,7 @@ function getPointData(event, props) {
 }
 
 
-class TissueExpressionView extends PureComponent {
+class PathwayScoresView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -175,7 +175,7 @@ class TissueExpressionView extends PureComponent {
     }
 }
 
-TissueExpressionView.propTypes = {
+PathwayScoresView.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
@@ -289,7 +289,7 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
-export default class AssociatedDataCache extends PureComponent {
+export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
@@ -319,7 +319,7 @@ export default class AssociatedDataCache extends PureComponent {
             let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
             let layoutData = layout(width, returnedValue.data);
             return (
-                <TissueExpressionView
+                <PathwayScoresView
                     {...this.props}
                     width={width}
                     layout={layoutData}
@@ -337,7 +337,7 @@ export default class AssociatedDataCache extends PureComponent {
         }
         else {
             return (
-                <TissueExpressionView
+                <PathwayScoresView
                     {...this.props}
                     width={width}
                     layout={layout(width, returnedValue.data)}
