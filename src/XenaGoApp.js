@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './components/PureComponent';
 import {CohortSelector} from "./components/CohortSelector";
-import PathwayScoresViewCache from "./components/PathwayScoresView";
+import TissueExpressionView from "./components/PathwayScoresView";
 import PathWays from "../tests/data/tgac";
 import ExampleExpression from "../tests/data/bulkExpression";
 import ExampleCopyNumber from "../tests/data/bulkCopyNumber";
@@ -49,7 +49,7 @@ export default class XenaGoApp extends PureComponent {
         this.state = {
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
-            selectedPathways: [],
+            selectedPathways: [PathWays[0].golabel],
             sortTypes: ['Cluster', 'Hierarchical', 'Overall'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
@@ -115,30 +115,11 @@ export default class XenaGoApp extends PureComponent {
     clickPathway = (pathwayClickData) => {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
-        // console.log('selected path')
-        // console.log(golabel)
-
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
-        let sortPathwayName = this.state.sortPathwayName;
-        let sortPathwayOrder = this.state.sortPathwayOrder;
-        if (pathwayClickData.tissue === 'Header') {
-            if (sortPathwayName === pathwayClickData.pathway.golabel) {
-                // switch the order
-                sortPathwayOrder = sortPathwayOrder === 'desc' ? 'asc' : 'desc';
-            }
-            else {
-                sortPathwayName = pathwayClickData.pathway.golabel;
-                sortPathwayOrder = 'desc';
-            }
-        }
 
         this.setState({
             pathwayClickData,
-            sortPathwayName: sortPathwayName,
-            sortPathwayOrder: sortPathwayOrder,
-            sortGeneName: null,
-            sortGeneOrder: null,
             selectedPathways: [golabel],
             geneData: {
                 expression,
@@ -201,25 +182,8 @@ export default class XenaGoApp extends PureComponent {
 
     clickGene = (props) => {
         let pathwayLabel = [props.pathway.golabel];
-        let sortGeneName = this.state.sortGeneName;
-        let sortGeneOrder = this.state.sortGeneOrder;
-        if (props.tissue === 'Header') {
-            let geneValue = props.pathway.gene[0];
-            if (sortGeneName === geneValue) {
-                // switch the order
-                sortGeneOrder = sortGeneOrder === 'desc' ? 'asc' : 'desc';
-            }
-            else {
-                sortGeneName = geneValue;
-                sortGeneOrder = 'desc';
-            }
-        }
         this.setState({
             geneClickData: props,
-            sortGeneName: sortGeneName,
-            sortGeneOrder: sortGeneOrder,
-            sortPathwayName: this.state.sortPathwayName,
-            sortPathwayOrder: this.state.sortPathwayOrder,
             selectedPathways: pathwayLabel,
         });
     };
@@ -344,7 +308,7 @@ export default class XenaGoApp extends PureComponent {
             <Grid>
                 <Row>
                     {this.state.loadState === 'loading' ? 'Loading' : ''}
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
+                    {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.columns}>
                         <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
@@ -362,19 +326,20 @@ export default class XenaGoApp extends PureComponent {
                         </Card>
                     </Col>
                     }
-                    {this.state.loadState === 'loaded' && this.state.uiControls.pathway.show && !this.state.geneData.expression.rows &&
+                    {this.state.loadState === 'loaded' &&
                     <Col md={this.state.uiControls.pathway.expressionColumns}>
-                        <PathwayScoresViewCache id="pathwayViewId" width={400} height={800}
-                                                data={this.state.pathwayData} titleText=""
-                                                filter={this.state.tissueExpressionFilter}
-                                                filterPercentage={this.state.filterPercentage}
-                                                geneList={geneList}
-                                                loading={cohortLoading}
-                                                min={this.state.minFilter}
-                                                selectedSort={this.state.selectedTissueSort}
-                                                selectedPathways={this.state.selectedPathways}
-                                                onClick={this.clickPathway} onHover={this.hoverPathway}
-                                                hideTitle={true}
+                        <TissueExpressionView id="pathwayViewId" width={400} height={800}
+                                              data={this.state.pathwayData} titleText=""
+                                              filter={this.state.tissueExpressionFilter}
+                                              filterPercentage={this.state.filterPercentage}
+                                              geneList={geneList}
+                                              loading={cohortLoading}
+                                              min={this.state.minFilter}
+                                              selectedSort={this.state.selectedTissueSort}
+                                              referencePathways={this.state.pathwayData}
+                                              selectedPathways={this.state.selectedPathways}
+                                              onClick={this.clickPathway} onHover={this.hoverPathway}
+                                              hideTitle={true}
                         />
                     </Col>
                     }
@@ -406,20 +371,20 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={this.state.uiControls.gene.expressionColumns}>
-                        <PathwayScoresViewCache id="geneViewId" height={800}
-                                                data={this.state.geneData}
-                                                selected={this.state.geneData.selectedPathway}
-                                                filter={this.state.geneExpressionFilter}
-                                                filterPercentage={this.state.filterPercentage}
-                                                geneList={geneList}
-                                                loading={cohortLoading}
-                                                min={this.state.minFilter}
-                                                selectedSort={this.state.selectedGeneSort}
-                                                referencePathways={this.state.pathwayData}
-                                                selectedPathways={this.state.selectedPathways}
-                                                onClick={this.clickGene}
-                                                onHover={this.hoverGene}
-                                                hideTitle={true}
+                        <TissueExpressionView id="geneViewId" height={800}
+                                              data={this.state.geneData}
+                                              selected={this.state.geneData.selectedPathway}
+                                              filter={this.state.geneExpressionFilter}
+                                              filterPercentage={this.state.filterPercentage}
+                                              geneList={geneList}
+                                              loading={cohortLoading}
+                                              min={this.state.minFilter}
+                                              selectedSort={this.state.selectedGeneSort}
+                                              referencePathways={this.state.pathwayData}
+                                              selectedPathways={this.state.selectedPathways}
+                                              onClick={this.clickGene}
+                                              onHover={this.hoverGene}
+                                              hideTitle={true}
                         />
                     </Col>
                     }
