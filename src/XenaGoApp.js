@@ -61,10 +61,11 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
 
+
         this.state = {
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
-            selectedPathways: [PathWays[0].golabel],
+            selectedPathways: [],
             sortTypes: ['Cluster', 'Hierarchical', 'Overall'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
@@ -108,6 +109,15 @@ export default class XenaGoApp extends PureComponent {
             },
         };
 
+    }
+
+    componentDidMount(){
+        this.clickPathway(
+            {
+                pathway: PathWays[0],
+                tissue: 'Header'
+            }
+        );
     }
 
     clickPathway = (pathwayClickData) => {
