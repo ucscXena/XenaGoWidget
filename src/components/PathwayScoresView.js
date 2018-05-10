@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CanvasDrawing from "../CanvasDrawing";
 import ScoreFunctions from '../functions/ScoreFunctions';
 import mutationScores from '../data/mutationVector';
-import {memoize, range} from 'underscore';
+import {times,memoize, range} from 'underscore';
 import {partition, sum, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
@@ -107,8 +107,6 @@ class TissueExpressionView extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('constructor');
-        console.log(props)
     }
 
     onClick = (event) => {
@@ -238,14 +236,7 @@ function pruneColumns(data, pathways, min) {
  */
 function associateData(expression, copyNumber, geneList, pathways, samples, filter, min) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    let returnArray = new Array(pathways.length);
-    for (let p in pathways) {
-        returnArray[p] = new Array(samples.length);
-        for (let s in samples) {
-            returnArray[p][s] = 0;
-        }
-    }
-
+    let returnArray =  times(pathways.length, () => times(samples.length, () => 0))
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -321,10 +312,7 @@ function linkage(distances) {
 //     return Math.min.apply(null, distances);
     // complete-linkage clustering?
     let max = 0;
-    for (let d of distances) {
-        max = d > max ? d : max;
-    }
-    return max;
+    return distances.reduce( (d) => d > max ? d : max );
 }
 
 /**
@@ -352,12 +340,12 @@ function sortColumnHierarchical(prunedColumns) {
 
     let clusterIndices = levels[levels.length - 1].clusters[0];
 
-    let renderedArray = [];
-    let renderedIndices = [];
-    for (let index = 0; index < clusterIndices.length; ++index) {
-        renderedArray[index] = sortedColumns.data[clusterIndices[index]];
-        renderedIndices[index] = sortedColumns.pathways[clusterIndices[index]];
-    }
+    let renderedArray = clusterIndices.map( (el,i) => {
+        return sortedColumns.data[el]
+    });
+    let renderedIndices = clusterIndices.map( (el,i) => {
+        return sortedColumns.pathways[el]
+    });
     sortedColumns.data = renderedArray;
     sortedColumns.pathways = renderedIndices;
 
@@ -380,23 +368,12 @@ function scoreColumnDensities(prunedColumns) {
 
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = sortedPathways;
-    // sortedColumns.samples = prunedColumns.samples;
-    // sortedColumns.data = prunedColumns.data;
 
     sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
     // refilter data by index
-    let renderedArray = [];
-    for (let index = 0; index < sortedColumns.pathways.length; ++index) {
-        renderedArray[index] = sortedColumns.data[sortedColumns.pathways[index].index];
-
-    }
-    sortedColumns.data = renderedArray;
+    sortedColumns.data = sortedColumns.pathways.map( el => sortedColumns.data[el.index]);
     sortedColumns.samples = prunedColumns.samples;
-
-    console.log('abcd')
-    console.log(prunedColumns)
-    console.log(sortedColumns)
 
     return sortedColumns;
 }
@@ -415,10 +392,6 @@ function scoreColumnDensities(prunedColumns) {
  */
 function clusterSort(prunedColumns) {
     let sortedColumns = scoreColumnDensities(prunedColumns);
-    console.log('cluster sort vs');
-    // console.log(sortedColumns);
-    console.log(prunedColumns);
-
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
@@ -456,12 +429,7 @@ function hierarchicalSort(prunedColumns) {
 
     let clusters = levels[levels.length - 1].clusters[0];
 
-    let returnData = [];
-    for (let cIndex in clusters) {
-        returnData[cIndex] = renderedData[clusters[cIndex]];
-    }
-
-
+    let returnData = clusters.map( el => renderedData[el])
     renderedData = transpose(returnData);
 
     let returnColumns = {};
@@ -490,8 +458,6 @@ function densitySort(prunedColumns) {
     renderedData = transpose(renderedData);
 
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    // returnColumns.samples = returnColumns.samples;
-    // returnColumns.pathways = returnColumns.pathways;
     returnColumns.data = renderedData.slice(0, returnColumns.data.length - 1);
 
     return returnColumns;
@@ -548,9 +514,6 @@ export default class AssociatedDataCache extends PureComponent {
                 returnedValue = clusterSort(prunedColumns);
                 break;
         }
-
-        console.log('sorted pathways');
-        console.log(returnedValue.pathways)
 
         if (referencePathways) {
             let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
