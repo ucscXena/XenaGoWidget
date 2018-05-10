@@ -117,7 +117,6 @@ export default class XenaGoApp extends PureComponent {
         let {goid, golabel, gene} = pathwayClickData.pathway;
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
-
         this.setState({
             pathwayClickData,
             selectedPathways: [golabel],
