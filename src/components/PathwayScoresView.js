@@ -243,11 +243,8 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
-            let gene = row.gene;
-            let effect = row.effect;
-            let effectValue = getMutationScore(effect, min);
-            // let effectValue = (!filter || effect === filter) ? getMutationScore(effect, min) : 0;
-            let pathwayIndices = genePathwayLookup(gene);
+            let effectValue = getMutationScore(row.effect, min);
+            let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
                 returnArray[index][sampleIndex.get(row.sample)] += effectValue;
@@ -258,14 +255,8 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
 
     if (!filter || filter === 'Copy Number') {
 
-        let processedGenes = [];
-
         // for each pathway
         let geneSet = new Set(pathways.reduce((p, returnElem) => [returnElem, ...p.gene])[0].gene);
-
-        console.log('gene set ');
-        console.log(geneSet);
-        console.log(geneSet);
 
         // get list of genes
         for (let gene of geneSet) {
