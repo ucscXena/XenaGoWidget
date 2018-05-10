@@ -10,24 +10,23 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
-function selectPathway(item){
+function selectPathway(item) {
     // console.log('selected pathway: ');
     // console.log(item);
-   // alert(JSON.stringify(item))
+    // alert(JSON.stringify(item))
 }
 
-function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset,colorMask) {
+const reducer = (a, b) => a.density + b;
+
+
+function drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset, colorMask) {
 
     if (layout[0].size <= 1) {
         return;
     }
 
-
     // find the max
-    let highestScore = 0;
-    pathways.forEach(p => {
-        highestScore = p.density > highestScore ? p.density : highestScore;
-    });
+    let highestScore = pathways.reduce((max, n) => n.density > max ? n.density : max).density;
 
     if (pathways.length === layout.length) {
         return layout.map((el, i) => {
@@ -53,7 +52,7 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
                 <HeaderLabel
                     labelHeight={labelHeight}
                     labelOffset={labelOffset}
-                    highScore = {highestScore}
+                    highScore={highestScore}
                     left={el.start}
                     width={el.size}
                     item={d}
@@ -168,12 +167,12 @@ export default {
 
         let labels;
         if (referencePathways) {
-            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways, selectedPathways, 150, 0,[0,1,1]);
-            let l2 = drawOverviewLabels(width, height, layout, pathways, [], 150, 150,[1,0,0]);
+            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways, selectedPathways, 150, 0, [0, 1, 1]);
+            let l2 = drawOverviewLabels(width, height, layout, pathways, [], 150, 150, [1, 0, 0]);
             labels = [...l1, ...l2];
         }
         else {
-            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0,[0,1,1]);
+            labels = drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0, [0, 1, 1]);
         }
         return labels;
 
