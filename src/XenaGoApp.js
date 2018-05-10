@@ -40,6 +40,21 @@ function intersection(a, b) {
     return b.filter(x => sa.has(x));
 }
 
+const style = {
+    pathway: {
+        columns: 2,
+        columnWidth: 200,
+        expressionColumns: 4,
+        expressionWidth: 400,
+    },
+    gene: {
+        columns: 2,
+        columnWidth: 200,
+        expressionColumns: 4,
+        expressionWidth: 400,
+    },
+};
+
 
 export default class XenaGoApp extends PureComponent {
 
@@ -91,23 +106,6 @@ export default class XenaGoApp extends PureComponent {
                 pathway: null,
                 score: null
             },
-            uiControls: {
-                pathway: {
-                    columns: 2,
-                    columnWidth: 200,
-                    expressionColumns: 8,
-                    expressionWidth: 700,
-                    show: true,
-                },
-                gene: {
-                    columns: 2,
-                    columnWidth: 200,
-                    expressionColumns: 8,
-                    expressionWidth: 700,
-                    show: false,
-                },
-            }
-
         };
 
     }
@@ -128,52 +126,9 @@ export default class XenaGoApp extends PureComponent {
                 copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
-            uiControls: {
-                pathway: {
-                    columns: 1,
-                    columnWidth: 100,
-                    expressionColumns: 1,
-                    show: false,
-                },
-                gene: {
-                    columns: 2,
-                    columnWidth: 200,
-                    expressionColumns: 7,
-                    expressionWidth: 800,
-                    show: true,
-                },
-            }
         });
     };
 
-
-    closeGeneView = (props) => {
-        this.setState({
-            uiControls: {
-                pathway: {
-                    columns: 2,
-                    columnWidth: 200,
-                    expressionColumns: 8,
-                    expressionWidth: 700,
-                    show: true,
-                },
-                gene: {
-                    columns: 2,
-                    columnWidth: 200,
-                    expressionColumns: 7,
-                    expressionWidth: 700,
-                    show: false,
-                },
-            },
-            geneData: {
-                expression: [],
-                pathways: [],
-                samples: [],
-                geneList: [],
-                copyNumber: [],
-            },
-        });
-    };
 
     hoverPathway = (props) => {
         this.setState({pathwayHoverData: props});
@@ -240,7 +195,6 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
-        this.closeGeneView();
         let cohort = this.state.cohortData.find(c => c.name === selected);
         let geneList = this.getGenesForPathway(PathWays);
         Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
@@ -308,8 +262,8 @@ export default class XenaGoApp extends PureComponent {
                 <Row>
                     {this.state.loadState === 'loading' ? 'Loading' : ''}
                     {this.state.loadState === 'loaded' &&
-                    <Col md={this.state.uiControls.pathway.columns}>
-                        <Card style={{width: this.state.uiControls.pathway.columnWidth}}>
+                    <Col md={style.pathway.columns}>
+                        <Card style={{width: style.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
                                             selectedCohort={this.state.selectedCohort}
                                             onChange={this.selectCohort}/>
@@ -326,7 +280,7 @@ export default class XenaGoApp extends PureComponent {
                     </Col>
                     }
                     {this.state.loadState === 'loaded' &&
-                    <Col md={this.state.uiControls.pathway.expressionColumns}>
+                    <Col md={style.pathway.expressionColumns}>
                         <TissueExpressionView id="pathwayViewId" width={400} height={800}
                                               data={this.state.pathwayData} titleText=""
                                               filter={this.state.tissueExpressionFilter}
@@ -343,12 +297,8 @@ export default class XenaGoApp extends PureComponent {
                     </Col>
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                    <Col md={this.state.uiControls.gene.columns}>
-                        <Card style={{width: this.state.uiControls.gene.columnWidth}}>
-                            <CardActions>
-                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView}/>
-                            </CardActions>
-
+                    <Col md={style.gene.columns}>
+                        <Card style={{width: style.gene.columnWidth}}>
                             <CardTitle
                                 title={this.state.selectedCohort}
                                 subtitle='Cohort'
@@ -369,7 +319,7 @@ export default class XenaGoApp extends PureComponent {
                     </Col>
                     }
                     {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                    <Col md={this.state.uiControls.gene.expressionColumns}>
+                    <Col md={style.gene.expressionColumns}>
                         <TissueExpressionView id="geneViewId" height={800}
                                               data={this.state.geneData}
                                               selected={this.state.geneData.selectedPathway}
