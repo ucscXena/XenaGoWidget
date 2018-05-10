@@ -22,24 +22,19 @@ function compileData(filteredEffects, data,geneList) {
                      list => list.length);
 
     let copyNumberTotal = 0 ;
+
+    // TODO: move to a reduce function and use 'index' method
     for(let gene of genes){
-        let geneIndex = geneList.indexOf(gene)
-        // console.log(gene + ' => '+ geneIndex)
-        let copyNumberData = copyNumber[geneIndex]
-        // console.log(copyNumberData)
-        for(let c of copyNumberData){
-            // for(let g of c){
-                copyNumberTotal += getCopyNumberValue(c)
-            // }
-        }
+        let geneIndex = geneList.indexOf(gene);
+        let copyNumberData = copyNumber[geneIndex];
+
+        copyNumberData.map( ( el)  => {
+            copyNumberTotal += getCopyNumberValue(el)
+        });
     }
 
     let filterObject = {};
     filterObject['Copy Number'] = copyNumberTotal;
-
-    // console.log('return objects');
-    //
-    // console.log(returnObject)
     let totalMutations = 0 ;
     for(let obj in returnObject){
         totalMutations += returnObject[obj];
