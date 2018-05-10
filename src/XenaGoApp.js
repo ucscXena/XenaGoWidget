@@ -49,7 +49,7 @@ export default class XenaGoApp extends PureComponent {
         this.state = {
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
-            selectedPathways: [],
+            selectedPathways: [PathWays[0].golabel],
             sortTypes: ['Cluster', 'Hierarchical', 'Overall'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
@@ -115,30 +115,10 @@ export default class XenaGoApp extends PureComponent {
     clickPathway = (pathwayClickData) => {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
-        // console.log('selected path')
-        // console.log(golabel)
-
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
-
-        let sortPathwayName = this.state.sortPathwayName;
-        let sortPathwayOrder = this.state.sortPathwayOrder;
-        if (pathwayClickData.tissue === 'Header') {
-            if (sortPathwayName === pathwayClickData.pathway.golabel) {
-                // switch the order
-                sortPathwayOrder = sortPathwayOrder === 'desc' ? 'asc' : 'desc';
-            }
-            else {
-                sortPathwayName = pathwayClickData.pathway.golabel;
-                sortPathwayOrder = 'desc';
-            }
-        }
 
         this.setState({
             pathwayClickData,
-            sortPathwayName: sortPathwayName,
-            sortPathwayOrder: sortPathwayOrder,
-            sortGeneName: null,
-            sortGeneOrder: null,
             selectedPathways: [golabel],
             geneData: {
                 expression,
@@ -201,25 +181,8 @@ export default class XenaGoApp extends PureComponent {
 
     clickGene = (props) => {
         let pathwayLabel = [props.pathway.golabel];
-        let sortGeneName = this.state.sortGeneName;
-        let sortGeneOrder = this.state.sortGeneOrder;
-        if (props.tissue === 'Header') {
-            let geneValue = props.pathway.gene[0];
-            if (sortGeneName === geneValue) {
-                // switch the order
-                sortGeneOrder = sortGeneOrder === 'desc' ? 'asc' : 'desc';
-            }
-            else {
-                sortGeneName = geneValue;
-                sortGeneOrder = 'desc';
-            }
-        }
         this.setState({
             geneClickData: props,
-            sortGeneName: sortGeneName,
-            sortGeneOrder: sortGeneOrder,
-            sortPathwayName: this.state.sortPathwayName,
-            sortPathwayOrder: this.state.sortPathwayOrder,
             selectedPathways: pathwayLabel,
         });
     };
