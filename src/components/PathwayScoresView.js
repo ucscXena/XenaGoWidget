@@ -255,11 +255,8 @@ function associateData(expression, copyNumber, geneList, pathways, samples, filt
 
     if (!filter || filter === 'Copy Number') {
 
-        // for each pathway
-        let geneSet = new Set(pathways.reduce((p, returnElem) => [returnElem, ...p.gene])[0].gene);
-
-        // get list of genes
-        for (let gene of geneSet) {
+        // get list of genes in identified pathways
+        for (let gene of geneList) {
             // if we have not processed that gene before, then process
             let geneIndex = geneList.indexOf(gene);
 
