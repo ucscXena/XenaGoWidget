@@ -301,7 +301,8 @@ export default class XenaGoApp extends PureComponent {
                                               selectedSort={this.state.selectedTissueSort}
                                               referencePathways={this.state.pathwayData}
                                               selectedPathways={this.state.selectedPathways}
-                                              onClick={this.clickPathway} onHover={this.hoverPathway}
+                                              onClick={this.clickPathway}
+                                              onHover={this.hoverPathway}
                                               hideTitle={true}
                         />
                     </Col>
