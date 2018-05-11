@@ -159,15 +159,55 @@ export default {
 
         console.log('selected overlay');
         console.log(selectedPathways);
+        console.log('reference pathways');
+        console.log(referencePathways);
+        console.log('pathways');
+        console.log(pathways);
 
         if (associateData.length === 0) {
             // console.log('Clicked on an empty cell?');
             return;
         }
 
+
         let labels;
         if (referencePathways) {
-            let l1 = drawOverviewLabels(width, height, referenceLayout, referencePathways, selectedPathways, 150, 0, [0, 1, 1]);
+
+            // TODO: for each gene, map the other pathways that gene is involved in
+            let pathwayMapping = pathways.map( p => {
+                return {
+                    label:p.gene[0],
+                    density: p.density,
+                }
+            });
+
+
+            // calculates the scores for the pathways based on existing gene density
+            let newRefPathways = referencePathways.map( r => {
+
+                let density = 0 ;
+
+                // TODO: this could be a lot faster
+                for( let gene of  r.gene){
+                    let found = pathwayMapping.filter( pm => pm.label === gene );
+                    if(found.length>0){
+                        density += found.reduce( (sum , a ) => sum + a.density , 0);
+                    }
+                }
+
+                // TODO: there is a race condition in here, that is messing this up
+                return  {
+                    goid: r.goid,
+                    golabel: r.golabel,
+                    gene: r.gene,
+                    density: density,
+                };
+            });
+
+            console.log('newRefPathways')
+            console.log(newRefPathways)
+
+            let l1 = drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, 150, 0, [0, 1, 1]);
             let l2 = drawOverviewLabels(width, height, layout, pathways, [], 150, 150, [1, 0, 0]);
             labels = [...l1, ...l2];
         }

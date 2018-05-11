@@ -114,7 +114,7 @@ export default class XenaGoApp extends PureComponent {
     componentDidMount(){
         this.clickPathway(
             {
-                pathway: PathWays[0],
+                pathway: PathWays[21],
                 tissue: 'Header'
             }
         );
@@ -124,6 +124,11 @@ export default class XenaGoApp extends PureComponent {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
+
+        console.log('pathway click data')
+        console.log(pathwayClickData)
+        // let refPathway = this.state.pathwayData.referencePathways ? JSON.parse(JSON.stringify(this.state.pathwayData.referencePathways)) : PathWays;
+
 
         this.setState({
             pathwayClickData,
@@ -266,6 +271,9 @@ export default class XenaGoApp extends PureComponent {
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathway(PathWays);
+
+        console.log('input pathway data: ');
+        console.log(this.state.pathwayData)
 
         return (
             <Grid>
