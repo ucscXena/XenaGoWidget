@@ -302,9 +302,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         let returnedValue;
 
         switch (selectedSort) {
-            case 'Overall':
-                returnedValue = overallSort(prunedColumns);
-                break;
             case 'Hierarchical':
                 returnedValue = hierarchicalSort(prunedColumns);
                 break;

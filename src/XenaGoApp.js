@@ -66,7 +66,7 @@ export default class XenaGoApp extends PureComponent {
             selectedTissueSort: 'Cluster',
             selectedGeneSort: 'Cluster',
             selectedPathways: [],
-            sortTypes: ['Cluster', 'Hierarchical', 'Overall'],
+            sortTypes: ['Cluster', 'Hierarchical'],
             pathwayData: {
                 cohort: 'TCGA Ovarian Cancer (OV)',
                 copyNumber: ExampleCopyNumber,
