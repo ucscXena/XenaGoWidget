@@ -143,9 +143,6 @@ class PathwayScoresView extends PureComponent {
 
         let stat = loading ? <img src={spinner}/> : null;
 
-        console.log('data.pathways');
-        console.log(this.props.data.pathways);
-
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
                 {!this.props.hideTitle &&
@@ -295,8 +292,6 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
-        console.log('input reference pathways');
-        console.log(referencePathways)
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
 
         let filterMin = Math.trunc(filterPercentage * samples.length);

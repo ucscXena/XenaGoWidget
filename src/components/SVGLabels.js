@@ -84,10 +84,6 @@ export default class SVGLabels extends PureComponent {
     drawTissueOverlay(div, props) {
         let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
 
-        console.log('input data.pathways');
-        console.log(pathways);
-
-
         if (associateData.length === 0) {
             alert('Clicked on an empty cell?');
             return;
@@ -128,12 +124,6 @@ export default class SVGLabels extends PureComponent {
                 };
             });
 
-            console.log('newRefPathways')
-            console.log(newRefPathways)
-
-            console.log('pathways')
-            console.log(pathways)
-
             let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, 150, 0, [0, 1, 1]);
             let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], 150, 150, [1, 0, 0]);
             labels = [...l1, ...l2];
@@ -147,8 +137,6 @@ export default class SVGLabels extends PureComponent {
 
     render() {
         const { width, height ,onClick,onMouseMove} = this.props;
-        console.log('draw props: '+this.state.drawProps)
-        console.log(this.state.drawProps)
         return (
             <div id="expressionOverlay"
                  style={{...styles.overlay, width, height}}
