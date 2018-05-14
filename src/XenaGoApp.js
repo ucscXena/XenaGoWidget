@@ -295,8 +295,8 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathway(PathWays);
 
-        console.log('input pathway data: ');
-        console.log(this.state.pathwayData)
+        // console.log('input pathway data: ');
+        // console.log(this.state.pathwayData)
 
         return (
             <Grid>
