@@ -299,7 +299,8 @@ export default class XenaGoApp extends PureComponent {
             <Grid>
                 <Row>
                     {this.state.loadState === 'loading' ? 'Loading' : ''}
-                    {this.state.loadState === 'loaded' &&
+
+                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
                     <Col md={style.pathway.columns}>
                         <Card style={{width: style.pathway.columnWidth}}>
                             <CohortSelector cohorts={this.state.cohortData}
@@ -317,7 +318,7 @@ export default class XenaGoApp extends PureComponent {
                         </Card>
                     </Col>
                     }
-                    {this.state.loadState === 'loaded' &&
+                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
                     <Col md={style.pathway.expressionColumns}>
                         <PathwayScoresView id="pathwayViewId" width={400} height={800}
                                            data={this.state.pathwayData} titleText=""
