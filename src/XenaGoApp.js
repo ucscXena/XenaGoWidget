@@ -14,7 +14,7 @@ import {FilterSelector} from "./components/FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
-import {pick, pluck, flatten,isEqual} from 'underscore';
+import {pick, pluck, flatten, isEqual} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import {Button} from 'react-toolbox/lib/button';
 
@@ -111,7 +111,7 @@ export default class XenaGoApp extends PureComponent {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.clickPathway(
             {
                 pathway: PathWays[21],
@@ -121,14 +121,31 @@ export default class XenaGoApp extends PureComponent {
     }
 
     clickPathway = (pathwayClickData) => {
+        console.log(pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
-        let {goid, golabel, gene} = pathwayClickData.pathway;
+        let {metaSelect, pathway: {goid, golabel, gene}} = pathwayClickData;
         let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
-        let newSelection = [golabel];
-        if(isEqual(this.state.selectedPathways,newSelection)){
+        let newSelection = [];
+
+        if (metaSelect) {
+            let goindex = this.state.selectedPathways.indexOf(golabel);
+            newSelection = JSON.parse(JSON.stringify(this.state.selectedPathways));
+            if (goindex >= 0) {
+                newSelection.splice(goindex, 1);
+            }
+            else {
+                newSelection.push(golabel)
+            }
+            console.log('newSelection: ')
+            console.log(newSelection)
+        }
+        else if (isEqual(this.state.selectedPathways, [golabel])) {
             newSelection = [];
-            pathways = [] ;
+            pathways = [];
+        }
+        else {
+            newSelection = [golabel];
         }
 
         this.setState({
@@ -316,7 +333,7 @@ export default class XenaGoApp extends PureComponent {
                         />
                     </Col>
                     }
-                    {this.state.selectedPathways.length>0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={style.gene.columns}>
                         <Card style={{width: style.gene.columnWidth}}>
                             <CardTitle
@@ -338,7 +355,7 @@ export default class XenaGoApp extends PureComponent {
                         </Card>
                     </Col>
                     }
-                    {this.state.selectedPathways.length>0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={style.gene.expressionColumns}>
                         <PathwayScoresView id="geneViewId" height={800}
                                            data={this.state.geneData}

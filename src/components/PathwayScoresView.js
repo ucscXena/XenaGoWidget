@@ -60,6 +60,7 @@ let pathwayIndexFromX = (x, layout) =>
 
 function getPointData(event, props) {
     let {associateData, height, layout, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
+    let metaSelect = event.metaKey;
 
     // if reference pathways and layouts exists
     if (referenceLayout && referencePathways) {
@@ -74,7 +75,8 @@ function getPointData(event, props) {
             return {
                 pathway: referencePathways[pathwayIndex],
                 tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-                expression
+                expression,
+                metaSelect: metaSelect
             };
         }
         tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT * 2, samples.length);
@@ -84,7 +86,8 @@ function getPointData(event, props) {
         return {
             pathway: pathways[pathwayIndex],
             tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-            expression
+            expression,
+            metaSelect: metaSelect
         };
 
     }
@@ -97,7 +100,8 @@ function getPointData(event, props) {
         return {
             pathway: pathways[pathwayIndex],
             tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-            expression
+            expression,
+            metaSelect: metaSelect
         };
     }
 
