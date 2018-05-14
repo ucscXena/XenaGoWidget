@@ -155,7 +155,7 @@ export default class SVGLabels extends PureComponent {
                  onMouseMove={onMouseMove}
                  onClick={onClick}
             >
-                { this.drawTissueOverlay(this,this.state.drawProps) }
+                { this.drawTissueOverlay(this,this.props) }
             </div>
         )
     }
