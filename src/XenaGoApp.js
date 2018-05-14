@@ -121,10 +121,8 @@ export default class XenaGoApp extends PureComponent {
     }
 
     clickPathway = (pathwayClickData) => {
-        console.log(pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {metaSelect, pathway: {goid, golabel, gene}} = pathwayClickData;
-        let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
 
         let newSelection = [];
 
@@ -137,17 +135,16 @@ export default class XenaGoApp extends PureComponent {
             else {
                 newSelection.push(golabel)
             }
-            console.log('newSelection: ')
-            console.log(newSelection)
         }
         else if (isEqual(this.state.selectedPathways, [golabel])) {
             newSelection = [];
-            pathways = [];
         }
         else {
             newSelection = [golabel];
         }
 
+        let geneList = this.getGenesForNamedPathways(newSelection,PathWays);
+        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
         this.setState({
             pathwayClickData,
             selectedPathways: newSelection,
@@ -229,7 +226,7 @@ export default class XenaGoApp extends PureComponent {
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        let geneList = this.getGenesForPathway(PathWays);
+        let geneList = this.getGenesForPathways(PathWays);
         Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
             datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
             intersection)
@@ -259,7 +256,12 @@ export default class XenaGoApp extends PureComponent {
             });
     };
 
-    getGenesForPathway(pathways) {
+    getGenesForNamedPathways(selectedPathways,pathways) {
+        let filteredPathways = pathways.filter( f => selectedPathways.indexOf(f.golabel)>=0 )
+        return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
+    };
+
+    getGenesForPathways(pathways) {
         return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
     };
 
@@ -288,7 +290,7 @@ export default class XenaGoApp extends PureComponent {
         // console.log(filteredMutationVector)
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
-        let geneList = this.getGenesForPathway(PathWays);
+        let geneList = this.getGenesForPathways(PathWays);
 
         // console.log('input pathway data: ');
         // console.log(this.state.pathwayData)
