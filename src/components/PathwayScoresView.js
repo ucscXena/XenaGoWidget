@@ -124,6 +124,7 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+
     render() {
         const {
             loading, width, height, layout, data, associateData,
@@ -141,6 +142,9 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
+
+        console.log('data.pathways');
+        console.log(this.props.data.pathways);
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -163,7 +167,6 @@ class PathwayScoresView extends PureComponent {
                     height={height}
                     layout={layout}
                     referenceLayout={referenceLayout}
-                    drawOverlay={ScoreFunctions.drawTissueOverlay}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     data={data}
