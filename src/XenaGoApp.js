@@ -120,31 +120,6 @@ export default class XenaGoApp extends PureComponent {
         );
     }
 
-    clickGenePathway = (pathwayClickData) => {
-        let {expression, samples, copyNumber} = this.state.pathwayData;
-        let {goid, golabel, gene} = pathwayClickData.pathway;
-        let pathways = gene.map(gene => ({goid, golabel, gene: [gene]}));
-
-        let newSelection = [golabel];
-        if(isEqual(this.state.selectedPathways,newSelection)){
-            newSelection = [];
-            pathways = [] ;
-        }
-
-        this.setState({
-            pathwayClickData,
-            selectedPathways: newSelection,
-            geneData: {
-                expression,
-                samples,
-                pathways,
-                referencePathways: PathWays,
-                copyNumber,
-                selectedPathway: pathwayClickData.pathway
-            },
-        });
-    };
-
     clickPathway = (pathwayClickData) => {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {goid, golabel, gene} = pathwayClickData.pathway;
@@ -376,7 +351,7 @@ export default class XenaGoApp extends PureComponent {
                                            selectedSort={this.state.selectedGeneSort}
                                            referencePathways={this.state.pathwayData}
                                            selectedPathways={this.state.selectedPathways}
-                                           onClick={this.clickGenePathway}
+                                           onClick={this.clickPathway}
                                            onHover={this.hoverGene}
                                            hideTitle={true}
                         />
