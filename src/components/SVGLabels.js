@@ -75,7 +75,6 @@ export default class SVGLabels extends PureComponent {
         let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
-            alert('Clicked on an empty cell?');
             return;
         }
 
