@@ -14,7 +14,7 @@ import {FilterSelector} from "./components/FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
-import {pick, pluck, flatten} from 'underscore';
+import {pick, pluck, flatten,isEqual} from 'underscore';
 import {SortSelector} from "./components/SortSelector";
 import {Button} from 'react-toolbox/lib/button';
 
@@ -153,9 +153,16 @@ export default class XenaGoApp extends PureComponent {
         console.log(pathwayClickData)
         // let refPathway = this.state.pathwayData.referencePathways ? JSON.parse(JSON.stringify(this.state.pathwayData.referencePathways)) : PathWays;
 
+        let newSelection = [golabel];
+
+        let oldSelection = this.state.pathwayClickData.pathway  ? [this.state.pathwayClickData.pathway.golabel] : [];
+        if(isEqual(oldSelection,newSelection)){
+            newSelection = [];
+        }
+
         this.setState({
             pathwayClickData,
-            selectedPathways: [golabel],
+            selectedPathways: newSelection,
             geneData: {
                 expression,
                 samples,
