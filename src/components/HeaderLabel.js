@@ -26,8 +26,6 @@ export class HeaderLabel extends PureComponent {
         let {item: {density, golabel}, selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let color = Math.round(this.maxColor * (1.0 - (density / highScore)));
-        // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
-
 
         let colorString = 'rgb(';
         colorString += (colorMask[0] === 0 ? 256 : color) + ',';
@@ -84,13 +82,14 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, onMouseClick, item} = this.props;
+        // let {width, labelString, labelHeight, onMouseClick, item} = this.props;
+        let {width, labelString, labelHeight, item} = this.props;
         return (
             <svg
                 style={this.style()}
                 onMouseOver={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
-                onMouseUp={onMouseClick(item)}
+                // onMouseDownCapture={onMouseClick(item)}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
                       transform='rotate(-90)'
@@ -113,5 +112,5 @@ HeaderLabel.propTypes = {
     item: PropTypes.any,
     selectedPathways: PropTypes.any,
     colorMask: PropTypes.any,
-    onMouseClick: PropTypes.any,
+    // onMouseClick: PropTypes.any,
 };

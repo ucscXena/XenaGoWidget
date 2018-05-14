@@ -11,8 +11,8 @@ function clearScreen(vg, width, height) {
 }
 
 function selectPathway(item) {
-    // console.log('selected pathway: ');
-    // console.log(item);
+    console.log('selected pathway in header label: ');
+    console.log(item);
     // alert(JSON.stringify(item))
 }
 
@@ -25,8 +25,7 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
         return;
     }
 
-    // find the max
-    let highestScore = pathways.reduce((max, n) => n.density > max ? n.density : max).density;
+    const highestScore = pathways.reduce((max, current) => (max > current.density) ? max : current.density,0);
 
     if (pathways.length === layout.length) {
         return layout.map((el, i) => {
@@ -59,7 +58,7 @@ function drawOverviewLabels(width, height, layout, pathways, selectedPathways, l
                     selectedPathways={selectedPathways}
                     labelString={labelString}
                     colorMask={colorMask}
-                    onMouseClick={selectPathway}
+                    // onMouseClick={selectPathway}
                     key={labelString}
                 />
             )
@@ -156,13 +155,6 @@ export default {
 
     drawTissueOverlay(div, props) {
         let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
-
-        console.log('selected overlay');
-        console.log(selectedPathways);
-        console.log('reference pathways');
-        console.log(referencePathways);
-        console.log('pathways');
-        console.log(pathways);
 
         if (associateData.length === 0) {
             // console.log('Clicked on an empty cell?');
