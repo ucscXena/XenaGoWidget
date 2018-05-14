@@ -72,12 +72,18 @@ export class HeaderLabel extends PureComponent {
     }
 
     fontColor() {
+        let {item: {golabel}, selectedPathways} = this.props;
+
+        let selected = selectedPathways.indexOf(golabel) >= 0;
         if (this.state.hovered) {
-            return 'brown';
+            return !selected ? 'brown' : 'yellow';
         }
-        if (this.state.selected) {
+
+        if (selected) {
             return 'white';
         }
+
+
         return 'black';
     }
 

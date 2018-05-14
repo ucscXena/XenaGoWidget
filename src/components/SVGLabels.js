@@ -22,16 +22,6 @@ export default class SVGLabels extends PureComponent {
 
     constructor(props){
         super(props);
-        console.log('SVGLabels input props');
-        console.log(this.props);
-        const { width, height ,...drawProps} = this.props;
-        console.log(drawProps);
-
-        this.state = {
-            width: width,
-            height: height,
-            drawProps: drawProps,
-        }
     }
 
     drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset, colorMask) {
