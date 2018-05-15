@@ -123,7 +123,7 @@ export default class SVGLabels extends PureComponent {
     render() {
         const { width, height ,onClick,onMouseMove,offset} = this.props;
         return (
-            <div style={{...styles.overlay, width, height,top:72+offset}}
+            <div style={{...styles.overlay, width, height,top:74+offset}}
                  onMouseMove={onMouseMove}
                  onClick={onClick}
             >

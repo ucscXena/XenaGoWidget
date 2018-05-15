@@ -121,7 +121,7 @@ export default class MultiXenaGoApp extends PureComponent {
         let appLength = this.state.apps.length ;
         return this.state.apps.map( (app,index) => {
             return (
-            <div key={app.key} >
+            <div key={app.key} style={{border:'solid'}}>
                 <XenaGoApp appState={app}/>
 
                 {index > 0 &&
@@ -153,7 +153,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // calculate the render offset based on the last offset
         let {renderHeight,renderOffset} = apps[apps.length-1];
-        newCohort.renderOffset = renderOffset + renderHeight ;
+        newCohort.renderOffset = renderOffset + renderHeight + 10;
         apps.push(newCohort);
         this.setState({
             apps: apps
