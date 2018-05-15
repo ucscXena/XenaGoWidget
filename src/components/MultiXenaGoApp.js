@@ -121,7 +121,7 @@ export default class MultiXenaGoApp extends PureComponent {
     render() {
         let appLength = this.state.apps.length ;
         let statBox = this.generateGlobalStatsForApps(this.state.apps);
-        this.state.apps.map( (a) => a.statsBox = statBox );
+        this.state.apps.map( (a) => a.statBox = statBox );
         return this.state.apps.map( (app,index) => {
             return (
             <div key={app.key} style={{border:'solid'}}>
@@ -160,7 +160,7 @@ export default class MultiXenaGoApp extends PureComponent {
         apps.push(newCohort);
 
         let statBox = this.generateGlobalStatsForApps(apps);
-        apps.map( (a) => a.statsBox = statBox );
+        apps.map( (a) => a.statBox = statBox );
 
 
         this.setState({
@@ -171,7 +171,7 @@ export default class MultiXenaGoApp extends PureComponent {
     removeCohort(app) {
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter( (f) => f.key !== app.key  ) ;
         let statBox = this.generateGlobalStatsForApps(apps);
-        apps.map( (a) => a.statsBox = statBox );
+        apps.map( (a) => a.statBox = statBox );
         this.setState({
             apps: apps
         });

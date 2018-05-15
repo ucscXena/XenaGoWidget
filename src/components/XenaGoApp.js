@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
@@ -58,6 +59,8 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         this.state = this.props.appState;
+        console.log('xena go app props')
+        console.log(this.state.statBox)
     }
 
     componentDidMount() {
@@ -350,8 +353,7 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col mdOffset={1} md={style.gene.expressionColumns}>
                         <Card style={{width: style.gene.columnWidth}}>
-                            <CompareBox>
-                            </CompareBox>
+                            <CompareBox statBox={this.state.statBox}/>
                         </Card>
                     </Col>
                     }
@@ -361,3 +363,6 @@ export default class XenaGoApp extends PureComponent {
     }
 }
 
+XenaGoApp.propTypes = {
+    appState: PropTypes.any,
+};
