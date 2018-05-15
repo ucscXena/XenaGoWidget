@@ -276,7 +276,8 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
                     <Col md={style.pathway.expressionColumns}>
-                        <PathwayScoresView id="pathwayViewId" width={400} height={800}
+                        <PathwayScoresView width={400} height={this.state.renderHeight}
+                                           offset = {this.state.renderOffset}
                                            data={this.state.pathwayData} titleText=""
                                            filter={this.state.tissueExpressionFilter}
                                            filterPercentage={this.state.filterPercentage}
@@ -289,6 +290,7 @@ export default class XenaGoApp extends PureComponent {
                                            onClick={this.clickPathway}
                                            onHover={this.hoverPathway}
                                            hideTitle={true}
+                                           key={this.state.key}
                         />
                     </Col>
                     }
@@ -319,7 +321,8 @@ export default class XenaGoApp extends PureComponent {
                     }
                     {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={style.gene.expressionColumns}>
-                        <PathwayScoresView id="geneViewId" height={800}
+                        <PathwayScoresView height={this.state.renderHeight}
+                                           offset = {this.state.renderOffset}
                                            data={this.state.geneData}
                                            selected={this.state.geneData.selectedPathway}
                                            filter={this.state.geneExpressionFilter}

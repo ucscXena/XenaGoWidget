@@ -7,12 +7,8 @@ import {HeaderLabel} from "../components/HeaderLabel";
 let styles = {
     overlay: {
         position: 'absolute'
-        , top: 72
-        // ,width:'25px !important'
         , display: 'block'
         , zIndex: 9999
-        // , color: 'green'
-        // , backgroundColor: 'blue'
         , opacity: 1
     }
 };
@@ -125,10 +121,9 @@ export default class SVGLabels extends PureComponent {
     }
 
     render() {
-        const { width, height ,onClick,onMouseMove} = this.props;
+        const { width, height ,onClick,onMouseMove,offset} = this.props;
         return (
-            <div id="expressionOverlay"
-                 style={{...styles.overlay, width, height}}
+            <div style={{...styles.overlay, width, height,top:72+offset}}
                  onMouseMove={onMouseMove}
                  onClick={onClick}
             >
@@ -140,6 +135,7 @@ export default class SVGLabels extends PureComponent {
 SVGLabels.propTypes = {
     width: PropTypes.any,
     height: PropTypes.any,
+    offset: PropTypes.any,
     // onMouseOver: PropTypes.any,
     onClick: PropTypes.any,
     onMouseOver: PropTypes.any,

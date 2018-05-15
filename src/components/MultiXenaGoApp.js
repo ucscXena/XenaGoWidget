@@ -19,6 +19,8 @@ export default class MultiXenaGoApp extends PureComponent {
             apps: [
                 {
                     key: 0,
+                    renderHeight: 800,
+                    renderOffset: 0,
                     selectedTissueSort: 'Cluster',
                     selectedGeneSort: 'Cluster',
                     selectedPathways: [],
@@ -148,6 +150,10 @@ export default class MultiXenaGoApp extends PureComponent {
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key  = this.state.apps[this.state.apps.length-1].key + 1 ;
         let apps = JSON.parse(JSON.stringify(this.state.apps)) ;
+
+        // calculate the render offset based on the last offset
+        let {renderHeight,renderOffset} = apps[apps.length-1];
+        newCohort.renderOffset = renderOffset + renderHeight ;
         apps.push(newCohort);
         this.setState({
             apps: apps

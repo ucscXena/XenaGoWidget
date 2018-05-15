@@ -131,7 +131,7 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            loading, width, height, layout, data, associateData,
+            loading, width, height, layout, data, associateData, offset,
             titleText, selected, filter, referenceLayout, selectedPathways
         } = this.props;
 
@@ -166,6 +166,7 @@ class PathwayScoresView extends PureComponent {
                 <SVGLabels
                     width={width}
                     height={height}
+                    offset={offset}
                     layout={layout}
                     referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
@@ -182,6 +183,7 @@ class PathwayScoresView extends PureComponent {
 PathwayScoresView.propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
+    offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
     selected: PropTypes.any,
     titleText: PropTypes.string,
@@ -192,7 +194,6 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
-    id: PropTypes.any,
 };
 
 /**
