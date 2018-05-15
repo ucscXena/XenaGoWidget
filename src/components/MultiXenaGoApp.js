@@ -121,6 +121,14 @@ export default class MultiXenaGoApp extends PureComponent {
             return (
             <div key={app.key} >
                 <XenaGoApp appState={app}/>
+
+                {index > 0 &&
+                // if its not the first one, then allow for a deletion
+                <CardActions>
+                    <Button label='- Remove Cohort' raised flat onClick={ () => this.removeCohort(app)}/>
+                </CardActions>
+                }
+
                 {index === appLength-1 &&
                 // if its the last one, then allow for an add
                 <CardActions>
@@ -128,12 +136,6 @@ export default class MultiXenaGoApp extends PureComponent {
                 </CardActions>
                 }
 
-                {index > 0 &&
-                // if its not the first one, then allow for a deletion
-                <CardActions>
-                <Button label='- Remove Cohort' raised primary onClick={ () => this.removeCohort(app)}/>
-                    </CardActions>
-                }
 
             </div>
             )
