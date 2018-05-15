@@ -259,20 +259,9 @@ export default class XenaGoApp extends PureComponent {
     };
 
     closeGeneView = (props) => {
-        // {pathway: {…}, tissue: "Header", expression: 0, metaSelect: false}
-        // expression
-        //     :
-        //     0
-        // metaSelect
-        //     :
-        //     false
-        // pathway
-        //     :
-        // {goid: "GO:0048017", golabel: "PI3-K signaling", gene: Array(21)}
-        // tissue
-        //     :
-        //     "Header"
-        alert('closing gene')
+        this.setState({
+            selectedPathways:[]
+        });
     };
 
     getGenesForNamedPathways(selectedPathways,pathways) {
