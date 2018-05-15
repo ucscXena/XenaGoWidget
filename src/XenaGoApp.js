@@ -121,8 +121,10 @@ export default class XenaGoApp extends PureComponent {
     }
 
     clickPathway = (pathwayClickData) => {
+        console.log('pathwayClickData')
+        console.log(pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
-        let {metaSelect, pathway: {goid, golabel, gene}} = pathwayClickData;
+        let {metaSelect, pathway: {goid, golabel}} = pathwayClickData;
 
         let newSelection = [];
 
@@ -256,6 +258,23 @@ export default class XenaGoApp extends PureComponent {
             });
     };
 
+    closeGeneView = (props) => {
+        // {pathway: {…}, tissue: "Header", expression: 0, metaSelect: false}
+        // expression
+        //     :
+        //     0
+        // metaSelect
+        //     :
+        //     false
+        // pathway
+        //     :
+        // {goid: "GO:0048017", golabel: "PI3-K signaling", gene: Array(21)}
+        // tissue
+        //     :
+        //     "Header"
+        alert('closing gene')
+    };
+
     getGenesForNamedPathways(selectedPathways,pathways) {
         let filteredPathways = pathways.filter( f => selectedPathways.indexOf(f.golabel)>=0 )
         return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
@@ -343,6 +362,9 @@ export default class XenaGoApp extends PureComponent {
                                 title={this.state.selectedCohort}
                                 subtitle='Cohort'
                             />
+                            <CardActions>
+                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView} />
+                            </CardActions>
 
                             <CardMedia>
                                 <SortSelector sortTypes={this.state.sortTypes}
