@@ -3,9 +3,6 @@ import PureComponent from './PureComponent';
 import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
 import PathWays from "../../tests/data/tgac";
-import ExampleExpression from "../../tests/data/bulkExpression";
-import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
-import ExampleSamples from "../../tests/data/samples";
 import '../base.css';
 import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
@@ -17,7 +14,6 @@ let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten, isEqual} from 'underscore';
 import {SortSelector} from "./SortSelector";
 import {Button} from 'react-toolbox/lib/button';
-
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
