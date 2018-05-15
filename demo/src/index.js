@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import XenaGoApp from '../../src/XenaGoApp'
+import XenaGoApp from '../../src/components/XenaGoApp'
 import {AppBar, Link, Navigation} from "react-toolbox";
+import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 
 
 const GithubIcon = () => (
@@ -30,7 +31,7 @@ class Demo extends Component {
                     </a>
                 </Navigation>
             </AppBar>
-            <XenaGoApp/>
+            <MultiXenaGoApp/>
         </div>
     }
 }

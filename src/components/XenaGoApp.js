@@ -1,21 +1,21 @@
 import React from 'react'
-import PureComponent from './components/PureComponent';
-import {CohortSelector} from "./components/CohortSelector";
-import PathwayScoresView from "./components/PathwayScoresView";
-import PathWays from "../tests/data/tgac";
-import ExampleExpression from "../tests/data/bulkExpression";
-import ExampleCopyNumber from "../tests/data/bulkCopyNumber";
-import ExampleSamples from "../tests/data/samples";
-import './base.css';
-import HoverPathwayView from "./components/HoverPathwayView"
-import HoverGeneView from "./components/HoverGeneView";
-import mutationVector from "./data/mutationVector";
-import {FilterSelector} from "./components/FilterSelector";
+import PureComponent from './PureComponent';
+import {CohortSelector} from "./CohortSelector";
+import PathwayScoresView from "./PathwayScoresView";
+import PathWays from "../../tests/data/tgac";
+import ExampleExpression from "../../tests/data/bulkExpression";
+import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
+import ExampleSamples from "../../tests/data/samples";
+import '../base.css';
+import HoverPathwayView from "./HoverPathwayView"
+import HoverGeneView from "./HoverGeneView";
+import mutationVector from "../data/mutationVector";
+import {FilterSelector} from "./FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten, isEqual} from 'underscore';
-import {SortSelector} from "./components/SortSelector";
+import {SortSelector} from "./SortSelector";
 import {Button} from 'react-toolbox/lib/button';
 
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
