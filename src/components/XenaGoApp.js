@@ -60,55 +60,7 @@ export default class XenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-
-
-        this.state = {
-            selectedTissueSort: 'Cluster',
-            selectedGeneSort: 'Cluster',
-            selectedPathways: [],
-            sortTypes: ['Cluster', 'Hierarchical'],
-            pathwayData: {
-                cohort: 'TCGA Ovarian Cancer (OV)',
-                copyNumber: ExampleCopyNumber,
-                expression: ExampleExpression,
-                pathways: PathWays,
-                samples: ExampleSamples,
-            },
-            loadState: 'loading',
-            selectedCohort: 'TCGA Ovarian Cancer (OV)',
-            cohortData: {},
-            tissueExpressionFilter: 'All',
-            geneExpressionFilter: 'All',
-            minFilter: 2,
-            filterPercentage: 0.005,
-            geneData: {
-                copyNumber: [],
-                expression: [],
-                pathways: [],
-                samples: [],
-            },
-            pathwayHoverData: {
-                tissue: null,
-                pathway: null,
-                score: null
-            },
-            pathwayClickData: {
-                tissue: null,
-                pathway: null,
-                score: null
-            },
-            geneHoverData: {
-                tissue: null,
-                gene: null,
-                score: null
-            },
-            geneClickData: {
-                tissue: null,
-                pathway: null,
-                score: null
-            },
-        };
-
+        this.state = this.props.appState;
     }
 
     componentDidMount() {
