@@ -5,12 +5,12 @@ import {List, ListItem, ListSubHeader} from "react-toolbox";
 
 export default class HoverGeneView extends PureComponent {
 
-    getRatio(data){
+    getRatio(data) {
         let returnString = data.expression.affected + '/' + data.expression.total;
         returnString += '  (';
-        returnString +=  ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total))*100.0).toFixed(0);
+        returnString += ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
         returnString += '%)';
-        return returnString ;
+        return returnString;
     }
 
     render() {
@@ -42,7 +42,7 @@ export default class HoverGeneView extends PureComponent {
                         }
                     </List>
                     }
-                    {data.tissue === 'Header' && data.pathway &&
+                    {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 &&
                     <List>
                         <ListItem
                             caption={data.pathway.gene[0]}
@@ -51,6 +51,14 @@ export default class HoverGeneView extends PureComponent {
                         <ListItem
                             caption={this.getRatio(data)}
                             legend='Samples Affected'
+                        />
+                    </List>
+                    }
+                    {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 1 &&
+                    <List>
+                        <ListItem
+                            caption={data.pathway.golabel}
+                            legend='Pathway'
                         />
                     </List>
                     }
