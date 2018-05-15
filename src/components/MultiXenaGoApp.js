@@ -117,8 +117,11 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
 
+
     render() {
         let appLength = this.state.apps.length ;
+        let statBox = this.generateGlobalStatsForApps(this.state.apps);
+        this.state.apps.map( (a) => a.statsBox = statBox );
         return this.state.apps.map( (app,index) => {
             return (
             <div key={app.key} style={{border:'solid'}}>
@@ -155,6 +158,11 @@ export default class MultiXenaGoApp extends PureComponent {
         let {renderHeight,renderOffset} = apps[apps.length-1];
         newCohort.renderOffset = renderOffset + renderHeight + 10;
         apps.push(newCohort);
+
+        let statBox = this.generateGlobalStatsForApps(apps);
+        apps.map( (a) => a.statsBox = statBox );
+
+
         this.setState({
             apps: apps
         });
@@ -162,8 +170,23 @@ export default class MultiXenaGoApp extends PureComponent {
 
     removeCohort(app) {
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter( (f) => f.key !== app.key  ) ;
+        let statBox = this.generateGlobalStatsForApps(apps);
+        apps.map( (a) => a.statsBox = statBox );
         this.setState({
             apps: apps
         });
+    }
+
+    generateGlobalStatsForApps(apps) {
+        return {
+            commonGenes:[
+                {name:'ARC1',score:32},
+                {name:'BRCA3',score:44}
+            ],
+            commonPathways:[
+                {name:'DNA something',score:32},
+                {name:'other something',score:44}
+            ],
+        }
     }
 }

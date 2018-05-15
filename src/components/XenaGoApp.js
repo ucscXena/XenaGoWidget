@@ -6,6 +6,7 @@ import PathWays from "../../tests/data/tgac";
 import '../base.css';
 import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
+import CompareBox from "./CompareBox";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
@@ -14,7 +15,7 @@ let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten, isEqual} from 'underscore';
 import {SortSelector} from "./SortSelector";
 import {Button} from 'react-toolbox/lib/button';
-import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+import {Card, Chip,CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
@@ -294,6 +295,13 @@ export default class XenaGoApp extends PureComponent {
                         />
                     </Col>
                     }
+                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
+                    <Col mdOffset={1} md={style.pathway.expressionColumns}>
+                        <div>
+                            Summary box
+                        </div>
+                    </Col>
+                    }
                     {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={style.gene.columns}>
                         <Card style={{width: style.gene.columnWidth}}>
@@ -337,6 +345,14 @@ export default class XenaGoApp extends PureComponent {
                                            onHover={this.hoverGene}
                                            hideTitle={true}
                         />
+                    </Col>
+                    }
+                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                    <Col mdOffset={1} md={style.gene.expressionColumns}>
+                        <Card style={{width: style.gene.columnWidth}}>
+                            <CompareBox>
+                            </CompareBox>
+                        </Card>
                     </Col>
                     }
                 </Row>
