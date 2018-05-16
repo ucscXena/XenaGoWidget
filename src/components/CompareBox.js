@@ -21,12 +21,14 @@ export default class CompareBox extends PureComponent {
         // // return <div>Compare box</div>
         if (commonGenes) {
             console.log('has common genes')
-            commonGenes.map((s) => {
-                console.log(s)
-                // return (
-                //     <div>dogs</div>
-                // )
-            })
+            return (
+                commonGenes.map((s) => {
+                    console.log(s)
+                    return (
+                        <div key={s.name}>{s.name} {s.score}</div>
+                    )
+                })
+            )
         }
         // else{
         return <div>Nada</div>
