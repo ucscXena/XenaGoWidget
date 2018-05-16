@@ -1,13 +1,13 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
-import {Grid, Row, Col} from 'react-material-responsive-grid';
 import ExampleExpression from "../../tests/data/bulkExpression";
 import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
 import ExampleSamples from "../../tests/data/samples";
 import PathWays from "../../tests/data/tgac";
 import {Button} from 'react-toolbox/lib/button';
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+
 
 
 export default class MultiXenaGoApp extends PureComponent {
@@ -117,15 +117,35 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
 
+    associateData = (expression, copyNumber, geneList, pathways, samples, filter, min) => {
+        console.log('munge munge munge')
+        console.log(expression, copyNumber, geneList, pathways, samples, filter, min)
+
+        console.log(this.state)
+
+        this.setState({
+            statBox:{
+                commonGenes:[
+                    {name:'ARC1',score:7},
+                    {name:'BRCA3',score:12}
+                ],
+                commonPathways:[
+                    {name:'DNA something',score:9},
+                    {name:'other something',score:3}
+                ],
+            }
+        })
+    };
+
 
     render() {
         let appLength = this.state.apps.length ;
-        let statBox = this.generateGlobalStatsForApps(this.state.apps);
-        this.state.apps.map( (a) => a.statBox = statBox );
+        // let statBox = this.generateGlobalStatsForApps(this.state.apps);
+        // this.state.apps.map( (a) => a.statBox = statBox );
         return this.state.apps.map( (app,index) => {
             return (
             <div key={app.key} style={{border:'solid'}}>
-                <XenaGoApp appState={app}/>
+                <XenaGoApp appData={app} dataMunger={this.associateData} stats={this.state.statBox}/>
 
                 {index > 0 &&
                 // if its not the first one, then allow for a deletion
@@ -148,7 +168,7 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     // just duplicate the last state
-    duplicateCohort = (app) => {
+    duplicateCohort(app){
         // console.log('duplicating cohort: '+ index)
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key  = this.state.apps[this.state.apps.length-1].key + 1 ;
@@ -159,8 +179,8 @@ export default class MultiXenaGoApp extends PureComponent {
         newCohort.renderOffset = renderOffset + renderHeight + 10;
         apps.push(newCohort);
 
-        let statBox = this.generateGlobalStatsForApps(apps);
-        apps.map( (a) => a.statBox = statBox );
+        // let statBox = this.generateGlobalStatsForApps(apps);
+        // apps.map( (a) => a.statBox = statBox );
 
 
         this.setState({
@@ -170,25 +190,25 @@ export default class MultiXenaGoApp extends PureComponent {
 
     removeCohort(app) {
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter( (f) => f.key !== app.key  ) ;
-        let statBox = this.generateGlobalStatsForApps(apps);
-        apps.map( (a) => a.statBox = statBox );
+        // let statBox = this.generateGlobalStatsForApps(apps);
+        // apps.map( (a) => a.statBox = statBox );
         this.setState({
             apps: apps
         });
     }
-
-    generateGlobalStatsForApps(apps) {
-        console.log('apps')
-        console.log(apps)
-        return {
-            commonGenes:[
-                {name:'ARC1',score:32},
-                {name:'BRCA3',score:44}
-            ],
-            commonPathways:[
-                {name:'DNA something',score:32},
-                {name:'other something',score:44}
-            ],
-        }
-    }
+    //
+    // generateGlobalStatsForApps(apps) {
+    //     console.log('apps')
+    //     console.log(apps)
+    //     return {
+    //         commonGenes:[
+    //             {name:'ARC1',score:32},
+    //             {name:'BRCA3',score:44}
+    //         ],
+    //         commonPathways:[
+    //             {name:'DNA something',score:32},
+    //             {name:'other something',score:44}
+    //         ],
+    //     }
+    // }
 }

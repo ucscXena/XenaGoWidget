@@ -16,7 +16,7 @@ let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten, isEqual} from 'underscore';
 import {SortSelector} from "./SortSelector";
 import {Button} from 'react-toolbox/lib/button';
-import {Card, Chip,CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
 let tcgaHub = 'https://tcga.xenahubs.net';
@@ -58,7 +58,7 @@ export default class XenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = this.props.appState;
+        this.state = this.props.appData;
         console.log('xena go app props')
         console.log(this.state.statBox)
     }
@@ -97,7 +97,7 @@ export default class XenaGoApp extends PureComponent {
             newSelection = [golabel];
         }
 
-        let geneList = this.getGenesForNamedPathways(newSelection,PathWays);
+        let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
         this.setState({
             pathwayClickData,
@@ -212,12 +212,12 @@ export default class XenaGoApp extends PureComponent {
 
     closeGeneView = (props) => {
         this.setState({
-            selectedPathways:[]
+            selectedPathways: []
         });
     };
 
-    getGenesForNamedPathways(selectedPathways,pathways) {
-        let filteredPathways = pathways.filter( f => selectedPathways.indexOf(f.golabel)>=0 )
+    getGenesForNamedPathways(selectedPathways, pathways) {
+        let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
         return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
     };
 
@@ -233,6 +233,10 @@ export default class XenaGoApp extends PureComponent {
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(PathWays);
+
+        let {dataMunger,stats} = this.props;
+        console.log('rendering app state ')
+        console.log(this.state)
 
         return (
             <Grid>
@@ -260,9 +264,10 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
                     <Col md={style.pathway.expressionColumns}>
                         <PathwayScoresView width={400} height={this.state.renderHeight}
-                                           offset = {this.state.renderOffset}
+                                           offset={this.state.renderOffset}
                                            data={this.state.pathwayData} titleText=""
                                            filter={this.state.tissueExpressionFilter}
+                                           dataMunger={dataMunger}
                                            filterPercentage={this.state.filterPercentage}
                                            geneList={geneList}
                                            loading={cohortLoading}
@@ -277,11 +282,11 @@ export default class XenaGoApp extends PureComponent {
                         />
                     </Col>
                     }
-                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
-                    <Col mdOffset={1} md={style.pathway.expressionColumns}>
-                        <div>
-                            Summary box
-                        </div>
+                    {stats && this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
+                    <Col mdOffset={1} md={style.gene.expressionColumns}>
+                        <Card style={{width: style.gene.columnWidth}}>
+                            <CompareBox statBox={stats}/>
+                        </Card>
                     </Col>
                     }
                     {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -292,7 +297,7 @@ export default class XenaGoApp extends PureComponent {
                                 subtitle='Cohort'
                             />
                             <CardActions>
-                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView} />
+                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView}/>
                             </CardActions>
 
                             <CardMedia>
@@ -312,9 +317,10 @@ export default class XenaGoApp extends PureComponent {
                     {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col md={style.gene.expressionColumns}>
                         <PathwayScoresView height={this.state.renderHeight}
-                                           offset = {this.state.renderOffset}
+                                           offset={this.state.renderOffset}
                                            data={this.state.geneData}
                                            selected={this.state.geneData.selectedPathway}
+                                           dataMunger={dataMunger}
                                            filter={this.state.geneExpressionFilter}
                                            filterPercentage={this.state.filterPercentage}
                                            geneList={geneList}
@@ -329,10 +335,10 @@ export default class XenaGoApp extends PureComponent {
                         />
                     </Col>
                     }
-                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                    {stats && this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                     <Col mdOffset={1} md={style.gene.expressionColumns}>
                         <Card style={{width: style.gene.columnWidth}}>
-                            <CompareBox statBox={this.state.statBox}/>
+                            <CompareBox statBox={stats}/>
                         </Card>
                     </Col>
                     }
@@ -343,5 +349,7 @@ export default class XenaGoApp extends PureComponent {
 }
 
 XenaGoApp.propTypes = {
-    appState: PropTypes.any,
+    appData: PropTypes.any,
+    dataMunger: PropTypes.any,
+    stats: PropTypes.any,
 };

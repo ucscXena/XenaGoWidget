@@ -218,8 +218,12 @@ const minColWidth = 12;
 
 export default class PathwayScoresViewCache extends PureComponent {
     render() {
-        let {selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        console.log('data munger');
+        let {dataMunger,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        dataMunger(expression,copyNumber,geneList,pathways,samples,filter,min);
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
+        console.log('new state?');
+        console.log(this.state)
 
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
