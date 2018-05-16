@@ -1,9 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import XenaGoApp from './XenaGoApp';
-import {Grid, Row, Col} from 'react-material-responsive-grid';
-import {Button} from 'react-toolbox/lib/button';
 import {Chip, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
 import {sum} from '../functions/util';
 import {Dropdown} from "react-toolbox";
-import {getCopyNumberValue} from "../functions/ScoreFunctions";
+import {getCopyNumberValue} from "../functions/DataFunctions";
 
 function lowerCaseCompare(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());

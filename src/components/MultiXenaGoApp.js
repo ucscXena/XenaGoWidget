@@ -178,6 +178,8 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     generateGlobalStatsForApps(apps) {
+        console.log('apps')
+        console.log(apps)
         return {
             commonGenes:[
                 {name:'ARC1',score:32},

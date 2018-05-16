@@ -78,9 +78,6 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) 
 }
 
 
-export function getCopyNumberValue(copyNumberValue) {
-    return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2) ? 1 : 0;
-}
 
 export default {
 

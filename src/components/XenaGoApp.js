@@ -227,33 +227,12 @@ export default class XenaGoApp extends PureComponent {
 
     render() {
 
-        const alignTop = {
-            marginLeft: '40px',
-            paddingLeft: '40px',
-            verticalAlign: 'top',
-            width: '100px'
-        };
-
-        const geneAlignment = {
-            paddingTop: '100px',
-            marginTop: '100px',
-            marginLeft: '40px',
-            paddingLeft: '40px',
-            verticalAlign: 'top',
-            width: '100px'
-        };
-
         let filteredMutationVector = pick(mutationVector,
             v => v >= this.state.minFilter);
         filteredMutationVector['Copy Number'] = 1;
-        // console.log('filtered mutation vector');
-        // console.log(filteredMutationVector)
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(PathWays);
-
-        // console.log('input pathway data: ');
-        // console.log(this.state.pathwayData)
 
         return (
             <Grid>
