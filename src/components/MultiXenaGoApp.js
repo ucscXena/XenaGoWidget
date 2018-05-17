@@ -128,6 +128,7 @@ export default class MultiXenaGoApp extends PureComponent {
      * @param samples
      * @param filter
      * @param min
+     * @param key
      * @returns {any[]}
      */
     associateData = (expression, copyNumber, geneList, pathways, samples, filter, min,key) => {
@@ -180,9 +181,17 @@ export default class MultiXenaGoApp extends PureComponent {
 
         let keyString = key + '';
 
-        console.log('top-level keyString: '+ keyString)
+        console.log('top-level keyString: '+ keyString);
+
+        // TODO: add associated data to that app
+        let appData = JSON.parse(JSON.stringify(this.state.apps)) ;
+        appData[key].associatedData = returnArray ;
+
+        console.log('appData');
+        console.log(appData);
 
         this.setState({
+            apps: appData,
             statBox:{
                 commonGenes:[
                     {name:keyString,score:7},
@@ -195,7 +204,7 @@ export default class MultiXenaGoApp extends PureComponent {
                     {name:'other something',score:3}
                 ],
             }
-        })
+        });
 
         return returnArray;
 
