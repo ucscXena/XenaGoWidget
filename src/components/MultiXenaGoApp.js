@@ -161,7 +161,8 @@ export default class MultiXenaGoApp extends PureComponent {
 
     };
 
-    maxStats = 9 ;
+    maxStats = 9;
+
     /**
      *
      * show top-5 correlated pathways with color (32%/25%/17%) GO Pathway X
@@ -179,42 +180,79 @@ export default class MultiXenaGoApp extends PureComponent {
         // assume everything is a gene for now
 
         // dumb way, just add up the columns to get the highest
-        let globalStat = {};
-        apps.forEach(app => {
-            app.summedColumn.forEach(column => {
-                console.log('name')
-                let name = column.name.gene[0];
-                let nameStat = globalStat[name];
-                // a novel one
-                if (!nameStat) {
-                    nameStat = column.sum
-                }
-                // combine them
-                else {
-                    nameStat += column.sum;
-                }
-                globalStat[name] = nameStat;
+
+        // here, we want an array of A[name] = score;
+
+        let columnList = apps.map(app => app.summedColumn);
+
+        let columnObjectList = columnList.map( (cl) => {
+            let columnObject = {};
+            cl.forEach( c => {
+                return columnObject[c.name.gene[0]] = c.sum
             });
+            return columnObject;
+        });
+        console.log('col');
+        console.log(columnObjectList);
+
+        let finalObjectList = columnObjectList[0];
+        // console.log('col rest');
+        // console.log(columnObjectList.slice(1));
+        columnObjectList.slice(1).forEach( (col) => {
+
+            Object.keys(finalObjectList).forEach( k => {
+                let otherValue = col[k];
+                otherValue = otherValue===undefined ? 0 : otherValue ;
+                finalObjectList[k] *= otherValue ;
+            });
+            // col.forEach( c => {
+            //    let name = c.name.gene[0];
+            //    let nameStat = finalObjectList[name] ;
+            // });
         });
 
+        // console.log('finalObjectList')
+        // console.log(finalObjectList)
+
+
+        // let globalStat = {};
+        // apps.forEach(app => {
+        //     app.summedColumn.forEach(column => {
+        //         console.log('name')
+        //         let name = column.name.gene[0];
+        //         let nameStat = globalStat[name];
+        //         // a novel one
+        //         if (!nameStat) {
+        //             nameStat = column.sum
+        //         }
+        //         // combine them
+        //         else {
+        //             nameStat *= column.sum;
+        //         }
+        //         globalStat[name] = nameStat;
+        //     });
+        // });
+
         let commonGenes = [];
-        Object.keys(globalStat).forEach(k => {
-                let newGene = {
-                    'name': k,
-                    'score': globalStat[k],
-                };
-                commonGenes.push(newGene);
+        Object.keys(finalObjectList).forEach(k => {
+                if(finalObjectList[k]>0) {
+                    let newGene = {
+                        'name': k,
+                        'score': finalObjectList[k],
+                    };
+                    commonGenes.push(newGene);
+                }
             }
         );
+
 
         let reducedGenes = commonGenes.sort((a, b) => {
             return b.score - a.score;
         });
 
-        if(reducedGenes.length > this.maxStats){
-            reducedGenes = reducedGenes.slice(0,this.maxStats);
+        if (reducedGenes.length > this.maxStats) {
+            reducedGenes = reducedGenes.slice(0, this.maxStats);
         }
-
 
 
         return {
