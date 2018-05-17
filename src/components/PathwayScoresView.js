@@ -220,11 +220,8 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {cohortIndex,dataMunger,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
         console.log('data munger');
-        console.log(cohortIndex);
+        
         let associatedData = dataMunger(expression, copyNumber, geneList, pathways, samples, filter, min,cohortIndex);
-        console.log('new state?');
-        console.log(this.state)
-
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
