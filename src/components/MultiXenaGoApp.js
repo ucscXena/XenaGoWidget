@@ -7,6 +7,8 @@ import ExampleSamples from "../../tests/data/samples";
 import PathWays from "../../tests/data/tgac";
 import {Button} from 'react-toolbox/lib/button';
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+import {sum} from 'underscore';
+
 
 
 export default class MultiXenaGoApp extends PureComponent {
@@ -133,10 +135,12 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // for each app get the column scores
         console.log('generating stats with app');
-        console.log(appData)
+        console.log(appData);
 
 
         // for each column, associate columns with pathways
+        let scoredColumn = appData.data.map(a => sum(a));
+        console.log(scoredColumn);
 
         // use the pathways, to repeat the exercise for genes
 
@@ -150,6 +154,28 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
         // show highly correlated genes
+
+        //
+        // let keyString = key + '';
+        //
+        // console.log('top-level keyString: ' + keyString);
+        //
+        // // TODO: add associated data to that app
+        // let appData = JSON.parse(JSON.stringify(this.state.apps));
+        // appData[key].associatedData = returnArray;gg
+        // appData[key].pathways = pathways;
+        // appData[key].scoredColumn = scoredColumn;
+
+        // console.log('appData');
+        // console.log(appData);
+        // let statBox = MultiXenaGoApp.generateStats(appData);
+        //
+        // this.setState({
+        //     apps: appData,
+        //     statBox: statBox,
+        // });
+
+
 
         this.setState({
             statBox:
