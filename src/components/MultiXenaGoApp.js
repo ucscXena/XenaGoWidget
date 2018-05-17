@@ -163,6 +163,10 @@ export default class MultiXenaGoApp extends PureComponent {
 
     maxStats = 9;
 
+    getName(c){
+        return  c.name.gene.length === 1 ? c.name.gene[0] : c.name.golabel ;
+    }
+
     /**
      *
      * show top-5 correlated pathways with color (32%/25%/17%) GO Pathway X
@@ -188,7 +192,7 @@ export default class MultiXenaGoApp extends PureComponent {
         let columnObjectList = columnList.map( (cl) => {
             let columnObject = {};
             cl.forEach( c => {
-                return columnObject[c.name.gene[0]] = c.sum
+                return columnObject[this.getName(c)] = c.sum
             });
             return columnObject;
         });
