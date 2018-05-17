@@ -23,6 +23,7 @@ export default class CompareBox extends PureComponent {
         return {
             backgroundColor: colorString,
             width: '100%',
+            height: 20,
         }
 
     }
@@ -35,7 +36,7 @@ export default class CompareBox extends PureComponent {
                 commonGenes.map((s) => {
                     return (
                         <Chip style={this.style(s,commonGenes.length,[0,1,1])} key={s.name}>
-                            <div style={{marginLeft: "auto",marginRight:"auto"}}>
+                            <div style={{lineHeight:"normal",fontSize:"x-small",marginLeft: "auto",marginRight:"auto",fontWeight:"bolder"}}>
                             {s.name}
                             </div>
                         </Chip>

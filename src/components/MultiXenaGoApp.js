@@ -166,7 +166,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     };
 
-    maxStats = 9;
+    maxStats = 7;
 
     getName(c){
         return  c.name.gene.length === 1 ? c.name.gene[0] : c.name.golabel ;

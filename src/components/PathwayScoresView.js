@@ -41,7 +41,7 @@ function getMousePos(evt) {
 function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
     let pathwayArray = associatedData[pathwayIndex];
     if (!pathwayArray) {
-        console.log("No pathway data at " + pathwayIndex + " for " + associateData.length);
+        // console.log("No pathway data at " + pathwayIndex + " for " + associateData.length);
         return 0;
     }
 
