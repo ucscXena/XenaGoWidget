@@ -79,7 +79,7 @@ export default class MultiXenaGoApp extends PureComponent {
         return this.state.apps.map((app, index) => {
             return (
                 <div key={app.key} style={{border: 'solid'}}>
-                    <XenaGoApp appData={app} dataMunger={this.generateStats} stats={this.state.statBox}/>
+                    <XenaGoApp appData={app} statGenerator={this.generateStats} stats={this.state.statBox}/>
 
                     {index > 0 &&
                     // if its not the first one, then allow for a deletion
@@ -141,9 +141,6 @@ export default class MultiXenaGoApp extends PureComponent {
         // for each column, associate columns with pathways
         let scoredColumn = appData.data.map(a => sum(a));
         console.log(scoredColumn);
-
-        // use the pathways, to repeat the exercise for genes
-
 
         // for each app, get the pathways with hits
         // sort by rank within each cohort view

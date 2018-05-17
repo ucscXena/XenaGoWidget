@@ -234,7 +234,7 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(PathWays);
 
-        let {dataMunger,stats} = this.props;
+        let {statGenerator,stats} = this.props;
 
         return (
             <Grid>
@@ -265,7 +265,7 @@ export default class XenaGoApp extends PureComponent {
                                            offset={this.state.renderOffset}
                                            data={this.state.pathwayData} titleText=""
                                            filter={this.state.tissueExpressionFilter}
-                                           dataMunger={dataMunger}
+                                           statGenerator={statGenerator}
                                            filterPercentage={this.state.filterPercentage}
                                            geneList={geneList}
                                            loading={cohortLoading}
@@ -319,7 +319,7 @@ export default class XenaGoApp extends PureComponent {
                                            offset={this.state.renderOffset}
                                            data={this.state.geneData}
                                            selected={this.state.geneData.selectedPathway}
-                                           dataMunger={dataMunger}
+                                           statGenerator={statGenerator}
                                            filter={this.state.geneExpressionFilter}
                                            filterPercentage={this.state.filterPercentage}
                                            geneList={geneList}
@@ -351,6 +351,6 @@ export default class XenaGoApp extends PureComponent {
 
 XenaGoApp.propTypes = {
     appData: PropTypes.any,
-    dataMunger: PropTypes.any,
+    statGenerator: PropTypes.any,
     stats: PropTypes.any,
 };
