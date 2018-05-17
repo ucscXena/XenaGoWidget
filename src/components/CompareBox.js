@@ -28,7 +28,7 @@ export default class CompareBox extends PureComponent {
             )
         }
         // else{
-        return <div>Nada</div>
+        return <div></div>
         // }
     }
 }

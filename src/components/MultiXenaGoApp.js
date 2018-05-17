@@ -10,7 +10,6 @@ import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
 
-
 export default class MultiXenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
@@ -139,53 +138,87 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
         // for each column, associate columns with pathways
-        let scoredColumn = appData.data.map(a => sum(a));
-        console.log(scoredColumn);
+        let summedPathways = appData.data.map((a, index) => {
+                let pathway = appData.pathways[index];
+                return {
+                    'name': pathway,
+                    'sum': sum(a)
+                }
+            }
+        );
 
-        // for each app, get the pathways with hits
-        // sort by rank within each cohort view
-        // view WRT genes as well
+        let apps = JSON.parse(JSON.stringify(this.state.apps));
 
-        // show top-5 correlated pathways with color (32%/25%/17%) GO Pathway X
-        // show top-5 correlated genes with color (32%/25%/17%) Genex X
+        apps[appData.index].summedColumn = summedPathways;
 
-
-        // show highly correlated genes
-
-        //
-        // let keyString = key + '';
-        //
-        // console.log('top-level keyString: ' + keyString);
-        //
-        // // TODO: add associated data to that app
-        // let appData = JSON.parse(JSON.stringify(this.state.apps));
-        // appData[key].associatedData = returnArray;gg
-        // appData[key].pathways = pathways;
-        // appData[key].scoredColumn = scoredColumn;
-
-        // console.log('appData');
-        // console.log(appData);
-        // let statBox = MultiXenaGoApp.generateStats(appData);
-        //
-        // this.setState({
-        //     apps: appData,
-        //     statBox: statBox,
-        // });
-
-
+        // generate a global stat box
+        let statBox = this.generateGlobalStats(apps);
 
         this.setState({
-            statBox:
-                {
-                    commonGenes: [
-                        {name: 'ARC1', score: 32},
-                        {name: 'BRCA3', score: 44}
-                    ],
-                    commonPathways: [
-                        {name: 'DNA something', score: 32},
-                        {name: 'other something', score: 44}
-                    ],
-                }
+            apps: apps,
+            statBox: statBox,
         });
+
+    };
+
+    maxStats = 9 ;
+    /**
+     *
+     * show top-5 correlated pathways with color (32%/25%/17%) GO Pathway X
+     * show top-5 correlated genes with color (32%/25%/17%) Genex X
+     * show highly correlated genes
+     * @param apps
+     * @returns {*}
+     */
+    generateGlobalStats(apps) {
+        // only one app, maybe provide something?
+        // if(apps.length<2){
+        //     return {};
+        // }
+
+        // assume everything is a gene for now
+
+        // dumb way, just add up the columns to get the highest
+        let globalStat = {};
+        apps.forEach(app => {
+            app.summedColumn.forEach(column => {
+                console.log('name')
+                let name = column.name.gene[0];
+                let nameStat = globalStat[name];
+                // a novel one
+                if (!nameStat) {
+                    nameStat = column.sum
+                }
+                // combine them
+                else {
+                    nameStat += column.sum;
+                }
+                globalStat[name] = nameStat;
+            });
+        });
+
+        let commonGenes = [];
+        Object.keys(globalStat).forEach(k => {
+                let newGene = {
+                    'name': k,
+                    'score': globalStat[k],
+                };
+                commonGenes.push(newGene);
+            }
+        );
+
+        let reducedGenes = commonGenes.sort((a, b) => {
+            return b.score - a.score;
+        });
+
+        if(reducedGenes.length > this.maxStats){
+            reducedGenes = reducedGenes.slice(0,this.maxStats);
+        }
+
+
+
+        return {
+            commonGenes: reducedGenes
+        }
     }
 }
