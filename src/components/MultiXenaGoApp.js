@@ -140,14 +140,19 @@ export default class MultiXenaGoApp extends PureComponent {
         // for each column, associate columns with pathways
         let summedPathways = appData.data.map((a, index) => {
                 let pathway = appData.pathways[index];
+                let score = sum(a);
+                let percent = score / a.length;
                 return {
                     'name': pathway,
-                    'sum': sum(a)
+                    'sum': score,
+                    'percent': percent ,
                 }
             }
         );
 
         let apps = JSON.parse(JSON.stringify(this.state.apps));
+
+        console.log(summedPathways);
 
         apps[appData.index].summedColumn = summedPathways;
 
@@ -177,22 +182,14 @@ export default class MultiXenaGoApp extends PureComponent {
      */
     generateGlobalStats(apps) {
         // only one app, maybe provide something?
-        // if(apps.length<2){
-        //     return {};
-        // }
-
         // assume everything is a gene for now
-
         // dumb way, just add up the columns to get the highest
-
-        // here, we want an array of A[name] = score;
-
         let columnList = apps.map(app => app.summedColumn);
 
         let columnObjectList = columnList.map( (cl) => {
             let columnObject = {};
             cl.forEach( c => {
-                return columnObject[this.getName(c)] = c.sum
+                return columnObject[this.getName(c)] = c.percent;
             });
             return columnObject;
         });
@@ -209,33 +206,7 @@ export default class MultiXenaGoApp extends PureComponent {
                 otherValue = otherValue===undefined ? 0 : otherValue ;
                 finalObjectList[k] *= otherValue ;
             });
-            // col.forEach( c => {
-            //    let name = c.name.gene[0];
-            //    let nameStat = finalObjectList[name] ;
-            // });
         });
-
-        // console.log('finalObjectList')
-        // console.log(finalObjectList)
-
-
-        // let globalStat = {};
-        // apps.forEach(app => {
-        //     app.summedColumn.forEach(column => {
-        //         console.log('name')
-        //         let name = column.name.gene[0];
-        //         let nameStat = globalStat[name];
-        //         // a novel one
-        //         if (!nameStat) {
-        //             nameStat = column.sum
-        //         }
-        //         // combine them
-        //         else {
-        //             nameStat *= column.sum;
-        //         }
-        //         globalStat[name] = nameStat;
-        //     });
-        // });
 
         let commonGenes = [];
         Object.keys(finalObjectList).forEach(k => {
@@ -248,7 +219,6 @@ export default class MultiXenaGoApp extends PureComponent {
                 }
             }
         );
-
 
         let reducedGenes = commonGenes.sort((a, b) => {
             return b.score - a.score;

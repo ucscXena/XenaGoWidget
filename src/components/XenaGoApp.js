@@ -47,7 +47,7 @@ const style = {
     },
     gene: {
         columns: 2,
-        columnWidth: 200,
+        columnWidth: 150,
         expressionColumns: 4,
         expressionWidth: 400,
     },

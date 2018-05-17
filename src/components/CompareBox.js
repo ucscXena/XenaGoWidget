@@ -3,26 +3,42 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Chip, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
+const MAX_COLOR = 256  ;
 
 export default class CompareBox extends PureComponent {
+
+
     constructor(props) {
         super(props);
     }
 
+    style(s,length,colorMask) {
+        let color = Math.round(MAX_COLOR * (1.0 - (length * s.score)));
+
+        let colorString = 'rgb(';
+        colorString += (colorMask[0] === 0 ? 256 : color) + ',';
+        colorString += (colorMask[1] === 0 ? 256 : color) + ',';
+        colorString += (colorMask[2] === 0 ? 256 : color) + ')';
+
+        return {
+            backgroundColor: colorString,
+            width: '100%',
+        }
+
+    }
+
     render() {
-        console.log('render Compare Box props')
-        console.log(this.props)
-        let {statBox: {commonGenes, commonPathways}} = this.props;
-        console.log(commonGenes)
-        console.log(commonPathways)
-        // // return <div>Compare box</div>
+        let {statBox: {commonGenes}} = this.props;
+
         if (commonGenes) {
-            console.log('has common genes')
             return (
                 commonGenes.map((s) => {
-                    console.log(s)
                     return (
-                        <div key={s.name}>{s.name} {s.score}</div>
+                        <Chip style={this.style(s,commonGenes.length,[0,1,1])} key={s.name}>
+                            <div style={{marginLeft: "auto",marginRight:"auto"}}>
+                            {s.name}
+                            </div>
+                        </Chip>
                     )
                 })
             )
