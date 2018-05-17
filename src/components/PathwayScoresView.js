@@ -8,7 +8,6 @@ import spinner from './ajax-loader.gif';
 import {pick, pluck, flatten} from 'underscore';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort,clusterSort} from '../functions/SortFunctions';
-import {associateData} from "../functions/DataFunctions";
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -220,8 +219,7 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         console.log('data munger');
         let {dataMunger,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
-        dataMunger(expression,copyNumber,geneList,pathways,samples,filter,min);
-        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
+        let associatedData = dataMunger(expression, copyNumber, geneList, pathways, samples, filter, min);
         console.log('new state?');
         console.log(this.state)
 

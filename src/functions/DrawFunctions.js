@@ -1,5 +1,5 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
-import {range, times} from 'underscore';
+import {range} from 'underscore';
 import React from "react";
 
 function clearScreen(vg, width, height) {

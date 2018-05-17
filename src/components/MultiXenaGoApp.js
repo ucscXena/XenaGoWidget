@@ -6,7 +6,9 @@ import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
 import ExampleSamples from "../../tests/data/samples";
 import PathWays from "../../tests/data/tgac";
 import {Button} from 'react-toolbox/lib/button';
+import {getGenePathwayLookup,getCopyNumberValue,getMutationScore} from '../functions/DataFunctions';
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+import {range, times} from 'underscore';
 
 
 
@@ -116,12 +118,65 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
-
+    /**
+     * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
+     *
+     * @param expression
+     * @param copyNumber
+     * @param geneList
+     * @param pathways
+     * @param samples
+     * @param filter
+     * @param min
+     * @returns {any[]}
+     */
     associateData = (expression, copyNumber, geneList, pathways, samples, filter, min) => {
-        console.log('munge munge munge')
-        console.log(expression, copyNumber, geneList, pathways, samples, filter, min)
+        // console.log('munge munge munge')
+        // console.log(expression, copyNumber, geneList, pathways, samples, filter, min)
+        //
+        // console.log(this.state)
+        filter = filter.indexOf('All') === 0 ? '' : filter;
+        let returnArray = times(pathways.length, () => times(samples.length, () => 0))
+        let sampleIndex = new Map(samples.map((v, i) => [v, i]));
+        let genePathwayLookup = getGenePathwayLookup(pathways);
 
-        console.log(this.state)
+        // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
+        if (!filter || filter === 'Mutation') {
+            for (let row of expression.rows) {
+                let effectValue = getMutationScore(row.effect, min);
+                let pathwayIndices = genePathwayLookup(row.gene);
+
+                for (let index of pathwayIndices) {
+                    returnArray[index][sampleIndex.get(row.sample)] += effectValue;
+                }
+            }
+        }
+
+
+        if (!filter || filter === 'Copy Number') {
+
+            // get list of genes in identified pathways
+            for (let gene of geneList) {
+                // if we have not processed that gene before, then process
+                let geneIndex = geneList.indexOf(gene);
+
+                let pathwayIndices = genePathwayLookup(gene);
+                let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
+                // we retrieve proper indices from the pathway to put back in the right place
+
+                // get pathways this gene is involved in
+                for (let index of pathwayIndices) {
+                    // process all samples
+                    for (let sampleEntryIndex in sampleEntries) {
+                        let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
+                        if (returnValue > 0) {
+                            returnArray[index][sampleEntryIndex] += returnValue;
+                        }
+                    }
+                }
+            }
+
+        }
 
         this.setState({
             statBox:{
@@ -135,6 +190,9 @@ export default class MultiXenaGoApp extends PureComponent {
                 ],
             }
         })
+
+        return returnArray;
+
     };
 
 

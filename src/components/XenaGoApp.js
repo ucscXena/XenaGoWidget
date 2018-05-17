@@ -235,8 +235,6 @@ export default class XenaGoApp extends PureComponent {
         let geneList = this.getGenesForPathways(PathWays);
 
         let {dataMunger,stats} = this.props;
-        console.log('rendering app state ')
-        console.log(this.state)
 
         return (
             <Grid>
