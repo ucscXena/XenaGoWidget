@@ -130,7 +130,7 @@ export default class MultiXenaGoApp extends PureComponent {
      * @param min
      * @returns {any[]}
      */
-    associateData = (expression, copyNumber, geneList, pathways, samples, filter, min) => {
+    associateData = (expression, copyNumber, geneList, pathways, samples, filter, min,key) => {
         // console.log('munge munge munge')
         // console.log(expression, copyNumber, geneList, pathways, samples, filter, min)
         //
@@ -178,13 +178,19 @@ export default class MultiXenaGoApp extends PureComponent {
 
         }
 
+        let keyString = key + '';
+
+        console.log('top-level keyString: '+ keyString)
+
         this.setState({
             statBox:{
                 commonGenes:[
+                    {name:keyString,score:7},
                     {name:'ARC1',score:7},
                     {name:'BRCA3',score:12}
                 ],
                 commonPathways:[
+                    {name:keyString,score:9},
                     {name:'DNA something',score:9},
                     {name:'other something',score:3}
                 ],

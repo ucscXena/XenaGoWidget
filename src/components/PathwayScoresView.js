@@ -191,6 +191,7 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
+    cohortIndex: PropTypes.any,
 };
 
 
@@ -217,9 +218,10 @@ const minColWidth = 12;
 
 export default class PathwayScoresViewCache extends PureComponent {
     render() {
+        let {cohortIndex,dataMunger,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
         console.log('data munger');
-        let {dataMunger,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
-        let associatedData = dataMunger(expression, copyNumber, geneList, pathways, samples, filter, min);
+        console.log(cohortIndex);
+        let associatedData = dataMunger(expression, copyNumber, geneList, pathways, samples, filter, min,cohortIndex);
         console.log('new state?');
         console.log(this.state)
 

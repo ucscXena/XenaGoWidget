@@ -276,6 +276,7 @@ export default class XenaGoApp extends PureComponent {
                                            onClick={this.clickPathway}
                                            onHover={this.hoverPathway}
                                            hideTitle={true}
+                                           cohortIndex={this.state.key}
                                            key={this.state.key}
                         />
                     </Col>
@@ -330,6 +331,8 @@ export default class XenaGoApp extends PureComponent {
                                            onClick={this.clickPathway}
                                            onHover={this.hoverGene}
                                            hideTitle={true}
+                                           cohortIndex={this.state.key}
+                                           key={this.state.key}
                         />
                     </Col>
                     }
