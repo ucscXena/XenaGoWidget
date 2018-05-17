@@ -6,9 +6,7 @@ import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
 import ExampleSamples from "../../tests/data/samples";
 import PathWays from "../../tests/data/tgac";
 import {Button} from 'react-toolbox/lib/button';
-import {getGenePathwayLookup, getCopyNumberValue, getMutationScore} from '../functions/DataFunctions';
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
-import {sum,range, times} from 'underscore';
 
 
 export default class MultiXenaGoApp extends PureComponent {
@@ -71,88 +69,6 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
-    /**
-     * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
-     *
-     * @param expression
-     * @param copyNumber
-     * @param geneList
-     * @param pathways
-     * @param samples
-     * @param filter
-     * @param min
-     * @param key
-     * @returns {any[]}
-     */
-    associateData = (expression, copyNumber, geneList, pathways, samples, filter, min, key) => {
-        filter = filter.indexOf('All') === 0 ? '' : filter;
-        let returnArray = times(pathways.length, () => times(samples.length, () => 0))
-        let sampleIndex = new Map(samples.map((v, i) => [v, i]));
-        let genePathwayLookup = getGenePathwayLookup(pathways);
-
-        // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-        if (!filter || filter === 'Mutation') {
-            for (let row of expression.rows) {
-                let effectValue = getMutationScore(row.effect, min);
-                let pathwayIndices = genePathwayLookup(row.gene);
-
-                for (let index of pathwayIndices) {
-                    returnArray[index][sampleIndex.get(row.sample)] += effectValue;
-                }
-            }
-        }
-
-
-        if (!filter || filter === 'Copy Number') {
-
-            // get list of genes in identified pathways
-            for (let gene of geneList) {
-                // if we have not processed that gene before, then process
-                let geneIndex = geneList.indexOf(gene);
-
-                let pathwayIndices = genePathwayLookup(gene);
-                let sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
-                // we retrieve proper indices from the pathway to put back in the right place
-
-                // get pathways this gene is involved in
-                for (let index of pathwayIndices) {
-                    // process all samples
-                    for (let sampleEntryIndex in sampleEntries) {
-                        let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
-                        if (returnValue > 0) {
-                            returnArray[index][sampleEntryIndex] += returnValue;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        let scoredColumn = returnArray.map(a => sum(a));
-
-        let keyString = key + '';
-
-        console.log('top-level keyString: ' + keyString);
-
-        // TODO: add associated data to that app
-        let appData = JSON.parse(JSON.stringify(this.state.apps));
-        appData[key].associatedData = returnArray;
-        appData[key].pathways = pathways;
-        appData[key].scoredColumn = scoredColumn;
-
-        console.log('appData');
-        console.log(appData);
-        let statBox = MultiXenaGoApp.generateStats(appData);
-
-        this.setState({
-            apps: appData,
-            statBox: statBox,
-        });
-
-        return returnArray;
-
-    };
-
 
     render() {
         let appLength = this.state.apps.length;
@@ -161,7 +77,7 @@ export default class MultiXenaGoApp extends PureComponent {
         return this.state.apps.map((app, index) => {
             return (
                 <div key={app.key} style={{border: 'solid'}}>
-                    <XenaGoApp appData={app} dataMunger={this.associateData} stats={this.state.statBox}/>
+                    <XenaGoApp appData={app} dataMunger={this.generateStats} stats={this.state.statBox}/>
 
                     {index > 0 &&
                     // if its not the first one, then allow for a deletion
@@ -213,9 +129,11 @@ export default class MultiXenaGoApp extends PureComponent {
         });
     }
 
-    static generateStats(appData) {
+    generateStats = (appData) => {
 
         // for each app get the column scores
+        console.log('generating stats with app');
+        console.log(appData)
 
 
         // for each column, associate columns with pathways
@@ -233,16 +151,18 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // show highly correlated genes
 
-
-        return {
-            commonGenes: [
-                {name: 'ARC1', score: 32},
-                {name: 'BRCA3', score: 44}
-            ],
-            commonPathways: [
-                {name: 'DNA something', score: 32},
-                {name: 'other something', score: 44}
-            ],
-        }
+        this.setState({
+            statBox:
+                {
+                    commonGenes: [
+                        {name: 'ARC1', score: 32},
+                        {name: 'BRCA3', score: 44}
+                    ],
+                    commonPathways: [
+                        {name: 'DNA something', score: 32},
+                        {name: 'other something', score: 44}
+                    ],
+                }
+        });
     }
 }
