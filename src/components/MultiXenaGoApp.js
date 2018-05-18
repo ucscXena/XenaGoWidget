@@ -126,8 +126,13 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     toggleSynchronizeSelection() {
+
+        // set sort as well
+        let newSort = !this.state.synchronizeSelection ? true : this.state.synchronizeSort;
+
         this.setState({
-            synchronizeSelection: !this.state.synchronizeSelection
+            synchronizeSelection: !this.state.synchronizeSelection,
+            synchronizeSort: newSort,
         })
     }
 
