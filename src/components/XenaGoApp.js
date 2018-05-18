@@ -60,7 +60,7 @@ export default class XenaGoApp extends PureComponent {
         super(props);
         this.state = this.props.appData;
         console.log('xena go app props')
-        console.log(this.state.statBox)
+        console.log(this.state)
     }
 
     componentDidMount() {
