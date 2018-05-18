@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
 
-import XenaGoApp from '../../src/components/XenaGoApp'
 import {AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 
