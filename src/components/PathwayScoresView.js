@@ -12,6 +12,7 @@ import {pick, pluck, flatten,sum,range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
+const GENE_LABEL_HEIGHT = 75;
 
 const style = {
     fadeIn: {

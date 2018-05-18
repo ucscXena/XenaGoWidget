@@ -9,6 +9,7 @@ import {Button} from 'react-toolbox/lib/button';
 import {Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
+const MAX_GLOBAL_STATS = 10;
 
 export default class MultiXenaGoApp extends PureComponent {
     constructor(props) {
@@ -132,11 +133,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
     generateStats = (appData) => {
 
-        // for each app get the column scores
-        console.log('generating stats with app');
-        console.log(appData);
-
-
         // for each column, associate columns with pathways
         let summedPathways = appData.data.map((a, index) => {
                 let pathway = appData.pathways[index];
@@ -166,7 +162,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
     };
 
-    maxStats = 7;
 
     getName(c){
         return  c.name.gene.length === 1 ? c.name.gene[0] : c.name.golabel ;
@@ -224,8 +219,8 @@ export default class MultiXenaGoApp extends PureComponent {
             return b.score - a.score;
         });
 
-        if (reducedGenes.length > this.maxStats) {
-            reducedGenes = reducedGenes.slice(0, this.maxStats);
+        if (reducedGenes.length > MAX_GLOBAL_STATS) {
+            reducedGenes = reducedGenes.slice(0, MAX_GLOBAL_STATS);
         }
 
 
