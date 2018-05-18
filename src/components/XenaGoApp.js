@@ -99,6 +99,8 @@ export default class XenaGoApp extends PureComponent {
 
         let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+
+
         this.setState({
             pathwayClickData,
             selectedPathways: newSelection,
@@ -111,6 +113,8 @@ export default class XenaGoApp extends PureComponent {
                 selectedPathway: pathwayClickData.pathway
             },
         });
+        pathwayClickData.key = this.props.appData.key;
+        this.props.pathwaySelect(pathwayClickData);
     };
 
 
@@ -353,4 +357,5 @@ XenaGoApp.propTypes = {
     appData: PropTypes.any,
     statGenerator: PropTypes.any,
     stats: PropTypes.any,
+    pathwaySelect: PropTypes.any,
 };
