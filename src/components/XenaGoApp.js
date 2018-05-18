@@ -47,7 +47,7 @@ const style = {
     },
     gene: {
         columns: 2,
-        columnWidth: 150,
+        columnWidth: 200,
         expressionColumns: 4,
         expressionWidth: 400,
     },
@@ -64,12 +64,12 @@ export default class XenaGoApp extends PureComponent {
     }
 
     componentDidMount() {
-        this.clickPathway(
-            {
-                pathway: PathWays[21],
-                tissue: 'Header'
-            }
-        );
+        // this.clickPathway(
+        //     {
+        //         pathway: PathWays[21],
+        //         tissue: 'Header'
+        //     }
+        // );
     }
 
     clickPathway = (pathwayClickData) => {
@@ -114,7 +114,10 @@ export default class XenaGoApp extends PureComponent {
             },
         });
         pathwayClickData.key = this.props.appData.key;
-        this.props.pathwaySelect(pathwayClickData);
+        pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
+        if(pathwayClickData.propagate){
+            this.props.pathwaySelect(pathwayClickData);
+        }
     };
 
 
@@ -300,7 +303,7 @@ export default class XenaGoApp extends PureComponent {
                                 subtitle='Cohort'
                             />
                             <CardActions>
-                                <Button label='&lArr; Show Pathways' raised primary onClick={this.closeGeneView}/>
+                                <Button label='&lArr; Pathways' raised primary onClick={this.closeGeneView}/>
                             </CardActions>
 
                             <CardMedia>

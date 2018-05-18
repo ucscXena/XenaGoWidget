@@ -77,7 +77,7 @@ export default class MultiXenaGoApp extends PureComponent {
     render() {
         let appLength = this.state.apps.length;
         return this.state.apps.map((app, index) => {
-            let refString = 'xena-go-app-'+index;
+            let refString = 'xena-go-app-' + index;
             return (
                 <div key={app.key} style={{border: 'solid'}}>
 
@@ -92,11 +92,11 @@ export default class MultiXenaGoApp extends PureComponent {
                     <Card>
                         {index === 0 &&
                         <CardActions>
-                            <Switch
-                                checked={this.state.synchronizeSort}
-                                label="Synchronize sort"
-                                onChange={() => this.toggleSynchronizeSort()}
-                            />
+                            {/*<Switch*/}
+                                {/*checked={this.state.synchronizeSort}*/}
+                                {/*label="Synchronize sort"*/}
+                                {/*onChange={() => this.toggleSynchronizeSort()}*/}
+                            {/*/>*/}
                             <Switch
                                 checked={this.state.synchronizeSelection}
                                 label="Synchronize selection"
@@ -176,25 +176,26 @@ export default class MultiXenaGoApp extends PureComponent {
         console.log('multixenagoapp selection');
         console.log(pathwaySelection);
 
-        // let myIndex = pathwaySelection.key ;
+        let myIndex = pathwaySelection.key;
 
         // let xenaGoApp = this.refs.abcd
-        let xenaGoApp = this.refs['xena-go-app-'+0];
+        let xenaGoApp = this.refs['xena-go-app-' + myIndex];
         console.log('xenaGoApp')
         console.log(this.refs)
         console.log(xenaGoApp)
 
-        // let apps = JSON.parse(JSON.stringify(this.state.apps));
-        //
-        // console.log(myIndex);
-        // console.log(apps)
+        let apps = JSON.parse(JSON.stringify(this.state.apps));
+        // let appLengths = apps.length ;
 
-        // TODO: get pathway data for this index
-        // TODO: propagate to other instances
 
-        // this.setState({
-        //     apps: apps,
-        // });
+        pathwaySelection.propagate = false;
+        if(this.state.synchronizeSelection){
+            apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                }
+            });
+        }
 
     };
 
