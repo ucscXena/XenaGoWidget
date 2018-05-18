@@ -73,6 +73,21 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
+    loadDefault(){
+        let pathwaySelection = (
+            {
+                pathway: PathWays[21],
+                tissue: 'Header'
+            }
+        );
+        let myIndex = 0 ;
+        this.refs['xena-go-app-' + myIndex].clickPathway(pathwaySelection);
+
+    }
+
+    componentDidMount() {
+        this.loadDefault();
+    }
 
     render() {
         let appLength = this.state.apps.length;
@@ -173,24 +188,10 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwaySelect = (pathwaySelection) => {
-        console.log('multixenagoapp selection');
-        console.log(pathwaySelection);
-
         let myIndex = pathwaySelection.key;
-
-        // let xenaGoApp = this.refs.abcd
-        let xenaGoApp = this.refs['xena-go-app-' + myIndex];
-        console.log('xenaGoApp')
-        console.log(this.refs)
-        console.log(xenaGoApp)
-
-        let apps = JSON.parse(JSON.stringify(this.state.apps));
-        // let appLengths = apps.length ;
-
-
         pathwaySelection.propagate = false;
         if(this.state.synchronizeSelection){
-            apps.forEach((app, index) => {
+            this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                 }
