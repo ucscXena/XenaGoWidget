@@ -77,6 +77,7 @@ export default class MultiXenaGoApp extends PureComponent {
     render() {
         let appLength = this.state.apps.length;
         return this.state.apps.map((app, index) => {
+            let refString = 'xena-go-app-'+index;
             return (
                 <div key={app.key} style={{border: 'solid'}}>
 
@@ -85,6 +86,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                statGenerator={this.generateStats}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
+                               ref={refString}
                     />
 
                     <Card>
@@ -177,9 +179,10 @@ export default class MultiXenaGoApp extends PureComponent {
         // let myIndex = pathwaySelection.key ;
 
         // let xenaGoApp = this.refs.abcd
-        //
-        // console.log('xenaGoApp')
-        // console.log(xenaGoApp)
+        let xenaGoApp = this.refs['xena-go-app-'+0];
+        console.log('xenaGoApp')
+        console.log(this.refs)
+        console.log(xenaGoApp)
 
         // let apps = JSON.parse(JSON.stringify(this.state.apps));
         //
