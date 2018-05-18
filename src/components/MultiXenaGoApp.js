@@ -84,7 +84,8 @@ export default class MultiXenaGoApp extends PureComponent {
                     <XenaGoApp appData={app}
                                statGenerator={this.generateStats}
                                stats={this.state.statBox}
-                               pathwaySelect={this.pathwaySelect}/>
+                               pathwaySelect={this.pathwaySelect}
+                    />
 
                     <Card>
                         {index === 0 &&
@@ -173,18 +174,24 @@ export default class MultiXenaGoApp extends PureComponent {
         console.log('multixenagoapp selection');
         console.log(pathwaySelection);
 
-        let myIndex = pathwaySelection.key ;
+        // let myIndex = pathwaySelection.key ;
 
-        let apps = JSON.parse(JSON.stringify(this.state.apps));
+        // let xenaGoApp = this.refs.abcd
+        //
+        // console.log('xenaGoApp')
+        // console.log(xenaGoApp)
 
-        console.log(apps)
+        // let apps = JSON.parse(JSON.stringify(this.state.apps));
+        //
+        // console.log(myIndex);
+        // console.log(apps)
 
         // TODO: get pathway data for this index
         // TODO: propagate to other instances
 
-        this.setState({
-            apps: apps,
-        });
+        // this.setState({
+        //     apps: apps,
+        // });
 
     };
 
