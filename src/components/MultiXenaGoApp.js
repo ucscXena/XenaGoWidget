@@ -126,7 +126,7 @@ export default class MultiXenaGoApp extends PureComponent {
                             <Button label='- Remove Cohort' raised flat onClick={() => this.removeCohort(app)}/>
                             }
 
-                            {index === appLength - 1 &&
+                            {index === 0 &&
                             // if its the last one, then allow for an add
                             <Button label='+ Add Cohort' raised primary onClick={() => this.duplicateCohort(app)}/>
                             }
