@@ -160,6 +160,12 @@ export default class MultiXenaGoApp extends PureComponent {
     // just duplicate the last state
     duplicateCohort(app) {
         // console.log('duplicating cohort: '+ index)
+        console.log('duplicating cohort');
+        console.log(app);
+
+        console.log('prior states');
+        console.log(this.state);
+
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key = this.state.apps[this.state.apps.length - 1].key + 1;
         let apps = JSON.parse(JSON.stringify(this.state.apps));
@@ -169,8 +175,23 @@ export default class MultiXenaGoApp extends PureComponent {
         newCohort.renderOffset = renderOffset + renderHeight + 80;
         apps.push(newCohort);
 
-        // let statBox = this.generateGlobalStatsForApps(apps);
-        // apps.map( (a) => a.statBox = statBox );
+
+        if(this.state.synchronizeSelection){
+            let myIndex = app.key;
+            app.propagate = false;
+
+            let rootApp = this.refs['xena-go-app-' + myIndex];
+            console.log('root app ');
+            console.log(rootApp)
+            console.log(rootApp.state)
+
+            this.state.apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    console.log('setting pathway selection for '+ index);
+                    // this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                }
+            });
+        }
 
 
         this.setState({
@@ -187,17 +208,20 @@ export default class MultiXenaGoApp extends PureComponent {
         });
     }
 
-    pathwaySelect = (pathwaySelection) => {
-        let myIndex = pathwaySelection.key;
-        pathwaySelection.propagate = false;
+    pathwaySelect = (pathwaySelection,newSelection) => {
+        console.log('pathwayselection');
+        console.log(pathwaySelection);
+        console.log('newSelection');
+        console.log(newSelection);
         if(this.state.synchronizeSelection){
+            let myIndex = pathwaySelection.key;
+            pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                 }
             });
         }
-
     };
 
     generateStats = (appData) => {
