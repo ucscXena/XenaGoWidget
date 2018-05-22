@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {render} from 'react-dom'
 
-import {Button,AppBar, Link, Navigation} from "react-toolbox";
+import {Button, AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
+import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import PureComponent from "../../src/components/PureComponent";
 
@@ -22,10 +23,10 @@ const GithubIcon = () => (
 //     </nav>
 // );
 
-const style= {
-    selectedButton:{
-        backgroundColor:'green',
-        color:'pink'
+const style = {
+    selectedButton: {
+        backgroundColor: 'green',
+        color: 'pink'
     }
 };
 
@@ -34,8 +35,9 @@ class Demo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            view: 'xena',
-            pathway:DefaultPathWays
+            // view: 'xena',
+            view: 'pathways',
+            pathway: DefaultPathWays
         }
     }
 
@@ -45,18 +47,18 @@ class Demo extends PureComponent {
             <AppBar title='Xena Geneset Widget Demo'>
                 <Navigation type='horizontal'>
 
-                    {this.state.view==='xena'&&
-                    <div style={{display:'inline'}}>
-                        <Button raised primary >Xena</Button>
-                        <Button raised onClick={()=> this.showPathways()}>Pathways</Button>
+                    {this.state.view === 'xena' &&
+                    <div style={{display: 'inline'}}>
+                        <Button raised primary>Xena</Button>
+                        <Button raised onClick={() => this.showPathways()}>Pathways</Button>
                     </div>}
-                    {this.state.view==='pathways'&&
-                    <div style={{display:'inline'}}>
-                        <Button raised onClick={()=> this.showXena()}>Xena</Button>
-                        <Button raised primary >Pathways</Button>
+                    {this.state.view === 'pathways' &&
+                    <div style={{display: 'inline'}}>
+                        <Button raised onClick={() => this.showXena()}>Xena</Button>
+                        <Button raised primary>Pathways</Button>
                     </div>}
 
-                    <a href='https://github.com/nathandunn/XenaGoWidget' style={{marginLeft:20}}>
+                    <a href='https://github.com/nathandunn/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>
                     </a>
                 </Navigation>
@@ -65,7 +67,7 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={DefaultPathWays}/>
             }
             {this.state.view === 'pathways' &&
-            <div>Pathway View </div>
+            <PathwayEditor/>
             }
 
         </div>)
@@ -73,13 +75,13 @@ class Demo extends PureComponent {
 
     showPathways() {
         this.setState({
-            view:'pathways'
+            view: 'pathways'
         })
     }
 
     showXena() {
         this.setState({
-            view:'xena'
+            view: 'xena'
         })
     }
 }
