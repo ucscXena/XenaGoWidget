@@ -4,6 +4,7 @@ import {render} from 'react-dom'
 import {Button,AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import DefaultPathWays from "../../tests/data/tgac";
+import PureComponent from "../../src/components/PureComponent";
 
 
 const GithubIcon = () => (
@@ -21,7 +22,14 @@ const GithubIcon = () => (
 //     </nav>
 // );
 
-class Demo extends Component {
+const style= {
+    selectedButton:{
+        backgroundColor:'green',
+        color:'pink'
+    }
+};
+
+class Demo extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -33,11 +41,20 @@ class Demo extends Component {
 
 
     render() {
-        return <div>
+        return (<div>
             <AppBar title='Xena Geneset Widget Demo'>
                 <Navigation type='horizontal'>
-                    <Button raised onClick={()=> this.showXena()}>Xena</Button>
-                    <Button raised onClick={()=> this.showPathways()}>Pathways</Button>
+
+                    {this.state.view==='xena'&&
+                    <div style={{display:'inline'}}>
+                        <Button raised primary >Xena</Button>
+                        <Button raised onClick={()=> this.showPathways()}>Pathways</Button>
+                    </div>}
+                    {this.state.view==='pathways'&&
+                    <div style={{display:'inline'}}>
+                        <Button raised onClick={()=> this.showXena()}>Xena</Button>
+                        <Button raised primary >Pathways</Button>
+                    </div>}
 
                     <a href='https://github.com/nathandunn/XenaGoWidget' style={{marginLeft:20}}>
                         <GithubIcon/>
@@ -51,7 +68,7 @@ class Demo extends Component {
             <div>Pathway View </div>
             }
 
-        </div>
+        </div>)
     }
 
     showPathways() {
