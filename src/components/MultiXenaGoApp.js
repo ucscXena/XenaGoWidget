@@ -176,7 +176,7 @@ export default class MultiXenaGoApp extends PureComponent {
             this.setState({
                     apps: apps
                 },
-                () => this.pathwaySelect(rootAppSelection.pathwayClickData)
+                () => this.pathwaySelect(rootAppSelection.pathwayClickData,rootAppSelection.selectedPathways)
             );
         }
         else {
@@ -195,14 +195,18 @@ export default class MultiXenaGoApp extends PureComponent {
         });
     }
 
-    pathwaySelect = (pathwaySelection) => {
+    pathwaySelect = (pathwaySelection,selectedPathways) => {
         if (this.state.synchronizeSelection) {
-            console.log(pathwaySelection)
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                    if(selectedPathways){
+                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection);
+                    }
+                    else{
+                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                    }
                 }
             });
         }
@@ -224,8 +228,6 @@ export default class MultiXenaGoApp extends PureComponent {
         );
 
         let apps = JSON.parse(JSON.stringify(this.state.apps));
-
-        console.log(summedPathways);
 
         apps[appData.index].summedColumn = summedPathways;
 
@@ -265,12 +267,7 @@ export default class MultiXenaGoApp extends PureComponent {
             });
             return columnObject;
         });
-        console.log('col');
-        console.log(columnObjectList);
-
         let finalObjectList = columnObjectList[0];
-        // console.log('col rest');
-        // console.log(columnObjectList.slice(1));
         columnObjectList.slice(1).forEach((col) => {
 
             Object.keys(finalObjectList).forEach(k => {
