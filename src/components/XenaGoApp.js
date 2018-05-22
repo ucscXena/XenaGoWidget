@@ -63,31 +63,9 @@ export default class XenaGoApp extends PureComponent {
         console.log(this.state)
     }
 
-
-    clickPathway = (pathwayClickData) => {
-        console.log('pathwayClickData')
-        console.log(pathwayClickData)
+    setPathwayState(newSelection,pathwayClickData){
         let {expression, samples, copyNumber} = this.state.pathwayData;
-        let {metaSelect, pathway: {goid, golabel}} = pathwayClickData;
-
-        let newSelection = [];
-
-        if (metaSelect) {
-            let goindex = this.state.selectedPathways.indexOf(golabel);
-            newSelection = JSON.parse(JSON.stringify(this.state.selectedPathways));
-            if (goindex >= 0) {
-                newSelection.splice(goindex, 1);
-            }
-            else {
-                newSelection.push(golabel)
-            }
-        }
-        else if (isEqual(this.state.selectedPathways, [golabel])) {
-            newSelection = [];
-        }
-        else {
-            newSelection = [golabel];
-        }
+        let {pathway: {goid, golabel}} = pathwayClickData;
 
         let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
@@ -110,6 +88,55 @@ export default class XenaGoApp extends PureComponent {
         if(pathwayClickData.propagate){
             this.props.pathwaySelect(pathwayClickData);
         }
+    }
+
+    clickPathway = (pathwayClickData) => {
+        console.log('pathwayClickData')
+        console.log(pathwayClickData)
+        let {metaSelect, pathway: {golabel}} = pathwayClickData;
+
+        let newSelection = [];
+
+        if (metaSelect) {
+            let goindex = this.state.selectedPathways.indexOf(golabel);
+            newSelection = JSON.parse(JSON.stringify(this.state.selectedPathways));
+            if (goindex >= 0) {
+                newSelection.splice(goindex, 1);
+            }
+            else {
+                newSelection.push(golabel)
+            }
+        }
+        else if (isEqual(this.state.selectedPathways, [golabel])) {
+            newSelection = [];
+        }
+        else {
+            newSelection = [golabel];
+        }
+
+        this.setPathwayState(newSelection,pathwayClickData);
+
+        // let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
+        // let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+        //
+        //
+        // this.setState({
+        //     pathwayClickData,
+        //     selectedPathways: newSelection,
+        //     geneData: {
+        //         expression,
+        //         samples,
+        //         pathways,
+        //         referencePathways: PathWays,
+        //         copyNumber,
+        //         selectedPathway: pathwayClickData.pathway
+        //     },
+        // });
+        // pathwayClickData.key = this.props.appData.key;
+        // pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
+        // if(pathwayClickData.propagate){
+        //     this.props.pathwaySelect(pathwayClickData);
+        // }
     };
 
 

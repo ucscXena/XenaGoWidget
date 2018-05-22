@@ -197,6 +197,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     pathwaySelect = (pathwaySelection) => {
         if (this.state.synchronizeSelection) {
+            console.log(pathwaySelection)
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
