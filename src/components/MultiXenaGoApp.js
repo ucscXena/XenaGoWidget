@@ -159,13 +159,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
     // just duplicate the last state
     duplicateCohort(app) {
-        // console.log('duplicating cohort: '+ index)
-        console.log('duplicating cohort');
-        console.log(app);
-
-        console.log('prior states');
-        console.log(this.state);
-
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key = this.state.apps[this.state.apps.length - 1].key + 1;
         let apps = JSON.parse(JSON.stringify(this.state.apps));
@@ -180,8 +173,6 @@ export default class MultiXenaGoApp extends PureComponent {
             app.propagate = false;
 
             let rootAppSelection = JSON.parse(JSON.stringify(this.refs['xena-go-app-' + myIndex].state));
-            console.log('root app selection')
-            console.log(rootAppSelection)
             this.setState({
                     apps: apps
                 },
@@ -199,16 +190,12 @@ export default class MultiXenaGoApp extends PureComponent {
 
     removeCohort(app) {
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter((f) => f.key !== app.key);
-        // let statBox = this.generateGlobalStatsForApps(apps);
-        // apps.map( (a) => a.statBox = statBox );
         this.setState({
             apps: apps
         });
     }
 
     pathwaySelect = (pathwaySelection) => {
-        console.log('pathwayselection');
-        console.log(pathwaySelection);
         if (this.state.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;

@@ -110,10 +110,6 @@ export default class XenaGoApp extends PureComponent {
         if(pathwayClickData.propagate){
             this.props.pathwaySelect(pathwayClickData);
         }
-
-        console.log('set states')
-        console.log(this.state)
-
     };
 
 
