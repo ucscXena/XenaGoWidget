@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
-import PathWays from "../../tests/data/tgac";
 import '../base.css';
 import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
@@ -67,7 +66,7 @@ export default class XenaGoApp extends PureComponent {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
-        let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
+        let geneList = this.getGenesForNamedPathways(newSelection, this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
 
@@ -78,7 +77,7 @@ export default class XenaGoApp extends PureComponent {
                 expression,
                 samples,
                 pathways,
-                referencePathways: PathWays,
+                referencePathways: this.props.pathways,
                 copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
@@ -115,28 +114,6 @@ export default class XenaGoApp extends PureComponent {
         }
 
         this.setPathwayState(newSelection,pathwayClickData);
-
-        // let geneList = this.getGenesForNamedPathways(newSelection, PathWays);
-        // let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
-        //
-        //
-        // this.setState({
-        //     pathwayClickData,
-        //     selectedPathways: newSelection,
-        //     geneData: {
-        //         expression,
-        //         samples,
-        //         pathways,
-        //         referencePathways: PathWays,
-        //         copyNumber,
-        //         selectedPathway: pathwayClickData.pathway
-        //     },
-        // });
-        // pathwayClickData.key = this.props.appData.key;
-        // pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
-        // if(pathwayClickData.propagate){
-        //     this.props.pathwaySelect(pathwayClickData);
-        // }
     };
 
 
@@ -206,7 +183,7 @@ export default class XenaGoApp extends PureComponent {
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        let geneList = this.getGenesForPathways(PathWays);
+        let geneList = this.getGenesForPathways(this.props.pathways);
         Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
             datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
             intersection)
@@ -222,7 +199,7 @@ export default class XenaGoApp extends PureComponent {
                         copyNumber,
                         geneList,
                         expression: mutations,
-                        pathways: PathWays,
+                        pathways: this.props.pathways,
                         cohort: cohort.name,
                         samples
                     },
@@ -258,7 +235,7 @@ export default class XenaGoApp extends PureComponent {
         filteredMutationVector['Copy Number'] = 1;
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
-        let geneList = this.getGenesForPathways(PathWays);
+        let geneList = this.getGenesForPathways(this.props.pathways);
 
         let {statGenerator,stats} = this.props;
 
@@ -380,4 +357,5 @@ XenaGoApp.propTypes = {
     statGenerator: PropTypes.any,
     stats: PropTypes.any,
     pathwaySelect: PropTypes.any,
+    pathways:PropTypes.any,
 };

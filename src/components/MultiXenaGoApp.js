@@ -1,10 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
 import ExampleExpression from "../../tests/data/bulkExpression";
 import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
 import ExampleSamples from "../../tests/data/samples";
-import PathWays from "../../tests/data/tgac";
 import {Button} from 'react-toolbox/lib/button';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
@@ -32,7 +32,7 @@ export default class MultiXenaGoApp extends PureComponent {
                         cohort: 'TCGA Ovarian Cancer (OV)',
                         copyNumber: ExampleCopyNumber,
                         expression: ExampleExpression,
-                        pathways: PathWays,
+                        pathways: this.props.pathways,
                         samples: ExampleSamples,
                     },
                     loadState: 'loading',
@@ -76,7 +76,7 @@ export default class MultiXenaGoApp extends PureComponent {
     loadDefault() {
         let pathwaySelection = (
             {
-                pathway: PathWays[21],
+                pathway: this.props.pathways[21],
                 tissue: 'Header'
             }
         );
@@ -90,7 +90,6 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
-        let appLength = this.state.apps.length;
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -102,16 +101,12 @@ export default class MultiXenaGoApp extends PureComponent {
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
+                               pathways={this.props.pathways}
                     />
 
                     <Card>
                         {index === 0 &&
                         <CardActions>
-                            {/*<Switch*/}
-                            {/*checked={this.state.synchronizeSort}*/}
-                            {/*label="Synchronize sort"*/}
-                            {/*onChange={() => this.toggleSynchronizeSort()}*/}
-                            {/*/>*/}
                             <Switch
                                 checked={this.state.synchronizeSelection}
                                 label="Synchronize selection"
@@ -303,3 +298,7 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 }
+
+MultiXenaGoApp.propTyes = {
+    pathways: PropTypes.any.isRequired
+};
