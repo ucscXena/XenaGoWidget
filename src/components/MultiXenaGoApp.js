@@ -73,14 +73,14 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
-    loadDefault(){
+    loadDefault() {
         let pathwaySelection = (
             {
                 pathway: PathWays[21],
                 tissue: 'Header'
             }
         );
-        let myIndex = 0 ;
+        let myIndex = 0;
         this.refs['xena-go-app-' + myIndex].clickPathway(pathwaySelection);
 
     }
@@ -108,9 +108,9 @@ export default class MultiXenaGoApp extends PureComponent {
                         {index === 0 &&
                         <CardActions>
                             {/*<Switch*/}
-                                {/*checked={this.state.synchronizeSort}*/}
-                                {/*label="Synchronize sort"*/}
-                                {/*onChange={() => this.toggleSynchronizeSort()}*/}
+                            {/*checked={this.state.synchronizeSort}*/}
+                            {/*label="Synchronize sort"*/}
+                            {/*onChange={() => this.toggleSynchronizeSort()}*/}
                             {/*/>*/}
                             <Switch
                                 checked={this.state.synchronizeSelection}
@@ -175,17 +175,20 @@ export default class MultiXenaGoApp extends PureComponent {
         newCohort.renderOffset = renderOffset + renderHeight + 80;
         apps.push(newCohort);
 
-        if(this.state.synchronizeSelection){
+        if (this.state.synchronizeSelection) {
             let myIndex = app.key;
             app.propagate = false;
 
             let rootAppSelection = JSON.parse(JSON.stringify(this.refs['xena-go-app-' + myIndex].state));
+            console.log('root app selection')
+            console.log(rootAppSelection)
             this.setState({
-                apps: apps,
-                 function(){this.pathwaySelect(rootAppSelection)}
-            });
+                    apps: apps
+                },
+                () => this.pathwaySelect(rootAppSelection.pathwayClickData)
+            );
         }
-        else{
+        else {
             this.setState({
                 apps: apps
             });
@@ -206,7 +209,7 @@ export default class MultiXenaGoApp extends PureComponent {
     pathwaySelect = (pathwaySelection) => {
         console.log('pathwayselection');
         console.log(pathwaySelection);
-        if(this.state.synchronizeSelection){
+        if (this.state.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
