@@ -63,14 +63,6 @@ export default class XenaGoApp extends PureComponent {
         console.log(this.state)
     }
 
-    componentDidMount() {
-        // this.clickPathway(
-        //     {
-        //         pathway: PathWays[21],
-        //         tissue: 'Header'
-        //     }
-        // );
-    }
 
     clickPathway = (pathwayClickData) => {
         console.log('pathwayClickData')
