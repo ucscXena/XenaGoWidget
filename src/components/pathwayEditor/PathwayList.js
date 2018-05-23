@@ -9,19 +9,13 @@ export default class PathwayList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            pathways: [DefaultPathWays]
+            pathways: [{name: "Default", pathways: DefaultPathWays}]
         }
     }
 
     render() {
-        return this.state.pathways.map( (pathway) => {
-            pathway.map( (p) => {
-                return (
-                    <div key={p.golabel}>{p.golabel}</div>
-                );
-            });
-        });
 
+        <div>?</div>
     }
 
 }
