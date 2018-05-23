@@ -1,8 +1,9 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
-import PathwayList from "./PathwayList";
 import PathwayView from "./PathwayView";
 import DefaultPathWays from "../../../tests/data/tgac";
+import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {Button} from 'react-toolbox/lib/button';
 
 
 export default class PathwayEditor extends PureComponent {
@@ -18,19 +19,29 @@ export default class PathwayEditor extends PureComponent {
     getLabels() {
         return this.state.pathways.map((pathway, index) => {
             return (
-                <option key={pathway.name}>{pathway.name}</option>
+                <li key={pathway.name}>{pathway.name}
+                <Button assert raised>(X) Remove</Button>
+                </li>
             )
         });
     }
 
     render() {
         return (
-            <div>
-                <select>
-                    {this.getLabels()}
-                </select>
-                <PathwayView selectedPathway={this.getSelectedPathway()}/>
-            </div>
+            <Grid>
+                <Row>
+                    <Col md={2}>
+                        <ul>
+                            {this.getLabels()}
+                        </ul>
+                        <Button raised primary>(+) New Pathway Set</Button>
+                    </Col>
+                    <Col md={4}>
+                        <Button accent primay>(+) Add Pathway</Button>
+                        <PathwayView selectedPathway={this.getSelectedPathway()}/>
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 

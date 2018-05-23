@@ -13,21 +13,17 @@ export default class PathwayView extends PureComponent {
         }
     }
 
-    getItems(){
-        return this.state.pathway.map( p => {
-            console.log(p.golabel)
-            return <li> {p.golabel} </li>
-        })
-    }
 
     render(){
-        console.log('render');
-        console.log(this.state);
         if(this.state.pathway.pathways){
             console.log(this.state.pathway.pathways)
             return this.state.pathway.pathways.map( p => {
-                console.log(p)
-                return <li key={p.golabel+p.goid}> {p.golabel} </li>
+                return (
+                    <li key={p.golabel+p.goid}>
+                        {p.golabel} <b>{p.goid ? p.goid :''}</b>
+                        <button>(X) Remove</button>
+                    </li>
+                )
             })
         }
         else{
