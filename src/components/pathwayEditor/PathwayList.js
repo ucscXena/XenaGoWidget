@@ -1,21 +1,27 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
 
+import DefaultPathWays from "../../../tests/data/tgac";
 
 export default class PathwayList extends PureComponent {
 
 
-
-    render(){
-
-        return(
-            <div>
-                List
-            </div>
-        )
-
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            pathways: [DefaultPathWays]
+        }
     }
 
+    render() {
+        return this.state.pathways.map( (pathway) => {
+            pathway.map( (p) => {
+                return (
+                    <div key={p.golabel}>{p.golabel}</div>
+                );
+            });
+        });
+
+    }
 
 }
