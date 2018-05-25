@@ -9,7 +9,7 @@ export default class PathwayList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            pathways: [{name: "Default", pathways: DefaultPathWays}]
+            pathways: [{name: "Default", pathwaySets: DefaultPathWays}]
         }
     }
 

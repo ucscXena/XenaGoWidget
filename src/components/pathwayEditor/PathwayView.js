@@ -1,6 +1,8 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
 import PropTypes from 'prop-types';
+import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {Button} from 'react-toolbox/lib/button';
 
 
 export default class PathwayView extends PureComponent {
@@ -9,24 +11,32 @@ export default class PathwayView extends PureComponent {
         super(props);
         console.log(this.props)
         this.state = {
-            pathway: this.props.selectedPathway
+            pathwaySet: this.props.selectedPathwaySet
         }
     }
 
+    selectPathway = (p) => {
+        console.log('child selecting pathway ');
+        this.props.clickPathwayHandler(p);
+    }
 
-    render(){
-        if(this.state.pathway.pathways){
-            console.log(this.state.pathway.pathways)
-            return this.state.pathway.pathways.map( p => {
+    render() {
+        if (this.state.pathwaySet.pathwaySets) {
+            console.log(this.state.pathwaySet.pathwaySets)
+            return this.state.pathwaySet.pathwaySets.map(p => {
                 return (
-                    <li key={p.golabel+p.goid}>
-                        {p.golabel} <b>{p.goid ? p.goid :''}</b>
-                        <button>(X) Remove</button>
-                    </li>
+                    <Row key={p.golabel + p.goid}>
+                        <Col md={8}>
+                            <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} <b>{p.goid ? p.goid : ''}</b></Button>
+                        </Col>
+                        <Col md={2}>
+                            <Button accent raised mini  onClick={this.props.removePathwayHandler}>(X) Remove</Button>
+                        </Col>
+                    </Row>
                 )
             })
         }
-        else{
+        else {
             <div></div>
         }
     }
@@ -35,5 +45,7 @@ export default class PathwayView extends PureComponent {
 }
 
 PathwayView.propTypes = {
-    selectedPathway: PropTypes.any.isRequired,
+    selectedPathwaySet: PropTypes.any.isRequired,
+    clickPathwayHandler: PropTypes.any.isRequired,
+    removePathwayHandler: PropTypes.any.isRequired,
 };
