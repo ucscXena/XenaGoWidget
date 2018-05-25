@@ -1,7 +1,6 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
-import DefaultPathWays from "../../../tests/data/tgac";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
 import GeneView from "./GeneView";
@@ -12,7 +11,7 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            pathwaySets: [{name: "Default", pathway: DefaultPathWays, selected: true}]
+            pathwaySets: this.props.pathwaySets
         }
     }
 
@@ -29,7 +28,7 @@ export default class PathwayEditor extends PureComponent {
     }
 
     render() {
-        let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true)
+        let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true);
         console.log('selected pathway state')
         console.log(selectedPathwayState)
         return (

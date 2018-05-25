@@ -34,10 +34,15 @@ class Demo extends PureComponent {
 
     constructor(props) {
         super(props);
+        let defaultPathway = {
+            name: 'Default',
+            pathway: DefaultPathWays,
+            selected: true,
+        };
         this.state = {
             // view: 'xena',
             view: 'pathways',
-            pathway: DefaultPathWays
+            pathwaySets: [defaultPathway],
         }
     }
 
@@ -64,10 +69,10 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={DefaultPathWays}/>
+            <MultiXenaGoApp pathways={this.state.pathwaySets[0].pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor/>
+            <PathwayEditor pathwaySets={this.state.pathwaySets} />
             }
 
         </div>)

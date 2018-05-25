@@ -27,6 +27,7 @@ export default class PathwayView extends PureComponent {
 
     render() {
         if (this.props.selectedPathwaySet.pathway) {
+            console.log('this.props.selectedPathwaySet.pathway')
             console.log(this.props.selectedPathwaySet.pathway)
             return this.props.selectedPathwaySet.pathway.map(p => {
                 return (
