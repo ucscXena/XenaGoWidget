@@ -12,7 +12,7 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            pathwaySets: [{name: "Default", pathwaySets: DefaultPathWays, selected: true}]
+            pathwaySets: [{name: "Default", pathway: DefaultPathWays, selected: true}]
         }
     }
 
@@ -22,15 +22,18 @@ export default class PathwayEditor extends PureComponent {
             return (
                 <Row key={pathway.name}>
                     <Button>{pathway.name}</Button>
-                    <Button accent raised>(X) Remove</Button>
+                    <Button>(X) Remove</Button>
                 </Row>
             )
         });
     }
 
     render() {
+        let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true)
+        console.log('selected pathway state')
+        console.log(selectedPathwayState)
         return (
-            <Grid>
+            <Grid style={{marginTop: 20}}>
                 <Row>
                     <Col md={3}>
                         <Button raised primary>(+) New Pathway Set</Button>
@@ -40,7 +43,7 @@ export default class PathwayEditor extends PureComponent {
                         <Button onClick={() => this.addPathway()} raised primary>(+) Add Pathway</Button>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
-                                     selectedPathwaySet={this.getSelectedPathwaySet()}/>
+                                     selectedPathwaySet={selectedPathwayState}/>
                     </Col>
                     <Col md={3}>
                         <Button raised primary>(+) Add Gene </Button>
@@ -55,11 +58,6 @@ export default class PathwayEditor extends PureComponent {
                 </Row>
             </Grid>
         );
-    }
-
-
-    getSelectedPathwaySet() {
-        return this.state.pathwaySets.find(f => f.selected === true)
     }
 
 
@@ -78,7 +76,16 @@ export default class PathwayEditor extends PureComponent {
     };
 
     removePathway = (selectedPathway) => {
-        console.log('ROOT removed pathway ');
-        console.log(selectedPathway)
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find( f => f.selected === true );
+        allSets = allSets.filter( f => (!f || f.selected === false ));
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter( p => selectedPathway.golabel !== p.golabel )
+        allSets.push(selectedPathwaySet);
+
+
+        this.setState({
+            selectedPathway:undefined,
+            pathwaySets:allSets,
+        });
     }
 }

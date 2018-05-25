@@ -23,14 +23,13 @@ export default class GeneView extends PureComponent {
         if (this.props.selectedPathway) {
             console.log(this.props.selectedPathway)
             return this.props.selectedPathway.gene.map(g => {
-                console.log(g)
                 return (
-                    <Row>
+                    <Row key={g}>
                         <Col md={4}>
-                            <Link active label={g} href={"https://google.com/search?q=" + ""}/>
+                            {g}
                         </Col>
                         <Col md={2}>
-                            <Button accent raised>(X) Remove</Button>
+                            <Button >(X) Remove</Button>
                         </Col>
                     </Row>
                 )

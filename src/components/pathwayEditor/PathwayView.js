@@ -10,27 +10,32 @@ export default class PathwayView extends PureComponent {
     constructor(props) {
         super(props);
         console.log(this.props)
-        this.state = {
-            pathwaySet: this.props.selectedPathwaySet
-        }
+        // this.state = {
+        //     pathwaySet: this.props.selectedPathwaySet
+        // }
     }
 
     selectPathway = (p) => {
         console.log('child selecting pathway ');
         this.props.clickPathwayHandler(p);
-    }
+    };
+
+    removePathway = (p) => {
+        console.log('remove child selecting pathway ');
+        this.props.removePathwayHandler(p);
+    };
 
     render() {
-        if (this.state.pathwaySet.pathwaySets) {
-            console.log(this.state.pathwaySet.pathwaySets)
-            return this.state.pathwaySet.pathwaySets.map(p => {
+        if (this.props.selectedPathwaySet.pathway) {
+            console.log(this.props.selectedPathwaySet.pathway)
+            return this.props.selectedPathwaySet.pathway.map(p => {
                 return (
                     <Row key={p.golabel + p.goid}>
                         <Col md={8}>
                             <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
                         <Col md={2}>
-                            <Button accent raised mini  onClick={this.props.removePathwayHandler}>(X) Remove</Button>
+                            <Button onClick={ () => this.removePathway(p)}>(X) Remove</Button>
                         </Col>
                     </Row>
                 )
