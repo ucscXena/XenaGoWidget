@@ -5,6 +5,7 @@ import {Button, AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
+import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
 
 
@@ -34,11 +35,6 @@ class Demo extends PureComponent {
 
     constructor(props) {
         super(props);
-        let defaultPathway = {
-            name: 'Default',
-            pathway: DefaultPathWays,
-            selected: true,
-        };
         this.state = {
             // view: 'xena',
             view: 'pathways',
@@ -51,7 +47,7 @@ class Demo extends PureComponent {
                 ,
                 {
                     name: 'Other Pathway',
-                    pathway: DefaultPathWays,
+                    pathway: Pathways2,
                     selected: false
                 }
             ],

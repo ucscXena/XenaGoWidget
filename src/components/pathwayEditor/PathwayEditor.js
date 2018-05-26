@@ -6,10 +6,11 @@ import {Button} from 'react-toolbox/lib/button';
 import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
-import FaTrash from 'react-icons/lib/fa/trash';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
+import FaTrash from 'react-icons/lib/fa/trash';
+import PathwaySetsView from "./PathwaySetsView";
 
 
 export default class PathwayEditor extends PureComponent {
@@ -22,17 +23,6 @@ export default class PathwayEditor extends PureComponent {
     }
 
 
-    getLabels() {
-        return this.state.pathwaySets.map((pathway, index) => {
-            return (
-                <Row key={pathway.name}>
-                    <Button>{pathway.name}</Button>
-                    <Button><FaTrash/></Button>
-                </Row>
-            )
-        });
-    }
-
     render() {
         let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true);
         console.log('selected pathway state')
@@ -41,7 +31,7 @@ export default class PathwayEditor extends PureComponent {
             <Grid style={{marginTop: 20}}>
                 <Row>
                     <Col md={3}>
-                        <Chip>Pathway Set</Chip>
+                        <Chip>Pathway Sets</Chip>
                     </Col>
                     <Col md={6}>
                         <Chip>Pathways</Chip>
@@ -69,7 +59,7 @@ export default class PathwayEditor extends PureComponent {
                 </Row>
                 <Row>
                     <Col md={3}>
-                        {this.getLabels()}
+                        <PathwaySetsView pathwaySets={this.state.pathwaySets}/>
                     </Col>
                     <Col md={6}>
                         <PathwayView removePathwayHandler={this.removePathway}
