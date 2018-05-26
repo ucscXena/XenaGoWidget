@@ -42,7 +42,19 @@ class Demo extends PureComponent {
         this.state = {
             // view: 'xena',
             view: 'pathways',
-            pathwaySets: [defaultPathway],
+            pathwaySets: [
+                {
+                    name: 'Pathway1',
+                    pathway: DefaultPathWays,
+                    selected: true
+                }
+                ,
+                {
+                    name: 'Other Pathway',
+                    pathway: DefaultPathWays,
+                    selected: false
+                }
+            ],
         }
     }
 
@@ -69,10 +81,10 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.state.pathwaySets.find( ps => ps.selected ).pathway}/>
+            <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor pathwaySets={this.state.pathwaySets} />
+            <PathwayEditor pathwaySets={this.state.pathwaySets}/>
             }
 
         </div>)
