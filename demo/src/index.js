@@ -69,7 +69,7 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.state.pathwaySets[0].pathway}/>
+            <MultiXenaGoApp pathways={this.state.pathwaySets.find( ps => ps.selected ).pathway}/>
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor pathwaySets={this.state.pathwaySets} />
