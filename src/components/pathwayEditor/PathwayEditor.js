@@ -4,6 +4,7 @@ import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
 import GeneView from "./GeneView";
+import PropTypes from 'prop-types';
 
 
 export default class PathwayEditor extends PureComponent {
@@ -59,6 +60,19 @@ export default class PathwayEditor extends PureComponent {
         );
     }
 
+    removePathway = (selectedPathway) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find( f => f.selected === true );
+        allSets = allSets.filter( f => (!f || f.selected === false ));
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter( p => selectedPathway.golabel !== p.golabel )
+        allSets.push(selectedPathwaySet);
+
+
+        this.setState({
+            selectedPathway:undefined,
+            pathwaySets:allSets,
+        });
+    }
 
     addPathway() {
         alert('adding patway')
@@ -74,17 +88,8 @@ export default class PathwayEditor extends PureComponent {
         })
     };
 
-    removePathway = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find( f => f.selected === true );
-        allSets = allSets.filter( f => (!f || f.selected === false ));
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter( p => selectedPathway.golabel !== p.golabel )
-        allSets.push(selectedPathwaySet);
-
-
-        this.setState({
-            selectedPathway:undefined,
-            pathwaySets:allSets,
-        });
-    }
 }
+
+PathwayEditor.propTypes = {
+    removePathwayHandler: PropTypes.any,
+};

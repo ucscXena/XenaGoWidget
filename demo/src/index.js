@@ -89,6 +89,7 @@ class Demo extends PureComponent {
             view: 'xena'
         })
     }
+
 }
 
 render(<Demo/>, document.querySelector('#demo'));
