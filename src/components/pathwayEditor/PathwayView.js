@@ -3,6 +3,7 @@ import PureComponent from "../PureComponent";
 import PropTypes from 'prop-types';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
+import FaTrash from 'react-icons/lib/fa/trash';
 
 
 export default class PathwayView extends PureComponent {
@@ -36,7 +37,7 @@ export default class PathwayView extends PureComponent {
                             <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
                         <Col md={2}>
-                            <Button onClick={ () => this.removePathway(p)}>(X) Remove</Button>
+                            <Button onClick={ () => this.removePathway(p)}><FaTrash/></Button>
                         </Col>
                     </Row>
                 )

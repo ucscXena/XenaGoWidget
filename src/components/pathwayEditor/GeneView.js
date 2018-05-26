@@ -3,7 +3,8 @@ import PureComponent from "../PureComponent";
 import PropTypes from 'prop-types';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
-import {Link} from 'react-toolbox/lib/link';
+// import {Link} from 'react-toolbox/lib/link';
+import FaTrash from 'react-icons/lib/fa/trash';
 
 
 export default class GeneView extends PureComponent {
@@ -29,7 +30,7 @@ export default class GeneView extends PureComponent {
                             {g}
                         </Col>
                         <Col md={2}>
-                            <Button >(X) Remove</Button>
+                            <Button ><FaTrash/></Button>
                         </Col>
                     </Row>
                 )

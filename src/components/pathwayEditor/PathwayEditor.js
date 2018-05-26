@@ -3,8 +3,13 @@ import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
+import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
+import FaTrash from 'react-icons/lib/fa/trash';
+import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
+import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
+import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 
 
 export default class PathwayEditor extends PureComponent {
@@ -22,7 +27,7 @@ export default class PathwayEditor extends PureComponent {
             return (
                 <Row key={pathway.name}>
                     <Button>{pathway.name}</Button>
-                    <Button>(X) Remove</Button>
+                    <Button><FaTrash/></Button>
                 </Row>
             )
         });
@@ -36,17 +41,42 @@ export default class PathwayEditor extends PureComponent {
             <Grid style={{marginTop: 20}}>
                 <Row>
                     <Col md={3}>
-                        <Button raised primary>(+) New Pathway Set</Button>
+                        <Chip>Pathway Set</Chip>
+                    </Col>
+                    <Col md={6}>
+                        <Chip>Pathways</Chip>
+                    </Col>
+                    <Col md={3}>
+                        <Chip>Genes</Chip>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={3}>
+                        <Button raised primary><FaPlusCircle/></Button>
+                        <Button raised primary><FaCloudUpload/></Button>
+                        <Button raised primary><FaCloudDownload/></Button>
+                    </Col>
+                    <Col md={6}>
+                        <Button onClick={() => this.addPathway()} raised primary><FaPlusCircle/></Button>
+                        <Button raised primary><FaCloudUpload/></Button>
+                        <Button raised primary><FaCloudDownload/></Button>
+                    </Col>
+                    <Col md={3}>
+                        <Button raised primary><FaPlusCircle/></Button>
+                        <Button raised primary><FaCloudUpload/></Button>
+                        <Button raised primary><FaCloudDownload/></Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={3}>
                         {this.getLabels()}
                     </Col>
                     <Col md={6}>
-                        <Button onClick={() => this.addPathway()} raised primary>(+) Add Pathway</Button>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
                                      selectedPathwaySet={selectedPathwayState}/>
                     </Col>
                     <Col md={3}>
-                        <Button raised primary>(+) Add Gene </Button>
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}
@@ -62,15 +92,15 @@ export default class PathwayEditor extends PureComponent {
 
     removePathway = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find( f => f.selected === true );
-        allSets = allSets.filter( f => (!f || f.selected === false ));
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter( p => selectedPathway.golabel !== p.golabel )
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 
 
         this.setState({
-            selectedPathway:undefined,
-            pathwaySets:allSets,
+            selectedPathway: undefined,
+            pathwaySets: allSets,
         });
     }
 
