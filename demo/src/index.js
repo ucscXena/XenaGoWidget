@@ -1,12 +1,13 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {Button, AppBar, Link, Navigation} from "react-toolbox";
+import {Avatar, Chip, Button, AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
+import FaViewing from 'react-icons/lib/fa/eye';
 
 
 const GithubIcon = () => (
@@ -18,19 +19,6 @@ const GithubIcon = () => (
     </svg>
 );
 
-// const MyLink = () => (
-//     <nav>
-//         <Link active href="http://google.com" label='GH1'/>
-//     </nav>
-// );
-
-const style = {
-    selectedButton: {
-        backgroundColor: 'green',
-        color: 'pink'
-    }
-};
-
 class Demo extends PureComponent {
 
     constructor(props) {
@@ -38,6 +26,7 @@ class Demo extends PureComponent {
         this.state = {
             // view: 'xena',
             view: 'pathways',
+            value: 'ES-es',
             pathwaySets: [
                 {
                     name: 'Pathway1',
@@ -58,8 +47,12 @@ class Demo extends PureComponent {
     render() {
         return (<div>
             <AppBar title='Xena Geneset Widget Demo'>
-                <Navigation type='horizontal'>
-
+                <div style={{marginTop:14}}>
+                    <Chip>
+                        {this.showActive().name}
+                    </Chip>
+                </div>
+                <Navigation type='vertical'>
                     {this.state.view === 'xena' &&
                     <div style={{display: 'inline'}}>
                         <Button raised primary>Xena</Button>
@@ -98,6 +91,16 @@ class Demo extends PureComponent {
         })
     }
 
+    showActive() {
+        let activePathwaySet = this.state.pathwaySets.find(f => {
+            console.log(f)
+            return f.selected === true
+        });
+        console.log('returning active pathway set');
+        console.log(activePathwaySet)
+
+        return activePathwaySet;
+    }
 }
 
 render(<Demo/>, document.querySelector('#demo'));
