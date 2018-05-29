@@ -62,7 +62,7 @@ export default class XenaGoApp extends PureComponent {
         console.log(this.state)
     }
 
-    setPathwayState(newSelection,pathwayClickData){
+    setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -84,7 +84,7 @@ export default class XenaGoApp extends PureComponent {
         });
         pathwayClickData.key = this.props.appData.key;
         pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
-        if(pathwayClickData.propagate){
+        if (pathwayClickData.propagate) {
             this.props.pathwaySelect(pathwayClickData);
         }
     }
@@ -113,7 +113,7 @@ export default class XenaGoApp extends PureComponent {
             newSelection = [golabel];
         }
 
-        this.setPathwayState(newSelection,pathwayClickData);
+        this.setPathwayState(newSelection, pathwayClickData);
     };
 
 
@@ -237,118 +237,127 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator,stats} = this.props;
+        let {statGenerator, stats} = this.props;
 
-        return (
-            <Grid>
-                <Row>
-                    {this.state.loadState === 'loading' ? 'Loading' : ''}
+        if (this.state.loadState === 'loading') {
+            return <div>Loading</div>
+        }
 
-                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
-                    <Col md={style.pathway.columns}>
-                        <Card style={{width: style.pathway.columnWidth}}>
-                            <CohortSelector cohorts={this.state.cohortData}
-                                            selectedCohort={this.state.selectedCohort}
-                                            onChange={this.selectCohort}/>
-                            <SortSelector sortTypes={this.state.sortTypes}
-                                          selected={this.state.selectedTissueSort}
-                                          onChange={this.sortTissueType}/>
-                            <FilterSelector filters={filteredMutationVector}
-                                            selected={this.state.tissueExpressionFilter}
-                                            pathwayData={this.state.pathwayData}
-                                            geneList={geneList}
-                                            onChange={this.filterTissueType}/>
-                            <HoverPathwayView data={this.state.pathwayHoverData}/>
-                        </Card>
-                    </Col>
-                    }
-                    {this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
-                    <Col md={style.pathway.expressionColumns}>
-                        <PathwayScoresView width={400} height={this.state.renderHeight}
-                                           offset={this.state.renderOffset}
-                                           data={this.state.pathwayData} titleText=""
-                                           filter={this.state.tissueExpressionFilter}
-                                           statGenerator={statGenerator}
-                                           filterPercentage={this.state.filterPercentage}
-                                           geneList={geneList}
-                                           loading={cohortLoading}
-                                           min={this.state.minFilter}
-                                           selectedSort={this.state.selectedTissueSort}
-                                           referencePathways={this.state.pathwayData}
-                                           selectedPathways={this.state.selectedPathways}
-                                           onClick={this.clickPathway}
-                                           onHover={this.hoverPathway}
-                                           hideTitle={true}
-                                           cohortIndex={this.state.key}
-                                           key={this.state.key}
-                        />
-                    </Col>
-                    }
-                    {stats && this.state.loadState === 'loaded' && this.state.selectedPathways.length === 0 &&
-                    <Col mdOffset={1} md={style.gene.expressionColumns}>
-                        <Card style={{width: style.gene.columnWidth}}>
-                            <CompareBox statBox={stats}/>
-                        </Card>
-                    </Col>
-                    }
-                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                    <Col md={style.gene.columns}>
-                        <Card style={{width: style.gene.columnWidth}}>
-                            <CardTitle
-                                title={this.state.selectedCohort}
-                                subtitle='Cohort'
-                            />
-                            <CardActions>
-                                <Button label='&lArr; Pathways' raised primary onClick={this.closeGeneView}/>
-                            </CardActions>
-
-                            <CardMedia>
+        if (this.state.loadState === 'loaded') {
+            if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
+                return (
+                <Grid>
+                    <Row>
+                        <Col md={style.pathway.columns}>
+                            <Card style={{width: style.pathway.columnWidth}}>
+                                <CohortSelector cohorts={this.state.cohortData}
+                                                selectedCohort={this.state.selectedCohort}
+                                                onChange={this.selectCohort}/>
                                 <SortSelector sortTypes={this.state.sortTypes}
-                                              selected={this.state.selectedGeneSort}
-                                              onChange={this.sortGeneType}/>
+                                              selected={this.state.selectedTissueSort}
+                                              onChange={this.sortTissueType}/>
                                 <FilterSelector filters={filteredMutationVector}
-                                                selected={this.state.geneExpressionFilter}
-                                                pathwayData={this.state.geneData}
+                                                selected={this.state.tissueExpressionFilter}
+                                                pathwayData={this.state.pathwayData}
                                                 geneList={geneList}
-                                                onChange={this.filterGeneType}/>
-                                <HoverGeneView data={this.state.geneHoverData}/>
-                            </CardMedia>
-                        </Card>
-                    </Col>
-                    }
-                    {this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                    <Col md={style.gene.expressionColumns}>
-                        <PathwayScoresView height={this.state.renderHeight}
-                                           offset={this.state.renderOffset}
-                                           data={this.state.geneData}
-                                           selected={this.state.geneData.selectedPathway}
-                                           statGenerator={statGenerator}
-                                           filter={this.state.geneExpressionFilter}
-                                           filterPercentage={this.state.filterPercentage}
-                                           geneList={geneList}
-                                           loading={cohortLoading}
-                                           min={this.state.minFilter}
-                                           selectedSort={this.state.selectedGeneSort}
-                                           referencePathways={this.state.pathwayData}
-                                           selectedPathways={this.state.selectedPathways}
-                                           onClick={this.clickPathway}
-                                           onHover={this.hoverGene}
-                                           hideTitle={true}
-                                           cohortIndex={this.state.key}
-                                           key={this.state.key}
-                        />
-                    </Col>
-                    }
-                    {stats && this.state.selectedPathways.length > 0 && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                    <Col mdOffset={1} md={style.gene.expressionColumns}>
-                        <Card style={{width: style.gene.columnWidth}}>
-                            <CompareBox statBox={stats}/>
-                        </Card>
-                    </Col>
-                    }
-                </Row>
-            </Grid>
-        );
+                                                onChange={this.filterTissueType}/>
+                                <HoverPathwayView data={this.state.pathwayHoverData}/>
+                            </Card>
+                        </Col>
+                        <Col md={style.pathway.expressionColumns}>
+                            <PathwayScoresView width={400} height={this.state.renderHeight}
+                                               offset={this.state.renderOffset}
+                                               data={this.state.pathwayData} titleText=""
+                                               filter={this.state.tissueExpressionFilter}
+                                               statGenerator={statGenerator}
+                                               filterPercentage={this.state.filterPercentage}
+                                               geneList={geneList}
+                                               loading={cohortLoading}
+                                               min={this.state.minFilter}
+                                               selectedSort={this.state.selectedTissueSort}
+                                               referencePathways={this.state.pathwayData}
+                                               selectedPathways={this.state.selectedPathways}
+                                               onClick={this.clickPathway}
+                                               onHover={this.hoverPathway}
+                                               hideTitle={true}
+                                               cohortIndex={this.state.key}
+                                               key={this.state.key}
+                            />
+                        </Col>
+                        <Col mdOffset={1} md={style.gene.expressionColumns}>
+                            <Card style={{width: style.gene.columnWidth}}>
+                                <CompareBox statBox={stats}/>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Grid>
+                )
+            }
+            if(this.state.selectedPathways.length > 0 ){
+                return (
+                <Grid>
+                    <Row>
+                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <Col md={style.gene.columns}>
+                            <Card style={{width: style.gene.columnWidth}}>
+                                {/*<CohortSelector cohorts={[]}*/}
+                                                {/*selectedCohort={this.state.selectedCohort}*/}
+                                                {/*onChange={this.selectCohort}/>*/}
+                                <CardActions>
+                                    <Button label='&lArr; Pathways' raised primary onClick={this.closeGeneView}/>
+                                </CardActions>
+
+                                <CardMedia>
+                                    <SortSelector sortTypes={this.state.sortTypes}
+                                                  selected={this.state.selectedGeneSort}
+                                                  onChange={this.sortGeneType}/>
+                                    <FilterSelector filters={filteredMutationVector}
+                                                    selected={this.state.geneExpressionFilter}
+                                                    pathwayData={this.state.geneData}
+                                                    geneList={geneList}
+                                                    onChange={this.filterGeneType}/>
+                                    <HoverGeneView data={this.state.geneHoverData}/>
+                                </CardMedia>
+                            </Card>
+                        </Col>
+                        }
+                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <Col md={style.gene.expressionColumns}>
+                            <PathwayScoresView height={this.state.renderHeight}
+                                               offset={this.state.renderOffset}
+                                               data={this.state.geneData}
+                                               selected={this.state.geneData.selectedPathway}
+                                               statGenerator={statGenerator}
+                                               filter={this.state.geneExpressionFilter}
+                                               filterPercentage={this.state.filterPercentage}
+                                               geneList={geneList}
+                                               loading={cohortLoading}
+                                               min={this.state.minFilter}
+                                               selectedSort={this.state.selectedGeneSort}
+                                               referencePathways={this.state.pathwayData}
+                                               selectedPathways={this.state.selectedPathways}
+                                               onClick={this.clickPathway}
+                                               onHover={this.hoverGene}
+                                               hideTitle={true}
+                                               cohortIndex={this.state.key}
+                                               key={this.state.key}
+                            />
+                        </Col>
+                        }
+                        {stats && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <Col mdOffset={1} md={style.gene.expressionColumns}>
+                            <Card style={{width: style.gene.columnWidth}}>
+                                <CompareBox statBox={stats}/>
+                            </Card>
+                        </Col>
+                        }
+                    </Row>
+                </Grid>
+                )
+            }
+        }
+
+        return <div>Error</div>
     }
 }
 
@@ -357,5 +366,5 @@ XenaGoApp.propTypes = {
     statGenerator: PropTypes.any,
     stats: PropTypes.any,
     pathwaySelect: PropTypes.any,
-    pathways:PropTypes.any,
+    pathways: PropTypes.any,
 };
