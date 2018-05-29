@@ -300,9 +300,9 @@ export default class XenaGoApp extends PureComponent {
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <Col md={style.gene.columns}>
                             <Card style={{width: style.gene.columnWidth}}>
-                                {/*<CohortSelector cohorts={[]}*/}
-                                                {/*selectedCohort={this.state.selectedCohort}*/}
-                                                {/*onChange={this.selectCohort}/>*/}
+                                <CohortSelector cohorts={this.state.cohortData}
+                                                selectedCohort={this.state.selectedCohort}
+                                                onChange={this.selectCohort}/>
                                 <CardActions>
                                     <Button label='&lArr; Pathways' raised primary onClick={this.closeGeneView}/>
                                 </CardActions>
