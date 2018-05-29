@@ -24,8 +24,8 @@ class Demo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            // view: 'xena',
-            view: 'pathways',
+            view: 'xena',
+            // view: 'pathways',
             value: 'ES-es',
             pathwaySets: [
                 {
@@ -64,7 +64,7 @@ class Demo extends PureComponent {
                         <Button raised primary>Pathways</Button>
                     </div>}
 
-                    <a href='https://github.com/nathandunn/XenaGoWidget' style={{marginLeft: 20}}>
+                    <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>
                     </a>
                 </Navigation>
