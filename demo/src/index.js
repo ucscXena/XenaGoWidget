@@ -92,14 +92,9 @@ class Demo extends PureComponent {
     }
 
     showActive() {
-        let activePathwaySet = this.state.pathwaySets.find(f => {
-            console.log(f)
+        return this.state.pathwaySets.find(f => {
             return f.selected === true
         });
-        console.log('returning active pathway set');
-        console.log(activePathwaySet)
-
-        return activePathwaySet;
     }
 }
 
