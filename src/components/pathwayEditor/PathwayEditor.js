@@ -10,6 +10,7 @@ import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 import FaTrash from 'react-icons/lib/fa/trash';
+import Input from 'react-toolbox/lib/input';
 import PathwaySetsView from "./PathwaySetsView";
 
 
@@ -18,7 +19,7 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            selectedPathway:undefined,
+            selectedPathway: undefined,
             // pathwaySets: this.props.pathwaySets
         }
     }
@@ -39,21 +40,41 @@ export default class PathwayEditor extends PureComponent {
                         <Chip>Genes</Chip>
                     </Col>
                 </Row>
+                {/*<Row>*/}
+                    {/*<Col md={3}>*/}
+                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                    {/*</Col>*/}
+                    {/*<Col md={6}>*/}
+                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                    {/*</Col>*/}
+                    {/*<Col md={3}>*/}
+                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                    {/*</Col>*/}
+                {/*</Row>*/}
                 <Row>
-                    <Col md={3}>
-                        <Button raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    <Col md={2}>
+                        <Input type='text' label='New View' name='newView' value={this.state.name} maxLength={16}/>
                     </Col>
-                    <Col md={6}>
-                        <Button onClick={() => this.addPathway()} raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    <Col md={1}>
+                        <Button style={{marginTop:20}} raised primary onClick={() => this.handleAddNewView('newView')}><FaPlusCircle/></Button>
                     </Col>
-                    <Col md={3}>
-                        <Button raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    <Col md={5}>
+                        <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.name}
+                               maxLength={16}/>
+                    </Col>
+                    <Col md={1}>
+                        {/*<Button onClick={() => this.addPathway()} raised primary><FaPlusCircle/></Button>*/}
+                        <Button style={{marginTop:20}} onClick={() => this.handleAddNewGeneSet('newGeneSet')} raised
+                                primary><FaPlusCircle/></Button>
+                    </Col>
+                    <Col md={2}>
+                        <Input type='text' label='New Gene' name='newGene' value={this.state.name} maxLength={16}/>
+                    </Col>
+                    <Col md={1}>
+                        <Button style={{marginTop:20}} raised primary onClick={() => this.handleAddNewGene('newGene')}><FaPlusCircle/></Button>
                     </Col>
                 </Row>
                 <Row>
@@ -79,10 +100,10 @@ export default class PathwayEditor extends PureComponent {
         );
     }
 
-    removeGene = (selectedPathway,selectedGene) => {
+    removeGene = (selectedPathway, selectedGene) => {
         console.log('removing with selete gene');
-        console.log(selectedPathway,selectedGene);
-        this.props.removeGeneHandler(selectedPathway,selectedGene);
+        console.log(selectedPathway, selectedGene);
+        this.props.removeGeneHandler(selectedPathway, selectedGene);
     };
 
     removePathway = (selectedPathway) => {
@@ -107,6 +128,17 @@ export default class PathwayEditor extends PureComponent {
         })
     };
 
+    handleAddNewView(newView) {
+        alert('adding new view: ' + JSON.stringify(newView))
+    }
+
+    handleAddNewGeneSet(newGeneSet) {
+        alert('adding new gene set: ' + JSON.stringify(newGeneSet))
+    }
+
+    handleAddNewGene(newGene) {
+        alert('adding new gene : ' + JSON.stringify(newGene))
+    }
 }
 
 PathwayEditor.propTypes = {
