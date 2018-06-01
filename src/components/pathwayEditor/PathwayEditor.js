@@ -72,12 +72,18 @@ export default class PathwayEditor extends PureComponent {
                             ({this.state.selectedPathway.goid})
                         </h3>
                         }
-                        <GeneView selectedPathway={this.state.selectedPathway}/>
+                        <GeneView selectedPathway={this.state.selectedPathway} removeGeneHandler={this.removeGene}/>
                     </Col>
                 </Row>
             </Grid>
         );
     }
+
+    removeGene = (selectedPathway,selectedGene) => {
+        console.log('removing with selete gene');
+        console.log(selectedPathway,selectedGene);
+        this.props.removeGeneHandler(selectedPathway,selectedGene);
+    };
 
     removePathway = (selectedPathway) => {
         this.props.removePathwayHandler(selectedPathway);
@@ -105,4 +111,5 @@ export default class PathwayEditor extends PureComponent {
 
 PathwayEditor.propTypes = {
     removePathwayHandler: PropTypes.any,
+    removeGeneHandler: PropTypes.any,
 };

@@ -18,6 +18,12 @@ export default class GeneView extends PureComponent {
         }
     }
 
+    removeGene = (p,g) => {
+        console.log('remove child selecting gene ');
+        console.log(p,g)
+        this.props.removeGeneHandler(p,g);
+    };
+
     render() {
         console.log('geneview render')
         console.log(this.props)
@@ -30,7 +36,7 @@ export default class GeneView extends PureComponent {
                             {g}
                         </Col>
                         <Col md={2}>
-                            <Button ><FaTrash/></Button>
+                            <Button onClick={ () => this.removeGene(this.props.selectedPathway,g)}><FaTrash/></Button>
                         </Col>
                     </Row>
                 )

@@ -36,6 +36,22 @@ class Demo extends PureComponent {
         }
     }
 
+    removeGene = (selectedPathway,selectedGene) => {
+        console.log('removing top-level')
+        console.log(selectedPathway)
+        console.log(selectedGene)
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedGeneSet = allSets.find(f => f.selected === true);
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        // selectedGeneSet.pathway = selectedGeneSet.pathway.filter(p => selectedGene.golabel !== p.golabel);
+        allSets.push(selectedGeneSet);
+
+        this.setState({
+            pathwaySets: allSets,
+            // selectedPathway: undefined,
+        });
+    };
+
     removePathway = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
@@ -78,7 +94,10 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor pathwaySets={this.state.pathwaySets} removePathwayHandler={this.removePathway}/>
+            <PathwayEditor pathwaySets={this.state.pathwaySets}
+                           removeGeneHandler={this.removeGene}
+                           removePathwayHandler={this.removePathway}
+            />
             }
 
         </div>)

@@ -34,7 +34,7 @@ export default class PathwayView extends PureComponent {
                 return (
                     <Row key={p.golabel + p.goid}>
                         <Col md={8}>
-                            <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} <b>{p.goid ? p.goid : ''}</b></Button>
+                            <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
                         <Col md={2}>
                             <Button onClick={ () => this.removePathway(p)}><FaTrash/></Button>
