@@ -101,8 +101,6 @@ export default class PathwayEditor extends PureComponent {
     }
 
     removeGene = (selectedPathway, selectedGene) => {
-        console.log('removing with selete gene');
-        console.log(selectedPathway, selectedGene);
         this.props.removeGeneHandler(selectedPathway, selectedGene);
     };
 

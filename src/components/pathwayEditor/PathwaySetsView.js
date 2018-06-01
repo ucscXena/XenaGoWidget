@@ -5,6 +5,7 @@ import {Button} from 'react-toolbox/lib/button';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import FaTrash from 'react-icons/lib/fa/trash';
 import FaEye from 'react-icons/lib/fa/eye';
+import FaClone from 'react-icons/lib/fa/clone';
 
 
 export default class PathwaySetsView extends PureComponent {
@@ -20,10 +21,11 @@ export default class PathwaySetsView extends PureComponent {
                     <Col md={8}>
                         <Button primary>{pathway.name}</Button>
                     </Col>
-                    <Col md={1}>
+                    <Col md={3}>
+                        <a role='button' onClick={()=>this.clone(pathway)}><FaClone/></a>
                         <a role='button' onClick={()=>this.view(pathway)}><FaEye/></a>
-                    </Col>
-                    <Col md={1}>
+                    {/*</Col>*/}
+                    {/*<Col md={1}>*/}
                         <a role='button' onClick={()=>this.deleteView(pathway)}><FaTrash/></a>
                     </Col>
                 </Row>
@@ -31,12 +33,16 @@ export default class PathwaySetsView extends PureComponent {
         });
     }
 
+    clone(pathway) {
+        console.log('clone: '+JSON.stringify(pathway))
+    }
+
     view(pathway) {
-        alert('viewing: '+JSON.stringify(pathway))
+        console.log('viewing: '+JSON.stringify(pathway))
     }
 
     deleteView(pathway) {
-        alert('delete view: '+JSON.stringify(pathway))
+        console.log('delete view: '+JSON.stringify(pathway))
     }
 }
 

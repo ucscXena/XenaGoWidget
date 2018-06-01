@@ -37,14 +37,24 @@ class Demo extends PureComponent {
     }
 
     removeGene = (selectedPathway,selectedGene) => {
-        console.log('removing top-level')
-        console.log(selectedPathway)
-        console.log(selectedGene)
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedGeneSet = allSets.find(f => f.selected === true);
+
+        // get geneset to alter
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+
+        // get pathway to filter
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel)
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+
+        // remove gene
+        newSelectedPathway.gene = newSelectedPathway.gene.filter( g =>  g!==selectedGene );
+
+        // add to the existing index
+
+        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
         allSets = allSets.filter(f => (!f || f.selected === false));
-        // selectedGeneSet.pathway = selectedGeneSet.pathway.filter(p => selectedGene.golabel !== p.golabel);
-        allSets.push(selectedGeneSet);
+        allSets.push(selectedPathwaySet);
 
         this.setState({
             pathwaySets: allSets,
@@ -56,6 +66,7 @@ class Demo extends PureComponent {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
         allSets = allSets.filter(f => (!f || f.selected === false));
+        // removes selected pathway
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 

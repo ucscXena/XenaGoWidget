@@ -11,22 +11,16 @@ export default class GeneView extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('gene view construct ')
-        console.log(props)
         this.state = {
             pathway: this.props.selectedPathway
         }
     }
 
     removeGene = (p,g) => {
-        console.log('remove child selecting gene ');
-        console.log(p,g)
         this.props.removeGeneHandler(p,g);
     };
 
     render() {
-        console.log('geneview render')
-        console.log(this.props)
         if (this.props.selectedPathway) {
             console.log(this.props.selectedPathway)
             return this.props.selectedPathway.gene.map(g => {
