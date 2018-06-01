@@ -22,7 +22,6 @@ export default class GeneView extends PureComponent {
 
     render() {
         if (this.props.selectedPathway) {
-            console.log(this.props.selectedPathway)
             return this.props.selectedPathway.gene.map(g => {
                 return (
                     <Row key={g}>

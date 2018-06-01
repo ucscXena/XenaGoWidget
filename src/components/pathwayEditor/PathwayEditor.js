@@ -19,8 +19,7 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            selectedPathway: undefined,
-            // pathwaySets: this.props.pathwaySets
+            selectedPathway: this.props.selectedPathway,
         }
     }
 
@@ -118,9 +117,6 @@ export default class PathwayEditor extends PureComponent {
 
     selectedPathway = (selectedPathway) => {
         // get genes for selected pathway
-        console.log('ROOT selecting pathway');
-        console.log(selectedPathway)
-
         this.setState({
             selectedPathway: selectedPathway
         })

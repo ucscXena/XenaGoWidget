@@ -58,8 +58,9 @@ class Demo extends PureComponent {
 
         this.setState({
             pathwaySets: allSets,
-            // selectedPathway: undefined,
         });
+
+        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removePathway = (selectedPathway) => {
@@ -105,7 +106,8 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor pathwaySets={this.state.pathwaySets}
+            <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                           selectedPathway={this.state.selectedPathway}
                            removeGeneHandler={this.removeGene}
                            removePathwayHandler={this.removePathway}
             />
