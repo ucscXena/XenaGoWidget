@@ -7,7 +7,6 @@ import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
-import FaViewing from 'react-icons/lib/fa/eye';
 
 
 const GithubIcon = () => (
@@ -24,30 +23,36 @@ class Demo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            view: 'xena',
-            // view: 'pathways',
+            // view: 'xena',
+            view: 'pathways',
             value: 'ES-es',
             pathwaySets: [
                 {
-                    name: 'Pathway1',
+                    name: 'Default Pathway',
                     pathway: DefaultPathWays,
                     selected: true
-                }
-                ,
-                {
-                    name: 'Other Pathway',
-                    pathway: Pathways2,
-                    selected: false
                 }
             ],
         }
     }
 
+    removePathway = (selectedPathway) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+            selectedPathway: undefined,
+        });
+    };
 
     render() {
         return (<div>
             <AppBar title='Xena Geneset Widget Demo'>
-                <div style={{marginTop:14}}>
+                <div style={{marginTop: 14}}>
                     <Chip>
                         {this.showActive().name}
                     </Chip>
@@ -73,7 +78,7 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor pathwaySets={this.state.pathwaySets}/>
+            <PathwayEditor pathwaySets={this.state.pathwaySets} removePathwayHandler={this.removePathway}/>
             }
 
         </div>)

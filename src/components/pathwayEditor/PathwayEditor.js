@@ -18,23 +18,22 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            pathwaySets: this.props.pathwaySets
+            selectedPathway:undefined,
+            // pathwaySets: this.props.pathwaySets
         }
     }
 
 
     render() {
-        let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true);
-        console.log('selected pathway state')
-        console.log(selectedPathwayState)
+        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
                     <Col md={3}>
-                        <Chip>Pathway Sets</Chip>
+                        <Chip>Views</Chip>
                     </Col>
                     <Col md={6}>
-                        <Chip>Pathways</Chip>
+                        <Chip>Gene Sets</Chip>
                     </Col>
                     <Col md={3}>
                         <Chip>Genes</Chip>
@@ -59,7 +58,7 @@ export default class PathwayEditor extends PureComponent {
                 </Row>
                 <Row>
                     <Col md={3}>
-                        <PathwaySetsView pathwaySets={this.state.pathwaySets}/>
+                        <PathwaySetsView pathwaySets={this.props.pathwaySets}/>
                     </Col>
                     <Col md={6}>
                         <PathwayView removePathwayHandler={this.removePathway}
@@ -81,18 +80,12 @@ export default class PathwayEditor extends PureComponent {
     }
 
     removePathway = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
-        allSets = allSets.filter(f => (!f || f.selected === false));
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
-        allSets.push(selectedPathwaySet);
-
+        this.props.removePathwayHandler(selectedPathway);
 
         this.setState({
             selectedPathway: undefined,
-            pathwaySets: allSets,
         });
-    }
+    };
 
     addPathway() {
         alert('adding patway')
