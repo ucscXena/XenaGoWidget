@@ -21,7 +21,7 @@ export default class PathwayEditor extends PureComponent {
         this.state = {
             selectedPathway: this.props.selectedPathway,
             newGene: undefined,
-            newGeneSet: undefined,
+            newGeneSet: '',
             newView: undefined,
         }
     }
@@ -136,9 +136,11 @@ export default class PathwayEditor extends PureComponent {
     }
 
     handleAddNewGeneSet(newGeneSet) {
-        console.log(newGeneSet)
-        console.log('adding new gene set: ' + JSON.stringify(newGeneSet))
         this.props.addGeneSetHandler(newGeneSet);
+        //
+        this.setState({
+            newGeneSet:''
+        })
     }
 
     handleAddNewGene(newGeneSet,newGene) {
