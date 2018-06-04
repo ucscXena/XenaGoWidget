@@ -99,7 +99,10 @@ export default class PathwayEditor extends PureComponent {
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}
-                            ({this.state.selectedPathway.goid})
+
+                            {this.state.selectedPathway.goid &&
+                            <div>({this.state.selectedPathway.goid})</div>
+                            }
                         </h3>
                         }
                         <GeneView selectedPathway={this.state.selectedPathway} removeGeneHandler={this.removeGene}/>
@@ -135,14 +138,18 @@ export default class PathwayEditor extends PureComponent {
     handleAddNewGeneSet(newGeneSet) {
         console.log(newGeneSet)
         console.log('adding new gene set: ' + JSON.stringify(newGeneSet))
+        this.props.addGeneSetHandler(newGeneSet);
     }
 
-    handleAddNewGene(newGene) {
+    handleAddNewGene(newGeneSet,newGene) {
         console.log('adding new gene : ' + JSON.stringify(newGene))
+        this.props.addGeneHandler(newGeneSet,newGene);
     }
 }
 
 PathwayEditor.propTypes = {
+    addGeneSetHandler: PropTypes.any,
+    addGeneHandler: PropTypes.any,
     removePathwayHandler: PropTypes.any,
     removeGeneHandler: PropTypes.any,
 };

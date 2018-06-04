@@ -36,6 +36,57 @@ class Demo extends PureComponent {
         }
     }
 
+    addGeneSet = (selectedPathway) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // allSets = allSets.filter(f => (!f || f.selected === false));
+
+        let newGeneSetObject = {
+            goid:'',
+            golabel:selectedPathway,
+            gene:[]
+        };
+        selectedPathwaySet.pathway.unshift(newGeneSetObject);
+        // allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+            selectedPathway: selectedPathwaySet ,
+        });
+    };
+
+    // TODO
+    addGene= (selectedPathway,selectedGene) => {
+
+        console.log('ROOT: adding new gene');
+        console.log(selectedPathway,selectedGene);
+
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+
+        // get geneset to alter
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+
+        // get pathway to filter
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel)
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+
+        // remove gene
+        newSelectedPathway.gene = newSelectedPathway.gene.filter( g =>  g!==selectedGene );
+
+        // add to the existing index
+
+        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+        });
+
+        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
+    };
+
     removeGene = (selectedPathway,selectedGene) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
@@ -110,6 +161,8 @@ class Demo extends PureComponent {
                            selectedPathway={this.state.selectedPathway}
                            removeGeneHandler={this.removeGene}
                            removePathwayHandler={this.removePathway}
+                           addGeneHandler={this.addGene}
+                           addGeneSetHandler={this.addGeneSet}
             />
             }
 
