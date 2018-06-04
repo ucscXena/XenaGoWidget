@@ -5,9 +5,7 @@ import {Avatar, Chip, Button, AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
-import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
-import FaViewing from 'react-icons/lib/fa/eye';
 
 
 const GithubIcon = () => (
@@ -26,28 +24,111 @@ class Demo extends PureComponent {
         this.state = {
             view: 'xena',
             // view: 'pathways',
-            value: 'ES-es',
             pathwaySets: [
                 {
-                    name: 'Pathway1',
+                    name: 'Default Pathway',
                     pathway: DefaultPathWays,
                     selected: true
-                }
-                ,
-                {
-                    name: 'Other Pathway',
-                    pathway: Pathways2,
-                    selected: false
                 }
             ],
         }
     }
 
+    addGeneSet = (selectedPathway) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // allSets = allSets.filter(f => (!f || f.selected === false));
+
+        let newGeneSetObject = {
+            goid:'',
+            golabel:selectedPathway,
+            gene:[]
+        };
+        selectedPathwaySet.pathway.unshift(newGeneSetObject);
+        // allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+            selectedPathway: selectedPathwaySet ,
+        });
+    };
+
+    // TODO
+    addGene= (selectedPathway,selectedGene) => {
+
+        console.log('ROOT: adding new gene',selectedPathway,selectedGene);
+
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+
+        // get geneset to alter
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+
+        // get pathway to filter
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel);
+
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+
+        // remove gene
+        newSelectedPathway.gene.unshift(selectedGene)
+
+        // add to the existing index
+        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+        });
+
+        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
+    };
+
+    removeGene = (selectedPathway,selectedGene) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+
+        // get geneset to alter
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+
+        // get pathway to filter
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel)
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+
+        // remove gene
+        newSelectedPathway.gene = newSelectedPathway.gene.filter( g =>  g!==selectedGene );
+
+        // add to the existing index
+
+        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+        });
+
+        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
+    };
+
+    removePathway = (selectedPathway) => {
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        allSets = allSets.filter(f => (!f || f.selected === false));
+        // removes selected pathway
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        allSets.push(selectedPathwaySet);
+
+        this.setState({
+            pathwaySets: allSets,
+            selectedPathway: undefined,
+        });
+    };
 
     render() {
         return (<div>
             <AppBar title='Xena Geneset Widget Demo'>
-                <div style={{marginTop:14}}>
+                <div style={{marginTop: 14}}>
                     <Chip>
                         {this.showActive().name}
                     </Chip>
@@ -73,7 +154,13 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
             }
             {this.state.view === 'pathways' &&
-            <PathwayEditor pathwaySets={this.state.pathwaySets}/>
+            <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                           selectedPathway={this.state.selectedPathway}
+                           removeGeneHandler={this.removeGene}
+                           removePathwayHandler={this.removePathway}
+                           addGeneHandler={this.addGene}
+                           addGeneSetHandler={this.addGeneSet}
+            />
             }
 
         </div>)
@@ -92,14 +179,9 @@ class Demo extends PureComponent {
     }
 
     showActive() {
-        let activePathwaySet = this.state.pathwaySets.find(f => {
-            console.log(f)
+        return this.state.pathwaySets.find(f => {
             return f.selected === true
         });
-        console.log('returning active pathway set');
-        console.log(activePathwaySet)
-
-        return activePathwaySet;
     }
 }
 

@@ -10,58 +10,105 @@ import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 import FaTrash from 'react-icons/lib/fa/trash';
+import Input from 'react-toolbox/lib/input';
 import PathwaySetsView from "./PathwaySetsView";
+import Autocomplete from 'react-toolbox/lib/autocomplete';
 
+// import {sparseDataMatchPartialField, refGene} = require('../xenaQuery');
+let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+let {sparseDataMatchPartialField, refGene} = xenaQuery;
 
 export default class PathwayEditor extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
-            pathwaySets: this.props.pathwaySets
+            selectedPathway: this.props.selectedPathway,
+            newGene: [],
+            newGeneSet: '',
+            newView: '',
+            geneOptions: [],
+            geneQuery: '',
+            reference: refGene['hg38'],
+            limit: 25,
         }
     }
 
 
     render() {
-        let selectedPathwayState = this.state.pathwaySets.find(f => f.selected === true);
-        console.log('selected pathway state')
-        console.log(selectedPathwayState)
+        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
-                    <Col md={3}>
-                        <Chip>Pathway Sets</Chip>
-                    </Col>
-                    <Col md={6}>
-                        <Chip>Pathways</Chip>
+                    {/*<Col md={3}>*/}
+                    {/*<Chip>Views</Chip>*/}
+                    {/*</Col>*/}
+                    <Col md={7}>
+                        <Chip>Gene Sets</Chip>
                     </Col>
                     <Col md={3}>
                         <Chip>Genes</Chip>
                     </Col>
                 </Row>
+                {/*<Row>*/}
+                {/*<Col md={3}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
+                {/*<Col md={6}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
+                {/*<Col md={3}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
+                {/*</Row>*/}
                 <Row>
-                    <Col md={3}>
-                        <Button raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    {/*<Col md={2}>*/}
+                    {/*<Input type='text' label='New View' name='newView' value={this.state.newView}*/}
+                    {/*onChange={(newView) => this.setState({newView: newView})}*/}
+                    {/*maxLength={16}/>*/}
+                    {/*</Col>*/}
+                    {/*<Col md={1}>*/}
+                    {/*<Button style={{marginTop: 20}} raised primary*/}
+                    {/*onClick={() => this.handleAddNewView(this.state.newView)}><FaPlusCircle/></Button>*/}
+                    {/*</Col>*/}
+                    <Col md={5}>
+                        <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.newGeneSet}
+                               onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
+                               maxLength={16}/>
                     </Col>
-                    <Col md={6}>
-                        <Button onClick={() => this.addPathway()} raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    <Col md={2}>
+                        <Button style={{marginTop: 20}} onClick={() => this.handleAddNewGeneSet(this.state.newGeneSet)}
+                                raised
+                                primary><FaPlusCircle/></Button>
                     </Col>
-                    <Col md={3}>
-                        <Button raised primary><FaPlusCircle/></Button>
-                        <Button raised primary><FaCloudUpload/></Button>
-                        <Button raised primary><FaCloudDownload/></Button>
+                    {this.state.selectedPathway &&
+                    <Col md={2}>
+                        <Autocomplete label='New Gene' source={this.state.geneOptions} value={this.state.newGene}
+                                      onQueryChange={(geneQuery) => this.queryGenes(geneQuery)}
+                                      onChange={(newGene) => {
+                                          this.setState({newGene: newGene})
+                                      }}
+                        />
+                        {/*<Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}*/}
+                        {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
+                        {/*/>*/}
                     </Col>
+                    }
+                    {this.state.selectedPathway &&
+                    <Col md={1}>
+                        <Button style={{marginTop: 20}} raised primary
+                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
+                    </Col>
+                    }
                 </Row>
                 <Row>
-                    <Col md={3}>
-                        <PathwaySetsView pathwaySets={this.state.pathwaySets}/>
-                    </Col>
-                    <Col md={6}>
+                    {/*<Col md={3}>*/}
+                    {/*<PathwaySetsView pathwaySets={this.props.pathwaySets}/>*/}
+                    {/*</Col>*/}
+                    <Col md={7}>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
                                      selectedPathwaySet={selectedPathwayState}/>
@@ -70,46 +117,75 @@ export default class PathwayEditor extends PureComponent {
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}
-                            ({this.state.selectedPathway.goid})
+
+                            {this.state.selectedPathway.goid &&
+                            <div>({this.state.selectedPathway.goid})</div>
+                            }
                         </h3>
                         }
-                        <GeneView selectedPathway={this.state.selectedPathway}/>
+                        <GeneView selectedPathway={this.state.selectedPathway} removeGeneHandler={this.removeGene}/>
                     </Col>
                 </Row>
             </Grid>
         );
     }
 
-    removePathway = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
-        allSets = allSets.filter(f => (!f || f.selected === false));
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
-        allSets.push(selectedPathwaySet);
+    removeGene = (selectedPathway, selectedGene) => {
+        this.props.removeGeneHandler(selectedPathway, selectedGene);
+    };
 
+    removePathway = (selectedPathway) => {
+        this.props.removePathwayHandler(selectedPathway);
 
         this.setState({
             selectedPathway: undefined,
-            pathwaySets: allSets,
         });
-    }
-
-    addPathway() {
-        alert('adding patway')
-    }
+    };
 
     selectedPathway = (selectedPathway) => {
         // get genes for selected pathway
-        console.log('ROOT selecting pathway');
-        console.log(selectedPathway)
-
         this.setState({
             selectedPathway: selectedPathway
         })
     };
 
+    handleAddNewView(newView) {
+        console.log('adding new view: ' + JSON.stringify(newView))
+    }
+
+    handleAddNewGeneSet(newGeneSet) {
+        this.props.addGeneSetHandler(newGeneSet);
+        //
+        this.setState({
+            newGeneSet: ''
+        })
+    }
+
+    handleAddNewGene(newGeneSet, newGene) {
+        newGene.map(g => {
+            this.props.addGeneHandler(newGeneSet, g);
+        });
+
+        this.setState({
+            newGene: []
+        })
+    }
+
+    queryGenes(geneQuery) {
+        let {reference: {host, name}, limit} = this.state;
+        let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+        subscriber.subscribe(matches => {
+                this.setState({
+                    geneOptions: matches
+                })
+            }
+        )
+    }
 }
 
 PathwayEditor.propTypes = {
+    addGeneSetHandler: PropTypes.any,
+    addGeneHandler: PropTypes.any,
     removePathwayHandler: PropTypes.any,
+    removeGeneHandler: PropTypes.any,
 };
