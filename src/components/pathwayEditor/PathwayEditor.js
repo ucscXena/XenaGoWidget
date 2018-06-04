@@ -32,9 +32,9 @@ export default class PathwayEditor extends PureComponent {
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
-                    <Col md={3}>
-                        <Chip>Views</Chip>
-                    </Col>
+                    {/*<Col md={3}>*/}
+                        {/*<Chip>Views</Chip>*/}
+                    {/*</Col>*/}
                     <Col md={6}>
                         <Chip>Gene Sets</Chip>
                     </Col>
@@ -57,15 +57,15 @@ export default class PathwayEditor extends PureComponent {
                 {/*</Col>*/}
                 {/*</Row>*/}
                 <Row>
-                    <Col md={2}>
-                        <Input type='text' label='New View' name='newView' value={this.state.newView}
-                               onChange={(newView) => this.setState({newView: newView})}
-                               maxLength={16}/>
-                    </Col>
-                    <Col md={1}>
-                        <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewView(this.state.newView)}><FaPlusCircle/></Button>
-                    </Col>
+                    {/*<Col md={2}>*/}
+                        {/*<Input type='text' label='New View' name='newView' value={this.state.newView}*/}
+                               {/*onChange={(newView) => this.setState({newView: newView})}*/}
+                               {/*maxLength={16}/>*/}
+                    {/*</Col>*/}
+                    {/*<Col md={1}>*/}
+                        {/*<Button style={{marginTop: 20}} raised primary*/}
+                                {/*onClick={() => this.handleAddNewView(this.state.newView)}><FaPlusCircle/></Button>*/}
+                    {/*</Col>*/}
                     <Col md={5}>
                         <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.newGeneSet}
                                onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
@@ -87,9 +87,9 @@ export default class PathwayEditor extends PureComponent {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={3}>
-                        <PathwaySetsView pathwaySets={this.props.pathwaySets}/>
-                    </Col>
+                    {/*<Col md={3}>*/}
+                        {/*<PathwaySetsView pathwaySets={this.props.pathwaySets}/>*/}
+                    {/*</Col>*/}
                     <Col md={6}>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
