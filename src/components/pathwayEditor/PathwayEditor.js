@@ -43,7 +43,7 @@ export default class PathwayEditor extends PureComponent {
                     {/*<Col md={3}>*/}
                     {/*<Chip>Views</Chip>*/}
                     {/*</Col>*/}
-                    <Col md={6}>
+                    <Col md={7}>
                         <Chip>Gene Sets</Chip>
                     </Col>
                     <Col md={3}>
@@ -79,11 +79,12 @@ export default class PathwayEditor extends PureComponent {
                                onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
                                maxLength={16}/>
                     </Col>
-                    <Col md={1}>
+                    <Col md={2}>
                         <Button style={{marginTop: 20}} onClick={() => this.handleAddNewGeneSet(this.state.newGeneSet)}
                                 raised
                                 primary><FaPlusCircle/></Button>
                     </Col>
+                    {this.state.selectedPathway &&
                     <Col md={2}>
                         <Autocomplete label='New Gene' source={this.state.geneOptions} value={this.state.newGene}
                                       onQueryChange={(geneQuery) => this.queryGenes(geneQuery)}
@@ -92,19 +93,22 @@ export default class PathwayEditor extends PureComponent {
                                       }}
                         />
                         {/*<Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}*/}
-                               {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
+                        {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
                         {/*/>*/}
                     </Col>
+                    }
+                    {this.state.selectedPathway &&
                     <Col md={1}>
                         <Button style={{marginTop: 20}} raised primary
                                 onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
                     </Col>
+                    }
                 </Row>
                 <Row>
                     {/*<Col md={3}>*/}
                     {/*<PathwaySetsView pathwaySets={this.props.pathwaySets}/>*/}
                     {/*</Col>*/}
-                    <Col md={6}>
+                    <Col md={7}>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
                                      selectedPathwaySet={selectedPathwayState}/>
@@ -158,7 +162,7 @@ export default class PathwayEditor extends PureComponent {
     }
 
     handleAddNewGene(newGeneSet, newGene) {
-        newGene.map( g => {
+        newGene.map(g => {
             this.props.addGeneHandler(newGeneSet, g);
         });
 
@@ -172,7 +176,7 @@ export default class PathwayEditor extends PureComponent {
         let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
         subscriber.subscribe(matches => {
                 this.setState({
-                    geneOptions:matches
+                    geneOptions: matches
                 })
             }
         )
