@@ -22,9 +22,8 @@ class Demo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            // view: 'xena',
-            view: 'pathways',
-            value: 'ES-es',
+            view: 'xena',
+            // view: 'pathways',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
