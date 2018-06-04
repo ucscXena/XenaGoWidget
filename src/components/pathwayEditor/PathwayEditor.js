@@ -12,7 +12,11 @@ import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 import FaTrash from 'react-icons/lib/fa/trash';
 import Input from 'react-toolbox/lib/input';
 import PathwaySetsView from "./PathwaySetsView";
+import Autocomplete from 'react-toolbox/lib/autocomplete';
 
+// import {sparseDataMatchPartialField, refGene} = require('../xenaQuery');
+let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+let {sparseDataMatchPartialField, refGene} = xenaQuery;
 
 export default class PathwayEditor extends PureComponent {
 
@@ -23,7 +27,19 @@ export default class PathwayEditor extends PureComponent {
             newGene: '',
             newGeneSet: '',
             newView: '',
+            reference: refGene['hg38'],
         }
+    }
+
+    componentDidMount(){
+        console.log('podunkis')
+        // console.log(refGene['hg38'])
+        // var {host, name} = refGene[this.props.assembly] || refGene[defaultAssembly];
+        let {host,name} = this.state.reference;
+        let value = 'ALK';
+        let limit = 25 ;
+        let subscriber = sparseDataMatchPartialField(host, 'name2', name, value, limit);
+        subscriber.subscribe( matches => console.log('matches: ',matches))
     }
 
 
@@ -77,6 +93,7 @@ export default class PathwayEditor extends PureComponent {
                                 primary><FaPlusCircle/></Button>
                     </Col>
                     <Col md={2}>
+                        <Autocomplete label='asdfasdf' source={['asdf','kljlkj']}/>
                         <Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}
                                onChange={(newGene) => this.setState({newGene: newGene})}
                         />
