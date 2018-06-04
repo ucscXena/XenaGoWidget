@@ -20,6 +20,9 @@ export default class PathwayEditor extends PureComponent {
         super(props);
         this.state = {
             selectedPathway: this.props.selectedPathway,
+            newGene: undefined,
+            newGeneSet: undefined,
+            newView: undefined,
         }
     }
 
@@ -40,40 +43,47 @@ export default class PathwayEditor extends PureComponent {
                     </Col>
                 </Row>
                 {/*<Row>*/}
-                    {/*<Col md={3}>*/}
-                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                    {/*</Col>*/}
-                    {/*<Col md={6}>*/}
-                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                    {/*</Col>*/}
-                    {/*<Col md={3}>*/}
-                        {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                        {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                    {/*</Col>*/}
+                {/*<Col md={3}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
+                {/*<Col md={6}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
+                {/*<Col md={3}>*/}
+                {/*<Button raised primary><FaCloudUpload/></Button>*/}
+                {/*<Button raised primary><FaCloudDownload/></Button>*/}
+                {/*</Col>*/}
                 {/*</Row>*/}
                 <Row>
                     <Col md={2}>
-                        <Input type='text' label='New View' name='newView' value={this.state.name} maxLength={16}/>
-                    </Col>
-                    <Col md={1}>
-                        <Button style={{marginTop:20}} raised primary onClick={() => this.handleAddNewView('newView')}><FaPlusCircle/></Button>
-                    </Col>
-                    <Col md={5}>
-                        <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.name}
+                        <Input type='text' label='New View' name='newView' value={this.state.newView}
+                               onChange={(newView) => this.setState({newView: newView})}
                                maxLength={16}/>
                     </Col>
                     <Col md={1}>
-                        {/*<Button onClick={() => this.addPathway()} raised primary><FaPlusCircle/></Button>*/}
-                        <Button style={{marginTop:20}} onClick={() => this.handleAddNewGeneSet('newGeneSet')} raised
+                        <Button style={{marginTop: 20}} raised primary
+                                onClick={() => this.handleAddNewView(this.state.newView)}><FaPlusCircle/></Button>
+                    </Col>
+                    <Col md={5}>
+                        <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.newGeneSet}
+                               onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
+                               maxLength={16}/>
+                    </Col>
+                    <Col md={1}>
+                        <Button style={{marginTop: 20}} onClick={() => this.handleAddNewGeneSet(this.state.newGeneSet)}
+                                raised
                                 primary><FaPlusCircle/></Button>
                     </Col>
                     <Col md={2}>
-                        <Input type='text' label='New Gene' name='newGene' value={this.state.name} maxLength={16}/>
+                        <Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}
+                               onChange={(newGene) => this.setState({newGene: newGene})}
+                        />
                     </Col>
                     <Col md={1}>
-                        <Button style={{marginTop:20}} raised primary onClick={() => this.handleAddNewGene('newGene')}><FaPlusCircle/></Button>
+                        <Button style={{marginTop: 20}} raised primary
+                                onClick={() => this.handleAddNewGene(this.state.newGene)}><FaPlusCircle/></Button>
                     </Col>
                 </Row>
                 <Row>
@@ -111,10 +121,6 @@ export default class PathwayEditor extends PureComponent {
         });
     };
 
-    addPathway() {
-        alert('adding patway')
-    }
-
     selectedPathway = (selectedPathway) => {
         // get genes for selected pathway
         this.setState({
@@ -123,15 +129,16 @@ export default class PathwayEditor extends PureComponent {
     };
 
     handleAddNewView(newView) {
-        alert('adding new view: ' + JSON.stringify(newView))
+        console.log('adding new view: ' + JSON.stringify(newView))
     }
 
     handleAddNewGeneSet(newGeneSet) {
-        alert('adding new gene set: ' + JSON.stringify(newGeneSet))
+        console.log(newGeneSet)
+        console.log('adding new gene set: ' + JSON.stringify(newGeneSet))
     }
 
     handleAddNewGene(newGene) {
-        alert('adding new gene : ' + JSON.stringify(newGene))
+        console.log('adding new gene : ' + JSON.stringify(newGene))
     }
 }
 
