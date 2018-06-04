@@ -20,9 +20,9 @@ export default class PathwayEditor extends PureComponent {
         super(props);
         this.state = {
             selectedPathway: this.props.selectedPathway,
-            newGene: undefined,
+            newGene: '',
             newGeneSet: '',
-            newView: undefined,
+            newView: '',
         }
     }
 
@@ -83,7 +83,7 @@ export default class PathwayEditor extends PureComponent {
                     </Col>
                     <Col md={1}>
                         <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewGene(this.state.newGene)}><FaPlusCircle/></Button>
+                                onClick={() => this.handleAddNewGene(this.state.selectedPathway,this.state.newGene)}><FaPlusCircle/></Button>
                     </Col>
                 </Row>
                 <Row>
@@ -144,8 +144,12 @@ export default class PathwayEditor extends PureComponent {
     }
 
     handleAddNewGene(newGeneSet,newGene) {
-        console.log('adding new gene : ' + JSON.stringify(newGene))
+        console.log('adding new gene : ',newGeneSet,newGene)
         this.props.addGeneHandler(newGeneSet,newGene);
+
+        this.setState({
+            newGene:''
+        })
     }
 }
 
