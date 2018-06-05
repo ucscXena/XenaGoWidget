@@ -23,7 +23,7 @@ export default class MultiXenaGoApp extends PureComponent {
                 {
                     key: 0,
                     renderHeight: 800,
-                    renderOffset: 0,
+                    renderOffset: 5,
                     selectedTissueSort: 'Cluster',
                     selectedGeneSort: 'Cluster',
                     selectedPathways: [],
@@ -114,9 +114,10 @@ export default class MultiXenaGoApp extends PureComponent {
                             />
                         </CardActions>
                         }
-                        {index === 0 && this.state.synchronizeSelection &&
+                        {index === 0 &&
                         <CardActions>
                             <Switch
+                                disabled={!this.state.synchronizeSelection}
                                 checked={this.state.synchronizeSort}
                                 label="Synchronize sort "
                                 onChange={() => this.toggleSynchronizeSort()}
@@ -169,7 +170,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // calculate the render offset based on the last offset
         let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 80;
+        newCohort.renderOffset = renderOffset + renderHeight + 160;
         apps.push(newCohort);
 
         if (this.state.synchronizeSelection) {
