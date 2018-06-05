@@ -114,6 +114,15 @@ export default class MultiXenaGoApp extends PureComponent {
                             />
                         </CardActions>
                         }
+                        {index === 0 && this.state.synchronizeSelection &&
+                        <CardActions>
+                            <Switch
+                                checked={this.state.synchronizeSort}
+                                label="Synchronize sort "
+                                onChange={() => this.toggleSynchronizeSort()}
+                            />
+                        </CardActions>
+                        }
 
                         <CardActions>
                             {index > 0 &&
