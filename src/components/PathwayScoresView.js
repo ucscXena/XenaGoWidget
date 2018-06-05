@@ -173,6 +173,8 @@ class PathwayScoresView extends PureComponent {
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
+                    synchronizationHandler={this.props.synchronizationHandler}
+                    synchronizationGeneList={this.props.synchronizedGeneList}
                 />
             </div>
         );
@@ -194,6 +196,8 @@ PathwayScoresView.propTypes = {
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
     cohortIndex: PropTypes.any,
+    synchronizationHandler: PropTypes.any,
+    synchronizedGeneList: PropTypes.any,
 };
 
 

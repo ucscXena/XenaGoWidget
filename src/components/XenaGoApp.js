@@ -58,8 +58,12 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         this.state = this.props.appData;
-        console.log('xena go app props')
+        console.log('xena go app props');
         console.log(this.state)
+    }
+
+    getGenePathway(){
+        return this.state.geneData.pathways;
     }
 
     setPathwayState(newSelection, pathwayClickData) {
@@ -85,6 +89,8 @@ export default class XenaGoApp extends PureComponent {
         pathwayClickData.key = this.props.appData.key;
         pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
         if (pathwayClickData.propagate) {
+            // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
+            this.props.synchronizationHandler(pathways);
             this.props.pathwaySelect(pathwayClickData);
         }
     }
@@ -345,6 +351,8 @@ export default class XenaGoApp extends PureComponent {
                                                    onHover={this.hoverGene}
                                                    hideTitle={true}
                                                    cohortIndex={this.state.key}
+                                                   synchronizedGeneList={this.props.synchronizedGeneList}
+                                                   synchronizedHandler={this.props.synchronizationHandler}
                                                    key={this.state.key}
                                 />
                             </Col>
@@ -372,4 +380,6 @@ XenaGoApp.propTypes = {
     stats: PropTypes.any,
     pathwaySelect: PropTypes.any,
     pathways: PropTypes.any,
+    synchronizationHandler: PropTypes.any,
+    synchronizedGeneList: PropTypes.any,
 };

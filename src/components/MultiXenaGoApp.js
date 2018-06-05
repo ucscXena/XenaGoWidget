@@ -9,9 +9,16 @@ import {Button} from 'react-toolbox/lib/button';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
+
 const MAX_GLOBAL_STATS = 10;
 
+// synchronizing gene sorts between pathways
+let synchronizedGeneList ;
+
 export default class MultiXenaGoApp extends PureComponent {
+
+
+
     constructor(props) {
         super(props);
 
@@ -102,6 +109,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
                                pathways={this.props.pathways}
+                               synchronizationHandler={this.synchronizationHandler}
                     />
 
                     <Card>
@@ -204,6 +212,9 @@ export default class MultiXenaGoApp extends PureComponent {
         if (this.state.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
+
+            console.log('synchornized genes',synchronizedGeneList);
+
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     if(selectedPathways){
@@ -307,8 +318,13 @@ export default class MultiXenaGoApp extends PureComponent {
             commonGenes: reducedGenes
         }
     }
+
+
+    synchronizationHandler = (geneList) => {
+        synchronizedGeneList = geneList;
+    }
 }
 
 MultiXenaGoApp.propTyes = {
-    pathways: PropTypes.any.isRequired
+    pathways: PropTypes.any.isRequired,
 };
