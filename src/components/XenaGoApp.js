@@ -18,6 +18,7 @@ import {Button} from 'react-toolbox/lib/button';
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
+let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 
@@ -25,20 +26,6 @@ import {Grid, Row, Col} from 'react-material-responsive-grid';
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
 }
-
-// This is horrible. We don't have metadata identifying
-// this dataset type, so we locate it by string name.
-let gisticDSFromMutation = mutDsID => {
-
-    console.log('mutDsId,',mutDsID)
-    if(mutDsID.indexOf('TCGA')===0){
-        return mutDsID.replace(/[/].*/, '/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes');
-    }
-    else{
-        return mutDsID;
-    }
-
-};
 
 function intersection(a, b) {
     let sa = new Set(a);
@@ -175,7 +162,8 @@ export default class XenaGoApp extends PureComponent {
                         })
                         .map(cohort => {
                             let mutation = data[cohort][mutationKey];
-                            return {name: cohort, mutationDataSetId: mutation.dataset, host: mutation.host}
+                            let copyNumberView = data[cohort][copyNumberViewKey];
+                            return {name: cohort, mutationDataSetId: mutation.dataset, copyNumberDataSetId:copyNumberView.dataset,host: mutation.host}
                         })
                         .sort(lowerCaseCompareName);
                     this.setState({
@@ -196,14 +184,15 @@ export default class XenaGoApp extends PureComponent {
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
+        console.log('selecting',cohort)
         let geneList = this.getGenesForPathways(this.props.pathways);
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, gisticDSFromMutation(cohort.mutationDataSetId), null),
+            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
             intersection)
             .flatMap((samples) => {
                 return Rx.Observable.zip(
                     sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
-                    datasetFetch(cohort.host, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
+                    datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
