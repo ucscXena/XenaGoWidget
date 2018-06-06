@@ -9,9 +9,16 @@ import {Button} from 'react-toolbox/lib/button';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
+
 const MAX_GLOBAL_STATS = 10;
 
+// synchronizing gene sorts between pathways
+let synchronizedGeneList  = [];
+
 export default class MultiXenaGoApp extends PureComponent {
+
+
+
     constructor(props) {
         super(props);
 
@@ -23,7 +30,7 @@ export default class MultiXenaGoApp extends PureComponent {
                 {
                     key: 0,
                     renderHeight: 800,
-                    renderOffset: 0,
+                    renderOffset: 5,
                     selectedTissueSort: 'Cluster',
                     selectedGeneSort: 'Cluster',
                     selectedPathways: [],
@@ -101,6 +108,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
+                               synchronizeSort={this.state.synchronizeSort}
                                pathways={this.props.pathways}
                     />
 
@@ -111,6 +119,16 @@ export default class MultiXenaGoApp extends PureComponent {
                                 checked={this.state.synchronizeSelection}
                                 label="Synchronize selection"
                                 onChange={() => this.toggleSynchronizeSelection()}
+                            />
+                        </CardActions>
+                        }
+                        {index === 0 &&
+                        <CardActions>
+                            <Switch
+                                disabled={!this.state.synchronizeSelection}
+                                checked={this.state.synchronizeSort}
+                                label="Synchronize sort "
+                                onChange={() => this.toggleSynchronizeSort()}
                             />
                         </CardActions>
                         }
@@ -144,7 +162,11 @@ export default class MultiXenaGoApp extends PureComponent {
     toggleSynchronizeSelection() {
 
         // set sort as well
-        let newSort = !this.state.synchronizeSelection ? true : this.state.synchronizeSort;
+        let newSort = this.state.synchronizeSort;
+        if(this.state.synchronizeSelection){
+            newSort = false ;
+        }
+
 
         this.setState({
             synchronizeSelection: !this.state.synchronizeSelection,
@@ -160,7 +182,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // calculate the render offset based on the last offset
         let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 80;
+        newCohort.renderOffset = renderOffset + renderHeight + 160;
         apps.push(newCohort);
 
         if (this.state.synchronizeSelection) {
@@ -297,8 +319,10 @@ export default class MultiXenaGoApp extends PureComponent {
             commonGenes: reducedGenes
         }
     }
+
+
 }
 
 MultiXenaGoApp.propTyes = {
-    pathways: PropTypes.any.isRequired
+    pathways: PropTypes.any.isRequired,
 };

@@ -54,9 +54,9 @@ class Demo extends PureComponent {
     };
 
     // TODO
-    addGene= (selectedPathway,selectedGene) => {
+    addGene = (selectedPathway, selectedGene) => {
 
-        console.log('ROOT: adding new gene',selectedPathway,selectedGene);
+        console.log('ROOT: adding new gene', selectedPathway, selectedGene);
 
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
@@ -64,16 +64,16 @@ class Demo extends PureComponent {
         let selectedPathwaySet = allSets.find(f => f.selected === true);
 
         // get pathway to filter
-        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
         let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel);
 
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel);
 
         // remove gene
-        newSelectedPathway.gene.unshift(selectedGene)
+        newSelectedPathway.gene.unshift(selectedGene);
 
         // add to the existing index
-        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
@@ -84,23 +84,23 @@ class Demo extends PureComponent {
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
-    removeGene = (selectedPathway,selectedGene) => {
+    removeGene = (selectedPathway, selectedGene) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
         let selectedPathwaySet = allSets.find(f => f.selected === true);
 
         // get pathway to filter
-        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
-        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel)
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel);
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel);
 
         // remove gene
-        newSelectedPathway.gene = newSelectedPathway.gene.filter( g =>  g!==selectedGene );
+        newSelectedPathway.gene = newSelectedPathway.gene.filter(g => g !== selectedGene);
 
         // add to the existing index
 
-        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 

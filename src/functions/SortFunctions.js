@@ -1,4 +1,3 @@
-
 import React from "react";
 import cluster from '../functions/Cluster';
 import {sum, sumInstances} from '../functions/util';
@@ -66,23 +65,23 @@ function sortColumnHierarchical(prunedColumns) {
     return sortedColumns;
 }
 
-/**
- * Populates density for each column
- * @param prunedColumns
- */
-function scoreColumnDensities(prunedColumns) {
-
-
-    let sortedPathways = prunedColumns.pathways.map((el, index) => {
+function scoreColumns(prunedColumns) {
+    return prunedColumns.pathways.map((el, index) => {
         let pathway = JSON.parse(JSON.stringify(el));
         pathway.density = sumInstances(prunedColumns.data[index]);
         pathway.index = index;
         return pathway;
     });
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortColumnDensities(prunedColumns) {
 
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = sortedPathways;
-
+    sortedColumns.pathways = scoreColumns(prunedColumns);
     sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
     // refilter data by index
@@ -98,7 +97,7 @@ function scoreColumnDensities(prunedColumns) {
  * @param prunedColumns
  */
 export function overallSort(prunedColumns) {
-    let sortedColumns = scoreColumnDensities(prunedColumns);
+    let sortedColumns = sortColumnDensities(prunedColumns);
 
     let renderedData = transpose(sortedColumns.data);
 
@@ -128,7 +127,10 @@ export function overallSort(prunedColumns) {
  * @returns {undefined}
  */
 export function clusterSort(prunedColumns) {
-    let sortedColumns = scoreColumnDensities(prunedColumns);
+    let sortedColumns = sortColumnDensities(prunedColumns);
+
+    // let sortedPathways = scoreColumns(prunedColumns);
+
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
@@ -140,6 +142,62 @@ export function clusterSort(prunedColumns) {
         }
         return sum(b) - sum(a)
     });
+    renderedData = transpose(renderedData);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    return returnColumns;
+}
+
+
+export function synchronizedSort(prunedColumns, geneList) {
+    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
+    sortedColumns.pathways = scoreColumns(prunedColumns);
+
+    sortedColumns.pathways.sort((a, b) => {
+        let index1 = geneList.indexOf(a.gene[0]);
+        let index2 = geneList.indexOf(b.gene[0]);
+        //
+        if(index1>=0 && index2 >=0){
+            return geneList.indexOf(a.gene[0])-geneList.indexOf(b.gene[0])
+        }
+        // else
+        // if(index1>=0){
+        //     return 1
+        // }
+        // else
+        // if(index2>=0){
+        //     return -1
+        // }
+        else{
+            return b.density - a.density
+        }
+    });
+    // refilter data by index
+    sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
+
+    sortedColumns.samples = prunedColumns.samples;
+
+    // let sortedColumns = sortColumnDensities(prunedColumns);
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
+
+    // TODO: sort where the column appears based on geneList first
+    // TODO: then sort by column densities
+    // TODO: then stub in empty columns
+
+    renderedData = renderedData.sort(function (a, b) {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
+            }
+        }
+        return sum(b) - sum(a)
+    });
+
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];

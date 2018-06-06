@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
+import Fafresh from 'react-icons/lib/fa/refresh';
 import FaTrash from 'react-icons/lib/fa/trash';
 import Input from 'react-toolbox/lib/input';
 import PathwaySetsView from "./PathwaySetsView";
@@ -42,6 +43,25 @@ export default class PathwayEditor extends PureComponent {
                 <Row>
                     {/*<Col md={3}>*/}
                     {/*<Chip>Views</Chip>*/}
+                    {/*</Col>*/}
+                    <Col md={6}>
+                        <Button onClick={ () => this.downloadView()}>
+                            Download <FaCloudDownload/>
+                        </Button>
+                        <Button onClick={ () => this.uploadView()}>
+                            Upload <FaCloudUpload/>
+                        </Button>
+                        <Button onClick={ () => this.resetView()}>
+                            Reset <Fafresh/>
+                        </Button>
+                    </Col>
+                    {/*<Col md={3}>*/}
+                        {/*<Chip>Genes</Chip>*/}
+                    {/*</Col>*/}
+                </Row>
+                <Row>
+                    {/*<Col md={3}>*/}
+                        {/*<Chip>Views</Chip>*/}
                     {/*</Col>*/}
                     <Col md={7}>
                         <Chip>Gene Sets</Chip>
@@ -180,6 +200,18 @@ export default class PathwayEditor extends PureComponent {
                 })
             }
         )
+    }
+
+    downloadView() {
+        alert('downloading active view')
+    }
+
+    uploadView() {
+        alert('upload active view')
+    }
+
+    resetView() {
+        alert('reseting to the default')
     }
 }
 
