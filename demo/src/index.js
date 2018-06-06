@@ -5,7 +5,6 @@ import {Avatar, Chip, Button, AppBar, Link, Navigation} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
-import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
 
 
@@ -25,7 +24,6 @@ class Demo extends PureComponent {
         this.state = {
             view: 'xena',
             // view: 'pathways',
-            value: 'ES-es',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
