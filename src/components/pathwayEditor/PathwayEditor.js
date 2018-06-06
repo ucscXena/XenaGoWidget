@@ -48,10 +48,10 @@ export default class PathwayEditor extends PureComponent {
                         <Button onClick={ () => this.downloadView()}>
                             Download <FaCloudDownload/>
                         </Button>
-                        <Button onClick={ () => this.uploadView()}>
+                        <Button onClick={ () => this.props.uploadHandler()}>
                             Upload <FaCloudUpload/>
                         </Button>
-                        <Button onClick={ () => this.resetView()}>
+                        <Button onClick={ () => this.props.resetHandler()}>
                             Reset <Fafresh/>
                         </Button>
                     </Col>
@@ -217,13 +217,6 @@ export default class PathwayEditor extends PureComponent {
         downloadAnchorNode.remove();
     }
 
-    uploadView() {
-        alert('upload active view')
-    }
-
-    resetView() {
-        alert('reseting to the default')
-    }
 }
 
 PathwayEditor.propTypes = {
@@ -231,4 +224,6 @@ PathwayEditor.propTypes = {
     addGeneHandler: PropTypes.any,
     removePathwayHandler: PropTypes.any,
     removeGeneHandler: PropTypes.any,
+    uploadHandler: PropTypes.any,
+    resetHandler: PropTypes.any,
 };

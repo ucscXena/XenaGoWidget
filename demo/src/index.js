@@ -34,6 +34,22 @@ class Demo extends PureComponent {
         }
     }
 
+    handleUpload = () =>{
+        alert('upload active view')
+    };
+
+    handleReset = () =>{
+        this.setState({
+            pathwaySets: [
+                {
+                    name: 'Default Pathway',
+                    pathway: DefaultPathWays,
+                    selected: true
+                }
+            ],
+        })
+    };
+
     addGeneSet = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
@@ -160,6 +176,8 @@ class Demo extends PureComponent {
                            removePathwayHandler={this.removePathway}
                            addGeneHandler={this.addGene}
                            addGeneSetHandler={this.addGeneSet}
+                           uploadHandler={this.handleUpload}
+                           resetHandler={this.handleReset}
             />
             }
 
