@@ -17,17 +17,31 @@ const GithubIcon = () => (
     </svg>
 );
 
+const LOCAL_STORAGE_STRING = "default-xena-go-key";
+
 class Demo extends PureComponent {
+
+    static storePathway(pathway){
+        if(pathway){
+            localStorage.setItem(LOCAL_STORAGE_STRING,JSON.stringify(pathway));
+        }
+    }
+    static getPathway(){
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING)) ;
+        console.log('reading stored pathway',storedPathway);
+        return storedPathway ? storedPathway : DefaultPathWays;
+    }
 
     constructor(props) {
         super(props);
+        console.log('constrocuting',Demo.getPathway());
         this.state = {
             view: 'xena',
             // view: 'pathways',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: DefaultPathWays,
+                    pathway: Demo.getPathway(),
                     selected: true
                 }
             ],
@@ -35,6 +49,7 @@ class Demo extends PureComponent {
     }
 
     handleUpload = (file) =>{
+        Demo.storePathway(file);
         this.setState({
             pathwaySets: [
                 {
@@ -47,6 +62,7 @@ class Demo extends PureComponent {
     };
 
     handleReset = () =>{
+        Demo.storePathway(DefaultPathWays);
         this.setState({
             pathwaySets: [
                 {
@@ -71,6 +87,7 @@ class Demo extends PureComponent {
         selectedPathwaySet.pathway.unshift(newGeneSetObject);
         // allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: selectedPathwaySet ,
@@ -101,6 +118,7 @@ class Demo extends PureComponent {
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -128,6 +146,7 @@ class Demo extends PureComponent {
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -143,6 +162,7 @@ class Demo extends PureComponent {
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: undefined,
