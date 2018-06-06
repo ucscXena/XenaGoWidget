@@ -4,8 +4,8 @@ import mutationScores from '../data/mutationVector';
 import {sum,times, memoize, range} from 'underscore';
 
 
-export function getCopyNumberValue(copyNumberValue) {
-    return (!isNaN(copyNumberValue) && Math.abs(copyNumberValue) === 2) ? 1 : 0;
+export function getCopyNumberValue(copyNumberValue,amplificationThreshold,deletionThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold))  ? 1 : 0;
 }
 
 /**
@@ -51,7 +51,7 @@ export function pruneColumns(data, pathways, min) {
  * @param key
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key){
+export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key,selectedCohort){
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = times(pathways.length, () => times(samples.length, () => 0));
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
@@ -85,7 +85,7 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
             for (let index of pathwayIndices) {
                 // process all samples
                 for (let sampleEntryIndex in sampleEntries) {
-                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]);
+                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],selectedCohort.amplificationThreshold,selectedCohort.deletionThreshold);
                     if (returnValue > 0) {
                         returnArray[index][sampleEntryIndex] += returnValue;
                     }

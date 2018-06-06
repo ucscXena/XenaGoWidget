@@ -168,6 +168,8 @@ export default class XenaGoApp extends PureComponent {
                                 name: cohort,
                                 mutationDataSetId: mutation.dataset,
                                 copyNumberDataSetId: copyNumberView.dataset,
+                                amplificationThreshold:copyNumberView.amplificationThreshold,
+                                deletionThreshold:copyNumberView.deletionThreshold,
                                 host: mutation.host
                             }
                         })
@@ -294,6 +296,7 @@ export default class XenaGoApp extends PureComponent {
                                                    loading={cohortLoading}
                                                    min={this.state.minFilter}
                                                    selectedSort={this.state.selectedTissueSort}
+                                                   selectedCohort={this.state.selectedCohort}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    onClick={this.clickPathway}
@@ -357,6 +360,7 @@ export default class XenaGoApp extends PureComponent {
                                                    loading={cohortLoading}
                                                    min={this.state.minFilter}
                                                    selectedSort={this.state.selectedGeneSort}
+                                                   selectedCohort={this.state.selectedCohort}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    onClick={this.clickPathway}

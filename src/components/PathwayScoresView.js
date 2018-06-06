@@ -207,9 +207,9 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, synchronizeSort,statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, synchronizeSort,statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
-        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex);
+        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex,selectedCohort);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
