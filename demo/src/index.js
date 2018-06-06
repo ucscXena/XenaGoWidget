@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {Avatar, Chip, Button, AppBar, Link, Navigation} from "react-toolbox";
+import {Avatar, Chip, Button, AppBar, Link, Navigation,BrowseButton} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
@@ -22,8 +22,8 @@ class Demo extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            // view: 'xena',
-            view: 'pathways',
+            view: 'xena',
+            // view: 'pathways',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -34,8 +34,16 @@ class Demo extends PureComponent {
         }
     }
 
-    handleUpload = () =>{
-        alert('upload active view')
+    handleUpload = (file) =>{
+        this.setState({
+            pathwaySets: [
+                {
+                    name: 'Default Pathway',
+                    pathway: file,
+                    selected: true
+                }
+            ],
+        })
     };
 
     handleReset = () =>{

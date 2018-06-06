@@ -3,6 +3,7 @@ import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
+import { BrowseButton } from "react-toolbox/lib/button";
 import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
@@ -35,6 +36,19 @@ export default class PathwayEditor extends PureComponent {
         }
     }
 
+    handleChange = e => {
+        let file = e.target.files[0];
+        let {uploadHandler } = this.props;
+
+        let result = {};
+        let fr = new FileReader();
+        fr.onload = function(e) {
+            result = JSON.parse(e.target.result);
+            uploadHandler(result);
+        };
+
+        fr.readAsText(file);
+    };
 
     render() {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
@@ -48,9 +62,11 @@ export default class PathwayEditor extends PureComponent {
                         <Button onClick={ () => this.downloadView()}>
                             Download <FaCloudDownload/>
                         </Button>
-                        <Button onClick={ () => this.props.uploadHandler()}>
-                            Upload <FaCloudUpload/>
-                        </Button>
+                        <BrowseButton label="Upload"
+                                      onChange={ this.handleChange}
+                        >
+                            <FaCloudUpload/>
+                        </BrowseButton>
                         <Button onClick={ () => this.props.resetHandler()}>
                             Reset <Fafresh/>
                         </Button>
