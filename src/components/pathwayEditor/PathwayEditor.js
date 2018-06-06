@@ -3,6 +3,7 @@ import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
+import { BrowseButton } from "react-toolbox/lib/button";
 import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
@@ -35,6 +36,19 @@ export default class PathwayEditor extends PureComponent {
         }
     }
 
+    handleChange = e => {
+        let file = e.target.files[0];
+        let {uploadHandler } = this.props;
+
+        let result = {};
+        let fr = new FileReader();
+        fr.onload = function(e) {
+            result = JSON.parse(e.target.result);
+            uploadHandler(result);
+        };
+
+        fr.readAsText(file);
+    };
 
     render() {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
@@ -48,10 +62,12 @@ export default class PathwayEditor extends PureComponent {
                         <Button onClick={ () => this.downloadView()}>
                             Download <FaCloudDownload/>
                         </Button>
-                        <Button onClick={ () => this.uploadView()}>
-                            Upload <FaCloudUpload/>
-                        </Button>
-                        <Button onClick={ () => this.resetView()}>
+                        <BrowseButton label="Upload"
+                                      onChange={ this.handleChange}
+                        >
+                            <FaCloudUpload/>
+                        </BrowseButton>
+                        <Button onClick={ () => this.props.resetHandler()}>
                             Reset <Fafresh/>
                         </Button>
                     </Col>
@@ -203,16 +219,20 @@ export default class PathwayEditor extends PureComponent {
     }
 
     downloadView() {
-        alert('downloading active view')
+        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
+        let exportObj = selectedPathwayState.pathway;
+        let now = new Date();
+        let dateString = now.toLocaleDateString()+'-'+now.toLocaleTimeString();
+        let exportName = 'xenaGoView-'+dateString;
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+        let downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("download", exportName + ".json");
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
     }
 
-    uploadView() {
-        alert('upload active view')
-    }
-
-    resetView() {
-        alert('reseting to the default')
-    }
 }
 
 PathwayEditor.propTypes = {
@@ -220,4 +240,6 @@ PathwayEditor.propTypes = {
     addGeneHandler: PropTypes.any,
     removePathwayHandler: PropTypes.any,
     removeGeneHandler: PropTypes.any,
+    uploadHandler: PropTypes.any,
+    resetHandler: PropTypes.any,
 };
