@@ -212,17 +212,13 @@ export default class MultiXenaGoApp extends PureComponent {
         if (this.state.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
-
-
-            console.log('select',synchronizedGeneList)
-
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     if(selectedPathways){
-                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection,synchronizedGeneList);
+                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection);
                     }
                     else{
-                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection,synchronizedGeneList);
+                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                     }
                 }
             });
@@ -321,11 +317,6 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
 
-    synchronizationHandler = (geneList) => {
-        console.log('ROOT: synchronizer',geneList)
-        synchronizedGeneList = geneList.map( g => g.gene[0]);
-        console.log('ROOT: synchronizer B',synchronizedGeneList)
-    }
 }
 
 MultiXenaGoApp.propTyes = {

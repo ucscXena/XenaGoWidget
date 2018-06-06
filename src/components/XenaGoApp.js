@@ -62,11 +62,8 @@ export default class XenaGoApp extends PureComponent {
         console.log(this.state)
     }
 
-    getGenePathway(){
-        return this.state.geneData.pathways;
-    }
 
-    setPathwayState(newSelection, pathwayClickData,synchronizedGeneList) {
+    setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -95,7 +92,7 @@ export default class XenaGoApp extends PureComponent {
         }
     }
 
-    clickPathway = (pathwayClickData,synchronizedGeneList) => {
+    clickPathway = (pathwayClickData) => {
         let {metaSelect, pathway: {golabel}} = pathwayClickData;
 
         let newSelection = [];
@@ -117,7 +114,7 @@ export default class XenaGoApp extends PureComponent {
             newSelection = [golabel];
         }
 
-        this.setPathwayState(newSelection, pathwayClickData,synchronizedGeneList);
+        this.setPathwayState(newSelection, pathwayClickData);
     };
 
 

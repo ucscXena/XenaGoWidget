@@ -150,6 +150,31 @@ export function clusterSort(prunedColumns) {
     return returnColumns;
 }
 
+
+export function synchronizedSort(prunedColumns,geneList) {
+    console.log('synchronzie sort with ',prunedColumns,geneList)
+    let sortedColumns = scoreColumnDensities(prunedColumns);
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
+
+    renderedData = renderedData.sort(function (a, b) {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
+            }
+        }
+        return sum(b) - sum(a)
+    });
+    renderedData = transpose(renderedData);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    return returnColumns;
+}
+
 /**
  * @param prunedColumns
  */

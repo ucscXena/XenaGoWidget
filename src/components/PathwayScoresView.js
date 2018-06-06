@@ -6,9 +6,9 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort,clusterSort} from '../functions/SortFunctions';
-import {pruneColumns,associateData} from '../functions/DataFunctions';
-import {pick, pluck, flatten,sum,range, times} from 'underscore';
+import {hierarchicalSort, clusterSort,synchronizedSort} from '../functions/SortFunctions';
+import {pruneColumns, associateData} from '../functions/DataFunctions';
+import {pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -194,14 +194,7 @@ PathwayScoresView.propTypes = {
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
     cohortIndex: PropTypes.any,
-    synchronizationHandler: PropTypes.any,
-    synchronizedGeneList: PropTypes.any,
 };
-
-
-
-
-
 
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
@@ -209,11 +202,16 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
-export default class PathwayScoresViewCache extends PureComponent {
-    render() {
-        let {cohortIndex,statGenerator,synchronizationHandler,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
-        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min,cohortIndex);
+let doSynchronizedSort = true;
+
+export default class PathwayScoresViewCache extends PureComponent {
+
+
+    render() {
+        let {cohortIndex, statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+
+        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
         let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
@@ -221,22 +219,29 @@ export default class PathwayScoresViewCache extends PureComponent {
         let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
-        switch (selectedSort) {
-            case 'Hierarchical':
-                returnedValue = hierarchicalSort(prunedColumns);
-                break;
-            case 'Cluster':
-            default:
-                returnedValue = clusterSort(prunedColumns);
-                break;
+        console.log('rendering pathway for cohort', cohortIndex);
+        if (cohortIndex === 0 || !doSynchronizedSort) {
+            switch (selectedSort) {
+                case 'Hierarchical':
+                    returnedValue = hierarchicalSort(prunedColumns);
+                    break;
+                case 'Cluster':
+                default:
+                    returnedValue = clusterSort(prunedColumns);
+                    break;
+            }
+            console.log('setting synchronized gene list');
+            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         }
+        else {
+            returnedValue = synchronizedSort(prunedColumns,PathwayScoresView.synchronizedGeneList);
+            console.log('using synchronized gene list');
+        }
+        console.log(PathwayScoresView.synchronizedGeneList);
+        returnedValue.index = cohortIndex;
 
-        returnedValue.index = cohortIndex ;
-        if(synchronizationHandler && cohortIndex===0){
-            synchronizationHandler(returnedValue.pathways);
-        }
+
         statGenerator(returnedValue);
-
 
 
         if (referencePathways) {
