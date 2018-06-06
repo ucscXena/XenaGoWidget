@@ -1,4 +1,3 @@
-
 import React from "react";
 import cluster from '../functions/Cluster';
 import {sum, sumInstances} from '../functions/util';
@@ -66,22 +65,24 @@ function sortColumnHierarchical(prunedColumns) {
     return sortedColumns;
 }
 
-/**
- * Populates density for each column
- * @param prunedColumns
- */
-function scoreColumnDensities(prunedColumns) {
-
-
-    let sortedPathways = prunedColumns.pathways.map((el, index) => {
+function scoreColumns(prunedColumns) {
+    return prunedColumns.pathways.map((el, index) => {
         let pathway = JSON.parse(JSON.stringify(el));
         pathway.density = sumInstances(prunedColumns.data[index]);
         pathway.index = index;
         return pathway;
     });
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortColumnDensities(prunedColumns) {
+
 
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = sortedPathways;
+    sortedColumns.pathways = scoreColumns(prunedColumns);
 
     sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
@@ -98,7 +99,7 @@ function scoreColumnDensities(prunedColumns) {
  * @param prunedColumns
  */
 export function overallSort(prunedColumns) {
-    let sortedColumns = scoreColumnDensities(prunedColumns);
+    let sortedColumns = sortColumnDensities(prunedColumns);
 
     let renderedData = transpose(sortedColumns.data);
 
@@ -128,7 +129,10 @@ export function overallSort(prunedColumns) {
  * @returns {undefined}
  */
 export function clusterSort(prunedColumns) {
-    let sortedColumns = scoreColumnDensities(prunedColumns);
+    let sortedColumns = sortColumnDensities(prunedColumns);
+
+    let sortedPathways = scoreColumns(prunedColumns);
+
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
@@ -151,15 +155,50 @@ export function clusterSort(prunedColumns) {
 }
 
 
-export function synchronizedSort(prunedColumns,geneList) {
-    console.log('synchronzie sort with ',prunedColumns,geneList)
-    let sortedColumns = scoreColumnDensities(prunedColumns);
+function generateSortedList(sortedPathways, geneList) {
+    let returnPathway = [];
+    console.log('sorting the list:',sortedPathways,'into',returnPathway)
+    sortedPathways.forEach( p => {
+        let index = geneList.indexOf(p.gene[0]);
+        console.log(p)
+        console.log('pre- ',p.gene[0],'->',index);
+        returnPathway.splice(index,0,p)
+        console.log('post-',returnPathway);
+    });
+
+    console.log('input',sortedPathways.map( p => p.gene[0]),returnPathway.map(p => p.gene[0]));
+
+    return returnPathway;
+}
+
+export function synchronizedSort(prunedColumns, geneList) {
+    console.log('synchronzie sort with ', prunedColumns, geneList)
+
+
+    let sortedPathways = scoreColumns(prunedColumns);
+
+
+    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
+    sortedColumns.pathways = generateSortedList(sortedPathways,geneList);
+
+    sortedColumns.pathways.sort((a, b) => {
+        return geneList.indexOf(a.gene[0])-geneList.indexOf(b.gene[0])
+    });
+    // refilter data by index
+    sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
+
+    sortedColumns.samples = prunedColumns.samples;
+
+    // let sortedColumns = sortColumnDensities(prunedColumns);
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
     // TODO: sort where the column appears based on geneList first
     // TODO: then sort by column densities
     // TODO: then stub in empty columns
+
+    console.log('sorted columns', sortedColumns);
+    console.log('rendered data', renderedData);
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
@@ -169,6 +208,8 @@ export function synchronizedSort(prunedColumns,geneList) {
         }
         return sum(b) - sum(a)
     });
+    console.log('rendered data 2', renderedData);
+
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
