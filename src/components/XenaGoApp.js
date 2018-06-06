@@ -28,8 +28,17 @@ function lowerCaseCompareName(a, b) {
 
 // This is horrible. We don't have metadata identifying
 // this dataset type, so we locate it by string name.
-let gisticDSFromMutation = mutDsID =>
-    mutDsID.replace(/[/].*/, '/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes');
+let gisticDSFromMutation = mutDsID => {
+
+    console.log('mutDsId,',mutDsID)
+    if(mutDsID.indexOf('TCGA')===0){
+        return mutDsID.replace(/[/].*/, '/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes');
+    }
+    else{
+        return mutDsID;
+    }
+
+};
 
 function intersection(a, b) {
     let sa = new Set(a);
@@ -162,7 +171,7 @@ export default class XenaGoApp extends PureComponent {
                 response.json().then(data => {
                     let cohortData = Object.keys(data)
                         .filter(cohort => {
-                            return (cohort.indexOf('TCGA') === 0 || cohort.indexOf('Cancer Cell Line') === 0) && data[cohort][mutationKey]
+                            return (cohort.indexOf('TCGA') === 0 || cohort.indexOf('Cancer Cell Line Encyclopedia (Breast)') === 0) && data[cohort][mutationKey]
                         })
                         .map(cohort => {
                             let mutation = data[cohort][mutationKey];
