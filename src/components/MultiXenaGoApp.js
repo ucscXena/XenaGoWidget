@@ -105,10 +105,10 @@ export default class MultiXenaGoApp extends PureComponent {
 
                     <XenaGoApp appData={app}
                                statGenerator={this.generateStats}
-                               synchronizationHandler={this.synchronizationHandler}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
+                               synchronizeSort={this.state.synchronizeSort}
                                pathways={this.props.pathways}
                     />
 

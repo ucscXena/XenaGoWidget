@@ -193,6 +193,7 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
+    synchronizeSort:PropTypes.any,
     cohortIndex: PropTypes.any,
 };
 
@@ -203,13 +204,11 @@ const minWidth = 400;
 const minColWidth = 12;
 
 
-let doSynchronizedSort = true;
-
 export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, synchronizeSort,statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex);
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -219,8 +218,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
+
         console.log('rendering pathway for cohort', cohortIndex);
-        if (cohortIndex === 0 || !doSynchronizedSort) {
+        if (cohortIndex === 0 || !synchronizeSort) {
             switch (selectedSort) {
                 case 'Hierarchical':
                     returnedValue = hierarchicalSort(prunedColumns);
