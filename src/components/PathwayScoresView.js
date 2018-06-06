@@ -173,8 +173,6 @@ class PathwayScoresView extends PureComponent {
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
-                    synchronizationHandler={this.props.synchronizationHandler}
-                    synchronizationGeneList={this.props.synchronizedGeneList}
                 />
             </div>
         );
@@ -213,8 +211,7 @@ const minColWidth = 12;
 
 export default class PathwayScoresViewCache extends PureComponent {
     render() {
-        let {cohortIndex,statGenerator,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
-        console.log('data munger');
+        let {cohortIndex,statGenerator,synchronizationHandler,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min,cohortIndex);
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -235,6 +232,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
 
         returnedValue.index = cohortIndex ;
+        if(synchronizationHandler && cohortIndex===0){
+            synchronizationHandler(returnedValue.pathways);
+        }
         statGenerator(returnedValue);
 
 

@@ -13,7 +13,7 @@ import {sum} from 'underscore';
 const MAX_GLOBAL_STATS = 10;
 
 // synchronizing gene sorts between pathways
-let synchronizedGeneList ;
+let synchronizedGeneList  = [];
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -105,11 +105,11 @@ export default class MultiXenaGoApp extends PureComponent {
 
                     <XenaGoApp appData={app}
                                statGenerator={this.generateStats}
+                               synchronizationHandler={this.synchronizationHandler}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
                                pathways={this.props.pathways}
-                               synchronizationHandler={this.synchronizationHandler}
                     />
 
                     <Card>
@@ -213,15 +213,16 @@ export default class MultiXenaGoApp extends PureComponent {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
 
-            console.log('synchornized genes',synchronizedGeneList);
+
+            console.log('select',synchronizedGeneList)
 
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     if(selectedPathways){
-                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection);
+                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection,synchronizedGeneList);
                     }
                     else{
-                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection,synchronizedGeneList);
                     }
                 }
             });
@@ -321,7 +322,9 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
     synchronizationHandler = (geneList) => {
-        synchronizedGeneList = geneList;
+        console.log('ROOT: synchronizer',geneList)
+        synchronizedGeneList = geneList.map( g => g.gene[0]);
+        console.log('ROOT: synchronizer B',synchronizedGeneList)
     }
 }
 

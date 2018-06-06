@@ -66,7 +66,7 @@ export default class XenaGoApp extends PureComponent {
         return this.state.geneData.pathways;
     }
 
-    setPathwayState(newSelection, pathwayClickData) {
+    setPathwayState(newSelection, pathwayClickData,synchronizedGeneList) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -90,12 +90,12 @@ export default class XenaGoApp extends PureComponent {
         pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
         if (pathwayClickData.propagate) {
             // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
-            this.props.synchronizationHandler(pathways);
+            // this.props.synchronizationHandler(pathways);
             this.props.pathwaySelect(pathwayClickData);
         }
     }
 
-    clickPathway = (pathwayClickData) => {
+    clickPathway = (pathwayClickData,synchronizedGeneList) => {
         let {metaSelect, pathway: {golabel}} = pathwayClickData;
 
         let newSelection = [];
@@ -117,7 +117,7 @@ export default class XenaGoApp extends PureComponent {
             newSelection = [golabel];
         }
 
-        this.setPathwayState(newSelection, pathwayClickData);
+        this.setPathwayState(newSelection, pathwayClickData,synchronizedGeneList);
     };
 
 
@@ -339,6 +339,7 @@ export default class XenaGoApp extends PureComponent {
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
                                                    statGenerator={statGenerator}
+                                                   synchronizationHandler={this.props.synchronizationHandler}
                                                    filter={this.state.geneExpressionFilter}
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
@@ -351,8 +352,6 @@ export default class XenaGoApp extends PureComponent {
                                                    onHover={this.hoverGene}
                                                    hideTitle={true}
                                                    cohortIndex={this.state.key}
-                                                   synchronizedGeneList={this.props.synchronizedGeneList}
-                                                   synchronizedHandler={this.props.synchronizationHandler}
                                                    key={this.state.key}
                                 />
                             </Col>
@@ -377,9 +376,9 @@ export default class XenaGoApp extends PureComponent {
 XenaGoApp.propTypes = {
     appData: PropTypes.any,
     statGenerator: PropTypes.any,
+    synchronizationHandler: PropTypes.any,
     stats: PropTypes.any,
     pathwaySelect: PropTypes.any,
     pathways: PropTypes.any,
-    synchronizationHandler: PropTypes.any,
     synchronizedGeneList: PropTypes.any,
 };
