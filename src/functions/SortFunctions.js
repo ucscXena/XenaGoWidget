@@ -157,6 +157,10 @@ export function synchronizedSort(prunedColumns,geneList) {
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
+    // TODO: sort where the column appears based on geneList first
+    // TODO: then sort by column densities
+    // TODO: then stub in empty columns
+
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
             if (a[index] !== b[index]) {
