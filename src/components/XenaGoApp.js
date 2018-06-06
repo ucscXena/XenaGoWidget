@@ -21,6 +21,7 @@ let mutationKey = 'simple somatic mutation';
 let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
+import Dialog from 'react-toolbox/lib/dialog';
 
 
 function lowerCaseCompareName(a, b) {
@@ -163,7 +164,12 @@ export default class XenaGoApp extends PureComponent {
                         .map(cohort => {
                             let mutation = data[cohort][mutationKey];
                             let copyNumberView = data[cohort][copyNumberViewKey];
-                            return {name: cohort, mutationDataSetId: mutation.dataset, copyNumberDataSetId:copyNumberView.dataset,host: mutation.host}
+                            return {
+                                name: cohort,
+                                mutationDataSetId: mutation.dataset,
+                                copyNumberDataSetId: copyNumberView.dataset,
+                                host: mutation.host
+                            }
                         })
                         .sort(lowerCaseCompareName);
                     this.setState({
@@ -180,11 +186,15 @@ export default class XenaGoApp extends PureComponent {
             });
 
     }
-;
+    ;
+
     selectCohort = (selected) => {
-        this.setState({selectedCohort: selected});
+        this.setState({
+            selectedCohort: selected,
+            processing: true,
+        });
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        console.log('selecting',cohort)
+        console.log('selecting', cohort)
         let geneList = this.getGenesForPathways(this.props.pathways);
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
@@ -204,7 +214,8 @@ export default class XenaGoApp extends PureComponent {
                         pathways: this.props.pathways,
                         cohort: cohort.name,
                         samples
-                    }
+                    },
+                    processing: false,
                 });
                 if (this.state.selectedPathways.length > 0) {
                     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
@@ -248,10 +259,6 @@ export default class XenaGoApp extends PureComponent {
 
         let {statGenerator, stats} = this.props;
 
-        if (this.state.loadState === 'loading') {
-            return <div>Loading</div>
-        }
-
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
                 return (
@@ -271,6 +278,9 @@ export default class XenaGoApp extends PureComponent {
                                                     geneList={geneList}
                                                     onChange={this.filterTissueType}/>
                                     <HoverPathwayView data={this.state.pathwayHoverData}/>
+                                    <Dialog active={this.state.processing} title='Loading'>
+                                        {this.state.selectedCohort}
+                                    </Dialog>
                                 </Card>
                             </Col>
                             <Col md={style.pathway.expressionColumns}>
@@ -326,6 +336,9 @@ export default class XenaGoApp extends PureComponent {
                                                         geneList={geneList}
                                                         onChange={this.filterGeneType}/>
                                         <HoverGeneView data={this.state.geneHoverData}/>
+                                        <Dialog active={this.state.processing} title='Loading'>
+                                            {this.state.selectedCohort}
+                                        </Dialog>
                                     </CardMedia>
                                 </Card>
                             </Col>
