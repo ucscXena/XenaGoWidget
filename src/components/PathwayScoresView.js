@@ -6,7 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort, clusterSort,synchronizedSort} from '../functions/SortFunctions';
+import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {pruneColumns, associateData} from '../functions/DataFunctions';
 import {pick, pluck, flatten, sum, range, times} from 'underscore';
 
@@ -193,7 +193,7 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
-    synchronizeSort:PropTypes.any,
+    synchronizeSort: PropTypes.any,
     cohortIndex: PropTypes.any,
 };
 
