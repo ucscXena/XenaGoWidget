@@ -18,7 +18,6 @@ import {Button} from 'react-toolbox/lib/button';
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
-let tcgaHub = 'https://tcga.xenahubs.net';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 
@@ -161,10 +160,14 @@ export default class XenaGoApp extends PureComponent {
             })
             .then((response) => {
                 response.json().then(data => {
-                    // alert(JSON.stringify(data));
                     let cohortData = Object.keys(data)
-                        .filter(cohort => cohort.indexOf('TCGA') === 0 && data[cohort][mutationKey])
-                        .map(cohort => ({name: cohort, mutationDataSetId: data[cohort][mutationKey].dataset}))
+                        .filter(cohort => {
+                            return (cohort.indexOf('TCGA') === 0 || cohort.indexOf('Cancer Cell Line') === 0) && data[cohort][mutationKey]
+                        })
+                        .map(cohort => {
+                            let mutation = data[cohort][mutationKey];
+                            return {name: cohort, mutationDataSetId: mutation.dataset, host: mutation.host}
+                        })
                         .sort(lowerCaseCompareName);
                     this.setState({
                         loadState: 'loaded',
@@ -185,13 +188,13 @@ export default class XenaGoApp extends PureComponent {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
         let geneList = this.getGenesForPathways(this.props.pathways);
-        Rx.Observable.zip(datasetSamples(tcgaHub, cohort.mutationDataSetId, null),
-            datasetSamples(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), null),
+        Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+            datasetSamples(cohort.host, gisticDSFromMutation(cohort.mutationDataSetId), null),
             intersection)
             .flatMap((samples) => {
                 return Rx.Observable.zip(
-                    sparseData(tcgaHub, cohort.mutationDataSetId, samples, geneList),
-                    datasetFetch(tcgaHub, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
+                    sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+                    datasetFetch(cohort.host, gisticDSFromMutation(cohort.mutationDataSetId), samples, geneList),
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
