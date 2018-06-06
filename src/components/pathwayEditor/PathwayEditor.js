@@ -203,7 +203,18 @@ export default class PathwayEditor extends PureComponent {
     }
 
     downloadView() {
-        alert('downloading active view')
+        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
+        let exportObj = selectedPathwayState.pathway;
+        let now = new Date();
+        let dateString = now.toLocaleDateString()+'-'+now.toLocaleTimeString();
+        let exportName = 'xenaGoView-'+dateString;
+        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+        let downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("download", exportName + ".json");
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
     }
 
     uploadView() {
