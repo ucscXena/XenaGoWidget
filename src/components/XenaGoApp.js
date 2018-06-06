@@ -171,7 +171,7 @@ export default class XenaGoApp extends PureComponent {
                 response.json().then(data => {
                     let cohortData = Object.keys(data)
                         .filter(cohort => {
-                            return (cohort.indexOf('TCGA') === 0 || cohort.indexOf('Cancer Cell Line Encyclopedia (Breast)') === 0) && data[cohort][mutationKey]
+                            return (data[cohort].viewInPathway) && data[cohort][mutationKey]
                         })
                         .map(cohort => {
                             let mutation = data[cohort][mutationKey];
@@ -192,7 +192,7 @@ export default class XenaGoApp extends PureComponent {
             });
 
     }
-
+;
     selectCohort = (selected) => {
         this.setState({selectedCohort: selected});
         let cohort = this.state.cohortData.find(c => c.name === selected);
