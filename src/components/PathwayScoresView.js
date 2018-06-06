@@ -42,7 +42,6 @@ function getMousePos(evt) {
 function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
     let pathwayArray = associatedData[pathwayIndex];
     if (!pathwayArray) {
-        // console.log("No pathway data at " + pathwayIndex + " for " + associateData.length);
         return 0;
     }
 
@@ -237,9 +236,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue = synchronizedSort(prunedColumns,PathwayScoresView.synchronizedGeneList);
             console.log('using synchronized gene list');
         }
-        console.log(PathwayScoresView.synchronizedGeneList);
         returnedValue.index = cohortIndex;
-
 
         statGenerator(returnedValue);
 

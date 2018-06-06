@@ -80,10 +80,8 @@ function scoreColumns(prunedColumns) {
  */
 function sortColumnDensities(prunedColumns) {
 
-
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = scoreColumns(prunedColumns);
-
     sortedColumns.pathways.sort((a, b) => b.density - a.density);
 
     // refilter data by index
@@ -131,7 +129,7 @@ export function overallSort(prunedColumns) {
 export function clusterSort(prunedColumns) {
     let sortedColumns = sortColumnDensities(prunedColumns);
 
-    let sortedPathways = scoreColumns(prunedColumns);
+    // let sortedPathways = scoreColumns(prunedColumns);
 
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
@@ -155,34 +153,28 @@ export function clusterSort(prunedColumns) {
 }
 
 
-function generateSortedList(sortedPathways, geneList) {
-    let returnPathway = [];
-    console.log('sorting the list:',sortedPathways,'into',returnPathway)
-    sortedPathways.forEach( p => {
-        let index = geneList.indexOf(p.gene[0]);
-        console.log(p)
-        console.log('pre- ',p.gene[0],'->',index);
-        returnPathway.splice(index,0,p)
-        console.log('post-',returnPathway);
-    });
-
-    console.log('input',sortedPathways.map( p => p.gene[0]),returnPathway.map(p => p.gene[0]));
-
-    return returnPathway;
-}
-
 export function synchronizedSort(prunedColumns, geneList) {
-    console.log('synchronzie sort with ', prunedColumns, geneList)
-
-
-    let sortedPathways = scoreColumns(prunedColumns);
-
-
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = generateSortedList(sortedPathways,geneList);
+    sortedColumns.pathways = scoreColumns(prunedColumns);
 
     sortedColumns.pathways.sort((a, b) => {
-        return geneList.indexOf(a.gene[0])-geneList.indexOf(b.gene[0])
+        let index1 = geneList.indexOf(a.gene[0]);
+        let index2 = geneList.indexOf(b.gene[0]);
+        //
+        if(index1>=0 && index2 >=0){
+            return geneList.indexOf(a.gene[0])-geneList.indexOf(b.gene[0])
+        }
+        // else
+        // if(index1>=0){
+        //     return 1
+        // }
+        // else
+        // if(index2>=0){
+        //     return -1
+        // }
+        else{
+            return b.density - a.density
+        }
     });
     // refilter data by index
     sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
@@ -197,9 +189,6 @@ export function synchronizedSort(prunedColumns, geneList) {
     // TODO: then sort by column densities
     // TODO: then stub in empty columns
 
-    console.log('sorted columns', sortedColumns);
-    console.log('rendered data', renderedData);
-
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
             if (a[index] !== b[index]) {
@@ -208,7 +197,6 @@ export function synchronizedSort(prunedColumns, geneList) {
         }
         return sum(b) - sum(a)
     });
-    console.log('rendered data 2', renderedData);
 
     renderedData = transpose(renderedData);
     let returnColumns = {};
