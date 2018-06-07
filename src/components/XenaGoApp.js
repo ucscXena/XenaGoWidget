@@ -279,6 +279,8 @@ export default class XenaGoApp extends PureComponent {
                                                     selected={this.state.tissueExpressionFilter}
                                                     pathwayData={this.state.pathwayData}
                                                     geneList={geneList}
+                                                    amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
+                                                    deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
                                                     onChange={this.filterTissueType}/>
                                     <HoverPathwayView data={this.state.pathwayHoverData}/>
                                     <Dialog active={this.state.processing} title='Loading'>
@@ -338,6 +340,8 @@ export default class XenaGoApp extends PureComponent {
                                                         selected={this.state.geneExpressionFilter}
                                                         pathwayData={this.state.geneData}
                                                         geneList={geneList}
+                                                        amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
+                                                        deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
                                                         onChange={this.filterGeneType}/>
                                         <HoverGeneView data={this.state.geneHoverData}/>
                                         <Dialog active={this.state.processing} title='Loading'>

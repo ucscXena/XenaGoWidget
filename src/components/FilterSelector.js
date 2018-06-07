@@ -11,7 +11,7 @@ function lowerCaseCompare(a, b) {
 }
 
 
-function compileData(filteredEffects, data,geneList) {
+function compileData(filteredEffects, data,geneList,amplificationThreshold,deletionThreshold) {
     let {pathways, copyNumber,expression: {rows}} = data;
 
     let genes = new Set(flatten(pluck(pathways, 'gene')));
@@ -29,7 +29,7 @@ function compileData(filteredEffects, data,geneList) {
         let copyNumberData = copyNumber[geneIndex];
 
         copyNumberData.map( ( el)  => {
-            copyNumberTotal += getCopyNumberValue(el)
+            copyNumberTotal += getCopyNumberValue(el,amplificationThreshold,deletionThreshold)
         });
     }
 
@@ -68,9 +68,8 @@ export class FilterSelector extends PureComponent {
     };
 
     render() {
-        const {filters,pathwayData,selected,geneList} = this.props;
-
-        let counts = compileData(Object.keys(filters), pathwayData,geneList);
+        const {filters,pathwayData,selected,geneList,amplificationThreshold,deletionThreshold} = this.props;
+        let counts = compileData(Object.keys(filters), pathwayData,geneList,amplificationThreshold,deletionThreshold);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
         let total = sum(Object.values(counts));
@@ -95,4 +94,6 @@ FilterSelector.propTypes = {
     geneList: PropTypes.any,
     onChange: PropTypes.any,
     selected: PropTypes.any,
+    amplificationThreshold:PropTypes.any,
+    deletionThreshold:PropTypes.any,
 };
