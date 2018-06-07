@@ -54,7 +54,7 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         this.state = this.props.appData;
-        this.state.processing = false ;
+        this.state.processing = false;
         console.log('xena go app props');
         console.log(this.state)
     }
@@ -169,8 +169,8 @@ export default class XenaGoApp extends PureComponent {
                                 name: cohort,
                                 mutationDataSetId: mutation.dataset,
                                 copyNumberDataSetId: copyNumberView.dataset,
-                                amplificationThreshold:copyNumberView.amplificationThreshold,
-                                deletionThreshold:copyNumberView.deletionThreshold,
+                                amplificationThreshold: copyNumberView.amplificationThreshold,
+                                deletionThreshold: copyNumberView.deletionThreshold,
                                 host: mutation.host
                             }
                         })
@@ -195,7 +195,7 @@ export default class XenaGoApp extends PureComponent {
         let cohort = this.state.cohortData.find(c => c.name === selected);
         this.setState({
             selectedCohort: selected,
-            selectedCohortData:cohort,
+            selectedCohortData: cohort,
             processing: true,
         });
         let geneList = this.getGenesForPathways(this.props.pathways);
@@ -267,8 +267,8 @@ export default class XenaGoApp extends PureComponent {
                 return (
                     <Grid>
                         <Row>
-                            <Col md={style.pathway.columns}>
-                                <Card style={{width: style.pathway.columnWidth}}>
+                            <Col md={2}>
+                                <Card style={{width: style.pathway.columnWidth, marginTop: 10}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
                                                     onChange={this.selectCohort}/>
@@ -288,7 +288,7 @@ export default class XenaGoApp extends PureComponent {
                                     </Dialog>
                                 </Card>
                             </Col>
-                            <Col md={style.pathway.expressionColumns}>
+                            <Col md={9}>
                                 <PathwayScoresView width={400} height={this.state.renderHeight}
                                                    offset={this.state.renderOffset}
                                                    data={this.state.pathwayData} titleText=""
@@ -309,8 +309,8 @@ export default class XenaGoApp extends PureComponent {
                                                    key={this.state.key}
                                 />
                             </Col>
-                            <Col mdOffset={1} md={style.gene.expressionColumns}>
-                                <Card style={{width: style.gene.columnWidth}}>
+                            <Col md={1}>
+                                <Card style={{marginTop: 5}}>
                                     <CompareBox statBox={stats}/>
                                 </Card>
                             </Col>
@@ -323,8 +323,8 @@ export default class XenaGoApp extends PureComponent {
                     <Grid>
                         <Row>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={style.gene.columns}>
-                                <Card style={{width: style.gene.columnWidth}}>
+                            <Col md={2}>
+                                <Card style={{width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
                                                     onChange={this.selectCohort}/>
@@ -352,7 +352,7 @@ export default class XenaGoApp extends PureComponent {
                             </Col>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={style.gene.expressionColumns}>
+                            <Col md={9}>
                                 <PathwayScoresView height={this.state.renderHeight}
                                                    offset={this.state.renderOffset}
                                                    data={this.state.geneData}
@@ -377,8 +377,8 @@ export default class XenaGoApp extends PureComponent {
                             </Col>
                             }
                             {stats && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col mdOffset={1} md={style.gene.expressionColumns}>
-                                <Card style={{width: style.gene.columnWidth}}>
+                            <Col md={1}>
+                                <Card style={{marginTop: 5}}>
                                     <CompareBox statBox={stats}/>
                                 </Card>
                             </Col>

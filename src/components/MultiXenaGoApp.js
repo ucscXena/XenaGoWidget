@@ -13,10 +13,9 @@ import {sum} from 'underscore';
 const MAX_GLOBAL_STATS = 10;
 
 // synchronizing gene sorts between pathways
-let synchronizedGeneList  = [];
+let synchronizedGeneList = [];
 
 export default class MultiXenaGoApp extends PureComponent {
-
 
 
     constructor(props) {
@@ -100,7 +99,7 @@ export default class MultiXenaGoApp extends PureComponent {
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
-                <div key={app.key} style={{border: 'solid'}}>
+                <div key={app.key}>
 
 
                     <XenaGoApp appData={app}
@@ -163,8 +162,8 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // set sort as well
         let newSort = this.state.synchronizeSort;
-        if(this.state.synchronizeSelection){
-            newSort = false ;
+        if (this.state.synchronizeSelection) {
+            newSort = false;
         }
 
 
@@ -193,7 +192,7 @@ export default class MultiXenaGoApp extends PureComponent {
             this.setState({
                     apps: apps
                 },
-                () => this.pathwaySelect(rootAppSelection.pathwayClickData,rootAppSelection.selectedPathways)
+                () => this.pathwaySelect(rootAppSelection.pathwayClickData, rootAppSelection.selectedPathways)
             );
         }
         else {
@@ -212,16 +211,16 @@ export default class MultiXenaGoApp extends PureComponent {
         });
     }
 
-    pathwaySelect = (pathwaySelection,selectedPathways) => {
+    pathwaySelect = (pathwaySelection, selectedPathways) => {
         if (this.state.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    if(selectedPathways){
-                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection);
+                    if (selectedPathways) {
+                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
                     }
-                    else{
+                    else {
                         this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                     }
                 }
