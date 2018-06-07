@@ -54,6 +54,7 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         this.state = this.props.appData;
+        this.state.processing = false ;
         console.log('xena go app props');
         console.log(this.state)
     }
@@ -191,12 +192,12 @@ export default class XenaGoApp extends PureComponent {
     ;
 
     selectCohort = (selected) => {
+        let cohort = this.state.cohortData.find(c => c.name === selected);
         this.setState({
             selectedCohort: selected,
+            selectedCohortData:cohort,
             processing: true,
         });
-        let cohort = this.state.cohortData.find(c => c.name === selected);
-        console.log('selecting', cohort)
         let geneList = this.getGenesForPathways(this.props.pathways);
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
@@ -296,7 +297,7 @@ export default class XenaGoApp extends PureComponent {
                                                    loading={cohortLoading}
                                                    min={this.state.minFilter}
                                                    selectedSort={this.state.selectedTissueSort}
-                                                   selectedCohort={this.state.selectedCohort}
+                                                   selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    onClick={this.clickPathway}
@@ -360,7 +361,7 @@ export default class XenaGoApp extends PureComponent {
                                                    loading={cohortLoading}
                                                    min={this.state.minFilter}
                                                    selectedSort={this.state.selectedGeneSort}
-                                                   selectedCohort={this.state.selectedCohort}
+                                                   selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    onClick={this.clickPathway}

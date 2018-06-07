@@ -1,11 +1,9 @@
-
-
 import mutationScores from '../data/mutationVector';
-import {sum,times, memoize, range} from 'underscore';
+import {sum, times, memoize, range} from 'underscore';
 
 
-export function getCopyNumberValue(copyNumberValue,amplificationThreshold,deletionThreshold) {
-    return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold))  ? 1 : 0;
+export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
 
 /**
@@ -49,13 +47,16 @@ export function pruneColumns(data, pathways, min) {
  * @param filter
  * @param min
  * @param key
+ * @param selectedCohort
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key,selectedCohort){
+export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = times(pathways.length, () => times(samples.length, () => 0));
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
+
+    console.log('associating', selectedCohort)
 
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
@@ -85,7 +86,9 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
             for (let index of pathwayIndices) {
                 // process all samples
                 for (let sampleEntryIndex in sampleEntries) {
-                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],selectedCohort.amplificationThreshold,selectedCohort.deletionThreshold);
+                    let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]
+                        , selectedCohort ? selectedCohort.amplificationThreshold : 2
+                        , selectedCohort ? selectedCohort.deletionThreshold : -2);
                     if (returnValue > 0) {
                         returnArray[index][sampleEntryIndex] += returnValue;
                     }
