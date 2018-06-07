@@ -23,7 +23,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
         return (
-            <Dropdown label={'Select Cohort'} value={this.state.selectedCohort} onChange={this.onChange}
+            <Dropdown style={{marginLeft:10}} label={'Select Cohort'} value={this.state.selectedCohort} onChange={this.onChange}
                       source={this.props.cohorts.map(c => ( {label:c.name,value:c.name} ))} />
         );
     }

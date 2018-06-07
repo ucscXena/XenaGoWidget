@@ -172,11 +172,6 @@ class Demo extends PureComponent {
     render() {
         return (<div>
             <AppBar title='Xena Geneset Widget Demo'>
-                <div style={{marginTop: 14}}>
-                    <Chip>
-                        {this.showActive().name}
-                    </Chip>
-                </div>
                 <Navigation type='vertical'>
                     {this.state.view === 'xena' &&
                     <div style={{display: 'inline'}}>

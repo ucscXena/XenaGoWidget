@@ -28,10 +28,10 @@ export class SortSelector extends PureComponent {
     render() {
         // const {sortTypes,selected} = this.props;
         return (
-            <Dropdown label='Sort' onChange={this.setSelected} value={this.state.selectedSort}
-            source={this.state.sortTypes.map(type => ({label:type,value:type}))}
+            <Dropdown style={{marginLeft:10}} label='Sort' onChange={this.setSelected} value={this.state.selectedSort}
+                      source={this.state.sortTypes.map(type => ({label: type, value: type}))}
             >
-            </Dropdown >);
+            </Dropdown>);
     }
 }
 

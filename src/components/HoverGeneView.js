@@ -21,23 +21,23 @@ export default class HoverGeneView extends PureComponent {
                     {data.tissue !== 'Header' &&
                     <List>
                         {title &&
-                        <ListSubHeader caption={title}/>
+                        <ListSubHeader legend={title}/>
                         }
                         {data.pathway &&
                         <ListItem
-                            caption={data.pathway.gene[0]}
-                            legend='Gene'
+                            legend={data.pathway.gene[0]}
+                            caption='Gene'
                         />
                         }
                         {data.expression != null &&
                         <ListItem
-                            caption={data.expression.toString()}
-                            legend='Hits'/>
+                            legend={data.expression.toString()}
+                            caption='Hits'/>
                         }
                         {data.tissue &&
                         <ListItem
-                            caption={data.tissue}
-                            legend='Sample'
+                            legend={data.tissue}
+                            caption='Sample'
                         />
                         }
                     </List>
@@ -45,20 +45,20 @@ export default class HoverGeneView extends PureComponent {
                     {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 &&
                     <List>
                         <ListItem
-                            caption={data.pathway.gene[0]}
-                            legend='Gene'
+                            legend={data.pathway.gene[0]}
+                            caption='Gene'
                         />
                         <ListItem
-                            caption={this.getRatio(data)}
-                            legend='Samples Affected'
+                            legend={this.getRatio(data)}
+                            caption='Samples Affected'
                         />
                     </List>
                     }
                     {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 1 &&
                     <List>
                         <ListItem
-                            caption={data.pathway.golabel}
-                            legend='Pathway'
+                            legend={data.pathway.golabel}
+                            caption='Pathway 123'
                         />
                     </List>
                     }
