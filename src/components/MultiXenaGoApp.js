@@ -10,10 +10,9 @@ import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-too
 import {sum} from 'underscore';
 
 
-const MAX_GLOBAL_STATS = 10;
+const MAX_GLOBAL_STATS = 30;
 
 // synchronizing gene sorts between pathways
-let synchronizedGeneList = [];
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -249,6 +248,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // generate a global stat box
         let statBox = this.generateGlobalStats(apps);
+        console.log(statBox)
 
         this.setState({
             apps: apps,
@@ -315,7 +315,8 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
         return {
-            commonGenes: reducedGenes
+            commonGenes: reducedGenes,
+            cohortCount: apps.length,
         }
     }
 

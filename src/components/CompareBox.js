@@ -3,7 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Chip, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
-const MAX_COLOR = 256  ;
+const MAX_COLOR = 256;
 
 export default class CompareBox extends PureComponent {
 
@@ -12,7 +12,7 @@ export default class CompareBox extends PureComponent {
         super(props);
     }
 
-    style(s,length,colorMask) {
+    style(s, length, colorMask) {
         let color = Math.round(MAX_COLOR * (1.0 - (length * s.score)));
 
         let colorString = 'rgb(';
@@ -29,24 +29,32 @@ export default class CompareBox extends PureComponent {
     }
 
     render() {
-        let {statBox: {commonGenes}} = this.props;
+        let {statBox: {commonGenes, cohortCount}} = this.props;
 
-        if (commonGenes) {
+        if (commonGenes && cohortCount > 1) {
             return (
                 commonGenes.map((s) => {
                     return (
-                        <Chip style={this.style(s,commonGenes.length,[0,1,1])} key={s.name}>
-                            <div style={{lineHeight:"normal",fontSize:"x-small",color:'black',marginTop:0,fontWeight:"bolder"}}>
-                            {s.name}
+                        <Chip style={this.style(s, commonGenes.length, [0, 1, 1])} key={s.name}>
+                            <div style={{
+                                lineHeight: "normal",
+                                fontSize: "x-small",
+                                color: 'black',
+                                marginTop: 0,
+                                fontWeight: "bolder"
+                            }}>
+                                {s.name}
                             </div>
                         </Chip>
                     )
                 })
             )
         }
-        // else{
-        return <div></div>
-        // }
+        else{
+            return <div>
+
+            </div>
+        }
     }
 }
 
