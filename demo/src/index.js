@@ -19,6 +19,9 @@ const GithubIcon = () => (
 );
 
 const LOCAL_STORAGE_STRING = "default-xena-go-key";
+const EXPAND_HEIGHT = 800 ;
+const COMPACT_HEIGHT = 500 ;
+const COMPACT_VIEW_DEFAULT = true ;
 
 class Demo extends PureComponent {
 
@@ -48,7 +51,8 @@ class Demo extends PureComponent {
             synchronizeSort: true,
             synchronizeSelection: true,
             cohortCount: 1,
-            compactView: true,
+            compactView: COMPACT_VIEW_DEFAULT,
+            renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         }
     }
 
@@ -223,6 +227,7 @@ class Demo extends PureComponent {
             <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
                             synchronizeSort={this.state.synchronizeSort}
                             synchronizeSelection={this.state.synchronizeSelection}
+                            renderHeight={this.state.renderHeight}
             />
             }
             {this.state.view === 'pathways' &&
@@ -300,6 +305,7 @@ class Demo extends PureComponent {
     makeCompact(value) {
         this.setState({
             compactView: value,
+            renderHeight: value ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         })
     }
 }

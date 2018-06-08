@@ -18,15 +18,16 @@ export default class MultiXenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-        let {synchronizeSort,synchronizeSelection} = this.props;
+        let {synchronizeSort, synchronizeSelection, renderHeight} = this.props;
         // initilialize an init app
         this.state = {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,
+            renderHeight: renderHeight,
             apps: [
                 {
                     key: 0,
-                    renderHeight: 800,
+                    renderHeight: renderHeight,
                     renderOffset: 5,
                     selectedTissueSort: 'Cluster',
                     selectedGeneSort: 'Cluster',
@@ -94,18 +95,17 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
-        let {synchronizeSort,synchronizeSelection} = this.props;
+        let {synchronizeSort, renderHeight} = this.props;
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
                 <div key={app.key}>
-
-
                     <XenaGoApp appData={app}
                                statGenerator={this.generateStats}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
+                               renderHeight={renderHeight}
                                synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />
@@ -115,27 +115,6 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
 
-    // toggleSynchronizeSort() {
-    //     this.setState({
-    //         synchronizeSort: !this.state.synchronizeSort
-    //     })
-    // }
-
-    // toggleSynchronizeSelection() {
-    //
-    //     // set sort as well
-    //     let newSort = this.state.synchronizeSort;
-    //     if (this.state.synchronizeSelection) {
-    //         newSort = false;
-    //     }
-    //
-    //
-    //     this.setState({
-    //         synchronizeSelection: !this.state.synchronizeSelection,
-    //         synchronizeSort: newSort,
-    //     })
-    // }
-    //
     // // just duplicate the last state
     duplicateCohort() {
         let app = this.state.apps[0];
@@ -145,7 +124,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // calculate the render offset based on the last offset
         let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 5 ;
+        newCohort.renderOffset = renderOffset + renderHeight + 5;
         apps.push(newCohort);
 
         if (this.props.synchronizeSelection) {
@@ -291,4 +270,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
 MultiXenaGoApp.propTyes = {
     pathways: PropTypes.any.isRequired,
+    renderHeight:PropTypes.any,
+    synchronizeSort:PropTypes.any,
+    synchronizeSelection:PropTypes.any,
 };
