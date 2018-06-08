@@ -21,7 +21,7 @@ const GithubIcon = () => (
 const LOCAL_STORAGE_STRING = "default-xena-go-key";
 const EXPAND_HEIGHT = 800 ;
 const COMPACT_HEIGHT = 500 ;
-const COMPACT_VIEW_DEFAULT = true ;
+const COMPACT_VIEW_DEFAULT = false ;
 
 class Demo extends PureComponent {
 
@@ -263,12 +263,14 @@ class Demo extends PureComponent {
 
     // just duplicate the last state
     duplicateCohort() {
+        this.makeCompact(true);
         this.setState({
             cohortCount: this.refs['multiXenaGoApp'].duplicateCohort()
         });
     };
 
     removeCohort() {
+        this.makeCompact(false);
         this.setState({
             cohortCount: this.refs['multiXenaGoApp'].removeCohort()
         })
