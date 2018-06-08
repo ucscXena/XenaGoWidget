@@ -12,7 +12,7 @@ import {pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
-const GENE_LABEL_HEIGHT = 75;
+const GENE_LABEL_HEIGHT = 50;
 
 const style = {
     fadeIn: {
@@ -77,7 +77,7 @@ function getPointData(event, props) {
                 metaSelect: metaSelect
             };
         }
-        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT * 2, samples.length);
+        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 

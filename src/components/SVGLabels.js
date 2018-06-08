@@ -110,7 +110,7 @@ export default class SVGLabels extends PureComponent {
             });
 
             let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, 150, 0, [0, 1, 1]);
-            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], 150, 150, [1, 0, 0]);
+            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], 50, 150, [1, 0, 0]);
             labels = [...l1, ...l2];
         }
         else {
