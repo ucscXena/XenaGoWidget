@@ -181,7 +181,7 @@ class Demo extends PureComponent {
                   rel="stylesheet"/>
 
             <AppBar title='Xena Geneset Widget Demo' >
-                <IconMenu icon='menu' position='topLeft' iconRipple currentColor='white' className={BaseStyle.menu}>
+                <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
                     <Switch
                         checked={this.state.synchronizeSelection}
                         label="Synchronize selection"

@@ -1,7 +1,8 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Dropdown} from "react-toolbox";
+import Input from 'react-toolbox/lib/input';
+
 
 export class CohortSelector extends PureComponent {
 
@@ -23,8 +24,23 @@ export class CohortSelector extends PureComponent {
 
     render() {
         return (
-            <Dropdown style={{marginLeft:10}} label={'Select Cohort'} value={this.state.selectedCohort} onChange={this.onChange}
-                      source={this.props.cohorts.map(c => ( {label:c.name,value:c.name} ))} />
+            <div>
+                <h3>Cohort</h3>
+                <select style={{marginLeft: 10}}
+                        onChange={this.onChange}
+                        value={this.state.selectedCohort}
+                >
+                    {
+                        this.props.cohorts.map(c => {
+                            return (
+                                <option value={c.name} key={c.name}>
+                                    {c.name}
+                                </option>
+                            )
+                        })
+                    }
+                </select>
+            </div>
         );
     }
 }
@@ -34,3 +50,11 @@ CohortSelector.propTypes = {
     selectedCohort: PropTypes.string.isRequired,
     onChange: PropTypes.any.isRequired,
 };
+{/*label={'Select Cohort'}*/
+}
+{/*value={this.state.selectedCohort} onChange={this.onChange}*/
+}
+{/*source={this.props.cohorts.map(c => ( {label:c.name,value:c.name} ))} />*/
+}
+{/*{label:c.name,value:c.name} ))*/
+}
