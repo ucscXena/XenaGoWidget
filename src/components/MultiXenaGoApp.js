@@ -106,6 +106,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
                                renderHeight={renderHeight}
+                               renderOffset={(renderHeight + 5 )* index }
                                synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />

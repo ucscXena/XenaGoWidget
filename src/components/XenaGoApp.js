@@ -258,7 +258,7 @@ export default class XenaGoApp extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator, stats, renderHeight} = this.props;
+        let {statGenerator, stats, renderHeight, renderOffset} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
@@ -352,7 +352,7 @@ export default class XenaGoApp extends PureComponent {
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <Col md={9}>
                                 <PathwayScoresView height={renderHeight}
-                                                   offset={this.state.renderOffset}
+                                                   offset={renderOffset}
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
                                                    statGenerator={statGenerator}
@@ -396,6 +396,7 @@ XenaGoApp.propTypes = {
     statGenerator: PropTypes.any,
     stats: PropTypes.any,
     renderHeight: PropTypes.any,
+    renderOffset: PropTypes.any,
     pathwaySelect: PropTypes.any,
     pathways: PropTypes.any,
     synchronizeSort: PropTypes.any,
