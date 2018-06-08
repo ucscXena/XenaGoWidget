@@ -187,9 +187,7 @@ export default class XenaGoApp extends PureComponent {
                     loadState: 'error'
                 });
             });
-
     }
-    ;
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
@@ -236,7 +234,7 @@ export default class XenaGoApp extends PureComponent {
             });
     };
 
-    closeGeneView = (props) => {
+    closeGeneView = () => {
         this.setState({
             selectedPathways: []
         });

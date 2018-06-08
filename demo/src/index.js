@@ -48,7 +48,7 @@ class Demo extends PureComponent {
             synchronizeSort: true,
             synchronizeSelection: true,
             cohortCount: 1,
-            compactView: false,
+            compactView: true,
         }
     }
 
@@ -188,11 +188,6 @@ class Demo extends PureComponent {
                         onChange={() => this.toggleSynchronizeSort()}
                     />
                     <MenuDivider/>
-                    {/*<Checkbox*/}
-                    {/*checked={this.state.compactView}*/}
-                    {/*label="Compace"*/}
-                    {/*onChange={ (value) => this.makeCompact(value)}*/}
-                    {/*/>*/}
                     <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
                               onClick={() => this.makeCompact(true)}
                               disabled={this.state.compactView}/>
