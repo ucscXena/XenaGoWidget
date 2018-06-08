@@ -16,7 +16,7 @@ let styles = {
 
 export default class SVGLabels extends PureComponent {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
@@ -26,7 +26,7 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-        const highestScore = pathways.reduce((max, current) => (max > current.density) ? max : current.density,0);
+        const highestScore = pathways.reduce((max, current) => (max > current.density) ? max : current.density, 0);
 
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
@@ -59,7 +59,6 @@ export default class SVGLabels extends PureComponent {
                         selectedPathways={selectedPathways}
                         labelString={labelString}
                         colorMask={colorMask}
-                        // onMouseClick={selectPathway}
                         key={labelString}
                     />
                 )
@@ -68,7 +67,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay(div, props) {
-        let {width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
+        let {pathwayLabelHeight,geneLabelHeight,width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
             return;
@@ -79,29 +78,29 @@ export default class SVGLabels extends PureComponent {
         if (referencePathways) {
 
             // TODO: for each gene, map the other pathways that gene is involved in
-            let pathwayMapping = pathways.map( p => {
+            let pathwayMapping = pathways.map(p => {
                 return {
-                    label:p.gene[0],
+                    label: p.gene[0],
                     density: p.density,
                 }
             });
 
 
             // calculates the scores for the pathways based on existing gene density
-            let newRefPathways = referencePathways.map( r => {
+            let newRefPathways = referencePathways.map(r => {
 
-                let density = 0 ;
+                let density = 0;
 
                 // TODO: this could be a lot faster
-                for( let gene of  r.gene){
-                    let found = pathwayMapping.filter( pm => pm.label === gene );
-                    if(found.length>0){
-                        density += found.reduce( (sum , a ) => sum + a.density , 0);
+                for (let gene of  r.gene) {
+                    let found = pathwayMapping.filter(pm => pm.label === gene);
+                    if (found.length > 0) {
+                        density += found.reduce((sum, a) => sum + a.density, 0);
                     }
                 }
 
                 // TODO: there is a race condition in here, that is messing this up
-                return  {
+                return {
                     goid: r.goid,
                     golabel: r.golabel,
                     gene: r.gene,
@@ -109,25 +108,25 @@ export default class SVGLabels extends PureComponent {
                 };
             });
 
-            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, 150, 0, [0, 1, 1]);
-            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], 50, 150, [1, 0, 0]);
+            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, pathwayLabelHeight, 0, [0, 1, 1]);
+            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], geneLabelHeight, pathwayLabelHeight, [1, 0, 0]);
             labels = [...l1, ...l2];
         }
         else {
-            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, 150, 0, [0, 1, 1]);
+            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, pathwayLabelHeight, 0, [0, 1, 1]);
         }
         return labels;
 
     }
 
     render() {
-        const { width, height ,onClick,onMouseMove,offset} = this.props;
+        const {width, height, onClick, onMouseMove, offset} = this.props;
         return (
-            <div style={{...styles.overlay, width, height,top:74+offset}}
+            <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}
                  onClick={onClick}
             >
-                { this.drawTissueOverlay(this,this.props) }
+                {this.drawTissueOverlay(this, this.props)}
             </div>
         )
     }
@@ -136,7 +135,8 @@ SVGLabels.propTypes = {
     width: PropTypes.any,
     height: PropTypes.any,
     offset: PropTypes.any,
-    // onMouseOver: PropTypes.any,
     onClick: PropTypes.any,
     onMouseOver: PropTypes.any,
+    pathwayLabelHeight: PropTypes.any,
+    geneLabelHeight: PropTypes.any,
 };

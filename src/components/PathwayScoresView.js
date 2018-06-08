@@ -169,6 +169,8 @@ class PathwayScoresView extends PureComponent {
                     referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
+                    pathwayLabelHeight={REFERENCE_LABEL_HEIGHT}
+                    geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
