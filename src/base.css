@@ -6,3 +6,11 @@ body {
     margin: 10px;
     padding: 10px;
 }
+
+.menu{
+    currentColor:white;
+    border: 2px;
+    background-color: goldenrod;
+    margin-top: 10px;
+    border-radius: 5px;
+}

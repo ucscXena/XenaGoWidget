@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 
+import BaseStyle from '../../src/base.css';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
@@ -180,7 +181,7 @@ class Demo extends PureComponent {
                   rel="stylesheet"/>
 
             <AppBar title='Xena Geneset Widget Demo' >
-                <IconMenu icon='menu' position='topLeft' iconRipple outline>
+                <IconMenu icon='menu' position='topLeft' iconRipple currentColor='white' className={BaseStyle.menu}>
                     <Switch
                         checked={this.state.synchronizeSelection}
                         label="Synchronize selection"
