@@ -109,78 +109,43 @@ export default class MultiXenaGoApp extends PureComponent {
                                synchronizeSort={this.state.synchronizeSort}
                                pathways={this.props.pathways}
                     />
-
-                    <Card>
-                        {index === 0 &&
-                        <CardActions>
-                            <Switch
-                                checked={this.state.synchronizeSelection}
-                                label="Synchronize selection"
-                                onChange={() => this.toggleSynchronizeSelection()}
-                            />
-                        </CardActions>
-                        }
-                        {index === 0 &&
-                        <CardActions>
-                            <Switch
-                                disabled={!this.state.synchronizeSelection}
-                                checked={this.state.synchronizeSort}
-                                label="Synchronize sort "
-                                onChange={() => this.toggleSynchronizeSort()}
-                            />
-                        </CardActions>
-                        }
-
-                        <CardActions>
-                            {index > 0 &&
-                            // if its not the first one, then allow for a deletion
-                            <Button label='- Remove Cohort' raised flat onClick={() => this.removeCohort(app)}/>
-                            }
-
-                            {index === 0 &&
-                            // if its the last one, then allow for an add
-                            <Button label='+ Add Cohort' raised primary onClick={() => this.duplicateCohort(app)}/>
-                            }
-                        </CardActions>
-                    </Card>
-
-
                 </div>
             )
         });
     }
 
 
-    toggleSynchronizeSort() {
-        this.setState({
-            synchronizeSort: !this.state.synchronizeSort
-        })
-    }
+    // toggleSynchronizeSort() {
+    //     this.setState({
+    //         synchronizeSort: !this.state.synchronizeSort
+    //     })
+    // }
 
-    toggleSynchronizeSelection() {
-
-        // set sort as well
-        let newSort = this.state.synchronizeSort;
-        if (this.state.synchronizeSelection) {
-            newSort = false;
-        }
-
-
-        this.setState({
-            synchronizeSelection: !this.state.synchronizeSelection,
-            synchronizeSort: newSort,
-        })
-    }
-
-    // just duplicate the last state
-    duplicateCohort(app) {
+    // toggleSynchronizeSelection() {
+    //
+    //     // set sort as well
+    //     let newSort = this.state.synchronizeSort;
+    //     if (this.state.synchronizeSelection) {
+    //         newSort = false;
+    //     }
+    //
+    //
+    //     this.setState({
+    //         synchronizeSelection: !this.state.synchronizeSelection,
+    //         synchronizeSort: newSort,
+    //     })
+    // }
+    //
+    // // just duplicate the last state
+    duplicateCohort() {
+        let app = this.state.apps[0];
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key = this.state.apps[this.state.apps.length - 1].key + 1;
         let apps = JSON.parse(JSON.stringify(this.state.apps));
 
         // calculate the render offset based on the last offset
         let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 160;
+        newCohort.renderOffset = renderOffset + renderHeight + 5 ;
         apps.push(newCohort);
 
         if (this.state.synchronizeSelection) {
@@ -199,15 +164,18 @@ export default class MultiXenaGoApp extends PureComponent {
                 apps: apps
             });
         }
+        return apps.length;
 
 
     };
 
-    removeCohort(app) {
+    removeCohort() {
+        let app = this.state.apps[1];
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter((f) => f.key !== app.key);
         this.setState({
             apps: apps
         });
+        return apps.length;
     }
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {

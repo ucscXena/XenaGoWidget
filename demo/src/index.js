@@ -1,7 +1,8 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {FontIcon,Avatar, Chip, Button, AppBar, Link, Navigation,BrowseButton} from "react-toolbox";
+import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
+import {Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
@@ -21,20 +22,21 @@ const LOCAL_STORAGE_STRING = "default-xena-go-key";
 
 class Demo extends PureComponent {
 
-    static storePathway(pathway){
-        if(pathway){
-            localStorage.setItem(LOCAL_STORAGE_STRING,JSON.stringify(pathway));
+    static storePathway(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
         }
     }
-    static getPathway(){
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING)) ;
-        console.log('reading stored pathway',storedPathway);
+
+    static getPathway() {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        console.log('reading stored pathway', storedPathway);
         return storedPathway ? storedPathway : DefaultPathWays;
     }
 
     constructor(props) {
         super(props);
-        console.log('constrocuting',Demo.getPathway());
+        console.log('constrocuting', Demo.getPathway());
         this.state = {
             view: 'xena',
             // view: 'pathways',
@@ -45,10 +47,13 @@ class Demo extends PureComponent {
                     selected: true
                 }
             ],
+            synchronizeSort: true,
+            synchronizeSelection: true,
+            cohortCount:1,
         }
     }
 
-    handleUpload = (file) =>{
+    handleUpload = (file) => {
         Demo.storePathway(file);
         this.setState({
             pathwaySets: [
@@ -61,7 +66,7 @@ class Demo extends PureComponent {
         })
     };
 
-    handleReset = () =>{
+    handleReset = () => {
         Demo.storePathway(DefaultPathWays);
         this.setState({
             pathwaySets: [
@@ -80,9 +85,9 @@ class Demo extends PureComponent {
         // allSets = allSets.filter(f => (!f || f.selected === false));
 
         let newGeneSetObject = {
-            goid:'',
-            golabel:selectedPathway,
-            gene:[]
+            goid: '',
+            golabel: selectedPathway,
+            gene: []
         };
         selectedPathwaySet.pathway.unshift(newGeneSetObject);
         // allSets.push(selectedPathwaySet);
@@ -90,7 +95,7 @@ class Demo extends PureComponent {
         Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
-            selectedPathway: selectedPathwaySet ,
+            selectedPathway: selectedPathwaySet,
         });
     };
 
@@ -170,10 +175,30 @@ class Demo extends PureComponent {
     };
 
     render() {
+        console.log(this.state.pathwaySets, this.state.pathwaySets.length)
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                   rel="stylesheet"/>
             <AppBar title='Xena Geneset Widget Demo'>
+                <IconMenu icon='menu' position='topLeft' iconRipple>
+                    <Switch
+                        checked={this.state.synchronizeSelection}
+                        label="Synchronize selection"
+                        onChange={() => this.toggleSynchronizeSelection()}
+                    />
+                    <Switch
+                        checked={this.state.synchronizeSort}
+                        label="Synchronize sort"
+                        onChange={() => this.toggleSynchronizeSort()}
+                    />
+                    <MenuDivider/>
+                    <MenuItem value='settings' icon='add' caption='Add cohort'
+                              onClick={() => this.duplicateCohort()}
+                              disabled={this.state.cohortCount !== 1}/>
+                    <MenuItem value='settings' icon='remove' caption='Remove cohort'
+                              onClick={() => this.removeCohort()}
+                              disabled={this.state.cohortCount === 1}/>
+                </IconMenu>
                 <Navigation type='vertical'>
                     {this.state.view === 'xena' &&
                     <div style={{display: 'inline'}}>
@@ -192,7 +217,10 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
+            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                            synchronizeSort={this.state.synchronizeSort}
+                            synchronizeSelection={this.state.synchronizeSelection}
+            />
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
@@ -209,6 +237,10 @@ class Demo extends PureComponent {
         </div>)
     }
 
+    getActiveApp() {
+        return this.state.pathwaySets.find(ps => ps.selected);
+    }
+
     showPathways() {
         this.setState({
             view: 'pathways'
@@ -218,6 +250,41 @@ class Demo extends PureComponent {
     showXena() {
         this.setState({
             view: 'xena'
+        })
+    }
+
+    // just duplicate the last state
+    duplicateCohort() {
+        this.setState({
+            cohortCount: this.refs['multiXenaGoApp'].duplicateCohort()
+        });
+    };
+
+    removeCohort() {
+        this.setState({
+            cohortCount: this.refs['multiXenaGoApp'].removeCohort()
+    })
+        ;
+    }
+
+    toggleSynchronizeSort() {
+        this.setState({
+            synchronizeSort: !this.state.synchronizeSort
+        })
+    }
+
+    toggleSynchronizeSelection() {
+
+        // set sort as well
+        let newSort = this.state.synchronizeSort;
+        if (this.state.synchronizeSelection) {
+            newSort = false;
+        }
+
+
+        this.setState({
+            synchronizeSelection: !this.state.synchronizeSelection,
+            synchronizeSort: newSort,
         })
     }
 
