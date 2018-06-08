@@ -30,13 +30,11 @@ class Demo extends PureComponent {
 
     static getPathway() {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
-        console.log('reading stored pathway', storedPathway);
         return storedPathway ? storedPathway : DefaultPathWays;
     }
 
     constructor(props) {
         super(props);
-        console.log('constrocuting', Demo.getPathway());
         this.state = {
             view: 'xena',
             // view: 'pathways',
@@ -101,9 +99,6 @@ class Demo extends PureComponent {
 
     // TODO
     addGene = (selectedPathway, selectedGene) => {
-
-        console.log('ROOT: adding new gene', selectedPathway, selectedGene);
-
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
@@ -175,7 +170,6 @@ class Demo extends PureComponent {
     };
 
     render() {
-        console.log(this.state.pathwaySets, this.state.pathwaySets.length)
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                   rel="stylesheet"/>

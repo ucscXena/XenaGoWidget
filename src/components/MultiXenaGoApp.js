@@ -5,7 +5,6 @@ import XenaGoApp from './XenaGoApp';
 import ExampleExpression from "../../tests/data/bulkExpression";
 import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
 import ExampleSamples from "../../tests/data/samples";
-import {Button} from 'react-toolbox/lib/button';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
@@ -19,11 +18,11 @@ export default class MultiXenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-
+        let {synchronizeSort,synchronizeSelection} = this.props;
         // initilialize an init app
         this.state = {
-            synchronizeSort: true,
-            synchronizeSelection: true,
+            synchronizeSort: synchronizeSort,
+            synchronizeSelection: synchronizeSelection,
             apps: [
                 {
                     key: 0,
@@ -95,6 +94,7 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
+        let {synchronizeSort,synchronizeSelection} = this.props;
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -106,7 +106,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
-                               synchronizeSort={this.state.synchronizeSort}
+                               synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />
                 </div>
@@ -148,7 +148,7 @@ export default class MultiXenaGoApp extends PureComponent {
         newCohort.renderOffset = renderOffset + renderHeight + 5 ;
         apps.push(newCohort);
 
-        if (this.state.synchronizeSelection) {
+        if (this.props.synchronizeSelection) {
             let myIndex = app.key;
             app.propagate = false;
 
@@ -179,7 +179,7 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
-        if (this.state.synchronizeSelection) {
+        if (this.props.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
@@ -216,8 +216,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // generate a global stat box
         let statBox = this.generateGlobalStats(apps);
-        console.log(statBox)
-
         this.setState({
             apps: apps,
             statBox: statBox,
