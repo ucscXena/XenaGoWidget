@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {Avatar, Chip, Button, AppBar, Link, Navigation,BrowseButton} from "react-toolbox";
+import {FontIcon,Avatar, Chip, Button, AppBar, Link, Navigation,BrowseButton} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
@@ -171,6 +171,8 @@ class Demo extends PureComponent {
 
     render() {
         return (<div>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                  rel="stylesheet"/>
             <AppBar title='Xena Geneset Widget Demo'>
                 <Navigation type='vertical'>
                     {this.state.view === 'xena' &&
