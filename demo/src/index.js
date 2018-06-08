@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
-import {Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
+import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
@@ -47,7 +47,8 @@ class Demo extends PureComponent {
             ],
             synchronizeSort: true,
             synchronizeSelection: true,
-            cohortCount:1,
+            cohortCount: 1,
+            compactView: false,
         }
     }
 
@@ -173,8 +174,9 @@ class Demo extends PureComponent {
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                   rel="stylesheet"/>
-            <AppBar title='Xena Geneset Widget Demo'>
-                <IconMenu icon='menu' position='topLeft' iconRipple>
+
+            <AppBar title='Xena Geneset Widget Demo' >
+                <IconMenu icon='menu' position='topLeft' iconRipple outline>
                     <Switch
                         checked={this.state.synchronizeSelection}
                         label="Synchronize selection"
@@ -185,6 +187,18 @@ class Demo extends PureComponent {
                         label="Synchronize sort"
                         onChange={() => this.toggleSynchronizeSort()}
                     />
+                    <MenuDivider/>
+                    {/*<Checkbox*/}
+                    {/*checked={this.state.compactView}*/}
+                    {/*label="Compace"*/}
+                    {/*onChange={ (value) => this.makeCompact(value)}*/}
+                    {/*/>*/}
+                    <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
+                              onClick={() => this.makeCompact(true)}
+                              disabled={this.state.compactView}/>
+                    <MenuItem value='settings' icon='import_export' caption='Expand'
+                              onClick={() => this.makeCompact(false)}
+                              disabled={!this.state.compactView}/>
                     <MenuDivider/>
                     <MenuItem value='settings' icon='add' caption='Add cohort'
                               onClick={() => this.duplicateCohort()}
@@ -257,7 +271,7 @@ class Demo extends PureComponent {
     removeCohort() {
         this.setState({
             cohortCount: this.refs['multiXenaGoApp'].removeCohort()
-    })
+        })
         ;
     }
 
@@ -286,6 +300,12 @@ class Demo extends PureComponent {
         return this.state.pathwaySets.find(f => {
             return f.selected === true
         });
+    }
+
+    makeCompact(value) {
+        this.setState({
+            compactView: value,
+        })
     }
 }
 
