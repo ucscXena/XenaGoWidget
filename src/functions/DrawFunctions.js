@@ -15,10 +15,6 @@ function selectPathway(item) {
     // alert(JSON.stringify(item))
 }
 
-const reducer = (a, b) => a.density + b;
-
-
-
 
 function findRegions(index, height, count) {
     // Find pixel regions having the same set of samples, e.g.
@@ -92,7 +88,7 @@ export default {
         }
 
         if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, 300);
+            drawExpressionData(vg, width, height, layout, associateData, 200);
             // drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
             // drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
         }
