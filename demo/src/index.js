@@ -184,12 +184,12 @@ class Demo extends PureComponent {
                 <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
                     <Switch
                         checked={this.state.synchronizeSelection}
-                        label="Synchronize selection"
+                        label="Sync pathway"
                         onChange={() => this.toggleSynchronizeSelection()}
                     />
                     <Switch
                         checked={this.state.synchronizeSort}
-                        label="Synchronize sort"
+                        label="Sync sort"
                         onChange={() => this.toggleSynchronizeSort()}
                     />
                     <MenuDivider/>
