@@ -1,6 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
+import BaseStyle from '../../src/base.css';
 
 
 export class CohortSelector extends PureComponent {
@@ -28,6 +29,7 @@ export class CohortSelector extends PureComponent {
                 <select style={{marginLeft: 10}}
                         onChange={this.onChange}
                         value={this.state.selectedCohort}
+                        className={BaseStyle.softflow}
                 >
                     {
                         this.props.cohorts.map(c => {
