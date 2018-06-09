@@ -148,7 +148,7 @@ export default class XenaGoApp extends PureComponent {
     };
 
     componentWillMount() {
-        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
+        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDatasetForGeneset.json";
         fetch(cohortPreferredURL)
             .then(function (response) {
                 if (!response.ok) {
