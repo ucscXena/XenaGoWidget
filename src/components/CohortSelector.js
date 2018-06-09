@@ -1,7 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import Input from 'react-toolbox/lib/input';
 
 
 export class CohortSelector extends PureComponent {
@@ -14,7 +13,8 @@ export class CohortSelector extends PureComponent {
     }
 
     onChange = (event) => {
-        this.setState({selectedCohort: event});
+        console.log(event.target.value)
+        this.setState({selectedCohort: event.target.value});
         let {onChange} = this.props;
         if (onChange) {
             onChange(event);
@@ -50,11 +50,3 @@ CohortSelector.propTypes = {
     selectedCohort: PropTypes.string.isRequired,
     onChange: PropTypes.any.isRequired,
 };
-{/*label={'Select Cohort'}*/
-}
-{/*value={this.state.selectedCohort} onChange={this.onChange}*/
-}
-{/*source={this.props.cohorts.map(c => ( {label:c.name,value:c.name} ))} />*/
-}
-{/*{label:c.name,value:c.name} ))*/
-}
