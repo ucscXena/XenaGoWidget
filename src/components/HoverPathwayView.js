@@ -1,7 +1,8 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {List, ListItem, ListSubHeader} from "react-toolbox";
+import {Chip, Avatar, List, ListItem, ListSubHeader} from "react-toolbox";
+import BaseStyle from '../../src/base.css';
 
 export default class HoverPathwayView extends PureComponent {
 
@@ -17,54 +18,69 @@ export default class HoverPathwayView extends PureComponent {
         let {data, title} = this.props;
         if (data.tissue) {
             return (
-                <div style={{height:'500px'}}>
+                <div style={{height: '500px'}}>
                     {data.tissue !== 'Header' &&
-                    <List>
+                    <div>
                         {title &&
-                        <ListSubHeader caption={title}/>
+                        <H3>{title}</H3>
                         }
 
                         {data.pathway &&
-                        <ListItem
-                            caption={data.pathway.golabel}
-                            legend={data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}
-                        />
+                        <div className={BaseStyle.pathwayChip}>
+                            <span>
+                                <strong>{data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}</strong>
+                                {data.pathway.golabel}
+                            </span>
+                        </div>
                         }
                         {data.pathway &&
-                        <ListItem
-                            caption={data.pathway.gene.length.toString()}
-                            legend='Genes'
-                        />
+                        <Chip>
+                            <span>
+                                <strong>Genes</strong>
+                                {data.pathway.gene.length.toString()}
+                            </span>
+                        </Chip>
                         }
                         {data.expression != null &&
-                        <ListItem
-                            caption={data.expression.toString()}
-                            legend='Hits'/>
+                        <Chip>
+                            <span>
+                                <strong>Hits</strong>
+                                {data.expression.toString()}
+                            </span>
+                        </Chip>
                         }
                         {data.tissue &&
-                        <ListItem
-                            caption={data.tissue}
-                            legend='Sample'
-                        />
+                        <div className={BaseStyle.pathwayChip}>
+                            <span>
+                                <strong>Sample</strong>
+                                {data.tissue}
+                            </span>
+                        </div>
                         }
-                    </List>
+                    </div>
                     }
                     {
                         data.tissue === 'Header' && data.pathway &&
-                        <List>
-                            <ListItem
-                                caption={data.pathway.golabel}
-                                legend={data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}
-                            />
-                            <ListItem
-                                caption={data.pathway.gene.length.toString()}
-                                legend='Genes'
-                            />
-                            <ListItem
-                                caption={this.getRatio(data)}
-                                legend='Samples Affected'
-                            />
-                        </List>
+                        <div>
+                            <div className={BaseStyle.pathwayChip}>
+                                <span>
+                                <strong>{data.pathway.goid ? 'Pathway (' + data.pathway.goid + ')' : 'Pathway'}</strong>&nbsp;&nbsp;
+                                    {data.pathway.golabel}
+                            </span>
+                            </div>
+                            <Chip>
+                                <span>
+                                <strong>Genes</strong>
+                                    {data.pathway.gene.length.toString()}
+                            </span>
+                            </Chip>
+                            <div className={BaseStyle.pathwayChip}>
+                                <span>
+                                <strong>Samples Affected</strong>&nbsp;&nbsp;
+                                    {this.getRatio(data)}
+                            </span>
+                            </div>
+                        </div>
                     }
                 </div>
             );

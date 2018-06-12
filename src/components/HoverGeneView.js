@@ -1,7 +1,8 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {List, ListItem, ListSubHeader} from "react-toolbox";
+import {Chip, Avatar, List, ListItem, ListSubHeader} from "react-toolbox";
+import BaseStyle from '../../src/base.css';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -19,48 +20,42 @@ export default class HoverGeneView extends PureComponent {
             return (
                 <div>
                     {data.tissue !== 'Header' &&
-                    <List>
+                    <div>
                         {title &&
-                        <ListSubHeader legend={title}/>
+                        <H3>{title}</H3>
                         }
                         {data.pathway &&
-                        <ListItem
-                            legend={data.pathway.gene[0]}
-                            caption='Gene'
-                        />
+                        <Chip>
+                            <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
+                        </Chip>
                         }
                         {data.expression != null &&
-                        <ListItem
-                            legend={data.expression.toString()}
-                            caption='Hits'/>
+                        <Chip>
+                            <span><strong>Hits</strong> {data.expression.toString()}</span>
+                        </Chip>
                         }
                         {data.tissue &&
-                        <ListItem
-                            legend={data.tissue}
-                            caption='Sample'
-                        />
+                        <Chip>
+                            <span><strong>Sample</strong> {data.tissue}</span>
+                        </Chip>
                         }
-                    </List>
+                    </div>
                     }
                     {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 &&
-                    <List>
-                        <ListItem
-                            legend={data.pathway.gene[0]}
-                            caption='Gene'
-                        />
-                        <ListItem
-                            legend={this.getRatio(data)}
-                            caption='Samples Affected'
-                        />
-                    </List>
+                    <div>
+                        <Chip>
+                            <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
+                        </Chip>
+                        <Chip>
+                            <span><strong>Samples Affected</strong> {this.getRatio(data)}</span>
+                        </Chip>
+                    </div>
                     }
                     {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 1 &&
-                    <List>
-                        <ListItem
-                            legend={data.pathway.golabel}
-                            caption='Pathway'
-                        />
-                    </List>
+                    <div className={BaseStyle.pathwayChip}>
+                        <strong>Pathway&nbsp;&nbsp;</strong>
+                        {data.pathway.golabel}
+                    </div>
                     }
                 </div>
             );
