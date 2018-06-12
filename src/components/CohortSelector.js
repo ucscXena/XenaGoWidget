@@ -25,8 +25,8 @@ export class CohortSelector extends PureComponent {
     render() {
         return (
             <div>
-                <h3>Cohort</h3>
-                <select style={{marginLeft: 10}}
+                <div style={{marginTop:10,marginLeft:10,marginBottom:3,fontSize:"large",color:"gray",fontWeight:"bold"}}>Select Cohort</div>
+                <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
                         value={this.state.selectedCohort}
                         className={BaseStyle.softflow}
