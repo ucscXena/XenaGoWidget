@@ -26,7 +26,10 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-        const highestScore = pathways.reduce((max, current) => (max > current.density) ? max : current.density, 0);
+        const highestScore = pathways.reduce((max, current) => {
+            let score = current.density / current.gene.length ;
+            return (max > score) ? max : score;
+        },0);
 
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
@@ -53,6 +56,7 @@ export default class SVGLabels extends PureComponent {
                         labelHeight={labelHeight}
                         labelOffset={labelOffset}
                         highScore={highestScore}
+                        geneLength={geneLength}
                         left={el.start}
                         width={el.size}
                         item={d}

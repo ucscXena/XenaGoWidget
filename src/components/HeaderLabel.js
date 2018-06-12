@@ -23,9 +23,10 @@ export class HeaderLabel extends PureComponent {
     };
 
     style() {
-        let {item: {density, golabel}, selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
+        console.log('props',this.props)
+        let {item: {density, golabel}, geneLength,selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
-        let color = Math.round(this.maxColor * (1.0 - (density / highScore)));
+        let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
 
         let colorString = 'rgb(';
         colorString += (colorMask[0] === 0 ? 256 : color) + ',';
@@ -118,5 +119,6 @@ HeaderLabel.propTypes = {
     item: PropTypes.any,
     selectedPathways: PropTypes.any,
     colorMask: PropTypes.any,
+    geneLength: PropTypes.any,
     // onMouseClick: PropTypes.any,
 };
