@@ -23,7 +23,6 @@ export class HeaderLabel extends PureComponent {
     };
 
     style() {
-        console.log('props',this.props)
         let {item: {density, golabel}, geneLength,selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));

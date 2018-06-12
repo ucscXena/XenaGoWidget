@@ -153,41 +153,63 @@ export function clusterSort(prunedColumns) {
 }
 
 
+function generateMissingColumns(pathways, geneList) {
+
+    let pathwayGenes = pathways.map(p => p.gene[0]);
+    let missingGenes = geneList.filter(g => pathwayGenes.indexOf(g) < 0);
+
+    console.log("missing genes", missingGenes);
+    console.log('pathways', pathways)
+    let returnColumns = [];
+    missingGenes.forEach(mg => {
+        let newPathway = {
+            density: 0,
+            goid: pathways[0].goid,
+            golabel: pathways[0].golabel,
+            index: -1,
+            gene: [mg],
+        };
+        returnColumns.push(newPathway);
+    });
+
+    return returnColumns;
+}
+
 export function synchronizedSort(prunedColumns, geneList) {
+
+
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = scoreColumns(prunedColumns);
+    let missingColumns = generateMissingColumns(sortedColumns.pathways, geneList);
+    sortedColumns.pathways = [...sortedColumns.pathways, ...missingColumns];
 
     sortedColumns.pathways.sort((a, b) => {
-        let index1 = geneList.indexOf(a.gene[0]);
-        let index2 = geneList.indexOf(b.gene[0]);
-        //
-        if(index1>=0 && index2 >=0){
-            return geneList.indexOf(a.gene[0])-geneList.indexOf(b.gene[0])
+        let geneA = a.gene[0];
+        let geneB = b.gene[0];
+        let index1 = geneList.indexOf(geneA);
+        let index2 = geneList.indexOf(geneB);
+
+        if (index1 >= 0 && index2 >= 0) {
+            return geneList.indexOf(geneA) - geneList.indexOf(geneB)
         }
-        // else
-        // if(index1>=0){
-        //     return 1
-        // }
-        // else
-        // if(index2>=0){
-        //     return -1
-        // }
-        else{
-            return b.density - a.density
-        }
+        return b.density - a.density
     });
     // refilter data by index
-    sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
+    let columnLength = sortedColumns.data[0].length;
+    sortedColumns.data = sortedColumns.pathways.map(el => {
+        let columnData = sortedColumns.data[el.index];
+        if (columnData) {
+            return columnData
+        }
+        else {
+            return Array.from(Array(columnLength), () => 0);
+        }
+    });
 
     sortedColumns.samples = prunedColumns.samples;
 
-    // let sortedColumns = sortColumnDensities(prunedColumns);
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
-
-    // TODO: sort where the column appears based on geneList first
-    // TODO: then sort by column densities
-    // TODO: then stub in empty columns
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
