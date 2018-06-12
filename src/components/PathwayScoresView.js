@@ -216,7 +216,6 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
         prunedColumns.samples = samples;
-        let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
 
@@ -239,6 +238,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             console.log('using synchronized gene list');
         }
         returnedValue.index = cohortIndex;
+        let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
         statGenerator(returnedValue);
 
