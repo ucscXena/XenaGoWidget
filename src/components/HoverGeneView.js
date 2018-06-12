@@ -58,7 +58,7 @@ export default class HoverGeneView extends PureComponent {
                     <List>
                         <ListItem
                             legend={data.pathway.golabel}
-                            caption='Pathway 123'
+                            caption='Pathway'
                         />
                     </List>
                     }
