@@ -12,6 +12,7 @@ import {sum} from 'underscore';
 const MAX_GLOBAL_STATS = 30;
 
 // synchronizing gene sorts between pathways
+const LOCAL_STORAGE_STRING = "default-app-storage";
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -24,57 +25,7 @@ export default class MultiXenaGoApp extends PureComponent {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
-            apps: [
-                {
-                    key: 0,
-                    renderHeight: renderHeight,
-                    renderOffset: 5,
-                    selectedTissueSort: 'Cluster',
-                    selectedGeneSort: 'Cluster',
-                    selectedPathways: [],
-                    sortTypes: ['Cluster', 'Hierarchical'],
-                    pathwayData: {
-                        cohort: 'TCGA Ovarian Cancer (OV)',
-                        copyNumber: ExampleCopyNumber,
-                        expression: ExampleExpression,
-                        pathways: this.props.pathways,
-                        samples: ExampleSamples,
-                    },
-                    loadState: 'loading',
-                    selectedCohort: 'TCGA Ovarian Cancer (OV)',
-                    cohortData: {},
-                    tissueExpressionFilter: 'All',
-                    geneExpressionFilter: 'All',
-                    minFilter: 2,
-                    filterPercentage: 0.005,
-                    geneData: {
-                        copyNumber: [],
-                        expression: [],
-                        pathways: [],
-                        samples: [],
-                    },
-                    pathwayHoverData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    pathwayClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    geneHoverData: {
-                        tissue: null,
-                        gene: null,
-                        score: null
-                    },
-                    geneClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                },
-            ]
+            apps:MultiXenaGoApp.getApp(this.props),
         }
     }
 
@@ -96,6 +47,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     render() {
         let {synchronizeSort, renderHeight} = this.props;
+        MultiXenaGoApp.storeApp(this.state.apps);
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -106,7 +58,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                pathwaySelect={this.pathwaySelect}
                                ref={refString}
                                renderHeight={renderHeight}
-                               renderOffset={(renderHeight + 5 )* index }
+                               renderOffset={(renderHeight + 5) * index}
                                synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />
@@ -266,12 +218,77 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
+    static storeApp(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+        }
+    }
+
+    static getApp(props) {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        if (storedPathway) {
+            return storedPathway
+        }
+        else {
+            return [
+                {
+                    key: 0,
+                    renderHeight: props.renderHeight,
+                    renderOffset: 5,
+                    selectedTissueSort: 'Cluster',
+                    selectedGeneSort: 'Cluster',
+                    selectedPathways: [],
+                    sortTypes: ['Cluster', 'Hierarchical'],
+                    pathwayData: {
+                        cohort: 'TCGA Ovarian Cancer (OV)',
+                        copyNumber: ExampleCopyNumber,
+                        expression: ExampleExpression,
+                        pathways: props.pathways,
+                        samples: ExampleSamples,
+                    },
+                    loadState: 'loading',
+                    selectedCohort: 'TCGA Ovarian Cancer (OV)',
+                    cohortData: {},
+                    tissueExpressionFilter: 'All',
+                    geneExpressionFilter: 'All',
+                    minFilter: 2,
+                    filterPercentage: 0.005,
+                    geneData: {
+                        copyNumber: [],
+                        expression: [],
+                        pathways: [],
+                        samples: [],
+                    },
+                    pathwayHoverData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                    pathwayClickData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                    geneHoverData: {
+                        tissue: null,
+                        gene: null,
+                        score: null
+                    },
+                    geneClickData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                },
+            ];
+        }
+    }
 
 }
 
 MultiXenaGoApp.propTyes = {
     pathways: PropTypes.any.isRequired,
-    renderHeight:PropTypes.any,
-    synchronizeSort:PropTypes.any,
-    synchronizeSelection:PropTypes.any,
+    renderHeight: PropTypes.any,
+    synchronizeSort: PropTypes.any,
+    synchronizeSelection: PropTypes.any,
 };
