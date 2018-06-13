@@ -288,7 +288,7 @@ export default class XenaGoApp extends PureComponent {
                             </Col>
                             <Col md={9}>
                                 <PathwayScoresView width={400} height={renderHeight}
-                                                   offset={this.state.renderOffset}
+                                                   offset={renderOffset}
                                                    data={this.state.pathwayData} titleText=""
                                                    filter={this.state.tissueExpressionFilter}
                                                    statGenerator={statGenerator}
