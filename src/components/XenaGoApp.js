@@ -387,7 +387,11 @@ export default class XenaGoApp extends PureComponent {
             }
         }
 
-        return <div>Error</div>
+        return (
+        <Dialog active={this.state.processing} title='Loading'>
+            {this.state.selectedCohort}
+        </Dialog>
+        );
     }
 }
 

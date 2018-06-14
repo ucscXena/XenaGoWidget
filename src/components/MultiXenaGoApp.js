@@ -96,10 +96,17 @@ export default class MultiXenaGoApp extends PureComponent {
                 apps: apps
             });
         }
-        return apps.length;
+        return this.cohortCount();
 
 
     };
+
+    cohortCount(){
+        if(this.state.apps){
+            return this.state.apps.length;
+        }
+        return 0 ;
+    }
 
     removeCohort() {
         let app = this.state.apps[1];
@@ -107,7 +114,7 @@ export default class MultiXenaGoApp extends PureComponent {
         this.setState({
             apps: apps
         });
-        return apps.length;
+        return this.cohortCount();
     }
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {

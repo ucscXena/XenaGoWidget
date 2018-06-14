@@ -200,10 +200,10 @@ class Demo extends PureComponent {
                               onClick={() => this.makeCompact(false)}
                               disabled={!this.state.compactView}/>
                     <MenuDivider/>
-                    <MenuItem value='settings' icon='add' caption='Add cohort'
+                    <MenuItem value='settings' icon='add' caption='Add Cohort'
                               onClick={() => this.duplicateCohort()}
                               disabled={this.state.cohortCount !== 1}/>
-                    <MenuItem value='settings' icon='remove' caption='Remove cohort'
+                    <MenuItem value='settings' icon='remove' caption='Remove Cohort'
                               onClick={() => this.removeCohort()}
                               disabled={this.state.cohortCount === 1}/>
                 </IconMenu>
