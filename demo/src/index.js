@@ -294,6 +294,9 @@ class Demo extends PureComponent {
     componentDidUpdate(){
         console.log('more refs:',this.refs);
         console.log('found xena refs:',this.refs['multiXenaGoApp']);
+        if(this.state.view==='xena'){
+            this.refs['multiXenaGoApp'].reloadCohorts();
+        }
     }
 
     toggleSynchronizeSelection() {

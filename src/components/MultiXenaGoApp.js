@@ -69,6 +69,10 @@ export default class MultiXenaGoApp extends PureComponent {
 
     reloadCohorts (){
         alert('reloading the cohort')
+        return this.state.apps.map((app, index) => {
+            let refString = 'xena-go-app-' + index;
+            this.refs[refString].reloadCohort();
+        });
     };
 
     // // just duplicate the last state
