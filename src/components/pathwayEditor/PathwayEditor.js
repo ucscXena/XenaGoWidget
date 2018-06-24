@@ -116,9 +116,11 @@ export default class PathwayEditor extends PureComponent {
                                maxLength={16}/>
                     </Col>
                     <Col md={2}>
+                        {this.state.newGeneSet &&
                         <Button style={{marginTop: 20}} onClick={() => this.handleAddNewGeneSet(this.state.newGeneSet)}
                                 raised
                                 primary><FaPlusCircle/></Button>
+                        }
                     </Col>
                     {this.state.selectedPathway &&
                     <Col md={2}>
@@ -127,6 +129,7 @@ export default class PathwayEditor extends PureComponent {
                                       onChange={(newGene) => {
                                           this.setState({newGene: newGene})
                                       }}
+                                      disabled={this.state.newGene.length>0}
                         />
                         {/*<Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}*/}
                         {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
@@ -135,8 +138,10 @@ export default class PathwayEditor extends PureComponent {
                     }
                     {this.state.selectedPathway &&
                     <Col md={1}>
+                        {this.state.newGene && this.state.newGene.length===1 &&
                         <Button style={{marginTop: 20}} raised primary
                                 onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
+                        }
                     </Col>
                     }
                 </Row>
