@@ -67,6 +67,9 @@ export default class MultiXenaGoApp extends PureComponent {
         });
     }
 
+    reloadCohorts (){
+        alert('reloading the cohort')
+    };
 
     // // just duplicate the last state
     duplicateCohort() {
