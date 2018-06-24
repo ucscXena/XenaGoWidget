@@ -175,6 +175,23 @@ class Demo extends PureComponent {
         });
     };
 
+    componentDidMount(){
+        let numCohorts = this.refs['multiXenaGoApp'].cohortCount();
+        if(numCohorts===2){
+            this.makeCompact(true);
+            this.setState({
+                cohortCount:numCohorts
+            })
+        }
+        else{
+            this.makeCompact(false);
+            this.setState({
+                cohortCount:numCohorts
+            })
+        }
+    }
+
+
     render() {
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -202,7 +219,7 @@ class Demo extends PureComponent {
                     <MenuDivider/>
                     <MenuItem value='settings' icon='add' caption='Add Cohort'
                               onClick={() => this.duplicateCohort()}
-                              disabled={this.state.cohortCount !== 1}/>
+                              disabled={this.state.cohortCount === 2}/>
                     <MenuItem value='settings' icon='remove' caption='Remove Cohort'
                               onClick={() => this.removeCohort()}
                               disabled={this.state.cohortCount === 1}/>
@@ -265,15 +282,17 @@ class Demo extends PureComponent {
     // just duplicate the last state
     duplicateCohort() {
         this.makeCompact(true);
+        this.refs['multiXenaGoApp'].duplicateCohort();
         this.setState({
-            cohortCount: this.refs['multiXenaGoApp'].duplicateCohort()
+            cohortCount: 2
         });
     };
 
     removeCohort() {
         this.makeCompact(false);
+        this.refs['multiXenaGoApp'].removeCohort();
         this.setState({
-            cohortCount: this.refs['multiXenaGoApp'].removeCohort()
+            cohortCount:1
         })
         ;
     }
