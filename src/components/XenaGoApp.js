@@ -187,14 +187,19 @@ export default class XenaGoApp extends PureComponent {
                 hoveredPathways: genesHovered
             }
         );
+        let hoverData = {
+            hoveredPathways:genesHovered,
+            key:this.props.appData.key,
+            propagate:genesHovered.propagate == null ? true : genesHovered.propagate,
+        };
         // hoveredPathways.key = this.props.appData.key;
         // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
         // console.log('hover propagating?',hoveredPathways)
-        // if (hoveredPathways.propagate) {
-        //     // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
-        //     // this.props.synchronizationHandler(pathways);
-        //     this.props.pathwayHover(hoveredPathways);
-        // }
+        if (hoverData.propagate) {
+            // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
+            // this.props.synchronizationHandler(pathways);
+            this.props.pathwayHover(hoverData);
+        }
     };
 
     filterTissueType = (filter) => {
