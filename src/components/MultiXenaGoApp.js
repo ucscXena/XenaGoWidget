@@ -119,13 +119,15 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwayHover = (pathwayHover) => {
+        console.log('hovering pathway',pathwayHover)
         if (this.props.synchronizeSelection) {
             let myIndex = pathwayHover.key;
             pathwayHover.propagate = false;
+            console.log('pathway hover',pathwayHover)
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     // if (selectedPathways) {
-                        this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
+                        this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
                     // }
                     // else {
                     //     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
