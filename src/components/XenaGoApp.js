@@ -311,6 +311,7 @@ export default class XenaGoApp extends PureComponent {
                                                    geneList={geneList}
                                                    loading={cohortLoading}
                                                    min={this.state.minFilter}
+                                                   synchronizeSort={this.props.synchronizeSort}
                                                    selectedSort={this.state.selectedTissueSort}
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
