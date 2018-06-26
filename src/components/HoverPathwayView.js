@@ -76,7 +76,7 @@ export default class HoverPathwayView extends PureComponent {
                             </Chip>
                             <div className={BaseStyle.pathwayChip}>
                                 <span>
-                                <strong>Samples Affected</strong>&nbsp;&nbsp;
+                                <strong>Samples Affected</strong><br/>
                                     {this.getRatio(data)}
                             </span>
                             </div>
