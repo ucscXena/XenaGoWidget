@@ -20,16 +20,16 @@ export default class SVGLabels extends PureComponent {
         super(props);
     }
 
-    drawOverviewLabels(width, height, layout, pathways, selectedPathways, labelHeight, labelOffset, colorMask) {
+    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask) {
 
         if (layout[0].size <= 1) {
             return;
         }
 
         const highestScore = pathways.reduce((max, current) => {
-            let score = current.density / current.gene.length ;
+            let score = current.density / current.gene.length;
             return (max > score) ? max : score;
-        },0);
+        }, 0);
 
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
@@ -61,6 +61,7 @@ export default class SVGLabels extends PureComponent {
                         width={el.size}
                         item={d}
                         selectedPathways={selectedPathways}
+                        hoveredPathways={hoveredPathways}
                         labelString={labelString}
                         colorMask={colorMask}
                         key={labelString}
@@ -71,7 +72,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay(div, props) {
-        let {pathwayLabelHeight,geneLabelHeight,width, height, layout, referenceLayout, associateData, data: {selectedPathways, pathways, referencePathways}} = props;
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, data: {selectedPathways, hoveredPathways, pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
             return;
@@ -112,12 +113,12 @@ export default class SVGLabels extends PureComponent {
                 };
             });
 
-            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, pathwayLabelHeight, 0, [0, 1, 1]);
-            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], geneLabelHeight, pathwayLabelHeight, [1, 0, 0]);
+            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, [0, 1, 1]);
+            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, pathwayLabelHeight, [1, 0, 0]);
             labels = [...l1, ...l2];
         }
         else {
-            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, pathwayLabelHeight, 0, [0, 1, 1]);
+            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, [0, 1, 1]);
         }
         return labels;
 

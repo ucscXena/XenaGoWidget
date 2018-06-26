@@ -9,21 +9,21 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            hovered: false,
-        };
+        // this.state = {
+        //     hovered: false,
+        // };
     }
 
-    onMouseOver = (item) => {
-        this.setState({hovered: true});
-    };
-
-    onMouseOut = (item) => {
-        this.setState({hovered: false});
-    };
+    // onMouseOver = (item) => {
+    //     this.setState({hovered: true});
+    // };
+    //
+    // onMouseOut = (item) => {
+    //     this.setState({hovered: false});
+    // };
 
     style() {
-        let {item: {density, golabel}, geneLength,selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
+        let {item: {density, golabel,gene}, geneLength,selectedPathways,hoveredPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
 
@@ -33,6 +33,12 @@ export class HeaderLabel extends PureComponent {
         colorString += (colorMask[2] === 0 ? 256 : color) + ')';
 
         let selected = selectedPathways.indexOf(golabel) >= 0;
+        let hovered = hoveredPathways.indexOf(golabel) >= 0;
+        hovered = hovered || hoveredPathways.indexOf(gene[0]) >= 0;
+
+        // console.log('selectedPathways',selectedPathways,'hoveredPathways',hoveredPathways)
+        // console.log('gene',gene);
+        // console.log('selected',selected,'hovered',hovered,'golabel',golabel)
 
         if (selected) {
             return {
@@ -46,7 +52,8 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-        else if (this.state.hovered) {
+
+        else if (hovered) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -72,10 +79,12 @@ export class HeaderLabel extends PureComponent {
     }
 
     fontColor() {
-        let {item: {golabel}, selectedPathways} = this.props;
+        let {item: {golabel,gene}, selectedPathways,hoveredPathways} = this.props;
 
         let selected = selectedPathways.indexOf(golabel) >= 0;
-        if (this.state.hovered) {
+        let hovered = hoveredPathways.indexOf(golabel) >= 0;
+        hovered = hovered || hoveredPathways.indexOf(gene[0]) >= 0;
+        if (hovered) {
             return !selected ? 'brown' : 'yellow';
         }
 
@@ -94,8 +103,8 @@ export class HeaderLabel extends PureComponent {
         return (
             <svg
                 style={this.style()}
-                onMouseOver={this.onMouseOver}
-                onMouseOut={this.onMouseOut}
+                // onMouseOver={this.onMouseOver}
+                // onMouseOut={this.onMouseOut}
                 className={className}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
@@ -118,6 +127,7 @@ HeaderLabel.propTypes = {
     highScore: PropTypes.number,
     item: PropTypes.any,
     selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
     colorMask: PropTypes.any,
     geneLength: PropTypes.any,
     // onMouseClick: PropTypes.any,

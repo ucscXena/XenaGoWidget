@@ -209,7 +209,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, selectedCohort, synchronizeSort, statGenerator, selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, synchronizeSort, statGenerator, selectedPathways,hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         let filterMin = Math.trunc(filterPercentage * samples.length);
@@ -268,6 +268,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                         referencePathways,
                         samples,
                         selectedPathways,
+                        hoveredPathways,
                         sortedSamples: returnedValue.sortedSamples
                     }}
                     associateData={returnedValue.data}/>
@@ -287,6 +288,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                         pathways: returnedValue.pathways,
                         samples,
                         selectedPathways,
+                        hoveredPathways,
                         sortedSamples: returnedValue.sortedSamples,
                     }}
                     associateData={returnedValue.data}/>

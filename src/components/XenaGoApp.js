@@ -55,6 +55,7 @@ export default class XenaGoApp extends PureComponent {
         super(props);
         this.state = this.props.appData;
         this.state.processing = false;
+        this.state.hoveredPathways = [];
         console.log('xena go app props');
         console.log(this.state)
     }
@@ -93,18 +94,19 @@ export default class XenaGoApp extends PureComponent {
     closeGeneView = () => {
 
 
-        if(this.props.synchronizeSort){
+        if (this.props.synchronizeSort) {
             let selectedPathways = this.props.pathways.filter(f => {
                 let index = this.state.selectedPathways.indexOf(f.golabel);
-                return index >=0 ;
+                return index >= 0;
             });
             let pathwayClickDataObject = {};
             pathwayClickDataObject.pathway = selectedPathways[0];
             this.setPathwayState([], pathwayClickDataObject);
         }
-        else{
+        else {
             this.setState({
-                selectedPathways: []
+                selectedPathways: [],
+                hoveredPathways: []
             });
         }
     };
@@ -136,7 +138,14 @@ export default class XenaGoApp extends PureComponent {
 
 
     hoverPathway = (props) => {
-        this.setState({pathwayHoverData: props});
+        let pathwayHovered = props.pathway[0].golabel;
+        console.log('pathway hovered', pathwayHovered);
+        this.setState(
+            {
+                pathwayHoverData: props,
+                hoveredPathways: [pathwayHovered],
+            }
+        );
     };
 
     clickGene = (props) => {
@@ -148,7 +157,14 @@ export default class XenaGoApp extends PureComponent {
     };
 
     hoverGene = (props) => {
-        this.setState({geneHoverData: props});
+        let genesHovered = props.pathway ? props.pathway.gene : [];
+        // console.log('genes hovered',genesHovered);
+        this.setState(
+            {
+                geneHoverData: props,
+                hoveredPathways: genesHovered
+            }
+        );
     };
 
     filterTissueType = (filter) => {
@@ -316,6 +332,7 @@ export default class XenaGoApp extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
+                                                   hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverPathway}
                                                    hideTitle={true}
@@ -382,6 +399,7 @@ export default class XenaGoApp extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
+                                                   hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
                                                    hideTitle={true}
