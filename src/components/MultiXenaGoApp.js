@@ -119,11 +119,11 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwayHover = (pathwayHover) => {
-        console.log('hovering pathway',pathwayHover)
+        // console.log('hovering pathway',pathwayHover)
         if (this.props.synchronizeSelection) {
             let myIndex = pathwayHover.key;
             pathwayHover.propagate = false;
-            console.log('pathway hover',pathwayHover)
+            // console.log('pathway hover',pathwayHover)
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
                     // if (selectedPathways) {
