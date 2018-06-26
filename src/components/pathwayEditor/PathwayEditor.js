@@ -3,7 +3,7 @@ import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
-import { BrowseButton } from "react-toolbox/lib/button";
+import {BrowseButton} from "react-toolbox/lib/button";
 import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
@@ -38,11 +38,11 @@ export default class PathwayEditor extends PureComponent {
 
     handleChange = e => {
         let file = e.target.files[0];
-        let {uploadHandler } = this.props;
+        let {uploadHandler} = this.props;
 
         let result = {};
         let fr = new FileReader();
-        fr.onload = function(e) {
+        fr.onload = function (e) {
             result = JSON.parse(e.target.result);
             uploadHandler(result);
         };
@@ -59,25 +59,25 @@ export default class PathwayEditor extends PureComponent {
                     {/*<Chip>Views</Chip>*/}
                     {/*</Col>*/}
                     <Col md={6}>
-                        <Button onClick={ () => this.downloadView()}>
+                        <Button onClick={() => this.downloadView()}>
                             Download <FaCloudDownload/>
                         </Button>
                         <BrowseButton label="Upload"
-                                      onChange={ this.handleChange}
+                                      onChange={this.handleChange}
                         >
                             <FaCloudUpload/>
                         </BrowseButton>
-                        <Button onClick={ () => this.props.resetHandler()}>
+                        <Button onClick={() => this.props.resetHandler()}>
                             Reset <Fafresh/>
                         </Button>
                     </Col>
                     {/*<Col md={3}>*/}
-                        {/*<Chip>Genes</Chip>*/}
+                    {/*<Chip>Genes</Chip>*/}
                     {/*</Col>*/}
                 </Row>
                 <Row>
                     {/*<Col md={3}>*/}
-                        {/*<Chip>Views</Chip>*/}
+                    {/*<Chip>Views</Chip>*/}
                     {/*</Col>*/}
                     <Col md={7}>
                         <Chip>Gene Sets</Chip>
@@ -125,11 +125,15 @@ export default class PathwayEditor extends PureComponent {
                     {this.state.selectedPathway &&
                     <Col md={2}>
                         <Autocomplete label='New Gene' source={this.state.geneOptions} value={this.state.newGene}
-                                      onQueryChange={(geneQuery) => this.queryGenes(geneQuery)}
+                                      onQueryChange={(geneQuery) => {
+                                          if(geneQuery.trim().length>0) {
+                                              this.queryGenes(geneQuery)
+                                          }
+                                      }}
                                       onChange={(newGene) => {
                                           this.setState({newGene: newGene})
                                       }}
-                                      disabled={this.state.newGene.length>0}
+                                      disabled={this.state.newGene.length > 0}
                         />
                         {/*<Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}*/}
                         {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
@@ -138,7 +142,7 @@ export default class PathwayEditor extends PureComponent {
                     }
                     {this.state.selectedPathway &&
                     <Col md={1}>
-                        {this.state.newGene && this.state.newGene.length===1 &&
+                        {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
                                 onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
                         }
@@ -227,11 +231,11 @@ export default class PathwayEditor extends PureComponent {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         let exportObj = selectedPathwayState.pathway;
         let now = new Date();
-        let dateString = now.toLocaleDateString()+'-'+now.toLocaleTimeString();
-        let exportName = 'xenaGoView-'+dateString;
+        let dateString = now.toLocaleDateString() + '-' + now.toLocaleTimeString();
+        let exportName = 'xenaGoView-' + dateString;
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
         let downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", exportName + ".json");
         document.body.appendChild(downloadAnchorNode); // required for firefox
         downloadAnchorNode.click();
