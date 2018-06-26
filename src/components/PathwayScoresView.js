@@ -219,7 +219,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         let returnedValue;
 
         console.log('rendering pathway for cohort', cohortIndex);
-        console.log('syn sort',synchronizeSort);
 
 
         if (cohortIndex === 0 || !synchronizeSort) {
@@ -238,12 +237,8 @@ export default class PathwayScoresViewCache extends PureComponent {
             else {
                 PathwayScoresView.synchronizedGeneSetList = returnedValue.pathways.map(g => g.golabel);
             }
-            console.log('setting synchronized gene list',PathwayScoresView.synchronizedGeneList);
-            console.log('setting synchronized gene set list',PathwayScoresView.synchronizedGeneSetList);
         }
         else {
-            console.log('using synchronized gene list',PathwayScoresView.synchronizedGeneList);
-            console.log('using synchronized gene set list',PathwayScoresView.synchronizedGeneSetList);
             if (referencePathways) {
                 returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
             }
