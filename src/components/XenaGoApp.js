@@ -374,13 +374,13 @@ export default class XenaGoApp extends PureComponent {
                                 />
                             </Col>
                             }
-                            {stats && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={1}>
-                                <Card style={{marginTop: 5}}>
-                                    <CompareBox statBox={stats}/>
-                                </Card>
-                            </Col>
-                            }
+                            {/*{stats && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&*/}
+                            {/*<Col md={1}>*/}
+                                {/*<Card style={{marginTop: 5}}>*/}
+                                    {/*<CompareBox statBox={stats}/>*/}
+                                {/*</Card>*/}
+                            {/*</Col>*/}
+                            {/*}*/}
                         </Row>
                     </Grid>
                 )
