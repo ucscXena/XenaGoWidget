@@ -61,6 +61,7 @@ export default class XenaGoApp extends PureComponent {
 
 
     setPathwayState(newSelection, pathwayClickData) {
+        console.log('pathway click data', pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -88,6 +89,25 @@ export default class XenaGoApp extends PureComponent {
             this.props.pathwaySelect(pathwayClickData);
         }
     }
+
+    closeGeneView = () => {
+
+
+        if(this.props.synchronizeSort){
+            let selectedPathways = this.props.pathways.filter(f => {
+                let index = this.state.selectedPathways.indexOf(f.golabel);
+                return index >=0 ;
+            });
+            let pathwayClickDataObject = {};
+            pathwayClickDataObject.pathway = selectedPathways[0];
+            this.setPathwayState([], pathwayClickDataObject);
+        }
+        else{
+            this.setState({
+                selectedPathways: []
+            });
+        }
+    };
 
     clickPathway = (pathwayClickData) => {
         let {metaSelect, pathway: {golabel}} = pathwayClickData;
@@ -234,11 +254,6 @@ export default class XenaGoApp extends PureComponent {
             });
     };
 
-    closeGeneView = () => {
-        this.setState({
-            selectedPathways: []
-        });
-    };
 
     getGenesForNamedPathways(selectedPathways, pathways) {
         let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
@@ -308,9 +323,9 @@ export default class XenaGoApp extends PureComponent {
                                 />
                             </Col>
                             {/*<Col md={1}>*/}
-                                {/*<Card style={{marginTop: 5}}>*/}
-                                    {/*<CompareBox statBox={stats}/>*/}
-                                {/*</Card>*/}
+                            {/*<Card style={{marginTop: 5}}>*/}
+                            {/*<CompareBox statBox={stats}/>*/}
+                            {/*</Card>*/}
                             {/*</Col>*/}
                         </Row>
                     </Grid>
@@ -376,9 +391,9 @@ export default class XenaGoApp extends PureComponent {
                             }
                             {/*{stats && this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&*/}
                             {/*<Col md={1}>*/}
-                                {/*<Card style={{marginTop: 5}}>*/}
-                                    {/*<CompareBox statBox={stats}/>*/}
-                                {/*</Card>*/}
+                            {/*<Card style={{marginTop: 5}}>*/}
+                            {/*<CompareBox statBox={stats}/>*/}
+                            {/*</Card>*/}
                             {/*</Col>*/}
                             {/*}*/}
                         </Row>
@@ -388,9 +403,9 @@ export default class XenaGoApp extends PureComponent {
         }
 
         return (
-        <Dialog active={this.state.processing} title='Loading'>
-            {this.state.selectedCohort}
-        </Dialog>
+            <Dialog active={this.state.processing} title='Loading'>
+                {this.state.selectedCohort}
+            </Dialog>
         );
     }
 }
