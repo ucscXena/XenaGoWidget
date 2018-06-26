@@ -90,12 +90,13 @@ export class HeaderLabel extends PureComponent {
     render() {
         // let {width, labelString, labelHeight, onMouseClick, item} = this.props;
         let {width, labelString, labelHeight, item} = this.props;
+        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g,'-');
         return (
             <svg
                 style={this.style()}
                 onMouseOver={this.onMouseOver}
                 onMouseOut={this.onMouseOut}
-                // onMouseDownCapture={onMouseClick(item)}
+                className={className}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
                       transform='rotate(-90)'
