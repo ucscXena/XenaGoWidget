@@ -307,11 +307,11 @@ export default class XenaGoApp extends PureComponent {
                                                    key={this.state.key}
                                 />
                             </Col>
-                            <Col md={1}>
-                                <Card style={{marginTop: 5}}>
-                                    <CompareBox statBox={stats}/>
-                                </Card>
-                            </Col>
+                            {/*<Col md={1}>*/}
+                                {/*<Card style={{marginTop: 5}}>*/}
+                                    {/*<CompareBox statBox={stats}/>*/}
+                                {/*</Card>*/}
+                            {/*</Col>*/}
                         </Row>
                     </Grid>
                 )
