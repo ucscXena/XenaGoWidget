@@ -138,14 +138,21 @@ export default class XenaGoApp extends PureComponent {
 
 
     hoverPathway = (props) => {
-        let pathwayHovered = props.pathway[0].golabel;
-        console.log('pathway hovered', pathwayHovered);
+        let hoveredPathways = props.pathway[0].golabel;
+        console.log('pathway hovered', hoveredPathways);
         this.setState(
             {
                 pathwayHoverData: props,
-                hoveredPathways: [pathwayHovered],
+                hoveredPathways: [hoveredPathways],
             }
         );
+        hoveredPathways.key = this.props.appData.key;
+        hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
+        if (hoveredPathways.propagate) {
+            // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
+            // this.props.synchronizationHandler(pathways);
+            this.props.pathwayHover(hoveredPathways);
+        }
     };
 
     clickGene = (props) => {
@@ -158,7 +165,6 @@ export default class XenaGoApp extends PureComponent {
 
     hoverGene = (props) => {
         let genesHovered = props.pathway ? props.pathway.gene : [];
-        // console.log('genes hovered',genesHovered);
         this.setState(
             {
                 geneHoverData: props,
@@ -436,6 +442,7 @@ XenaGoApp.propTypes = {
     renderHeight: PropTypes.any,
     renderOffset: PropTypes.any,
     pathwaySelect: PropTypes.any,
+    pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     synchronizeSort: PropTypes.any,
     synchronizedGeneList: PropTypes.any,
