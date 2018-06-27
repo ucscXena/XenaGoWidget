@@ -6,9 +6,9 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort, clusterSort, synchronizedSort,synchronizedGeneSetSort} from '../functions/SortFunctions';
+import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
 import {pruneColumns, associateData} from '../functions/DataFunctions';
-import {pick, pluck, flatten, sum, range, times} from 'underscore';
+import {isEqual, memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -204,17 +204,65 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
+let associationDataHash = null;
+let associationDataCache = null;
+
+let pruneHash = null;
+let pruneCache = null;
+
+// let associationDataFunction = {};
+
+function findAssociatedData(inputHash) {
+    if (!isEqual(associationDataHash, inputHash)) {
+        console.log('!is equals',associationDataHash,inputHash)
+        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
+        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        associationDataHash = inputHash;
+    }
+    console.log('returning',associationDataCache)
+    return associationDataCache;
+}
+
+function findPruneData(inputHash) {
+    if (!isEqual(pruneHash, inputHash)) {
+        console.log('!is equals',pruneHash,inputHash)
+        let {associatedData, pathways, filterMin} = inputHash;
+        pruneCache = pruneColumns(associatedData, pathways, filterMin);
+        // associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        pruneHash = inputHash;
+    }
+    console.log('returning',pruneCache);
+    return pruneCache;
+}
 
 export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, selectedCohort, synchronizeSort, statGenerator, selectedPathways,hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, synchronizeSort, statGenerator, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
-        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        let hashAssociation = {
+            expression,
+            copyNumber,
+            geneList,
+            pathways,
+            samples,
+            filter,
+            min,
+            cohortIndex,
+            selectedCohort
+        };
+        // let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
-        let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
+        let hashForPrune = {
+            associatedData,
+            pathways,
+            filterMin
+        };
+        // let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
+        let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
         let returnedValue;
 
@@ -249,7 +297,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        statGenerator(returnedValue);
+        // statGenerator(returnedValue);
 
 
         if (referencePathways) {
