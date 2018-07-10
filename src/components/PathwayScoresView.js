@@ -141,7 +141,7 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset,
-            titleText, selected, filter, referenceLayout, selectedPathways
+            titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
 
         let titleString, filterString;
@@ -179,6 +179,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
+                    hoveredPathways={hoveredPathways}
                     associateData={associateData}
                     pathwayLabelHeight={REFERENCE_LABEL_HEIGHT}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
@@ -202,6 +203,7 @@ PathwayScoresView.propTypes = {
     hideTitle: PropTypes.bool,
     referencePathways: PropTypes.any,
     selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
@@ -247,7 +249,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, selectedCohort, synchronizeSort, statGenerator, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, synchronizeSort,  selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -317,13 +319,13 @@ export default class PathwayScoresViewCache extends PureComponent {
                     width={width}
                     layout={layoutData}
                     referenceLayout={referenceLayout}
+                    hoveredPathways={hoveredPathways}
                     data={{
                         expression,
                         pathways: returnedValue.pathways,
                         referencePathways,
                         samples,
                         selectedPathways,
-                        hoveredPathways,
                         sortedSamples: returnedValue.sortedSamples
                     }}
                     associateData={returnedValue.data}/>
@@ -335,12 +337,12 @@ export default class PathwayScoresViewCache extends PureComponent {
                     {...this.props}
                     width={width}
                     layout={layout(width, returnedValue.data)}
+                    hoveredPathways={hoveredPathways}
                     data={{
                         expression,
                         pathways: returnedValue.pathways,
                         samples,
                         selectedPathways,
-                        hoveredPathways,
                         sortedSamples: returnedValue.sortedSamples,
                     }}
                     associateData={returnedValue.data}/>

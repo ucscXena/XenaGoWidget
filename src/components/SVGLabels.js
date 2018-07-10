@@ -72,7 +72,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay(div, props) {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, data: {selectedPathways, hoveredPathways, pathways, referencePathways}} = props;
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways,data: { pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
             return;

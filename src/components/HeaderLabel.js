@@ -14,13 +14,6 @@ export class HeaderLabel extends PureComponent {
         // };
     }
 
-    // onMouseOver = (item) => {
-    //     this.setState({hovered: true});
-    // };
-    //
-    // onMouseOut = (item) => {
-    //     this.setState({hovered: false});
-    // };
 
     style() {
         let {item: {density, golabel,gene}, geneLength,selectedPathways,hoveredPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
@@ -35,10 +28,6 @@ export class HeaderLabel extends PureComponent {
         let selected = selectedPathways.indexOf(golabel) >= 0;
         let hovered = hoveredPathways.indexOf(golabel) >= 0;
         hovered = hovered || hoveredPathways.indexOf(gene[0]) >= 0;
-
-        // console.log('selectedPathways',selectedPathways,'hoveredPathways',hoveredPathways)
-        // console.log('gene',gene);
-        // console.log('selected',selected,'hovered',hovered,'golabel',golabel)
 
         if (selected) {
             return {
