@@ -6,7 +6,6 @@ import PathwayScoresView from "./PathwayScoresView";
 import '../base.css';
 import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
-import CompareBox from "./CompareBox";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
@@ -22,6 +21,7 @@ let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
+import MultiXenaGoApp from "./MultiXenaGoApp";
 
 
 function lowerCaseCompareName(a, b) {
@@ -185,7 +185,7 @@ export default class XenaGoApp extends PureComponent {
             props = {};
             genesHovered = [];
         }
-        else{
+        else {
             genesHovered = props.pathway ? props.pathway.gene : [];
         }
         this.setState(
@@ -257,6 +257,11 @@ export default class XenaGoApp extends PureComponent {
                         loadState: 'loaded',
                         cohortData
                     });
+                    console.log('post cohort', this.state.pathwayData.pathways.length, this.state.geneData.expression.length)
+                    if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+                        console.log('selecing a cohort ', MultiXenaGoApp.getApp()[0].selectedCohort)
+                        this.selectCohort(MultiXenaGoApp.getApp()[0].selectedCohort);
+                    }
                     return data;
                 });
             })
@@ -392,6 +397,8 @@ export default class XenaGoApp extends PureComponent {
                 )
             }
             if (this.state.selectedPathways.length > 0) {
+                // console.log('C',this.state.loadState)
+                // console.log('D',this.state.selectedPathways)
                 return (
                     <Grid>
                         <Row>
