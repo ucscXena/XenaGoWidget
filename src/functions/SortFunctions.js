@@ -152,14 +152,9 @@ export function clusterSort(prunedColumns) {
     return returnColumns;
 }
 
-
-function generateMissingColumns(pathways, geneList) {
-
-    let pathwayGenes = pathways.map(p => p.gene[0]);
-    let missingGenes = geneList.filter(g => pathwayGenes.indexOf(g) < 0);
-
-    console.log("missing genes", missingGenes);
-    console.log('pathways', pathways)
+function generateMissingGeneSets(pathways, geneSetList) {
+    let pathwayGeneSets = pathways.map(p => p.golabel);
+    let missingGenes = geneSetList.filter(g => pathwayGeneSets.indexOf(g) < 0);
     let returnColumns = [];
     missingGenes.forEach(mg => {
         let newPathway = {
@@ -175,8 +170,80 @@ function generateMissingColumns(pathways, geneList) {
     return returnColumns;
 }
 
-export function synchronizedSort(prunedColumns, geneList) {
+function generateMissingColumns(pathways, geneList) {
 
+    let pathwayGenes = pathways.map(p => p.gene[0]);
+    let missingGenes = geneList.filter(g => pathwayGenes.indexOf(g) < 0);
+    let returnColumns = [];
+    missingGenes.forEach(mg => {
+        let newPathway = {
+            density: 0,
+            goid: pathways[0].goid,
+            golabel: pathways[0].golabel,
+            index: -1,
+            gene: [mg],
+        };
+        returnColumns.push(newPathway);
+    });
+
+    return returnColumns;
+}
+
+export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
+    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
+    sortedColumns.pathways = scoreColumns(prunedColumns);
+    let missingColumns = generateMissingGeneSets(sortedColumns.pathways, geneSetList);
+    sortedColumns.pathways = [...sortedColumns.pathways, ...missingColumns];
+
+    sortedColumns.pathways.sort((a, b) => {
+        let geneSetA = a.golabel;
+        let geneSetB = b.golabel;
+        let index1 = geneSetList.indexOf(geneSetA);
+        let index2 = geneSetList.indexOf(geneSetB);
+
+        if (index1 >= 0 && index2 >= 0) {
+            return geneSetList.indexOf(geneSetA) - geneSetList.indexOf(geneSetB)
+        }
+        return b.density - a.density
+    });
+    // refilter data by index
+    let columnLength = sortedColumns.data[0].length;
+    sortedColumns.data = sortedColumns.pathways.map(el => {
+        let columnData = sortedColumns.data[el.index];
+        if (columnData) {
+            return columnData
+        }
+        else {
+            return Array.from(Array(columnLength), () => 0);
+        }
+    });
+
+    sortedColumns.samples = prunedColumns.samples;
+
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
+
+    renderedData = renderedData.sort(function (a, b) {
+        for (let index = 0; index < a.length; ++index) {
+            if (a[index] !== b[index]) {
+                return b[index] - a[index];
+            }
+        }
+        return sum(b) - sum(a)
+    });
+
+    renderedData = transpose(renderedData);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    return returnColumns;
+}
+
+
+export function synchronizedSort(prunedColumns, geneList) {
 
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = scoreColumns(prunedColumns);

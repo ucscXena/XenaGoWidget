@@ -214,6 +214,12 @@ export default class PathwayEditor extends PureComponent {
 
     queryGenes(geneQuery) {
         let {reference: {host, name}, limit} = this.state;
+        if(geneQuery.trim().length===0){
+            this.setState({
+                geneOptions: []
+            });
+            return ;
+        }
         let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
         subscriber.subscribe(matches => {
                 this.setState({
