@@ -2,9 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
-import ExampleExpression from "../../tests/data/bulkExpression";
-import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
-import ExampleSamples from "../../tests/data/samples";
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
@@ -37,8 +34,10 @@ export default class MultiXenaGoApp extends PureComponent {
             }
         );
         let myIndex = 0;
-        this.refs['xena-go-app-' + myIndex].clickPathway(pathwaySelection);
-
+        let ref = this.refs['xena-go-app-' + myIndex];
+        if(ref){
+            ref.clickPathway(pathwaySelection);
+        }
     }
 
     componentDidMount() {
@@ -48,6 +47,7 @@ export default class MultiXenaGoApp extends PureComponent {
     render() {
         let {synchronizeSort, renderHeight} = this.props;
         MultiXenaGoApp.storeApp(this.state.apps);
+        console.log(this.state.apps)
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -268,10 +268,10 @@ export default class MultiXenaGoApp extends PureComponent {
                     sortTypes: ['Cluster', 'Hierarchical'],
                     pathwayData: {
                         cohort: 'TCGA Ovarian Cancer (OV)',
-                        copyNumber: ExampleCopyNumber,
-                        expression: ExampleExpression,
+                        copyNumber: [],
+                        expression: [],
                         pathways: props.pathways,
-                        samples: ExampleSamples,
+                        samples: [],
                     },
                     loadState: 'loading',
                     selectedCohort: 'TCGA Ovarian Cancer (OV)',

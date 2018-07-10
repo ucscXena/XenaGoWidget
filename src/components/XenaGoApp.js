@@ -6,7 +6,6 @@ import PathwayScoresView from "./PathwayScoresView";
 import '../base.css';
 import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
-import CompareBox from "./CompareBox";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
@@ -22,6 +21,7 @@ let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
+import MultiXenaGoApp from "./MultiXenaGoApp";
 
 
 function lowerCaseCompareName(a, b) {
@@ -56,13 +56,10 @@ export default class XenaGoApp extends PureComponent {
         this.state = this.props.appData;
         this.state.processing = false;
         this.state.hoveredPathways = [];
-        console.log('xena go app props');
-        console.log(this.state)
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        console.log('pathway click data', pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -137,19 +134,15 @@ export default class XenaGoApp extends PureComponent {
     };
 
     setPathwayHover = (newHover) => {
-        // if(newHover.propagate){
-        // console.log('setting new hover',newHover)
         this.setState(
             {
                 hoveredPathways: newHover,
             }
         );
-        // }
     };
 
     hoverPathway = (props) => {
         let hoveredPathways = props.pathway.golabel;
-        // console.log('pathway hovered', hoveredPathways);
         this.setState(
             {
                 pathwayHoverData: props,
@@ -163,7 +156,6 @@ export default class XenaGoApp extends PureComponent {
         };
         // hoveredPathways.key = this.props.appData.key;
         // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
-        // console.log('hover propagating?', hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
@@ -185,7 +177,7 @@ export default class XenaGoApp extends PureComponent {
             props = {};
             genesHovered = [];
         }
-        else{
+        else {
             genesHovered = props.pathway ? props.pathway.gene : [];
         }
         this.setState(
@@ -199,9 +191,6 @@ export default class XenaGoApp extends PureComponent {
             key: this.props.appData.key,
             propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
         };
-        // hoveredPathways.key = this.props.appData.key;
-        // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
-        // console.log('hover propagating?',hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
@@ -226,6 +215,7 @@ export default class XenaGoApp extends PureComponent {
     };
 
     componentWillMount() {
+        // TODO: perhaps this could just be loaded once, not a performance concern now, though.
         let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
         fetch(cohortPreferredURL)
             .then(function (response) {
@@ -257,6 +247,9 @@ export default class XenaGoApp extends PureComponent {
                         loadState: 'loaded',
                         cohortData
                     });
+                    if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+                        this.selectCohort(MultiXenaGoApp.getApp()[0].selectedCohort);
+                    }
                     return data;
                 });
             })
