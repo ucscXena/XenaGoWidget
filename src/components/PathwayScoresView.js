@@ -66,7 +66,8 @@ function getPointData(event, props) {
         let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
         let pathwayIndex;
         let expression;
-        // if a reference pathway
+        // if the tissue index is less than 0, it is a reference pathway
+        // is a reference pathway
         if (tissueIndex < 0) {
             pathwayIndex = pathwayIndexFromX(x, referenceLayout);
             expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
@@ -77,10 +78,10 @@ function getPointData(event, props) {
                 metaSelect: metaSelect
             };
         }
+        // if in the sample area, pull from the gene and sample area
         tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-
         return {
             pathway: pathways[pathwayIndex],
             tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
@@ -94,6 +95,7 @@ function getPointData(event, props) {
         let pathwayIndex = pathwayIndexFromX(x, layout);
         let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
         let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+        console.log('no ref ', tissueIndex, pathwayIndex, expression);
 
         return {
             pathway: pathways[pathwayIndex],
@@ -119,10 +121,21 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+    onMouseOut = (event) => {
+        console.log('MOUSE OUT ')
+        let {onHover} = this.props;
+        onHover(null);
+    };
+
     onHover = (event) => {
         let {onHover} = this.props;
         if (onHover) {
-            onHover(getPointData(event, this.props));
+            let pointData = getPointData(event, this.props);
+            console.log('point data', event, this.props,pointData);
+            onHover(pointData);
+        }
+        else {
+            onHover(null);
         }
     };
 
@@ -174,6 +187,7 @@ class PathwayScoresView extends PureComponent {
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
+                    onMouseOut={this.onMouseOut}
                 />
             </div>
         );
@@ -214,24 +228,24 @@ let pruneCache = null;
 
 function findAssociatedData(inputHash) {
     if (!isEqual(associationDataHash, inputHash)) {
-        console.log('!is equals',associationDataHash,inputHash)
+        console.log('!is equals', associationDataHash, inputHash)
         let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
         associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         associationDataHash = inputHash;
     }
-    console.log('returning',associationDataCache)
+    console.log('returning', associationDataCache)
     return associationDataCache;
 }
 
 function findPruneData(inputHash) {
     if (!isEqual(pruneHash, inputHash)) {
-        console.log('!is equals',pruneHash,inputHash)
+        console.log('!is equals', pruneHash, inputHash)
         let {associatedData, pathways, filterMin} = inputHash;
         pruneCache = pruneColumns(associatedData, pathways, filterMin);
         // associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         pruneHash = inputHash;
     }
-    console.log('returning',pruneCache);
+    console.log('returning', pruneCache);
     return pruneCache;
 }
 

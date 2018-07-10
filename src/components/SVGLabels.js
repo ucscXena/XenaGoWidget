@@ -125,10 +125,11 @@ export default class SVGLabels extends PureComponent {
     }
 
     render() {
-        const {width, height, onClick, onMouseMove, offset} = this.props;
+        const {width, height, onClick, onMouseMove,onMouseOut, offset} = this.props;
         return (
             <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}
+                 onMouseOut={onMouseOut}
                  onClick={onClick}
             >
                 {this.drawTissueOverlay(this, this.props)}
@@ -142,6 +143,7 @@ SVGLabels.propTypes = {
     offset: PropTypes.any,
     onClick: PropTypes.any,
     onMouseOver: PropTypes.any,
+    onMouseOut: PropTypes.any,
     pathwayLabelHeight: PropTypes.any,
     geneLabelHeight: PropTypes.any,
 };

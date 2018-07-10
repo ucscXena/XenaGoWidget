@@ -180,7 +180,14 @@ export default class XenaGoApp extends PureComponent {
     };
 
     hoverGene = (props) => {
-        let genesHovered = props.pathway ? props.pathway.gene : [];
+        let genesHovered;
+        if (props == null) {
+            props = {};
+            genesHovered = [];
+        }
+        else{
+            genesHovered = props.pathway ? props.pathway.gene : [];
+        }
         this.setState(
             {
                 geneHoverData: props,
