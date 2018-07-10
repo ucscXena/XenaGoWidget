@@ -2,6 +2,7 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
+import {intersection} from 'underscore';
 
 
 let styles = {
@@ -38,9 +39,11 @@ export default class SVGLabels extends PureComponent {
                 // let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
                 // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
                 let geneLength = d.gene.length;
-                let labelString;
+                let labelString, hovered, selected ;
                 if (geneLength === 1) {
                     labelString = d.gene[0];
+                    hovered = hoveredPathways.indexOf(labelString) >= 0;
+                    selected = selectedPathways.indexOf(labelString) >= 0;
                 }
                 else {
                     labelString = '(' + d.gene.length + ') ';
@@ -50,6 +53,9 @@ export default class SVGLabels extends PureComponent {
                     }
 
                     labelString += d.golabel;
+                    selected = selectedPathways.indexOf(d.golabel) >= 0;
+
+                    hovered = intersection(hoveredPathways,d.gene).length>0
                 }
                 return (
                     <HeaderLabel
@@ -60,8 +66,8 @@ export default class SVGLabels extends PureComponent {
                         left={el.start}
                         width={el.size}
                         item={d}
-                        selectedPathways={selectedPathways}
-                        hoveredPathways={hoveredPathways}
+                        selected={selected}
+                        hovered={hovered}
                         labelString={labelString}
                         colorMask={colorMask}
                         key={labelString}

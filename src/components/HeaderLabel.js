@@ -16,7 +16,7 @@ export class HeaderLabel extends PureComponent {
 
 
     style() {
-        let {item: {density, golabel,gene}, geneLength,selectedPathways,hoveredPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
+        let {item: {density}, geneLength,selected,hovered, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
 
@@ -24,10 +24,6 @@ export class HeaderLabel extends PureComponent {
         colorString += (colorMask[0] === 0 ? 256 : color) + ',';
         colorString += (colorMask[1] === 0 ? 256 : color) + ',';
         colorString += (colorMask[2] === 0 ? 256 : color) + ')';
-
-        let selected = selectedPathways.indexOf(golabel) >= 0;
-        let hovered = hoveredPathways.indexOf(golabel) >= 0;
-        hovered = hovered || hoveredPathways.indexOf(gene[0]) >= 0;
 
         if (selected) {
             return {
@@ -68,11 +64,8 @@ export class HeaderLabel extends PureComponent {
     }
 
     fontColor() {
-        let {item: {golabel,gene}, selectedPathways,hoveredPathways} = this.props;
+        let {item: {golabel,gene}, selected,hovered} = this.props;
 
-        let selected = selectedPathways.indexOf(golabel) >= 0;
-        let hovered = hoveredPathways.indexOf(golabel) >= 0;
-        hovered = hovered || hoveredPathways.indexOf(gene[0]) >= 0;
         if (hovered) {
             return !selected ? 'brown' : 'yellow';
         }
@@ -115,8 +108,8 @@ HeaderLabel.propTypes = {
     labelString: PropTypes.string,
     highScore: PropTypes.number,
     item: PropTypes.any,
-    selectedPathways: PropTypes.any,
-    hoveredPathways: PropTypes.any,
+    selected: PropTypes.any,
+    hovered: PropTypes.any,
     colorMask: PropTypes.any,
     geneLength: PropTypes.any,
     // onMouseClick: PropTypes.any,

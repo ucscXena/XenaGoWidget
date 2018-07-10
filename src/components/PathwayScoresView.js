@@ -8,7 +8,7 @@ import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
 import {pruneColumns, associateData} from '../functions/DataFunctions';
-import {isEqual, memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
+import {isEqual, omit,memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -227,7 +227,7 @@ let pruneCache = null;
 // let associationDataFunction = {};
 
 function findAssociatedData(inputHash) {
-    if (!isEqual(associationDataHash, inputHash)) {
+    if (!isEqual(omit(associationDataHash,['cohortIndex']), omit(inputHash,['cohortIndex']))) {
         let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
         associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         associationDataHash = inputHash;
