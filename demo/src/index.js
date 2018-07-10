@@ -273,11 +273,18 @@ class Demo extends PureComponent {
         })
     }
 
-    showXena() {
+    showXena = () =>  {
+        let oldState = this.state.view ;
         this.setState({
             view: 'xena'
-        })
+        });
+        if(oldState !== 'xena'){
+            console.log('refs:',this.refs);
+            // console.log(this.refs['pathway-editor']);
+            // console.log(this.refs['pathway-editor'].multiXenaGoApp);
+        }
     }
+
 
     // just duplicate the last state
     duplicateCohort() {
@@ -301,6 +308,14 @@ class Demo extends PureComponent {
         this.setState({
             synchronizeSort: !this.state.synchronizeSort
         })
+    }
+
+    componentDidUpdate(){
+        console.log('more refs:',this.refs);
+        console.log('found xena refs:',this.refs['multiXenaGoApp']);
+        if(this.state.view==='xena'){
+            this.refs['multiXenaGoApp'].reloadCohorts();
+        }
     }
 
     toggleSynchronizeSelection() {

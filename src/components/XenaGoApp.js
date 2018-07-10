@@ -267,7 +267,15 @@ export default class XenaGoApp extends PureComponent {
             });
     }
 
+    reloadCohort(){
+       let selectedCohort = this.state.selectedCohort ;
+       alert(JSON.stringify(selectedCohort))
+       this.selectCohort(selectedCohort);
+    }
+
     selectCohort = (selected) => {
+        alert('selected');
+        alert(JSON.stringify(selected));
         let cohort = this.state.cohortData.find(c => c.name === selected);
         this.setState({
             selectedCohort: selected,
