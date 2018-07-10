@@ -122,7 +122,6 @@ class PathwayScoresView extends PureComponent {
     };
 
     onMouseOut = (event) => {
-        console.log('MOUSE OUT ')
         let {onHover} = this.props;
         onHover(null);
     };
@@ -131,7 +130,6 @@ class PathwayScoresView extends PureComponent {
         let {onHover} = this.props;
         if (onHover) {
             let pointData = getPointData(event, this.props);
-            console.log('point data', event, this.props,pointData);
             onHover(pointData);
         }
         else {
@@ -228,24 +226,20 @@ let pruneCache = null;
 
 function findAssociatedData(inputHash) {
     if (!isEqual(associationDataHash, inputHash)) {
-        console.log('!is equals', associationDataHash, inputHash)
         let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
         associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         associationDataHash = inputHash;
     }
-    console.log('returning', associationDataCache)
     return associationDataCache;
 }
 
 function findPruneData(inputHash) {
     if (!isEqual(pruneHash, inputHash)) {
-        console.log('!is equals', pruneHash, inputHash)
         let {associatedData, pathways, filterMin} = inputHash;
         pruneCache = pruneColumns(associatedData, pathways, filterMin);
         // associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         pruneHash = inputHash;
     }
-    console.log('returning', pruneCache);
     return pruneCache;
 }
 
@@ -280,7 +274,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
-        console.log('rendering pathway for cohort', cohortIndex);
 
 
         if (cohortIndex === 0 || !synchronizeSort) {
@@ -337,9 +330,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             );
         }
         else {
-
-            console.log('pathway only view:', returnedValue.pathways)
-
             return (
                 <PathwayScoresView
                     {...this.props}
