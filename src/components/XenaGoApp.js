@@ -55,6 +55,7 @@ export default class XenaGoApp extends PureComponent {
         super(props);
         this.state = this.props.appData;
         this.state.processing = false;
+        this.state.hoveredPathways = [];
         console.log('xena go app props');
         console.log(this.state)
     }
@@ -93,18 +94,19 @@ export default class XenaGoApp extends PureComponent {
     closeGeneView = () => {
 
 
-        if(this.props.synchronizeSort){
+        if (this.props.synchronizeSort) {
             let selectedPathways = this.props.pathways.filter(f => {
                 let index = this.state.selectedPathways.indexOf(f.golabel);
-                return index >=0 ;
+                return index >= 0;
             });
             let pathwayClickDataObject = {};
             pathwayClickDataObject.pathway = selectedPathways[0];
             this.setPathwayState([], pathwayClickDataObject);
         }
-        else{
+        else {
             this.setState({
-                selectedPathways: []
+                selectedPathways: [],
+                hoveredPathways: []
             });
         }
     };
@@ -134,9 +136,39 @@ export default class XenaGoApp extends PureComponent {
         this.setPathwayState(newSelection, pathwayClickData);
     };
 
+    setPathwayHover = (newHover) => {
+        // if(newHover.propagate){
+        // console.log('setting new hover',newHover)
+        this.setState(
+            {
+                hoveredPathways: newHover,
+            }
+        );
+        // }
+    };
 
     hoverPathway = (props) => {
-        this.setState({pathwayHoverData: props});
+        let hoveredPathways = props.pathway.golabel;
+        // console.log('pathway hovered', hoveredPathways);
+        this.setState(
+            {
+                pathwayHoverData: props,
+                hoveredPathways: [hoveredPathways],
+            }
+        );
+        let hoverData = {
+            hoveredPathways,
+            key: this.props.appData.key,
+            propagate: hoveredPathways.propagate == null ? true : hoveredPathways.propagate,
+        };
+        // hoveredPathways.key = this.props.appData.key;
+        // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
+        // console.log('hover propagating?', hoveredPathways)
+        if (hoverData.propagate) {
+            // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
+            // this.props.synchronizationHandler(pathways);
+            this.props.pathwayHover(hoverData);
+        }
     };
 
     clickGene = (props) => {
@@ -148,7 +180,33 @@ export default class XenaGoApp extends PureComponent {
     };
 
     hoverGene = (props) => {
-        this.setState({geneHoverData: props});
+        let genesHovered;
+        if (props == null) {
+            props = {};
+            genesHovered = [];
+        }
+        else{
+            genesHovered = props.pathway ? props.pathway.gene : [];
+        }
+        this.setState(
+            {
+                geneHoverData: props,
+                hoveredPathways: genesHovered
+            }
+        );
+        let hoverData = {
+            hoveredPathways: genesHovered,
+            key: this.props.appData.key,
+            propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
+        };
+        // hoveredPathways.key = this.props.appData.key;
+        // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
+        // console.log('hover propagating?',hoveredPathways)
+        if (hoverData.propagate) {
+            // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
+            // this.props.synchronizationHandler(pathways);
+            this.props.pathwayHover(hoverData);
+        }
     };
 
     filterTissueType = (filter) => {
@@ -316,6 +374,7 @@ export default class XenaGoApp extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
+                                                   hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverPathway}
                                                    hideTitle={true}
@@ -382,6 +441,7 @@ export default class XenaGoApp extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
+                                                   hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
                                                    hideTitle={true}
@@ -418,6 +478,7 @@ XenaGoApp.propTypes = {
     renderHeight: PropTypes.any,
     renderOffset: PropTypes.any,
     pathwaySelect: PropTypes.any,
+    pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     synchronizeSort: PropTypes.any,
     synchronizedGeneList: PropTypes.any,

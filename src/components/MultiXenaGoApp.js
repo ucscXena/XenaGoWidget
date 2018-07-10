@@ -56,6 +56,7 @@ export default class MultiXenaGoApp extends PureComponent {
                                statGenerator={this.generateStats}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
+                               pathwayHover={this.pathwayHover}
                                ref={refString}
                                renderHeight={renderHeight}
                                renderOffset={(renderHeight + 5) * index}
@@ -116,6 +117,25 @@ export default class MultiXenaGoApp extends PureComponent {
         });
         return this.cohortCount();
     }
+
+    pathwayHover = (pathwayHover) => {
+        // console.log('hovering pathway',pathwayHover)
+        if (this.props.synchronizeSelection) {
+            let myIndex = pathwayHover.key;
+            pathwayHover.propagate = false;
+            // console.log('pathway hover',pathwayHover)
+            this.state.apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    // if (selectedPathways) {
+                        this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
+                    // }
+                    // else {
+                    //     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                    // }
+                }
+            });
+        }
+    };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
         if (this.props.synchronizeSelection) {

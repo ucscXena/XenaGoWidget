@@ -39,10 +39,14 @@ let styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        // console.log('will recieve')
+        // console.log('data is equals',underscore.isEqual(newProps.data, this.props.data))
         if (this.vg && !underscore.isEqual(newProps, this.props)) {
+            // console.log('redrawing')
             this.draw(newProps);
         }
+        // else{
+        //     console.log('ignoring update')
+        // }
     }
 
     shouldComponentUpdate() {
