@@ -56,13 +56,10 @@ export default class XenaGoApp extends PureComponent {
         this.state = this.props.appData;
         this.state.processing = false;
         this.state.hoveredPathways = [];
-        console.log('xena go app props');
-        console.log(this.state)
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        console.log('pathway click data', pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -137,19 +134,15 @@ export default class XenaGoApp extends PureComponent {
     };
 
     setPathwayHover = (newHover) => {
-        // if(newHover.propagate){
-        // console.log('setting new hover',newHover)
         this.setState(
             {
                 hoveredPathways: newHover,
             }
         );
-        // }
     };
 
     hoverPathway = (props) => {
         let hoveredPathways = props.pathway.golabel;
-        // console.log('pathway hovered', hoveredPathways);
         this.setState(
             {
                 pathwayHoverData: props,
@@ -163,7 +156,6 @@ export default class XenaGoApp extends PureComponent {
         };
         // hoveredPathways.key = this.props.appData.key;
         // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
-        // console.log('hover propagating?', hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
@@ -199,9 +191,6 @@ export default class XenaGoApp extends PureComponent {
             key: this.props.appData.key,
             propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
         };
-        // hoveredPathways.key = this.props.appData.key;
-        // hoveredPathways.propagate = hoveredPathways.propagate == null ? true : hoveredPathways.propagate;
-        // console.log('hover propagating?',hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchornization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
@@ -226,6 +215,7 @@ export default class XenaGoApp extends PureComponent {
     };
 
     componentWillMount() {
+        // TODO: perhaps this could just be loaded once, not a performance concern now, though.
         let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
         fetch(cohortPreferredURL)
             .then(function (response) {
@@ -257,9 +247,7 @@ export default class XenaGoApp extends PureComponent {
                         loadState: 'loaded',
                         cohortData
                     });
-                    console.log('post cohort', this.state.pathwayData.pathways.length, this.state.geneData.expression.length)
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-                        console.log('selecing a cohort ', MultiXenaGoApp.getApp()[0].selectedCohort)
                         this.selectCohort(MultiXenaGoApp.getApp()[0].selectedCohort);
                     }
                     return data;
@@ -397,8 +385,6 @@ export default class XenaGoApp extends PureComponent {
                 )
             }
             if (this.state.selectedPathways.length > 0) {
-                // console.log('C',this.state.loadState)
-                // console.log('D',this.state.selectedPathways)
                 return (
                     <Grid>
                         <Row>
