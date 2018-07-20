@@ -32,14 +32,17 @@ function findRegions(index, height, count) {
     return regions;
 }
 
-function regionColor(data) {
+function regionColor(data,colorMask) {
     let p = sum(data) / data.length;
     let scale = 5;
     let c = 255 - 255 * p / scale;
-    return [255, c, c];
+    let r = colorMask[0] === 0 ? 255 : c ;
+    let g = colorMask[1] === 0 ? 255 : c ;
+    let b = colorMask[2] === 0 ? 255 : c ;
+    return [r, g, b];
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight,colorMask) {
     let height = totalHeight - labelHeight;
     let pathwayCount = data.length;
     let tissueCount = data[0].length;
@@ -54,7 +57,8 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) 
             let r = regions.get(rs);
             let d = rowData.slice(r.start, r.end + 1);
 
-            let color = regionColor(d);
+            let color = regionColor(d,colorMask);
+            // console.log('colormask, etc',colorMask,color)
 
             for (let y = rs + labelHeight; y < rs + r.height + labelHeight; ++y) {
                 let pxRow = y * width,
@@ -88,12 +92,12 @@ export default {
         }
 
         if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, 200);
+            drawExpressionData(vg, width, height, layout, associateData, 200,[1,0,0]);
             // drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
             // drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
         }
         else {
-            drawExpressionData(vg, width, height, layout, associateData, 150);
+            drawExpressionData(vg, width, height, layout, associateData, 150,[0,1,1]);
             // drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
         }
 
