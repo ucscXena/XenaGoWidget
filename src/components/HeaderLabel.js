@@ -2,7 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor,getHoverColor} from '../functions/ColorFunctions'
+import {getSelectColor, getHoverColor} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -14,20 +14,19 @@ export class HeaderLabel extends PureComponent {
 
 
     style() {
-        let {item: {density}, geneLength,selected,hovered, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
+        let {item: {density}, geneLength, selected, hovered, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
-
-        color = 1 - color / 256 ;
+        color = 1 - color / 256;
 
         let colorString = 'rgba(';
-        colorString += colorMask[0] ;
+        colorString += colorMask[0];
         colorString += ',';
-        colorString += colorMask[1] ;
+        colorString += colorMask[1];
         colorString += ',';
-        colorString += colorMask[2] ;
+        colorString += colorMask[2];
         colorString += ',';
-        colorString +=  color + ')';
+        colorString += color + ')';
 
         if (selected) {
             return {
@@ -69,7 +68,7 @@ export class HeaderLabel extends PureComponent {
     }
 
     fontColor() {
-        let {item: {golabel,gene}, selected,hovered} = this.props;
+        let {selected, hovered} = this.props;
 
         if (hovered) {
             return !selected ? '#1A535C' : getHoverColor();
@@ -84,14 +83,11 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        // let {width, labelString, labelHeight, onMouseClick, item} = this.props;
         let {width, labelString, labelHeight, item} = this.props;
-        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g,'-');
+        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         return (
             <svg
                 style={this.style()}
-                // onMouseOver={this.onMouseOver}
-                // onMouseOut={this.onMouseOut}
                 className={className}
             >
                 <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}

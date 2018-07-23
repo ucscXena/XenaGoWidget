@@ -10,13 +10,6 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
-function selectPathway(item) {
-    console.log('selected pathway in header label: ');
-    console.log(item);
-    // alert(JSON.stringify(item))
-}
-
-
 function findRegions(index, height, count) {
     // Find pixel regions having the same set of samples, e.g.
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
