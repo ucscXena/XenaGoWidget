@@ -20,10 +20,20 @@ export class HeaderLabel extends PureComponent {
 
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
 
-        let colorString = 'rgb(';
-        colorString += (colorMask[0] === 0 ? 256 : color) + ',';
-        colorString += (colorMask[1] === 0 ? 256 : color) + ',';
-        colorString += (colorMask[2] === 0 ? 256 : color) + ')';
+        color = 1 - color / 256 ;
+
+        let colorString = 'rgba(';
+        colorString += colorMask[0] ;
+        colorString += ',';
+        colorString += colorMask[1] ;
+        colorString += ',';
+        colorString += colorMask[2] ;
+        colorString += ',';
+        colorString +=  color + ')';
+
+        console.log(colorString);
+
+        colorString = 'rgba(26,83,92,'+color+')';
 
         if (selected) {
             return {
@@ -68,11 +78,11 @@ export class HeaderLabel extends PureComponent {
         let {item: {golabel,gene}, selected,hovered} = this.props;
 
         if (hovered) {
-            return !selected ? 'brown' : 'yellow';
+            return !selected ? '#1A535C' : '#FFE66D';
         }
 
         if (selected) {
-            return 'white';
+            return '#F7FFF7';
         }
 
 
