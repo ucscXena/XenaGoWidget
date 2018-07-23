@@ -2,7 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor, getHoverColor} from '../functions/ColorFunctions'
+import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -73,15 +73,15 @@ export class HeaderLabel extends PureComponent {
         let {selected, hovered} = this.props;
 
         if (hovered) {
-            return !selected ? '#1A535C' : getHoverColor();
+            return !selected ? getDarkColor() : getHoverColor();
         }
 
         if (selected) {
-            return '#F7FFF7';
+            return getWhiteColor();
         }
 
 
-        return colorDensity < 0.7 ? 'black': '#F7FFF7';
+        return colorDensity < 0.7 ? 'black': getWhiteColor();
     }
 
     render() {
