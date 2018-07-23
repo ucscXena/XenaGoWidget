@@ -12,12 +12,14 @@ export class HeaderLabel extends PureComponent {
         super(props);
     }
 
-
-    style() {
-        let {item: {density}, geneLength, selected, hovered, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
-
+    getColorDensity(density,geneLength,highScore) {
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
-        color = 1 - color / 256;
+        return 1 - color / 256;
+    }
+
+
+    style(color) {
+        let { selected, hovered, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let colorString = 'rgba(';
         colorString += colorMask[0];
@@ -67,7 +69,7 @@ export class HeaderLabel extends PureComponent {
         }
     }
 
-    fontColor() {
+    fontColor(colorDensity) {
         let {selected, hovered} = this.props;
 
         if (hovered) {
@@ -79,18 +81,20 @@ export class HeaderLabel extends PureComponent {
         }
 
 
-        return 'black';
+        return colorDensity < 0.7 ? 'black': '#F7FFF7';
     }
 
     render() {
-        let {width, labelString, labelHeight, item} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
+        // let color = this.getColorDensity();
+        let colorDensity = this.getColorDensity(item.density, geneLength, highScore);
         return (
             <svg
-                style={this.style()}
+                style={this.style(colorDensity)}
                 className={className}
             >
-                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
+                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
                 >
                     {width < 10 ? '' : labelString}
