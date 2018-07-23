@@ -6,13 +6,13 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort,clusterSort} from '../functions/SortFunctions';
-import {pruneColumns,associateData} from '../functions/DataFunctions';
-import {pick, pluck, flatten,sum,range, times} from 'underscore';
+import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
+import {pruneColumns, associateData} from '../functions/DataFunctions';
+import {isEqual, omit,memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
-const GENE_LABEL_HEIGHT = 75;
+const GENE_LABEL_HEIGHT = 50;
 
 const style = {
     fadeIn: {
@@ -27,7 +27,7 @@ const style = {
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
-        backgroundColor: 'white'
+        backgroundColor: '#F7FFF7'
     }
 };
 
@@ -42,7 +42,6 @@ function getMousePos(evt) {
 function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
     let pathwayArray = associatedData[pathwayIndex];
     if (!pathwayArray) {
-        // console.log("No pathway data at " + pathwayIndex + " for " + associateData.length);
         return 0;
     }
 
@@ -67,7 +66,8 @@ function getPointData(event, props) {
         let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
         let pathwayIndex;
         let expression;
-        // if a reference pathway
+        // if the tissue index is less than 0, it is a reference pathway
+        // is a reference pathway
         if (tissueIndex < 0) {
             pathwayIndex = pathwayIndexFromX(x, referenceLayout);
             expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
@@ -78,10 +78,10 @@ function getPointData(event, props) {
                 metaSelect: metaSelect
             };
         }
-        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT * 2, samples.length);
+        // if in the sample area, pull from the gene and sample area
+        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-
         return {
             pathway: pathways[pathwayIndex],
             tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
@@ -95,6 +95,7 @@ function getPointData(event, props) {
         let pathwayIndex = pathwayIndexFromX(x, layout);
         let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
         let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+        console.log('no ref ', tissueIndex, pathwayIndex, expression);
 
         return {
             pathway: pathways[pathwayIndex],
@@ -120,10 +121,19 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+    onMouseOut = (event) => {
+        let {onHover} = this.props;
+        onHover(null);
+    };
+
     onHover = (event) => {
         let {onHover} = this.props;
         if (onHover) {
-            onHover(getPointData(event, this.props));
+            let pointData = getPointData(event, this.props);
+            onHover(pointData);
+        }
+        else {
+            onHover(null);
         }
     };
 
@@ -131,7 +141,7 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset,
-            titleText, selected, filter, referenceLayout, selectedPathways
+            titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
 
         let titleString, filterString;
@@ -169,10 +179,14 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
+                    hoveredPathways={hoveredPathways}
                     associateData={associateData}
+                    pathwayLabelHeight={REFERENCE_LABEL_HEIGHT}
+                    geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
+                    onMouseOut={this.onMouseOut}
                 />
             </div>
         );
@@ -189,17 +203,14 @@ PathwayScoresView.propTypes = {
     hideTitle: PropTypes.bool,
     referencePathways: PropTypes.any,
     selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
+    synchronizeSort: PropTypes.any,
     cohortIndex: PropTypes.any,
 };
-
-
-
-
-
 
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
@@ -207,32 +218,95 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
-export default class PathwayScoresViewCache extends PureComponent {
-    render() {
-        let {cohortIndex,statGenerator,selectedPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
-        console.log('data munger');
+let associationDataHash = null;
+let associationDataCache = null;
 
-        let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min,cohortIndex);
+let pruneHash = null;
+let pruneCache = null;
+
+// let associationDataFunction = {};
+
+function findAssociatedData(inputHash) {
+    if (!isEqual(omit(associationDataHash,['cohortIndex']), omit(inputHash,['cohortIndex']))) {
+        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
+        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        associationDataHash = inputHash;
+    }
+    return associationDataCache;
+}
+
+function findPruneData(inputHash) {
+    if (!isEqual(pruneHash, inputHash)) {
+        let {associatedData, pathways, filterMin} = inputHash;
+        pruneCache = pruneColumns(associatedData, pathways, filterMin);
+        // associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        pruneHash = inputHash;
+    }
+    return pruneCache;
+}
+
+export default class PathwayScoresViewCache extends PureComponent {
+
+
+    render() {
+        let {cohortIndex, selectedCohort, synchronizeSort,  selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+
+        let hashAssociation = {
+            expression,
+            copyNumber,
+            geneList,
+            pathways,
+            samples,
+            filter,
+            min,
+            cohortIndex,
+            selectedCohort
+        };
+        // let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
-        let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
+        let hashForPrune = {
+            associatedData,
+            pathways,
+            filterMin
+        };
+        // let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
+        let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
-        let width = Math.max(minWidth, minColWidth * prunedColumns.pathways.length);
         let returnedValue;
 
-        switch (selectedSort) {
-            case 'Hierarchical':
-                returnedValue = hierarchicalSort(prunedColumns);
-                break;
-            case 'Cluster':
-            default:
-                returnedValue = clusterSort(prunedColumns);
-                break;
+
+
+        if (cohortIndex === 0 || !synchronizeSort) {
+            switch (selectedSort) {
+                case 'Hierarchical':
+                    returnedValue = hierarchicalSort(prunedColumns);
+                    break;
+                case 'Cluster':
+                default:
+                    returnedValue = clusterSort(prunedColumns);
+                    break;
+            }
+            if (referencePathways) {
+                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+            }
+            else {
+                PathwayScoresView.synchronizedGeneSetList = returnedValue.pathways.map(g => g.golabel);
+            }
         }
+        else {
+            if (referencePathways) {
+                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+            }
+            else {
+                returnedValue = synchronizedGeneSetSort(prunedColumns, PathwayScoresView.synchronizedGeneSetList);
+            }
+        }
+        returnedValue.index = cohortIndex;
+        let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        returnedValue.index = cohortIndex ;
-        statGenerator(returnedValue);
-
+        // statGenerator(returnedValue);
 
 
         if (referencePathways) {
@@ -245,6 +319,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                     width={width}
                     layout={layoutData}
                     referenceLayout={referenceLayout}
+                    hoveredPathways={hoveredPathways}
                     data={{
                         expression,
                         pathways: returnedValue.pathways,
@@ -262,6 +337,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                     {...this.props}
                     width={width}
                     layout={layout(width, returnedValue.data)}
+                    hoveredPathways={hoveredPathways}
                     data={{
                         expression,
                         pathways: returnedValue.pathways,

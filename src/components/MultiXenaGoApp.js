@@ -2,74 +2,27 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
-import ExampleExpression from "../../tests/data/bulkExpression";
-import ExampleCopyNumber from "../../tests/data/bulkCopyNumber";
-import ExampleSamples from "../../tests/data/samples";
-import {Button} from 'react-toolbox/lib/button';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 
-const MAX_GLOBAL_STATS = 10;
+
+const MAX_GLOBAL_STATS = 30;
+
+// synchronizing gene sorts between pathways
+const LOCAL_STORAGE_STRING = "default-app-storage";
 
 export default class MultiXenaGoApp extends PureComponent {
+
+
     constructor(props) {
         super(props);
-
-        // initilialize an init app
+        let {synchronizeSort, synchronizeSelection, renderHeight} = this.props;
+        // initialize an init app
         this.state = {
-            synchronizeSort: true,
-            synchronizeSelection: true,
-            apps: [
-                {
-                    key: 0,
-                    renderHeight: 800,
-                    renderOffset: 0,
-                    selectedTissueSort: 'Cluster',
-                    selectedGeneSort: 'Cluster',
-                    selectedPathways: [],
-                    sortTypes: ['Cluster', 'Hierarchical'],
-                    pathwayData: {
-                        cohort: 'TCGA Ovarian Cancer (OV)',
-                        copyNumber: ExampleCopyNumber,
-                        expression: ExampleExpression,
-                        pathways: this.props.pathways,
-                        samples: ExampleSamples,
-                    },
-                    loadState: 'loading',
-                    selectedCohort: 'TCGA Ovarian Cancer (OV)',
-                    cohortData: {},
-                    tissueExpressionFilter: 'All',
-                    geneExpressionFilter: 'All',
-                    minFilter: 2,
-                    filterPercentage: 0.005,
-                    geneData: {
-                        copyNumber: [],
-                        expression: [],
-                        pathways: [],
-                        samples: [],
-                    },
-                    pathwayHoverData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    pathwayClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    geneHoverData: {
-                        tissue: null,
-                        gene: null,
-                        score: null
-                    },
-                    geneClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                },
-            ]
+            synchronizeSort: synchronizeSort,
+            synchronizeSelection: synchronizeSelection,
+            renderHeight: renderHeight,
+            apps:MultiXenaGoApp.getApp(this.props),
         }
     }
 
@@ -81,8 +34,10 @@ export default class MultiXenaGoApp extends PureComponent {
             }
         );
         let myIndex = 0;
-        this.refs['xena-go-app-' + myIndex].clickPathway(pathwaySelection);
-
+        let ref = this.refs['xena-go-app-' + myIndex];
+        if(ref){
+            ref.clickPathway(pathwaySelection);
+        }
     }
 
     componentDidMount() {
@@ -90,80 +45,43 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
+        let {synchronizeSort, renderHeight} = this.props;
+        MultiXenaGoApp.storeApp(this.state.apps);
+        console.log(this.state.apps)
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
-                <div key={app.key} style={{border: 'solid'}}>
-
-
+                <div key={app.key}>
                     <XenaGoApp appData={app}
                                statGenerator={this.generateStats}
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
+                               pathwayHover={this.pathwayHover}
                                ref={refString}
+                               renderHeight={renderHeight}
+                               renderOffset={(renderHeight + 5) * index}
+                               synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />
-
-                    <Card>
-                        {index === 0 &&
-                        <CardActions>
-                            <Switch
-                                checked={this.state.synchronizeSelection}
-                                label="Synchronize selection"
-                                onChange={() => this.toggleSynchronizeSelection()}
-                            />
-                        </CardActions>
-                        }
-
-                        <CardActions>
-                            {index > 0 &&
-                            // if its not the first one, then allow for a deletion
-                            <Button label='- Remove Cohort' raised flat onClick={() => this.removeCohort(app)}/>
-                            }
-
-                            {index === 0 &&
-                            // if its the last one, then allow for an add
-                            <Button label='+ Add Cohort' raised primary onClick={() => this.duplicateCohort(app)}/>
-                            }
-                        </CardActions>
-                    </Card>
-
-
                 </div>
             )
         });
     }
 
 
-    toggleSynchronizeSort() {
-        this.setState({
-            synchronizeSort: !this.state.synchronizeSort
-        })
-    }
-
-    toggleSynchronizeSelection() {
-
-        // set sort as well
-        let newSort = !this.state.synchronizeSelection ? true : this.state.synchronizeSort;
-
-        this.setState({
-            synchronizeSelection: !this.state.synchronizeSelection,
-            synchronizeSort: newSort,
-        })
-    }
-
-    // just duplicate the last state
-    duplicateCohort(app) {
+    // // just duplicate the last state
+    duplicateCohort() {
+        let app = this.state.apps[0];
         let newCohort = JSON.parse(JSON.stringify(app));
         newCohort.key = this.state.apps[this.state.apps.length - 1].key + 1;
         let apps = JSON.parse(JSON.stringify(this.state.apps));
 
         // calculate the render offset based on the last offset
         let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 80;
+        newCohort.renderOffset = renderOffset + renderHeight + 5;
         apps.push(newCohort);
 
-        if (this.state.synchronizeSelection) {
+        if (this.props.synchronizeSelection) {
             let myIndex = app.key;
             app.propagate = false;
 
@@ -171,7 +89,7 @@ export default class MultiXenaGoApp extends PureComponent {
             this.setState({
                     apps: apps
                 },
-                () => this.pathwaySelect(rootAppSelection.pathwayClickData,rootAppSelection.selectedPathways)
+                () => this.pathwaySelect(rootAppSelection.pathwayClickData, rootAppSelection.selectedPathways)
             );
         }
         else {
@@ -179,27 +97,56 @@ export default class MultiXenaGoApp extends PureComponent {
                 apps: apps
             });
         }
+        return this.cohortCount();
 
 
     };
 
-    removeCohort(app) {
+    cohortCount(){
+        if(this.state.apps){
+            return this.state.apps.length;
+        }
+        return 0 ;
+    }
+
+    removeCohort() {
+        let app = this.state.apps[1];
         let apps = JSON.parse(JSON.stringify(this.state.apps)).filter((f) => f.key !== app.key);
         this.setState({
             apps: apps
         });
+        return this.cohortCount();
     }
 
-    pathwaySelect = (pathwaySelection,selectedPathways) => {
-        if (this.state.synchronizeSelection) {
+    pathwayHover = (pathwayHover) => {
+        // console.log('hovering pathway',pathwayHover)
+        if (this.props.synchronizeSelection) {
+            let myIndex = pathwayHover.key;
+            pathwayHover.propagate = false;
+            // console.log('pathway hover',pathwayHover)
+            this.state.apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    // if (selectedPathways) {
+                        this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
+                    // }
+                    // else {
+                    //     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                    // }
+                }
+            });
+        }
+    };
+
+    pathwaySelect = (pathwaySelection, selectedPathways) => {
+        if (this.props.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    if(selectedPathways){
-                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways,pathwaySelection);
+                    if (selectedPathways) {
+                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
                     }
-                    else{
+                    else {
                         this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                     }
                 }
@@ -228,7 +175,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
         // generate a global stat box
         let statBox = this.generateGlobalStats(apps);
-
         this.setState({
             apps: apps,
             statBox: statBox,
@@ -294,11 +240,82 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
         return {
-            commonGenes: reducedGenes
+            commonGenes: reducedGenes,
+            cohortCount: apps.length,
         }
     }
+
+    static storeApp(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+        }
+    }
+
+    static getApp(props) {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        if (storedPathway) {
+            return storedPathway
+        }
+        else {
+            return [
+                {
+                    key: 0,
+                    renderHeight: props.renderHeight,
+                    renderOffset: 5,
+                    selectedTissueSort: 'Cluster',
+                    selectedGeneSort: 'Cluster',
+                    selectedPathways: [],
+                    sortTypes: ['Cluster', 'Hierarchical'],
+                    pathwayData: {
+                        cohort: 'TCGA Ovarian Cancer (OV)',
+                        copyNumber: [],
+                        expression: [],
+                        pathways: props.pathways,
+                        samples: [],
+                    },
+                    loadState: 'loading',
+                    selectedCohort: 'TCGA Ovarian Cancer (OV)',
+                    cohortData: {},
+                    tissueExpressionFilter: 'All',
+                    geneExpressionFilter: 'All',
+                    minFilter: 2,
+                    filterPercentage: 0.005,
+                    geneData: {
+                        copyNumber: [],
+                        expression: [],
+                        pathways: [],
+                        samples: [],
+                    },
+                    pathwayHoverData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                    pathwayClickData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                    geneHoverData: {
+                        tissue: null,
+                        gene: null,
+                        score: null
+                    },
+                    geneClickData: {
+                        tissue: null,
+                        pathway: null,
+                        score: null
+                    },
+                },
+            ];
+        }
+    }
+
 }
 
 MultiXenaGoApp.propTyes = {
-    pathways: PropTypes.any.isRequired
+    pathways: PropTypes.any.isRequired,
+    renderHeight: PropTypes.any,
+    synchronizeSort: PropTypes.any,
+    synchronizeSelection: PropTypes.any,
 };

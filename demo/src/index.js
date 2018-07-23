@@ -1,11 +1,12 @@
 import React from 'react'
 import {render} from 'react-dom'
 
-import {Avatar, Chip, Button, AppBar, Link, Navigation} from "react-toolbox";
+import BaseStyle from '../../src/base.css';
+import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
+import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
-import Pathways2 from "../../tests/data/sample2";
 import PureComponent from "../../src/components/PureComponent";
 
 
@@ -18,14 +19,60 @@ const GithubIcon = () => (
     </svg>
 );
 
+const LOCAL_STORAGE_STRING = "default-xena-go-key";
+const EXPAND_HEIGHT = 800 ;
+const COMPACT_HEIGHT = 500 ;
+const COMPACT_VIEW_DEFAULT = false ;
+
 class Demo extends PureComponent {
+
+    static storePathway(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+        }
+    }
+
+    static getPathway() {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        return storedPathway ? storedPathway : DefaultPathWays;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
             view: 'xena',
             // view: 'pathways',
-            value: 'ES-es',
+            pathwaySets: [
+                {
+                    name: 'Default Pathway',
+                    pathway: Demo.getPathway(),
+                    selected: true
+                }
+            ],
+            synchronizeSort: true,
+            synchronizeSelection: true,
+            cohortCount: 1,
+            compactView: COMPACT_VIEW_DEFAULT,
+            renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
+        }
+    }
+
+    handleUpload = (file) => {
+        Demo.storePathway(file);
+        this.setState({
+            pathwaySets: [
+                {
+                    name: 'Default Pathway',
+                    pathway: file,
+                    selected: true
+                }
+            ],
+        })
+    };
+
+    handleReset = () => {
+        Demo.storePathway(DefaultPathWays);
+        this.setState({
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -33,8 +80,8 @@ class Demo extends PureComponent {
                     selected: true
                 }
             ],
-        }
-    }
+        })
+    };
 
     addGeneSet = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
@@ -42,43 +89,42 @@ class Demo extends PureComponent {
         // allSets = allSets.filter(f => (!f || f.selected === false));
 
         let newGeneSetObject = {
-            goid:'',
-            golabel:selectedPathway,
-            gene:[]
+            goid: '',
+            golabel: selectedPathway,
+            gene: []
         };
         selectedPathwaySet.pathway.unshift(newGeneSetObject);
         // allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
-            selectedPathway: selectedPathwaySet ,
+            selectedPathway: selectedPathwaySet,
         });
     };
 
     // TODO
-    addGene= (selectedPathway,selectedGene) => {
-
-        console.log('ROOT: adding new gene',selectedPathway,selectedGene);
-
+    addGene = (selectedPathway, selectedGene) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
         let selectedPathwaySet = allSets.find(f => f.selected === true);
 
         // get pathway to filter
-        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
         let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel);
 
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel);
 
         // remove gene
-        newSelectedPathway.gene.unshift(selectedGene)
+        newSelectedPathway.gene.unshift(selectedGene);
 
         // add to the existing index
-        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -86,26 +132,27 @@ class Demo extends PureComponent {
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
-    removeGene = (selectedPathway,selectedGene) => {
+    removeGene = (selectedPathway, selectedGene) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
         let selectedPathwaySet = allSets.find(f => f.selected === true);
 
         // get pathway to filter
-        let pathwayIndex = selectedPathwaySet.pathway.findIndex( p => selectedPathway.golabel === p.golabel);
-        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel)
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
+        let newSelectedPathway = selectedPathwaySet.pathway.find(p => selectedPathway.golabel === p.golabel);
+        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel);
 
         // remove gene
-        newSelectedPathway.gene = newSelectedPathway.gene.filter( g =>  g!==selectedGene );
+        newSelectedPathway.gene = newSelectedPathway.gene.filter(g => g !== selectedGene);
 
         // add to the existing index
 
-        selectedPathwaySet.pathway.splice(pathwayIndex,0,newSelectedPathway)
+        selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -121,20 +168,62 @@ class Demo extends PureComponent {
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 
+        Demo.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: undefined,
         });
     };
 
+    componentDidMount(){
+        let numCohorts = this.refs['multiXenaGoApp'].cohortCount();
+        if(numCohorts===2){
+            this.makeCompact(true);
+            this.setState({
+                cohortCount:numCohorts
+            })
+        }
+        else{
+            this.makeCompact(false);
+            this.setState({
+                cohortCount:numCohorts
+            })
+        }
+    }
+
+
     render() {
         return (<div>
-            <AppBar title='Xena Geneset Widget Demo'>
-                <div style={{marginTop: 14}}>
-                    <Chip>
-                        {this.showActive().name}
-                    </Chip>
-                </div>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+                  rel="stylesheet"/>
+
+            <AppBar title='Xena Geneset Widget Demo' >
+                <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
+                    <Switch
+                        checked={this.state.synchronizeSelection}
+                        label="Sync pathway"
+                        onChange={() => this.toggleSynchronizeSelection()}
+                    />
+                    <Switch
+                        checked={this.state.synchronizeSort}
+                        label="Sync sort"
+                        onChange={() => this.toggleSynchronizeSort()}
+                    />
+                    <MenuDivider/>
+                    <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
+                              onClick={() => this.makeCompact(true)}
+                              disabled={this.state.compactView}/>
+                    <MenuItem value='settings' icon='import_export' caption='Expand'
+                              onClick={() => this.makeCompact(false)}
+                              disabled={!this.state.compactView}/>
+                    <MenuDivider/>
+                    <MenuItem value='settings' icon='add' caption='Add Cohort'
+                              onClick={() => this.duplicateCohort()}
+                              disabled={this.state.cohortCount === 2}/>
+                    <MenuItem value='settings' icon='remove' caption='Remove Cohort'
+                              onClick={() => this.removeCohort()}
+                              disabled={this.state.cohortCount === 1}/>
+                </IconMenu>
                 <Navigation type='vertical'>
                     {this.state.view === 'xena' &&
                     <div style={{display: 'inline'}}>
@@ -153,7 +242,11 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.state.pathwaySets.find(ps => ps.selected).pathway}/>
+            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                            synchronizeSort={this.state.synchronizeSort}
+                            synchronizeSelection={this.state.synchronizeSelection}
+                            renderHeight={this.state.renderHeight}
+            />
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
@@ -162,10 +255,16 @@ class Demo extends PureComponent {
                            removePathwayHandler={this.removePathway}
                            addGeneHandler={this.addGene}
                            addGeneSetHandler={this.addGeneSet}
+                           uploadHandler={this.handleUpload}
+                           resetHandler={this.handleReset}
             />
             }
 
         </div>)
+    }
+
+    getActiveApp() {
+        return this.state.pathwaySets.find(ps => ps.selected);
     }
 
     showPathways() {
@@ -180,10 +279,56 @@ class Demo extends PureComponent {
         })
     }
 
+    // just duplicate the last state
+    duplicateCohort() {
+        this.makeCompact(true);
+        this.refs['multiXenaGoApp'].duplicateCohort();
+        this.setState({
+            cohortCount: 2
+        });
+    };
+
+    removeCohort() {
+        this.makeCompact(false);
+        this.refs['multiXenaGoApp'].removeCohort();
+        this.setState({
+            cohortCount:1
+        })
+        ;
+    }
+
+    toggleSynchronizeSort() {
+        this.setState({
+            synchronizeSort: !this.state.synchronizeSort
+        })
+    }
+
+    toggleSynchronizeSelection() {
+
+        // set sort as well
+        let newSort = this.state.synchronizeSort;
+        if (this.state.synchronizeSelection) {
+            newSort = false;
+        }
+
+
+        this.setState({
+            synchronizeSelection: !this.state.synchronizeSelection,
+            synchronizeSort: newSort,
+        })
+    }
+
     showActive() {
         return this.state.pathwaySets.find(f => {
             return f.selected === true
         });
+    }
+
+    makeCompact(value) {
+        this.setState({
+            compactView: value,
+            renderHeight: value ? COMPACT_HEIGHT : EXPAND_HEIGHT,
+        })
     }
 }
 

@@ -11,32 +11,32 @@ function lowerCaseCompare(a, b) {
 }
 
 
-function compileData(filteredEffects, data,geneList) {
-    let {pathways, copyNumber,expression: {rows}} = data;
+function compileData(filteredEffects, data, geneList, amplificationThreshold, deletionThreshold) {
+    let {pathways, copyNumber, expression: {rows}} = data;
 
     let genes = new Set(flatten(pluck(pathways, 'gene')));
     let hasGene = row => genes.has(row.gene);
     let effects = groupBy(rows.filter(hasGene), 'effect');
 
     let returnObject = mapObject(pick(effects, filteredEffects),
-                     list => list.length);
+        list => list.length);
 
-    let copyNumberTotal = 0 ;
+    let copyNumberTotal = 0;
 
     // TODO: move to a reduce function and use 'index' method
-    for(let gene of genes){
+    for (let gene of genes) {
         let geneIndex = geneList.indexOf(gene);
         let copyNumberData = copyNumber[geneIndex];
 
-        copyNumberData.map( ( el)  => {
-            copyNumberTotal += getCopyNumberValue(el)
+        copyNumberData.map((el) => {
+            copyNumberTotal += getCopyNumberValue(el, amplificationThreshold, deletionThreshold)
         });
     }
 
     let filterObject = {};
     filterObject['Copy Number'] = copyNumberTotal;
-    let totalMutations = 0 ;
-    for(let obj in returnObject){
+    let totalMutations = 0;
+    for (let obj in returnObject) {
         totalMutations += returnObject[obj];
     }
 
@@ -68,23 +68,24 @@ export class FilterSelector extends PureComponent {
     };
 
     render() {
-        const {filters,pathwayData,selected,geneList} = this.props;
-
-        let counts = compileData(Object.keys(filters), pathwayData,geneList);
+        const {filters, pathwayData, selected, geneList, amplificationThreshold, deletionThreshold} = this.props;
+        let counts = compileData(Object.keys(filters), pathwayData, geneList, amplificationThreshold, deletionThreshold);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
         let total = sum(Object.values(counts));
 
-        const labelValues = labels.map(label => ( {label:label+ ' ('+ counts[label]+')',value:label}));
-        labelValues.unshift({label:'CNV + Mutation ('+total+')',value:'All'});
+        const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
+        labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
         // labelValues.unshift({label:'Copy Number ('+copyNumberCount+')',value:'CopyNumber'});
 
-        const filterLabel = 'Filter ('+total+')';
+        const filterLabel = 'Filter (' + total + ')';
 
         return (
-            <Dropdown label={filterLabel} onChange={this.setSelected} value={selected}
-                      source={labelValues} >
-            </Dropdown>
+            <div style={{marginLeft: 10,marginTop:0}}>
+                <Dropdown style={{marginTop:0}} label={filterLabel} onChange={this.setSelected} value={selected}
+                          source={labelValues}>
+                </Dropdown>
+            </div>
         );
     }
 }
@@ -95,4 +96,6 @@ FilterSelector.propTypes = {
     geneList: PropTypes.any,
     onChange: PropTypes.any,
     selected: PropTypes.any,
+    amplificationThreshold: PropTypes.any,
+    deletionThreshold: PropTypes.any,
 };

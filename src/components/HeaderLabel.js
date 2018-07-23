@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
+import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -9,30 +10,25 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            hovered: false,
-        };
     }
 
-    onMouseOver = (item) => {
-        this.setState({hovered: true});
-    };
+    getColorDensity(density,geneLength,highScore) {
+        let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
+        return 1 - color / 256;
+    }
 
-    onMouseOut = (item) => {
-        this.setState({hovered: false});
-    };
 
-    style() {
-        let {item: {density, golabel}, selectedPathways, highScore, labelOffset, left, width, labelHeight, colorMask} = this.props;
+    style(color) {
+        let { selected, hovered, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
-        let color = Math.round(this.maxColor * (1.0 - (density / highScore)));
-
-        let colorString = 'rgb(';
-        colorString += (colorMask[0] === 0 ? 256 : color) + ',';
-        colorString += (colorMask[1] === 0 ? 256 : color) + ',';
-        colorString += (colorMask[2] === 0 ? 256 : color) + ')';
-
-        let selected = selectedPathways.indexOf(golabel) >= 0;
+        let colorString = 'rgba(';
+        colorString += colorMask[0];
+        colorString += ',';
+        colorString += colorMask[1];
+        colorString += ',';
+        colorString += colorMask[2];
+        colorString += ',';
+        colorString += color + ')';
 
         if (selected) {
             return {
@@ -41,19 +37,20 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: 'blue',
+                backgroundColor: getSelectColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
         }
-        else if (this.state.hovered) {
+
+        else if (hovered) {
             return {
                 position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: 'yellow',
+                backgroundColor: getHoverColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -67,37 +64,37 @@ export class HeaderLabel extends PureComponent {
                 width: width,
                 backgroundColor: colorString,
                 strokeWidth: 1,
+                cursor: 'pointer'
             }
         }
     }
 
-    fontColor() {
-        let {item: {golabel}, selectedPathways} = this.props;
+    fontColor(colorDensity) {
+        let {selected, hovered} = this.props;
 
-        let selected = selectedPathways.indexOf(golabel) >= 0;
-        if (this.state.hovered) {
-            return !selected ? 'brown' : 'yellow';
+        if (hovered) {
+            return !selected ? getDarkColor() : getHoverColor();
         }
 
         if (selected) {
-            return 'white';
+            return getWhiteColor();
         }
 
 
-        return 'black';
+        return colorDensity < 0.7 ? 'black': getWhiteColor();
     }
 
     render() {
-        // let {width, labelString, labelHeight, onMouseClick, item} = this.props;
-        let {width, labelString, labelHeight, item} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
+        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
+        // let color = this.getColorDensity();
+        let colorDensity = this.getColorDensity(item.density, geneLength, highScore);
         return (
             <svg
-                style={this.style()}
-                onMouseOver={this.onMouseOver}
-                onMouseOut={this.onMouseOut}
-                // onMouseDownCapture={onMouseClick(item)}
+                style={this.style(colorDensity)}
+                className={className}
             >
-                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor()}
+                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
                 >
                     {width < 10 ? '' : labelString}
@@ -116,7 +113,8 @@ HeaderLabel.propTypes = {
     labelString: PropTypes.string,
     highScore: PropTypes.number,
     item: PropTypes.any,
-    selectedPathways: PropTypes.any,
+    selected: PropTypes.any,
+    hovered: PropTypes.any,
     colorMask: PropTypes.any,
-    // onMouseClick: PropTypes.any,
+    geneLength: PropTypes.any,
 };
