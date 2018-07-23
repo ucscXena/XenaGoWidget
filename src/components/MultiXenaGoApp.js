@@ -17,7 +17,7 @@ export default class MultiXenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         let {synchronizeSort, synchronizeSelection, renderHeight} = this.props;
-        // initilialize an init app
+        // initialize an init app
         this.state = {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,

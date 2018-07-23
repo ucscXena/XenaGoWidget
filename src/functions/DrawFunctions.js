@@ -1,6 +1,7 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
+import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -8,13 +9,6 @@ function clearScreen(vg, width, height) {
     vg.strokeStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
     vg.fillRect(0, 0, width, height);
 }
-
-function selectPathway(item) {
-    console.log('selected pathway in header label: ');
-    console.log(item);
-    // alert(JSON.stringify(item))
-}
-
 
 function findRegions(index, height, count) {
     // Find pixel regions having the same set of samples, e.g.
@@ -35,13 +29,11 @@ function findRegions(index, height, count) {
 function regionColor(data) {
     let p = sum(data) / data.length;
     let scale = 5;
-    let c = 255 - 255 * p / scale;
-    return [255, c, c];
+    return 255 * p / scale;
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask) {
     let height = totalHeight - labelHeight;
-    let pathwayCount = data.length;
     let tissueCount = data[0].length;
     let regions = findRegions(0, height, tissueCount);
     let img = ctx.createImageData(width, totalHeight);
@@ -61,10 +53,10 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) 
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
                 for (let l = buffStart; l < buffEnd; l += 4) {
-                    img.data[l] = color[0];
-                    img.data[l + 1] = color[1];
-                    img.data[l + 2] = color[2];
-                    img.data[l + 3] = 255;
+                    img.data[l] = colorMask[0];
+                    img.data[l + 1] = colorMask[1];
+                    img.data[l + 2] = colorMask[2];
+                    img.data[l + 3] = color ;
                 }
             }
         }
@@ -74,27 +66,24 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight) 
 }
 
 
-
 export default {
 
+
+
     drawTissueView(vg, props) {
-        let {width, height, layout, referenceLayout, associateData, data: {pathways, referencePathways}} = props;
+        let {width, height, layout, associateData, data: { referencePathways}} = props;
 
         clearScreen(vg, width, height);
 
         if (associateData.length === 0) {
-            // console.log('Clicked on an empty cell?');
             return;
         }
 
         if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, 200);
-            // drawPathwayLabels(vg, width, height, referenceLayout, referencePathways, 150, 0);
-            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 150);
+            drawExpressionData(vg, width, height, layout, associateData, 200, getGeneColorMask());
         }
         else {
-            drawExpressionData(vg, width, height, layout, associateData, 150);
-            // drawPathwayLabels(vg, width, height, layout, pathways, 150, 0);
+            drawExpressionData(vg, width, height, layout, associateData, 150, getPathwayColorMask());
         }
 
     },

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {intersection} from 'underscore';
+import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
 
 
 let styles = {
@@ -86,6 +87,7 @@ export default class SVGLabels extends PureComponent {
 
 
         let labels;
+
         if (referencePathways) {
 
             // TODO: for each gene, map the other pathways that gene is involved in
@@ -119,12 +121,12 @@ export default class SVGLabels extends PureComponent {
                 };
             });
 
-            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, [0, 1, 1]);
-            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, pathwayLabelHeight, [1, 0, 0]);
+            let l1 = this.drawOverviewLabels(width, height, referenceLayout, newRefPathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, getPathwayColorMask());
+            let l2 = this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, pathwayLabelHeight, getGeneColorMask());
             labels = [...l1, ...l2];
         }
         else {
-            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, [0, 1, 1]);
+            labels = this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, getPathwayColorMask());
         }
         return labels;
 
