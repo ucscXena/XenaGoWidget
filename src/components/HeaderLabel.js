@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
+import {getSelectColor,getHoverColor} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -9,9 +10,6 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
-        // this.state = {
-        //     hovered: false,
-        // };
     }
 
 
@@ -31,10 +29,6 @@ export class HeaderLabel extends PureComponent {
         colorString += ',';
         colorString +=  color + ')';
 
-        console.log(colorString);
-
-        colorString = 'rgba(26,83,92,'+color+')';
-
         if (selected) {
             return {
                 position: 'absolute',
@@ -42,7 +36,7 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: '#113871',
+                backgroundColor: getSelectColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -55,7 +49,7 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: '#FFE66D',
+                backgroundColor: getHoverColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -78,7 +72,7 @@ export class HeaderLabel extends PureComponent {
         let {item: {golabel,gene}, selected,hovered} = this.props;
 
         if (hovered) {
-            return !selected ? '#1A535C' : '#FFE66D';
+            return !selected ? '#1A535C' : getHoverColor();
         }
 
         if (selected) {
@@ -123,5 +117,4 @@ HeaderLabel.propTypes = {
     hovered: PropTypes.any,
     colorMask: PropTypes.any,
     geneLength: PropTypes.any,
-    // onMouseClick: PropTypes.any,
 };
