@@ -32,7 +32,7 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: '#324D5C',
+                backgroundColor: '#113871',
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -45,7 +45,7 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: '#F0C94D',
+                backgroundColor: '#FFE66D',
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
