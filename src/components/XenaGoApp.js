@@ -54,7 +54,8 @@ export default class XenaGoApp extends PureComponent {
     constructor(props) {
         super(props);
         this.state = this.props.appData;
-        this.state.processing = false;
+        this.state.processing = true;
+        this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
     }
 
