@@ -33,6 +33,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     getPathwaySelection() {
         let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_SELECTION_STRING));
+        console.log('got pathway seleciton',storedPathwaySelection);
         return storedPathwaySelection ? storedPathwaySelection : this.getDefaultSelectionPathway();
     }
 
@@ -144,6 +145,8 @@ export default class MultiXenaGoApp extends PureComponent {
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
+        this.storePathwaySelection(pathwaySelection);
+        console.log('selecting pathway',pathwaySelection,selectedPathways);
         if (this.props.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
