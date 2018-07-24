@@ -9,8 +9,8 @@ import {sum} from 'underscore';
 const MAX_GLOBAL_STATS = 30;
 
 // synchronizing gene sorts between pathways
-const LOCAL_APP_STRING = "xena-app-storage";
-const LOCAL_SELECTION_STRING = "xena-selection-storage";
+const LOCAL_APP_STORAGE = "xena-app-storage";
+const LOCAL_STATE_STORAGE = "xena-selection-storage";
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -28,22 +28,36 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     getDefaultSelectionPathway() {
-        return {pathway: this.props.pathways[21], tissue: 'Header'};
+        return {selection: {pathway: this.props.pathways[21], tissue: 'Header'}};
+    }
+
+    getSelection() {
+        let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
+        console.log('got pathway seleciton', storedPathwaySelection);
+        let finalSelection = storedPathwaySelection ? storedPathwaySelection : this.getDefaultSelectionPathway();
+        console.log('got final seleciton', finalSelection);
+        return finalSelection;
     }
 
     getPathwaySelection() {
-        let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_SELECTION_STRING));
-        console.log('got pathway seleciton',storedPathwaySelection);
-        return storedPathwaySelection ? storedPathwaySelection : this.getDefaultSelectionPathway();
+        let pathwaySelection = this.getSelection().selection;
+        console.log('pathway selection',pathwaySelection)
+        return pathwaySelection;
     }
 
-    storePathwaySelection(selection) {
+    storeSelection(selection) {
         if (selection) {
-            localStorage.setItem(LOCAL_SELECTION_STRING, JSON.stringify(selection));
+            localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
         }
-        else{
+        else {
             console.log('storing empty pathway')
         }
+    }
+
+    storePathwaySelection(pathway) {
+        let selection = this.getSelection();
+        selection.selection = pathway;
+        this.storeSelection(selection);
     }
 
     loadDefault() {
@@ -145,8 +159,8 @@ export default class MultiXenaGoApp extends PureComponent {
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
+        console.log('selecting a pathway', pathwaySelection, selectedPathways);
         this.storePathwaySelection(pathwaySelection);
-        console.log('selecting pathway',pathwaySelection,selectedPathways);
         if (this.props.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
@@ -257,12 +271,12 @@ export default class MultiXenaGoApp extends PureComponent {
 
     static storeApp(pathway) {
         if (pathway) {
-            localStorage.setItem(LOCAL_APP_STRING, JSON.stringify(pathway));
+            localStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
         }
     }
 
     static getApp(props) {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STRING));
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
         if (storedPathway) {
             return storedPathway
         }
