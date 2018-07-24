@@ -22,7 +22,7 @@ export default class MultiXenaGoApp extends PureComponent {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
-            apps:MultiXenaGoApp.getApp(this.props),
+            apps: MultiXenaGoApp.getApp(this.props),
         }
     }
 
@@ -35,7 +35,7 @@ export default class MultiXenaGoApp extends PureComponent {
         );
         let myIndex = 0;
         let ref = this.refs['xena-go-app-' + myIndex];
-        if(ref){
+        if (ref) {
             ref.clickPathway(pathwaySelection);
         }
     }
@@ -102,11 +102,11 @@ export default class MultiXenaGoApp extends PureComponent {
 
     };
 
-    cohortCount(){
-        if(this.state.apps){
+    cohortCount() {
+        if (this.state.apps) {
             return this.state.apps.length;
         }
-        return 0 ;
+        return 0;
     }
 
     removeCohort() {
@@ -119,19 +119,12 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwayHover = (pathwayHover) => {
-        // console.log('hovering pathway',pathwayHover)
         if (this.props.synchronizeSelection) {
             let myIndex = pathwayHover.key;
             pathwayHover.propagate = false;
-            // console.log('pathway hover',pathwayHover)
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    // if (selectedPathways) {
-                        this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
-                    // }
-                    // else {
-                    //     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
-                    // }
+                    this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
                 }
             });
         }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {intersection} from 'underscore';
-import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
+import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 
 
 let styles = {
@@ -36,11 +36,8 @@ export default class SVGLabels extends PureComponent {
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
                 let d = pathways[i];
-
-                // let color = Math.round(maxColor * (1.0 - (d.density / highestScore)));
-                // let colorString = 'rgb(256,' + color + ',' + color + ')'; // sets the color to fill in the rectangle with
                 let geneLength = d.gene.length;
-                let labelString, hovered, selected ;
+                let labelString, hovered, selected;
                 if (geneLength === 1) {
                     labelString = d.gene[0];
                     hovered = hoveredPathways.indexOf(labelString) >= 0;
@@ -56,7 +53,8 @@ export default class SVGLabels extends PureComponent {
                     labelString += d.golabel;
                     selected = selectedPathways.indexOf(d.golabel) >= 0;
 
-                    hovered = intersection(hoveredPathways,d.gene).length>0
+                    hovered = intersection(hoveredPathways, d.gene).length > 0;
+                    hovered = hovered || hoveredPathways.indexOf(d.golabel)===0 ;
                 }
                 return (
                     <HeaderLabel
@@ -79,7 +77,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay(div, props) {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways,data: { pathways, referencePathways}} = props;
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = props;
 
         if (associateData.length === 0) {
             return;
@@ -133,7 +131,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     render() {
-        const {width, height, onClick, onMouseMove,onMouseOut, offset} = this.props;
+        const {width, height, onClick, onMouseMove, onMouseOut, offset} = this.props;
         return (
             <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}
