@@ -9,7 +9,8 @@ import {sum} from 'underscore';
 const MAX_GLOBAL_STATS = 30;
 
 // synchronizing gene sorts between pathways
-const LOCAL_STORAGE_STRING = "default-app-storage";
+const LOCAL_APP_STRING = "xena-app-storage";
+const LOCAL_SELECTION_STRING = "xena-selection-storage";
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -26,17 +27,29 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
+    getDefaultSelectionPathway() {
+        return {pathway: this.props.pathways[21], tissue: 'Header'};
+    }
+
+    getPathwaySelection() {
+        let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_SELECTION_STRING));
+        return storedPathwaySelection ? storedPathwaySelection : this.getDefaultSelectionPathway();
+    }
+
+    storePathwaySelection(selection) {
+        if (selection) {
+            localStorage.setItem(LOCAL_SELECTION_STRING, JSON.stringify(selection));
+        }
+        else{
+            console.log('storing empty pathway')
+        }
+    }
+
     loadDefault() {
-        let pathwaySelection = (
-            {
-                pathway: this.props.pathways[21],
-                tissue: 'Header'
-            }
-        );
         let myIndex = 0;
         let ref = this.refs['xena-go-app-' + myIndex];
         if (ref) {
-            ref.clickPathway(pathwaySelection);
+            ref.clickPathway(this.getPathwaySelection());
         }
     }
 
@@ -47,7 +60,7 @@ export default class MultiXenaGoApp extends PureComponent {
     render() {
         let {synchronizeSort, renderHeight} = this.props;
         MultiXenaGoApp.storeApp(this.state.apps);
-        console.log(this.state.apps)
+        console.log(this.state.apps);
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -238,14 +251,15 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
+
     static storeApp(pathway) {
         if (pathway) {
-            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+            localStorage.setItem(LOCAL_APP_STRING, JSON.stringify(pathway));
         }
     }
 
     static getApp(props) {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STRING));
         if (storedPathway) {
             return storedPathway
         }
