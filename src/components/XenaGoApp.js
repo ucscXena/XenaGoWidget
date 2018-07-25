@@ -22,6 +22,7 @@ let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import MultiXenaGoApp from "./MultiXenaGoApp";
+import {AppStorageHandler} from "./AppStorageHandler";
 
 
 function lowerCaseCompareName(a, b) {
@@ -248,7 +249,7 @@ export default class XenaGoApp extends PureComponent {
                         cohortData
                     });
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-                        this.selectCohort(MultiXenaGoApp.getApp()[0].selectedCohort);
+                        this.selectCohort(AppStorageHandler.getApp()[0].selectedCohort);
                     }
                     return data;
                 });
@@ -262,7 +263,7 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        MultiXenaGoApp.storeCohortState(selected,this.state.key);
+        AppStorageHandler.storeCohortState(selected,this.state.key);
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,

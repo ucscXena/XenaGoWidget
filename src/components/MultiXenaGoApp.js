@@ -4,13 +4,11 @@ import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
+import {AppStorageHandler} from "./AppStorageHandler";
 
 
 const MAX_GLOBAL_STATS = 30;
 
-// synchronizing gene sorts between pathways
-const LOCAL_APP_STORAGE = "xena-app-storage";
-const LOCAL_STATE_STORAGE = "xena-selection-storage";
 
 export default class MultiXenaGoApp extends PureComponent {
 
@@ -23,67 +21,25 @@ export default class MultiXenaGoApp extends PureComponent {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
-            apps: MultiXenaGoApp.getApp(this.props),
+            apps: AppStorageHandler.getApp(this.props),
         }
     }
 
-    static getDefaultSelectionPathway() {
-        return {selection: {pathway: this.props.pathways[21], tissue: 'Header'}};
-    }
-
-    static getAppState() {
-        let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
-        console.log('got pathway seleciton', storedPathwaySelection);
-        let finalSelection = storedPathwaySelection ? storedPathwaySelection : MultiXenaGoApp.getDefaultSelectionPathway();
-        console.log('got final seleciton', finalSelection);
-        return finalSelection;
-    }
-
-    getPathwaySelection() {
-        let pathwaySelection = MultiXenaGoApp.getAppState().selection;
-        console.log('pathway selection',pathwaySelection)
-        return pathwaySelection;
-    }
-
-    static storeAppState(selection) {
-        if (selection) {
-            localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
-        }
-        else {
-            console.log('storing empty pathway')
-        }
-    }
-
-    storePathwaySelection(pathway) {
-        let selection = MultiXenaGoApp.getAppState();
-        selection.selection = pathway;
-        MultiXenaGoApp.storeAppState(selection);
-    }
-
-    static storeCohortState(selected, cohortIndex) {
-        let appState = MultiXenaGoApp.getAppState();
-        if(!appState.cohortState){
-            appState.cohortState = {};
-        }
-        appState.cohortState[cohortIndex] = { selected:selected };
-        MultiXenaGoApp.storeAppState(appState);
-    }
-
-    loadDefault() {
+    loadSelectedState() {
         let myIndex = 0;
         let ref = this.refs['xena-go-app-' + myIndex];
         if (ref) {
-            ref.clickPathway(this.getPathwaySelection());
+            ref.clickPathway(AppStorageHandler.getPathwaySelection());
         }
     }
 
     componentDidMount() {
-        this.loadDefault();
+        this.loadSelectedState();
     }
 
     render() {
         let {synchronizeSort, renderHeight} = this.props;
-        MultiXenaGoApp.storeApp(this.state.apps);
+        AppStorageHandler.storeApp(this.state.apps);
         console.log(this.state.apps);
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
@@ -169,7 +125,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
         console.log('selecting a pathway', pathwaySelection, selectedPathways);
-        this.storePathwaySelection(pathwaySelection);
+        AppStorageHandler.storePathwaySelection(pathwaySelection);
         if (this.props.synchronizeSelection) {
             let myIndex = pathwaySelection.key;
             pathwaySelection.propagate = false;
@@ -274,75 +230,6 @@ export default class MultiXenaGoApp extends PureComponent {
         return {
             commonGenes: reducedGenes,
             cohortCount: apps.length,
-        }
-    }
-
-
-    static storeApp(pathway) {
-        if (pathway) {
-            localStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
-        }
-    }
-
-    static getApp(props) {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
-        if (storedPathway) {
-            console.log(storedPathway)
-            return storedPathway
-        }
-        else {
-            alert('getting default app')
-            return [
-                {
-                    key: 0,
-                    renderHeight: props.renderHeight,
-                    renderOffset: 5,
-                    selectedTissueSort: 'Cluster',
-                    selectedGeneSort: 'Cluster',
-                    selectedPathways: [],
-                    sortTypes: ['Cluster', 'Hierarchical'],
-                    pathwayData: {
-                        cohort: 'TCGA Ovarian Cancer (OV)',
-                        copyNumber: [],
-                        expression: [],
-                        pathways: props.pathways,
-                        samples: [],
-                    },
-                    loadState: 'loading',
-                    selectedCohort: 'TCGA Ovarian Cancer (OV)',
-                    cohortData: {},
-                    tissueExpressionFilter: 'All',
-                    geneExpressionFilter: 'All',
-                    minFilter: 2,
-                    filterPercentage: 0.005,
-                    geneData: {
-                        copyNumber: [],
-                        expression: [],
-                        pathways: [],
-                        samples: [],
-                    },
-                    pathwayHoverData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    pathwayClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                    geneHoverData: {
-                        tissue: null,
-                        gene: null,
-                        score: null
-                    },
-                    geneClickData: {
-                        tissue: null,
-                        pathway: null,
-                        score: null
-                    },
-                },
-            ];
         }
     }
 
