@@ -21,7 +21,7 @@ export default class MultiXenaGoApp extends PureComponent {
             synchronizeSort: synchronizeSort,
             synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
-            apps: AppStorageHandler.getApp(this.props),
+            apps: AppStorageHandler.getAppData(this.props),
         }
     }
 
@@ -39,7 +39,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     render() {
         let {synchronizeSort, renderHeight} = this.props;
-        AppStorageHandler.storeApp(this.state.apps);
+        AppStorageHandler.storeAppData(this.state.apps);
         console.log(this.state.apps);
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;

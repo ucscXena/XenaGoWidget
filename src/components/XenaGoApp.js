@@ -249,7 +249,9 @@ export default class XenaGoApp extends PureComponent {
                         cohortData
                     });
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-                        this.selectCohort(AppStorageHandler.getApp()[0].selectedCohort);
+                        // let selectedCohort1 = AppStorageHandler.getApp()[0].selectedCohort;
+                        let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
+                        this.selectCohort(selectedCohort2);
                     }
                     return data;
                 });
@@ -263,7 +265,9 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
+        console.log('storing cohort ',selected,this.state.key);
         AppStorageHandler.storeCohortState(selected,this.state.key);
+        console.log(AppStorageHandler.getAppState())
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
