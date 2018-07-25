@@ -262,6 +262,7 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
+        MultiXenaGoApp.storeCohortState(selected,this.state.key);
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
@@ -375,11 +376,6 @@ export default class XenaGoApp extends PureComponent {
                                                    key={this.state.key}
                                 />
                             </Col>
-                            {/*<Col md={1}>*/}
-                            {/*<Card style={{marginTop: 5}}>*/}
-                            {/*<CompareBox statBox={stats}/>*/}
-                            {/*</Card>*/}
-                            {/*</Col>*/}
                         </Row>
                     </Grid>
                 )

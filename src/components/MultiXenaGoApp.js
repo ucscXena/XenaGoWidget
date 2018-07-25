@@ -27,25 +27,25 @@ export default class MultiXenaGoApp extends PureComponent {
         }
     }
 
-    getDefaultSelectionPathway() {
+    static getDefaultSelectionPathway() {
         return {selection: {pathway: this.props.pathways[21], tissue: 'Header'}};
     }
 
-    getSelection() {
+    static getAppState() {
         let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
         console.log('got pathway seleciton', storedPathwaySelection);
-        let finalSelection = storedPathwaySelection ? storedPathwaySelection : this.getDefaultSelectionPathway();
+        let finalSelection = storedPathwaySelection ? storedPathwaySelection : MultiXenaGoApp.getDefaultSelectionPathway();
         console.log('got final seleciton', finalSelection);
         return finalSelection;
     }
 
     getPathwaySelection() {
-        let pathwaySelection = this.getSelection().selection;
+        let pathwaySelection = MultiXenaGoApp.getAppState().selection;
         console.log('pathway selection',pathwaySelection)
         return pathwaySelection;
     }
 
-    storeSelection(selection) {
+    static storeAppState(selection) {
         if (selection) {
             localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
         }
@@ -55,9 +55,18 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     storePathwaySelection(pathway) {
-        let selection = this.getSelection();
+        let selection = MultiXenaGoApp.getAppState();
         selection.selection = pathway;
-        this.storeSelection(selection);
+        MultiXenaGoApp.storeAppState(selection);
+    }
+
+    static storeCohortState(selected, cohortIndex) {
+        let appState = MultiXenaGoApp.getAppState();
+        if(!appState.cohortState){
+            appState.cohortState = {};
+        }
+        appState.cohortState[cohortIndex] = { selected:selected };
+        MultiXenaGoApp.storeAppState(appState);
     }
 
     loadDefault() {
@@ -278,9 +287,11 @@ export default class MultiXenaGoApp extends PureComponent {
     static getApp(props) {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
         if (storedPathway) {
+            console.log(storedPathway)
             return storedPathway
         }
         else {
+            alert('getting default app')
             return [
                 {
                     key: 0,
