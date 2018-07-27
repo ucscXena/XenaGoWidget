@@ -19,9 +19,9 @@ export class AppStorageHandler extends PureComponent {
 
     static getAppState() {
         let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
-        console.log('got pathway seleciton', storedPathwaySelection);
+        // console.log('got pathway seleciton', storedPathwaySelection);
         let finalSelection = storedPathwaySelection ? storedPathwaySelection : AppStorageHandler.getDefaultSelectionPathway();
-        console.log('got final seleciton', finalSelection);
+        // console.log('got final seleciton', finalSelection);
         return finalSelection;
     }
 
@@ -49,7 +49,11 @@ export class AppStorageHandler extends PureComponent {
     static getCohortState(cohortIndex){
         let appState = AppStorageHandler.getAppState();
         console.log('getting state',appState);
+        console.log('getting state 1',appState);
+        console.log('getting state 1 c',appState.cohortState);
+        // console.log('getting state 1 c l',appState.cohortState.length,cohortIndex, appState.cohortState.length > cohortIndex);
         if(appState && appState.cohortState && appState.cohortState.length > cohortIndex){
+            console.log('trying to return',appState.cohortState[cohortIndex]);
             return appState.cohortState[cohortIndex];
         }
         else{
@@ -61,7 +65,7 @@ export class AppStorageHandler extends PureComponent {
     static storeCohortState(selected, cohortIndex) {
         let appState = AppStorageHandler.getAppState();
         if(!appState.cohortState){
-            appState.cohortState = {};
+            appState.cohortState = [];
         }
         appState.cohortState[cohortIndex] = { selected:selected };
         console.log('STORING cohort state',appState);
@@ -77,11 +81,11 @@ export class AppStorageHandler extends PureComponent {
     static getAppData(props) {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
         if (storedPathway) {
-            console.log(storedPathway)
+            // console.log('retrived storage',storedPathway);
             return storedPathway
         }
         else {
-            alert('getting default app')
+            // console.log('retrieving default app');
             return [
                 {
                     key: 0,
