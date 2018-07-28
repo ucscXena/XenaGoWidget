@@ -49,17 +49,26 @@ export class AppStorageHandler extends PureComponent {
     static getCohortState(cohortIndex){
         let appState = AppStorageHandler.getAppState();
         console.log('getting state',appState);
-        console.log('getting state 1',appState);
-        console.log('getting state 1 c',appState.cohortState);
+        console.log('getting state 1',appState.cohortState);
+        if(appState.cohortState){
+            console.log('getting state 1 c',appState.cohortState.selected);
+        }
         // console.log('getting state 1 c l',appState.cohortState.length,cohortIndex, appState.cohortState.length > cohortIndex);
         if(appState && appState.cohortState && appState.cohortState.length > cohortIndex){
             console.log('trying to return',appState.cohortState[cohortIndex]);
-            return appState.cohortState[cohortIndex];
+            let returnValue = appState.cohortState[cohortIndex];
+            if(returnValue && returnValue.selected) {
+                console.log('is defined, so returning',returnValue);
+                return returnValue ;
+            }
+            else{
+                console.log('not defined');
+            }
+
         }
-        else{
-            console.log('no cohort index found',cohortIndex);
-            return 'TCGA Ovarian Cancer (OV)'
-        }
+
+        console.log('no cohort index found',cohortIndex);
+        return 'TCGA Ovarian Cancer (OV)'
     }
 
     static storeCohortState(selected, cohortIndex) {
@@ -67,7 +76,9 @@ export class AppStorageHandler extends PureComponent {
         if(!appState.cohortState){
             appState.cohortState = [];
         }
-        appState.cohortState[cohortIndex] = { selected:selected };
+        // TODO: remove this hack
+        let selectedValue = selected.selected ? selected.selected : selected ;
+        appState.cohortState[cohortIndex] = { selected:selectedValue};
         console.log('STORING cohort state',appState);
         AppStorageHandler.storeAppState(appState);
     }

@@ -251,8 +251,9 @@ export default class XenaGoApp extends PureComponent {
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
                         // let selectedCohort1 = AppStorageHandler.getApp()[0].selectedCohort;
                         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-                        console.log('got cohort sttate on xenagoapp mount:',selectedCohort2)
-                        this.selectCohort(selectedCohort2.cohortState[this.state.key]);
+                        console.log('got cohort sttate on xenagoapp mount:',selectedCohort2);
+                        // this.selectCohort(selectedCohort2.cohortState[this.state.key]);
+                        this.selectCohort(selectedCohort2);
                     }
                     return data;
                 });
@@ -266,7 +267,7 @@ export default class XenaGoApp extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        console.log('storing cohort ',selected,this.state.key);
+        console.log('selecting cohort ',selected,this.state.key,this.state.cohortData,cohort);
         AppStorageHandler.storeCohortState(selected,this.state.key);
         console.log(AppStorageHandler.getAppState());
         this.setState({
