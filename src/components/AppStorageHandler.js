@@ -49,12 +49,14 @@ export class AppStorageHandler extends PureComponent {
     static getCohortState(cohortIndex){
         let appState = AppStorageHandler.getAppState();
         console.log('getting state',appState);
-        console.log('getting state 1',appState.cohortState);
-        if(appState.cohortState){
-            console.log('getting state 1 c',appState.cohortState.selected);
+        console.log('getting state 1',appState.cohortState,cohortIndex);
+        if(appState.cohortState && appState.cohortState[cohortIndex]){
+            console.log('getting state 1 c',appState.cohortState[cohortIndex].selected);
         }
         // console.log('getting state 1 c l',appState.cohortState.length,cohortIndex, appState.cohortState.length > cohortIndex);
-        if(appState && appState.cohortState && appState.cohortState.length > cohortIndex){
+        // console.log('should pass',appState,appState.cohortState,appState.cohortState.length,cohortIndex,appState.cohortState[cohortIndex]);
+
+        if(appState && appState.cohortState && appState.cohortState[cohortIndex]){
             console.log('trying to return',appState.cohortState[cohortIndex]);
             let returnValue = appState.cohortState[cohortIndex];
             if(returnValue && returnValue.selected) {
@@ -66,12 +68,16 @@ export class AppStorageHandler extends PureComponent {
             }
 
         }
+        else{
+            console.log('did not pass')
+        }
 
         console.log('no cohort index found',cohortIndex);
         return 'TCGA Ovarian Cancer (OV)'
     }
 
     static storeCohortState(selected, cohortIndex) {
+        if(!selected) return ;
         let appState = AppStorageHandler.getAppState();
         if(!appState.cohortState){
             appState.cohortState = [];

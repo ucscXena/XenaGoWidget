@@ -253,7 +253,7 @@ export default class XenaGoApp extends PureComponent {
                         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
                         console.log('got cohort sttate on xenagoapp mount:',selectedCohort2);
                         // this.selectCohort(selectedCohort2.cohortState[this.state.key]);
-                        this.selectCohort(selectedCohort2);
+                        this.selectCohort( selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
                     }
                     return data;
                 });
