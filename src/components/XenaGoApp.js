@@ -62,6 +62,7 @@ export default class XenaGoApp extends PureComponent {
 
 
     setPathwayState(newSelection, pathwayClickData) {
+        console.log('setting pathway state',newSelection,pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -85,8 +86,7 @@ export default class XenaGoApp extends PureComponent {
         pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
         if (pathwayClickData.propagate) {
             // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
-            // this.props.synchronizationHandler(pathways);
-            this.props.pathwaySelect(pathwayClickData);
+            this.props.pathwaySelect(pathwayClickData,newSelection);
         }
     }
 

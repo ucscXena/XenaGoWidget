@@ -27,7 +27,14 @@ export default class MultiXenaGoApp extends PureComponent {
         let myIndex = 0;
         let ref = this.refs['xena-go-app-' + myIndex];
         if (ref) {
-            ref.clickPathway(AppStorageHandler.getPathwaySelection());
+            console.log('getting selection',AppStorageHandler.getPathwaySelection());
+            let selection = AppStorageHandler.getPathwaySelection();
+            if(selection.selectedPathways){
+                ref.setPathwayState(selection.selectedPathways,selection);
+            }
+            else{
+                ref.clickPathway(selection);
+            }
         }
     }
 
@@ -113,7 +120,7 @@ export default class MultiXenaGoApp extends PureComponent {
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
         console.log('selecting a pathway', pathwaySelection, selectedPathways);
-        AppStorageHandler.storePathwaySelection(pathwaySelection);
+        AppStorageHandler.storePathwaySelection(pathwaySelection,selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {

@@ -25,7 +25,7 @@ export class AppStorageHandler extends PureComponent {
 
     static getPathwaySelection() {
         let pathwaySelection = AppStorageHandler.getAppState().selection;
-        console.log('pathway selection',pathwaySelection)
+        console.log('pathway selection',pathwaySelection);
         return pathwaySelection;
     }
 
@@ -38,10 +38,11 @@ export class AppStorageHandler extends PureComponent {
         }
     }
 
-    static storePathwaySelection(pathway) {
-        let selection = AppStorageHandler.getAppState();
-        selection.selection = pathway;
-        AppStorageHandler.storeAppState(selection);
+    static storePathwaySelection(pathway,selectedPathways) {
+        let appState = AppStorageHandler.getAppState();
+        appState.selection = pathway;
+        appState.selection.selectedPathways = selectedPathways;
+        AppStorageHandler.storeAppState(appState);
     }
 
     static getCohortState(cohortIndex){
