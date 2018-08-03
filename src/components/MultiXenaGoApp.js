@@ -15,11 +15,9 @@ export default class MultiXenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-        let {synchronizeSort, synchronizeSelection, renderHeight} = this.props;
+        let {renderHeight} = this.props;
         // initialize an init app
         this.state = {
-            synchronizeSort: synchronizeSort,
-            synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
             apps: AppStorageHandler.getAppData(this.props),
         }
@@ -38,7 +36,7 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
-        let {synchronizeSort, renderHeight} = this.props;
+        let {renderHeight} = this.props;
         AppStorageHandler.storeAppData(this.state.apps);
         console.log(this.state.apps);
         return this.state.apps.map((app, index) => {
@@ -53,7 +51,6 @@ export default class MultiXenaGoApp extends PureComponent {
                                ref={refString}
                                renderHeight={renderHeight}
                                renderOffset={(renderHeight + 5) * index}
-                               synchronizeSort={synchronizeSort}
                                pathways={this.props.pathways}
                     />
                 </div>
@@ -74,22 +71,15 @@ export default class MultiXenaGoApp extends PureComponent {
         newCohort.renderOffset = renderOffset + renderHeight + 5;
         apps.push(newCohort);
 
-        if (this.props.synchronizeSelection) {
-            let myIndex = app.key;
-            app.propagate = false;
+        let myIndex = app.key;
+        app.propagate = false;
 
-            let rootAppSelection = JSON.parse(JSON.stringify(this.refs['xena-go-app-' + myIndex].state));
-            this.setState({
-                    apps: apps
-                },
-                () => this.pathwaySelect(rootAppSelection.pathwayClickData, rootAppSelection.selectedPathways)
-            );
-        }
-        else {
-            this.setState({
+        let rootAppSelection = JSON.parse(JSON.stringify(this.refs['xena-go-app-' + myIndex].state));
+        this.setState({
                 apps: apps
-            });
-        }
+            },
+            () => this.pathwaySelect(rootAppSelection.pathwayClickData, rootAppSelection.selectedPathways)
+        );
         return this.cohortCount();
 
 
@@ -112,34 +102,30 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     pathwayHover = (pathwayHover) => {
-        if (this.props.synchronizeSelection) {
-            let myIndex = pathwayHover.key;
-            pathwayHover.propagate = false;
-            this.state.apps.forEach((app, index) => {
-                if (index !== myIndex) {
-                    this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
-                }
-            });
-        }
+        let myIndex = pathwayHover.key;
+        pathwayHover.propagate = false;
+        this.state.apps.forEach((app, index) => {
+            if (index !== myIndex) {
+                this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
+            }
+        });
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
         console.log('selecting a pathway', pathwaySelection, selectedPathways);
         AppStorageHandler.storePathwaySelection(pathwaySelection);
-        if (this.props.synchronizeSelection) {
-            let myIndex = pathwaySelection.key;
-            pathwaySelection.propagate = false;
-            this.state.apps.forEach((app, index) => {
-                if (index !== myIndex) {
-                    if (selectedPathways) {
-                        this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
-                    }
-                    else {
-                        this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
-                    }
+        let myIndex = pathwaySelection.key;
+        pathwaySelection.propagate = false;
+        this.state.apps.forEach((app, index) => {
+            if (index !== myIndex) {
+                if (selectedPathways) {
+                    this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
                 }
-            });
-        }
+                else {
+                    this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                }
+            }
+        });
     };
 
     generateStats = (appData) => {
@@ -238,6 +224,4 @@ export default class MultiXenaGoApp extends PureComponent {
 MultiXenaGoApp.propTyes = {
     pathways: PropTypes.any.isRequired,
     renderHeight: PropTypes.any,
-    synchronizeSort: PropTypes.any,
-    synchronizeSelection: PropTypes.any,
 };

@@ -208,7 +208,6 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
-    synchronizeSort: PropTypes.any,
     cohortIndex: PropTypes.any,
 };
 
@@ -248,7 +247,7 @@ function findPruneData(inputHash) {
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, synchronizeSort,  selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -275,7 +274,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
 
-        if (cohortIndex === 0 || !synchronizeSort) {
+        if (cohortIndex === 0) {
             switch (selectedSort) {
                 case 'Hierarchical':
                     returnedValue = hierarchicalSort(prunedColumns);

@@ -49,8 +49,6 @@ class Demo extends PureComponent {
                     selected: true
                 }
             ],
-            synchronizeSort: true,
-            synchronizeSelection: true,
             cohortCount: 1,
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
@@ -199,17 +197,6 @@ class Demo extends PureComponent {
 
             <AppBar title='Xena Geneset Widget Demo' >
                 <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
-                    <Switch
-                        checked={this.state.synchronizeSelection}
-                        label="Sync pathway"
-                        onChange={() => this.toggleSynchronizeSelection()}
-                    />
-                    <Switch
-                        checked={this.state.synchronizeSort}
-                        label="Sync sort"
-                        onChange={() => this.toggleSynchronizeSort()}
-                    />
-                    <MenuDivider/>
                     <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
                               onClick={() => this.makeCompact(true)}
                               disabled={this.state.compactView}/>
@@ -243,8 +230,6 @@ class Demo extends PureComponent {
             </AppBar>
             {this.state.view === 'xena' &&
             <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                            synchronizeSort={this.state.synchronizeSort}
-                            synchronizeSelection={this.state.synchronizeSelection}
                             renderHeight={this.state.renderHeight}
             />
             }
@@ -295,33 +280,6 @@ class Demo extends PureComponent {
             cohortCount:1
         })
         ;
-    }
-
-    toggleSynchronizeSort() {
-        this.setState({
-            synchronizeSort: !this.state.synchronizeSort
-        })
-    }
-
-    toggleSynchronizeSelection() {
-
-        // set sort as well
-        let newSort = this.state.synchronizeSort;
-        if (this.state.synchronizeSelection) {
-            newSort = false;
-        }
-
-
-        this.setState({
-            synchronizeSelection: !this.state.synchronizeSelection,
-            synchronizeSort: newSort,
-        })
-    }
-
-    showActive() {
-        return this.state.pathwaySets.find(f => {
-            return f.selected === true
-        });
     }
 
     makeCompact(value) {
