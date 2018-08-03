@@ -19,9 +19,7 @@ export class AppStorageHandler extends PureComponent {
 
     static getAppState() {
         let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
-        // console.log('got pathway seleciton', storedPathwaySelection);
         let finalSelection = storedPathwaySelection ? storedPathwaySelection : AppStorageHandler.getDefaultSelectionPathway();
-        // console.log('got final seleciton', finalSelection);
         return finalSelection;
     }
 

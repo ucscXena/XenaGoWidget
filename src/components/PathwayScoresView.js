@@ -247,7 +247,6 @@ function findPruneData(inputHash) {
 
 export default class PathwayScoresViewCache extends PureComponent {
 
-
     render() {
         let {cohortIndex, selectedCohort, synchronizeSort,  selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
@@ -262,7 +261,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             cohortIndex,
             selectedCohort
         };
-        // let associatedData = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
@@ -271,7 +269,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways,
             filterMin
         };
-        // let prunedColumns = pruneColumns(associatedData, pathways, filterMin);
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
         let returnedValue;
@@ -296,6 +293,9 @@ export default class PathwayScoresViewCache extends PureComponent {
             }
         }
         else {
+            console.log('not calculated?:',PathwayScoresView.synchronizedGeneList)
+            console.log('calculated?:',PathwayScoresView.synchronizedGeneList)
+
             if (referencePathways) {
                 returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
             }
@@ -305,9 +305,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
-
-        // statGenerator(returnedValue);
-
 
         if (referencePathways) {
             let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
