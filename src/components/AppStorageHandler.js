@@ -45,34 +45,68 @@ export class AppStorageHandler extends PureComponent {
         AppStorageHandler.storeAppState(appState);
     }
 
+
     static getCohortState(cohortIndex){
         let appState = AppStorageHandler.getAppState();
-        console.log('getting state',appState);
-        console.log('getting state 1',appState.cohortState,cohortIndex);
-        if(appState.cohortState && appState.cohortState[cohortIndex]){
-            console.log('getting state 1 c',appState.cohortState[cohortIndex].selected);
-        }
-        // console.log('getting state 1 c l',appState.cohortState.length,cohortIndex, appState.cohortState.length > cohortIndex);
-        // console.log('should pass',appState,appState.cohortState,appState.cohortState.length,cohortIndex,appState.cohortState[cohortIndex]);
-
         if(appState && appState.cohortState && appState.cohortState[cohortIndex]){
-            console.log('trying to return',appState.cohortState[cohortIndex]);
             let returnValue = appState.cohortState[cohortIndex];
             if(returnValue && returnValue.selected) {
-                console.log('is defined, so returning',returnValue);
                 return returnValue ;
             }
-            else{
-                console.log('not defined');
-            }
-
         }
-        else{
-            console.log('did not pass')
-        }
-
         console.log('no cohort index found',cohortIndex);
         return 'TCGA Ovarian Cancer (OV)'
+    }
+
+    static storeFilterState(selected,cohortIndex){
+        if(!selected) return ;
+        let appState = AppStorageHandler.getAppState();
+        if(!appState.filterState){
+            appState.filterState = [];
+        }
+        // TODO: remove this hack
+        let selectedValue = selected.selected ? selected.selected : selected ;
+        appState.filterState[cohortIndex] = { selected:selectedValue};
+        console.log('STORING filter state',appState);
+        AppStorageHandler.storeAppState(appState);
+    }
+
+
+    static getFilterState(cohortIndex){
+        let appState = AppStorageHandler.getAppState();
+        if(appState && appState.filterState && appState.filterState[cohortIndex]){
+            let returnValue = appState.filterState[cohortIndex];
+            if(returnValue && returnValue.selected) {
+                return returnValue.selected ;
+            }
+        }
+        console.log('no cohort index found',cohortIndex);
+        return 'All'
+    }
+
+    static storeSortState(selected,cohortIndex){
+        if(!selected) return ;
+        let appState = AppStorageHandler.getAppState();
+        if(!appState.sortState){
+            appState.sortState = [];
+        }
+        // TODO: remove this hack
+        let selectedValue = selected.selected ? selected.selected : selected ;
+        appState.sortState[cohortIndex] = { selected:selectedValue};
+        console.log('STORING sort state',appState);
+        AppStorageHandler.storeAppState(appState);
+    }
+
+    static getSortState(cohortIndex){
+        let appState = AppStorageHandler.getAppState();
+        if(appState && appState.sortState && appState.sortState[cohortIndex]){
+            let returnValue = appState.sortState[cohortIndex];
+            if(returnValue && returnValue.selected) {
+                return returnValue.selected ;
+            }
+        }
+        console.log('no cohort index found',cohortIndex);
+        return 'Cluster'
     }
 
     static storeCohortState(selected, cohortIndex) {

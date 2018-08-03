@@ -58,6 +58,29 @@ export default class XenaGoApp extends PureComponent {
         this.state.processing = true;
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
+
+        let appState = AppStorageHandler.getAppState();
+
+        let cohortIndex = this.state.key ;
+        let sortString = AppStorageHandler.getSortState(cohortIndex);
+        let filterString = AppStorageHandler.getFilterState(cohortIndex);
+
+        console.log('srt string',sortString);
+        console.log('filter string',filterString);
+        console.log('this state',this.state);
+        console.log('vs ',appState);
+
+        if(sortString){
+            this.state.selectedGeneSort = sortString;
+            this.state.selectedTissueSort = sortString;
+        }
+
+        if(filterString){
+            this.state.geneExpressionFilter = filterString;
+            this.state.tissueExpressionFilter = filterString;
+        }
+
+        console.log('final state',appState);
     }
 
 
@@ -192,18 +215,22 @@ export default class XenaGoApp extends PureComponent {
 
     filterTissueType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
+        AppStorageHandler.storeFilterState(filter,this.state.key)
     };
 
     sortTissueType = (sortString) => {
         this.setState({selectedTissueSort: sortString});
+        AppStorageHandler.storeSortState(sortString,this.state.key)
     };
 
     sortGeneType = (sortString) => {
         this.setState({selectedGeneSort: sortString});
+        AppStorageHandler.storeSortState(sortString,this.state.key)
     };
 
     filterGeneType = (filter) => {
         this.setState({geneExpressionFilter: filter});
+        AppStorageHandler.storeFilterState(filter,this.state.key)
     };
 
     componentWillMount() {
