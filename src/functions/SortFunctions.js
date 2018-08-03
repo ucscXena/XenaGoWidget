@@ -262,7 +262,7 @@ export function synchronizedSort(prunedColumns, geneList) {
         return b.density - a.density
     });
     // refilter data by index
-    let columnLength = sortedColumns.data[0].length;
+    let columnLength = sortedColumns.data.length > 0 ? sortedColumns.data[0].length : 0 ;
     sortedColumns.data = sortedColumns.pathways.map(el => {
         let columnData = sortedColumns.data[el.index];
         if (columnData) {

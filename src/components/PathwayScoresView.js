@@ -8,7 +8,7 @@ import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
 import {pruneColumns, associateData} from '../functions/DataFunctions';
-import {isEqual, omit,memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
+import {isEqual, omit, memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
@@ -227,7 +227,7 @@ let pruneCache = null;
 // let associationDataFunction = {};
 
 function findAssociatedData(inputHash) {
-    if (!isEqual(omit(associationDataHash,['cohortIndex']), omit(inputHash,['cohortIndex']))) {
+    if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
         let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
         associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         associationDataHash = inputHash;
@@ -248,7 +248,10 @@ function findPruneData(inputHash) {
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, synchronizeSort,  selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {setGeneList,setGeneSetList,cohortIndex, selectedCohort, synchronizeSort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        console.log('synchronizedGeneData',this.props.synchronizedGeneData,cohortIndex);
+        let {synchronizedGeneList, synchronizedGeneSetList} = this.props.synchronizedGeneData ;
+        console.log('B synchronizedGeneData',this.props.synchronizedGeneData);
 
         let hashAssociation = {
             expression,
@@ -274,7 +277,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         let returnedValue;
 
 
-
         if (cohortIndex === 0 || !synchronizeSort) {
             switch (selectedSort) {
                 case 'Hierarchical':
@@ -286,21 +288,27 @@ export default class PathwayScoresViewCache extends PureComponent {
                     break;
             }
             if (referencePathways) {
-                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+                let newSynchronizedGeneList = synchronizedGeneList ? synchronizedGeneList : returnedValue.pathways.map(g => g.gene[0]);
+                console.log('going to set the top-level gene list')
+                setGeneList(newSynchronizedGeneList)
+                console.log('set the top-level gene list')
             }
             else {
-                PathwayScoresView.synchronizedGeneSetList = returnedValue.pathways.map(g => g.golabel);
+                console.log('going to set the top-level gene SET list')
+                let newSynchronizedGeneSetList = synchronizedGeneSetList ? synchronizedGeneSetList : returnedValue.pathways.map(g => g.golabel);
+                setGeneSetList(newSynchronizedGeneSetList)
+                console.log('SET the top-level gene SET list')
             }
         }
         else {
-            console.log('not calculated?:',PathwayScoresView.synchronizedGeneList)
-            console.log('calculated?:',PathwayScoresView.synchronizedGeneList)
+            // console.log('get list?:', PathwayScoresView.synchronizedGeneList)
+            // console.log('get set list?:', PathwayScoresView.synchronizedGeneList)
 
             if (referencePathways) {
-                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                returnedValue = synchronizedSort(prunedColumns, synchronizedGeneList);
             }
             else {
-                returnedValue = synchronizedGeneSetSort(prunedColumns, PathwayScoresView.synchronizedGeneSetList);
+                returnedValue = synchronizedGeneSetSort(prunedColumns, synchronizedGeneSetList);
             }
         }
         returnedValue.index = cohortIndex;
