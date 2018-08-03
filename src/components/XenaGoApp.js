@@ -429,6 +429,7 @@ export default class XenaGoApp extends PureComponent {
                                                    statGenerator={statGenerator}
                                                    filter={this.state.geneExpressionFilter}
                                                    synchronizeSort={this.props.synchronizeSort}
+                                                   synchronizedGeneData={this.props.synchronizedGeneData}
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
                                                    loading={cohortLoading}
@@ -443,6 +444,8 @@ export default class XenaGoApp extends PureComponent {
                                                    hideTitle={true}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
+                                                   setGeneList={this.props.setGeneList}
+                                                   setGeneSetList={this.props.setGeneList}
                                 />
                             </Col>
                             }
@@ -470,5 +473,7 @@ XenaGoApp.propTypes = {
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     synchronizeSort: PropTypes.any,
-    synchronizedGeneList: PropTypes.any,
+    synchronizedGeneData: PropTypes.any,
+    setGeneList: PropTypes.any,
+    setGeneSetList: PropTypes.any,
 };

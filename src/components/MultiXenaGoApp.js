@@ -22,6 +22,10 @@ export default class MultiXenaGoApp extends PureComponent {
             synchronizeSelection: synchronizeSelection,
             renderHeight: renderHeight,
             apps: AppStorageHandler.getAppData(this.props),
+            synchronizedGeneData: {
+                synchronizedGeneList: [],
+                synchronizedGeneSetList: [],
+            },
         }
     }
 
@@ -42,22 +46,28 @@ export default class MultiXenaGoApp extends PureComponent {
         AppStorageHandler.storeAppData(this.state.apps);
         console.log(this.state.apps);
         return this.state.apps.map((app, index) => {
-            let refString = 'xena-go-app-' + index;
-            return (
-                <div key={app.key}>
-                    <XenaGoApp appData={app}
-                               statGenerator={this.generateStats}
-                               stats={this.state.statBox}
-                               pathwaySelect={this.pathwaySelect}
-                               pathwayHover={this.pathwayHover}
-                               ref={refString}
-                               renderHeight={renderHeight}
-                               renderOffset={(renderHeight + 5) * index}
-                               synchronizeSort={synchronizeSort}
-                               pathways={this.props.pathways}
-                    />
-                </div>
-            )
+            console.log('mapping: ',index,this.state.synchronizedGeneData)
+            if(this.state.synchronizedGeneData.synchronizedGeneList.length>0 || index===0){
+                let refString = 'xena-go-app-' + index;
+                return (
+                    <div key={app.key}>
+                        <XenaGoApp appData={app}
+                                   statGenerator={this.generateStats}
+                                   stats={this.state.statBox}
+                                   pathwaySelect={this.pathwaySelect}
+                                   pathwayHover={this.pathwayHover}
+                                   ref={refString}
+                                   renderHeight={renderHeight}
+                                   renderOffset={(renderHeight + 5) * index}
+                                   synchronizeSort={synchronizeSort}
+                                   pathways={this.props.pathways}
+                                   synchronizedGeneData={this.state.synchronizedGeneData}
+                                   setGeneList={this.setGeneList}
+                                   setGeneSetList={this.setGeneList}
+                        />
+                    </div>
+                )
+            }
         });
     }
 
@@ -140,6 +150,28 @@ export default class MultiXenaGoApp extends PureComponent {
                 }
             });
         }
+    };
+
+    setGeneList = (geneList) => {
+        this.setState((prevState) => {
+            return {
+                synchronizedGeneData: {
+                    synchronizedGeneSetList: prevState.synchronizedGeneData.synchronizedGeneSetList,
+                    synchronizedGeneList: geneList
+                }
+            }
+        });
+    };
+
+    setGeneSetList = (geneSetList) => {
+        this.setState((prevState) => {
+            return {
+                synchronizedGeneData: {
+                    synchronizedGeneSetList: geneSetList,
+                    synchronizedGeneList: prevState.synchronizedGeneData.synchronizedGeneList,
+                }
+            }
+        });
     };
 
     generateStats = (appData) => {
