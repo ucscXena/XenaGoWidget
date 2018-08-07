@@ -296,9 +296,11 @@ export default class PathwayScoresViewCache extends PureComponent {
             console.log('calculated?:',PathwayScoresView.synchronizedGeneList)
 
             if (referencePathways) {
+                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList  : []
                 returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
             }
             else {
+                PathwayScoresView.synchronizedGeneSetList = PathwayScoresView.synchronizedGeneSetList ? PathwayScoresView.synchronizedGeneSetList  : []
                 returnedValue = synchronizedGeneSetSort(prunedColumns, PathwayScoresView.synchronizedGeneSetList);
             }
         }
