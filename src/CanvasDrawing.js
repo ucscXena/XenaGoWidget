@@ -8,9 +8,7 @@ import underscore from 'underscore'
 let styles = {
     canvas: {
         cursor: 'crosshair',
-        position: 'relative',
-        left: 0,
-        top: 0,
+        position: 'absolute',
         zIndex: 1,
         boxShadow: '0 2px 2px 0 rgba(0, 0, 0, .14)'
     }
@@ -51,10 +49,17 @@ export default class CanvasDrawing extends Component {
     render() {
         console.log('render props: ');
         console.log(this.props);
-        let {width, height} = this.props;
+        let {width, height,offset} = this.props;
         return (
             <canvas id='expressionOverview'
-                    style={styles.canvas}
+                    style={{
+                        position: 'absolute',
+                        cursor: 'crosshair',
+                        zIndex: 1,
+                        boxShadow: '0 2px 2px 0 rgba(0, 0, 0, .14)',
+                        top: offset,
+                        display: 'block'
+                    }}
                     ref='canvas'
                     width={width} height={height}
             />
@@ -88,5 +93,6 @@ CanvasDrawing.propTypes = {
     draw: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
+    offset: PropTypes.any,
 };
 

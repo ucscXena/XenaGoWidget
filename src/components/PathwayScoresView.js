@@ -13,6 +13,7 @@ import {isEqual, omit, memoize, pick, pluck, flatten, sum, range, times} from 'u
 
 const REFERENCE_LABEL_HEIGHT = 150;
 const GENE_LABEL_HEIGHT = 50;
+const CANVAS_OFFSET_BUFFER_HEIGHT = 74 ;
 
 const style = {
     fadeIn: {
@@ -165,6 +166,7 @@ class PathwayScoresView extends PureComponent {
                     width={width}
                     height={height}
                     layout={layout}
+                    offset={offset+ CANVAS_OFFSET_BUFFER_HEIGHT}
                     referenceLayout={referenceLayout}
                     filter={filterString}
                     draw={DrawFunctions.drawTissueView}
