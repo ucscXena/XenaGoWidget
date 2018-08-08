@@ -25,15 +25,17 @@ export default class MultiXenaGoApp extends PureComponent {
 
     loadSelectedState() {
         let myIndex = 0;
-        let ref = this.refs['xena-go-app-' + myIndex];
-        if (ref) {
-            console.log('getting selection',AppStorageHandler.getPathwaySelection());
+        let refLoaded = this.refs['xena-go-app-' + myIndex];
+        if (refLoaded) {
             let selection = AppStorageHandler.getPathwaySelection();
             if(selection.selectedPathways){
-                ref.setPathwayState(selection.selectedPathways,selection);
+                for(let index = 0 ; index < this.state.apps.length ; index++){
+                    let ref = this.refs['xena-go-app-' + index];
+                    ref.setPathwayState(selection.selectedPathways,selection);
+                }
             }
             else{
-                ref.clickPathway(selection);
+                refLoaded.clickPathway(selection);
             }
         }
     }
@@ -124,11 +126,14 @@ export default class MultiXenaGoApp extends PureComponent {
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {
+            console.log('setting pathway sate for ',index,myIndex)
             if (index !== myIndex) {
                 if (selectedPathways) {
+                    console.log('selected pathways',selectedPathways)
                     this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
                 }
                 else {
+                    console.log('MXGA pathway selection',pathwaySelection)
                     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                 }
             }
