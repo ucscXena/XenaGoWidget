@@ -39,14 +39,9 @@ let styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        // console.log('data is equals',underscore.isEqual(newProps.data, this.props.data))
         if (this.vg && !underscore.isEqual(newProps, this.props)) {
-            // console.log('redrawing')
             this.draw(newProps);
         }
-        // else{
-        //     console.log('ignoring update')
-        // }
     }
 
     shouldComponentUpdate() {
@@ -93,7 +88,5 @@ CanvasDrawing.propTypes = {
     draw: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
-    // onMouseOver: PropTypes.any,
-    // onClick: PropTypes.any,
 };
 

@@ -21,7 +21,6 @@ let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
-import MultiXenaGoApp from "./MultiXenaGoApp";
 import {AppStorageHandler} from "./AppStorageHandler";
 
 
