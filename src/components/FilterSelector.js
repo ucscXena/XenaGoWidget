@@ -69,6 +69,9 @@ export class FilterSelector extends PureComponent {
 
     render() {
         const {filters, pathwayData, selected, geneList, amplificationThreshold, deletionThreshold} = this.props;
+        if(pathwayData.expression.length === 0){
+            return <div>Loading...</div>;
+        }
         let counts = compileData(Object.keys(filters), pathwayData, geneList, amplificationThreshold, deletionThreshold);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);

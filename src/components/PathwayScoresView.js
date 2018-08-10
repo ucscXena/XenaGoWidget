@@ -260,6 +260,9 @@ export default class PathwayScoresViewCache extends PureComponent {
             cohortIndex,
             selectedCohort
         };
+        if(expression===undefined || expression.length===0){
+            return <div>Loading...</div>
+        }
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(filterPercentage * samples.length);
 
