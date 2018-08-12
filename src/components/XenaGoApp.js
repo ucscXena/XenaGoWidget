@@ -63,11 +63,13 @@ export default class XenaGoApp extends PureComponent {
         let cohortIndex = this.state.key ;
         let sortString = AppStorageHandler.getSortState(cohortIndex);
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
+        let cohort = AppStorageHandler.getCohortState(cohortIndex);
 
         console.log('srt string',sortString);
         console.log('filter string',filterString);
         console.log('this state',this.state);
         console.log('vs ',appState);
+        console.log('cohort',cohort);
 
         if(sortString){
             this.state.selectedGeneSort = sortString;
@@ -77,6 +79,10 @@ export default class XenaGoApp extends PureComponent {
         if(filterString){
             this.state.geneExpressionFilter = filterString;
             this.state.tissueExpressionFilter = filterString;
+        }
+
+        if(cohort && cohort.selected){
+            this.state.selectedCohort = cohort.selected ;
         }
 
         console.log('final state',appState);

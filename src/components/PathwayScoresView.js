@@ -223,8 +223,6 @@ let associationDataCache = null;
 let pruneHash = null;
 let pruneCache = null;
 
-// let associationDataFunction = {};
-
 function findAssociatedData(inputHash) {
     if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
         let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
@@ -238,7 +236,6 @@ function findPruneData(inputHash) {
     if (!isEqual(pruneHash, inputHash)) {
         let {associatedData, pathways, filterMin} = inputHash;
         pruneCache = pruneColumns(associatedData, pathways, filterMin);
-        // associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
         pruneHash = inputHash;
     }
     return pruneCache;
