@@ -18,7 +18,12 @@ export class HeaderLabel extends PureComponent {
     }
 
 
-    style(color) {
+    /**
+     * Score is from 0 to 1
+     * @param score
+     * @returns {*}
+     */
+    style(score) {
         let { selected, hovered, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let colorString = 'rgba(';
@@ -28,7 +33,7 @@ export class HeaderLabel extends PureComponent {
         colorString += ',';
         colorString += colorMask[2];
         colorString += ',';
-        colorString += color + ')';
+        colorString += score + ')';
 
         if (selected) {
             return {
@@ -50,7 +55,7 @@ export class HeaderLabel extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: getHoverColor(),
+                backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -73,7 +78,7 @@ export class HeaderLabel extends PureComponent {
         let {selected, hovered} = this.props;
 
         if (hovered) {
-            return !selected ? getDarkColor() : getHoverColor();
+            return !selected ? getDarkColor() : getHoverColor(colorDensity);
         }
 
         if (selected) {
