@@ -57,7 +57,7 @@ export class HeaderLabel extends PureComponent {
                 width: width,
                 backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
-                outline: '1px solid black',
+                outline: 'thin dotted gray',
                 cursor: 'pointer'
             }
         }
