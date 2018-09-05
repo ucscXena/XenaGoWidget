@@ -12,7 +12,7 @@ export class HeaderLabel extends PureComponent {
         super(props);
     }
 
-    getColorDensity(density,geneLength,highScore) {
+    getColorDensity(density, geneLength, highScore) {
         let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
         return 1 - color / 256;
     }
@@ -24,7 +24,7 @@ export class HeaderLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let { selected, hovered, labelOffset, left, width, labelHeight, colorMask} = this.props;
+        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask} = this.props;
 
         let colorString = 'rgba(';
         colorString += colorMask[0];
@@ -57,6 +57,7 @@ export class HeaderLabel extends PureComponent {
                 width: width,
                 backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
+                outline: '1px solid black',
                 cursor: 'pointer'
             }
         }
@@ -86,7 +87,7 @@ export class HeaderLabel extends PureComponent {
         }
 
 
-        return colorDensity < 0.7 ? 'black': getWhiteColor();
+        return colorDensity < 0.7 ? 'black' : getWhiteColor();
     }
 
     render() {
