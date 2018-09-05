@@ -77,6 +77,8 @@ export default class SVGLabels extends PureComponent {
     }
 
     getSelectedGenes(selectedPathways,referencePathways) {
+        if(!referencePathways) return [];
+        
         let selectedGeneSet = referencePathways.filter( ref => {
             return selectedPathways.indexOf(ref.golabel)>=0;
         });
