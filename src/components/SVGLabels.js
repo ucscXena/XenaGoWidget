@@ -2,7 +2,7 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
-import {intersection} from 'underscore';
+import {intersection,unique,union} from 'underscore';
 import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 
 
@@ -76,6 +76,13 @@ export default class SVGLabels extends PureComponent {
         }
     }
 
+    getSelectedGenes(selectedPathways,referencePathways) {
+        let selectedGeneSet = referencePathways.filter( ref => {
+            return ref.golabel.indexOf(selectedPathways)>=0;
+        })[0].gene;
+        return unique(selectedGeneSet);
+    }
+
     drawTissueOverlay(div, props) {
         let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = props;
 
@@ -86,29 +93,37 @@ export default class SVGLabels extends PureComponent {
 
         let labels;
 
+        let selectedGenes = this.getSelectedGenes(selectedPathways,referencePathways);
+        // console.log('selected genes',selectedGenes)
         if (referencePathways) {
 
-            // TODO: for each gene, map the other pathways that gene is involved in
-            let pathwayMapping = pathways.map(p => {
-                return {
-                    label: p.gene[0],
-                    density: p.density,
-                }
-            });
+            // // TODO: for each gene, map the other pathways that gene is involved in
+            // let pathwayMapping = pathways.map(p => {
+            //     return {
+            //         label: p.gene[0],
+            //         density: p.density,
+            //     }
+            // });
 
 
             // calculates the scores for the pathways based on existing gene density
             let newRefPathways = referencePathways.map(r => {
 
-                let density = 0;
+                // for (let gene of  r.gene) {
+                //     let found = pathwayMapping.filter(pm => pm.label === gene);
+                //     if (found.length > 0) {
+                //         density += found.reduce((sum, a) => sum + a.density, 0);
+                //     }
+                // }
 
-                // TODO: this could be a lot faster
-                for (let gene of  r.gene) {
-                    let found = pathwayMapping.filter(pm => pm.label === gene);
-                    if (found.length > 0) {
-                        density += found.reduce((sum, a) => sum + a.density, 0);
-                    }
-                }
+                // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
+                // intersection of values divided by union of values
+                let overlappingGenes = intersection(selectedGenes,r.gene);
+                let allGenes = union(selectedGenes,r.gene);
+
+                let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length ;
+
+
 
                 // TODO: there is a race condition in here, that is messing this up
                 return {
