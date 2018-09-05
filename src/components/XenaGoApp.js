@@ -362,7 +362,7 @@ export default class XenaGoApp extends PureComponent {
                 return (
                     <Grid>
                         <Row>
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.pathway.columnWidth, marginTop: 10}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -414,7 +414,7 @@ export default class XenaGoApp extends PureComponent {
                     <Grid>
                         <Row>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}

@@ -8,6 +8,7 @@ import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import PureComponent from "../../src/components/PureComponent";
+import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
 const GithubIcon = () => (
@@ -229,9 +230,16 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                            renderHeight={this.state.renderHeight}
-            />
+                    <Row>
+                        <Col md={2}>
+                            Gene Set Menu
+                        </Col>
+                        <Col md={10}>
+                            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                                            renderHeight={this.state.renderHeight}
+                            />
+                        </Col>
+                    </Row>
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
