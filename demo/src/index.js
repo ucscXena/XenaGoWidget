@@ -9,6 +9,7 @@ import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import PureComponent from "../../src/components/PureComponent";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {GeneSetSvgSelector} from "../../src/components/GeneSetSvgSelector";
 
 
 const GithubIcon = () => (
@@ -21,9 +22,9 @@ const GithubIcon = () => (
 );
 
 const LOCAL_STORAGE_STRING = "default-xena-go-key";
-const EXPAND_HEIGHT = 800 ;
-const COMPACT_HEIGHT = 500 ;
-const COMPACT_VIEW_DEFAULT = false ;
+const EXPAND_HEIGHT = 800;
+const COMPACT_HEIGHT = 500;
+const COMPACT_VIEW_DEFAULT = false;
 
 class Demo extends PureComponent {
 
@@ -174,29 +175,48 @@ class Demo extends PureComponent {
         });
     };
 
-    componentDidMount(){
+    componentDidMount() {
         let numCohorts = this.refs['multiXenaGoApp'].cohortCount();
-        if(numCohorts===2){
+        if (numCohorts === 2) {
             this.makeCompact(true);
             this.setState({
-                cohortCount:numCohorts
+                cohortCount: numCohorts
             })
         }
-        else{
+        else {
             this.makeCompact(false);
             this.setState({
-                cohortCount:numCohorts
+                cohortCount: numCohorts
             })
         }
     }
 
+    clickGeneSet = (event) => {
+        console.log('clicked on gene set', event);
+    };
+    hoverGeneSet = (event) => {
+        console.log('hover on gene set', event);
+    };
+    mouseOutGeneSet = (event) => {
+        console.log('mouse out gene set', event);
+    };
 
     render() {
+
+        let layout = [];
+        let referenceLayout = [];
+        let selectedPathways = [];
+        let hoveredPathways = [];
+        let associateData = [];
+        let data = [];
+
+        console.log('active app',this.getActiveApp().pathway);
+
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                   rel="stylesheet"/>
 
-            <AppBar title='Xena Geneset Widget Demo' >
+            <AppBar title='Xena Geneset Widget Demo'>
                 <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
                     <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
                               onClick={() => this.makeCompact(true)}
@@ -230,16 +250,26 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-                    <Row>
-                        <Col md={2}>
-                            Gene Set Menu
-                        </Col>
-                        <Col md={10}>
-                            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                                            renderHeight={this.state.renderHeight}
-                            />
-                        </Col>
-                    </Row>
+            <Row>
+                <Col md={2}>
+                    <GeneSetSvgSelector pathways={this.getActiveApp().pathway}
+                                        layout={layout}
+                                        referenceLayout={referenceLayout}
+                                        selectedPathways={selectedPathways}
+                                        hoveredPathways={hoveredPathways}
+                                        associateData={associateData}
+                                        pathwayLabelHeight={EXPAND_HEIGHT}
+                                        onClick={this.clickGeneSet}
+                                        onMouseMove={this.hoverGeneSet}
+                                        onMouseOut={this.mouseOutGeneSet}
+                    />
+                </Col>
+                <Col md={10}>
+                    <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                                    renderHeight={this.state.renderHeight}
+                    />
+                </Col>
+            </Row>
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
@@ -285,7 +315,7 @@ class Demo extends PureComponent {
         this.makeCompact(false);
         this.refs['multiXenaGoApp'].removeCohort();
         this.setState({
-            cohortCount:1
+            cohortCount: 1
         })
         ;
     }
