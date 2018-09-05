@@ -2,7 +2,7 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
-import {intersection,unique,union} from 'underscore';
+import {intersection,unique,union,flatten} from 'underscore';
 import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 
 
@@ -78,9 +78,9 @@ export default class SVGLabels extends PureComponent {
 
     getSelectedGenes(selectedPathways,referencePathways) {
         let selectedGeneSet = referencePathways.filter( ref => {
-            return ref.golabel.indexOf(selectedPathways)>=0;
-        })[0].gene;
-        return unique(selectedGeneSet);
+            return selectedPathways.indexOf(ref.golabel)>=0;
+        });
+        return unique(flatten(selectedGeneSet.map( g => g.gene)));
     }
 
     drawTissueOverlay(div, props) {
