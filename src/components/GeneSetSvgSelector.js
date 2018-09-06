@@ -80,6 +80,18 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     }
 
+    selectGeneSet(event){
+        console.log('mouse CLICK event',event);
+    }
+
+    mouseOut(event){
+        console.log('mouse out event',event);
+    }
+
+    mouseEnter(event){
+        console.log('mouse enter event',event);
+    }
+
     render() {
         let {pathways, selected, hovered, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask} = this.props;
         let colorDensity = 0.5;
@@ -89,15 +101,41 @@ export class GeneSetSvgSelector extends PureComponent {
         colorMask = [0.5, 0.5, 0.5];
         // labelOffset = 0;
 
+        const highestScore = pathways.reduce((max, current) => {
+            let score = current.density / current.gene.length;
+            return (max > score) ? max : score;
+        }, 0);
+
+        console.log('pathways', pathways);
+
+        let newRefPathways = pathways.map(r => {
+            let density = Math.random();
+
+            //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
+            //     // intersection of values divided by union of values
+            //     let allGenes = union(selectedGenes, r.gene);
+            //     let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
+
+            return {
+                goid: r.goid,
+                golabel: r.golabel,
+                gene: r.gene,
+                density: density,
+            };
+        });
 
 
-        return pathways.map((p, index) => {
+        return newRefPathways.map((p, index) => {
             let labelString = p.golabel;
+            colorDensity = p.density ;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     className={className}
                     key={p.golabel}
+                    onMouseDownCapture={this.selectGeneSet}
+                    onMouseOut={this.mouseOut}
+                    onMouseEnter={this.mouseEnter}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(colorDensity, selected, hovered)}

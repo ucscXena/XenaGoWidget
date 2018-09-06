@@ -28,17 +28,6 @@ const COMPACT_VIEW_DEFAULT = false;
 
 class Demo extends PureComponent {
 
-    static storePathway(pathway) {
-        if (pathway) {
-            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
-        }
-    }
-
-    static getPathway() {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
-        return storedPathway ? storedPathway : DefaultPathWays;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -54,8 +43,21 @@ class Demo extends PureComponent {
             cohortCount: 1,
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
+            selected: ['STUB'],
         }
     }
+
+    static storePathway(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+        }
+    }
+
+    static getPathway() {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        return storedPathway ? storedPathway : DefaultPathWays;
+    }
+
 
     handleUpload = (file) => {
         Demo.storePathway(file);
@@ -210,7 +212,9 @@ class Demo extends PureComponent {
         let associateData = [];
         let data = [];
 
-        console.log('active app',this.getActiveApp().pathway);
+        console.log('active app', this.getActiveApp().pathway);
+
+        console.log('seclted pathways', selectedPathways, selectedPathways.length)
 
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -251,6 +255,7 @@ class Demo extends PureComponent {
             </AppBar>
             {this.state.view === 'xena' &&
             <Row>
+                {this.state.selected.length > 0 &&
                 <Col md={2}>
                     <GeneSetSvgSelector pathways={this.getActiveApp().pathway}
                                         layout={layout}
@@ -264,6 +269,7 @@ class Demo extends PureComponent {
                                         onMouseOut={this.mouseOutGeneSet}
                     />
                 </Col>
+                }
                 <Col md={10}>
                     <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
                                     renderHeight={this.state.renderHeight}
