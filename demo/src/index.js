@@ -44,6 +44,8 @@ class Demo extends PureComponent {
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
             selected: ['STUB'],
+            hoveredPathways: [],
+            selectedPathways: [],
         }
     }
 
@@ -193,13 +195,19 @@ class Demo extends PureComponent {
     }
 
     clickGeneSet = (geneSet) => {
-        console.log('clicked on gene set', geneSet);
+        console.log('top-level clicked on gene set', geneSet);
     };
     hoverGeneSet = (geneSet) => {
-        console.log('hover on gene set', geneSet);
+        console.log('top-level hover on gene set', geneSet);
+        console.log('hovered pathways',this.state.hoveredPathways);
+        // this.state.hoveredPathways = [geneSet];
+        let newHover = [geneSet];
+        this.setState({
+            hoveredPathways: newHover
+        })
     };
     mouseOutGeneSet = (geneSet) => {
-        console.log('mouse out gene set', geneSet);
+        console.log('top-level mouse out gene set', geneSet);
     };
 
     render() {
@@ -261,7 +269,7 @@ class Demo extends PureComponent {
                                         width={150}
                                         referenceLayout={referenceLayout}
                                         selectedPathways={selectedPathways}
-                                        hoveredPathways={hoveredPathways}
+                                        hoveredPathways={this.state.hoveredPathways}
                                         associateData={associateData}
                                         pathwayLabelHeight={EXPAND_HEIGHT}
                                         onClick={this.clickGeneSet}

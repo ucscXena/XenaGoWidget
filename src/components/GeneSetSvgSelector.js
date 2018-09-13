@@ -40,7 +40,7 @@ export class GeneSetSvgSelector extends PureComponent {
         // console.log('SH',selected,hovered)
         if (selected) {
             return {
-                position: 'absolute',
+                // position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
@@ -53,12 +53,13 @@ export class GeneSetSvgSelector extends PureComponent {
 
         else if (hovered) {
             return {
-                position: 'absolute',
+                // position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: getHoverColor(score),
+                // backgroundColor: getHoverColor(score),
+                backgroundColor: 'red',
                 strokeWidth: 1,
                 // outline: 'thin dotted gray',
                 borderRadius: '15px',
@@ -109,12 +110,13 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
     render() {
-        let {pathways, selected, hovered, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
+        let {pathways, selected, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
         let colorDensity = 0.5;
         labelHeight = 20;
         let labelWidget = 150;
         let className = 'asdf';
         colorMask = [0.5, 0.5, 0.5];
+
         // labelOffset = 0;
 
         const highestScore = pathways.reduce((max, current) => {
@@ -141,10 +143,12 @@ export class GeneSetSvgSelector extends PureComponent {
             };
         });
 
+        let hoveredLabels = hoveredPathways.map( p => p && p.golabel );
 
         return newRefPathways.map((p, index) => {
             let labelString = p.golabel;
             colorDensity = p.density;
+            let hovered = hoveredLabels.indexOf(p.golabel)>=0;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
