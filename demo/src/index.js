@@ -10,6 +10,7 @@ import DefaultPathWays from "../../tests/data/tgac";
 import PureComponent from "../../src/components/PureComponent";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {GeneSetSvgSelector} from "../../src/components/GeneSetSvgSelector";
+import {AppStorageHandler} from "../../src/components/AppStorageHandler";
 
 
 const GithubIcon = () => (
@@ -198,12 +199,12 @@ class Demo extends PureComponent {
         console.log('top-level clicked on gene set', geneSet);
         let newSelect = [geneSet];
         this.setState({
-            selectedPathways : newSelect
+            selectedPathways: newSelect
         })
     };
     hoverGeneSet = (geneSet) => {
         console.log('top-level hover on gene set', geneSet);
-        console.log('hovered pathways',this.state.hoveredPathways);
+        console.log('hovered pathways', this.state.hoveredPathways);
         // this.state.hoveredPathways = [geneSet];
         let newHover = [geneSet];
         this.setState({
@@ -213,6 +214,20 @@ class Demo extends PureComponent {
     mouseOutGeneSet = (geneSet) => {
         console.log('top-level mouse out gene set', geneSet);
     };
+
+    // loadSelectedState() {
+    //     let selection = AppStorageHandler.getPathwaySelection();
+    //     // TODO: need to refactor this, so we are saving
+    //     if (selection.selectedPathways) {
+    //         this.setState({
+    //             selectedPathways: selection.selectedPathways
+    //         })
+    //     }
+    // }
+    //
+    // componentDidMount() {
+    //     // this.loadSelectedState();
+    // }
 
     render() {
 
@@ -263,23 +278,26 @@ class Demo extends PureComponent {
             <Row>
                 {this.state.selected.length > 0 &&
                 <Col md={2}>
-                    <GeneSetSvgSelector pathways={this.getActiveApp().pathway}
-                                        layout={layout}
-                                        width={150}
-                                        referenceLayout={referenceLayout}
-                                        selectedPathways={this.state.selectedPathways}
-                                        hoveredPathways={this.state.hoveredPathways}
-                                        associateData={associateData}
-                                        pathwayLabelHeight={EXPAND_HEIGHT}
-                                        onClick={this.clickGeneSet}
-                                        onHover={this.hoverGeneSet}
-                                        onMouseOut={this.mouseOutGeneSet}
+                    <GeneSetSvgSelector
+                        pathways={this.getActiveApp().pathway}
+                        layout={layout}
+                        width={150}
+                        referenceLayout={referenceLayout}
+                        selectedPathways={this.state.selectedPathways}
+                        hoveredPathways={this.state.hoveredPathways}
+                        associateData={associateData}
+                        pathwayLabelHeight={EXPAND_HEIGHT}
+                        onClick={this.clickGeneSet}
+                        onHover={this.hoverGeneSet}
+                        onMouseOut={this.mouseOutGeneSet}
                     />
                 </Col>
                 }
                 <Col md={10}>
                     <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
                                     renderHeight={this.state.renderHeight}
+                                    selectedPathways={this.state.selectedPathways}
+                                    hoveredPathways={this.state.hoveredPathways}
                     />
                 </Col>
             </Row>

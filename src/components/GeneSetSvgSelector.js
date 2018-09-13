@@ -82,23 +82,21 @@ export class GeneSetSvgSelector extends PureComponent {
     }
 
 
-
-
-    onClick = (geneSet,event) => {
-        console.log('local mouse CLICK event', event,geneSet);
+    onClick = (geneSet, event) => {
+        console.log('local mouse CLICK event', event, geneSet);
         let {onClick} = this.props;
         if (onClick) {
             onClick(geneSet);
         }
     };
 
-    onMouseOut = (geneSet,event) => {
+    onMouseOut = (geneSet, event) => {
         console.log('local mouse out event', geneSet);
         let {onHover} = this.props;
         onHover(null);
     };
 
-    onHover = (geneSet,event) => {
+    onHover = (geneSet, event) => {
         console.log('local mouse enter event', geneSet);
         let {onHover} = this.props;
         if (onHover) {
@@ -144,23 +142,23 @@ export class GeneSetSvgSelector extends PureComponent {
             };
         });
 
-        let hoveredLabels = hoveredPathways.map( p => p && p.golabel );
-        let selectedLabels = selectedPathways.map( p => p && p.golabel );
+        let hoveredLabels = hoveredPathways.map(p => p && p.golabel);
+        let selectedLabels = selectedPathways.map(p => p && p.golabel);
 
-        console.log('selected labels',selectedLabels)
+        console.log('selected labels', selectedLabels)
 
         return newRefPathways.map((p, index) => {
             let labelString = p.golabel;
             colorDensity = p.density;
-            let hovered = hoveredLabels.indexOf(p.golabel)>=0;
-            let selected = selectedLabels.indexOf(p.golabel)>=0;
+            let hovered = hoveredLabels.indexOf(p.golabel) >= 0;
+            let selected = selectedLabels.indexOf(p.golabel) >= 0;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     className={className}
-                    onMouseDown={this.onClick.bind(this,p)}
-                    onMouseOut={this.onMouseOut.bind(this,p)}
-                    onMouseOver={this.onHover.bind(this,p)}
+                    onMouseDown={this.onClick.bind(this, p)}
+                    onMouseOut={this.onMouseOut.bind(this, p)}
+                    onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
@@ -176,6 +174,15 @@ export class GeneSetSvgSelector extends PureComponent {
 }
 
 GeneSetSvgSelector.propTypes = {
-    value: PropTypes.any,
     pathways: PropTypes.any,
+    layout: PropTypes.any,
+    width: PropTypes.any,
+    referenceLayout: PropTypes.any,
+    selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
+    associateData: PropTypes.any,
+    pathwayLabelHeight: PropTypes.any,
+    onClick: PropTypes.any,
+    onHover: PropTypes.any,
+    onMouseOut: PropTypes.any,
 };

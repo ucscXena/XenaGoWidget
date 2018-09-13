@@ -45,6 +45,7 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
+        // let {renderHeight,selectedPathways,hoveredPathways} = this.props;
         let {renderHeight} = this.props;
         AppStorageHandler.storeAppData(this.state.apps);
         console.log(this.state.apps);
@@ -58,6 +59,8 @@ export default class MultiXenaGoApp extends PureComponent {
                                pathwaySelect={this.pathwaySelect}
                                pathwayHover={this.pathwayHover}
                                ref={refString}
+                               // selectedPathways={selectedPathways}
+                               // hoveredPathways={hoveredPathways}
                                renderHeight={renderHeight}
                                renderOffset={(renderHeight + 5) * index}
                                pathways={this.props.pathways}
@@ -236,4 +239,6 @@ export default class MultiXenaGoApp extends PureComponent {
 MultiXenaGoApp.propTyes = {
     pathways: PropTypes.any.isRequired,
     renderHeight: PropTypes.any,
+    selectedPathway: PropTypes.any,
+    hoveredPathways: PropTypes.any,
 };
