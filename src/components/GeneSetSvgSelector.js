@@ -128,7 +128,8 @@ export class GeneSetSvgSelector extends PureComponent {
         console.log('pathways', pathways);
 
         let newRefPathways = pathways.map(r => {
-            let density = Math.random();
+            // let density = Math.random();
+            let density = 0.2;
 
             //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
             //     // intersection of values divided by union of values
