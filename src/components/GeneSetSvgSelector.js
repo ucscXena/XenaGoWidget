@@ -86,8 +86,8 @@ export class GeneSetSvgSelector extends PureComponent {
 
     onClick = (geneSet,event) => {
         console.log('local mouse CLICK event', event,geneSet);
-        let {onClick, associateData} = this.props;
-        if (associateData.length && onClick) {
+        let {onClick} = this.props;
+        if (onClick) {
             onClick(geneSet);
         }
     };
@@ -110,7 +110,7 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
     render() {
-        let {pathways, selected, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
+        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
         let colorDensity = 0.5;
         labelHeight = 20;
         let labelWidget = 150;
@@ -144,11 +144,15 @@ export class GeneSetSvgSelector extends PureComponent {
         });
 
         let hoveredLabels = hoveredPathways.map( p => p && p.golabel );
+        let selectedLabels = selectedPathways.map( p => p && p.golabel );
+
+        console.log('selected labels',selectedLabels)
 
         return newRefPathways.map((p, index) => {
             let labelString = p.golabel;
             colorDensity = p.density;
             let hovered = hoveredLabels.indexOf(p.golabel)>=0;
+            let selected = selectedLabels.indexOf(p.golabel)>=0;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}

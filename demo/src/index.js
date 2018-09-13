@@ -196,6 +196,10 @@ class Demo extends PureComponent {
 
     clickGeneSet = (geneSet) => {
         console.log('top-level clicked on gene set', geneSet);
+        let newSelect = [geneSet];
+        this.setState({
+            selectedPathways : newSelect
+        })
     };
     hoverGeneSet = (geneSet) => {
         console.log('top-level hover on gene set', geneSet);
@@ -214,14 +218,9 @@ class Demo extends PureComponent {
 
         let layout = [];
         let referenceLayout = [];
-        let selectedPathways = [];
-        let hoveredPathways = [];
         let associateData = [];
-        let data = [];
 
         console.log('active app', this.getActiveApp().pathway);
-
-        console.log('seclted pathways', selectedPathways, selectedPathways.length)
 
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -268,7 +267,7 @@ class Demo extends PureComponent {
                                         layout={layout}
                                         width={150}
                                         referenceLayout={referenceLayout}
-                                        selectedPathways={selectedPathways}
+                                        selectedPathways={this.state.selectedPathways}
                                         hoveredPathways={this.state.hoveredPathways}
                                         associateData={associateData}
                                         pathwayLabelHeight={EXPAND_HEIGHT}
