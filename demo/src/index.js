@@ -58,7 +58,6 @@ class Demo extends PureComponent {
         return storedPathway ? storedPathway : DefaultPathWays;
     }
 
-
     handleUpload = (file) => {
         Demo.storePathway(file);
         this.setState({
@@ -259,13 +258,14 @@ class Demo extends PureComponent {
                 <Col md={2}>
                     <GeneSetSvgSelector pathways={this.getActiveApp().pathway}
                                         layout={layout}
+                                        width={150}
                                         referenceLayout={referenceLayout}
                                         selectedPathways={selectedPathways}
                                         hoveredPathways={hoveredPathways}
                                         associateData={associateData}
                                         pathwayLabelHeight={EXPAND_HEIGHT}
                                         onClick={this.clickGeneSet}
-                                        onMouseMove={this.hoverGeneSet}
+                                        onHover={this.hoverGeneSet}
                                         onMouseOut={this.mouseOutGeneSet}
                     />
                 </Col>

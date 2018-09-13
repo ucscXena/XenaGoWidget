@@ -80,20 +80,58 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     }
 
-    selectGeneSet(event){
-        console.log('mouse CLICK event',event);
+
+    getLabelForPoint(event, props) {
+
     }
 
-    mouseOut(event){
-        console.log('mouse out event',event);
-    }
 
-    mouseEnter(event){
-        console.log('mouse enter event',event);
-    }
+    onClick = (event) => {
+        console.log('local mouse CLICK event', event);
+        let {onClick, associateData} = this.props;
+        if (associateData.length && onClick) {
+            onClick(this.getLabelForPoint(event, this.props))
+        }
+        // return {
+        //     pathway: pathways[pathwayIndex],
+        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+        //     expression,
+        //     metaSelect: metaSelect
+        // };
+    };
+
+    onMouseOut = (event) => {
+        console.log('local mouse out event', event);
+        let {onHover} = this.props;
+        onHover(null);
+        // return {
+        //     pathway: pathways[pathwayIndex],
+        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+        //     expression,
+        //     metaSelect: metaSelect
+        // };
+    };
+
+    onHover = (event) => {
+        console.log('local mouse enter event', event);
+        let {onHover} = this.props;
+        if (onHover) {
+            let pointData = this.getLabelForPoint(event, this.props);
+            onHover(pointData);
+        }
+        else {
+            onHover(null);
+        }
+        // return {
+        //     pathway: pathways[pathwayIndex],
+        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+        //     expression,
+        //     metaSelect: metaSelect
+        // };
+    };
 
     render() {
-        let {pathways, selected, hovered, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask} = this.props;
+        let {pathways, selected, hovered, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
         let colorDensity = 0.5;
         labelHeight = 20;
         let labelWidget = 150;
@@ -106,6 +144,7 @@ export class GeneSetSvgSelector extends PureComponent {
             return (max > score) ? max : score;
         }, 0);
 
+        console.log('props', this.props);
         console.log('pathways', pathways);
 
         let newRefPathways = pathways.map(r => {
@@ -127,15 +166,14 @@ export class GeneSetSvgSelector extends PureComponent {
 
         return newRefPathways.map((p, index) => {
             let labelString = p.golabel;
-            colorDensity = p.density ;
+            colorDensity = p.density;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     className={className}
-                    key={p.golabel}
-                    onMouseDownCapture={this.selectGeneSet}
-                    onMouseOut={this.mouseOut}
-                    onMouseEnter={this.mouseEnter}
+                    onMouseDown={this.onClick}
+                    onMouseOut={this.onMouseOut}
+                    onMouseOver={this.onHover}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(colorDensity, selected, hovered)}
@@ -147,23 +185,6 @@ export class GeneSetSvgSelector extends PureComponent {
         });
     }
 
-    // render() {
-    //     let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
-    //     let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-    //     let colorDensity = this.getColorDensity(item.density, geneLength, highScore);
-    //     return (
-    //         <svg
-    //             style={this.style(colorDensity)}
-    //             className={className}
-    //         >
-    //             <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
-    //                   transform='rotate(-90)'
-    //             >
-    //                 {width < 10 ? '' : labelString}
-    //             </text>
-    //         </svg>
-    //     );
-    // }
 }
 
 GeneSetSvgSelector.propTypes = {
