@@ -192,14 +192,14 @@ class Demo extends PureComponent {
         }
     }
 
-    clickGeneSet = (event) => {
-        console.log('clicked on gene set', event);
+    clickGeneSet = (geneSet) => {
+        console.log('clicked on gene set', geneSet);
     };
-    hoverGeneSet = (event) => {
-        console.log('hover on gene set', event);
+    hoverGeneSet = (geneSet) => {
+        console.log('hover on gene set', geneSet);
     };
-    mouseOutGeneSet = (event) => {
-        console.log('mouse out gene set', event);
+    mouseOutGeneSet = (geneSet) => {
+        console.log('mouse out gene set', geneSet);
     };
 
     render() {

@@ -81,53 +81,31 @@ export class GeneSetSvgSelector extends PureComponent {
     }
 
 
-    getLabelForPoint(event, props) {
-
-    }
 
 
-    onClick = (event) => {
-        console.log('local mouse CLICK event', event);
+    onClick = (geneSet,event) => {
+        console.log('local mouse CLICK event', event,geneSet);
         let {onClick, associateData} = this.props;
         if (associateData.length && onClick) {
-            onClick(this.getLabelForPoint(event, this.props))
+            onClick(geneSet);
         }
-        // return {
-        //     pathway: pathways[pathwayIndex],
-        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        //     expression,
-        //     metaSelect: metaSelect
-        // };
     };
 
-    onMouseOut = (event) => {
-        console.log('local mouse out event', event);
+    onMouseOut = (geneSet,event) => {
+        console.log('local mouse out event', geneSet);
         let {onHover} = this.props;
         onHover(null);
-        // return {
-        //     pathway: pathways[pathwayIndex],
-        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        //     expression,
-        //     metaSelect: metaSelect
-        // };
     };
 
-    onHover = (event) => {
-        console.log('local mouse enter event', event);
+    onHover = (geneSet,event) => {
+        console.log('local mouse enter event', geneSet);
         let {onHover} = this.props;
         if (onHover) {
-            let pointData = this.getLabelForPoint(event, this.props);
-            onHover(pointData);
+            onHover(geneSet);
         }
         else {
             onHover(null);
         }
-        // return {
-        //     pathway: pathways[pathwayIndex],
-        //     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        //     expression,
-        //     metaSelect: metaSelect
-        // };
     };
 
     render() {
@@ -171,9 +149,10 @@ export class GeneSetSvgSelector extends PureComponent {
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     className={className}
-                    onMouseDown={this.onClick}
-                    onMouseOut={this.onMouseOut}
-                    onMouseOver={this.onHover}
+                    onMouseDown={this.onClick.bind(this,p)}
+                    onMouseOut={this.onMouseOut.bind(this,p)}
+                    onMouseOver={this.onHover.bind(this,p)}
+                    key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(colorDensity, selected, hovered)}
