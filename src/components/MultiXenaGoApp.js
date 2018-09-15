@@ -45,9 +45,10 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
     render() {
-        let {renderHeight} = this.props;
+        let {renderHeight,selectedPathways,hoveredPathways} = this.props;
+        // let {renderHeight} = this.props;
         AppStorageHandler.storeAppData(this.state.apps);
-        console.log(this.state.apps);
+        console.log('SELECTED STATE APP',this.state.apps);
         return this.state.apps.map((app, index) => {
             let refString = 'xena-go-app-' + index;
             return (
@@ -57,6 +58,8 @@ export default class MultiXenaGoApp extends PureComponent {
                                stats={this.state.statBox}
                                pathwaySelect={this.pathwaySelect}
                                pathwayHover={this.pathwayHover}
+                               selectedPathways={selectedPathways}
+                               hoveredPathways={hoveredPathways}
                                ref={refString}
                                renderHeight={renderHeight}
                                renderOffset={(renderHeight + 5) * index}
@@ -236,4 +239,6 @@ export default class MultiXenaGoApp extends PureComponent {
 MultiXenaGoApp.propTyes = {
     pathways: PropTypes.any.isRequired,
     renderHeight: PropTypes.any,
+    selectedPathway: PropTypes.any,
+    hoveredPathways: PropTypes.any,
 };

@@ -53,44 +53,46 @@ export default class XenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
+        let {hoveredPathways, selectedPathways} = this.props;
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
-        this.state.hoveredPathways = [];
+        this.state.hoveredPathways = hoveredPathways ? hoveredPathways : [];
+        this.state.selectedPathway = selectedPathways ? selectedPathways : [];
 
         let appState = AppStorageHandler.getAppState();
 
-        let cohortIndex = this.state.key ;
+        let cohortIndex = this.state.key;
         let sortString = AppStorageHandler.getSortState(cohortIndex);
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
 
-        console.log('srt string',sortString);
-        console.log('filter string',filterString);
-        console.log('this state',this.state);
-        console.log('vs ',appState);
-        console.log('cohort',cohort);
+        console.log('srt string', sortString);
+        console.log('filter string', filterString);
+        console.log('this state', this.state);
+        console.log('vs ', appState);
+        console.log('cohort', cohort);
 
-        if(sortString){
+        if (sortString) {
             this.state.selectedGeneSort = sortString;
             this.state.selectedTissueSort = sortString;
         }
 
-        if(filterString){
+        if (filterString) {
             this.state.geneExpressionFilter = filterString;
             this.state.tissueExpressionFilter = filterString;
         }
 
-        if(cohort && cohort.selected){
-            this.state.selectedCohort = cohort.selected ;
+        if (cohort && cohort.selected) {
+            this.state.selectedCohort = cohort.selected;
         }
 
-        console.log('final state',appState);
+        console.log('final state', appState);
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        console.log('setting pathway state',newSelection,pathwayClickData)
+        console.log('setting pathway state', newSelection, pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -165,6 +167,7 @@ export default class XenaGoApp extends PureComponent {
     hoverPathway = (props) => {
         if (props !== null) {
             let hoveredPathways = props.pathway.golabel;
+            // let hoveredPathways = this.props.hoveredPathways;
             this.setState(
                 {
                     pathwayHoverData: props,
@@ -220,22 +223,22 @@ export default class XenaGoApp extends PureComponent {
 
     filterTissueType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-        AppStorageHandler.storeFilterState(filter,this.state.key)
+        AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
     sortTissueType = (sortString) => {
         this.setState({selectedTissueSort: sortString});
-        AppStorageHandler.storeSortState(sortString,this.state.key)
+        AppStorageHandler.storeSortState(sortString, this.state.key)
     };
 
     sortGeneType = (sortString) => {
         this.setState({selectedGeneSort: sortString});
-        AppStorageHandler.storeSortState(sortString,this.state.key)
+        AppStorageHandler.storeSortState(sortString, this.state.key)
     };
 
     filterGeneType = (filter) => {
         this.setState({geneExpressionFilter: filter});
-        AppStorageHandler.storeFilterState(filter,this.state.key)
+        AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
     componentWillMount() {
@@ -357,12 +360,14 @@ export default class XenaGoApp extends PureComponent {
 
         let {statGenerator, stats, renderHeight, renderOffset} = this.props;
 
+        console.log('re-rednering XENA GO APP',this.state.selectedPathways);
+
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
                 return (
                     <Grid>
                         <Row>
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.pathway.columnWidth, marginTop: 10}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -414,7 +419,7 @@ export default class XenaGoApp extends PureComponent {
                     <Grid>
                         <Row>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -490,4 +495,6 @@ XenaGoApp.propTypes = {
     pathwaySelect: PropTypes.any,
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
+    selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
 };

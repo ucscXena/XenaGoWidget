@@ -148,7 +148,7 @@ SVGLabels.propTypes = {
     height: PropTypes.any,
     offset: PropTypes.any,
     onClick: PropTypes.any,
-    onMouseOver: PropTypes.any,
+    onMouseMove: PropTypes.any,
     onMouseOut: PropTypes.any,
     pathwayLabelHeight: PropTypes.any,
     geneLabelHeight: PropTypes.any,

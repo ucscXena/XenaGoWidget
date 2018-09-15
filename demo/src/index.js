@@ -8,6 +8,9 @@ import MultiXenaGoApp from "../../src/components/MultiXenaGoApp";
 import PathwayEditor from "../../src/components/pathwayEditor/PathwayEditor";
 import DefaultPathWays from "../../tests/data/tgac";
 import PureComponent from "../../src/components/PureComponent";
+import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {GeneSetSvgSelector} from "../../src/components/GeneSetSvgSelector";
+import {AppStorageHandler} from "../../src/components/AppStorageHandler";
 
 
 const GithubIcon = () => (
@@ -20,22 +23,11 @@ const GithubIcon = () => (
 );
 
 const LOCAL_STORAGE_STRING = "default-xena-go-key";
-const EXPAND_HEIGHT = 800 ;
-const COMPACT_HEIGHT = 500 ;
-const COMPACT_VIEW_DEFAULT = false ;
+const EXPAND_HEIGHT = 800;
+const COMPACT_HEIGHT = 500;
+const COMPACT_VIEW_DEFAULT = false;
 
 class Demo extends PureComponent {
-
-    static storePathway(pathway) {
-        if (pathway) {
-            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
-        }
-    }
-
-    static getPathway() {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
-        return storedPathway ? storedPathway : DefaultPathWays;
-    }
 
     constructor(props) {
         super(props);
@@ -52,7 +44,21 @@ class Demo extends PureComponent {
             cohortCount: 1,
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
+            selected: ['STUB'],
+            hoveredPathways: [],
+            selectedPathways: [],
         }
+    }
+
+    static storePathway(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
+        }
+    }
+
+    static getPathway() {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
+        return storedPathway ? storedPathway : DefaultPathWays;
     }
 
     handleUpload = (file) => {
@@ -173,29 +179,69 @@ class Demo extends PureComponent {
         });
     };
 
-    componentDidMount(){
+    componentDidMount() {
         let numCohorts = this.refs['multiXenaGoApp'].cohortCount();
-        if(numCohorts===2){
+        if (numCohorts === 2) {
             this.makeCompact(true);
             this.setState({
-                cohortCount:numCohorts
+                cohortCount: numCohorts
             })
         }
-        else{
+        else {
             this.makeCompact(false);
             this.setState({
-                cohortCount:numCohorts
+                cohortCount: numCohorts
             })
         }
     }
 
+    clickGeneSet = (geneSet) => {
+        console.log('top-level clicked on gene set', geneSet);
+        let newSelect = [geneSet];
+        this.setState({
+            selectedPathways: newSelect
+        })
+    };
+    hoverGeneSet = (geneSet) => {
+        console.log('top-level hover on gene set', geneSet);
+        console.log('hovered pathways', this.state.hoveredPathways);
+        // this.state.hoveredPathways = [geneSet];
+        let newHover = [geneSet];
+        this.setState({
+            hoveredPathways: newHover
+        })
+    };
+    mouseOutGeneSet = (geneSet) => {
+        console.log('top-level mouse out gene set', geneSet);
+    };
+
+    // loadSelectedState() {
+    //     let selection = AppStorageHandler.getPathwaySelection();
+    //     // TODO: need to refactor this, so we are saving
+    //     if (selection.selectedPathways) {
+    //         this.setState({
+    //             selectedPathways: selection.selectedPathways
+    //         })
+    //     }
+    // }
+    //
+    // componentDidMount() {
+    //     // this.loadSelectedState();
+    // }
 
     render() {
+
+        let layout = [];
+        let referenceLayout = [];
+        let associateData = [];
+
+        console.log('active app', this.getActiveApp().pathway);
+
         return (<div>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                   rel="stylesheet"/>
 
-            <AppBar title='Xena Geneset Widget Demo' >
+            <AppBar title='Xena Geneset Widget Demo'>
                 <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
                     <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
                               onClick={() => this.makeCompact(true)}
@@ -229,9 +275,32 @@ class Demo extends PureComponent {
                 </Navigation>
             </AppBar>
             {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                            renderHeight={this.state.renderHeight}
-            />
+            <Row>
+                {this.state.selected.length > 0 &&
+                <Col md={2}>
+                    <GeneSetSvgSelector
+                        pathways={this.getActiveApp().pathway}
+                        layout={layout}
+                        width={150}
+                        referenceLayout={referenceLayout}
+                        selectedPathways={this.state.selectedPathways}
+                        hoveredPathways={this.state.hoveredPathways}
+                        associateData={associateData}
+                        pathwayLabelHeight={EXPAND_HEIGHT}
+                        onClick={this.clickGeneSet}
+                        onHover={this.hoverGeneSet}
+                        onMouseOut={this.mouseOutGeneSet}
+                    />
+                </Col>
+                }
+                <Col md={10}>
+                    <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                                    renderHeight={this.state.renderHeight}
+                                    selectedPathways={this.state.selectedPathways}
+                                    hoveredPathways={this.state.hoveredPathways}
+                    />
+                </Col>
+            </Row>
             }
             {this.state.view === 'pathways' &&
             <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
@@ -277,7 +346,7 @@ class Demo extends PureComponent {
         this.makeCompact(false);
         this.refs['multiXenaGoApp'].removeCohort();
         this.setState({
-            cohortCount:1
+            cohortCount: 1
         })
         ;
     }
