@@ -360,6 +360,8 @@ export default class XenaGoApp extends PureComponent {
 
         let {statGenerator, stats, renderHeight, renderOffset} = this.props;
 
+        console.log('re-rednering XENA GO APP',this.state.selectedPathways);
+
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
                 return (
@@ -493,4 +495,6 @@ XenaGoApp.propTypes = {
     pathwaySelect: PropTypes.any,
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
+    selectedPathways: PropTypes.any,
+    hoveredPathways: PropTypes.any,
 };
