@@ -238,41 +238,6 @@ export default class XenaGeneSetViewer extends PureComponent {
         return (
             <div>
 
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                  rel="stylesheet"/>
-            <AppBar title='Xena Geneset Widget Demo' >
-                <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
-                    <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
-                              onClick={() => this.makeCompact(true)}
-                              disabled={this.state.compactView}/>
-                    <MenuItem value='settings' icon='import_export' caption='Expand'
-                              onClick={() => this.makeCompact(false)}
-                              disabled={!this.state.compactView}/>
-                    <MenuDivider/>
-                    <MenuItem value='settings' icon='add' caption='Add Cohort'
-                              onClick={() => this.duplicateCohort()}
-                              disabled={this.state.cohortCount === 2}/>
-                    <MenuItem value='settings' icon='remove' caption='Remove Cohort'
-                              onClick={() => this.removeCohort()}
-                              disabled={this.state.cohortCount === 1}/>
-                </IconMenu>
-                <Navigation type='vertical'>
-                    {this.state.view === 'xena' &&
-                    <div style={{display: 'inline'}}>
-                        <Button raised primary>Xena</Button>
-                        <Button raised onClick={() => this.showPathways()}>Pathways</Button>
-                    </div>}
-                    {this.state.view === 'pathways' &&
-                    <div style={{display: 'inline'}}>
-                        <Button raised onClick={() => this.showXena()}>Xena</Button>
-                        <Button raised primary>Pathways</Button>
-                    </div>}
-
-                    <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
-                        <GithubIcon/>
-                    </a>
-                </Navigation>
-            </AppBar>
             {this.state.view === 'xena' &&
             <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
                             renderHeight={this.state.renderHeight}
