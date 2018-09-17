@@ -1,11 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import XenaGoApp from './XenaGoApp';
-// import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 import BaseStyle from '../../src/base.css';
-import {AppStorageHandler} from "./AppStorageHandler";
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import DefaultPathWays from "../../tests/data/tgac";
@@ -29,7 +26,7 @@ const COMPACT_VIEW_DEFAULT = false ;
 /**
  * refactor that from index
  */
-export default class XenaGeneSetApp extends PureComponent {
+export default class XenaGeneSetViewer extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -39,7 +36,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: XenaGeneSetApp.getPathway(),
+                    pathway: XenaGeneSetViewer.getPathway(),
                     selected: true
                 }
             ],
