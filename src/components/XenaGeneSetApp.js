@@ -8,6 +8,7 @@ import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import DefaultPathWays from "../../tests/data/tgac";
 import MultiXenaGoApp from "./MultiXenaGoApp";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
+import {AppStorageHandler} from "./AppStorageHandler";
 
 const GithubIcon = () => (
     <svg viewBox="0 0 284 277" style={{height: 30}}>
@@ -43,6 +44,7 @@ export default class XenaGeneSetApp extends PureComponent {
             cohortCount: 2,
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
+            apps: AppStorageHandler.getAppData(this.props),
         }
     }
 
@@ -219,6 +221,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     render() {
+        let pathways = this.getActiveApp().pathway;
 
         return (
             <div>
@@ -263,29 +266,25 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === 'xena' &&
                 <div>
-                    <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                                    renderHeight={this.state.renderHeight}
+                    {/*<MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'*/}
+                    {/*renderHeight={this.state.renderHeight}*/}
+                    {/*/>*/}
+                    <XenaGoApp appData={this.state.apps[0]}
+                               pathwaySelect={this.pathwaySelect}
+                               pathwayHover={this.pathwayHover}
+                               ref={'xena-go-app-0'}
+                               renderHeight={this.state.renderHeight}
+                               renderOffset={0}
+                               pathways={this.getActiveApp().pathway}
                     />
-                    {/*<XenaGoApp appData={this.state.apps[0]}*/}
-                               {/*statGenerator={this.generateStats}*/}
-                               {/*stats={this.state.statBox}*/}
-                               {/*pathwaySelect={this.pathwaySelect}*/}
-                               {/*pathwayHover={this.pathwayHover}*/}
-                               {/*ref={'xena-go-app-0'}*/}
-                               {/*renderHeight={this.state.renderHeight}*/}
-                               {/*renderOffset={0}*/}
-                               {/*pathways={this.props.pathways}*/}
-                    {/*/>*/}
-                    {/*<XenaGoApp appData={this.state.apps[1]}*/}
-                               {/*statGenerator={this.generateStats}*/}
-                               {/*stats={this.state.statBox}*/}
-                               {/*pathwaySelect={this.pathwaySelect}*/}
-                               {/*pathwayHover={this.pathwayHover}*/}
-                               {/*ref={'xena-go-app-1'}*/}
-                               {/*renderHeight={this.state.renderHeight}*/}
-                               {/*renderOffset={(this.state.renderHeight + 5)}*/}
-                               {/*pathways={this.props.pathways}*/}
-                    {/*/>*/}
+                    <XenaGoApp appData={this.state.apps[1]}
+                               pathwaySelect={this.pathwaySelect}
+                               pathwayHover={this.pathwayHover}
+                               ref={'xena-go-app-1'}
+                               renderHeight={this.state.renderHeight}
+                               renderOffset={(this.state.renderHeight + 5)}
+                               pathways={pathways}
+                    />
                 </div>
                 }
                 {this.state.view === 'pathways' &&
