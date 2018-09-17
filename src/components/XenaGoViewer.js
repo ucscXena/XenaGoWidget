@@ -49,10 +49,11 @@ const style = {
 };
 
 
-export default class XenaGoApp extends PureComponent {
+export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log('input props',props);
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
@@ -481,7 +482,7 @@ export default class XenaGoApp extends PureComponent {
     }
 }
 
-XenaGoApp.propTypes = {
+XenaGoViewer.propTypes = {
     appData: PropTypes.any,
     statGenerator: PropTypes.any,
     stats: PropTypes.any,
