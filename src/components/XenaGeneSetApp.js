@@ -19,9 +19,9 @@ const GithubIcon = () => (
 );
 
 const LOCAL_STORAGE_STRING = "default-xena-go-key";
-const EXPAND_HEIGHT = 800 ;
-const COMPACT_HEIGHT = 500 ;
-const COMPACT_VIEW_DEFAULT = false ;
+const EXPAND_HEIGHT = 800;
+const COMPACT_HEIGHT = 500;
+const COMPACT_VIEW_DEFAULT = false;
 
 /**
  * refactor that from index
@@ -40,7 +40,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     selected: true
                 }
             ],
-            cohortCount: 1,
+            cohortCount: 2,
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         }
@@ -176,20 +176,8 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
-    componentDidMount(){
-        let numCohorts = this.refs['multiXenaGoApp'].cohortCount();
-        if(numCohorts===2){
-            this.makeCompact(true);
-            this.setState({
-                cohortCount:numCohorts
-            })
-        }
-        else{
-            this.makeCompact(false);
-            this.setState({
-                cohortCount:numCohorts
-            })
-        }
+    componentDidMount() {
+        this.makeCompact(true);
     }
 
     getActiveApp() {
@@ -212,16 +200,13 @@ export default class XenaGeneSetApp extends PureComponent {
     duplicateCohort() {
         this.makeCompact(true);
         this.refs['multiXenaGoApp'].duplicateCohort();
-        this.setState({
-            cohortCount: 2
-        });
     };
 
     removeCohort() {
         this.makeCompact(false);
         this.refs['multiXenaGoApp'].removeCohort();
         this.setState({
-            cohortCount:1
+            cohortCount: 1
         })
         ;
     }
@@ -233,16 +218,16 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     }
 
-    render(){
+    render() {
 
         return (
             <div>
 
                 {/*TODO: use NavigationBar*/}
-                
+
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
-                <AppBar title='Xena Geneset Widget Demo' >
+                <AppBar title='Xena Geneset Widget Demo'>
                     <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
                         <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
                                   onClick={() => this.makeCompact(true)}
@@ -276,23 +261,45 @@ export default class XenaGeneSetApp extends PureComponent {
                     </Navigation>
                 </AppBar>
 
-            {this.state.view === 'xena' &&
-            <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
-                            renderHeight={this.state.renderHeight}
-            />
-            }
-            {this.state.view === 'pathways' &&
-            <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
-                           selectedPathway={this.state.selectedPathway}
-                           removeGeneHandler={this.removeGene}
-                           removePathwayHandler={this.removePathway}
-                           addGeneHandler={this.addGene}
-                           addGeneSetHandler={this.addGeneSet}
-                           uploadHandler={this.handleUpload}
-                           resetHandler={this.handleReset}
-            />
-            }
-        </div>);
+                {this.state.view === 'xena' &&
+                <div>
+                    <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                                    renderHeight={this.state.renderHeight}
+                    />
+                    {/*<XenaGoApp appData={this.state.apps[0]}*/}
+                               {/*statGenerator={this.generateStats}*/}
+                               {/*stats={this.state.statBox}*/}
+                               {/*pathwaySelect={this.pathwaySelect}*/}
+                               {/*pathwayHover={this.pathwayHover}*/}
+                               {/*ref={'xena-go-app-0'}*/}
+                               {/*renderHeight={this.state.renderHeight}*/}
+                               {/*renderOffset={0}*/}
+                               {/*pathways={this.props.pathways}*/}
+                    {/*/>*/}
+                    {/*<XenaGoApp appData={this.state.apps[1]}*/}
+                               {/*statGenerator={this.generateStats}*/}
+                               {/*stats={this.state.statBox}*/}
+                               {/*pathwaySelect={this.pathwaySelect}*/}
+                               {/*pathwayHover={this.pathwayHover}*/}
+                               {/*ref={'xena-go-app-1'}*/}
+                               {/*renderHeight={this.state.renderHeight}*/}
+                               {/*renderOffset={(this.state.renderHeight + 5)}*/}
+                               {/*pathways={this.props.pathways}*/}
+                    {/*/>*/}
+                </div>
+                }
+                {this.state.view === 'pathways' &&
+                <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                               selectedPathway={this.state.selectedPathway}
+                               removeGeneHandler={this.removeGene}
+                               removePathwayHandler={this.removePathway}
+                               addGeneHandler={this.addGene}
+                               addGeneSetHandler={this.addGeneSet}
+                               uploadHandler={this.handleUpload}
+                               resetHandler={this.handleReset}
+                />
+                }
+            </div>);
     }
 
 }
