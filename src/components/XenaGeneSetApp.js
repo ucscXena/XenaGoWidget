@@ -1,11 +1,11 @@
 import React from 'react'
 import PureComponent from './PureComponent';
-import XenaGoApp from './XenaGoApp';
+import XenaGoViewer from './XenaGoViewer';
 import {sum} from 'underscore';
 import BaseStyle from '../../src/base.css';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
-import DefaultPathWays from "../../tests/data/tgac";
+import DefaultPathWays from "../data/tgac";
 import MultiXenaGoApp from "./MultiXenaGoApp";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "./AppStorageHandler";
@@ -20,7 +20,6 @@ const GithubIcon = () => (
     </svg>
 );
 
-const LOCAL_STORAGE_STRING = "default-xena-go-key";
 const EXPAND_HEIGHT = 800;
 const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
@@ -32,13 +31,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log(this.state)
         this.state = {
             view: 'xena',
             // view: 'pathways',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: XenaGeneSetApp.getPathway(),
+                    pathway: AppStorageHandler.getPathway(),
                     selected: true
                 }
             ],
@@ -46,23 +46,12 @@ export default class XenaGeneSetApp extends PureComponent {
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT,
             apps: AppStorageHandler.getAppData(this.props),
-        }
+        };
+        console.log(this.state)
     }
-
-    static storePathway(pathway) {
-        if (pathway) {
-            localStorage.setItem(LOCAL_STORAGE_STRING, JSON.stringify(pathway));
-        }
-    }
-
-    static getPathway() {
-        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STRING));
-        return storedPathway ? storedPathway : DefaultPathWays;
-    }
-
 
     handleUpload = (file) => {
-        Demo.storePathway(file);
+        AppStorageHandler.storePathway(file);
         this.setState({
             pathwaySets: [
                 {
@@ -75,7 +64,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleReset = () => {
-        Demo.storePathway(DefaultPathWays);
+        AppStorageHandler.storePathway(DefaultPathWays);
         this.setState({
             pathwaySets: [
                 {
@@ -100,14 +89,13 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathway.unshift(newGeneSetObject);
         // allSets.push(selectedPathwaySet);
 
-        Demo.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: selectedPathwaySet,
         });
     };
 
-    // TODO
     addGene = (selectedPathway, selectedGene) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
@@ -128,7 +116,7 @@ export default class XenaGeneSetApp extends PureComponent {
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
-        Demo.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -156,7 +144,7 @@ export default class XenaGeneSetApp extends PureComponent {
         allSets = allSets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
-        Demo.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -172,7 +160,7 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 
-        Demo.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: undefined,
@@ -194,7 +182,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     showXena = () => {
-        alert('showing xena')
         this.setState({
             view: 'xena'
         })
@@ -210,42 +197,43 @@ export default class XenaGeneSetApp extends PureComponent {
 
     render() {
         let pathways = this.getActiveApp().pathway;
-        let localPathways = XenaGeneSetApp.getPathway();
+        let localPathways = AppStorageHandler.getPathway();
 
-        console.log(pathways,' vs ',localPathways)
+        console.log(pathways, ' vs ', localPathways);
+        console.log('this.stateapps',this.state.apps)
 
         return (
             <div>
 
-                <NavigationBar pathways={XenaGeneSetApp.getPathway()}
+                <NavigationBar pathways={localPathways}
                                makeCompact={this.makeCompact}
                                showPathways={this.showPathways}
                                showXena={this.showXena}
-                               compactView = {this.state.compactView}
+                               compactView={this.state.compactView}
                                view={this.state.view}
                 />
 
                 {this.state.view === 'xena' &&
                 <div>
-                    {/*<MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'*/}
-                    {/*renderHeight={this.state.renderHeight}*/}
+                    <MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'
+                    renderHeight={this.state.renderHeight}
+                    />
+                    {/*<XenaGoViewer appData={this.state.apps[0]}*/}
+                                  {/*pathwaySelect={this.pathwaySelect}*/}
+                                  {/*pathwayHover={this.pathwayHover}*/}
+                                  {/*ref={'xena-go-app-0'}*/}
+                                  {/*renderHeight={this.state.renderHeight}*/}
+                                  {/*renderOffset={0}*/}
+                                  {/*pathways={pathways}*/}
                     {/*/>*/}
-                    <XenaGoApp appData={this.state.apps[0]}
-                               pathwaySelect={this.pathwaySelect}
-                               pathwayHover={this.pathwayHover}
-                               ref={'xena-go-app-0'}
-                               renderHeight={this.state.renderHeight}
-                               renderOffset={0}
-                               pathways={this.getActiveApp().pathway}
-                    />
-                    <XenaGoApp appData={this.state.apps[1]}
-                               pathwaySelect={this.pathwaySelect}
-                               pathwayHover={this.pathwayHover}
-                               ref={'xena-go-app-1'}
-                               renderHeight={this.state.renderHeight}
-                               renderOffset={(this.state.renderHeight + 5)}
-                               pathways={pathways}
-                    />
+                    {/*<XenaGoViewer appData={this.state.apps[1]}*/}
+                                  {/*pathwaySelect={this.pathwaySelect}*/}
+                                  {/*pathwayHover={this.pathwayHover}*/}
+                                  {/*ref={'xena-go-app-1'}*/}
+                                  {/*renderHeight={this.state.renderHeight}*/}
+                                  {/*renderOffset={(this.state.renderHeight + 5)}*/}
+                                  {/*pathways={pathways}*/}
+                    {/*/>*/}
                 </div>
                 }
                 {this.state.view === 'pathways' &&

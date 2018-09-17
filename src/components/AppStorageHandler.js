@@ -1,17 +1,27 @@
 import React from 'react'
 import PureComponent from './PureComponent';
-// import PropTypes from 'prop-types';
-// import BaseStyle from '../../src/base.css';
 
 
 // synchronizing gene sorts between pathways
 const LOCAL_APP_STORAGE = "xena-app-storage";
 const LOCAL_STATE_STORAGE = "xena-selection-storage";
-import DefaultPathWays from "../../tests/data/tgac";
+const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
+import DefaultPathWays from "../data/tgac";
 /**
  * This is just for handling memory.
  */
 export class AppStorageHandler extends PureComponent {
+
+    static storePathway(pathway) {
+        if (pathway) {
+            localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathway));
+        }
+    }
+
+    static getPathway() {
+        let storedPathway = JSON.parse(localStorage.getItem(LOCAL_PATHWAY_STORAGE));
+        return storedPathway ? storedPathway : DefaultPathWays;
+    }
 
     static getDefaultSelectionPathway() {
         return {selection: {pathway: DefaultPathWays[21], tissue: 'Header'}};

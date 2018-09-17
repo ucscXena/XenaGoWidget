@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
-import XenaGoApp from './XenaGoApp';
+import XenaGoViewer from './XenaGoViewer';
 import {Switch, Card, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 import {sum} from 'underscore';
 import {AppStorageHandler} from "./AppStorageHandler";
@@ -52,15 +52,15 @@ export default class MultiXenaGoApp extends PureComponent {
             let refString = 'xena-go-app-' + index;
             return (
                 <div key={app.key}>
-                    <XenaGoApp appData={app}
-                               statGenerator={this.generateStats}
-                               stats={this.state.statBox}
-                               pathwaySelect={this.pathwaySelect}
-                               pathwayHover={this.pathwayHover}
-                               ref={refString}
-                               renderHeight={renderHeight}
-                               renderOffset={(renderHeight + 5) * index}
-                               pathways={this.props.pathways}
+                    <XenaGoViewer appData={app}
+                                  statGenerator={this.generateStats}
+                                  stats={this.state.statBox}
+                                  pathwaySelect={this.pathwaySelect}
+                                  pathwayHover={this.pathwayHover}
+                                  ref={refString}
+                                  renderHeight={renderHeight}
+                                  renderOffset={(renderHeight + 5) * index}
+                                  pathways={this.props.pathways}
                     />
                 </div>
             )
