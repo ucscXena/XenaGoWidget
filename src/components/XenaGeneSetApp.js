@@ -187,79 +187,43 @@ export default class XenaGeneSetApp extends PureComponent {
         return this.state.pathwaySets.find(ps => ps.selected);
     }
 
-    showPathways() {
+    showPathways = () => {
         this.setState({
             view: 'pathways'
         })
-    }
+    };
 
-    showXena() {
+    showXena = () => {
+        alert('showing xena')
         this.setState({
             view: 'xena'
         })
-    }
-
-    // just duplicate the last state
-    duplicateCohort() {
-        this.makeCompact(true);
-        this.refs['multiXenaGoApp'].duplicateCohort();
     };
 
-    removeCohort() {
-        this.makeCompact(false);
-        this.refs['multiXenaGoApp'].removeCohort();
-        this.setState({
-            cohortCount: 1
-        })
-        ;
-    }
 
-    makeCompact(value) {
+    makeCompact = (value) => {
         this.setState({
             compactView: value,
             renderHeight: value ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         })
-    }
+    };
 
     render() {
         let pathways = this.getActiveApp().pathway;
+        let localPathways = XenaGeneSetApp.getPathway();
+
+        console.log(pathways,' vs ',localPathways)
 
         return (
             <div>
 
-                {/*TODO: use NavigationBar*/}
-
-                {/*<NavigationBar />*/}
-
-                <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-                      rel="stylesheet"/>
-                <AppBar title='Xena Geneset Widget Demo'>
-                    <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
-                        <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
-                                  onClick={() => this.makeCompact(true)}
-                                  disabled={this.state.compactView}/>
-                        <MenuItem value='settings' icon='import_export' caption='Expand'
-                                  onClick={() => this.makeCompact(false)}
-                                  disabled={!this.state.compactView}/>
-                        <MenuDivider/>
-                    </IconMenu>
-                    <Navigation type='vertical'>
-                        {this.state.view === 'xena' &&
-                        <div style={{display: 'inline'}}>
-                            <Button raised primary>Xena</Button>
-                            <Button raised onClick={() => this.showPathways()}>Pathways</Button>
-                        </div>}
-                        {this.state.view === 'pathways' &&
-                        <div style={{display: 'inline'}}>
-                            <Button raised onClick={() => this.showXena()}>Xena</Button>
-                            <Button raised primary>Pathways</Button>
-                        </div>}
-
-                        <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
-                            <GithubIcon/>
-                        </a>
-                    </Navigation>
-                </AppBar>
+                <NavigationBar pathways={XenaGeneSetApp.getPathway()}
+                               makeCompact={this.makeCompact}
+                               showPathways={this.showPathways}
+                               showXena={this.showXena}
+                               compactView = {this.state.compactView}
+                               view={this.state.view}
+                />
 
                 {this.state.view === 'xena' &&
                 <div>
