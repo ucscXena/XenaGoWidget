@@ -194,15 +194,13 @@ export class AppStorageHandler extends PureComponent {
             return storedPathway
         }
         else {
-            let app1 = DefaultApp;
+            DefaultApp.renderHeight = renderHeight ;
+            DefaultApp.pathwayData.pathways = pathways ;
+            let app1 = Object.assign({}, DefaultApp);
             app1.key = 0 ;
-            app1.renderHeight = renderHeight ;
-            app1.pathwayData.pathways = pathways ;
-            let app2 = DefaultApp;
+            let app2 = Object.assign({}, DefaultApp);
             app2.key = 1 ;
-            app2.renderHeight = renderHeight ;
-            app2.pathwayData.pathways = pathways ;
-            // console.log('retrieving default app');
+            console.log('retrieving default app',app1,app2);
             return [app1,app2];
         }
     }
