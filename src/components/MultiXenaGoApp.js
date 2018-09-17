@@ -15,11 +15,11 @@ export default class MultiXenaGoApp extends PureComponent {
 
     constructor(props) {
         super(props);
-        let {renderHeight} = this.props;
+        let {pathways,renderHeight} = this.props;
         // initialize an init app
         this.state = {
             renderHeight: renderHeight,
-            apps: AppStorageHandler.getAppData(this.props),
+            apps: AppStorageHandler.getAppData(pathways,renderHeight),
         }
     }
 
@@ -68,46 +68,12 @@ export default class MultiXenaGoApp extends PureComponent {
     }
 
 
-    // // just duplicate the last state
-    duplicateCohort() {
-        let app = this.state.apps[0];
-        let newCohort = JSON.parse(JSON.stringify(app));
-        newCohort.key = this.state.apps[this.state.apps.length - 1].key + 1;
-        let apps = JSON.parse(JSON.stringify(this.state.apps));
-
-        // calculate the render offset based on the last offset
-        let {renderHeight, renderOffset} = apps[apps.length - 1];
-        newCohort.renderOffset = renderOffset + renderHeight + 5;
-        apps.push(newCohort);
-
-        let myIndex = app.key;
-        app.propagate = false;
-
-        let rootAppSelection = JSON.parse(JSON.stringify(this.refs['xena-go-app-' + myIndex].state));
-        this.setState({
-                apps: apps
-            },
-            () => this.pathwaySelect(rootAppSelection.pathwayClickData, rootAppSelection.selectedPathways)
-        );
-        return this.cohortCount();
-
-
-    };
 
     cohortCount() {
         if (this.state.apps) {
             return this.state.apps.length;
         }
         return 0;
-    }
-
-    removeCohort() {
-        let app = this.state.apps[1];
-        let apps = JSON.parse(JSON.stringify(this.state.apps)).filter((f) => f.key !== app.key);
-        this.setState({
-            apps: apps
-        });
-        return this.cohortCount();
     }
 
     pathwayHover = (pathwayHover) => {
