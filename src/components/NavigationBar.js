@@ -41,12 +41,6 @@ export default class NavigationBar extends PureComponent {
                                   onClick={() => this.makeCompact(false)}
                                   disabled={!this.state.compactView}/>
                         <MenuDivider/>
-                        <MenuItem value='settings' icon='add' caption='Add Cohort'
-                                  onClick={() => this.duplicateCohort()}
-                                  disabled={this.state.cohortCount === 2}/>
-                        <MenuItem value='settings' icon='remove' caption='Remove Cohort'
-                                  onClick={() => this.removeCohort()}
-                                  disabled={this.state.cohortCount === 1}/>
                     </IconMenu>
                     <Navigation type='vertical'>
                         {this.state.view === 'xena' &&

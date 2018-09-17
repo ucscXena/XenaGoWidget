@@ -9,6 +9,7 @@ import DefaultPathWays from "../../tests/data/tgac";
 import MultiXenaGoApp from "./MultiXenaGoApp";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "./AppStorageHandler";
+import NavigationBar from "./NavigationBar";
 
 const GithubIcon = () => (
     <svg viewBox="0 0 284 277" style={{height: 30}}>
@@ -228,6 +229,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {/*TODO: use NavigationBar*/}
 
+                {/*<NavigationBar />*/}
+
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
                 <AppBar title='Xena Geneset Widget Demo'>
@@ -239,12 +242,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   onClick={() => this.makeCompact(false)}
                                   disabled={!this.state.compactView}/>
                         <MenuDivider/>
-                        <MenuItem value='settings' icon='add' caption='Add Cohort'
-                                  onClick={() => this.duplicateCohort()}
-                                  disabled={this.state.cohortCount === 2}/>
-                        <MenuItem value='settings' icon='remove' caption='Remove Cohort'
-                                  onClick={() => this.removeCohort()}
-                                  disabled={this.state.cohortCount === 1}/>
                     </IconMenu>
                     <Navigation type='vertical'>
                         {this.state.view === 'xena' &&
