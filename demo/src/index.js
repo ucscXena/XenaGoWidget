@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 
 import PureComponent from "../../src/components/PureComponent";
-import XenaGeneSetViewer from "../../src/components/XenaGeneSetViewer";
+import XenaGeneSetApp from "../../src/components/XenaGeneSetApp";
 
 class Demo extends PureComponent {
 
@@ -10,7 +10,7 @@ class Demo extends PureComponent {
         return (
             <div>
 
-            <XenaGeneSetViewer/>
+            <XenaGeneSetApp/>
 
 
         </div>)

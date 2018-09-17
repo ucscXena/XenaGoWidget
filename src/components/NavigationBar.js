@@ -17,7 +17,7 @@ export default class NavigationBar extends PureComponent {
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: XenaGeneSetViewer.getPathway(),
+                    pathway: XenaGeneSetApp.getPathway(),
                     selected: true
                 }
             ],
