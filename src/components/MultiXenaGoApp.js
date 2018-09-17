@@ -10,6 +10,9 @@ import {AppStorageHandler} from "./AppStorageHandler";
 const MAX_GLOBAL_STATS = 30;
 
 
+/**
+ * Deprecated
+ */
 export default class MultiXenaGoApp extends PureComponent {
 
 
