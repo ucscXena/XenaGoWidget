@@ -69,13 +69,6 @@ export default class MultiXenaGoApp extends PureComponent {
 
 
 
-    cohortCount() {
-        if (this.state.apps) {
-            return this.state.apps.length;
-        }
-        return 0;
-    }
-
     pathwayHover = (pathwayHover) => {
         let myIndex = pathwayHover.key;
         pathwayHover.propagate = false;

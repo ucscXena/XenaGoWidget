@@ -211,6 +211,36 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    pathwayHover = (pathwayHover) => {
+        let myIndex = pathwayHover.key;
+        pathwayHover.propagate = false;
+        this.state.apps.forEach((app, index) => {
+            if (index !== myIndex) {
+                this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
+            }
+        });
+    };
+
+    pathwaySelect = (pathwaySelection, selectedPathways) => {
+        console.log('selecting a pathway', pathwaySelection, selectedPathways);
+        AppStorageHandler.storePathwaySelection(pathwaySelection,selectedPathways);
+        let myIndex = pathwaySelection.key;
+        pathwaySelection.propagate = false;
+        this.state.apps.forEach((app, index) => {
+            console.log('setting pathway sate for ',index,myIndex)
+            if (index !== myIndex) {
+                if (selectedPathways) {
+                    console.log('selected pathways',selectedPathways)
+                    this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
+                }
+                else {
+                    console.log('MXGA pathway selection',pathwaySelection)
+                    this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
+                }
+            }
+        });
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
