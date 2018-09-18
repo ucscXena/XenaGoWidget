@@ -1,8 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {fontColor, getSelectColor} from "../functions/ColorFunctions";
-// import {fontColor, getSelectColor, getHoverColor} from "../functions/ColorFunctions";
+import {fontColor, getHoverColor,getSelectColor} from "../functions/ColorFunctions";
 
 
 export class GeneSetSvgSelector extends PureComponent {
@@ -59,8 +58,7 @@ export class GeneSetSvgSelector extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                // backgroundColor: getHoverColor(score),
-                backgroundColor: 'red',
+                backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
                 // outline: 'thin dotted gray',
                 borderRadius: '15px',
@@ -112,13 +110,9 @@ export class GeneSetSvgSelector extends PureComponent {
         let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onHover, onMouseOut} = this.props;
         let colorDensity = 0.5;
         labelHeight = 20;
-        let labelWidget = 150;
         let className = 'asdf';
         colorMask = [0.5, 0.5, 0.5];
 
-        // console.log('hovered pathaways',hoveredPathways)
-
-        // labelOffset = 0;
 
         const highestScore = pathways.reduce((max, current) => {
             let score = current.density / current.gene.length;

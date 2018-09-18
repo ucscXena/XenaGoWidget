@@ -260,6 +260,12 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathwayClickData = {
             pathway: pathwaySelection
         };
+
+        let newSelect = [pathwaySelection];
+        this.setState({
+            selectedPathways: newSelect
+        });
+
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {
             if (this.state.selectedPathways) {
