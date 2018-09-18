@@ -1,7 +1,8 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {fontColor, getSelectColor, getHoverColor} from "../functions/ColorFunctions";
+import {fontColor, getSelectColor} from "../functions/ColorFunctions";
+// import {fontColor, getSelectColor, getHoverColor} from "../functions/ColorFunctions";
 
 
 export class GeneSetSvgSelector extends PureComponent {
@@ -148,7 +149,7 @@ export class GeneSetSvgSelector extends PureComponent {
         console.log('selected labels', selectedLabels)
 
         return newRefPathways.map((p, index) => {
-            let labelString = p.golabel;
+            let labelString = '('+p.gene.length+') ' + p.golabel ;
             colorDensity = p.density;
             let hovered = hoveredLabels.indexOf(p.golabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
@@ -162,7 +163,7 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
-                          fill={fontColor(colorDensity, selected, hovered)}
+                          fill={fontColor(selected, hovered, colorDensity)}
                     >
                         {width < 10 ? '' : labelString}
                     </text>

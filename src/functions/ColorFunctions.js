@@ -21,3 +21,30 @@ export function getGeneColorMask() {
 export function getPathwayColorMask() {
     return [255, 107, 107];
 }
+
+export function fontColor(selected,hovered,colorDensity) {
+
+    if (hovered) {
+        return !selected ? getDarkColor() : getHoverColor(colorDensity);
+    }
+
+    if (selected) {
+        return getWhiteColor();
+    }
+
+
+    return colorDensity < 0.7 ? 'black' : getWhiteColor();
+}
+
+/**
+ *
+ * @param density
+ * @param geneLength
+ * @param highScore
+ * @param maxColor
+ * @returns {number}
+ */
+export function getColorDensity(density, geneLength, highScore,maxColor) {
+    let color = Math.round(maxColor * (1.0 - (density / geneLength / highScore)));
+    return 1 - color / 256;
+}
