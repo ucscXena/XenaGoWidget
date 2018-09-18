@@ -157,7 +157,7 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
-                          fill={fontColor(colorDensity,selected, hovered )}
+                          fill={fontColor(selected, hovered ,colorDensity)}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
