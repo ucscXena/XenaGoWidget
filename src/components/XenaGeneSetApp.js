@@ -219,6 +219,7 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayHover = (pathwayHover) => {
         let myIndex = pathwayHover.key;
         pathwayHover.propagate = false;
+        console.log('local pathway hover', pathwayHover)
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
@@ -227,7 +228,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
-        console.log('setting pathway with: ',selectedPathways,pathwaySelection);
+        console.log('setting pathway with: ', selectedPathways, pathwaySelection);
         AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
@@ -244,24 +245,17 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
-        console.log('global pathway hover', pathwayHover)
-        // let myIndex = pathwayHover.key;
-        // pathwayHover.propagate = false;
-        // this.state.apps.forEach((app, index) => {
-        //     if (index !== myIndex) {
-        //         this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
-        //     }
-        // });
+        let hoveredPathways = pathwayHover ? pathwayHover.gene : [];
+        this.state.apps.forEach((app, index) => {
+            this.refs['xena-go-app-' + index].setPathwayHover(hoveredPathways);
+        });
     };
 
     globalPathwaySelect = (pathwaySelection) => {
-        console.log('global pathway selected', pathwaySelection);
         let selectedPathways = [pathwaySelection.golabel];
-        console.log('global selected PAthways ', selectedPathways);
         let pathwayClickData = {
-            pathway : pathwaySelection
+            pathway: pathwaySelection
         };
-        // console.log('state',this.state);
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {
             if (this.state.selectedPathways) {

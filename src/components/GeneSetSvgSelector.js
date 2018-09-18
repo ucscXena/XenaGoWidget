@@ -109,7 +109,7 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
     render() {
-        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onMouseHover, onMouseOut} = this.props;
+        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onHover, onMouseOut} = this.props;
         let colorDensity = 0.5;
         labelHeight = 20;
         let labelWidget = 150;
