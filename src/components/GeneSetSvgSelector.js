@@ -116,6 +116,8 @@ export class GeneSetSvgSelector extends PureComponent {
         let className = 'asdf';
         colorMask = [0.5, 0.5, 0.5];
 
+        // console.log('hovered pathaways',hoveredPathways)
+
         // labelOffset = 0;
 
         const highestScore = pathways.reduce((max, current) => {
@@ -123,8 +125,8 @@ export class GeneSetSvgSelector extends PureComponent {
             return (max > score) ? max : score;
         }, 0);
 
-        console.log('props', this.props);
-        console.log('pathways', pathways);
+        // console.log('props', this.props);
+        // console.log('pathways', pathways);
 
         let newRefPathways = pathways.map(r => {
             // let density = Math.random();
@@ -143,15 +145,13 @@ export class GeneSetSvgSelector extends PureComponent {
             };
         });
 
-        let hoveredLabels = hoveredPathways.map(p => p && p.golabel);
+        let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
-
-        console.log('selected labels', selectedLabels)
 
         return newRefPathways.map((p, index) => {
             let labelString = '('+p.gene.length+') ' + p.golabel ;
             colorDensity = p.density;
-            let hovered = hoveredLabels.indexOf(p.golabel) >= 0;
+            let hovered = hoveredLabel === p.golabel;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             return (
                 <svg
@@ -163,7 +163,7 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
-                          fill={fontColor(selected, hovered, colorDensity)}
+                          fill={fontColor(colorDensity,selected, hovered )}
                     >
                         {width < 10 ? '' : labelString}
                     </text>

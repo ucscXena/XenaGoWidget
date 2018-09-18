@@ -53,7 +53,7 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('input props',props);
+        // console.log('input props',props);
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
@@ -66,11 +66,11 @@ export default class XenaGoViewer extends PureComponent {
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
 
-        console.log('srt string',sortString);
-        console.log('filter string',filterString);
-        console.log('this state',this.state);
-        console.log('vs ',appState);
-        console.log('cohort',cohort);
+        // console.log('srt string',sortString);
+        // console.log('filter string',filterString);
+        // console.log('this state',this.state);
+        // console.log('vs ',appState);
+        // console.log('cohort',cohort);
 
         if(sortString){
             this.state.selectedGeneSort = sortString;
@@ -86,12 +86,12 @@ export default class XenaGoViewer extends PureComponent {
             this.state.selectedCohort = cohort.selected ;
         }
 
-        console.log('final state',appState);
+        // console.log('final state',appState);
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        console.log('setting pathway state',newSelection,pathwayClickData)
+        // console.log('setting pathway state',newSelection,pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -275,7 +275,7 @@ export default class XenaGoViewer extends PureComponent {
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
                         // let selectedCohort1 = AppStorageHandler.getApp()[0].selectedCohort;
                         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-                        console.log('got cohort sttate on xenagoapp mount:', selectedCohort2);
+                        // console.log('got cohort sttate on xenagoapp mount:', selectedCohort2);
                         // this.selectCohort(selectedCohort2.cohortState[this.state.key]);
                         this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
                     }
@@ -291,9 +291,9 @@ export default class XenaGoViewer extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        console.log('selecting cohort ', selected, this.state.key, this.state.cohortData, cohort);
+        // console.log('selecting cohort ', selected, this.state.key, this.state.cohortData, cohort);
         AppStorageHandler.storeCohortState(selected, this.state.key);
-        console.log(AppStorageHandler.getAppState());
+        // console.log(AppStorageHandler.getAppState());
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,

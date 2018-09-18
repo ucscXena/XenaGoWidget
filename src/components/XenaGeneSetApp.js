@@ -219,7 +219,7 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayHover = (pathwayHover) => {
         let myIndex = pathwayHover.key;
         pathwayHover.propagate = false;
-        console.log('local pathway hover', pathwayHover)
+        // console.log('local pathway hover', pathwayHover)
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
@@ -228,7 +228,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
-        console.log('setting pathway with: ', selectedPathways, pathwaySelection);
+        // console.log('setting pathway with: ', selectedPathways, pathwaySelection);
         AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
@@ -246,6 +246,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwayHover = (pathwayHover) => {
         let hoveredPathways = pathwayHover ? pathwayHover.gene : [];
+        this.setState({
+            hoveredPathways:pathwayHover
+        });
+
         this.state.apps.forEach((app, index) => {
             this.refs['xena-go-app-' + index].setPathwayHover(hoveredPathways);
         });
