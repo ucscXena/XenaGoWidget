@@ -89,7 +89,7 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
     onClick = (geneSet, event) => {
-        console.log('local mouse CLICK event', event, geneSet);
+        // console.log('local mouse CLICK event', event, geneSet);
         let {onClick} = this.props;
         if (onClick) {
             onClick(geneSet);
@@ -97,13 +97,13 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
     onMouseOut = (geneSet, event) => {
-        console.log('local mouse out event', geneSet);
+        // console.log('local mouse out event', geneSet);
         let {onHover} = this.props;
         onHover(null);
     };
 
     onHover = (geneSet, event) => {
-        console.log('local mouse enter event', geneSet);
+        // console.log('local mouse enter event', geneSet);
         let {onHover} = this.props;
         if (onHover) {
             onHover(geneSet);
@@ -116,10 +116,17 @@ export class GeneSetSvgSelector extends PureComponent {
     getSelectedGenes(selectedPathways, referencePathways) {
         if (!referencePathways) return [];
 
-        let selectedGeneSet = referencePathways.filter(ref => {
-            return selectedPathways.indexOf(ref.golabel) >= 0;
+        let selectedPathwayGenes = flatten(selectedPathways.map( p => p.gene ));
+
+        // let filteredGeneSet = referencePathways.filter(ref => {
+        //     return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
+        // });
+        // TODO: should this process with the gen, as well?
+        let filteredGeneSet = referencePathways.filter(ref => {
+            return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
         });
-        return unique(flatten(selectedGeneSet.map(g => g.gene)));
+        console.log('FILTERED GENES',selectedPathways,selectedPathwayGenes,referencePathways,filteredGeneSet);
+        return unique(flatten(filteredGeneSet.map(g => g.gene)));
     }
 
     render() {
@@ -136,6 +143,10 @@ export class GeneSetSvgSelector extends PureComponent {
         // console.log('props', this.props);
         // console.log('pathways', pathways);
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
+        if(selectedGenes.length>0){
+            console.log('selectedGenes', selectedPathways,pathways,selectedGenes);
+        }
+
 
         let newRefPathways = pathways.map(r => {
             // let density = Math.random();
