@@ -1,7 +1,14 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {fontColor, getHoverColor,getSelectColor} from "../functions/ColorFunctions";
+import {intersection, unique, union, flatten} from 'underscore';
+import {
+    fontColor,
+    getHoverColor,
+    getSelectColor,
+    getPathwayColorMask,
+    getColorDensity
+} from "../functions/ColorFunctions";
 
 
 export class GeneSetSvgSelector extends PureComponent {
@@ -106,30 +113,39 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     };
 
+    getSelectedGenes(selectedPathways, referencePathways) {
+        if (!referencePathways) return [];
+
+        let selectedGeneSet = referencePathways.filter(ref => {
+            return selectedPathways.indexOf(ref.golabel) >= 0;
+        });
+        return unique(flatten(selectedGeneSet.map(g => g.gene)));
+    }
+
     render() {
-        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, colorMask, onClick, onHover, onMouseOut} = this.props;
-        let colorDensity = 0.5;
+        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, onClick, onHover, onMouseOut} = this.props;
         labelHeight = 20;
         let className = 'asdf';
-        colorMask = [0.5, 0.5, 0.5];
 
 
-        const highestScore = pathways.reduce((max, current) => {
-            let score = current.density / current.gene.length;
-            return (max > score) ? max : score;
-        }, 0);
+        // const highestScore = pathways.reduce((max, current) => {
+        //     let score = current.density / current.gene.length;
+        //     return (max > score) ? max : score;
+        // }, 0);
 
         // console.log('props', this.props);
         // console.log('pathways', pathways);
+        let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
 
         let newRefPathways = pathways.map(r => {
             // let density = Math.random();
-            let density = 0.2;
+            // let density = 0.2;
 
             //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
             //     // intersection of values divided by union of values
-            //     let allGenes = union(selectedGenes, r.gene);
-            //     let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
+            let overlappingGenes = intersection(selectedGenes, r.gene);
+            let allGenes = union(selectedGenes, r.gene);
+            let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
 
             return {
                 goid: r.goid,
@@ -141,12 +157,17 @@ export class GeneSetSvgSelector extends PureComponent {
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
+        let colorMask = getPathwayColorMask();
 
         return newRefPathways.map((p, index) => {
-            let labelString = '('+p.gene.length+') ' + p.golabel ;
-            colorDensity = p.density;
+            let labelString = '(' + p.gene.length + ') ' + p.golabel;
             let hovered = hoveredLabel === p.golabel;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
+            // let geneLength = p.gene.length ;
+            // console.log(p.density,geneLength,highScore)
+            // let colorDensity = getColorDensity(p.density, geneLength, highestScore);
+            // console.log(p.density)
+            let colorDensity = 0.5;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
@@ -157,7 +178,7 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
-                          fill={fontColor(selected, hovered ,colorDensity)}
+                          fill={fontColor(selected, hovered, colorDensity)}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
