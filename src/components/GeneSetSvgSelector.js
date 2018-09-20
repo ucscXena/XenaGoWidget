@@ -10,6 +10,7 @@ import {
     getColorDensity
 } from "../functions/ColorFunctions";
 
+const MAX_COLOR = 256;
 
 export class GeneSetSvgSelector extends PureComponent {
 
@@ -116,17 +117,18 @@ export class GeneSetSvgSelector extends PureComponent {
     getSelectedGenes(selectedPathways, referencePathways) {
         if (!referencePathways) return [];
 
-        let selectedPathwayGenes = flatten(selectedPathways.map( p => p.gene ));
+        let selectedPathwayGenes = flatten(selectedPathways.map(p => p.gene));
 
+        // // let filteredGeneSet = referencePathways.filter(ref => {
+        // //     return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
+        // // });
+        // // TODO: should this process with the gen, as well?
         // let filteredGeneSet = referencePathways.filter(ref => {
         //     return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
         // });
-        // TODO: should this process with the gen, as well?
-        let filteredGeneSet = referencePathways.filter(ref => {
-            return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
-        });
-        console.log('FILTERED GENES',selectedPathways,selectedPathwayGenes,referencePathways,filteredGeneSet);
-        return unique(flatten(filteredGeneSet.map(g => g.gene)));
+        // console.log('FILTERED GENES',selectedPathways,selectedPathwayGenes,referencePathways,filteredGeneSet);
+        // return unique(flatten(filteredGeneSet.map(g => g.gene)));
+        return selectedPathwayGenes
     }
 
     render() {
@@ -135,28 +137,21 @@ export class GeneSetSvgSelector extends PureComponent {
         let className = 'asdf';
 
 
-        // const highestScore = pathways.reduce((max, current) => {
-        //     let score = current.density / current.gene.length;
-        //     return (max > score) ? max : score;
-        // }, 0);
-
-        // console.log('props', this.props);
-        // console.log('pathways', pathways);
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
-        if(selectedGenes.length>0){
-            console.log('selectedGenes', selectedPathways,pathways,selectedGenes);
+        if (selectedGenes.length > 0) {
+            console.log('selectedGenes', selectedPathways, pathways, selectedGenes);
         }
 
 
         let newRefPathways = pathways.map(r => {
-            // let density = Math.random();
-            // let density = 0.2;
 
             //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
             //     // intersection of values divided by union of values
             let overlappingGenes = intersection(selectedGenes, r.gene);
             let allGenes = union(selectedGenes, r.gene);
             let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
+
+            // console.log('DENS 1: ', density);
 
             return {
                 goid: r.goid,
@@ -165,6 +160,14 @@ export class GeneSetSvgSelector extends PureComponent {
                 density: density,
             };
         });
+
+        const highestScore = newRefPathways.reduce((max, current) => {
+            let score = current.density / current.gene.length;
+            // let score = current.gene.length;
+            return (max > score) ? max : score;
+        }, 0);
+        // console.log('highest score,',highestScore)
+
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
@@ -176,9 +179,10 @@ export class GeneSetSvgSelector extends PureComponent {
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             // let geneLength = p.gene.length ;
             // console.log(p.density,geneLength,highScore)
-            // let colorDensity = getColorDensity(p.density, geneLength, highestScore);
-            // console.log(p.density)
-            let colorDensity = 0.5;
+            // console.log('DENSITY: ', p.density)
+            let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
+            // console.log('COLOR DENSITY: ', colorDensity)
+            // colorDensity = 0.5;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}

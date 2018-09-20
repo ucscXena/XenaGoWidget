@@ -1,3 +1,6 @@
+
+const DEFAULT_MAX_COLOR = 256 ;
+
 export function getSelectColor() {
     return '#113871';
 }
@@ -44,7 +47,7 @@ export function fontColor(selected,hovered,colorDensity) {
  * @param maxColor
  * @returns {number}
  */
-export function getColorDensity(density, geneLength, highScore,maxColor) {
-    let color = Math.round(maxColor * (1.0 - (density / geneLength / highScore)));
-    return 1 - color / 256;
+export function getColorDensity(density, geneLength, highScore) {
+    let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density / geneLength / highScore)));
+    return 1 - color / DEFAULT_MAX_COLOR;
 }
