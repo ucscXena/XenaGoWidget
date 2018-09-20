@@ -50,11 +50,17 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
+    /**
+     * Forces the state of the system once everything is loaded based on the existing pathway selection.
+     */
     forceState() {
-        let myIndex = 0;
-        let refLoaded = this.refs['xena-go-app-' + myIndex];
+        let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
         if (refLoaded) {
             let selection = AppStorageHandler.getPathwaySelection();
+            let newSelect = [selection.pathway];
+            this.setState({
+                selectedPathways: newSelect
+            });
             if (selection.selectedPathways) {
                 for (let index = 0; index < this.state.apps.length; index++) {
                     let ref = this.refs['xena-go-app-' + index];
