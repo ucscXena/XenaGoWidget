@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {intersection, unique, union, flatten} from 'underscore';
+import {intersection,  union, flatten} from 'underscore';
 import {
     fontColor,
     getHoverColor,
@@ -9,8 +9,6 @@ import {
     getPathwayColorMask,
     getColorDensity
 } from "../functions/ColorFunctions";
-
-const MAX_COLOR = 256;
 
 export class GeneSetSvgSelector extends PureComponent {
 

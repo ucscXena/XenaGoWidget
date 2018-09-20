@@ -53,24 +53,15 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-        // console.log('input props',props);
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
 
-        let appState = AppStorageHandler.getAppState();
-
         let cohortIndex = this.state.key ;
         let sortString = AppStorageHandler.getSortState(cohortIndex);
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-
-        // console.log('srt string',sortString);
-        // console.log('filter string',filterString);
-        // console.log('this state',this.state);
-        // console.log('vs ',appState);
-        // console.log('cohort',cohort);
 
         if(sortString){
             this.state.selectedGeneSort = sortString;
@@ -85,13 +76,10 @@ export default class XenaGoViewer extends PureComponent {
         if(cohort && cohort.selected){
             this.state.selectedCohort = cohort.selected ;
         }
-
-        // console.log('final state',appState);
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        // console.log('setting pathway state',newSelection,pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
