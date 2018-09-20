@@ -136,9 +136,9 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
-        if (selectedGenes.length > 0) {
-            console.log('selectedGenes', selectedPathways, pathways, selectedGenes);
-        }
+        // if (selectedGenes.length > 0) {
+        //     console.log('selectedGenes', selectedPathways, pathways, selectedGenes);
+        // }
 
 
         let newRefPathways = pathways.map(r => {

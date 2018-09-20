@@ -225,12 +225,20 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayHover = (pathwayHover) => {
         let myIndex = pathwayHover.key;
         pathwayHover.propagate = false;
-        // console.log('local pathway hover', pathwayHover)
+        console.log('APP pathway hover', pathwayHover)
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
             }
         });
+    };
+
+    geneHover = (geneHover) => {
+        this.setState(
+            {
+                hoveredPathways: geneHover ? geneHover.pathway : {}
+            }
+        );
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
@@ -253,7 +261,7 @@ export default class XenaGeneSetApp extends PureComponent {
     globalPathwayHover = (pathwayHover) => {
         let hoveredPathways = pathwayHover ? pathwayHover.gene : [];
         this.setState({
-            hoveredPathways:pathwayHover
+            hoveredPathways: pathwayHover
         });
 
         this.state.apps.forEach((app, index) => {
@@ -321,6 +329,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
+                                              geneHover={this.geneHover}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -331,6 +340,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
+                                              geneHover={this.geneHover}
                                 />
                             </Col>
                         </Row>
