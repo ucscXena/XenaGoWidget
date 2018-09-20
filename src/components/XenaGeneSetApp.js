@@ -225,7 +225,6 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayHover = (pathwayHover) => {
         let myIndex = pathwayHover.key;
         pathwayHover.propagate = false;
-        console.log('APP pathway hover', pathwayHover)
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);

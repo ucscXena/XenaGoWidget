@@ -119,28 +119,8 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     clickPathway = (pathwayClickData) => {
-        let {metaSelect, pathway: {golabel}} = pathwayClickData;
-
-        let newSelection = [];
-
-        if (metaSelect) {
-            let goindex = this.state.selectedPathways.indexOf(golabel);
-            newSelection = JSON.parse(JSON.stringify(this.state.selectedPathways));
-            if (goindex >= 0) {
-                newSelection.splice(goindex, 1);
-            }
-            else {
-                newSelection.push(golabel)
-            }
-        }
-        else if (isEqual(this.state.selectedPathways, [golabel])) {
-            newSelection = [];
-        }
-        else {
-            newSelection = [golabel];
-        }
-
-        this.setPathwayState(newSelection, pathwayClickData);
+        let {pathway: {golabel}} = pathwayClickData;
+        this.setPathwayState([golabel], pathwayClickData);
     };
 
     setPathwayHover = (newHover) => {
@@ -170,14 +150,6 @@ export default class XenaGoViewer extends PureComponent {
                 this.props.pathwayHover(hoverData);
             }
         }
-    };
-
-    clickGene = (props) => {
-        let pathwayLabel = [props.pathway.golabel];
-        this.setState({
-            geneClickData: props,
-            selectedPathways: pathwayLabel,
-        });
     };
 
     hoverGene = (props) => {
