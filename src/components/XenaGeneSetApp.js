@@ -4,10 +4,12 @@ import XenaGoViewer from './XenaGoViewer';
 import {sum} from 'underscore';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
+import {Grid, Row, Col} from 'react-material-responsive-grid';
 import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "./AppStorageHandler";
 import NavigationBar from "./NavigationBar";
+import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
 
 
 const EXPAND_HEIGHT = 800;
@@ -35,6 +37,8 @@ export default class XenaGeneSetApp extends PureComponent {
             ],
             compactView: COMPACT_VIEW_DEFAULT,
             renderHeight: renderHeight,
+            hoveredPathways: [],
+            selectedPathways: [],
         };
     }
 
@@ -46,11 +50,17 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
+    /**
+     * Forces the state of the system once everything is loaded based on the existing pathway selection.
+     */
     forceState() {
-        let myIndex = 0;
-        let refLoaded = this.refs['xena-go-app-' + myIndex];
+        let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
         if (refLoaded) {
             let selection = AppStorageHandler.getPathwaySelection();
+            let newSelect = [selection.pathway];
+            this.setState({
+                selectedPathways: newSelect
+            });
             if (selection.selectedPathways) {
                 for (let index = 0; index < this.state.apps.length; index++) {
                     let ref = this.refs['xena-go-app-' + index];
@@ -222,10 +232,25 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+    geneHover = (geneHover) => {
+        this.setState(
+            {
+                hoveredPathways: geneHover ? geneHover.pathway : {}
+            }
+        );
+    };
+
     pathwaySelect = (pathwaySelection, selectedPathways) => {
+        // console.log('setting pathway with: ', selectedPathways, pathwaySelection);
         AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
+        //  TODO: implement empty correlation
+        // if(selectedPathways.length===0){
+        //     this.setState({
+        //         selectedPathways: []
+        //     });
+        // }
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 if (selectedPathways) {
@@ -234,6 +259,39 @@ export default class XenaGeneSetApp extends PureComponent {
                 else {
                     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                 }
+            }
+        });
+    };
+
+    globalPathwayHover = (pathwayHover) => {
+        let hoveredPathways = pathwayHover ? pathwayHover.gene : [];
+        this.setState({
+            hoveredPathways: pathwayHover
+        });
+
+        this.state.apps.forEach((app, index) => {
+            this.refs['xena-go-app-' + index].setPathwayHover(hoveredPathways);
+        });
+    };
+
+    globalPathwaySelect = (pathwaySelection) => {
+        let selectedPathways = [pathwaySelection.golabel];
+        let pathwayClickData = {
+            pathway: pathwaySelection
+        };
+
+        let newSelect = [pathwaySelection];
+        this.setState({
+            selectedPathways: newSelect
+        });
+
+        pathwaySelection.propagate = false;
+        this.state.apps.forEach((app, index) => {
+            if (this.state.selectedPathways) {
+                this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwayClickData);
+            }
+            else {
+                this.refs['xena-go-app-' + index].clickPathway(pathwayClickData);
             }
         });
     };
@@ -255,25 +313,43 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === 'xena' && this.state.apps &&
                 <div>
-                    {/*<MultiXenaGoApp pathways={this.getActiveApp().pathway} ref='multiXenaGoApp'*/}
-                    {/*renderHeight={this.state.renderHeight}*/}
-                    {/*/>*/}
-                    <XenaGoViewer appData={this.state.apps[0]}
-                                  pathwaySelect={this.pathwaySelect}
-                                  pathwayHover={this.pathwayHover}
-                                  ref='xena-go-app-0'
-                                  renderHeight={this.state.renderHeight}
-                                  renderOffset={0}
-                                  pathways={pathways}
-                    />
-                    <XenaGoViewer appData={this.state.apps[1]}
-                                  pathwaySelect={this.pathwaySelect}
-                                  pathwayHover={this.pathwayHover}
-                                  ref='xena-go-app-1'
-                                  renderHeight={this.state.renderHeight}
-                                  renderOffset={(this.state.renderHeight + 5)}
-                                  pathways={pathways}
-                    />
+                    <Grid>
+                        <Row>
+                            <Col md={2}>
+                                <GeneSetSvgSelector pathways={pathways}
+                                                    hoveredPathways={this.state.hoveredPathways}
+                                                    selectedPathways={this.state.selectedPathways}
+                                                    onClick={this.globalPathwaySelect}
+                                                    onHover={this.globalPathwayHover}
+                                                    onMouseOut={this.globalPathwayHover}
+                                                    width={200}/>
+                            </Col>
+                            <Col md={10}>
+                                <XenaGoViewer appData={this.state.apps[0]}
+                                              pathwaySelect={this.pathwaySelect}
+                                              pathwayHover={this.pathwayHover}
+                                              ref='xena-go-app-0'
+                                              renderHeight={this.state.renderHeight}
+                                              renderOffset={0}
+                                              pathways={pathways}
+                                              hoveredPathways={this.state.hoveredPathways}
+                                              selectedPathways={this.state.selectedPathways}
+                                              geneHover={this.geneHover}
+                                />
+                                <XenaGoViewer appData={this.state.apps[1]}
+                                              pathwaySelect={this.pathwaySelect}
+                                              pathwayHover={this.pathwayHover}
+                                              ref='xena-go-app-1'
+                                              renderHeight={this.state.renderHeight}
+                                              renderOffset={(this.state.renderHeight + 5)}
+                                              pathways={pathways}
+                                              hoveredPathways={this.state.hoveredPathways}
+                                              selectedPathways={this.state.selectedPathways}
+                                              geneHover={this.geneHover}
+                                />
+                            </Col>
+                        </Row>
+                    </Grid>
                 </div>
                 }
                 {this.state.view === 'pathways' &&

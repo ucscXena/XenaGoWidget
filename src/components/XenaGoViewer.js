@@ -53,24 +53,15 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('input props',props);
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
 
-        let appState = AppStorageHandler.getAppState();
-
         let cohortIndex = this.state.key ;
         let sortString = AppStorageHandler.getSortState(cohortIndex);
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-
-        console.log('srt string',sortString);
-        console.log('filter string',filterString);
-        console.log('this state',this.state);
-        console.log('vs ',appState);
-        console.log('cohort',cohort);
 
         if(sortString){
             this.state.selectedGeneSort = sortString;
@@ -85,13 +76,10 @@ export default class XenaGoViewer extends PureComponent {
         if(cohort && cohort.selected){
             this.state.selectedCohort = cohort.selected ;
         }
-
-        console.log('final state',appState);
     }
 
 
     setPathwayState(newSelection, pathwayClickData) {
-        console.log('setting pathway state',newSelection,pathwayClickData)
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
 
@@ -131,28 +119,8 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     clickPathway = (pathwayClickData) => {
-        let {metaSelect, pathway: {golabel}} = pathwayClickData;
-
-        let newSelection = [];
-
-        if (metaSelect) {
-            let goindex = this.state.selectedPathways.indexOf(golabel);
-            newSelection = JSON.parse(JSON.stringify(this.state.selectedPathways));
-            if (goindex >= 0) {
-                newSelection.splice(goindex, 1);
-            }
-            else {
-                newSelection.push(golabel)
-            }
-        }
-        else if (isEqual(this.state.selectedPathways, [golabel])) {
-            newSelection = [];
-        }
-        else {
-            newSelection = [golabel];
-        }
-
-        this.setPathwayState(newSelection, pathwayClickData);
+        let {pathway: {golabel}} = pathwayClickData;
+        this.setPathwayState([golabel], pathwayClickData);
     };
 
     setPathwayHover = (newHover) => {
@@ -184,15 +152,10 @@ export default class XenaGoViewer extends PureComponent {
         }
     };
 
-    clickGene = (props) => {
-        let pathwayLabel = [props.pathway.golabel];
-        this.setState({
-            geneClickData: props,
-            selectedPathways: pathwayLabel,
-        });
-    };
-
     hoverGene = (props) => {
+
+        this.props.geneHover(props)
+
         let genesHovered;
         if (props == null) {
             props = {};
@@ -212,6 +175,7 @@ export default class XenaGoViewer extends PureComponent {
             key: this.props.appData.key,
             propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
         };
+        console.log('VIEWER: ',hoverData.hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
@@ -275,7 +239,7 @@ export default class XenaGoViewer extends PureComponent {
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
                         // let selectedCohort1 = AppStorageHandler.getApp()[0].selectedCohort;
                         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-                        console.log('got cohort sttate on xenagoapp mount:', selectedCohort2);
+                        // console.log('got cohort sttate on xenagoapp mount:', selectedCohort2);
                         // this.selectCohort(selectedCohort2.cohortState[this.state.key]);
                         this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
                     }
@@ -291,9 +255,9 @@ export default class XenaGoViewer extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        console.log('selecting cohort ', selected, this.state.key, this.state.cohortData, cohort);
+        // console.log('selecting cohort ', selected, this.state.key, this.state.cohortData, cohort);
         AppStorageHandler.storeCohortState(selected, this.state.key);
-        console.log(AppStorageHandler.getAppState());
+        // console.log(AppStorageHandler.getAppState());
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
@@ -356,7 +320,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator, stats, renderHeight, renderOffset} = this.props;
+        let {statGenerator, renderHeight, renderOffset} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
@@ -415,7 +379,7 @@ export default class XenaGoViewer extends PureComponent {
                     <Grid>
                         <Row>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -491,4 +455,5 @@ XenaGoViewer.propTypes = {
     pathwaySelect: PropTypes.any,
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
+    geneHover: PropTypes.any,
 };

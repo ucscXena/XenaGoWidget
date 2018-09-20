@@ -2,19 +2,13 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor} from '../functions/ColorFunctions'
+import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor,getColorDensity} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
-    maxColor = 256;
 
     constructor(props) {
         super(props);
-    }
-
-    getColorDensity(density, geneLength, highScore) {
-        let color = Math.round(this.maxColor * (1.0 - (density / geneLength / highScore)));
-        return 1 - color / 256;
     }
 
 
@@ -95,7 +89,7 @@ export class HeaderLabel extends PureComponent {
     render() {
         let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        let colorDensity = this.getColorDensity(item.density, geneLength, highScore);
+        let colorDensity = getColorDensity(item.density, geneLength, highScore);
         return (
             <svg
                 style={this.style(colorDensity)}

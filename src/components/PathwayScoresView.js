@@ -8,7 +8,7 @@ import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
 import {pruneColumns, associateData} from '../functions/DataFunctions';
-import {isEqual, omit, memoize, pick, pluck, flatten, sum, range, times} from 'underscore';
+import {isEqual, omit} from 'underscore';
 
 
 const REFERENCE_LABEL_HEIGHT = 150;
