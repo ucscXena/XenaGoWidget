@@ -245,6 +245,12 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
+        //  TODO: implement empty correlation
+        // if(selectedPathways.length===0){
+        //     this.setState({
+        //         selectedPathways: []
+        //     });
+        // }
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 if (selectedPathways) {
