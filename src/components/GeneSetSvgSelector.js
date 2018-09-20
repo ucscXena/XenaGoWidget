@@ -170,19 +170,17 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
+        let genesToHover=  hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
 
         return newRefPathways.map((p, index) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
-            let hovered = hoveredLabel === p.golabel;
+
+            let hovered = intersection(genesToHover, p.gene).length > 0;
+            hovered = hovered || p.gene.indexOf(hoveredLabel)>=0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            // let geneLength = p.gene.length ;
-            // console.log(p.density,geneLength,highScore)
-            // console.log('DENSITY: ', p.density)
             let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
-            // console.log('COLOR DENSITY: ', colorDensity)
-            // colorDensity = 0.5;
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}

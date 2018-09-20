@@ -85,8 +85,8 @@ export default class SVGLabels extends PureComponent {
         return unique(flatten(selectedGeneSet.map(g => g.gene)));
     }
 
-    drawTissueOverlay(div, props) {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = props;
+    drawTissueOverlay() {
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout, referenceLayout, associateData, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = this.props;
 
         if (associateData.length === 0) {
             return;
@@ -138,7 +138,7 @@ export default class SVGLabels extends PureComponent {
                  onMouseOut={onMouseOut}
                  onClick={onClick}
             >
-                {this.drawTissueOverlay(this, this.props)}
+                {this.drawTissueOverlay()}
             </div>
         )
     }
