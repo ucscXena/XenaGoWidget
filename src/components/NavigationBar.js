@@ -1,11 +1,10 @@
 
 import React from 'react'
-import {render} from 'react-dom'
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
 import PureComponent from "../../src/components/PureComponent";
-import * as BaseStyle from "react-toolbox";
+import BaseStyle from '../../src/base.css';
 
 
 const GithubIcon = () => (
@@ -16,6 +15,12 @@ const GithubIcon = () => (
         </g>
     </svg>
 );
+
+let menuButton= {
+
+    color: 'white'
+
+}
 
 export default class NavigationBar extends PureComponent {
 
@@ -32,15 +37,18 @@ export default class NavigationBar extends PureComponent {
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
                 <AppBar title='Xena Geneset Widget Demo' >
-                    <IconMenu icon='menu' position='topLeft' iconRipple className={BaseStyle.menu}>
-                        <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
-                                  onClick={() => makeCompact(true)}
-                                  disabled={compactView}/>
-                        <MenuItem value='settings' icon='import_export' caption='Expand'
-                                  onClick={() => makeCompact(false)}
-                                  disabled={!compactView}/>
-                        <MenuDivider/>
-                    </IconMenu>
+                    {!compactView &&
+                    <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
+                              onClick={() => makeCompact(true)}
+                              className={BaseStyle.menuButton}
+                              visible={compactView}/>
+                    }
+                    {compactView &&
+                    <MenuItem value='settings' icon='import_export' caption='Expand'
+                              onClick={() => makeCompact(false)}
+                              className={BaseStyle.menuButton}
+                              disabled={!compactView}/>
+                    }
                     <Navigation type='vertical'>
                         {view === 'xena' &&
                         <div style={{display: 'inline'}}>

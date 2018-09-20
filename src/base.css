@@ -54,3 +54,11 @@ body {
     margin-top: 3px;
     margin-bottom: 3px;
 }
+
+.menuButton{
+    border: 2px;
+    background-color: lightblue;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+}
