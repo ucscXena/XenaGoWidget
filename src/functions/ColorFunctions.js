@@ -22,7 +22,8 @@ export function getGeneColorMask() {
 }
 
 export function getPathwayColorMask() {
-    return [255, 107, 107];
+    // return [255, 107, 107];
+    return [255, 10, 10];
 }
 
 export function fontColor(selected,hovered,colorDensity) {
