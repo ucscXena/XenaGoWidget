@@ -16,12 +16,6 @@ const GithubIcon = () => (
     </svg>
 );
 
-let menuButton= {
-
-    color: 'white'
-
-}
-
 export default class NavigationBar extends PureComponent {
 
     constructor(props) {
@@ -37,19 +31,19 @@ export default class NavigationBar extends PureComponent {
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
                 <AppBar title='Xena Geneset Widget Demo' >
+                    <Navigation type='horizontal'>
                     {!compactView &&
-                    <MenuItem value='settings' icon='vertical_align_center' caption='Compact'
+                    <Link value='settings' icon='vertical_align_center' label='Compact'
                               onClick={() => makeCompact(true)}
                               className={BaseStyle.menuButton}
                               visible={compactView}/>
                     }
                     {compactView &&
-                    <MenuItem value='settings' icon='import_export' caption='Expand'
+                    <Link value='settings' icon='import_export' label='Expand'
                               onClick={() => makeCompact(false)}
                               className={BaseStyle.menuButton}
                               disabled={!compactView}/>
                     }
-                    <Navigation type='vertical'>
                         {view === 'xena' &&
                         <div style={{display: 'inline'}}>
                             <Button raised primary>Xena</Button>

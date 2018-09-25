@@ -58,7 +58,9 @@ body {
 .menuButton{
     border: 2px;
     background-color: lightblue;
-    margin-top: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 10px;
+    color: green;
     border-radius: 5px;
-    color: white;
 }
