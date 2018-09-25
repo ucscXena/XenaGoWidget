@@ -11,8 +11,8 @@ import {pruneColumns, associateData} from '../functions/DataFunctions';
 import {isEqual, omit} from 'underscore';
 
 
-const REFERENCE_LABEL_HEIGHT = 150;
-const GENE_LABEL_HEIGHT = 50;
+export const GENESET_LABEL_HEIGHT = 150;
+export const GENE_LABEL_HEIGHT = 50;
 
 const style = {
     fadeIn: {
@@ -63,7 +63,7 @@ function getPointData(event, props) {
     // if reference pathways and layouts exists
     if (referenceLayout && referencePathways) {
         let {x, y} = getMousePos(event);
-        let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
+        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length);
         let pathwayIndex;
         let expression;
         // if the tissue index is less than 0, it is a reference pathway
@@ -79,7 +79,7 @@ function getPointData(event, props) {
             };
         }
         // if in the sample area, pull from the gene and sample area
-        tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
+        tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
         return {
@@ -93,7 +93,7 @@ function getPointData(event, props) {
     else {
         let {x, y} = getMousePos(event);
         let pathwayIndex = pathwayIndexFromX(x, layout);
-        let tissueIndex = tissueIndexFromY(y, height, REFERENCE_LABEL_HEIGHT, samples.length);
+        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length);
         let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
         console.log('no ref ', tissueIndex, pathwayIndex, expression);
 
@@ -181,7 +181,7 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     associateData={associateData}
-                    pathwayLabelHeight={REFERENCE_LABEL_HEIGHT}
+                    pathwayLabelHeight={GENESET_LABEL_HEIGHT}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}

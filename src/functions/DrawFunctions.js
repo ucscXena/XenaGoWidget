@@ -2,6 +2,7 @@ import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
 import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
+import PathwayScoresViewCache, {GENE_LABEL_HEIGHT, GENESET_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -80,10 +81,10 @@ export default {
         }
 
         if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, 200, getGeneColorMask());
+            drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask());
         }
         else {
-            drawExpressionData(vg, width, height, layout, associateData, 150, getPathwayColorMask());
+            drawExpressionData(vg, width, height, layout, associateData, GENESET_LABEL_HEIGHT, getPathwayColorMask());
         }
 
     },
