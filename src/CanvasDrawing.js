@@ -88,5 +88,6 @@ CanvasDrawing.propTypes = {
     draw: PropTypes.any,
     width: PropTypes.any,
     height: PropTypes.any,
+    cohortIndex: PropTypes.any,
 };
 

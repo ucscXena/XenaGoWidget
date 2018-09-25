@@ -140,7 +140,7 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            loading, width, height, layout, data, associateData, offset,
+            loading, width, height, layout, data, associateData, offset, cohortIndex,
             titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
 
@@ -155,6 +155,7 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
+        let calculatedOffset = cohortIndex ===  0 ?  height - GENESET_LABEL_HEIGHT : offset ;
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -170,11 +171,13 @@ class PathwayScoresView extends PureComponent {
                     draw={DrawFunctions.drawTissueView}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
+                    cohortIndex={cohortIndex}
                     data={data}
                 />
                 <SVGLabels
                     width={width}
                     height={height}
+                    // offset={calculatedOffset}
                     offset={offset}
                     layout={layout}
                     referenceLayout={referenceLayout}
@@ -187,6 +190,7 @@ class PathwayScoresView extends PureComponent {
                     onClick={this.onClick}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
+                    cohortIndex={cohortIndex}
                 />
             </div>
         );

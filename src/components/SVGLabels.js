@@ -22,7 +22,7 @@ export default class SVGLabels extends PureComponent {
         super(props);
     }
 
-    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask) {
+    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask,cohortIndex) {
 
         if (layout[0].size <= 1) {
             return;
@@ -77,7 +77,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay() {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout,  associateData, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = this.props;
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout,  associateData, cohortIndex, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = this.props;
 
         if (associateData.length === 0) {
             return;
@@ -85,16 +85,21 @@ export default class SVGLabels extends PureComponent {
 
         if (referencePathways) {
             // draw genes
-            return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, 0, getGeneColorMask());
+            let offset = cohortIndex === 0 ?  height - geneLabelHeight : 0 ;
+            return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(),cohortIndex);
         }
         else {
             // draw genesets
-            return this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, 0, getPathwayColorMask());
+            let offset = cohortIndex === 0 ?  height - pathwayLabelHeight: 0 ;
+            return this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, offset, getPathwayColorMask(),cohortIndex);
         }
     }
 
     render() {
         const {width, height, onClick, onMouseMove, onMouseOut, offset} = this.props;
+
+
+
         return (
             <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}
@@ -115,4 +120,5 @@ SVGLabels.propTypes = {
     onMouseOut: PropTypes.any,
     pathwayLabelHeight: PropTypes.any,
     geneLabelHeight: PropTypes.any,
+    cohortIndex: PropTypes.any,
 };

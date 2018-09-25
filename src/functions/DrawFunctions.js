@@ -2,7 +2,7 @@ import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
 import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
-import PathwayScoresViewCache, {GENE_LABEL_HEIGHT, GENESET_LABEL_HEIGHT} from "../components/PathwayScoresView";
+import {GENE_LABEL_HEIGHT, GENESET_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -33,11 +33,13 @@ function regionColor(data) {
     return 255 * p / scale;
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask,cohortIndex) {
     let height = totalHeight - labelHeight;
     let tissueCount = data[0].length;
     let regions = findRegions(0, height, tissueCount);
     let img = ctx.createImageData(width, totalHeight);
+
+    let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
 
     layout.forEach(function (el, i) {
         let rowData = data[i];
@@ -49,7 +51,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 
             let color = regionColor(d);
 
-            for (let y = rs + labelHeight; y < rs + r.height + labelHeight; ++y) {
+            for (let y = rs + offsetHeight ; y < rs + r.height + offsetHeight ; ++y) {
                 let pxRow = y * width,
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
@@ -72,7 +74,8 @@ export default {
 
 
     drawTissueView(vg, props) {
-        let {width, height, layout, associateData, data: { referencePathways}} = props;
+        let {width, height, layout, cohortIndex, associateData, data: { referencePathways}} = props;
+        console.log('Darwing props:',props)
 
         clearScreen(vg, width, height);
 
@@ -81,10 +84,10 @@ export default {
         }
 
         if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask());
+            drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(),cohortIndex);
         }
         else {
-            drawExpressionData(vg, width, height, layout, associateData, GENESET_LABEL_HEIGHT, getPathwayColorMask());
+            drawExpressionData(vg, width, height, layout, associateData, GENESET_LABEL_HEIGHT, getPathwayColorMask(),cohortIndex);
         }
 
     },
