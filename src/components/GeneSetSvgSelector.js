@@ -133,6 +133,7 @@ export class GeneSetSvgSelector extends PureComponent {
         let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, onClick, onHover, onMouseOut} = this.props;
         labelHeight = 20;
         let className = 'asdf';
+        console.log('RENDER GSVS')
 
 
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
@@ -171,6 +172,8 @@ export class GeneSetSvgSelector extends PureComponent {
         let genesToHover=  hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
+
+        console.log('NEWREF',newRefPathways,this.props)
 
         return newRefPathways.map((p, index) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;

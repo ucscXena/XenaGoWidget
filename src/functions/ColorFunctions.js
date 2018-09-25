@@ -28,6 +28,7 @@ export function getPathwayColorMask() {
 
 export function fontColor(selected,hovered,colorDensity) {
 
+    // console.log('COLOR BE',selected,hovered,colorDensity);
     if (hovered) {
         return !selected ? getDarkColor() : getHoverColor(colorDensity);
     }
@@ -37,7 +38,9 @@ export function fontColor(selected,hovered,colorDensity) {
     }
 
 
-    return colorDensity < 0.7 ? 'black' : getWhiteColor();
+    let finalColor = colorDensity < 0.7 ? 'black' : getWhiteColor();
+    // console.log('FIONAL color',finalColor);
+    return finalColor
 }
 
 /**
@@ -49,6 +52,8 @@ export function fontColor(selected,hovered,colorDensity) {
  * @returns {number}
  */
 export function getColorDensity(density, geneLength, highScore) {
+    if(highScore===0) return 1 ;
+
     let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density / geneLength / highScore)));
     return 1 - color / DEFAULT_MAX_COLOR;
 }

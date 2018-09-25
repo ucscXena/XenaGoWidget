@@ -108,6 +108,7 @@ export default class XenaGoViewer extends PureComponent {
     }
 
     closeGeneView = () => {
+        console.log('closing gene view')
 
         let selectedPathways = this.props.pathways.filter(f => {
             let index = this.state.selectedPathways.indexOf(f.golabel);
