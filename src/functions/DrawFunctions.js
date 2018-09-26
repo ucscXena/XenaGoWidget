@@ -42,6 +42,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
     let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
 
     layout.forEach(function (el, i) {
+        // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
         if(cohortIndex === 0 ){
             rowData = data[i].reverse();
@@ -79,7 +80,6 @@ export default {
 
     drawTissueView(vg, props) {
         let {width, height, layout, cohortIndex, associateData, data: { referencePathways}} = props;
-        console.log('Darwing props:',props)
 
         clearScreen(vg, width, height);
 

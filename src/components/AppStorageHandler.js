@@ -83,7 +83,6 @@ export class AppStorageHandler extends PureComponent {
 
     static getPathwaySelection() {
         let pathwaySelection = AppStorageHandler.getAppState().selection;
-        // console.log('AppStorage: pathway selection', pathwaySelection);
         return pathwaySelection;
     }
 
@@ -112,7 +111,6 @@ export class AppStorageHandler extends PureComponent {
                 return returnValue;
             }
         }
-        console.log('no cohort index found', cohortIndex);
         return 'TCGA Ovarian Cancer (OV)'
     }
 
@@ -125,7 +123,6 @@ export class AppStorageHandler extends PureComponent {
         // TODO: remove this hack
         let selectedValue = selected.selected ? selected.selected : selected;
         appState.filterState[cohortIndex] = {selected: selectedValue};
-        console.log('STORING filter state', appState);
         AppStorageHandler.storeAppState(appState);
     }
 
@@ -138,7 +135,6 @@ export class AppStorageHandler extends PureComponent {
                 return returnValue.selected;
             }
         }
-        console.log('no cohort index found', cohortIndex);
         return 'All'
     }
 
@@ -151,7 +147,6 @@ export class AppStorageHandler extends PureComponent {
         // TODO: remove this hack
         let selectedValue = selected.selected ? selected.selected : selected;
         appState.sortState[cohortIndex] = {selected: selectedValue};
-        console.log('STORING sort state', appState);
         AppStorageHandler.storeAppState(appState);
     }
 
@@ -163,7 +158,6 @@ export class AppStorageHandler extends PureComponent {
                 return returnValue.selected;
             }
         }
-        console.log('no cohort index found', cohortIndex);
         return 'Cluster'
     }
 
@@ -176,7 +170,6 @@ export class AppStorageHandler extends PureComponent {
         // TODO: remove this hack
         let selectedValue = selected.selected ? selected.selected : selected;
         appState.cohortState[cohortIndex] = {selected: selectedValue};
-        console.log('STORING cohort state', appState);
         AppStorageHandler.storeAppState(appState);
     }
 
@@ -190,7 +183,6 @@ export class AppStorageHandler extends PureComponent {
     static getAppData(pathways, renderHeight) {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
         if (storedPathway) {
-            // console.log('retrived storage',storedPathway);
             return storedPathway
         }
         else {
@@ -200,7 +192,6 @@ export class AppStorageHandler extends PureComponent {
             app1.key = 0 ;
             let app2 = Object.assign({}, DefaultApp);
             app2.key = 1 ;
-            console.log('retrieving default app',app1,app2);
             return [app1,app2];
         }
     }

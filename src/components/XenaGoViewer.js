@@ -108,8 +108,6 @@ export default class XenaGoViewer extends PureComponent {
     }
 
     closeGeneView = () => {
-        console.log('closing gene view')
-
         let selectedPathways = this.props.pathways.filter(f => {
             let index = this.state.selectedPathways.indexOf(f.golabel);
             return index >= 0;
@@ -176,7 +174,6 @@ export default class XenaGoViewer extends PureComponent {
             key: this.props.appData.key,
             propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
         };
-        console.log('VIEWER: ',hoverData.hoveredPathways)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);

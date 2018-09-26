@@ -36,8 +36,6 @@ export default class GeneView extends PureComponent {
             })
         }
         else {
-            console.log('no pathway selected: ');
-            console.log(this.state)
             return <div></div>
         }
     }

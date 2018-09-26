@@ -95,7 +95,6 @@ function getPointData(event, props) {
         let pathwayIndex = pathwayIndexFromX(x, layout);
         let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length);
         let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-        console.log('no ref ', tissueIndex, pathwayIndex, expression);
 
         return {
             pathway: pathways[pathwayIndex],

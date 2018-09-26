@@ -49,8 +49,6 @@ export default class CanvasDrawing extends Component {
     }
 
     render() {
-        console.log('render props: ');
-        console.log(this.props);
         let {width, height} = this.props;
         return (
             <canvas id='expressionOverview'
