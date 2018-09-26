@@ -90,7 +90,6 @@ export class HeaderLabel extends PureComponent {
         let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = getColorDensity(item.density, geneLength, highScore);
-        console.log('LABEL HEIGHT',labelHeight,this.props)
         return (
             <svg
                 style={this.style(colorDensity)}

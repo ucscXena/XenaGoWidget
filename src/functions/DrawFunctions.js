@@ -43,7 +43,11 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 
     layout.forEach(function (el, i) {
         let rowData = data[i];
+        if(cohortIndex === 0 ){
+            rowData = data[i].reverse();
+        }
 
+        // let reverseMap = new Map(Array.from(regions).reverse());
         // XXX watch for poor iterator performance in this for...of.
         for (let rs of regions.keys()) {
             let r = regions.get(rs);

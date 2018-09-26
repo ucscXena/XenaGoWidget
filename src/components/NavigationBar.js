@@ -36,13 +36,13 @@ export default class NavigationBar extends PureComponent {
                     <Link value='settings' icon='vertical_align_center' label='Compact'
                               onClick={() => makeCompact(true)}
                               className={BaseStyle.menuButton}
-                              visible={compactView}/>
+                              />
                     }
                     {compactView &&
                     <Link value='settings' icon='import_export' label='Expand'
                               onClick={() => makeCompact(false)}
                               className={BaseStyle.menuButton}
-                              disabled={!compactView}/>
+                              />
                     }
                         {view === 'xena' &&
                         <div style={{display: 'inline'}}>
