@@ -75,7 +75,7 @@ function getPointData(event, props) {
     // if reference pathways and layouts exists
     if (referenceLayout && referencePathways) {
         let {x, y} = getMousePos(event);
-        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
+        let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
         let pathwayIndex;
         let expression;
         // if the tissue index is less than 0, it is a reference pathway
@@ -91,7 +91,7 @@ function getPointData(event, props) {
             };
         }
         // if in the sample area, pull from the gene and sample area
-        tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length,cohortIndex);
+        tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length,cohortIndex);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
         return {
