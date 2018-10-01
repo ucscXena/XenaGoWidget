@@ -49,21 +49,33 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
         pathwayArray[tissueIndex]; // sample
 }
 
-let tissueIndexFromY = (y, height, labelHeight, count) =>
-    y < labelHeight ? -1 :
-        Math.trunc((y - labelHeight) * count / (height - labelHeight));
+let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
+    let index = 0 ;
+    switch (cohortIndex) {
+        case 0:
+            index = y <= (height-labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
+            break;
+        case 1:
+            index = y < labelHeight ? -1 : Math.trunc((y - labelHeight) * count / (height - labelHeight));
+            break;
+        default:
+            console.log('error',y,height,labelHeight,count,cohortIndex)
+
+    }
+    return index;
+};
 
 let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
+    let {associateData, height, layout, cohortIndex, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
     let metaSelect = event.metaKey;
 
     // if reference pathways and layouts exists
     if (referenceLayout && referencePathways) {
         let {x, y} = getMousePos(event);
-        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length);
+        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
         let pathwayIndex;
         let expression;
         // if the tissue index is less than 0, it is a reference pathway
@@ -79,7 +91,7 @@ function getPointData(event, props) {
             };
         }
         // if in the sample area, pull from the gene and sample area
-        tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length);
+        tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT + GENE_LABEL_HEIGHT, samples.length,cohortIndex);
         pathwayIndex = pathwayIndexFromX(x, layout);
         expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
         return {
@@ -93,7 +105,7 @@ function getPointData(event, props) {
     else {
         let {x, y} = getMousePos(event);
         let pathwayIndex = pathwayIndexFromX(x, layout);
-        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length);
+        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length,cohortIndex);
         let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
         return {
@@ -154,7 +166,7 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
-        let calculatedOffset = cohortIndex ===  0 ?  height - GENESET_LABEL_HEIGHT : offset ;
+        let calculatedOffset = cohortIndex === 0 ? height - GENESET_LABEL_HEIGHT : offset;
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -260,7 +272,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             cohortIndex,
             selectedCohort
         };
-        if(expression===undefined || expression.length===0){
+        if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
         let associatedData = findAssociatedData(hashAssociation);
