@@ -33,7 +33,6 @@ export default class SVGLabels extends PureComponent {
             return (max > score) ? max : score;
         }, 0);
 
-        console.log(pathways.length ,'vs',layout.length);
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
                 let d = pathways[i];
@@ -44,7 +43,6 @@ export default class SVGLabels extends PureComponent {
                 if (geneLength === 1) {
                     labelString = cohortIndex === 1 ? d.gene[0] : '';
                     hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
-                    // console.log('hovered gene',hoveredPathways,d.gene)
                     selected = selectedPathways.indexOf(labelString) >= 0;
                     labelKey = d.gene[0];
                 }
