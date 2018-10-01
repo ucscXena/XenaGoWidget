@@ -163,7 +163,6 @@ export default class XenaGoViewer extends PureComponent {
         else {
             genesHovered = props.pathway ? props.pathway.gene : [];
         }
-        console.log('hovering a gene with',props)
         this.setState(
             {
                 geneHoverData: props,
@@ -175,7 +174,6 @@ export default class XenaGoViewer extends PureComponent {
             key: this.props.appData.key,
             propagate: genesHovered.propagate == null ? true : genesHovered.propagate,
         };
-        console.log('final hovered data',hoverData)
         if (hoverData.propagate) {
             // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
             // this.props.synchronizationHandler(pathways);
