@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {intersection,  union, flatten} from 'underscore';
+import {intersection, union, flatten} from 'underscore';
 import {
     fontColor,
     getHoverColor,
@@ -79,10 +79,34 @@ export class GeneSetSvgSelector extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: colorString,
+                // backgroundColor: colorString,
                 strokeWidth: 2,
                 cursor: 'pointer'
             }
+        }
+    }
+
+    pillStyle(score, colorMask) {
+        let colorString = 'rgba(';
+        colorString += colorMask[0];
+        colorString += ',';
+        colorString += colorMask[1];
+        colorString += ',';
+        colorString += colorMask[2];
+        colorString += ',';
+        colorString += score + ')';
+        // console.log(colorString)
+        return {
+            // position: 'absolute',
+            top: 0,
+            left: 0,
+            height: 10,
+            width: 20,
+            strokeWidth: 1,
+            stroke: colorString,
+            fill: colorString,
+
+            cursor: 'pointer'
         }
     }
 
@@ -132,9 +156,8 @@ export class GeneSetSvgSelector extends PureComponent {
     render() {
         let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, onClick, onHover, onMouseOut} = this.props;
         labelHeight = 20;
-        let className = 'asdf';
 
-        if(selectedPathways.length===0){
+        if (selectedPathways.length === 0) {
             return (
                 <div></div>
             )
@@ -173,7 +196,7 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
-        let genesToHover=  hoveredPathways ? hoveredPathways.gene : '';
+        let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
 
@@ -181,18 +204,19 @@ export class GeneSetSvgSelector extends PureComponent {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
 
             let hovered = intersection(genesToHover, p.gene).length > 0;
-            hovered = hovered || p.gene.indexOf(hoveredLabel)>=0;
+            hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
-                    className={className}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
+                    <rect width={width/4} x={width/4} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
+                    <rect width={width/4} x={width/2} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(selected, hovered, colorDensity)}
                     >
