@@ -298,6 +298,7 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
+        const BORDER_OFFSET = 0 ;
 
         return (
             <div>
@@ -340,7 +341,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
-                                              renderOffset={(this.state.renderHeight + 5)}
+                                              renderOffset={(this.state.renderHeight + BORDER_OFFSET )}
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}

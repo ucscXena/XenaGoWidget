@@ -153,7 +153,7 @@ export default class XenaGoViewer extends PureComponent {
 
     hoverGene = (props) => {
 
-        this.props.geneHover(props)
+        this.props.geneHover(props);
 
         let genesHovered;
         if (props == null) {
@@ -325,7 +325,7 @@ export default class XenaGoViewer extends PureComponent {
                 return (
                     <Grid>
                         <Row>
-                            <Col md={2}>
+                            <Col md={3}>
                                 <Card style={{width: style.pathway.columnWidth, marginTop: 10}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
