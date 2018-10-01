@@ -12,7 +12,7 @@ import {isEqual, omit} from 'underscore';
 
 
 export const GENESET_LABEL_HEIGHT = 150;
-export const GENE_LABEL_HEIGHT = 52;
+export const GENE_LABEL_HEIGHT = 50;
 
 const style = {
     fadeIn: {

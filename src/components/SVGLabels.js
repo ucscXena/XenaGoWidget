@@ -33,15 +33,19 @@ export default class SVGLabels extends PureComponent {
             return (max > score) ? max : score;
         }, 0);
 
+        console.log(pathways.length ,'vs',layout.length);
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
                 let labelString, hovered, selected;
+                let labelKey = '';
                 if (geneLength === 1) {
-                    labelString = d.gene[0];
-                    hovered = hoveredPathways.indexOf(labelString) >= 0;
+                    labelString = cohortIndex === 1 ? d.gene[0] : '';
+                    hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                    // console.log('hovered gene',hoveredPathways,d.gene)
                     selected = selectedPathways.indexOf(labelString) >= 0;
+                    labelKey = d.gene[0];
                 }
                 else {
                     labelString = '(' + d.gene.length + ') ';
@@ -53,8 +57,10 @@ export default class SVGLabels extends PureComponent {
                     labelString += d.golabel;
                     selected = selectedPathways.indexOf(d.golabel) >= 0;
 
+                    // hovered = hoveredPathways.indexOf(labelString) >= 0;
                     hovered = intersection(hoveredPathways, d.gene).length > 0;
                     hovered = hovered || hoveredPathways.indexOf(d.golabel) === 0;
+                    labelKey = labelString ;
                 }
                 return (
                     <HeaderLabel
@@ -69,7 +75,7 @@ export default class SVGLabels extends PureComponent {
                         hovered={hovered}
                         labelString={labelString}
                         colorMask={colorMask}
-                        key={labelString}
+                        key={labelKey+'-'+cohortIndex}
                     />
                 )
             });
