@@ -50,16 +50,16 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
 }
 
 let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
-    let index = 0 ;
+    let index = 0;
     switch (cohortIndex) {
         case 0:
-            index = y <= (height-labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
+            index = y <= (height - labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
             break;
         case 1:
             index = y < labelHeight ? -1 : Math.trunc((y - labelHeight) * count / (height - labelHeight));
             break;
         default:
-            console.log('error',y,height,labelHeight,count,cohortIndex)
+            console.log('error', y, height, labelHeight, count, cohortIndex)
 
     }
     return index;
@@ -71,51 +71,17 @@ let pathwayIndexFromX = (x, layout) =>
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
     let metaSelect = event.metaKey;
+    let {x, y} = getMousePos(event);
+    let pathwayIndex = pathwayIndexFromX(x, layout);
+    let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
+    let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
-    // if reference pathways and layouts exists
-    if (referenceLayout && referencePathways) {
-        let {x, y} = getMousePos(event);
-        let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
-        let pathwayIndex;
-        let expression;
-        // if the tissue index is less than 0, it is a reference pathway
-        // is a reference pathway
-        if (tissueIndex < 0) {
-            pathwayIndex = pathwayIndexFromX(x, referenceLayout);
-            expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-            return {
-                pathway: referencePathways[pathwayIndex],
-                tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-                expression,
-                metaSelect: metaSelect
-            };
-        }
-        // if in the sample area, pull from the gene and sample area
-        tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length,cohortIndex);
-        pathwayIndex = pathwayIndexFromX(x, layout);
-        expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-        return {
-            pathway: pathways[pathwayIndex],
-            tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-            expression,
-            metaSelect: metaSelect
-        };
-
-    }
-    else {
-        let {x, y} = getMousePos(event);
-        let pathwayIndex = pathwayIndexFromX(x, layout);
-        let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length,cohortIndex);
-        let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-
-        return {
-            pathway: pathways[pathwayIndex],
-            tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-            expression,
-            metaSelect: metaSelect
-        };
-    }
-
+    return {
+        pathway: pathways[pathwayIndex],
+        tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+        expression,
+        metaSelect: metaSelect
+    };
 }
 
 
