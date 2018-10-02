@@ -296,7 +296,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     render() {
-        let pathways = this.state.pathways.length ===0 ? this.getActiveApp().pathway : this.state.pathways;
+        let pathways = this.getActiveApp().pathway ;
         let localPathways = AppStorageHandler.getPathway();
         const BORDER_OFFSET = 0 ;
 
