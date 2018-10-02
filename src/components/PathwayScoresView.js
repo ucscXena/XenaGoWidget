@@ -132,7 +132,6 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
-        let calculatedOffset = cohortIndex === 0 ? height - GENESET_LABEL_HEIGHT : offset;
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -154,7 +153,6 @@ class PathwayScoresView extends PureComponent {
                 <SVGLabels
                     width={width}
                     height={height}
-                    // offset={calculatedOffset}
                     offset={offset}
                     layout={layout}
                     referenceLayout={referenceLayout}
@@ -225,6 +223,7 @@ function findPruneData(inputHash) {
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
+        // console.log('looking at props',this.props)
         let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {

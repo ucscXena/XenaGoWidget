@@ -95,7 +95,6 @@ export class GeneSetSvgSelector extends PureComponent {
         colorString += colorMask[2];
         colorString += ',';
         colorString += score + ')';
-        // console.log(colorString)
         return {
             // position: 'absolute',
             top: 0,
@@ -154,7 +153,7 @@ export class GeneSetSvgSelector extends PureComponent {
     }
 
     render() {
-        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, onClick, onHover, onMouseOut} = this.props;
+        let {pathways, selectedPathways, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
         labelHeight = 20;
 
         if (selectedPathways.length === 0) {
@@ -184,6 +183,8 @@ export class GeneSetSvgSelector extends PureComponent {
                 golabel: r.golabel,
                 gene: r.gene,
                 density: density,
+                firstDensity: r.firstDensity,
+                secondDensity: r.secondDensity,
             };
         });
 
@@ -215,8 +216,8 @@ export class GeneSetSvgSelector extends PureComponent {
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
-                    <rect width={width/4} x={width/4} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
-                    <rect width={width/4} x={width/2} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
+                    <rect width={width/2} x={width/4} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
+                    <rect width={width/2} x={width/2} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(selected, hovered, colorDensity)}
                     >
