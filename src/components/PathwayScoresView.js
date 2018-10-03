@@ -7,8 +7,8 @@ import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
-import {pruneColumns, associateData} from '../functions/DataFunctions';
-import {isEqual, omit} from 'underscore';
+import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
 
 
 export const GENESET_LABEL_HEIGHT = 150;
@@ -196,35 +196,12 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
-let associationDataHash = null;
-let associationDataCache = null;
-
-let pruneHash = null;
-let pruneCache = null;
-
-function findAssociatedData(inputHash) {
-    if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
-        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
-        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
-        associationDataHash = inputHash;
-    }
-    return associationDataCache;
-}
-
-function findPruneData(inputHash) {
-    if (!isEqual(pruneHash, inputHash)) {
-        let {associatedData, pathways, filterMin} = inputHash;
-        pruneCache = pruneColumns(associatedData, pathways, filterMin);
-        pruneHash = inputHash;
-    }
-    return pruneCache;
-}
 
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
         // console.log('looking at props',this.props)
-        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, filterPercentage, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList,  data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -241,7 +218,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             return <div>Loading...</div>
         }
         let associatedData = findAssociatedData(hashAssociation);
-        let filterMin = Math.trunc(filterPercentage * samples.length);
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 
         let hashForPrune = {
             associatedData,

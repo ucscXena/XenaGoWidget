@@ -163,9 +163,6 @@ export class GeneSetSvgSelector extends PureComponent {
         }
 
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
-        // if (selectedGenes.length > 0) {
-        //     console.log('selectedGenes', selectedPathways, pathways, selectedGenes);
-        // }
 
 
         let newRefPathways = pathways.map(r => {
@@ -188,8 +185,13 @@ export class GeneSetSvgSelector extends PureComponent {
             };
         });
 
-        const highestScore = newRefPathways.reduce((max, current) => {
-            let score = current.density / current.gene.length;
+        const highFirstScore = newRefPathways.reduce((max, current) => {
+            let score = current.firstDensity / current.gene.length;
+            // let score = current.gene.length;
+            return (max > score) ? max : score;
+        }, 0);
+        const highSecondScore = newRefPathways.reduce((max, current) => {
+            let score = current.secondDensity / current.gene.length;
             // let score = current.gene.length;
             return (max > score) ? max : score;
         }, 0);
@@ -206,9 +208,9 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
-            let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highestScore);
-            let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highestScore);
+            let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highFirstScore);
+            let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highSecondScore);
+            let colorDensity = firstDensity + secondDensity ;
             // console.log(firstDensity,secondDensity,colorDensity)
             return (
                 <svg
