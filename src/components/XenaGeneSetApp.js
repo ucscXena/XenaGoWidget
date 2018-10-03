@@ -334,7 +334,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <Grid>
                         <Row>
-                            <Col md={this.state.selectedPathways.length ===0 ? 0: 2}>
+                            <Col md={this.state.selectedPathways.length ===0 ? 0: 2} style={{marginTop: 15}}>
                                 <GeneSetSvgSelector pathways={pathways}
                                                     hoveredPathways={this.state.hoveredPathways}
                                                     selectedPathways={this.state.selectedPathways}
