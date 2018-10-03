@@ -99,8 +99,8 @@ export class GeneSetSvgSelector extends PureComponent {
             // position: 'absolute',
             top: 0,
             left: 0,
-            height: 10,
-            width: 20,
+            height: 20,
+            // width: 20,
             strokeWidth: 1,
             stroke: colorString,
             fill: colorString,
@@ -221,11 +221,11 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     {firstDensity &&
-                    <rect width={width / 2} x={width / 4} height={labelHeight}
+                    <rect width={width / 2-1} x={0}
                           style={this.pillStyle(firstDensity, colorMask)}/>
                     }
                     {secondDensity &&
-                    <rect width={width / 2} x={width / 2} height={labelHeight}
+                    <rect width={width / 2} x={width / 2+1} height={labelHeight}
                           style={this.pillStyle(secondDensity, colorMask)}/>
                     }
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
