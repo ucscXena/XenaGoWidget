@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {intersection,  union, flatten} from 'underscore';
+import {intersection, union, flatten} from 'underscore';
 import {
     fontColor,
     getHoverColor,
@@ -79,10 +79,33 @@ export class GeneSetSvgSelector extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: colorString,
+                // backgroundColor: colorString,
                 strokeWidth: 2,
                 cursor: 'pointer'
             }
+        }
+    }
+
+    pillStyle(score, colorMask) {
+        let colorString = 'rgba(';
+        colorString += colorMask[0];
+        colorString += ',';
+        colorString += colorMask[1];
+        colorString += ',';
+        colorString += colorMask[2];
+        colorString += ',';
+        colorString += score + ')';
+        return {
+            // position: 'absolute',
+            top: 0,
+            left: 0,
+            height: 20,
+            // width: 20,
+            strokeWidth: 1,
+            stroke: colorString,
+            fill: colorString,
+
+            cursor: 'pointer'
         }
     }
 
@@ -130,20 +153,16 @@ export class GeneSetSvgSelector extends PureComponent {
     }
 
     render() {
-        let {pathways, selectedPathways, hoveredPathways, width, labelString, labelHeight, item, geneLength, highScore, labelOffset, left, onClick, onHover, onMouseOut} = this.props;
+        let {pathways, selectedPathways, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
         labelHeight = 20;
-        let className = 'asdf';
 
-        if(selectedPathways.length===0){
+        if (selectedPathways.length === 0) {
             return (
                 <div></div>
             )
         }
 
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
-        // if (selectedGenes.length > 0) {
-        //     console.log('selectedGenes', selectedPathways, pathways, selectedGenes);
-        // }
 
 
         let newRefPathways = pathways.map(r => {
@@ -161,19 +180,25 @@ export class GeneSetSvgSelector extends PureComponent {
                 golabel: r.golabel,
                 gene: r.gene,
                 density: density,
+                firstDensity: r.firstDensity,
+                secondDensity: r.secondDensity,
             };
         });
 
-        const highestScore = newRefPathways.reduce((max, current) => {
-            let score = current.density / current.gene.length;
+        const highFirstScore = newRefPathways.reduce((max, current) => {
+            let score = current.firstDensity / current.gene.length;
             // let score = current.gene.length;
             return (max > score) ? max : score;
         }, 0);
-        // console.log('highest score,',highestScore)
+        const highSecondScore = newRefPathways.reduce((max, current) => {
+            let score = current.secondDensity / current.gene.length;
+            // let score = current.gene.length;
+            return (max > score) ? max : score;
+        }, 0);
 
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
-        let genesToHover=  hoveredPathways ? hoveredPathways.gene : '';
+        let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
 
@@ -181,18 +206,28 @@ export class GeneSetSvgSelector extends PureComponent {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
 
             let hovered = intersection(genesToHover, p.gene).length > 0;
-            hovered = hovered || p.gene.indexOf(hoveredLabel)>=0;
+            hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
+            let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highFirstScore);
+            let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highSecondScore);
+            let colorDensity = firstDensity + secondDensity ;
+            // console.log(firstDensity,secondDensity,colorDensity)
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
-                    className={className}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
+                    {firstDensity &&
+                    <rect width={width / 2-1} x={0}
+                          style={this.pillStyle(firstDensity, colorMask)}/>
+                    }
+                    {secondDensity &&
+                    <rect width={width / 2} x={width / 2+1} height={labelHeight}
+                          style={this.pillStyle(secondDensity, colorMask)}/>
+                    }
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(selected, hovered, colorDensity)}
                     >

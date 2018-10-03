@@ -235,10 +235,7 @@ export default class XenaGoViewer extends PureComponent {
                         cohortData
                     });
                     if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-                        // let selectedCohort1 = AppStorageHandler.getApp()[0].selectedCohort;
                         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-                        // console.log('got cohort sttate on xenagoapp mount:', selectedCohort2);
-                        // this.selectCohort(selectedCohort2.cohortState[this.state.key]);
                         this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
                     }
                     return data;
@@ -253,9 +250,7 @@ export default class XenaGoViewer extends PureComponent {
 
     selectCohort = (selected) => {
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        // console.log('selecting cohort ', selected, this.state.key, this.state.cohortData, cohort);
         AppStorageHandler.storeCohortState(selected, this.state.key);
-        // console.log(AppStorageHandler.getAppState());
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
@@ -272,17 +267,19 @@ export default class XenaGoViewer extends PureComponent {
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
+                let pathwayData = {
+                    copyNumber,
+                    geneList,
+                    expression: mutations,
+                    pathways: this.props.pathways,
+                    cohort: cohort.name,
+                    samples
+                };
                 this.setState({
-                    pathwayData: {
-                        copyNumber,
-                        geneList,
-                        expression: mutations,
-                        pathways: this.props.pathways,
-                        cohort: cohort.name,
-                        samples
-                    },
+                    pathwayData: pathwayData,
                     processing: false,
                 });
+                this.props.populateGlobal(pathwayData,this.props.cohortIndex);
                 if (this.state.selectedPathways.length > 0) {
                     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
                 }
@@ -454,4 +451,6 @@ XenaGoViewer.propTypes = {
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     geneHover: PropTypes.any,
+    populateGlobal: PropTypes.any,
+    cohortIndex: PropTypes.any,
 };

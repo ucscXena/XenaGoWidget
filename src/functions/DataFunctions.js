@@ -1,5 +1,6 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
+import {isEqual, omit} from 'underscore';
 
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
@@ -34,6 +35,30 @@ export function pruneColumns(data, pathways, min) {
         'data': prunedAssociations,
         'pathways': prunedPathways
     };
+}
+
+let associationDataHash = null;
+let associationDataCache = null;
+
+let pruneHash = null;
+let pruneCache = null;
+
+export function findAssociatedData(inputHash) {
+    if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
+        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
+        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+        associationDataHash = inputHash;
+    }
+    return associationDataCache;
+}
+
+export function findPruneData(inputHash) {
+    if (!isEqual(pruneHash, inputHash)) {
+        let {associatedData, pathways, filterMin} = inputHash;
+        pruneCache = pruneColumns(associatedData, pathways, filterMin);
+        pruneHash = inputHash;
+    }
+    return pruneCache;
 }
 
 /**

@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import {sum} from 'underscore';
+import {sum, max} from 'underscore';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
@@ -10,11 +10,14 @@ import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "./AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
+import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 
 
 const EXPAND_HEIGHT = 800;
 const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
+export const FILTER_PERCENTAGE = 0.005;
+import {sumInstances} from '../functions/util';
 
 /**
  * refactor that from index
@@ -245,7 +248,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
         //  TODO: implement empty correlation
-        if(selectedPathways.length===0){
+        if (selectedPathways.length === 0) {
             this.setState({
                 selectedPathways: selectedPathways
             });
@@ -295,10 +298,79 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+
+    calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
+        let hashAssociation = JSON.parse(JSON.stringify(pathwayData))
+        hashAssociation.filter = filter;
+        hashAssociation.min = min;
+        hashAssociation.cohortIndex = cohortIndex;
+        hashAssociation.selectedCohort = pathwayData.cohort;
+
+        console.log('hash association', hashAssociation)
+
+        let associatedData = findAssociatedData(hashAssociation);
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
+
+        let hashForPrune = {
+            associatedData,
+            pathways: hashAssociation.pathways,
+            filterMin
+        };
+        let prunedColumns = findPruneData(hashForPrune);
+        prunedColumns.samples = pathwayData.samples;
+
+        console.log('prune data ', prunedColumns, hashForPrune);
+
+        let pathwayScores = associatedData.map(pathway => {
+            // let sumValue = sumInstances(pathway)
+            // console.log(pathway,sumValue);
+            return sumInstances(pathway);
+        });
+
+        return pathwayScores;
+
+    }
+
+    populateGlobal = (pathwayData, cohortIndex) => {
+        console.log('populate pathway data ', pathwayData, cohortIndex);
+        // console.log(this.props, this.state);
+        // this.state.tissueExpressionFilter
+
+        console.log('cohort index', cohortIndex)
+        let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
+
+        let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
+        console.log('densities', densities);
+        // let maxDensity = Math.max(densities);
+        // let maxDensity = max(densities);
+        let maxDensity = pathwayData.samples.length;
+        // console.log('maxDensity',maxDensity,pathwayData.samples.length);
+
+        // return this.state.pathwaySets.find(ps => ps.selected);
+        let pathways = this.getActiveApp().pathway.map( (p,index) => {
+            let density =  densities[index] / maxDensity;
+            if (cohortIndex === 0) {
+                p.firstDensity = density;
+            }
+            else {
+                p.secondDensity = density;
+            }
+            return p;
+        });
+
+        console.log('final pathways',pathways)
+
+        this.setState(
+            {
+                selectedPathways: pathways
+            }
+        )
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
-        const BORDER_OFFSET = 0 ;
+        const BORDER_OFFSET = 0;
 
         return (
             <div>
@@ -315,7 +387,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <Grid>
                         <Row>
-                            <Col md={this.state.selectedPathways.length ===0 ? 0: 2}>
+                            <Col md={this.state.selectedPathways.length === 0 ? 0 : 2} style={{marginTop: 15}}>
                                 <GeneSetSvgSelector pathways={pathways}
                                                     hoveredPathways={this.state.hoveredPathways}
                                                     selectedPathways={this.state.selectedPathways}
@@ -335,17 +407,21 @@ export default class XenaGeneSetApp extends PureComponent {
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
                                               geneHover={this.geneHover}
+                                              populateGlobal={this.populateGlobal}
+                                              cohortIndex={0}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
                                               pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
-                                              renderOffset={(this.state.renderHeight + BORDER_OFFSET )}
+                                              renderOffset={(this.state.renderHeight + BORDER_OFFSET)}
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
                                               geneHover={this.geneHover}
+                                              populateGlobal={this.populateGlobal}
+                                              cohortIndex={1}
                                 />
                             </Col>
                         </Row>
