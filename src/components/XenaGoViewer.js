@@ -267,17 +267,19 @@ export default class XenaGoViewer extends PureComponent {
                     (mutations, copyNumber) => ({mutations, samples, copyNumber}))
             })
             .subscribe(({mutations, samples, copyNumber}) => {
+                let pathwayData = {
+                    copyNumber,
+                    geneList,
+                    expression: mutations,
+                    pathways: this.props.pathways,
+                    cohort: cohort.name,
+                    samples
+                };
                 this.setState({
-                    pathwayData: {
-                        copyNumber,
-                        geneList,
-                        expression: mutations,
-                        pathways: this.props.pathways,
-                        cohort: cohort.name,
-                        samples
-                    },
+                    pathwayData: pathwayData,
                     processing: false,
                 });
+                this.props.populateGlobal(pathwayData,this.props.cohortIndex);
                 if (this.state.selectedPathways.length > 0) {
                     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
                 }
@@ -449,4 +451,6 @@ XenaGoViewer.propTypes = {
     pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     geneHover: PropTypes.any,
+    populateGlobal: PropTypes.any,
+    cohortIndex: PropTypes.any,
 };

@@ -193,7 +193,6 @@ export class GeneSetSvgSelector extends PureComponent {
             // let score = current.gene.length;
             return (max > score) ? max : score;
         }, 0);
-        // console.log('highest score,',highestScore)
 
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
@@ -208,6 +207,9 @@ export class GeneSetSvgSelector extends PureComponent {
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let colorDensity = getColorDensity(p.density, p.gene.length, highestScore);
+            let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highestScore);
+            let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highestScore);
+            // console.log(firstDensity,secondDensity,colorDensity)
             return (
                 <svg
                     style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
@@ -216,8 +218,14 @@ export class GeneSetSvgSelector extends PureComponent {
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
-                    <rect width={width/2} x={width/4} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
-                    <rect width={width/2} x={width/2} height={labelHeight} style={this.pillStyle(colorDensity,colorMask)}/>
+                    {firstDensity &&
+                    <rect width={width / 2} x={width / 4} height={labelHeight}
+                          style={this.pillStyle(firstDensity, colorMask)}/>
+                    }
+                    {secondDensity &&
+                    <rect width={width / 2} x={width / 2} height={labelHeight}
+                          style={this.pillStyle(secondDensity, colorMask)}/>
+                    }
                     <text x={10} y={10} fontFamily='Arial' fontSize={10}
                           fill={fontColor(selected, hovered, colorDensity)}
                     >

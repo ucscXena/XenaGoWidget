@@ -295,6 +295,25 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+
+    populateGlobal = (pathwayData,cohortIndex) => {
+        console.log('populate pathway data ',pathwayData,cohortIndex);
+
+        // return this.state.pathwaySets.find(ps => ps.selected);
+        let pathways = this.getActiveApp().pathway.map( p => {
+
+            p.firstDensity = 0.2 ;
+            p.secondDensity = 0.8 ;
+            return p ;
+        }) ;
+
+        this.setState(
+            {
+                selectedPathways:pathways
+            }
+        )
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway ;
         let localPathways = AppStorageHandler.getPathway();
@@ -335,6 +354,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
                                               geneHover={this.geneHover}
+                                              populateGlobal={this.populateGlobal}
+                                              cohortIndex={0}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -346,6 +367,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
                                               geneHover={this.geneHover}
+                                              populateGlobal={this.populateGlobal}
+                                              cohortIndex={1}
                                 />
                             </Col>
                         </Row>
