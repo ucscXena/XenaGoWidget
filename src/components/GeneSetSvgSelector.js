@@ -105,7 +105,7 @@ export class GeneSetSvgSelector extends PureComponent {
             // position: 'absolute',
             top: 0,
             left: 0,
-            height: 20,
+            height: this.props.labelHeight,
             // width: 20,
             strokeWidth: 1,
             stroke: colorString,
@@ -160,8 +160,6 @@ export class GeneSetSvgSelector extends PureComponent {
 
     render() {
         let {pathways, selectedPathways, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
-        labelHeight = 20;
-
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
@@ -254,7 +252,7 @@ GeneSetSvgSelector.propTypes = {
     selectedPathways: PropTypes.any,
     hoveredPathways: PropTypes.any,
     associateData: PropTypes.any,
-    pathwayLabelHeight: PropTypes.any,
+    labelHeight:PropTypes.any,
     onClick: PropTypes.any,
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,

@@ -362,7 +362,7 @@ export default class XenaGeneSetApp extends PureComponent {
             return p;
         });
 
-        console.log('final pathways',pathways)
+        console.log('final pathways',pathways);
 
         this.setState(
             {
@@ -401,6 +401,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                     onClick={this.globalPathwaySelect}
                                                     onHover={this.globalPathwayHover}
                                                     onMouseOut={this.globalPathwayHover}
+                                                    labelHeight={12}
                                                     width={200}/>
                             </Col>
                             <Col md={10}>

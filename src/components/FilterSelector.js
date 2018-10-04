@@ -84,7 +84,7 @@ export class FilterSelector extends PureComponent {
         const filterLabel = 'Filter (' + total + ')';
 
         return (
-            <div style={{marginLeft: 10,marginTop:0}}>
+            <div style={{marginLeft: 10,marginTop:0,height:100}}>
                 <Dropdown style={{marginTop:0}} label={filterLabel} onChange={this.setSelected} value={selected}
                           source={labelValues}>
                 </Dropdown>
