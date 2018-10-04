@@ -7,7 +7,7 @@ import {
     getHoverColor,
     getSelectColor,
     getPathwayColorMask,
-    getColorDensity
+    getColorDensity, normalizedColor
 } from "../functions/ColorFunctions";
 import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
@@ -190,12 +190,12 @@ export class GeneSetSvgSelector extends PureComponent {
         });
 
         const highFirstScore = newRefPathways.reduce((max, current) => {
-            let score = current.firstDensity / current.gene.length;
+            let score = current.firstDensity  ;
             // let score = current.gene.length;
             return (max > score) ? max : score;
         }, 0);
         const highSecondScore = newRefPathways.reduce((max, current) => {
-            let score = current.secondDensity / current.gene.length;
+            let score = current.secondDensity ;
             // let score = current.gene.length;
             return (max > score) ? max : score;
         }, 0);
@@ -212,8 +212,10 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highFirstScore);
-            let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highSecondScore);
+            // let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highFirstScore);
+            // let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highSecondScore);
+            let firstDensity= normalizedColor(p.firstDensity ,  highFirstScore);
+            let secondDensity= normalizedColor(p.secondDensity ,  highSecondScore);
             let colorDensity = firstDensity + secondDensity ;
             // console.log(firstDensity,secondDensity,colorDensity)
             return (

@@ -310,7 +310,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.cohortIndex = cohortIndex;
         hashAssociation.selectedCohort = pathwayData.cohort;
 
-        console.log('hash association', hashAssociation)
+        // console.log('hash association', hashAssociation);
 
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
@@ -325,14 +325,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
         console.log('prune data ', prunedColumns, hashForPrune);
 
-        let pathwayScores = associatedData.map(pathway => {
+        return associatedData.map(pathway => {
             // let sumValue = sumInstances(pathway)
             // console.log(pathway,sumValue);
             return sumInstances(pathway);
+            // return sum(pathway);
         });
-
-        return pathwayScores;
-
     }
 
     populateGlobal = (pathwayData, cohortIndex) => {
@@ -347,6 +345,7 @@ export default class XenaGeneSetApp extends PureComponent {
         console.log('densities', densities);
         // let maxDensity = Math.max(densities);
         // let maxDensity = max(densities);
+        // let maxDensity = pathwayData.samples.length;
         let maxDensity = pathwayData.samples.length;
         // console.log('maxDensity',maxDensity,pathwayData.samples.length);
 

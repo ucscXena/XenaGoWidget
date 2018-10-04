@@ -124,4 +124,4 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
 
     return returnArray;
 
-};
+}
