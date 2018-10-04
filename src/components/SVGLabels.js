@@ -42,6 +42,7 @@ export default class SVGLabels extends PureComponent {
                 let labelKey = '';
                 if (geneLength === 1) {
                     labelString = cohortIndex === 1 ? d.gene[0] : '';
+                    // labelString =  d.gene[0];
                     hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                     selected = selectedPathways.indexOf(labelString) >= 0;
                     labelKey = d.gene[0];

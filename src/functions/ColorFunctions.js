@@ -30,12 +30,13 @@ export function fontColor(selected,hovered,colorDensity) {
 
     // console.log('COLOR BE',selected,hovered,colorDensity);
     if (hovered) {
-        return !selected ? getDarkColor() : getHoverColor(colorDensity);
+        // return !selected ? getDarkColor() : getHoverColor(colorDensity);
+        return  getDarkColor() ;
     }
 
-    if (selected) {
-        return getWhiteColor();
-    }
+    // if (selected) {
+    //     return getWhiteColor();
+    // }
 
 
     let finalColor = colorDensity < 0.7 ? 'black' : getWhiteColor();

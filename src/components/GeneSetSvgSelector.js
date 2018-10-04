@@ -51,9 +51,14 @@ export class GeneSetSvgSelector extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: getSelectColor(),
+                // backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
-                cursor: 'pointer'
+                // border: 'solid red',
+                // cursor: 'crosshair',
+                // outline: '2px solid blue',
+                boxShadow: '0 0 2px 2px red',
+                borderRadius: '25px',
+
             }
         }
 
