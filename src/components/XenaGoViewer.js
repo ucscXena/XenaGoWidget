@@ -22,6 +22,7 @@ let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "./AppStorageHandler";
+import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
 
 function lowerCaseCompareName(a, b) {
@@ -315,7 +316,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator, renderHeight, renderOffset} = this.props;
+        let {statGenerator, renderHeight, renderOffset,cohortIndex} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways && this.state.selectedPathways.length === 0) {
@@ -326,7 +327,9 @@ export default class XenaGoViewer extends PureComponent {
                                 <Card style={{width: style.pathway.columnWidth, marginTop: 10}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
-                                                    onChange={this.selectCohort}/>
+                                                    onChange={this.selectCohort}
+                                                    cohortLabel={this.getCohortLabel(cohortIndex)}
+                                    />
                                     <SortSelector sortTypes={this.state.sortTypes}
                                                   selected={this.state.selectedTissueSort}
                                                   onChange={this.sortTissueType}/>
@@ -378,7 +381,9 @@ export default class XenaGoViewer extends PureComponent {
                                 <Card style={{width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
-                                                    onChange={this.selectCohort}/>
+                                                    onChange={this.selectCohort}
+                                                    cohortLabel={this.getCohortLabel(cohortIndex)}
+                                    />
                                     <CardActions>
                                         <Button label='&lArr; Pathways' raised primary onClick={this.closeGeneView}/>
                                     </CardActions>
@@ -438,6 +443,10 @@ export default class XenaGoViewer extends PureComponent {
                 {this.state.selectedCohort}
             </Dialog>
         );
+    }
+
+    getCohortLabel(cohortIndex) {
+        return cohortIndex === 0 ? LABEL_A : LABEL_B;
     }
 }
 

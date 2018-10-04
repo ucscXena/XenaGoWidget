@@ -9,6 +9,7 @@ import {
     getPathwayColorMask,
     getColorDensity
 } from "../functions/ColorFunctions";
+import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
 export class GeneSetSvgSelector extends PureComponent {
 

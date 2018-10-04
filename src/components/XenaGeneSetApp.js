@@ -18,6 +18,10 @@ const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
 export const FILTER_PERCENTAGE = 0.005;
 import {sumInstances} from '../functions/util';
+import {LabelTop} from "./LabelTop";
+
+export const LABEL_A = 'A';
+export const LABEL_B = 'B';
 
 /**
  * refactor that from index
@@ -388,6 +392,9 @@ export default class XenaGeneSetApp extends PureComponent {
                     <Grid>
                         <Row>
                             <Col md={this.state.selectedPathways.length === 0 ? 0 : 2} style={{marginTop: 15}}>
+                                {this.state.selectedPathways.length > 0 &&
+                                <LabelTop width={200}/>
+                                }
                                 <GeneSetSvgSelector pathways={pathways}
                                                     hoveredPathways={this.state.hoveredPathways}
                                                     selectedPathways={this.state.selectedPathways}
