@@ -7,7 +7,7 @@ import {
     getHoverColor,
     getSelectColor,
     getPathwayColorMask,
-    getColorDensity, normalizedColor
+    getColorDensity, normalizedColor, getDarkColor
 } from "../functions/ColorFunctions";
 import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
@@ -57,7 +57,7 @@ export class GeneSetSvgSelector extends PureComponent {
                 // border: 'solid red',
                 // cursor: 'crosshair',
                 // outline: '2px solid blue',
-                boxShadow: '0 0 2px 2px red',
+                boxShadow: '0 0 4px 4px blue',
                 borderRadius: '25px',
 
             }
@@ -234,8 +234,8 @@ export class GeneSetSvgSelector extends PureComponent {
                     <rect width={width / 2} x={width / 2+1} height={labelHeight}
                           style={this.pillStyle(secondDensity, colorMask)}/>
                     }
-                    <text x={10} y={10} fontFamily='Arial' fontSize={10}
-                          fill={fontColor(selected, hovered, colorDensity)}
+                    <text x={10} y={10} fontFamily='Arial' fontSize={12}
+                          fill={getDarkColor()}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
