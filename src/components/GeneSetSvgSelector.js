@@ -172,6 +172,13 @@ export class GeneSetSvgSelector extends PureComponent {
             let firstScore = scoreData(p.firstDensity, 1, p.gene.length);
             let secondScore = scoreData(p.secondDensity, 1, p.gene.length);
             // console.log(p.firstDensity, p.gene.length,firstScore)
+
+            if(labelString.indexOf('ADP-ribose')>=0){
+                console.log('GSSS 1 LABEL', labelString, 1, p.firstDensity, p.firstDensity / 1);
+                console.log('GSSS 2 LABEL', labelString, 1, p.secondDensity, p.secondDensity / 1);
+                console.log('GSSS 1  LABEL -> GL', labelString, p.gene.length, p.firstDensity / 1 / p.gene.length);
+                console.log('GSSS 2 LABEL -> GL', labelString, p.gene.length, p.secondDensity / 1/ p.gene.length);
+            }
             return (
                 <svg
                     style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}

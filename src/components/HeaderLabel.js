@@ -2,7 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor,scoreData} from '../functions/ColorFunctions'
+import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor, scoreData} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -90,7 +90,12 @@ export class HeaderLabel extends PureComponent {
         let {width, labelString, labelHeight, item, geneLength, maxScore} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         // let colorDensity = getColorDensity(item.density, geneLength, highScore);
-        let colorDensity = scoreData(item.density , maxScore,geneLength);
+
+        if (labelString.indexOf('ADP-ribose') >= 0) {
+            console.log('HEADER LABEL', labelString, maxScore, item.density, item.density / maxScore);
+            console.log('HEADER LABEL GL', geneLength, item.density / maxScore / geneLength);
+        }
+        let colorDensity = scoreData(item.density, maxScore, geneLength);
         return (
             <svg
                 style={this.style(colorDensity)}
