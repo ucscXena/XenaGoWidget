@@ -26,6 +26,11 @@ export function getPathwayColorMask() {
     return [255, 10, 10];
 }
 
+export function scoreData(score, geneCount){
+    return Math.log(100 * score / geneCount) ;
+}
+
+
 export function fontColor(selected,hovered,colorDensity) {
 
     // console.log('COLOR BE',selected,hovered,colorDensity);

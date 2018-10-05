@@ -3,13 +3,12 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {intersection, union, flatten} from 'underscore';
 import {
-    fontColor,
     getHoverColor,
-    getSelectColor,
     getPathwayColorMask,
-    getColorDensity, normalizedColor, getDarkColor
+     getDarkColor,
+    scoreData,
+
 } from "../functions/ColorFunctions";
-import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
 export class GeneSetSvgSelector extends PureComponent {
 
@@ -169,6 +168,9 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
+            let firstScore = scoreData(p.firstDensity ,p.gene.length) ;
+            let secondScore = scoreData(p.secondDensity ,p.gene.length) ;
+            // console.log(p.firstDensity, p.gene.length,firstScore)
             return (
                 <svg
                     style={this.labelStyle( (p.firstDensity+p.secondDensity)/2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
@@ -179,11 +181,11 @@ export class GeneSetSvgSelector extends PureComponent {
                 >
                     {p.firstDensity &&
                     <rect width={width / 2-1} x={0}
-                          style={this.pillStyle(p.firstDensity, colorMask)}/>
+                          style={this.pillStyle(firstScore, colorMask)}/>
                     }
                     {p.secondDensity &&
                     <rect width={width / 2} x={width / 2+1} height={labelHeight}
-                          style={this.pillStyle(p.secondDensity, colorMask)}/>
+                          style={this.pillStyle(secondScore, colorMask)}/>
                     }
                     <text x={10} y={10} fontFamily='Arial' fontSize={12}
                           fill={getDarkColor()}
