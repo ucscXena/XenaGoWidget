@@ -33,7 +33,7 @@ export class GeneSetSvgSelector extends PureComponent {
      * @param colorMask
      * @returns {*}
      */
-    labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
+    labelStyle(score,selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
 
         let colorString = 'rgba(';
         colorString += colorMask[0];
@@ -47,16 +47,11 @@ export class GeneSetSvgSelector extends PureComponent {
         // console.log('SH',selected,hovered)
         if (selected) {
             return {
-                // position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
                 width: width,
-                // backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
-                // border: 'solid red',
-                // cursor: 'crosshair',
-                // outline: '2px solid blue',
                 boxShadow: '0 0 4px 4px blue',
                 borderRadius: '25px',
 
@@ -65,14 +60,12 @@ export class GeneSetSvgSelector extends PureComponent {
 
         else if (hovered) {
             return {
-                // position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
                 width: width,
                 backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
-                // outline: 'thin dotted gray',
                 borderRadius: '15px',
                 boxShadow: '0 0 1px 1px gray',
                 cursor: 'pointer'
@@ -80,12 +73,10 @@ export class GeneSetSvgSelector extends PureComponent {
         }
         else {
             return {
-                // position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
                 width: width,
-                // backgroundColor: colorString,
                 strokeWidth: 2,
                 cursor: 'pointer'
             }
@@ -144,18 +135,7 @@ export class GeneSetSvgSelector extends PureComponent {
     getSelectedGenes(selectedPathways, referencePathways) {
         if (!referencePathways) return [];
 
-        let selectedPathwayGenes = flatten(selectedPathways.map(p => p.gene));
-
-        // // let filteredGeneSet = referencePathways.filter(ref => {
-        // //     return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
-        // // });
-        // // TODO: should this process with the gen, as well?
-        // let filteredGeneSet = referencePathways.filter(ref => {
-        //     return selectedPathwayGenes.indexOf(ref.golabel) >= 0;
-        // });
-        // console.log('FILTERED GENES',selectedPathways,selectedPathwayGenes,referencePathways,filteredGeneSet);
-        // return unique(flatten(filteredGeneSet.map(g => g.gene)));
-        return selectedPathwayGenes
+        return flatten(selectedPathways.map(p => p.gene));
     }
 
     render() {
@@ -189,17 +169,6 @@ export class GeneSetSvgSelector extends PureComponent {
             };
         });
 
-        const highFirstScore = newRefPathways.reduce((max, current) => {
-            let score = current.firstDensity  ;
-            // let score = current.gene.length;
-            return (max > score) ? max : score;
-        }, 0);
-        const highSecondScore = newRefPathways.reduce((max, current) => {
-            let score = current.secondDensity ;
-            // let score = current.gene.length;
-            return (max > score) ? max : score;
-        }, 0);
-
 
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
@@ -212,27 +181,21 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            // let firstDensity= getColorDensity(p.firstDensity , p.gene.length, highFirstScore);
-            // let secondDensity= getColorDensity(p.secondDensity , p.gene.length, highSecondScore);
-            let firstDensity= normalizedColor(p.firstDensity ,  highFirstScore);
-            let secondDensity= normalizedColor(p.secondDensity ,  highSecondScore);
-            let colorDensity = firstDensity + secondDensity ;
-            // console.log(firstDensity,secondDensity,colorDensity)
             return (
                 <svg
-                    style={this.labelStyle(colorDensity, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
+                    style={this.labelStyle( (p.firstDensity+p.secondDensity)/2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
-                    {firstDensity &&
+                    {p.firstDensity &&
                     <rect width={width / 2-1} x={0}
-                          style={this.pillStyle(firstDensity, colorMask)}/>
+                          style={this.pillStyle(p.firstDensity, colorMask)}/>
                     }
-                    {secondDensity &&
+                    {p.secondDensity &&
                     <rect width={width / 2} x={width / 2+1} height={labelHeight}
-                          style={this.pillStyle(secondDensity, colorMask)}/>
+                          style={this.pillStyle(p.secondDensity, colorMask)}/>
                     }
                     <text x={10} y={10} fontFamily='Arial' fontSize={12}
                           fill={getDarkColor()}
