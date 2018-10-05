@@ -26,8 +26,8 @@ export function getPathwayColorMask() {
     return [255, 10, 10];
 }
 
-export function scoreData(score, geneCount){
-    return Math.log(100 * score / geneCount) ;
+export function scoreData(score, maxScore,geneCount){
+    return Math.log10(100 * score / maxScore / geneCount) ;
 }
 
 

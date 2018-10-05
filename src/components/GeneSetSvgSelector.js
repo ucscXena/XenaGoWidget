@@ -5,7 +5,7 @@ import {intersection, union, flatten} from 'underscore';
 import {
     getHoverColor,
     getPathwayColorMask,
-     getDarkColor,
+    getDarkColor,
     scoreData,
 
 } from "../functions/ColorFunctions";
@@ -32,7 +32,7 @@ export class GeneSetSvgSelector extends PureComponent {
      * @param colorMask
      * @returns {*}
      */
-    labelStyle(score,selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
+    labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
 
         if (selected) {
             return {
@@ -132,6 +132,7 @@ export class GeneSetSvgSelector extends PureComponent {
                 <div></div>
             )
         }
+        console.log('GSVG', this.props)
 
         let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
 
@@ -168,23 +169,23 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let firstScore = scoreData(p.firstDensity ,p.gene.length) ;
-            let secondScore = scoreData(p.secondDensity ,p.gene.length) ;
+            let firstScore = scoreData(p.firstDensity, 1, p.gene.length);
+            let secondScore = scoreData(p.secondDensity, 1, p.gene.length);
             // console.log(p.firstDensity, p.gene.length,firstScore)
             return (
                 <svg
-                    style={this.labelStyle( (p.firstDensity+p.secondDensity)/2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
+                    style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
                     {p.firstDensity &&
-                    <rect width={width / 2-1} x={0}
+                    <rect width={width / 2 - 1} x={0}
                           style={this.pillStyle(firstScore, colorMask)}/>
                     }
                     {p.secondDensity &&
-                    <rect width={width / 2} x={width / 2+1} height={labelHeight}
+                    <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
                           style={this.pillStyle(secondScore, colorMask)}/>
                     }
                     <text x={10} y={10} fontFamily='Arial' fontSize={12}
@@ -207,7 +208,7 @@ GeneSetSvgSelector.propTypes = {
     selectedPathways: PropTypes.any,
     hoveredPathways: PropTypes.any,
     associateData: PropTypes.any,
-    labelHeight:PropTypes.any,
+    labelHeight: PropTypes.any,
     onClick: PropTypes.any,
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,
