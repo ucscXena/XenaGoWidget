@@ -35,16 +35,6 @@ export class GeneSetSvgSelector extends PureComponent {
      */
     labelStyle(score,selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
 
-        let colorString = 'rgba(';
-        colorString += colorMask[0];
-        colorString += ',';
-        colorString += colorMask[1];
-        colorString += ',';
-        colorString += colorMask[2];
-        colorString += ',';
-        colorString += score + ')';
-
-        // console.log('SH',selected,hovered)
         if (selected) {
             return {
                 top: labelOffset,
@@ -93,11 +83,9 @@ export class GeneSetSvgSelector extends PureComponent {
         colorString += ',';
         colorString += score + ')';
         return {
-            // position: 'absolute',
             top: 0,
             left: 0,
             height: this.props.labelHeight,
-            // width: 20,
             strokeWidth: 1,
             stroke: colorString,
             fill: colorString,
