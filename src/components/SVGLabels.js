@@ -28,10 +28,11 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-        const highestScore = pathways.reduce((max, current) => {
-            let score = current.density / current.gene.length;
-            return (max > score) ? max : score;
-        }, 0);
+        // const highestScore = pathways.reduce((max, current) => {
+        //     let score = current.density / current.gene.length;
+        //     return (max > score) ? max : score;
+        // }, 0);
+        const numSamples= this.props.data.samples.length;
 
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
@@ -66,7 +67,7 @@ export default class SVGLabels extends PureComponent {
                     <HeaderLabel
                         labelHeight={labelHeight}
                         labelOffset={labelOffset}
-                        highScore={highestScore}
+                        numSamples={numSamples}
                         geneLength={geneLength}
                         left={el.start}
                         width={el.size}
@@ -83,7 +84,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay() {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout,  associateData, cohortIndex, selectedPathways, hoveredPathways, data: {pathways, referencePathways}} = this.props;
+        let {pathwayLabelHeight, geneLabelHeight, width, height, layout,  associateData, cohortIndex, selectedPathways, hoveredPathways, data: {pathways, referencePathways,samples}} = this.props;
 
         if (associateData.length === 0) {
             return;

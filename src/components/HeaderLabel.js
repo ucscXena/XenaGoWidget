@@ -2,7 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor,getColorDensity} from '../functions/ColorFunctions'
+import {getSelectColor, getHoverColor, getWhiteColor, getDarkColor, scoreData} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -87,9 +87,9 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, item, geneLength, highScore} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, numSamples} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        let colorDensity = getColorDensity(item.density, geneLength, highScore);
+        let colorDensity = scoreData(item.density, numSamples, geneLength, labelString);
         return (
             <svg
                 style={this.style(colorDensity)}
@@ -112,7 +112,7 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
-    highScore: PropTypes.number,
+    numSamples: PropTypes.number,
     item: PropTypes.any,
     selected: PropTypes.any,
     hovered: PropTypes.any,

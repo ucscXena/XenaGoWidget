@@ -200,7 +200,6 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        // console.log('looking at props',this.props)
         let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList,  data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
@@ -248,9 +247,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             }
         }
         else {
-            // console.log('not calculated?:', PathwayScoresView.synchronizedGeneList)
-            // console.log('calculated?:', PathwayScoresView.synchronizedGeneList)
-
             if (referencePathways) {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
                 returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
