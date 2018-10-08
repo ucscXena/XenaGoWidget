@@ -389,8 +389,6 @@ export default class XenaGeneSetApp extends PureComponent {
             return p;
         });
 
-        console.log('final pathways', pathways);
-
         this.setState(
             {
                 selectedPathways: pathways,

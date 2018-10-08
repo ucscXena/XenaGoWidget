@@ -95,7 +95,6 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
     onClick = (geneSet, event) => {
-        // console.log('local mouse CLICK event', event, geneSet);
         let {onClick} = this.props;
         if (onClick) {
             onClick(geneSet);
@@ -103,13 +102,11 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
     onMouseOut = (geneSet, event) => {
-        // console.log('local mouse out event', geneSet);
         let {onHover} = this.props;
         onHover(null);
     };
 
     onHover = (geneSet, event) => {
-        // console.log('local mouse enter event', geneSet);
         let {onHover} = this.props;
         if (onHover) {
             onHover(geneSet);
@@ -128,7 +125,6 @@ export class GeneSetSvgSelector extends PureComponent {
                 <div></div>
             )
         }
-        console.log('GSVG', this.props)
 
         let newRefPathways = pathways.map(r => {
 
@@ -157,13 +153,7 @@ export class GeneSetSvgSelector extends PureComponent {
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length,labelString);
             let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length,labelString);
-            // console.log(p.firstDensity, p.gene.length,firstScore)
 
-            if(labelString.indexOf('ADP-ribose')>=0){
-                console.log('GSSS 1 LABEL', labelString, p.firstDensity, p.firstNumSamples,p.gene.length, p.firstDensity / p.firstNumSamples / p.gene.length);
-
-                console.log('GSSS 2 LABEL', labelString, p.secondDensity, p.secondNumSamples,p.gene.length, p.secondDensity / p.secondNumSamples / p.gene.length);
-            }
             return (
                 <svg
                     style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}

@@ -41,9 +41,6 @@ export function scoreData(score, numSamples, geneCount,labelString) {
     // return Math.log10(100 * score / maxScore / geneCount) ;
     let inputScore = score / (numSamples * geneCount);
     let outputScore = adjustScore(inputScore);
-    if(labelString.indexOf('ADP-ribose')>=0){
-        console.log('input score',inputScore,'output score',outputScore)
-    }
     return outputScore;
 }
 
