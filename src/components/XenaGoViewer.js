@@ -203,7 +203,7 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     componentWillMount() {
-        // TODO: perhaps this could just be loaded once, not a performance concern now, though.
+        // TODO: this SHOULD just be loaded once, not a performance concern now, though.
         let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
         fetch(cohortPreferredURL)
             .then(function (response) {
