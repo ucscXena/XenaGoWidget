@@ -93,7 +93,7 @@ export default class XenaGeneSetApp extends PureComponent {
         this.makeCompact(true);
     }
 
-    loadCohorts(){
+    loadCohorts() {
         let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
         fetch(cohortPreferredURL)
             .then(function (response) {
@@ -297,11 +297,9 @@ export default class XenaGeneSetApp extends PureComponent {
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
         //  TODO: implement empty correlation
-        if (selectedPathways.length === 0) {
-            this.setState({
-                selectedPathways: selectedPathways
-            });
-        }
+        this.setState({
+            selectedPathways: selectedPathways
+        });
         this.state.apps.forEach((app, index) => {
             if (index !== myIndex) {
                 if (selectedPathways) {
@@ -354,7 +352,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
 
-        hashAssociation.selectedCohort = this.state.cohortData.find( c => c.name === pathwayData.cohort );
+        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -377,7 +375,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
-            let density = densities[index] ;
+            let density = densities[index];
             if (cohortIndex === 0) {
                 p.firstDensity = density;
                 p.firstNumSamples = maxSamplesAffected;
