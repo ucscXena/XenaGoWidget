@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {intersection, union, flatten} from 'underscore';
+import {intersection} from 'underscore';
 import {
     getHoverColor,
     getPathwayColorMask,
@@ -119,11 +119,7 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     };
 
-    getSelectedGenes(selectedPathways, referencePathways) {
-        if (!referencePathways) return [];
 
-        return flatten(selectedPathways.map(p => p.gene));
-    }
 
     render() {
         let {pathways, selectedPathways, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
@@ -134,24 +130,12 @@ export class GeneSetSvgSelector extends PureComponent {
         }
         console.log('GSVG', this.props)
 
-        let selectedGenes = this.getSelectedGenes(selectedPathways, pathways);
-
-
         let newRefPathways = pathways.map(r => {
-
-            //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
-            //     // intersection of values divided by union of values
-            // let overlappingGenes = intersection(selectedGenes, r.gene);
-            // let allGenes = union(selectedGenes, r.gene);
-            // let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
-
-            // console.log('DENS 1: ', r);
 
             return {
                 goid: r.goid,
                 golabel: r.golabel,
                 gene: r.gene,
-                // density: density,
                 firstDensity: r.firstDensity,
                 secondDensity: r.secondDensity,
                 firstNumSamples: r.firstNumSamples,

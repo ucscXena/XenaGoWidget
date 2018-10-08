@@ -96,6 +96,7 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
 
     if (!filter || filter === 'Copy Number') {
 
+        console.log('filtering by copy number!',selectedCohort);
         // get list of genes in identified pathways
         for (let gene of geneList) {
             // if we have not processed that gene before, then process

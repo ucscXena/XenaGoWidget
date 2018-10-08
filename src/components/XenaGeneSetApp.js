@@ -23,6 +23,9 @@ import {LabelTop} from "./LabelTop";
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
+let mutationKey = 'simple somatic mutation';
+let copyNumberViewKey = 'copy number for pathway view';
+
 /**
  * refactor that from index
  */
@@ -82,11 +85,53 @@ export default class XenaGeneSetApp extends PureComponent {
 
     componentDidUpdate() {
         this.forceState();
+        this.loadCohorts();
     }
 
     componentDidMount() {
         this.loadSelectedState();
         this.makeCompact(true);
+    }
+
+    loadCohorts(){
+        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
+        fetch(cohortPreferredURL)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response;
+            })
+            .then((response) => {
+                response.json().then(data => {
+                    let cohortData = Object.keys(data)
+                        .filter(cohort => {
+                            return (data[cohort].viewInPathway) && data[cohort][mutationKey]
+                        })
+                        .map(cohort => {
+                            let mutation = data[cohort][mutationKey];
+                            let copyNumberView = data[cohort][copyNumberViewKey];
+                            return {
+                                name: cohort,
+                                mutationDataSetId: mutation.dataset,
+                                copyNumberDataSetId: copyNumberView.dataset,
+                                amplificationThreshold: copyNumberView.amplificationThreshold,
+                                deletionThreshold: copyNumberView.deletionThreshold,
+                                host: mutation.host
+                            }
+                        });
+                    // console.log('cohort data',cohortData)
+                    this.setState({
+                        cohortData: cohortData
+                    });
+                    // return data;
+                });
+            })
+            .catch(() => {
+                this.setState({
+                    loadState: 'error'
+                });
+            });
     }
 
 
@@ -308,10 +353,8 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.filter = filter;
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
-        hashAssociation.selectedCohort = pathwayData.cohort;
 
-        // console.log('hash association', hashAssociation);
-
+        hashAssociation.selectedCohort = this.state.cohortData.find( c => c.name === pathwayData.cohort );
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -323,26 +366,15 @@ export default class XenaGeneSetApp extends PureComponent {
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = pathwayData.samples;
 
-        console.log('prune data ', prunedColumns, hashForPrune);
-
         return associatedData.map(pathway => {
-            // let sumValue = sumInstances(pathway)
-            // console.log(pathway,sumValue);
             return sumInstances(pathway);
-            // return sum(pathway);
         });
     }
 
     populateGlobal = (pathwayData, cohortIndex) => {
-        console.log('populate pathway data ', pathwayData, cohortIndex);
-        // console.log(this.props, this.state);
-        // this.state.tissueExpressionFilter
-
-        console.log('cohort index', cohortIndex)
         let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
 
         let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
-        console.log('densities', densities);
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             let density = densities[index] ;

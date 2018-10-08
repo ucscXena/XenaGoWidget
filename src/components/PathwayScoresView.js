@@ -217,7 +217,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
+        console.log('PSV',hashAssociation)
         let associatedData = findAssociatedData(hashAssociation);
+        console.log('PSV assocData',associatedData)
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 
         let hashForPrune = {
