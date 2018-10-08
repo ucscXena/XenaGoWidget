@@ -67,7 +67,7 @@ export default class SVGLabels extends PureComponent {
                     <HeaderLabel
                         labelHeight={labelHeight}
                         labelOffset={labelOffset}
-                        maxScore={numSamples}
+                        numSamples={numSamples}
                         geneLength={geneLength}
                         left={el.start}
                         width={el.size}

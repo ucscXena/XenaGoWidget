@@ -87,15 +87,18 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, item, geneLength, maxScore} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, numSamples} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         // let colorDensity = getColorDensity(item.density, geneLength, highScore);
-
+        // if (labelString.indexOf('ADP-ribose') >= 0) {
+        //     console.log('HEADER LABEL', labelString, numSamples, item.density, item.density / numSamples);
+        //     console.log('HEADER LABEL GL', geneLength, item.density / numSamples / geneLength);
+        // }
+        let colorDensity = scoreData(item.density, numSamples, geneLength, labelString);
         if (labelString.indexOf('ADP-ribose') >= 0) {
-            console.log('HEADER LABEL', labelString, maxScore, item.density, item.density / maxScore);
-            console.log('HEADER LABEL GL', geneLength, item.density / maxScore / geneLength);
+            console.log('HEADER LABEL', labelString, colorDensity, item.density, numSamples, geneLength, item.density / numSamples / geneLength);
+            console.log('props',this.props)
         }
-        let colorDensity = scoreData(item.density, maxScore, geneLength);
         return (
             <svg
                 style={this.style(colorDensity)}
@@ -118,7 +121,7 @@ HeaderLabel.propTypes = {
     left: PropTypes.any,
     width: PropTypes.any,
     labelString: PropTypes.string,
-    maxScore: PropTypes.number,
+    numSamples: PropTypes.number,
     item: PropTypes.any,
     selected: PropTypes.any,
     hovered: PropTypes.any,

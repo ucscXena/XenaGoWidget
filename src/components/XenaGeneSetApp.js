@@ -344,22 +344,24 @@ export default class XenaGeneSetApp extends PureComponent {
         let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
         console.log('densities', densities);
         let maxSamplesAffected = pathwayData.samples.length;
-        let pathways = this.getActiveApp().pathway.map( (p,index) => {
-            let density =  densities[index] / maxSamplesAffected ;
+        let pathways = this.getActiveApp().pathway.map((p, index) => {
+            let density = densities[index] ;
             if (cohortIndex === 0) {
                 p.firstDensity = density;
+                p.firstNumSamples = maxSamplesAffected;
             }
             else {
                 p.secondDensity = density;
+                p.secondNumSamples = maxSamplesAffected;
             }
             return p;
         });
 
-        console.log('final pathways',pathways);
+        console.log('final pathways', pathways);
 
         this.setState(
             {
-                selectedPathways: pathways
+                selectedPathways: pathways,
             }
         )
     };

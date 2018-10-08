@@ -141,19 +141,21 @@ export class GeneSetSvgSelector extends PureComponent {
 
             //     // JICARD INDEX: https://en.wikipedia.org/wiki/Jaccard_index
             //     // intersection of values divided by union of values
-            let overlappingGenes = intersection(selectedGenes, r.gene);
-            let allGenes = union(selectedGenes, r.gene);
-            let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
+            // let overlappingGenes = intersection(selectedGenes, r.gene);
+            // let allGenes = union(selectedGenes, r.gene);
+            // let density = allGenes.length === 0 ? 0 : overlappingGenes.length / allGenes.length;
 
-            // console.log('DENS 1: ', density);
+            // console.log('DENS 1: ', r);
 
             return {
                 goid: r.goid,
                 golabel: r.golabel,
                 gene: r.gene,
-                density: density,
+                // density: density,
                 firstDensity: r.firstDensity,
                 secondDensity: r.secondDensity,
+                firstNumSamples: r.firstNumSamples,
+                secondNumSamples: r.secondNumSamples,
             };
         });
 
@@ -169,15 +171,14 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let firstScore = scoreData(p.firstDensity, 1, p.gene.length);
-            let secondScore = scoreData(p.secondDensity, 1, p.gene.length);
+            let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length,labelString);
+            let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length,labelString);
             // console.log(p.firstDensity, p.gene.length,firstScore)
 
             if(labelString.indexOf('ADP-ribose')>=0){
-                console.log('GSSS 1 LABEL', labelString, 1, p.firstDensity, p.firstDensity / 1);
-                console.log('GSSS 2 LABEL', labelString, 1, p.secondDensity, p.secondDensity / 1);
-                console.log('GSSS 1  LABEL -> GL', labelString, p.gene.length, p.firstDensity / 1 / p.gene.length);
-                console.log('GSSS 2 LABEL -> GL', labelString, p.gene.length, p.secondDensity / 1/ p.gene.length);
+                console.log('GSSS 1 LABEL', labelString, p.firstDensity, p.firstNumSamples,p.gene.length, p.firstDensity / p.firstNumSamples / p.gene.length);
+
+                console.log('GSSS 2 LABEL', labelString, p.secondDensity, p.secondNumSamples,p.gene.length, p.secondDensity / p.secondNumSamples / p.gene.length);
             }
             return (
                 <svg

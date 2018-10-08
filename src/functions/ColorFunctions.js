@@ -1,5 +1,4 @@
-
-const DEFAULT_MAX_COLOR = 256 ;
+const DEFAULT_MAX_COLOR = 256;
 
 export function getSelectColor() {
     return '#113871';
@@ -26,17 +25,35 @@ export function getPathwayColorMask() {
     return [255, 10, 10];
 }
 
-export function scoreData(score, maxScore,geneCount){
-    return Math.log10(100 * score / maxScore / geneCount) ;
+export function adjustScore(score) {
+    return Math.log10(100 * score);
+}
+
+/**
+ * label is just for density
+ * @param score
+ * @param numSamples
+ * @param geneCount
+ * @param label
+ * @returns {*}
+ */
+export function scoreData(score, numSamples, geneCount,labelString) {
+    // return Math.log10(100 * score / maxScore / geneCount) ;
+    let inputScore = score / (numSamples * geneCount);
+    let outputScore = adjustScore(inputScore);
+    if(labelString.indexOf('ADP-ribose')>=0){
+        console.log('input score',inputScore,'output score',outputScore)
+    }
+    return outputScore;
 }
 
 
-export function fontColor(selected,hovered,colorDensity) {
+export function fontColor(selected, hovered, colorDensity) {
 
     // console.log('COLOR BE',selected,hovered,colorDensity);
     if (hovered) {
         // return !selected ? getDarkColor() : getHoverColor(colorDensity);
-        return  getDarkColor() ;
+        return getDarkColor();
     }
 
     // if (selected) {
@@ -57,7 +74,7 @@ export function fontColor(selected,hovered,colorDensity) {
  * @returns {number}
  */
 export function getColorDensity(density, geneLength, highScore) {
-    if(highScore===0) return 1 ;
+    if (highScore === 0) return 1;
 
     let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density / geneLength / highScore)));
     return 1 - color / DEFAULT_MAX_COLOR;
@@ -76,8 +93,8 @@ export function getColorDensity(density, geneLength, highScore) {
  * As the density approaches 1, it should go to t.
  *
  */
-export function normalizedColor(density,  highScore) {
-    if(highScore===0) return 1 ;
+export function normalizedColor(density, highScore) {
+    if (highScore === 0) return 1;
 
     // let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density /  highScore)));
     // return 1 - color / DEFAULT_MAX_COLOR;
