@@ -171,7 +171,7 @@ export class GeneSetSvgSelector extends PureComponent {
                           style={this.pillStyle(secondScore, colorMask)}/>
                     }
                     <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
-                          fill={'white'} stroke={'black'} strokeWidth={1}
+                          fill={'black'}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
