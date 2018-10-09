@@ -79,7 +79,7 @@ export class GeneSetSvgSelector extends PureComponent {
         colorString += ',';
         colorString += colorMask[2];
         colorString += ',';
-        colorString += score + ')';
+        colorString += isNaN(score)? 0 : score + ')';
         return {
             top: 0,
             left: 0,
