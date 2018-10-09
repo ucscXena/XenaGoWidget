@@ -426,7 +426,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                                     onClick={this.globalPathwaySelect}
                                                     onHover={this.globalPathwayHover}
                                                     onMouseOut={this.globalPathwayHover}
-                                                    labelHeight={12}
+                                                    labelHeight={18}
+                                                    topOffset={14}
                                                     width={200}/>
                             </Col>
                             <Col md={10}>

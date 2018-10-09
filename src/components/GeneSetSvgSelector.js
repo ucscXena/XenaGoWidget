@@ -118,7 +118,7 @@ export class GeneSetSvgSelector extends PureComponent {
 
 
     render() {
-        let {pathways, selectedPathways, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
+        let {pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
@@ -143,6 +143,7 @@ export class GeneSetSvgSelector extends PureComponent {
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
+        console.log('selected labels',selectedLabels)
 
         return newRefPathways.map((p, index) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
@@ -162,15 +163,15 @@ export class GeneSetSvgSelector extends PureComponent {
                     key={p.golabel}
                 >
                     {p.firstDensity &&
-                    <rect width={width / 2 - 1} x={0}
+                    <rect width={width / 2 - 1} x={0} height={labelHeight}
                           style={this.pillStyle(firstScore, colorMask)}/>
                     }
                     {p.secondDensity &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
                           style={this.pillStyle(secondScore, colorMask)}/>
                     }
-                    <text x={10} y={10} fontFamily='Arial' fontSize={12}
-                          fill={getDarkColor()}
+                    <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
+                          fill={'white'} stroke={'black'} strokeWidth={1}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
@@ -190,6 +191,7 @@ GeneSetSvgSelector.propTypes = {
     hoveredPathways: PropTypes.any,
     associateData: PropTypes.any,
     labelHeight: PropTypes.any,
+    topOffset: PropTypes.any,
     onClick: PropTypes.any,
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,
