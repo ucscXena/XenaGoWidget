@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import {sum, max} from 'underscore';
+import {sum} from 'underscore';
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import {Grid, Row, Col} from 'react-material-responsive-grid';

@@ -3,10 +3,8 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
-    getHoverColor,
     getPathwayColorMask,
     scoreData,
-    getColorDensity, normalizedColor, getDarkColor
 } from "../functions/ColorFunctions";
 
 export class GeneSetSvgSelector extends PureComponent {
@@ -52,10 +50,9 @@ export class GeneSetSvgSelector extends PureComponent {
                 left: left,
                 height: labelHeight,
                 width: width,
-                backgroundColor: getHoverColor(score),
                 strokeWidth: 1,
                 borderRadius: '15px',
-                boxShadow: '0 0 1px 1px gray',
+                boxShadow: '0 0 2px 2px green',
                 cursor: 'pointer'
             }
         }
@@ -143,9 +140,8 @@ export class GeneSetSvgSelector extends PureComponent {
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getPathwayColorMask();
-        console.log('selected labels',selectedLabels)
 
-        return newRefPathways.map((p, index) => {
+        return newRefPathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
 
             let hovered = intersection(genesToHover, p.gene).length > 0;
