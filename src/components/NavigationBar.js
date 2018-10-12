@@ -25,25 +25,13 @@ export default class NavigationBar extends PureComponent {
     }
 
     render() {
-        let {makeCompact,showPathways,showXena,compactView,view} = this.props ;
+        let {showPathways,showXena,view} = this.props ;
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
                 <AppBar title='Xena Geneset Widget Demo' >
                     <Navigation type='horizontal'>
-                    {!compactView &&
-                    <Link value='settings' icon='vertical_align_center' label='Compact'
-                              onClick={() => makeCompact(true)}
-                              className={BaseStyle.menuButton}
-                              />
-                    }
-                    {compactView &&
-                    <Link value='settings' icon='import_export' label='Expand'
-                              onClick={() => makeCompact(false)}
-                              className={BaseStyle.menuButton}
-                              />
-                    }
                         {view === 'xena' &&
                         <div style={{display: 'inline'}}>
                             <Button raised primary>Xena</Button>
