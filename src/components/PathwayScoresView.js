@@ -71,7 +71,6 @@ let pathwayIndexFromX = (x, layout) =>
 
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
-    let metaSelect = event.metaKey;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
@@ -81,7 +80,6 @@ function getPointData(event, props) {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
         expression,
-        metaSelect: metaSelect
     };
 }
 
