@@ -9,6 +9,7 @@ import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
+import {sum} from 'underscore';
 
 
 export const GENESET_LABEL_HEIGHT = 150;
@@ -200,7 +201,7 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList,  data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -228,6 +229,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
+        console.log('reference pathways: ', referencePathways)
 
         if (cohortIndex === 0) {
             switch (selectedSort) {
@@ -239,65 +241,51 @@ export default class PathwayScoresViewCache extends PureComponent {
                     returnedValue = clusterSort(prunedColumns);
                     break;
             }
-            if (referencePathways) {
-                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-            }
-            else {
-                PathwayScoresView.synchronizedGeneSetList = returnedValue.pathways.map(g => g.golabel);
-            }
+            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         }
         else {
-            if (referencePathways) {
-                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-            }
-            else {
-                PathwayScoresView.synchronizedGeneSetList = PathwayScoresView.synchronizedGeneSetList ? PathwayScoresView.synchronizedGeneSetList : [];
-                returnedValue = synchronizedGeneSetSort(prunedColumns, PathwayScoresView.synchronizedGeneSetList);
-            }
+            PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+            returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        if (referencePathways) {
-            let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
-            let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
-            let layoutData = layout(width, returnedValue.data);
-            return (
-                <PathwayScoresView
-                    {...this.props}
-                    width={width}
-                    layout={layoutData}
-                    referenceLayout={referenceLayout}
-                    hoveredPathways={hoveredPathways}
-                    data={{
-                        expression,
-                        pathways: returnedValue.pathways,
-                        referencePathways,
-                        samples,
-                        selectedPathways,
-                        sortedSamples: returnedValue.sortedSamples
-                    }}
-                    associateData={returnedValue.data}/>
-            );
+        let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
+        let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
+        let layoutData = layout(width, returnedValue.data);
+
+        // console.log('gene pathway data', returnedValue.data);
+
+        // set affected versus total
+        let samplesLength = returnedValue.data[0].length;
+        // console.log('samples length: ', samplesLength);
+        for (let d in returnedValue.data) {
+            // console.log(d)
+            returnedValue.pathways[d].total = samplesLength;
+            returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
-        else {
-            return (
-                <PathwayScoresView
-                    {...this.props}
-                    width={width}
-                    layout={layout(width, returnedValue.data)}
-                    hoveredPathways={hoveredPathways}
-                    data={{
-                        expression,
-                        pathways: returnedValue.pathways,
-                        samples,
-                        selectedPathways,
-                        sortedSamples: returnedValue.sortedSamples,
-                    }}
-                    associateData={returnedValue.data}/>
-            );
-        }
+
+        console.log('updated pathways: ',returnedValue.pathways)
+
+        return (
+
+            <PathwayScoresView
+                {...this.props}
+                width={width}
+                layout={layoutData}
+                referenceLayout={referenceLayout}
+                hoveredPathways={hoveredPathways}
+                data={{
+                    expression,
+                    pathways: returnedValue.pathways,
+                    referencePathways,
+                    samples,
+                    selectedPathways,
+                    sortedSamples: returnedValue.sortedSamples
+                }}
+                associateData={returnedValue.data}/>
+        )
+            ;
     }
 
 
