@@ -114,17 +114,19 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     setPathwayHover = (newHover) => {
-        console.log('set pathway hover: ', newHover);
+        // console.log('set pathway hover: ', newHover[0]);
+        // console.log('my first pathway: ', this.state.geneData.pathways[0].gene[0]);
 
-        console.log('GENE data:',this.state.geneData);
+        let genePathway = this.state.geneData.pathways.find( f => f.gene[0]===newHover[0])
+        // console.log('my GENE pathway: ', genePathway);
+
+        genePathway = genePathway ? genePathway : {  golabel: newHover, gene: newHover};
 
         let hoverData = {
             metaSelect: false,
             tissue: "Header",
             expression: {affected: 0, total: 7},
-            pathway: {
-                goid: '', golabel: newHover, gene: newHover, density: 4, index: 4
-            }
+            pathway: genePathway,
         };
         this.setState(
             {
