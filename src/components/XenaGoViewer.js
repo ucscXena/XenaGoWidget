@@ -113,14 +113,11 @@ export default class XenaGoViewer extends PureComponent {
         this.setPathwayState([golabel], pathwayClickData);
     };
 
-    setPathwayHover = (newHover) => {
-        let genePathwayHover = this.state.geneData.pathways.find( f => f.gene[0]===newHover[0]);
-        console.log('input gene pathway: ',genePathwayHover);
-        console.log('gene data',this.state.geneData);
-        console.log('new hover',newHover)
-
+    setPathwayHover = (pathwayHover) => {
+        let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
+        let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
         // if no gene pathway then its a pathway instead of a gene
-        if(genePathwayHover){
+        if (genePathwayHover) {
             // genePathway = genePathway ? genePathway : {  golabel: newHover, gene: newHover,affected:0,total:0};
             let expression = {affected: genePathwayHover.affected, total: genePathwayHover.total};
 
@@ -129,8 +126,6 @@ export default class XenaGoViewer extends PureComponent {
                 expression: expression,
                 pathway: genePathwayHover,
             };
-            console.log('gene hover setting hover pathways',newHover)
-            console.log('gene hover setting hover data',hoverData)
             this.setState(
                 {
                     hoveredPathways: newHover,
@@ -138,12 +133,21 @@ export default class XenaGoViewer extends PureComponent {
                 }
             );
         }
-        else{
+        else if (pathwayHover) {
             // get the pathway
             // genePathway = genePathway ? genePathway : {  golabel: newHover, gene: newHover,affected:0,total:0};
-            let expression = {affected: 0, total: 7};
+            let expression = {};
+            if (this.props.cohortIndex === 0) {
+                expression.affected = pathwayHover.firstDensity;
+                expression.total = pathwayHover.firstNumSamples;
+            }
+            else {
+                expression.affected = pathwayHover.secondDensity;
+                expression.total = pathwayHover.secondNumSamples;
+            }
             let sampleFirst = this.state.geneData.pathways[0]
-            let pathwayHover = {
+            // let hoveredPathway = this.state.pathwayData.pathways.find(p => p.golabel === sampleFirst.golabel)
+            let inputHover = {
                 golabel: sampleFirst.golabel,
                 goid: sampleFirst.goid,
                 gene: newHover,
@@ -152,10 +156,8 @@ export default class XenaGoViewer extends PureComponent {
             let hoverData = {
                 tissue: "Header",
                 expression: expression,
-                pathway: pathwayHover,
+                pathway: inputHover,
             };
-            console.log('gene SET hover setting hover pathways',newHover)
-            console.log('gene SET hover setting hover data',hoverData)
             this.setState(
                 {
                     hoveredPathways: newHover,

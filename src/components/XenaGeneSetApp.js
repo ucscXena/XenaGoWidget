@@ -120,7 +120,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 host: mutation.host
                             }
                         });
-                    // console.log('cohort data',cohortData)
                     this.setState({
                         cohortData: cohortData
                     });
@@ -315,13 +314,12 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
-        let hoveredPathways = pathwayHover ? pathwayHover.gene : [];
         this.setState({
             hoveredPathways: pathwayHover
         });
 
         this.state.apps.forEach((app, index) => {
-            this.refs['xena-go-app-' + index].setPathwayHover(hoveredPathways);
+            this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
         });
     };
 

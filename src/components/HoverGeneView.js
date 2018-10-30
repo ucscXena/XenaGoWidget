@@ -6,6 +6,11 @@ import BaseStyle from '../../src/base.css';
 
 export default class HoverGeneView extends PureComponent {
 
+    /**
+     * This returns the number of affected versus the total number versus a single gene
+     * @param data
+     * @returns {string}
+     */
     getRatio(data) {
         let returnString = data.expression.affected + '/' + data.expression.total;
         returnString += '  (';
@@ -14,9 +19,17 @@ export default class HoverGeneView extends PureComponent {
         return returnString;
     }
 
+    getAffectedPathway(data) {
+        let returnString = data.expression.affected + '/' + (data.expression.total * data.pathway.gene.length) ;
+        returnString += '  (';
+        returnString += ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total* data.pathway.gene.length)) * 100.0).toFixed(0);
+        returnString += '%)';
+        return returnString;
+
+    }
+
     render() {
         let {data, title} = this.props;
-        console.log('hover gene view',data)
         if (data.tissue) {
             return (
                 <div>
@@ -54,8 +67,13 @@ export default class HoverGeneView extends PureComponent {
                     }
                     {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 1 &&
                     <div className={BaseStyle.pathwayChip}>
-                        <strong>Pathway&nbsp;&nbsp;</strong>
-                        {data.pathway.golabel}
+                            <span><strong>Pathway&nbsp;&nbsp;</strong>
+                                {data.pathway.golabel}
+                            </span>
+                        <div>
+                            <span><strong>Samples Affected</strong><br/> {this.getAffectedPathway(data)}</span>
+                        </div>
+
                     </div>
                     }
                 </div>
@@ -65,6 +83,7 @@ export default class HoverGeneView extends PureComponent {
             return <div/>
         }
     }
+
 }
 
 HoverGeneView.propTypes = {
