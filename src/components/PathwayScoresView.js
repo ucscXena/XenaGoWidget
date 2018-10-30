@@ -6,7 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
+import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
@@ -70,7 +70,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, cohortIndex, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
+    let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
     let metaSelect = event.metaKey;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
