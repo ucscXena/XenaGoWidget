@@ -227,8 +227,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
-        console.log('reference pathways: ', referencePathways)
-
         if (cohortIndex === 0) {
             switch (selectedSort) {
                 case 'Hierarchical':
@@ -252,18 +250,12 @@ export default class PathwayScoresViewCache extends PureComponent {
         let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
         let layoutData = layout(width, returnedValue.data);
 
-        // console.log('gene pathway data', returnedValue.data);
-
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
-        // console.log('samples length: ', samplesLength);
         for (let d in returnedValue.data) {
-            // console.log(d)
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
-
-        console.log('updated pathways: ',returnedValue.pathways)
 
         return (
 
