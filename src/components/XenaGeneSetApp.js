@@ -273,15 +273,15 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    pathwayHover = (pathwayHover) => {
-        let myIndex = pathwayHover.key;
-        pathwayHover.propagate = false;
-        this.state.apps.forEach((app, index) => {
-            if (index !== myIndex) {
-                this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
-            }
-        });
-    };
+    // pathwayHover = (pathwayHover) => {
+    //     let myIndex = pathwayHover.key;
+    //     pathwayHover.propagate = false;
+    //     this.state.apps.forEach((app, index) => {
+    //         if (index !== myIndex) {
+    //             this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
+    //         }
+    //     });
+    // };
 
     geneHover = (geneHover) => {
         this.setState(
@@ -440,7 +440,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             <Col md={10}>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
-                                              pathwayHover={this.pathwayHover}
+                                              // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-0'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={0}
@@ -453,7 +453,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
-                                              pathwayHover={this.pathwayHover}
+                                              // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={(this.state.renderHeight + BORDER_OFFSET)}
