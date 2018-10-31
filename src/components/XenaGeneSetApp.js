@@ -289,6 +289,15 @@ export default class XenaGeneSetApp extends PureComponent {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
             }
         );
+        if(geneHover){
+            let myIndex = geneHover.cohortIndex;
+            this.state.apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    console.log('HOVERING OTHER gene with ',geneHover);
+                    this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
+                }
+            });
+        }
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
