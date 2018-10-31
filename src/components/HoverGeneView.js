@@ -30,6 +30,7 @@ export default class HoverGeneView extends PureComponent {
 
     render() {
         let {data, title} = this.props;
+        console.log('bhover gene data',data)
         if (data.tissue) {
             return (
                 <div>
@@ -71,7 +72,10 @@ export default class HoverGeneView extends PureComponent {
                                 {data.pathway.golabel}
                             </span>
                         <div>
-                            <span><strong>Samples Affected</strong><br/> {this.getAffectedPathway(data)}</span>
+                            <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
+                        </div>
+                        <div>
+                            <span><strong>Total Affected Pathways</strong><br/> {this.getAffectedPathway(data)}</span>
                         </div>
 
                     </div>
