@@ -2,7 +2,7 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
-import {intersection, unique, union, flatten} from 'underscore';
+import {intersection} from 'underscore';
 import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 
 

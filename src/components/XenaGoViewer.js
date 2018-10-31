@@ -245,30 +245,30 @@ export default class XenaGoViewer extends PureComponent {
         }
     };
 
-    hoverGene = (props) => {
+    hoverGene = (geneHoverProps) => {
         // console.log('hovering a gene',props)
         // console.log('in in this state ',this.state)
         // console.log('in this porps',this.props)
-        if (props) {
-            props.cohortIndex = this.props.cohortIndex;
+        if (geneHoverProps) {
+            geneHoverProps.cohortIndex = this.props.cohortIndex;
         }
-        this.props.geneHover(props);
+        this.props.geneHover(geneHoverProps);
 
 
         let genesHovered;
-        if (props == null) {
-            props = {};
+        if (geneHoverProps == null) {
+            geneHoverProps = {};
             genesHovered = [];
         }
         else {
-            genesHovered = props.pathway ? props.pathway.gene : [];
+            genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
         }
 
-        console.log('HOVERING genes with: ', props,this.props.cohortIndex)
+        console.log('HOVERING genes with: ', geneHoverProps,this.props.cohortIndex)
 
         this.setState(
             {
-                geneHoverData: props,
+                geneHoverData: geneHoverProps,
                 hoveredPathways: genesHovered
             }
         );
