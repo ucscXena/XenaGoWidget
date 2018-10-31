@@ -6,9 +6,10 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import spinner from './ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort, clusterSort, synchronizedSort, synchronizedGeneSetSort} from '../functions/SortFunctions';
+import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
+import {sum} from 'underscore';
 
 
 export const GENESET_LABEL_HEIGHT = 150;
@@ -69,8 +70,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, cohortIndex, referenceLayout, data: {referencePathways, pathways, samples, sortedSamples}} = props;
-    let metaSelect = event.metaKey;
+    let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
@@ -80,7 +80,6 @@ function getPointData(event, props) {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
         expression,
-        metaSelect: metaSelect
     };
 }
 
@@ -200,7 +199,7 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList,  data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -228,7 +227,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
-
         if (cohortIndex === 0) {
             switch (selectedSort) {
                 case 'Hierarchical':
@@ -239,65 +237,45 @@ export default class PathwayScoresViewCache extends PureComponent {
                     returnedValue = clusterSort(prunedColumns);
                     break;
             }
-            if (referencePathways) {
-                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-            }
-            else {
-                PathwayScoresView.synchronizedGeneSetList = returnedValue.pathways.map(g => g.golabel);
-            }
+            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         }
         else {
-            if (referencePathways) {
-                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-            }
-            else {
-                PathwayScoresView.synchronizedGeneSetList = PathwayScoresView.synchronizedGeneSetList ? PathwayScoresView.synchronizedGeneSetList : [];
-                returnedValue = synchronizedGeneSetSort(prunedColumns, PathwayScoresView.synchronizedGeneSetList);
-            }
+            PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+            returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        if (referencePathways) {
-            let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
-            let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
-            let layoutData = layout(width, returnedValue.data);
-            return (
-                <PathwayScoresView
-                    {...this.props}
-                    width={width}
-                    layout={layoutData}
-                    referenceLayout={referenceLayout}
-                    hoveredPathways={hoveredPathways}
-                    data={{
-                        expression,
-                        pathways: returnedValue.pathways,
-                        referencePathways,
-                        samples,
-                        selectedPathways,
-                        sortedSamples: returnedValue.sortedSamples
-                    }}
-                    associateData={returnedValue.data}/>
-            );
+        let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
+        let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
+        let layoutData = layout(width, returnedValue.data);
+
+        // set affected versus total
+        let samplesLength = returnedValue.data[0].length;
+        for (let d in returnedValue.data) {
+            returnedValue.pathways[d].total = samplesLength;
+            returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
-        else {
-            return (
-                <PathwayScoresView
-                    {...this.props}
-                    width={width}
-                    layout={layout(width, returnedValue.data)}
-                    hoveredPathways={hoveredPathways}
-                    data={{
-                        expression,
-                        pathways: returnedValue.pathways,
-                        samples,
-                        selectedPathways,
-                        sortedSamples: returnedValue.sortedSamples,
-                    }}
-                    associateData={returnedValue.data}/>
-            );
-        }
+
+        return (
+
+            <PathwayScoresView
+                {...this.props}
+                width={width}
+                layout={layoutData}
+                referenceLayout={referenceLayout}
+                hoveredPathways={hoveredPathways}
+                data={{
+                    expression,
+                    pathways: returnedValue.pathways,
+                    referencePathways,
+                    samples,
+                    selectedPathways,
+                    sortedSamples: returnedValue.sortedSamples
+                }}
+                associateData={returnedValue.data}/>
+        )
+            ;
     }
 
 
