@@ -71,17 +71,6 @@ export class HeaderLabel extends PureComponent {
     }
 
     fontColor(colorDensity) {
-        let {selected} = this.props;
-
-        // if (hovered) {
-        //     return getDarkColor();
-        // }
-
-        if (selected) {
-            return getWhiteColor();
-        }
-
-
         return colorDensity < 0.7 ? 'black' : getWhiteColor();
     }
 

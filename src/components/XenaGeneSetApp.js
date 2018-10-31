@@ -37,7 +37,6 @@ export default class XenaGeneSetApp extends PureComponent {
         let renderHeight = COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT;
         this.state = {
             view: 'xena',
-            // view: 'pathways',
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -272,16 +271,6 @@ export default class XenaGeneSetApp extends PureComponent {
             renderHeight: value ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         })
     };
-
-    // pathwayHover = (pathwayHover) => {
-    //     let myIndex = pathwayHover.key;
-    //     pathwayHover.propagate = false;
-    //     this.state.apps.forEach((app, index) => {
-    //         if (index !== myIndex) {
-    //             this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover.hoveredPathways);
-    //         }
-    //     });
-    // };
 
     geneHover = (geneHover) => {
         this.setState(
