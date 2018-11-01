@@ -117,13 +117,20 @@ export default class XenaGoViewer extends PureComponent {
         let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
         let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
 
-        // TODO: use real data here!
-        let expression = {affected:3, total: 5}
+        if (newHover[0] === 'NBN') {
+            console.log('gene hover set: ', newHover,geneHover,  genePathwayHover);
+            console.log('gene hover set state: ', this.state);
+            console.log('gene hover set propos: ', this.props);
+        }
 
-        genePathwayHover.density = 7 ;
-        genePathwayHover.affected = 8 ;
-        genePathwayHover.total = 287 ;
-        genePathwayHover.index = 3 ;
+        // TODO: use real data here!
+        let expression = {affected: 0, total: 0}
+        // let expression = geneHover;
+        //
+        // genePathwayHover.density = newHover.density;
+        // genePathwayHover.affected = newHover.affected;
+        // genePathwayHover.total = newHover.total;
+        // genePathwayHover.index = newHover.index;
 
         let hoverData = {
             cohortIndex: this.state.key,
@@ -209,7 +216,7 @@ export default class XenaGoViewer extends PureComponent {
             genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
         }
 
-        console.log('HOVERING genes with: ', geneHoverProps,this.props.cohortIndex)
+        console.log('HOVERING genes with: ', geneHoverProps, this.props.cohortIndex)
 
         this.setState(
             {
