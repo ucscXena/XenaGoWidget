@@ -120,6 +120,10 @@ class PathwayScoresView extends PureComponent {
             titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
 
+        console.log('SHARING DATA FOR ',data)
+
+        this.props.shareGlobalGeneData(data.pathways,cohortIndex);
+
         let titleString, filterString;
         if (selected) {
             titleString = selected.golabel + (selected.goid ? ' (' + selected.goid + ')' : '');
@@ -187,6 +191,7 @@ PathwayScoresView.propTypes = {
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
     cohortIndex: PropTypes.any,
+    shareGlobalGeneData: PropTypes.any,
 };
 
 
@@ -199,7 +204,7 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -265,6 +270,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                 layout={layoutData}
                 referenceLayout={referenceLayout}
                 hoveredPathways={hoveredPathways}
+                shareGlobalGeneData={shareGlobalGeneData}
                 data={{
                     expression,
                     pathways: returnedValue.pathways,

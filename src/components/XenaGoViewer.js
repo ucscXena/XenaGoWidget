@@ -113,6 +113,16 @@ export default class XenaGoViewer extends PureComponent {
         this.setPathwayState([golabel], pathwayClickData);
     };
 
+    // shareGeneData = (otherGeneData,cohortIndex) => {
+    //     console.log('RECEIVING gene data: '+otherGeneData,cohortIndex)
+    //     this.setState({
+    //         globalGeneData: {
+    //             cohortIndex: cohortIndex,
+    //             pathways: otherGeneData,
+    //         }
+    //     })
+    // };
+
     setGeneHover = (geneHover) => {
         let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
         let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
@@ -121,11 +131,12 @@ export default class XenaGoViewer extends PureComponent {
             console.log('gene hover set: ', newHover,geneHover,  genePathwayHover);
             console.log('gene hover set state: ', this.state);
             console.log('gene hover set propos: ', this.props);
+            console.log('global gene props: ', this.props.geneDataStats);
         }
 
         // TODO: use real data here!
-        let expression = {affected: 0, total: 0}
-        // let expression = geneHover;
+        // let expression = {affected: 0, total: 0};
+        let expression = geneHover;
         //
         // genePathwayHover.density = newHover.density;
         // genePathwayHover.affected = newHover.affected;
@@ -406,6 +417,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    hideTitle={true}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
+                                                   shareGlobalGeneData={this.props.shareGlobalGeneData}
                                 />
                             </Col>
                             }
@@ -439,4 +451,6 @@ XenaGoViewer.propTypes = {
     geneHover: PropTypes.any,
     populateGlobal: PropTypes.any,
     cohortIndex: PropTypes.any,
+    shareGlobalGeneData: PropTypes.any,
+    geneDataStats: PropTypes.any,
 };
