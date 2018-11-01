@@ -50,7 +50,10 @@ export default class HoverGeneView extends PureComponent {
                         }
                         {data.tissue &&
                         <Chip>
-                            <span><strong>Sample</strong> {data.tissue}</span>
+                            <span style={{margin:0}}>
+                                <strong>Sample</strong>
+                                <span>{data.tissue}</span>
+                                </span>
                         </Chip>
                         }
                     </div>

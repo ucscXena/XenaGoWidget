@@ -1,8 +1,8 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
-import {getGeneColorMask,getPathwayColorMask} from '../functions/ColorFunctions'
-import {GENE_LABEL_HEIGHT, GENESET_LABEL_HEIGHT} from "../components/PathwayScoresView";
+import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
+import {GENE_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -33,7 +33,7 @@ function regionColor(data) {
     return 255 * p / scale;
 }
 
-function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask,cohortIndex) {
+function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let height = totalHeight - labelHeight;
     let tissueCount = data[0].length;
     let regions = findRegions(0, height, tissueCount);
@@ -44,7 +44,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
     layout.forEach(function (el, i) {
         // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
-        if(cohortIndex === 0 ){
+        if (cohortIndex === 0) {
             rowData = data[i].reverse();
         }
 
@@ -56,7 +56,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 
             let color = regionColor(d);
 
-            for (let y = rs + offsetHeight ; y < rs + r.height + offsetHeight ; ++y) {
+            for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
                 let pxRow = y * width,
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
@@ -64,7 +64,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
                     img.data[l] = colorMask[0];
                     img.data[l + 1] = colorMask[1];
                     img.data[l + 2] = colorMask[2];
-                    img.data[l + 3] = color ;
+                    img.data[l + 3] = color;
                 }
             }
         }
@@ -77,9 +77,8 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 export default {
 
 
-
     drawTissueView(vg, props) {
-        let {width, height, layout, cohortIndex, associateData, data: { referencePathways}} = props;
+        let {width, height, layout, cohortIndex, associateData} = props;
 
         clearScreen(vg, width, height);
 
@@ -87,12 +86,7 @@ export default {
             return;
         }
 
-        if (referencePathways) {
-            drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(),cohortIndex);
-        }
-        else {
-            drawExpressionData(vg, width, height, layout, associateData, GENESET_LABEL_HEIGHT, getPathwayColorMask(),cohortIndex);
-        }
+        drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
 
     },
 

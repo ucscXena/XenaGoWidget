@@ -53,6 +53,7 @@ export default class HoverPathwayView extends PureComponent {
                         <div className={BaseStyle.pathwayChip}>
                             <span>
                                 <strong>Sample</strong>
+                                <br/>
                                 {data.tissue}
                             </span>
                         </div>

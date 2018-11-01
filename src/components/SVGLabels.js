@@ -22,7 +22,7 @@ export default class SVGLabels extends PureComponent {
         super(props);
     }
 
-    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask,cohortIndex) {
+    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask, cohortIndex) {
 
         if (layout[0].size <= 1) {
             return;
@@ -32,7 +32,7 @@ export default class SVGLabels extends PureComponent {
         //     let score = current.density / current.gene.length;
         //     return (max > score) ? max : score;
         // }, 0);
-        const numSamples= this.props.data.samples.length;
+        const numSamples = this.props.data.samples.length;
 
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
@@ -43,19 +43,19 @@ export default class SVGLabels extends PureComponent {
                 let labelKey = '';
                 if (geneLength === 1) {
                     // labelString = cohortIndex === 1 ? d.gene[0] : '';
-                    labelString =  d.gene[0];
+                    labelString = d.gene[0];
                     hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                     selected = selectedPathways.indexOf(labelString) >= 0;
                     labelKey = d.gene[0];
                 }
                 else {
                     // if(cohortIndex===1){
-                        labelString = '(' + d.gene.length + ') ';
-                        // pad for 1000, so 4 + 2 parans
-                        while (labelString.length < 5) {
-                            labelString += ' ';
-                        }
-                        labelString += d.golabel;
+                    labelString = '(' + d.gene.length + ') ';
+                    // pad for 1000, so 4 + 2 parans
+                    while (labelString.length < 5) {
+                        labelString += ' ';
+                    }
+                    labelString += d.golabel;
                     // }
                     selected = selectedPathways.indexOf(d.golabel) >= 0;
 
@@ -76,7 +76,7 @@ export default class SVGLabels extends PureComponent {
                         hovered={hovered}
                         labelString={labelString}
                         colorMask={colorMask}
-                        key={labelKey+'-'+cohortIndex}
+                        key={labelKey + '-' + cohortIndex}
                     />
                 )
             });
@@ -84,27 +84,19 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay() {
-        let {pathwayLabelHeight, geneLabelHeight, width, height, layout,  associateData, cohortIndex, selectedPathways, hoveredPathways, data: {pathways, referencePathways,samples}} = this.props;
+        let {geneLabelHeight, width, height, layout, associateData, cohortIndex, hoveredPathways, data: {pathways}} = this.props;
 
         if (associateData.length === 0) {
             return;
         }
 
-        if (referencePathways) {
-            // draw genes
-            let offset = cohortIndex === 0 ?  height - geneLabelHeight : 0 ;
-            return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(),cohortIndex);
-        }
-        else {
-            // draw genesets
-            let offset = cohortIndex === 0 ?  height - pathwayLabelHeight: 0 ;
-            return this.drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, pathwayLabelHeight, offset, getPathwayColorMask(),cohortIndex);
-        }
+        // draw genes
+        let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
+        return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex);
     }
 
     render() {
         const {width, height, onClick, onMouseMove, onMouseOut, offset} = this.props;
-
 
 
         return (
@@ -125,7 +117,6 @@ SVGLabels.propTypes = {
     onClick: PropTypes.any,
     onMouseOver: PropTypes.any,
     onMouseOut: PropTypes.any,
-    pathwayLabelHeight: PropTypes.any,
     geneLabelHeight: PropTypes.any,
     cohortIndex: PropTypes.any,
 };
