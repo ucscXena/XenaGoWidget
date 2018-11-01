@@ -90,7 +90,6 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-
         // draw genes
         let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
         return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex);
@@ -118,7 +117,6 @@ SVGLabels.propTypes = {
     onClick: PropTypes.any,
     onMouseOver: PropTypes.any,
     onMouseOut: PropTypes.any,
-    pathwayLabelHeight: PropTypes.any,
     geneLabelHeight: PropTypes.any,
     cohortIndex: PropTypes.any,
 };

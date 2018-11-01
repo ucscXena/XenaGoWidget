@@ -50,7 +50,10 @@ export default class HoverGeneView extends PureComponent {
                         }
                         {data.tissue &&
                         <Chip>
-                            <span><strong>Sample</strong> {data.tissue}</span>
+                            <span style={{margin:0}}>
+                                <strong>Sample</strong>
+                                <span>{data.tissue}</span>
+                                </span>
                         </Chip>
                         }
                     </div>
@@ -74,7 +77,7 @@ export default class HoverGeneView extends PureComponent {
                             <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                         </div>
                         <div>
-                            <span><strong>Total Affected Pathways</strong><br/> {this.getAffectedPathway(data)}</span>
+                            <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                         </div>
 
                     </div>

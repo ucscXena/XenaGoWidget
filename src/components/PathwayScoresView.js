@@ -73,7 +73,7 @@ function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
-    let tissueIndex = tissueIndexFromY(y, height, GENESET_LABEL_HEIGHT, samples.length, cohortIndex);
+    let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
     return {
@@ -162,7 +162,6 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     associateData={associateData}
-                    pathwayLabelHeight={GENESET_LABEL_HEIGHT}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}
