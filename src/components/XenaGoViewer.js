@@ -204,8 +204,6 @@ export default class XenaGoViewer extends PureComponent {
             genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
         }
 
-        console.log('HOVERING genes with: ', geneHoverProps, this.props.cohortIndex)
-
         this.setState(
             {
                 geneHoverData: geneHoverProps,

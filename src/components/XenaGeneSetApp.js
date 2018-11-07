@@ -283,7 +283,6 @@ export default class XenaGeneSetApp extends PureComponent {
             let myIndex = geneHover.cohortIndex;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    console.log('HOVERING OTHER gene with ', geneHover);
                     this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
                 }
             });
@@ -324,14 +323,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // populates back to the top
     shareGlobalGeneData = (geneData, cohortIndex) => {
-        console.log('sharing global gene data', geneData, cohortIndex)
-
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
-
-        console.log('final data 0',geneData0);
-        console.log('final data 1',geneData1);
-        console.log('input state',this.state.geneData);
 
         this.setState({
             geneData: [

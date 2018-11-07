@@ -71,7 +71,6 @@ let pathwayIndexFromX = (x, layout) =>
 
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
-    console.log('point data from pathway:', pathways[0]);
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
@@ -120,8 +119,6 @@ class PathwayScoresView extends PureComponent {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
             titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
-
-        console.log('SHARING DATA FOR ',data)
 
         this.props.shareGlobalGeneData(data.pathways,cohortIndex);
 
@@ -261,8 +258,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
-
-        console.log('returned value: ',returnedValue.pathways)
 
         return (
 
