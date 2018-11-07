@@ -326,8 +326,12 @@ export default class XenaGeneSetApp extends PureComponent {
     shareGlobalGeneData = (geneData, cohortIndex) => {
         console.log('sharing global gene data', geneData, cohortIndex)
 
-        let geneData0 = cohortIndex === 0 ? geneData : {};
-        let geneData1 = cohortIndex === 1 ? geneData : {};
+        let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
+        let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
+
+        console.log('final data 0',geneData0);
+        console.log('final data 1',geneData1);
+        console.log('input state',this.state.geneData);
 
         this.setState({
             geneData: [
@@ -444,7 +448,6 @@ export default class XenaGeneSetApp extends PureComponent {
                             <Col md={10}>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
-                                    // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-0'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={0}
@@ -459,7 +462,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
-                                    // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={(this.state.renderHeight + BORDER_OFFSET)}

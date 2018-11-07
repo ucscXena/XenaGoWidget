@@ -113,35 +113,12 @@ export default class XenaGoViewer extends PureComponent {
         this.setPathwayState([golabel], pathwayClickData);
     };
 
-    // shareGeneData = (otherGeneData,cohortIndex) => {
-    //     console.log('RECEIVING gene data: '+otherGeneData,cohortIndex)
-    //     this.setState({
-    //         globalGeneData: {
-    //             cohortIndex: cohortIndex,
-    //             pathways: otherGeneData,
-    //         }
-    //     })
-    // };
-
     setGeneHover = (geneHover) => {
         let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
         let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
 
-        if (newHover[0] === 'NBN') {
-            console.log('gene hover set: ', newHover,geneHover,  genePathwayHover);
-            console.log('gene hover set state: ', this.state);
-            console.log('gene hover set propos: ', this.props);
-            console.log('global gene props: ', this.props.geneDataStats);
-        }
-
         // TODO: use real data here!
-        // let expression = {affected: 0, total: 0};
-        let expression = geneHover;
-        //
-        // genePathwayHover.density = newHover.density;
-        // genePathwayHover.affected = newHover.affected;
-        // genePathwayHover.total = newHover.total;
-        // genePathwayHover.index = newHover.index;
+        let expression = this.props.geneDataStats.find(g => g.gene[0] === newHover[0]);
 
         let hoverData = {
             cohortIndex: this.state.key,
