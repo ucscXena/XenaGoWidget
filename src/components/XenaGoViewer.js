@@ -117,8 +117,7 @@ export default class XenaGoViewer extends PureComponent {
         let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
         let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
 
-        // TODO: use real data here!
-        let expression = this.props.geneDataStats.find(g => g.gene[0] === newHover[0]);
+        let expression = this.props.geneDataStats ? this.props.geneDataStats.find(g => g.gene[0] === newHover[0]) : {};
 
         let hoverData = {
             cohortIndex: this.state.key,

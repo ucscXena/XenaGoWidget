@@ -16,7 +16,8 @@ import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 const EXPAND_HEIGHT = 800;
 const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
-export const FILTER_PERCENTAGE = 0.005;
+// export const FILTER_PERCENTAGE = 0.005;
+export const FILTER_PERCENTAGE = 0;
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 
