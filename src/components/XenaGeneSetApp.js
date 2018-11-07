@@ -49,7 +49,8 @@ export default class XenaGeneSetApp extends PureComponent {
             renderHeight: renderHeight,
             hoveredPathways: [],
             selectedPathways: [],
-            geneData:[{},{}]
+            geneData:[{},{}],
+            pathwayData:[{},{}],
         };
     }
 
@@ -398,8 +399,12 @@ export default class XenaGeneSetApp extends PureComponent {
             return p;
         });
 
+        let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
+        let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
+
         this.setState(
             {
+                pathwayData:[globalPathwayData0,globalPathwayData1],
                 selectedPathways: pathways,
             }
         )
