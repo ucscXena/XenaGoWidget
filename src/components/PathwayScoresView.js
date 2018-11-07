@@ -97,6 +97,10 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+    componentWillMount(){
+        this.props.shareGlobalGeneData(this.props.data.pathways,this.props.cohortIndex);
+    }
+
     onMouseOut = (event) => {
         let {onHover} = this.props;
         onHover(null);
@@ -186,6 +190,7 @@ PathwayScoresView.propTypes = {
     filter: PropTypes.any,
     selectedSort: PropTypes.any,
     cohortIndex: PropTypes.any,
+    shareGlobalGeneData: PropTypes.any,
 };
 
 
@@ -198,7 +203,7 @@ const minColWidth = 12;
 export default class PathwayScoresViewCache extends PureComponent {
 
     render() {
-        let {cohortIndex, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -264,6 +269,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                 layout={layoutData}
                 referenceLayout={referenceLayout}
                 hoveredPathways={hoveredPathways}
+                shareGlobalGeneData={shareGlobalGeneData}
                 data={{
                     expression,
                     pathways: returnedValue.pathways,

@@ -48,6 +48,7 @@ export default class XenaGeneSetApp extends PureComponent {
             renderHeight: renderHeight,
             hoveredPathways: [],
             selectedPathways: [],
+            geneData:[{},{}]
         };
     }
 
@@ -278,11 +279,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
             }
         );
-        if(geneHover){
+        if (geneHover) {
             let myIndex = geneHover.cohortIndex;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
-                    console.log('HOVERING OTHER gene with ',geneHover);
                     this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
                 }
             });
@@ -294,7 +294,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
         //  TODO: implement empty correlation, for some reason this is necessary for proper select behavior
-        if(selectedPathways.length===0){
+        if (selectedPathways.length === 0) {
             this.setState({
                 selectedPathways: selectedPathways
             });
@@ -318,6 +318,18 @@ export default class XenaGeneSetApp extends PureComponent {
 
         this.state.apps.forEach((app, index) => {
             this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
+        });
+    };
+
+    // populates back to the top
+    shareGlobalGeneData = (geneData, cohortIndex) => {
+        let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
+        let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
+
+        this.setState({
+            geneData: [
+                geneData0, geneData1
+            ]
         });
     };
 
@@ -429,28 +441,30 @@ export default class XenaGeneSetApp extends PureComponent {
                             <Col md={10}>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
-                                              // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-0'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={0}
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
+                                              geneDataStats={this.state.geneData[0]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
+                                              shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
-                                              // pathwayHover={this.pathwayHover}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
                                               renderOffset={(this.state.renderHeight + BORDER_OFFSET)}
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}
+                                              geneDataStats={this.state.geneData[1]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
+                                              shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
                                 />
                             </Col>
