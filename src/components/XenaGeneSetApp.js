@@ -20,6 +20,7 @@ const COMPACT_VIEW_DEFAULT = false;
 export const FILTER_PERCENTAGE = 0;
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
+import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
 
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
@@ -49,8 +50,8 @@ export default class XenaGeneSetApp extends PureComponent {
             renderHeight: renderHeight,
             hoveredPathways: [],
             selectedPathways: [],
-            geneData:[{},{}],
-            pathwayData:[{},{}],
+            geneData: [{}, {}],
+            pathwayData: [{}, {}],
         };
     }
 
@@ -404,7 +405,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         this.setState(
             {
-                pathwayData:[globalPathwayData0,globalPathwayData1],
+                pathwayData: [globalPathwayData0, globalPathwayData1],
                 selectedPathways: pathways,
             }
         )
@@ -431,18 +432,39 @@ export default class XenaGeneSetApp extends PureComponent {
                     <Grid>
                         <Row>
                             <Col md={this.state.selectedPathways.length === 0 ? 0 : 2} style={{marginTop: 15}}>
-                                {this.state.selectedPathways.length > 0 &&
-                                <LabelTop width={200}/>
-                                }
-                                <GeneSetSvgSelector pathways={pathways}
-                                                    hoveredPathways={this.state.hoveredPathways}
-                                                    selectedPathways={this.state.selectedPathways}
-                                                    onClick={this.globalPathwaySelect}
-                                                    onHover={this.globalPathwayHover}
-                                                    onMouseOut={this.globalPathwayHover}
-                                                    labelHeight={18}
-                                                    topOffset={14}
-                                                    width={200}/>
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <button>Hide</button>
+                                        </td>
+                                        <td>
+                                            <LabelTop width={200}/>
+                                        </td>
+                                        <td>
+                                            <button>Hide</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <VerticalPathwaySetScoresView/>
+                                        </td>
+                                        <td>
+                                            <GeneSetSvgSelector pathways={pathways}
+                                                                hoveredPathways={this.state.hoveredPathways}
+                                                                selectedPathways={this.state.selectedPathways}
+                                                                onClick={this.globalPathwaySelect}
+                                                                onHover={this.globalPathwayHover}
+                                                                onMouseOut={this.globalPathwayHover}
+                                                                labelHeight={18}
+                                                                topOffset={14}
+                                                                width={200}/>
+                                        </td>
+                                        <td>
+                                            <VerticalPathwaySetScoresView/>
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </Col>
                             <Col md={10}>
                                 <XenaGoViewer appData={this.state.apps[0]}

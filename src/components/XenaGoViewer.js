@@ -4,7 +4,6 @@ import PureComponent from './PureComponent';
 import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
 import '../base.css';
-import HoverPathwayView from "./HoverPathwayView"
 import HoverGeneView from "./HoverGeneView";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
