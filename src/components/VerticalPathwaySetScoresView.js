@@ -15,7 +15,11 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
     }
 
     render(){
-        const { data, cohortIndex} = this.props.data ;
+
+        const { data, cohortIndex, labelHeight, width} = this.props.data ;
+        console.log('input data,',data)
+        // let layout = (width, {length = 0} = {}) => partition(width, length);
+        // let layoutData = layout(width, returnedValue.data);
         return (
             <div>
                 Left or Right Details
