@@ -154,8 +154,6 @@ export default class XenaGoViewer extends PureComponent {
                     geneHoverData: hoverData,
                 }
             );
-            console.log('get GENE HOVER ONLY ',this.props.cohortIndex,genePathwayHover,expression);
-            // console.log('gene pathway hover',genePathwayHover)
         }
         else if (pathwayHover) {
             // get the pathway
@@ -180,16 +178,12 @@ export default class XenaGoViewer extends PureComponent {
                 expression: expression,
                 pathway: inputHover,
             };
-            console.log('pathway hover ONLY ',this.props.cohortIndex,pathwayHover,expression);
             this.setState(
                 {
                     hoveredPathways: newHover,
                     geneHoverData: hoverData,
                 }
             );
-        }
-        else{
-            console.log('no pathway hover / selected')
         }
     };
 

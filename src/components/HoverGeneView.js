@@ -30,7 +30,6 @@ export default class HoverGeneView extends PureComponent {
 
     render() {
         let {data, title} = this.props;
-        console.log('data',data.cohortIndex,data)
         if (data.tissue) {
             return (
                 <div>
@@ -65,7 +64,7 @@ export default class HoverGeneView extends PureComponent {
                             <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
                         </Chip>
                         <div className={BaseStyle.pathwayChip}>
-                            <span><strong>Samples 1 Affected</strong><br/> {this.getRatio(data)}</span>
+                            <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                         </div>
                     </div>
                     }
