@@ -90,4 +90,17 @@ export default {
 
     },
 
+    drawPathwayView(vg, props) {
+        // let {width, height, layout, cohortIndex, associateData} = props;
+        //
+        // clearScreen(vg, width, height);
+        //
+        // if (associateData.length === 0) {
+        //     return;
+        // }
+        //
+        // drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+
+    },
+
 }

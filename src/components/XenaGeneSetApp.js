@@ -446,7 +446,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tr>
                                     <tr>
                                         <td>
-                                            <VerticalPathwaySetScoresView/>
+                                            <VerticalPathwaySetScoresView data={this.state.pathwayData} cohortIndex={0}/>
                                         </td>
                                         <td>
                                             <GeneSetSvgSelector pathways={pathways}
@@ -460,7 +460,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                                 width={200}/>
                                         </td>
                                         <td>
-                                            <VerticalPathwaySetScoresView/>
+                                            <VerticalPathwaySetScoresView data={this.state.pathwayData}  cohortIndex={1}/>
                                         </td>
                                     </tr>
                                 </table>
