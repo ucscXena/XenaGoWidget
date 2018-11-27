@@ -275,6 +275,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
+        console.log('calling geneHover')
         this.setState(
             {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
