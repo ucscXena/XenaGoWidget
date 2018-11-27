@@ -431,7 +431,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <Grid>
                         <Row>
-                            <Col md={this.state.selectedPathways.length === 0 ? 0 : 2} style={{marginTop: 15}}>
+                            <Col md={this.state.selectedPathways.length === 0 ? 0 : 3} style={{marginTop: 15}}>
                                 <table>
                                     <tbody>
                                     <tr>
@@ -447,8 +447,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tr>
                                     <tr>
                                         <td>
-                                            <VerticalPathwaySetScoresView data={this.state.pathwayData}
-                                                                          cohortIndex={0}/>
+                                            <VerticalPathwaySetScoresView
+                                                data={this.state.pathwayData}
+                                                cohortIndex={0}
+                                                width={200}
+                                                labelHeight={18}
+                                            />
                                         </td>
                                         <td>
                                             <GeneSetSvgSelector pathways={pathways}
@@ -462,15 +466,19 @@ export default class XenaGeneSetApp extends PureComponent {
                                                                 width={200}/>
                                         </td>
                                         <td>
-                                            <VerticalPathwaySetScoresView data={this.state.pathwayData}
-                                                                          cohortIndex={1}/>
+                                            <VerticalPathwaySetScoresView
+                                                data={this.state.pathwayData}
+                                                cohortIndex={1}
+                                                width={200}
+                                                labelHeight={18}
+                                            />
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
 
                             </Col>
-                            <Col md={10}>
+                            <Col md={9}>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
