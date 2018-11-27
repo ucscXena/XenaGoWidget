@@ -64,3 +64,8 @@ body {
     color: green;
     border-radius: 5px;
 }
+
+.mouseHover :hover{
+    cursor: pointer;
+}
+

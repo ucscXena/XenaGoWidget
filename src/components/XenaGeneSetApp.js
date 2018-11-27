@@ -11,6 +11,9 @@ import {AppStorageHandler} from "./AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
+import FaArrowRight from 'react-icons/lib/fa/arrow-right';
+import BaseStyle from '../../src/base.css';
 
 
 const EXPAND_HEIGHT = 800;
@@ -430,6 +433,7 @@ export default class XenaGeneSetApp extends PureComponent {
         const BORDER_OFFSET = 2;
 
         console.log('XGSA input state', this.state)
+        let leftPadding = this.state.showPathwayDetails ? 180 : 20;
 
         return (
             <div>
@@ -446,16 +450,16 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <Grid>
                         <Row>
-                            <Col md={this.state.showPathwayDetails ?  4: 2} style={{marginTop: 15}}>
+                            <Col md={this.state.showPathwayDetails ? 4 : 2} style={{marginTop: 15}}>
                                 <table>
                                     <tbody>
                                     <tr>
-                                        <td width={this.state.showPathwayDetails ? 200 : 20}>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20} style={{paddingLeft:leftPadding}}>
                                             {this.state.showPathwayDetails &&
-                                            <button onClick={this.hideGeneSetDetail}>Hide</button>
+                                            <FaArrowRight onClick={this.hideGeneSetDetail} className={BaseStyle.mouseHover}/>
                                             }
                                             {!this.state.showPathwayDetails &&
-                                            <button onClick={this.showGeneSetDetail}>Show</button>
+                                            <FaArrowLeft onClick={this.showGeneSetDetail}  className={BaseStyle.mouseHover}/>
                                             }
                                         </td>
                                         <td>
@@ -463,10 +467,10 @@ export default class XenaGeneSetApp extends PureComponent {
                                         </td>
                                         <td width={this.state.showPathwayDetails ? 200 : 20}>
                                             {this.state.showPathwayDetails &&
-                                            <button onClick={this.hideGeneSetDetail}>Hide</button>
+                                            <FaArrowLeft onClick={this.hideGeneSetDetail} className={BaseStyle.mouseHover}/>
                                             }
                                             {!this.state.showPathwayDetails &&
-                                            <button onClick={this.showGeneSetDetail}>Show</button>
+                                            <FaArrowRight onClick={this.showGeneSetDetail}  className={BaseStyle.mouseHover}/>
                                             }
                                         </td>
                                     </tr>
