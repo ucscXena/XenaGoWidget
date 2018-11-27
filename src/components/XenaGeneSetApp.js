@@ -275,7 +275,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
-        console.log('calling geneHover')
+        console.log('calling geneHover',geneHover ? geneHover.cohortIndex : null,geneHover)
         this.setState(
             {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
@@ -285,6 +285,7 @@ export default class XenaGeneSetApp extends PureComponent {
             let myIndex = geneHover.cohortIndex;
             this.state.apps.forEach((app, index) => {
                 if (index !== myIndex) {
+                    console.log('setting set gene hover for ',index,geneHover,'from',myIndex)
                     this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
                 }
             });
