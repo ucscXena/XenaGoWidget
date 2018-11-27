@@ -1,6 +1,7 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
+import {transpose} from '../functions/SortFunctions'
 import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 import {GENE_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
@@ -33,6 +34,12 @@ function regionColor(data) {
     return 255 * p / scale;
 }
 
+function pathwayColor(data, geneCount) {
+    let p = sum(data) / geneCount;
+    let scale = 5;
+    return 255 * p / scale;
+}
+
 function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let height = totalHeight - labelHeight;
     let tissueCount = data[0].length;
@@ -41,6 +48,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 
     let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
 
+    // for each row / geneSet
     layout.forEach(function (el, i) {
         // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
@@ -60,6 +68,9 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
                 let pxRow = y * width,
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
+                if(buffStart< 500){
+                    console.log('expression bit',buffStart,buffEnd, el,rs, r,pxRow, y, width)
+                }
                 for (let l = buffStart; l < buffEnd; l += 4) {
                     img.data[l] = colorMask[0];
                     img.data[l + 1] = colorMask[1];
@@ -76,21 +87,21 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 /**
  * TODO: handle for other type
  * @param index
- * @param width
+ * @param pathwayHeight
  * @param count
  */
-function findPathwayRegions(index, width, count) {
+function findPathwayRegions(index, pathwayHeight, count) {
     // Find pixel regions having the same set of samples, e.g.
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
     // range of samples in the region.
     let regions = reduceByKey(range(count),
-        i => ~~(i * width / count),
-        (i, x, r) => r ? {...r, end: i} : {x, start: i, end: i});
+        i => ~~(i * pathwayHeight / count),
+        (i, y, r) => r ? {...r, end: i} : {y, start: i, end: i});
     let starts = Array.from(regions.keys());
-    let se = partitionN(starts, 2, 1, [width]);
+    let se = partitionN(starts, 2, 1, [pathwayHeight]);
 
     // XXX side-effecting map
-    map2(starts, se, (start, [s, e]) => regions.get(start).width = e - s);
+    map2(starts, se, (start, [s, e]) => regions.get(start).pathwayHeight = e - s);
 
     return regions;
 }
@@ -98,11 +109,16 @@ function findPathwayRegions(index, width, count) {
 
 function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     // let height = totalHeight - labelHeight;
-    console.log('height: ',totalHeight,layout.length,labelHeight)
-    console.log('input length: ',data)
-    let tissueCount = data.length;
-    let regions = findPathwayRegions(0, width, tissueCount);
-    console.log('regions',regions)
+    console.log('height: ', totalHeight, layout.length, labelHeight)
+    let tissueCount = data[0].length;
+    let pathwayCount = data.length;
+    console.log('input data : ', tissueCount, pathwayCount, data)
+    console.log('total height: ',totalHeight)
+
+    let transposedData = transpose(data);
+    console.log('transpoed', transposedData)
+
+
     let img = ctx.createImageData(width, totalHeight);
 
     // let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
@@ -113,33 +129,77 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
     // console.log('totalHeight',totalHeight);
     // ctx.fillRect(0, 0, width, totalHeight);
 
+    // let regions = findPathwayRegions(0, totalHeight, pathwayCount);
+    let sampleRegions = findRegions(0, totalHeight,  tissueCount);
+    // let regions = findRegions(0, totalHeight,  pathwayCount);
+    console.log('regions', sampleRegions);
+    //
+    // // for each tissue / sample
+    // // let's assume a width of 1 for now
+    // // let's assume a height of 1 as well
+    // transposedData.forEach((sampleColumn, sampleIndex) => {
+    //
+    //     sampleColumn.forEach((pathwayPoint, pathwayIndex) => {
+    //         let color = pathwayColor(pathwayPoint);
+    //         // console.log('color',color)
+    //         color = 50 ;
+    //
+    //         // let buffStart = 0;
+    //         // let buffEnd = 4;
+    //         let layoutRegion = layout[pathwayIndex];
+    //         let pxRow = pathwayIndex * labelHeight,
+    //             buffStart = (pxRow + layoutRegion.start) * 4,
+    //             buffEnd = (pxRow + layoutRegion.start + layoutRegion.size) * 4;
+    //
+    //         // console.log('buffer Range',buffStart,buffEnd)
+    //         for (let l = buffStart; l < buffEnd; l += 4) {
+    //             // console.log('coloring a point',cocolor)
+    //             img.data[l] = colorMask[0];
+    //             img.data[l + 1] = colorMask[1];
+    //             img.data[l + 2] = colorMask[2];
+    //             img.data[l + 3] = color;
+    //         }
+    //         ctx.putImageData(img, 0, 0);
+    //     });
+    //
+    // });
+
+
     layout.forEach(function (el, i) {
     //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
+        // let rowData = transposedData[i];
+        // console.log('el',el)
         // console.log('row data',rowData)
-        if (cohortIndex === 0) {
-            rowData = data[i].reverse();
-        }
+        // if (cohortIndex === 0) {
+        //     rowData = data[i].reverse();
+        // }
+        // let pathway =
 
         let offsetHeight = 0 ;
         // XXX watch for poor iterator performance in this for...of.
-        for (let rs of regions.keys()) {
-            let r = regions.get(rs);
+        for (let rs of sampleRegions.keys()) {
+            let r = sampleRegions.get(rs);
             let d = rowData.slice(r.start, r.end + 1);
 
+            // TODO: should pass in geneList for each pathway and amortize over that . . .
             let color = regionColor(d);
 
-            // console.log('setting for color', rs, r)
-            for (let x = rs + offsetHeight; x < rs + r.width + offsetHeight; ++x) {
+            // console.log('setting for color',color, rs, r)
+            for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
+                // for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
                 // console.log('in y, etc.',x)
-                let pxRow = x * width,
+                let pxRow = y * width ,
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
+                if(buffStart< 500){
+                    console.log('overview bit',buffStart,buffEnd, el,rs, r,pxRow, y, width)
+                }
                 for (let l = buffStart; l < buffEnd; l += 4) {
                     img.data[l] = colorMask[0];
                     img.data[l + 1] = colorMask[1];
                     img.data[l + 2] = colorMask[2];
-                    img.data[l + 3] = color;
+                    img.data[l + 3] = color  ;
                 }
             }
         }
@@ -168,7 +228,7 @@ export default {
     drawPathwayView(vg, props) {
         let {width, layout, labelHeight, cohortIndex, associatedData} = props;
 
-        console.log('draw pathway view',props)
+        console.log('draw pathway view', props)
         let totalHeight = labelHeight * layout.length;
         clearScreen(vg, width, totalHeight);
         //
@@ -177,7 +237,7 @@ export default {
         // }
         //
         // drawPathwayData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getPathwayColorMask(), cohortIndex);
-        drawPathwayStub(vg, width, totalHeight,layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
+        drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
 
     },
 

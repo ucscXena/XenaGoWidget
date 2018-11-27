@@ -2,7 +2,7 @@ import React from "react";
 import cluster from '../functions/Cluster';
 import {sum, sumInstances} from '../functions/util';
 
-function transpose(a) {
+export function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
     // or in more modern dialect
     return a.length === 0 ? a : a[0].map((_, c) => a.map(r => r[c]));
