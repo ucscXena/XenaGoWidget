@@ -16,22 +16,28 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
     render(){
 
-        const { data, cohortIndex, labelHeight, width} = this.props.data ;
+        const { data, cohortIndex, labelHeight, width} = this.props ;
         console.log('input data,',data)
-        // let layout = (width, {length = 0} = {}) => partition(width, length);
+        if(!data || !data.pathways){
+            return <div>No data {cohortIndex}</div>
+        }
+        // need a size and vertical start for each
+        let layout = data.pathways.map( ( p , index ) => {
+           return { start: index * labelHeight, size: labelHeight }
+        } );
+        console.log('layout',layout)
+        const totalHeight = layout.length *  labelHeight ;
         // let layoutData = layout(width, returnedValue.data);
         return (
             <div>
-                Left or Right Details
                 <CanvasDrawing
-                    // width={width}
-                    // height={height}
-                    // layout={layout}
-                    // referenceLayout={referenceLayout}
-                    // filter={filterString}
+                    {...this.props}
+                    width={width}
+                    layout={layout}
                     draw={DrawFunctions.drawPathwayView}
-                    // selectedPathways={data.selectedPathways}
                     cohortIndex={cohortIndex}
+                    labelHeight={labelHeight}
+                    height={totalHeight}
                     data={data}
                 />
             </div>

@@ -52,6 +52,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedPathways: [],
             geneData: [{}, {}],
             pathwayData: [{}, {}],
+            showPathwayDetails: true,
         };
     }
 
@@ -411,10 +412,24 @@ export default class XenaGeneSetApp extends PureComponent {
         )
     };
 
+    hideGeneSetDetail = () => {
+        this.setState({
+            showPathwayDetails: false
+        })
+    }
+
+    showGeneSetDetail = () => {
+        this.setState({
+            showPathwayDetails: true
+        })
+    }
+
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
-        const BORDER_OFFSET = 0;
+        const BORDER_OFFSET = 2;
+
+        console.log('XGSA input state', this.state)
 
         return (
             <div>
@@ -431,28 +446,40 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <Grid>
                         <Row>
-                            <Col md={this.state.selectedPathways.length === 0 ? 0 : 3} style={{marginTop: 15}}>
+                            <Col md={this.state.showPathwayDetails ?  4: 2} style={{marginTop: 15}}>
                                 <table>
                                     <tbody>
                                     <tr>
-                                        <td>
-                                            <button>Hide</button>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20}>
+                                            {this.state.showPathwayDetails &&
+                                            <button onClick={this.hideGeneSetDetail}>Hide</button>
+                                            }
+                                            {!this.state.showPathwayDetails &&
+                                            <button onClick={this.showGeneSetDetail}>Show</button>
+                                            }
                                         </td>
                                         <td>
                                             <LabelTop width={200}/>
                                         </td>
-                                        <td>
-                                            <button>Hide</button>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20}>
+                                            {this.state.showPathwayDetails &&
+                                            <button onClick={this.hideGeneSetDetail}>Hide</button>
+                                            }
+                                            {!this.state.showPathwayDetails &&
+                                            <button onClick={this.showGeneSetDetail}>Show</button>
+                                            }
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20}>
+                                            {this.state.showPathwayDetails &&
                                             <VerticalPathwaySetScoresView
-                                                data={this.state.pathwayData}
+                                                data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
                                                 width={200}
-                                                labelHeight={18}
+                                                labelHeight={18 + 2 * BORDER_OFFSET}
                                             />
+                                            }
                                         </td>
                                         <td>
                                             <GeneSetSvgSelector pathways={pathways}
@@ -465,20 +492,22 @@ export default class XenaGeneSetApp extends PureComponent {
                                                                 topOffset={14}
                                                                 width={200}/>
                                         </td>
-                                        <td>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20}>
+                                            {this.state.showPathwayDetails &&
                                             <VerticalPathwaySetScoresView
-                                                data={this.state.pathwayData}
+                                                data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
                                                 width={200}
-                                                labelHeight={18}
+                                                labelHeight={18 + 2 * BORDER_OFFSET}
                                             />
+                                            }
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
 
                             </Col>
-                            <Col md={9}>
+                            <Col md={8}>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
@@ -497,7 +526,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-1'
                                               renderHeight={this.state.renderHeight}
-                                              renderOffset={(this.state.renderHeight + BORDER_OFFSET)}
+                                              renderOffset={(this.state.renderHeight)}
                                               pathways={pathways}
                                               hoveredPathways={this.state.hoveredPathways}
                                               selectedPathways={this.state.selectedPathways}

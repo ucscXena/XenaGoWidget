@@ -135,6 +135,55 @@ function drawPathwayData(ctx, width, totalHeight, layout, data, labelHeight, col
     });
 }
 
+function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
+    // let height = totalHeight - labelHeight;
+    console.log('height: ',totalHeight,layout.length,labelHeight)
+    console.log('input length: ',data)
+    let tissueCount = data.samples.length;
+    // let regions = findPathwayRegions(0, height, tissueCount);
+    // let img = ctx.createImageData(width, totalHeight);
+
+    // let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
+    ctx.save();
+    ctx.fillStyle = '#333333'; // sets the color to fill in the rectangle with
+    ctx.strokeStyle = '#AAAAAA'; // sets the color to fill in the rectangle with
+    console.log('width',width);
+    console.log('totalHeight',totalHeight);
+    ctx.fillRect(0, 0, width, totalHeight);
+
+    // layout.forEach(function (el, i) {
+    //     // TODO: may be faster to transform the whole data cohort at once
+    //     let rowData = data[i];
+    //     if (cohortIndex === 0) {
+    //         rowData = data[i].reverse();
+    //     }
+    //
+    //     // let reverseMap = new Map(Array.from(regions).reverse());
+    //     // XXX watch for poor iterator performance in this for...of.
+    //     for (let rs of regions.keys()) {
+    //         let r = regions.get(rs);
+    //         let d = rowData.slice(r.start, r.end + 1);
+    //
+    //         let color = regionColor(d);
+    //
+    //         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
+    //             let pxRow = y * width,
+    //                 buffStart = (pxRow + el.start) * 4,
+    //                 buffEnd = (pxRow + el.start + el.size) * 4;
+    //             for (let l = buffStart; l < buffEnd; l += 4) {
+    //                 img.data[l] = colorMask[0];
+    //                 img.data[l + 1] = colorMask[1];
+    //                 img.data[l + 2] = colorMask[2];
+    //                 img.data[l + 3] = color;
+    //             }
+    //         }
+    //     }
+    //
+    //     ctx.putImageData(img, 0, 0);
+    // });
+}
+
+
 export default {
 
 
@@ -152,15 +201,18 @@ export default {
     },
 
     drawPathwayView(vg, props) {
-        let {width, height, layout, labelHeight, cohortIndex, associateData} = props;
+        let {width, layout, labelHeight, cohortIndex, data} = props;
 
-        clearScreen(vg, width, height);
+        console.log('draw pathway view',props)
+        let totalHeight = labelHeight * layout.length;
+        clearScreen(vg, width, totalHeight);
         //
         // if (associateData.length === 0) {
         //     return;
         // }
         //
         // drawPathwayData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getPathwayColorMask(), cohortIndex);
+        drawPathwayStub(vg, width, totalHeight,layout, data, labelHeight, getPathwayColorMask(), cohortIndex);
 
     },
 
