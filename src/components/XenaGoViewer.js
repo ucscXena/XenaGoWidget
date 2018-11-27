@@ -119,14 +119,12 @@ export default class XenaGoViewer extends PureComponent {
 
         let expression = this.props.geneDataStats ? this.props.geneDataStats.find(g => g.gene[0] === newHover[0]) : {};
 
-
         let hoverData = {
             cohortIndex: this.state.key,
             tissue: "Header",
             expression: expression,
             pathway: genePathwayHover,
         };
-        console.log('setting expression in setGheneHover from ',this.state.key,this.props.geneDataStats,hoverData);
         this.setState(
             {
                 hoveredPathways: newHover,
