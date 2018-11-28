@@ -102,7 +102,7 @@ class PathwayScoresView extends PureComponent {
     }
 
     componentDidUpdate(){
-        this.props.shareGlobalGeneData(this.props.data.pathways,this.props.cohortIndex);
+        this.props.shareGlobalGeneData( this.props.data.pathways, this.props.cohortIndex);
     }
 
     onMouseOut = (event) => {
@@ -264,7 +264,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
-        // this.props.shareGlobalGeneData( returnedValue.pathways, cohortIndex );
 
         return (
 
