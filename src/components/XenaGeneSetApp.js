@@ -360,7 +360,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData))
+        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
@@ -382,19 +382,44 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
+    calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
+        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
+        hashAssociation.filter = filter;
+        hashAssociation.min = min;
+        hashAssociation.cohortIndex = cohortIndex;
+
+        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        let associatedData = findAssociatedData(hashAssociation);
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
+
+        let hashForPrune = {
+            associatedData,
+            pathways: hashAssociation.pathways,
+            filterMin
+        };
+        let prunedColumns = findPruneData(hashForPrune);
+        prunedColumns.samples = pathwayData.samples;
+
+        return associatedData.map(pathway => {
+            return sum(pathway);
+        });
+    }
+
     populateGlobal = (pathwayData, cohortIndex) => {
         let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
 
         let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
+        let totals = this.calculatePathwayScore(pathwayData, filter, 0, cohortIndex);
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
-            let density = densities[index];
             if (cohortIndex === 0) {
-                p.firstDensity = density;
+                p.firstDensity = densities[index];
+                p.firstTotal = totals[index] ;
                 p.firstNumSamples = maxSamplesAffected;
             }
             else {
-                p.secondDensity = density;
+                p.secondDensity = densities[index];
+                p.secondTotal = totals[index] ;
                 p.secondNumSamples = maxSamplesAffected;
             }
             return p;

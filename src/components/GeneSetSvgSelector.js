@@ -130,6 +130,8 @@ export class GeneSetSvgSelector extends PureComponent {
                 gene: r.gene,
                 firstDensity: r.firstDensity,
                 secondDensity: r.secondDensity,
+                firstTotal: r.firstTotal,
+                secondTotal: r.secondTotal,
                 firstNumSamples: r.firstNumSamples,
                 secondNumSamples: r.secondNumSamples,
             };

@@ -20,9 +20,9 @@ export default class HoverGeneView extends PureComponent {
     }
 
     getAffectedPathway(data) {
-        let returnString = data.expression.affected + '/' + (data.expression.total * data.pathway.gene.length) ;
+        let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length) ;
         returnString += '  (';
-        returnString += ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total* data.pathway.gene.length)) * 100.0).toFixed(0);
+        returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total* data.pathway.gene.length)) * 100.0).toFixed(0);
         returnString += '%)';
         return returnString;
 
