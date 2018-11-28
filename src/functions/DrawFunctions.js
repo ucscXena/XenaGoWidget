@@ -110,6 +110,8 @@ function findPathwayRegions(pathwayWidth, count) {
 function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let tissueCount = data[0].length;
 
+    let transposedData = transpose(data);
+
     let img = ctx.createImageData(width, totalHeight);
     let sampleRegions = findPathwayRegions(width, tissueCount);
 
@@ -118,7 +120,7 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
         if (cohortIndex === 0) {
-            rowData = data[i].reverse();
+            rowData = rowData.reverse();
         }
 
         // XXX watch for poor iterator performance in this for...of.
@@ -168,16 +170,8 @@ export default {
 
     drawPathwayView(vg, props) {
         let {width, layout, labelHeight, cohortIndex, associatedData} = props;
-
-        console.log('draw pathway view', props)
         let totalHeight = labelHeight * layout.length;
         clearScreen(vg, width, totalHeight);
-        //
-        // if (associateData.length === 0) {
-        //     return;
-        // }
-        //
-        // drawPathwayData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getPathwayColorMask(), cohortIndex);
         drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
 
     },
