@@ -113,13 +113,13 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
     let img = ctx.createImageData(width, totalHeight);
     let sampleRegions = findPathwayRegions(width, tissueCount);
 
-    if (cohortIndex == 1) {
-        console.log(sampleRegions)
-    }
 
     layout.forEach(function (el, i) {
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
+        if (cohortIndex === 0) {
+            rowData = data[i].reverse();
+        }
 
         // XXX watch for poor iterator performance in this for...of.
         for (let rs of sampleRegions.keys()) {
