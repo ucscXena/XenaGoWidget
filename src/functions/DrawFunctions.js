@@ -68,9 +68,9 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
                 let pxRow = y * width,
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4;
-                if (buffStart < 500) {
-                    console.log('expression bit', buffStart, buffEnd, el, rs, r, pxRow, y, width)
-                }
+                // if (buffStart < 500) {
+                // console.log('expression bit', buffStart, buffEnd, el, rs, r, pxRow, y, width)
+                // }
                 for (let l = buffStart; l < buffEnd; l += 4) {
                     img.data[l] = colorMask[0];
                     img.data[l + 1] = colorMask[1];
@@ -144,9 +144,9 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
         // }
         // let pathway =
 
-        // let color = i % 2 === 0 ? 250 : 0;
+        let color = i % 2 === 0 ? 250 : 0;
         // color = color % 255 ;
-        let color = 255 ;
+        // let color = 255 ;
 
         // write out a single row
         // console.log('rs',rs,r,d,el)
@@ -154,13 +154,19 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
 
         let pxRowStart = el.start * 4 * img.width;
         let buffStart = pxRowStart;
-        let buffEnd = pxRowStart + (img.width * 4);
+        let buffEnd = pxRowStart + (img.width * 4 * labelHeight);
 
-        console.log('el',i,el,pxRowStart,buffStart,buffEnd);
+        console.log('el', i, el, pxRowStart, buffStart, buffEnd);
 
         // var buf8 = new Uint8ClampedArray(buf);
         // var data = new Uint32Array(buf);
-        for (let l = buffStart; l < buffEnd; l += 4) {
+        // only doing column 1
+
+        // let columns = [0];
+
+        // for (let l = buffStart; l < buffEnd; l += 4  ) { // draws a block
+       
+        for (let l = buffStart; l < buffEnd; l += 4 * img.width) {  // draws a column
 
             // data[y * canvasWidth + x] =
             //     (255   << 24) |	// alpha
@@ -213,41 +219,41 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
         //         // }
         //     }
         // //
-        });
-        ctx.putImageData(img, 0, 0);
-    }
+    });
+    ctx.putImageData(img, 0, 0);
+}
 
 
-    export default {
+export default {
 
 
-        drawTissueView(vg, props) {
-            let {width, height, layout, cohortIndex, associateData} = props;
+    drawTissueView(vg, props) {
+        let {width, height, layout, cohortIndex, associateData} = props;
 
-            clearScreen(vg, width, height);
+        clearScreen(vg, width, height);
 
-            if (associateData.length === 0) {
-                return;
-            }
+        if (associateData.length === 0) {
+            return;
+        }
 
-            drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+        drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
 
-        },
+    },
 
-        drawPathwayView(vg, props) {
-            let {width, layout, labelHeight, cohortIndex, associatedData} = props;
+    drawPathwayView(vg, props) {
+        let {width, layout, labelHeight, cohortIndex, associatedData} = props;
 
-            console.log('draw pathway view', props)
-            let totalHeight = labelHeight * layout.length;
-            clearScreen(vg, width, totalHeight);
-            //
-            // if (associateData.length === 0) {
-            //     return;
-            // }
-            //
-            // drawPathwayData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getPathwayColorMask(), cohortIndex);
-            drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
+        console.log('draw pathway view', props)
+        let totalHeight = labelHeight * layout.length;
+        clearScreen(vg, width, totalHeight);
+        //
+        // if (associateData.length === 0) {
+        //     return;
+        // }
+        //
+        // drawPathwayData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getPathwayColorMask(), cohortIndex);
+        drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
 
-        },
+    },
 
-    }
+}
