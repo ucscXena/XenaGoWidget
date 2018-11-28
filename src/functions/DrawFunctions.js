@@ -12,7 +12,7 @@ function clearScreen(vg, width, height) {
     vg.fillRect(0, 0, width, height);
 }
 
-function findRegions(index, height, count) {
+function findRegions(height, count) {
     // Find pixel regions having the same set of samples, e.g.
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
     // range of samples in the region.
@@ -43,7 +43,7 @@ function pathwayColor(data, geneCount) {
 function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let height = totalHeight - labelHeight;
     let tissueCount = data[0].length;
-    let regions = findRegions(0, height, tissueCount);
+    let regions = findRegions(height, tissueCount);
     let img = ctx.createImageData(width, totalHeight);
 
     let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
@@ -87,138 +87,58 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 /**
  * TODO: handle for other type
  * @param index
- * @param pathwayHeight
+ * @param pathwayWidth
  * @param count
  */
-function findPathwayRegions(index, pathwayHeight, count) {
+function findPathwayRegions(pathwayWidth, count) {
     // Find pixel regions having the same set of samples, e.g.
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
     // range of samples in the region.
     let regions = reduceByKey(range(count),
-        i => ~~(i * pathwayHeight / count),
-        (i, y, r) => r ? {...r, end: i} : {y, start: i, end: i});
+        i => ~~(i * pathwayWidth / count),
+        (i, x, r) => r ? {...r, end: i} : {x, start: i, end: i});
     let starts = Array.from(regions.keys());
-    let se = partitionN(starts, 2, 1, [pathwayHeight]);
+    let se = partitionN(starts, 2, 1, [pathwayWidth]);
 
     // XXX side-effecting map
-    map2(starts, se, (start, [s, e]) => regions.get(start).height = e - s);
+    map2(starts, se, (start, [s, e]) => regions.get(start).width = e - s);
 
     return regions;
 }
 
 
 function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
-    // let height = totalHeight - labelHeight;
-    console.log('height: ', totalHeight, layout.length, labelHeight)
     let tissueCount = data[0].length;
-    let pathwayCount = data.length;
-    console.log('input data : ', tissueCount, pathwayCount, data)
-    console.log('total height: ', totalHeight)
-
-    let transposedData = transpose(data);
-    console.log('transpoed', transposedData)
-
 
     let img = ctx.createImageData(width, totalHeight);
-
-    // let offsetHeight = cohortIndex === 0 ? 0 : labelHeight;
-    // ctx.save();
-    // ctx.fillStyle = '#333333'; // sets the color to fill in the rectangle with
-    // ctx.strokeStyle = '#AAAAAA'; // sets the color to fill in the rectangle with
-    // console.log('width',width);
-    // console.log('totalHeight',totalHeight);
-    // ctx.fillRect(0, 0, width, totalHeight);
-
-    let sampleRegions = findPathwayRegions(0, totalHeight, tissueCount);
-    // let sampleRegions = findRegions(0, totalHeight,  pathwayCount);
-    console.log('regions', sampleRegions)
+    let sampleRegions = findPathwayRegions(width, tissueCount);
 
     layout.forEach(function (el, i) {
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
-        // let rowData = transposedData[i];
-        // console.log('el',el)
-        // console.log('row data',rowData)
-        // if (cohortIndex === 0) {
-        //     rowData = data[i].reverse();
-        // }
-        // let pathway =
-
-        let color = i % 2 === 0 ? 250 : 0;
-        // color = color % 255 ;
-        // let color = 255 ;
-
-        // write out a single row
-        // console.log('rs',rs,r,d,el)
-        // let pxRowStart = rs.y * img.width * 4 ;
-
-        let pxRowStart = el.start * 4 * img.width;
-        let buffStart = pxRowStart;
-        let buffEnd = pxRowStart + (img.width * 4 * labelHeight);
-
-        console.log('el', i, el, pxRowStart, buffStart, buffEnd);
-
-        // var buf8 = new Uint8ClampedArray(buf);
-        // var data = new Uint32Array(buf);
-        // only doing column 1
-
-        // let columns = [0];
-
-        // for (let l = buffStart; l < buffEnd; l += 4  ) { // draws a block
-       
-        for (let l = buffStart; l < buffEnd; l += 4 * img.width) {  // draws a column
-
-            // data[y * canvasWidth + x] =
-            //     (255   << 24) |	// alpha
-            //     (value << 16) |	// blue
-            //     (value <<  8) |	// green
-            //     value;		// red
-
-            // imageData.data.set(buf8);
-
-            img.data[l] = colorMask[0];
-            img.data[l + 1] = colorMask[1];
-            img.data[l + 2] = colorMask[2];
-            img.data[l + 3] = color;
-        }
-
 
         // XXX watch for poor iterator performance in this for...of.
-        //     for (let rs of sampleRegions.keys()) {
-        //         let r = sampleRegions.get(rs);
-        //         let d = rowData.slice(r.start, r.end + 1);
-        //
-        //         // TODO: should pass in geneList for each pathway and amortize over that . . .
-        //         // let color = regionColor(d);
-        //         // color = color > 255 ? 255 : color ;
-        //         let color  = i % 2 === 0 ? 250 : 0 ;
-        //         // color = color % 255 ;
-        //         // let color =
-        //
-        //         // write out a single row
-        //         console.log('rs',rs,r,d,el)
-        //         let pxRowStart = rs.y * img.width * 4 ;
-        //
-        //         // console.log('setting for color',color, rs, r)
-        //         // for (let y = rs ; y < rs + r.height ; ++y) {
-        //         //     // for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-        //         //     // console.log('in y, etc.',x)
-        //         //     let pxRow = y * width ,
-        //         //         buffStart = (pxRow + el.start) * 4,
-        //         //         buffEnd = (pxRow + el.start + labelHeight) * 4;
-        //         //     if(buffStart< 500){
-        //         //         console.log('overview bit',buffStart,buffEnd, el,rs, r,pxRow, y, width,d,color)
-        //         //     }
-        //         //     // TODO: use a shift here
-        //         //     for (let l = buffStart; l < buffEnd; l += 4) {
-        //         //         img.data[l] = colorMask[0];
-        //         //         img.data[l + 1] = colorMask[1];
-        //         //         img.data[l + 2] = colorMask[2];
-        //         //         img.data[l + 3] = color  ;
-        //         //     }
-        //         // }
-        //     }
-        // //
+        for (let rs of sampleRegions.keys()) {
+            let r = sampleRegions.get(rs);
+            let d = rowData.slice(r.start, r.end + 1);
+            //
+            //         // TODO: should pass in geneList for each pathway and amortize over that . . .
+            let color = regionColor(d);
+            color = color > 255 ? 255 : color;
+
+            let pxRow = el.start * 4 * img.width; // first column and row in the block
+
+            // start buffer at the correct column
+            let buffStart = pxRow + r.x * 4;
+            let buffEnd = buffStart + (r.x + img.width * 4 * labelHeight);
+
+            for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+                img.data[l] = colorMask[0];
+                img.data[l + 1] = colorMask[1];
+                img.data[l + 2] = colorMask[2];
+                img.data[l + 3] = color;
+            }
+        }
     });
     ctx.putImageData(img, 0, 0);
 }
