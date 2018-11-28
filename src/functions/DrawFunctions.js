@@ -131,39 +131,6 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
 
     // let regions = findPathwayRegions(0, totalHeight, pathwayCount);
     let sampleRegions = findRegions(0, totalHeight,  tissueCount);
-    // let regions = findRegions(0, totalHeight,  pathwayCount);
-    console.log('regions', sampleRegions);
-    //
-    // // for each tissue / sample
-    // // let's assume a width of 1 for now
-    // // let's assume a height of 1 as well
-    // transposedData.forEach((sampleColumn, sampleIndex) => {
-    //
-    //     sampleColumn.forEach((pathwayPoint, pathwayIndex) => {
-    //         let color = pathwayColor(pathwayPoint);
-    //         // console.log('color',color)
-    //         color = 50 ;
-    //
-    //         // let buffStart = 0;
-    //         // let buffEnd = 4;
-    //         let layoutRegion = layout[pathwayIndex];
-    //         let pxRow = pathwayIndex * labelHeight,
-    //             buffStart = (pxRow + layoutRegion.start) * 4,
-    //             buffEnd = (pxRow + layoutRegion.start + layoutRegion.size) * 4;
-    //
-    //         // console.log('buffer Range',buffStart,buffEnd)
-    //         for (let l = buffStart; l < buffEnd; l += 4) {
-    //             // console.log('coloring a point',cocolor)
-    //             img.data[l] = colorMask[0];
-    //             img.data[l + 1] = colorMask[1];
-    //             img.data[l + 2] = colorMask[2];
-    //             img.data[l + 3] = color;
-    //         }
-    //         ctx.putImageData(img, 0, 0);
-    //     });
-    //
-    // });
-
 
     layout.forEach(function (el, i) {
     //     // TODO: may be faster to transform the whole data cohort at once
