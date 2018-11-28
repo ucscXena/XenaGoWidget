@@ -444,20 +444,19 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({
             showPathwayDetails: false
         })
-    }
+    };
 
     showGeneSetDetail = () => {
         this.setState({
             showPathwayDetails: true
         })
-    }
+    };
 
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
         const BORDER_OFFSET = 2;
 
-        console.log('XGSA input state', this.state)
         let leftPadding = this.state.showPathwayDetails ? 180 : 20;
 
         return (

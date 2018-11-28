@@ -27,7 +27,6 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
         let { data, cohortIndex, filter, selectedSort, labelHeight, width} = this.props ;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
-        console.log('input data,',data)
         if(!data || !data.pathways){
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B }</div>
         }
