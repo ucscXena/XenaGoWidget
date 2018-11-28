@@ -487,7 +487,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             }
                                         </td>
                                         <td>
-                                            <LabelTop width={200}/>
+                                            <LabelTop width={180}/>
                                         </td>
                                         <td width={this.state.showPathwayDetails ? 200 : 20}>
                                             {this.state.showPathwayDetails &&
