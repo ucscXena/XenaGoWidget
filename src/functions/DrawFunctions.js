@@ -176,7 +176,6 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
         // }
         // let pathway =
 
-        let offsetHeight = 0 ;
         // XXX watch for poor iterator performance in this for...of.
         for (let rs of sampleRegions.keys()) {
             let r = sampleRegions.get(rs);
@@ -184,16 +183,18 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
 
             // TODO: should pass in geneList for each pathway and amortize over that . . .
             let color = regionColor(d);
+            color = color > 255 ? 255 : color ;
+            // color = color % 255 ;
 
             // console.log('setting for color',color, rs, r)
-            for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
+            for (let y = rs ; y < rs + r.height ; ++y) {
                 // for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
                 // console.log('in y, etc.',x)
                 let pxRow = y * width ,
                     buffStart = (pxRow + el.start) * 4,
-                    buffEnd = (pxRow + el.start + el.size) * 4;
+                    buffEnd = (pxRow + el.start + labelHeight) * 4;
                 if(buffStart< 500){
-                    console.log('overview bit',buffStart,buffEnd, el,rs, r,pxRow, y, width)
+                    console.log('overview bit',buffStart,buffEnd, el,rs, r,pxRow, y, width,d,color)
                 }
                 for (let l = buffStart; l < buffEnd; l += 4) {
                     img.data[l] = colorMask[0];
