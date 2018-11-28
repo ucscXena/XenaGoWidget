@@ -414,12 +414,12 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
                 p.firstDensity = densities[index];
-                p.firstTotal = totals[index] ;
+                p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
             }
             else {
                 p.secondDensity = densities[index];
-                p.secondTotal = totals[index] ;
+                p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
             }
             return p;
@@ -458,6 +458,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <Row>
                             <Col md={this.state.selectedPathways.length === 0 ? 0 : 2} style={{marginTop: 15}}>
                                 <table>
+                                    <tbody>
                                     <tr>
                                         <td>
                                             <button>Hide</button>
@@ -488,6 +489,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalPathwaySetScoresView/>
                                         </td>
                                     </tr>
+                                    </tbody>
                                 </table>
 
                             </Col>
