@@ -113,6 +113,10 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
     let img = ctx.createImageData(width, totalHeight);
     let sampleRegions = findPathwayRegions(width, tissueCount);
 
+    if (cohortIndex == 1) {
+        console.log(sampleRegions)
+    }
+
     layout.forEach(function (el, i) {
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
@@ -129,14 +133,16 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
             let pxRow = el.start * 4 * img.width; // first column and row in the block
 
             // start buffer at the correct column
-            let buffStart = pxRow + r.x * 4;
-            let buffEnd = buffStart + (r.x + img.width * 4 * labelHeight);
+            for(let xPos = 0 ; xPos < r.width ; ++xPos){
+                let buffStart = pxRow + (xPos + r.x) * 4;
+                let buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
 
-            for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-                img.data[l] = colorMask[0];
-                img.data[l + 1] = colorMask[1];
-                img.data[l + 2] = colorMask[2];
-                img.data[l + 3] = color;
+                for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+                    img.data[l] = colorMask[0];
+                    img.data[l + 1] = colorMask[1];
+                    img.data[l + 2] = colorMask[2];
+                    img.data[l + 3] = color;
+                }
             }
         }
     });
