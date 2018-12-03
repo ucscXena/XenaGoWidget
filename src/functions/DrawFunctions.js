@@ -90,7 +90,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
  * @param pathwayWidth
  * @param count
  */
-function findPathwayRegions(pathwayWidth, count) {
+function findPathwayData(pathwayWidth, count) {
     // Find pixel regions having the same set of samples, e.g.
     // 10 samples in 1 px, or 1 sample over 10 px. Record the
     // range of samples in the region.
@@ -110,10 +110,10 @@ function findPathwayRegions(pathwayWidth, count) {
 function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let tissueCount = data[0].length;
 
-    let transposedData = transpose(data);
-
     let img = ctx.createImageData(width, totalHeight);
-    let sampleRegions = findPathwayRegions(width, tissueCount);
+    let sampleRegions = findPathwayData(width, tissueCount);
+
+    console.log('regions',sampleRegions)
 
 
     layout.forEach(function (el, i) {
@@ -164,6 +164,8 @@ export default {
             return;
         }
 
+        console.log('draw tissue view depth: ',associateData,layout);
+
         drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
 
     },
@@ -172,6 +174,9 @@ export default {
         let {width, layout, labelHeight, cohortIndex, associatedData} = props;
         let totalHeight = labelHeight * layout.length;
         clearScreen(vg, width, totalHeight);
+
+        console.log('draw pathway view depth: ',associatedData,layout);
+
         drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
 
     },
