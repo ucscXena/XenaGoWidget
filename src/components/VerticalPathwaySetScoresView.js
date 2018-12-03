@@ -27,6 +27,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
         let { data, cohortIndex, filter, selectedSort, labelHeight, width,selectedCohort} = this.props ;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
+
         if(!data || !data.pathways){
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B }</div>
         }
@@ -67,7 +68,9 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
+        console.log('hash association',hashAssociation)
         let associatedData = findAssociatedData(hashAssociation);
+        console.log('ass data',associatedData)
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 
         let hashForPrune = {
