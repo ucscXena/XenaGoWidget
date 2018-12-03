@@ -25,7 +25,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
     render(){
 
-        let { data, cohortIndex, filter, selectedSort, labelHeight, width} = this.props ;
+        let { data, cohortIndex, filter, selectedSort, labelHeight, width,selectedCohort} = this.props ;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
         if(!data || !data.pathways){
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B }</div>
@@ -47,6 +47,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         // TODO: fix filter somehow?
         filter = filter ? filter : 'All';
         selectedSort = selectedSort ? selectedSort : 'Cluster';
+        const min = 2 ;
 
         // call
 
@@ -57,12 +58,12 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
             geneList,
             pathways,
             samples,
-            // filter,
             filter,
-            // min,
+            min,
             cohortIndex,
-            // selectedCohort
+            selectedCohort
         };
+        console.log('selected cohort now!',selectedCohort)
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }

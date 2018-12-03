@@ -220,6 +220,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             cohortIndex,
             selectedCohort
         };
+        console.log('pathway score view: ',min,cohortIndex)
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }

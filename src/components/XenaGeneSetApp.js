@@ -362,6 +362,11 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+    getSelectedCohort(pathwayData){
+        if(this.state.cohortData){
+            return this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        }
+    }
 
     calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
@@ -369,7 +374,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
 
-        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -392,7 +397,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
 
-        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -506,6 +511,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={0}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
+                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[0])}
                                             />
                                             }
                                         </td>
@@ -527,6 +533,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={1}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
+                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[1])}
                                             />
                                             }
                                         </td>
