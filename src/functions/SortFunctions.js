@@ -157,61 +157,21 @@ export function clusterSort(prunedColumns) {
  * @param prunedColumns
  */
 export function clusterSampleSort(prunedColumns) {
-    console.log('purned columns: ', prunedColumns);
-
     // prunedColumns =
     // - data = 41 gene sets times N samples
     // - pathways = 41 gene set descriptions
     // - samples = N sample descriptions
-
-
-    let summedSamples = transpose(prunedColumns.data).map((d, index) => {
+    let transposedData = transpose(prunedColumns.data);
+    let summedSamples = transposedData.map((d, index) => {
         return {index: index, score: sum(d)}
     }).sort((a, b) => b.score - a.score);
-    console.log('summed samples ', summedSamples)
-    console.log('input data', prunedColumns.data)
-    console.log('input transposed data', transpose(prunedColumns.data))
-
-    let transposedData = [];
-    transpose(prunedColumns.data).forEach(  (d,index)  => {
-        transposedData[summedSamples[index].index] = d
-        // transposedData[index] = d
+    let sortedTransposedData = [];
+    summedSamples.forEach((d,i) => {
+        sortedTransposedData[i] = transposedData[d.index];
     });
-    // transpose(prunedColumns.data).forEach((d, index) => {
-    //     console.log('index',index,'d',sum(d));
-    //     console.log('vs samples ',summedSamples[index]);
-    //     transposedData[summedSamples[index].index] = d;
-    // });
-
-    console.log('transposed data',transposedData);
-    let untransposedData = transpose(transposedData);
-    console.log('UN transposed data',untransposedData);
-
-
-    // let sortedColumns = sortColumnDensities(prunedColumns);
-    //
-    // // let sortedPathways = scoreColumns(prunedColumns);
-    //
-    // sortedColumns.data.push(prunedColumns.samples);
-    //
-    // let renderedData = transpose(sortedColumns.data);
-    //
-    // renderedData = renderedData.sort(function (a, b) {
-    //     for (let index = 0; index < a.length; ++index) {
-    //         if (a[index] !== b[index]) {
-    //             return b[index] - a[index];
-    //         }
-    //     }
-    //     return sum(b) - sum(a)
-    // });
-    // renderedData = transpose(renderedData);
+    let untransposedData = transpose(sortedTransposedData);
     let returnColumns = prunedColumns;
-    // returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    // returnColumns.samples = sortedColumns.samples;
-    // returnColumns.pathways = sortedColumns.pathways;
-    // returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
     returnColumns.data = untransposedData;
-
     return returnColumns;
 }
 
