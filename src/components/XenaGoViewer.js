@@ -10,7 +10,7 @@ import {FilterSelector} from "./FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
-import {pick, pluck, flatten, isEqual} from 'underscore';
+import {pick, pluck, flatten} from 'underscore';
 import {SortSelector} from "./SortSelector";
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
@@ -22,6 +22,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "./AppStorageHandler";
 import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
+import FaDownload from 'react-icons/lib/fa/download';
 
 
 function lowerCaseCompareName(a, b) {
@@ -356,6 +357,10 @@ export default class XenaGoViewer extends PureComponent {
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
                                     />
                                     <CardMedia>
+                                        <Button onClick={this.callDownload} floating mini>
+                                            <FaDownload/>
+                                            {/*Download*/}
+                                        </Button>
                                         <SortSelector sortTypes={this.state.sortTypes}
                                                       selected={this.state.selectedGeneSort}
                                                       onChange={this.sortGeneType}/>
@@ -370,9 +375,6 @@ export default class XenaGoViewer extends PureComponent {
                                         <Dialog active={this.state.processing} title='Loading'>
                                             {this.state.selectedCohort}
                                         </Dialog>
-                                        <Button onClick={this.callDownload}>
-                                            Download
-                                        </Button>
                                     </CardMedia>
                                 </Card>
                             </Col>
