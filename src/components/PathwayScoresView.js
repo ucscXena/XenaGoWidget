@@ -10,6 +10,7 @@ import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/Sort
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
+import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
 export const GENESET_LABEL_HEIGHT = 150;
@@ -70,7 +71,7 @@ let pathwayIndexFromX = (x, layout) =>
     layout.findIndex(({start, size}) => start <= x && x < start + size);
 
 function getPointData(event, props) {
-    let {associateData, height, layout, cohortIndex,  data: { pathways, samples, sortedSamples}} = props;
+    let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
@@ -97,12 +98,12 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    componentWillMount(){
-        this.props.shareGlobalGeneData(this.props.data.pathways,this.props.cohortIndex);
+    componentWillMount() {
+        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
     }
 
-    componentDidUpdate(){
-        this.props.shareGlobalGeneData( this.props.data.pathways, this.props.cohortIndex);
+    componentDidUpdate() {
+        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
     }
 
     onMouseOut = (event) => {
@@ -206,6 +207,21 @@ const minColWidth = 12;
 
 export default class PathwayScoresViewCache extends PureComponent {
 
+
+    downloadData = (data) => {
+        let filename = "export.json";
+        let contentType = "application/json;charset=utf-8;";
+        // a hacky way to do this
+        let a = document.createElement('a');
+        a.download = filename;
+        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(data));
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    };
+
+
     render() {
         let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
 
@@ -267,22 +283,30 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         return (
 
-            <PathwayScoresView
-                {...this.props}
-                width={width}
-                layout={layoutData}
-                referenceLayout={referenceLayout}
-                hoveredPathways={hoveredPathways}
-                shareGlobalGeneData={shareGlobalGeneData}
-                data={{
-                    expression,
-                    pathways: returnedValue.pathways,
-                    referencePathways,
-                    samples,
-                    selectedPathways,
-                    sortedSamples: returnedValue.sortedSamples
-                }}
-                associateData={returnedValue.data}/>
+            <Grid>
+                <Row>
+                    <div>
+                        <button onClick={ () => this.downloadData(returnedValue.data)}>Download</button>
+                    </div>
+                    <PathwayScoresView
+                        {...this.props}
+                        width={width}
+                        layout={layoutData}
+                        referenceLayout={referenceLayout}
+                        hoveredPathways={hoveredPathways}
+                        shareGlobalGeneData={shareGlobalGeneData}
+                        data={{
+                            expression,
+                            pathways: returnedValue.pathways,
+                            referencePathways,
+                            samples,
+                            selectedPathways,
+                            sortedSamples: returnedValue.sortedSamples
+                        }}
+                        associateData={returnedValue.data}/>
+                </Row>
+            </Grid>
+
         )
             ;
     }

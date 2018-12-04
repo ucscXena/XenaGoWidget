@@ -12,7 +12,6 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten, isEqual} from 'underscore';
 import {SortSelector} from "./SortSelector";
-import {Button} from 'react-toolbox/lib/button';
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
