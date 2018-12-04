@@ -21,6 +21,7 @@ import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "./AppStorageHandler";
 import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+import Button from "react-toolbox/lib/button";
 
 
 function lowerCaseCompareName(a, b) {
@@ -46,6 +47,8 @@ const style = {
         expressionWidth: 400,
     },
 };
+
+const COHORT_PREFERRED_URL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
 
 
 export default class XenaGoViewer extends PureComponent {
@@ -223,8 +226,7 @@ export default class XenaGoViewer extends PureComponent {
 
     componentWillMount() {
         // TODO: this SHOULD just be loaded once, not a performance concern now, though.
-        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
-        fetch(cohortPreferredURL)
+        fetch(COHORT_PREFERRED_URL)
             .then(function (response) {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -325,6 +327,9 @@ export default class XenaGoViewer extends PureComponent {
     getGenesForPathways(pathways) {
         return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
     };
+    callDownload = () =>  {
+        this.refs['pathwayscoreview'].downloadData();
+    };
 
     render() {
 
@@ -365,6 +370,9 @@ export default class XenaGoViewer extends PureComponent {
                                         <Dialog active={this.state.processing} title='Loading'>
                                             {this.state.selectedCohort}
                                         </Dialog>
+                                        <Button onClick={this.callDownload}>
+                                            Download
+                                        </Button>
                                     </CardMedia>
                                 </Card>
                             </Col>
@@ -373,6 +381,7 @@ export default class XenaGoViewer extends PureComponent {
                             <Col md={9}>
                                 <PathwayScoresView height={renderHeight}
                                                    offset={renderOffset}
+                                                   ref='pathwayscoreview'
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
                                                    statGenerator={statGenerator}

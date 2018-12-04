@@ -204,17 +204,25 @@ let layout = (width, {length = 0} = {}) => partition(width, length);
 const minWidth = 400;
 const minColWidth = 12;
 
+let internalData = undefined;
 
 export default class PathwayScoresViewCache extends PureComponent {
 
 
-    downloadData = (data) => {
-        let filename = "export.json";
+    downloadData() {
+        if (!internalData) {
+            alert('No Data Available');
+            return;
+        }
+        let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
+        console.log('Downloading data from ', selectedCohort, selectedPathways, cohortIndex);
+        let filename = selectedCohort.name.replace(/ /g,'_')+'_'+selectedPathways[0]+'_'+cohortIndex+'.json';
+        // let filename = "export.json";
         let contentType = "application/json;charset=utf-8;";
         // a hacky way to do this
         let a = document.createElement('a');
         a.download = filename;
-        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(data));
+        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(internalData));
         a.target = '_blank';
         document.body.appendChild(a);
         a.click();
@@ -283,13 +291,12 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
 
+        internalData = returnedValue.data;
+
         return (
 
             <Grid>
                 <Row>
-                    <div>
-                        <button onClick={ () => this.downloadData(returnedValue.data)}>Download</button>
-                    </div>
                     <PathwayScoresView
                         {...this.props}
                         width={width}
