@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import DrawFunctions from '../functions/DrawFunctions';
 import CanvasDrawing from "../CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
+import {clusterSampleSort} from '../functions/SortFunctions';
 import {pick, pluck, flatten, isEqual} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B} from "./XenaGeneSetApp";
 
@@ -88,7 +88,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         //         break;
         //     case 'Cluster':
         //     default:
-        //         returnedValue = clusterSort(prunedColumns);
+                returnedValue = clusterSampleSort(prunedColumns);
                 // break;
         // }
 
