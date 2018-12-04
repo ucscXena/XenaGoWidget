@@ -220,15 +220,11 @@ export default class PathwayScoresViewCache extends PureComponent {
             cohortIndex,
             selectedCohort
         };
-        console.log('pathway score view: ',min,cohortIndex)
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
 
-        // console.log('data 2',data)
-        console.log('hash 2 association',hashAssociation)
         let associatedData = findAssociatedData(hashAssociation);
-        console.log('ass 2 data',associatedData)
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 

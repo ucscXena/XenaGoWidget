@@ -163,9 +163,6 @@ export default {
         if (associateData.length === 0) {
             return;
         }
-
-        console.log('draw tissue view depth: ',associateData,layout);
-
         drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
 
     },
@@ -174,11 +171,7 @@ export default {
         let {width, layout, labelHeight, cohortIndex, associatedData} = props;
         let totalHeight = labelHeight * layout.length;
         clearScreen(vg, width, totalHeight);
-
-        console.log('draw pathway view depth: ',associatedData,layout);
-
         drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
-
     },
 
 }

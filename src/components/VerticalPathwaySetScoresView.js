@@ -6,8 +6,10 @@ import DrawFunctions from '../functions/DrawFunctions';
 import CanvasDrawing from "../CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
-import {pick, pluck, flatten, isEqual} from 'underscore';
+import {pluck, flatten} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B} from "./XenaGeneSetApp";
+
+const MIN_FILTER =2 ;
 
 /**
  * Extends PathwaysScoreView (but the old one)
@@ -35,11 +37,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         let layout = data.pathways.map( ( p , index ) => {
            return { start: index * labelHeight, size: labelHeight }
         } );
-        console.log('layout',layout)
         const totalHeight = layout.length *  labelHeight ;
-        // let layoutData = layout(width, returnedValue.data);
-
-
         let geneList = this.getGenesForPathways(pathways);
 
 
@@ -47,8 +45,6 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
         // TODO: fix filter somehow?
         filter = filter ? filter : 'All';
-        selectedSort = selectedSort ? selectedSort : 'Cluster';
-        const min = 2 ;
 
         // call
 
@@ -60,17 +56,14 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
             pathways,
             samples,
             filter,
-            min,
+            MIN_FILTER,
             cohortIndex,
             selectedCohort
         };
-        console.log('selected cohort now!',selectedCohort)
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
-        console.log('hash association',hashAssociation)
         let associatedData = findAssociatedData(hashAssociation);
-        console.log('ass data',associatedData)
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 
         let hashForPrune = {
@@ -80,20 +73,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
-        let returnedValue = prunedColumns;
-
-        // switch (selectedSort) {
-        //     case 'Hierarchical':
-        //         returnedValue = hierarchicalSort(prunedColumns);
-        //         break;
-        //     case 'Cluster':
-        //     default:
-                returnedValue = clusterSampleSort(prunedColumns);
-                // break;
-        // }
-
-
-
+        let returnedValue = clusterSampleSort(prunedColumns);
 
         return (
             <div>

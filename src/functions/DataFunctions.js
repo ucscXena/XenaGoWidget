@@ -81,8 +81,6 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
-    console.log('selectd cohort: ', selectedCohort, key)
-
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {

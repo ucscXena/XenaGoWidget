@@ -16,7 +16,6 @@ import Input from 'react-toolbox/lib/input';
 import PathwaySetsView from "./PathwaySetsView";
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 
-// import {sparseDataMatchPartialField, refGene} = require('../xenaQuery');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 
