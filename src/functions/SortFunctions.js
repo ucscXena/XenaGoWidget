@@ -152,6 +152,29 @@ export function clusterSort(prunedColumns) {
     return returnColumns;
 }
 
+/**
+ * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
+ * @param prunedColumns
+ */
+export function clusterSampleSort(prunedColumns) {
+    // prunedColumns =
+    // - data = 41 gene sets times N samples
+    // - pathways = 41 gene set descriptions
+    // - samples = N sample descriptions
+    let transposedData = transpose(prunedColumns.data);
+    let summedSamples = transposedData.map((d, index) => {
+        return {index: index, score: sum(d)}
+    }).sort((a, b) => b.score - a.score);
+    let sortedTransposedData = [];
+    summedSamples.forEach((d,i) => {
+        sortedTransposedData[i] = transposedData[d.index];
+    });
+    let untransposedData = transpose(sortedTransposedData);
+    let returnColumns = prunedColumns;
+    returnColumns.data = untransposedData;
+    return returnColumns;
+}
+
 function generateMissingGeneSets(pathways, geneSetList) {
     let pathwayGeneSets = pathways.map(p => p.golabel);
     let missingGenes = geneSetList.filter(g => pathwayGeneSets.indexOf(g) < 0);

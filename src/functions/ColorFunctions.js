@@ -37,64 +37,8 @@ export function adjustScore(score) {
  * @param label
  * @returns {*}
  */
-export function scoreData(score, numSamples, geneCount,labelString) {
-    // return Math.log10(100 * score / maxScore / geneCount) ;
+export function scoreData(score, numSamples, geneCount) {
     let inputScore = score / (numSamples * geneCount);
-    let outputScore = adjustScore(inputScore);
-    return outputScore;
+    return adjustScore(inputScore);
 }
 
-
-export function fontColor(selected, hovered, colorDensity) {
-
-    // console.log('COLOR BE',selected,hovered,colorDensity);
-    if (hovered) {
-        // return !selected ? getDarkColor() : getHoverColor(colorDensity);
-        return getDarkColor();
-    }
-
-    // if (selected) {
-    //     return getWhiteColor();
-    // }
-
-
-    let finalColor = colorDensity < 0.7 ? 'black' : getWhiteColor();
-    // console.log('FIONAL color',finalColor);
-    return finalColor
-}
-
-/**
- *
- * @param density
- * @param geneLength
- * @param highScore
- * @returns {number}
- */
-export function getColorDensity(density, geneLength, highScore) {
-    if (highScore === 0) return 1;
-
-    let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density / geneLength / highScore)));
-    return 1 - color / DEFAULT_MAX_COLOR;
-}
-
-/**
- *
- * @param density
- * @param highScore
- * @returns {number}
- *
- * Should return a number from 1 to 256 based on the density.
- *
- * If the high score is 0 (nothing is there), thit it will return 1 for no alpha.
- *
- * As the density approaches 1, it should go to t.
- *
- */
-export function normalizedColor(density, highScore) {
-    if (highScore === 0) return 1;
-
-    // let color = Math.round(DEFAULT_MAX_COLOR * (1.0 - (density /  highScore)));
-    // return 1 - color / DEFAULT_MAX_COLOR;
-
-    return density;
-}

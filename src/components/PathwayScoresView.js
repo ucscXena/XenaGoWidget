@@ -239,7 +239,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
+
         let associatedData = findAssociatedData(hashAssociation);
+
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 
         let hashForPrune = {

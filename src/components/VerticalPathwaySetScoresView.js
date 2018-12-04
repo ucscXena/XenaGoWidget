@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import DrawFunctions from '../functions/DrawFunctions';
 import CanvasDrawing from "../CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
-import {pick, pluck, flatten, isEqual} from 'underscore';
-import {FILTER_PERCENTAGE, LABEL_A, LABEL_B} from "./XenaGeneSetApp";
+import {clusterSampleSort} from '../functions/SortFunctions';
+import {pluck, flatten} from 'underscore';
+import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+
 
 /**
  * Extends PathwaysScoreView (but the old one)
@@ -25,8 +26,9 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
     render(){
 
-        let { data, cohortIndex, filter, selectedSort, labelHeight, width} = this.props ;
+        let { data, cohortIndex, filter, selectedSort, labelHeight, width,selectedCohort} = this.props ;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
+
         if(!data || !data.pathways){
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B }</div>
         }
@@ -34,11 +36,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         let layout = data.pathways.map( ( p , index ) => {
            return { start: index * labelHeight, size: labelHeight }
         } );
-        console.log('layout',layout)
         const totalHeight = layout.length *  labelHeight ;
-        // let layoutData = layout(width, returnedValue.data);
-
-
         let geneList = this.getGenesForPathways(pathways);
 
 
@@ -46,7 +44,6 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
         // TODO: fix filter somehow?
         filter = filter ? filter : 'All';
-        selectedSort = selectedSort ? selectedSort : 'Cluster';
 
         // call
 
@@ -57,11 +54,10 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
             geneList,
             pathways,
             samples,
-            // filter,
             filter,
-            // min,
+            MIN_FILTER,
             cohortIndex,
-            // selectedCohort
+            selectedCohort
         };
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
@@ -76,20 +72,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
-        let returnedValue;
-
-        switch (selectedSort) {
-            case 'Hierarchical':
-                returnedValue = hierarchicalSort(prunedColumns);
-                break;
-            case 'Cluster':
-            default:
-                returnedValue = clusterSort(prunedColumns);
-                break;
-        }
-
-
-
+        let returnedValue = clusterSampleSort(prunedColumns);
 
         return (
             <div>

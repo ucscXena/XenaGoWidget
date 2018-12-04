@@ -149,8 +149,8 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length,labelString);
-            let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length,labelString);
+            let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length);
+            let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length);
 
             return (
                 <svg

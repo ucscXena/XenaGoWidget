@@ -14,6 +14,9 @@ import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../../src/base.css';
+import {sumInstances} from '../functions/util';
+import {LabelTop} from "./LabelTop";
+import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
 
 
 const EXPAND_HEIGHT = 800;
@@ -21,9 +24,8 @@ const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
 // export const FILTER_PERCENTAGE = 0.005;
 export const FILTER_PERCENTAGE = 0;
-import {sumInstances} from '../functions/util';
-import {LabelTop} from "./LabelTop";
-import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
+export const MIN_FILTER =2 ;
+
 
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
@@ -362,6 +364,11 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+    getSelectedCohort(pathwayData){
+        if(this.state.cohortData){
+            return this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        }
+    }
 
     calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
@@ -369,7 +376,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
 
-        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -392,7 +399,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.min = min;
         hashAssociation.cohortIndex = cohortIndex;
 
-        hashAssociation.selectedCohort = this.state.cohortData.find(c => c.name === pathwayData.cohort);
+        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
@@ -506,6 +513,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={0}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
+                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[0])}
                                             />
                                             }
                                         </td>
@@ -527,6 +535,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={1}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
+                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[1])}
                                             />
                                             }
                                         </td>
