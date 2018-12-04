@@ -80,17 +80,17 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
-        let returnedValue;
+        let returnedValue = prunedColumns;
 
-        switch (selectedSort) {
-            case 'Hierarchical':
-                returnedValue = hierarchicalSort(prunedColumns);
-                break;
-            case 'Cluster':
-            default:
-                returnedValue = clusterSort(prunedColumns);
-                break;
-        }
+        // switch (selectedSort) {
+        //     case 'Hierarchical':
+        //         returnedValue = hierarchicalSort(prunedColumns);
+        //         break;
+        //     case 'Cluster':
+        //     default:
+        //         returnedValue = clusterSort(prunedColumns);
+                // break;
+        // }
 
 
 
