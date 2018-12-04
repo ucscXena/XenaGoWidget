@@ -21,7 +21,7 @@ let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "./AppStorageHandler";
-import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
+import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 
 
 function lowerCaseCompareName(a, b) {
@@ -381,7 +381,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
                                                    loading={cohortLoading}
-                                                   min={this.state.minFilter}
+                                                   min={MIN_FILTER}
                                                    selectedSort={this.state.selectedGeneSort}
                                                    selectedCohort={this.state.selectedCohortData}
                                                    referencePathways={this.state.pathwayData}

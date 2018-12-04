@@ -7,9 +7,8 @@ import CanvasDrawing from "../CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
-import {FILTER_PERCENTAGE, LABEL_A, LABEL_B} from "./XenaGeneSetApp";
+import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 
-const MIN_FILTER =2 ;
 
 /**
  * Extends PathwaysScoreView (but the old one)

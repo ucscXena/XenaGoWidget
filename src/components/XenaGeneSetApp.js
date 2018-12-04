@@ -14,6 +14,9 @@ import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../../src/base.css';
+import {sumInstances} from '../functions/util';
+import {LabelTop} from "./LabelTop";
+import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
 
 
 const EXPAND_HEIGHT = 800;
@@ -21,9 +24,8 @@ const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
 // export const FILTER_PERCENTAGE = 0.005;
 export const FILTER_PERCENTAGE = 0;
-import {sumInstances} from '../functions/util';
-import {LabelTop} from "./LabelTop";
-import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
+export const MIN_FILTER =2 ;
+
 
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';

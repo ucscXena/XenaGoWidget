@@ -113,9 +113,6 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
     let img = ctx.createImageData(width, totalHeight);
     let sampleRegions = findPathwayData(width, tissueCount);
 
-    console.log('regions',sampleRegions)
-
-
     layout.forEach(function (el, i) {
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];

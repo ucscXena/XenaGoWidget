@@ -7,6 +7,7 @@ const LOCAL_APP_STORAGE = "xena-app-storage";
 const LOCAL_STATE_STORAGE = "xena-selection-storage";
 const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
 import DefaultPathWays from "../data/tgac";
+import {FILTER_PERCENTAGE, MIN_FILTER} from "./XenaGeneSetApp";
 
 const DefaultApp = {
     renderOffset: 5,
@@ -25,8 +26,8 @@ const DefaultApp = {
     cohortData: {},
     tissueExpressionFilter: 'All',
     geneExpressionFilter: 'All',
-    minFilter: 2,
-    filterPercentage: 0.005,
+    minFilter: MIN_FILTER,
+    filterPercentage: FILTER_PERCENTAGE,
     geneData: {
         copyNumber: [],
         expression: [],
