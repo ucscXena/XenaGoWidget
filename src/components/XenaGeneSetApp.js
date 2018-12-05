@@ -24,7 +24,7 @@ const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
 // export const FILTER_PERCENTAGE = 0.005;
 export const FILTER_PERCENTAGE = 0;
-export const MIN_FILTER =2 ;
+export const MIN_FILTER = 2 ;
 
 
 export const LABEL_A = 'A';
