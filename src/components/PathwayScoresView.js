@@ -13,7 +13,6 @@ import {sum} from 'underscore';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
-export const GENESET_LABEL_HEIGHT = 150;
 export const GENE_LABEL_HEIGHT = 50;
 
 const style = {
@@ -140,6 +139,7 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
+        console.log('pathway data',data.pathways)
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -261,6 +261,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
+
         if (cohortIndex === 0) {
             switch (selectedSort) {
                 case 'Hierarchical':
@@ -277,6 +278,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
+        console.log('select sort: ',selectedSort,prunedColumns,PathwayScoresView.synchronizedGeneList,returnedValue.pathways)
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
@@ -290,6 +292,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
+
 
         internalData = returnedValue.data;
 
