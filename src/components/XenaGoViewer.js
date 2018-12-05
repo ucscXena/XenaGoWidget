@@ -359,7 +359,6 @@ export default class XenaGoViewer extends PureComponent {
                                     <CardMedia>
                                         <Button onClick={this.callDownload} floating mini>
                                             <FaDownload/>
-                                            {/*Download*/}
                                         </Button>
                                         <SortSelector sortTypes={this.state.sortTypes}
                                                       selected={this.state.selectedGeneSort}
