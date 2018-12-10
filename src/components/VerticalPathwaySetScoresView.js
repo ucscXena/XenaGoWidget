@@ -32,7 +32,7 @@ const HEADER_HEIGHT = 15;
 
 function pathwayIndexFromY(y, pathways, labelHeight) {
     let index = Math.round((y - HEADER_HEIGHT) / labelHeight);
-    return pathways[index];
+    return index;
 
 }
 
@@ -45,19 +45,12 @@ function getMousePos(evt) {
 }
 
 function getPointData(event, props) {
-    // let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
-    console.log('gettting point data: ', event, props);
     let {labelHeight, data: {pathways}} = props;
     let {x, y} = getMousePos(event);
-    // let pathwayIndex = pathwayIndexFromX(x, layout);
     let pathwayIndex = pathwayIndexFromY(y, pathways, labelHeight);
-    // let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
-    // let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
     return {
         pathway: pathways[pathwayIndex],
-        // tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        // expression,
     };
 }
 
@@ -92,10 +85,22 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         }
     };
 
+    onClick = (event) => {
+        let {onClickMethod} = this.props;
+        if (onClickMethod) {
+            onClickMethod(getPointData(event, this.props))
+        }
+        else{
+            alert('not found')
+        }
+    };
+
     render() {
 
         let {data, cohortIndex, filter, selectedSort, labelHeight, width, selectedCohort} = this.props;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
+
+        console.log('input data for vertical',this.props)
 
         if (!data || !data.pathways) {
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
@@ -155,6 +160,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
                     height={totalHeight}
                     associatedData={returnedValue.data}
                     onHover={this.onHover}
+                    // onClick={this.onClick}
                     onMouseOut={this.onMouseOut}
                     data={{
                         expression,
@@ -172,4 +178,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 VerticalPathwaySetScoresView.propTypes = {
     data: PropTypes.any,
     cohortIndex: PropTypes.any,
+    // onClickMethod: PropTypes.any,
+    onHover: PropTypes.any,
+    onMouseOut: PropTypes.any,
 };

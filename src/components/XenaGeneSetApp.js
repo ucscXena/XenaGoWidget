@@ -321,6 +321,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
+        console.log('hovering a glo bal path ', pathwayHover);
         this.setState({
             hoveredPathways: pathwayHover
         });
@@ -514,6 +515,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort = {this.getSelectedCohort(this.state.pathwayData[0])}
+                                                onClickMethod={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
                                             />
@@ -523,7 +525,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <GeneSetSvgSelector pathways={pathways}
                                                                 hoveredPathways={this.state.hoveredPathways}
                                                                 selectedPathways={this.state.selectedPathways}
-                                                                onClick={this.globalPathwaySelect}
+                                                                // onClick={this.globalPathwaySelect}
                                                                 onHover={this.globalPathwayHover}
                                                                 onMouseOut={this.globalPathwayHover}
                                                                 labelHeight={18}

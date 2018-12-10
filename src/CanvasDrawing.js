@@ -58,6 +58,7 @@ export default class CanvasDrawing extends Component {
                     width={width} height={height}
                     onMouseMove={this.props.onHover}
                     onMouseOut={this.props.onMouseOut}
+                    onClick={this.props.onClick}
             />
         );
     }
@@ -92,5 +93,6 @@ CanvasDrawing.propTypes = {
     cohortIndex: PropTypes.any,
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,
+    onClick: PropTypes.any,
 };
 
