@@ -9,6 +9,8 @@ import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 
+const HEADER_HEIGHT = 15;
+
 // let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
 //     let index = 0;
 //     switch (cohortIndex) {
@@ -25,8 +27,14 @@ import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp"
 //     return index;
 // };
 
-let pathwayIndexFromY = (y, layout) =>
-    layout.findIndex(({start, size}) => start <= y && y < start + size);
+// let pathwayIndexFromY = (y, pathways) =>
+//     pathways.findIndex(({start, size}) => start <= y && y < start + size);
+
+function pathwayIndexFromY(y, pathways, labelHeight) {
+    let index = Math.round((y - HEADER_HEIGHT) / labelHeight);
+    return pathways[index];
+
+}
 
 function getMousePos(evt) {
     let rect = evt.currentTarget.getBoundingClientRect();
@@ -38,10 +46,11 @@ function getMousePos(evt) {
 
 function getPointData(event, props) {
     // let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
-    let {layout, data: {pathways}} = props;
+    console.log('gettting point data: ', event, props);
+    let {labelHeight, data: {pathways}} = props;
     let {x, y} = getMousePos(event);
     // let pathwayIndex = pathwayIndexFromX(x, layout);
-    let pathwayIndex = pathwayIndexFromY(y, layout);
+    let pathwayIndex = pathwayIndexFromY(y, pathways, labelHeight);
     // let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     // let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
 
@@ -51,12 +60,13 @@ function getPointData(event, props) {
         // expression,
     };
 }
+
 /**
  * Extends PathwaysScoreView (but the old one)
  */
 export default class VerticalPathwaySetScoresView extends PureComponent {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
@@ -82,19 +92,20 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
         }
     };
 
-    render(){
+    render() {
 
-        let { data, cohortIndex, filter, selectedSort, labelHeight, width,selectedCohort} = this.props ;
+        let {data, cohortIndex, filter, selectedSort, labelHeight, width, selectedCohort} = this.props;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
 
-        if(!data || !data.pathways){
-            return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B }</div>
+        if (!data || !data.pathways) {
+            return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
         }
         // need a size and vertical start for each
-        let layout = data.pathways.map( ( p , index ) => {
-           return { start: index * labelHeight, size: labelHeight }
-        } );
-        const totalHeight = layout.length *  labelHeight ;
+        let layout = data.pathways.map((p, index) => {
+            return {start: index * labelHeight, size: labelHeight}
+        });
+
+        const totalHeight = layout.length * labelHeight;
         let geneList = this.getGenesForPathways(pathways);
 
 
@@ -143,7 +154,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
                     labelHeight={labelHeight}
                     height={totalHeight}
                     associatedData={returnedValue.data}
-                    onMouseMove={this.onHover}
+                    onHover={this.onHover}
                     onMouseOut={this.onMouseOut}
                     data={{
                         expression,
