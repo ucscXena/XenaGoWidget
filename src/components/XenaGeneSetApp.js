@@ -321,7 +321,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
-        console.log('hovering a glo bal path ', pathwayHover);
         this.setState({
             hoveredPathways: pathwayHover
         });

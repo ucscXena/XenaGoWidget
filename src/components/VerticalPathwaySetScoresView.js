@@ -30,10 +30,8 @@ const HEADER_HEIGHT = 15;
 // let pathwayIndexFromY = (y, pathways) =>
 //     pathways.findIndex(({start, size}) => start <= y && y < start + size);
 
-function pathwayIndexFromY(y, pathways, labelHeight) {
-    let index = Math.round((y - HEADER_HEIGHT) / labelHeight);
-    return index;
-
+function pathwayIndexFromY(y, labelHeight) {
+    return Math.round((y - HEADER_HEIGHT) / labelHeight);
 }
 
 function getMousePos(evt) {
@@ -47,11 +45,8 @@ function getMousePos(evt) {
 function getPointData(event, props) {
     let {labelHeight, data: {pathways}} = props;
     let {x, y} = getMousePos(event);
-    let pathwayIndex = pathwayIndexFromY(y, pathways, labelHeight);
-
-    return {
-        pathway: pathways[pathwayIndex],
-    };
+    let pathwayIndex = pathwayIndexFromY(y, labelHeight);
+    return pathways[pathwayIndex];
 }
 
 /**
