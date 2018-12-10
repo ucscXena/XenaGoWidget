@@ -38,6 +38,9 @@ export function adjustScore(score) {
  * @returns {*}
  */
 export function scoreData(score, numSamples, geneCount) {
+    if(score === 0){
+        return 0 ;
+    }
     let inputScore = score / (numSamples * geneCount);
     return adjustScore(inputScore);
 }
