@@ -139,7 +139,6 @@ class PathwayScoresView extends PureComponent {
         }
 
         let stat = loading ? <img src={spinner}/> : null;
-        console.log('pathway data',data.pathways)
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -278,7 +277,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
-        console.log('select sort: ',selectedSort,prunedColumns,PathwayScoresView.synchronizedGeneList,returnedValue.pathways)
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
