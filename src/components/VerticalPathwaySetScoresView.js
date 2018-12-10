@@ -81,9 +81,9 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
     };
 
     onClick = (event) => {
-        let {onClickMethod} = this.props;
-        if (onClickMethod) {
-            onClickMethod(getPointData(event, this.props))
+        let {onClick} = this.props;
+        if (onClick) {
+            onClick(getPointData(event, this.props))
         }
         else{
             alert('not found')
@@ -94,9 +94,6 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
         let {data, cohortIndex, filter, selectedSort, labelHeight, width, selectedCohort} = this.props;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
-
-        console.log('input data for vertical',this.props)
-
         if (!data || !data.pathways) {
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
         }
@@ -155,7 +152,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
                     height={totalHeight}
                     associatedData={returnedValue.data}
                     onHover={this.onHover}
-                    // onClick={this.onClick}
+                    onClick={this.onClick}
                     onMouseOut={this.onMouseOut}
                     data={{
                         expression,
@@ -173,7 +170,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 VerticalPathwaySetScoresView.propTypes = {
     data: PropTypes.any,
     cohortIndex: PropTypes.any,
-    // onClickMethod: PropTypes.any,
+    onClick: PropTypes.any,
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,
 };

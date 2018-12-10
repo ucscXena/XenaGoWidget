@@ -539,6 +539,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort = {this.getSelectedCohort(this.state.pathwayData[1])}
+                                                onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
                                             />
