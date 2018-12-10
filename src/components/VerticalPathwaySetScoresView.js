@@ -11,25 +11,6 @@ import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp"
 
 const HEADER_HEIGHT = 15;
 
-// let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
-//     let index = 0;
-//     switch (cohortIndex) {
-//         case 0:
-//             index = y <= (height - labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
-//             break;
-//         case 1:
-//             index = y < labelHeight ? -1 : Math.trunc((y - labelHeight) * count / (height - labelHeight));
-//             break;
-//         default:
-//             console.log('error', y, height, labelHeight, count, cohortIndex)
-//
-//     }
-//     return index;
-// };
-
-// let pathwayIndexFromY = (y, pathways) =>
-//     pathways.findIndex(({start, size}) => start <= y && y < start + size);
-
 function pathwayIndexFromY(y, labelHeight) {
     return Math.round((y - HEADER_HEIGHT) / labelHeight);
 }
