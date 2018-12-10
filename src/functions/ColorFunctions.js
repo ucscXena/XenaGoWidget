@@ -1,11 +1,5 @@
-const DEFAULT_MAX_COLOR = 256;
-
 export function getSelectColor() {
     return '#113871';
-}
-
-export function getHoverColor(score) {
-    return 'rgba(255, 230, 109, ' + score + ')';
 }
 
 export function getWhiteColor() {
@@ -21,7 +15,6 @@ export function getGeneColorMask() {
 }
 
 export function getPathwayColorMask() {
-    // return [255, 107, 107];
     return [255, 10, 10];
 }
 
@@ -34,7 +27,6 @@ export function adjustScore(score) {
  * @param score
  * @param numSamples
  * @param geneCount
- * @param label
  * @returns {*}
  */
 export function scoreData(score, numSamples, geneCount) {
