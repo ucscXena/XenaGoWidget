@@ -9,7 +9,48 @@ import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 
+// let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
+//     let index = 0;
+//     switch (cohortIndex) {
+//         case 0:
+//             index = y <= (height - labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
+//             break;
+//         case 1:
+//             index = y < labelHeight ? -1 : Math.trunc((y - labelHeight) * count / (height - labelHeight));
+//             break;
+//         default:
+//             console.log('error', y, height, labelHeight, count, cohortIndex)
+//
+//     }
+//     return index;
+// };
 
+let pathwayIndexFromY = (y, layout) =>
+    layout.findIndex(({start, size}) => start <= y && y < start + size);
+
+function getMousePos(evt) {
+    let rect = evt.currentTarget.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function getPointData(event, props) {
+    // let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
+    let {layout, data: {pathways}} = props;
+    let {x, y} = getMousePos(event);
+    // let pathwayIndex = pathwayIndexFromX(x, layout);
+    let pathwayIndex = pathwayIndexFromY(y, layout);
+    // let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
+    // let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
+
+    return {
+        pathway: pathways[pathwayIndex],
+        // tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
+        // expression,
+    };
+}
 /**
  * Extends PathwaysScoreView (but the old one)
  */
@@ -22,6 +63,23 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
     // TODO: restructure
     getGenesForPathways(pathways) {
         return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
+    };
+
+
+    onMouseOut = (event) => {
+        let {onHover} = this.props;
+        onHover(null);
+    };
+
+    onHover = (event) => {
+        let {onHover} = this.props;
+        if (onHover) {
+            let pointData = getPointData(event, this.props);
+            onHover(pointData);
+        }
+        else {
+            onHover(null);
+        }
     };
 
     render(){
@@ -85,6 +143,8 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
                     labelHeight={labelHeight}
                     height={totalHeight}
                     associatedData={returnedValue.data}
+                    onMouseMove={this.onHover}
+                    onMouseOut={this.onMouseOut}
                     data={{
                         expression,
                         pathways: returnedValue.pathways,
