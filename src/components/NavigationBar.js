@@ -54,10 +54,9 @@ export default class NavigationBar extends PureComponent {
                         <Autocomplete label='Search Gene Usage'
                                       source={this.props.geneOptions}
                                       value={this.state.geneNameSearch}
+                                      multiple={false}
                                       onQueryChange={(geneQuery) => this.handleSearch(geneQuery)}
                                       onChange={(searchText) => {
-                                          console.log('accepting gene',searchText)
-                                          this.setState({geneNameSearch: searchText})
                                           this.acceptGeneHandler(searchText);
                                       }}
                         />
