@@ -507,6 +507,39 @@ export default class XenaGeneSetApp extends PureComponent {
         // expression: {affected: 111, total: 183}
         // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
         // tissue: "Header"
+        if(this.state.view === XENA_VIEW){
+            let pathwayObject = {
+                goid: "nomatter",
+                golabel: "nomatter",
+                gene: geneName,
+            };
+            let geneHoverObject = {
+                tissue: "Header",
+                cohortIndex: 0,
+                expression:{},
+                pathway: pathwayObject,
+            };
+            console.log('hovering with',geneHoverObject)
+            this.geneHover(geneHoverObject);
+            geneHoverObject.cohortIndex = 1 ;
+            // redo for the other cohort
+            this.geneHover(geneHoverObject);
+        }
+        else
+        if(this.state.view === PATHWAYS_VIEW){
+            this.pathwayEditorGeneHandler(geneName)
+        }
+    };
+
+    pathwayEditorGeneHandler = (geneName) => {
+        console.log('gene accpeted', geneName);
+
+        // the input is ["<Gene Name"]
+
+        // cohortIndex: 0
+        // expression: {affected: 111, total: 183}
+        // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
+        // tissue: "Header"
         let pathwayObject = {
             goid: "nomatter",
             golabel: "nomatter",
@@ -517,11 +550,8 @@ export default class XenaGeneSetApp extends PureComponent {
             cohortIndex: 0,
             expression:{},
             pathway: pathwayObject,
-        }
-        console.log('hovering with',geneHoverObject)
-        this.geneHover(geneHoverObject);
-        geneHoverObject.cohortIndex = 1 ;
-        this.geneHover(geneHoverObject);
+        };
+        this.refs['pathway-editor'].highlightGenes(geneName)
     };
 
     render() {

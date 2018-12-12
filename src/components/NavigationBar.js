@@ -60,7 +60,6 @@ export default class NavigationBar extends PureComponent {
                                           this.setState({geneNameSearch: searchText})
                                           this.acceptGeneHandler(searchText);
                                       }}
-                                      // disabled={this.state.geneNameSearch.length>0}
                         />
                         {view === XENA_VIEW &&
                         <div style={{display: 'inline'}}>

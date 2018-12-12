@@ -49,6 +49,13 @@ export default class PathwayEditor extends PureComponent {
         fr.readAsText(file);
     };
 
+    highlightGenes = (genes) => {
+        console.log('highlight genes in pathway editor',genes);
+
+        // TODO: provide a "higlight view as state to pathway view"
+    };
+
+
     render() {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
