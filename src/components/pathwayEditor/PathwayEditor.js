@@ -124,7 +124,7 @@ export default class PathwayEditor extends PureComponent {
                     {this.state.selectedPathway &&
                     <Col md={2}>
                         <Autocomplete label='New Gene' source={this.state.geneOptions} value={this.state.newGene}
-                                      onQueryChange={(geneQuery) => this.queryGenes(geneQuery)}
+                                      onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
                                       onChange={(newGene) => {
                                           this.setState({newGene: newGene})
                                       }}
@@ -211,7 +211,7 @@ export default class PathwayEditor extends PureComponent {
         })
     }
 
-    queryGenes(geneQuery) {
+    queryNewGenes(geneQuery) {
         let {reference: {host, name}, limit} = this.state;
         if(geneQuery.trim().length===0){
             this.setState({

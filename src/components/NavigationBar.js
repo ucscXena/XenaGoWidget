@@ -3,8 +3,12 @@ import React from 'react'
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
+import {XENA_VIEW,PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
-import BaseStyle from '../../src/base.css';
+import BaseStyle from '../../src/base.css'
+import Input from "react-toolbox/lib/input";
+import * as PropTypes from "underscore";
+import Autocomplete from "react-toolbox/lib/autocomplete";
 
 
 const GithubIcon = () => (
@@ -20,9 +24,22 @@ export default class NavigationBar extends PureComponent {
 
     constructor(props) {
         super(props);
-        // this.state = {
-        // }
+        this.state = {
+            geneNameSearch : '',
+            // geneOptions: [],
+        }
     }
+
+    handleSearch = (text) => {
+        console.log('handling search: ',text)
+        this.props.searchHandler(text);
+    };
+
+    acceptGeneHandler = (text) => {
+        console.log('accepting geene to search for usage: ',text)
+        this.props.acceptGeneHandler(text);
+    };
+
 
     render() {
         let {showPathways,showXena,view} = this.props ;
@@ -30,19 +47,33 @@ export default class NavigationBar extends PureComponent {
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
-                <AppBar title='Xena Geneset Widget Demo' >
-                    <Navigation type='horizontal'>
-                        {view === 'xena' &&
+                <AppBar title='Xena Geneset Widget Demo'>
+                    <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
+                        {/*<input type='text' label='Gene' value={this.state.geneNameSearch}*/}
+                               {/*onChange={this.handleSearch} maxLength={16}/>*/}
+                        <Autocomplete label='Search Gene Usage'
+                                      source={this.props.geneOptions}
+                                      value={this.state.geneNameSearch}
+                                      onQueryChange={(geneQuery) => this.handleSearch(geneQuery)}
+                                      onChange={(searchText) => {
+                                          console.log('accepting gene',searchText)
+                                          this.setState({geneNameSearch: searchText})
+                                          this.acceptGeneHandler(searchText);
+                                      }}
+                                      // disabled={this.state.geneNameSearch.length>0}
+                        />
+                        {view === XENA_VIEW &&
                         <div style={{display: 'inline'}}>
                             <Button raised primary>Xena</Button>
                             <Button raised onClick={() => showPathways()}>Pathways</Button>
-                        </div>}
-                        {view === 'pathways' &&
+                        </div>
+                        }
+                        {view === PATHWAYS_VIEW &&
                         <div style={{display: 'inline'}}>
                             <Button raised onClick={() => showXena()}>Xena</Button>
                             <Button raised primary>Pathways</Button>
-                        </div>}
-
+                        </div>
+                        }
                         <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                             <GithubIcon/>
                         </a>
@@ -53,3 +84,11 @@ export default class NavigationBar extends PureComponent {
     }
 
 }
+
+NavigationBar.propTypes = {
+    searchHandler: PropTypes.any,
+    acceptGeneHandler: PropTypes.any,
+    view: PropTypes.any,
+    showPathways: PropTypes.any,
+    showXena: PropTypes.any,
+};
