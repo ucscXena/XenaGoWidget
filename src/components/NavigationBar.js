@@ -57,6 +57,9 @@ export default class NavigationBar extends PureComponent {
                                       multiple={false}
                                       onQueryChange={(geneQuery) => this.handleSearch(geneQuery)}
                                       onChange={(searchText) => {
+                                          this.setState({
+                                              geneNameSearch: searchText
+                                          });
                                           this.acceptGeneHandler(searchText);
                                       }}
                         />

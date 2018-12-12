@@ -52,12 +52,39 @@ export default class PathwayEditor extends PureComponent {
     highlightGenes = (genes) => {
         console.log('highlight genes in pathway editor',genes);
 
+        // we can reset the state then
         // TODO: provide a "higlight view as state to pathway view"
+        if(genes && this.state.selectedPathwayState){
+            // console.log('search over this state',this.state.selectedPathwayState)
+            this.state.selectedPathwayState.pathway.forEach( p => {
+                if(p.gene.indexOf(genes[0])>=0){
+                    console.log('pathway DOES contains gene', p.golabel)
+                }else{
+                    console.log('pathway NOT contains gene', p.golabel)
+
+                    console.log(p.gene, ' vs ',genes[0], p.gene.indexOf(genes[0]) )
+                }
+                // console.log(p,genes)
+            })
+        }
     };
 
+    findPathwayState(){
+        let pathwaySet = this.props.pathwaySets.find(f => f.selected === true);
+        this.setState({
+            selectedPathwayState : pathwaySet,
+        });
+    }
+
+    componentDidMount(){
+        this.findPathwayState();
+    }
+
+    componentDidUpdate(){
+        this.findPathwayState();
+    }
 
     render() {
-        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
@@ -156,9 +183,12 @@ export default class PathwayEditor extends PureComponent {
                     {/*<PathwaySetsView pathwaySets={this.props.pathwaySets}/>*/}
                     {/*</Col>*/}
                     <Col md={7}>
+                        { this.state.selectedPathwayState &&
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
-                                     selectedPathwaySet={selectedPathwayState}/>
+                                     selectedPathwaySet={this.state.selectedPathwayState}
+                        />
+                        }
                     </Col>
                     <Col md={3}>
                         {this.state.selectedPathway &&
