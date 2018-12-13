@@ -52,23 +52,14 @@ export default class PathwayEditor extends PureComponent {
         // we can reset the state then
         // TODO: provide a "higlight view as state to pathway view"
         if (genes && this.state.selectedPathwayState) {
-            // console.log('search over this state',this.state.selectedPathwayState)
             let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
-            console.log('INPUT pathway state', this.state.selectedPathwayState)
-            let newState = newSelectedPathwayState.pathway.map(p => {
+            newSelectedPathwayState.pathway = newSelectedPathwayState.pathway.map(p => {
                 p.highlight = p.gene.indexOf(genes) >= 0;
-                if (p.highlight) console.log('match', p.golabel);
                 return p;
             });
-            newSelectedPathwayState.pathway = newState;
-            console.log('OUTPUT pathway state', newSelectedPathwayState)
-            // let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
-            // newSelectedPathwayState.pathway  = newPathways ;
-            console.log('OLD pathway state', this.state.selectedPathwayState)
             this.setState({
                 selectedPathwayState: newSelectedPathwayState
             });
-            console.log('new pathway state', newSelectedPathwayState)
         }
     };
 
@@ -81,17 +72,14 @@ export default class PathwayEditor extends PureComponent {
     }
 
     componentDidMount() {
-        console.log('MOUNT selectedPathwayState', this.state.selectedPathwayState);
         this.findPathwayStateIfEmpty();
     }
 
     componentDidUpdate() {
-        console.log('UPDATE selectedPathwayState', this.state.selectedPathwayState);
         this.findPathwayStateIfEmpty();
     }
 
     render() {
-        console.log('changed selected pathway set', this.state.selectedPathwaySet, this.state.selectedPathwayState)
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>

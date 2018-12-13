@@ -1,10 +1,9 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
 import PropTypes from 'prop-types';
-import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
 import FaTrash from 'react-icons/lib/fa/trash';
-import BaseStyle from '../../../src/base.css';
 
 
 export default class PathwayView extends PureComponent {
@@ -23,7 +22,6 @@ export default class PathwayView extends PureComponent {
     };
 
     render() {
-        console.log('updated pathway  in PathwayView ',this.props.selectedPathwaySet)
         if (this.props.selectedPathwaySet
             && this.props.selectedPathwaySet.pathway
             && this.props.selectedPathwaySet.pathway.length > 0) {
