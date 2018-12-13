@@ -87,10 +87,7 @@ body {
     background-color: white;
 }
 
-.highlight{
-    color: mediumpurple;
-    background-color: mediumpurple;
-}
-
-.nohighlight {
+.input .autocomplete {
+    color: white;
+    background-color: white;
 }

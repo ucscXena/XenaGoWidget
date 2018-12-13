@@ -7,6 +7,7 @@ import PureComponent from "../../src/components/PureComponent";
 import BaseStyle from '../../src/base.css'
 import * as PropTypes from "underscore";
 import Autocomplete from "react-toolbox/lib/autocomplete";
+import AutocompleteTheme from "../../src/autocomplete.css";
 
 
 const GithubIcon = () => (
@@ -48,18 +49,20 @@ export default class NavigationBar extends PureComponent {
                         <table>
                             <tr>
                                 <td width="35%">
-                                    <Autocomplete label='Find Gene'
-                                                  source={this.props.geneOptions}
-                                                  value={this.state.geneNameSearch}
-                                                  multiple={false}
-                                                  onQueryChange={(geneQuery) => {
-                                                      this.handleSearch(geneQuery);
-                                                      this.setState({geneNameSearch: geneQuery});
-                                                  }}
-                                                  onChange={(searchText) => {
-                                                      this.acceptGeneHandler(searchText);
-                                                      this.setState({geneNameSearch: searchText});
-                                                  }}
+                                    <Autocomplete
+                                        theme={AutocompleteTheme}
+                                        label='Find Gene'
+                                        source={this.props.geneOptions}
+                                        value={this.state.geneNameSearch}
+                                        multiple={false}
+                                        onQueryChange={(geneQuery) => {
+                                            this.handleSearch(geneQuery);
+                                            this.setState({geneNameSearch: geneQuery});
+                                        }}
+                                        onChange={(searchText) => {
+                                            this.acceptGeneHandler(searchText);
+                                            this.setState({geneNameSearch: searchText});
+                                        }}
                                     />
                                 </td>
                                 <td width="50%">
@@ -70,7 +73,7 @@ export default class NavigationBar extends PureComponent {
                                     </div>
                                     }
                                     {view === PATHWAYS_VIEW &&
-                                    <div >
+                                    <div>
                                         <Button raised onClick={() => showXena()}>Xena</Button>
                                         <Button raised primary>Pathways</Button>
                                     </div>
