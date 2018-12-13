@@ -1,9 +1,8 @@
-
 import React from 'react'
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
-import {XENA_VIEW,PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
+import {XENA_VIEW, PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
 import BaseStyle from '../../src/base.css'
 import * as PropTypes from "underscore";
@@ -24,66 +23,70 @@ export default class NavigationBar extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            geneNameSearch : '',
+            geneNameSearch: '',
             // geneOptions: [],
         }
     }
 
     handleSearch = (text) => {
-        console.log('handling search: ',text)
         this.props.searchHandler(text);
     };
 
     acceptGeneHandler = (text) => {
-        console.log('accepting geene to search for usage: ',text)
         this.props.acceptGeneHandler(text);
     };
 
 
     render() {
-        let {showPathways,showXena,view} = this.props ;
-        console.log('rendering nav bar',this.state)
+        let {showPathways, showXena, view} = this.props;
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
                 <AppBar title='Xena Geneset Widget Demo'>
                     <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
-                        {/*<input type='text' label='Gene' value={this.state.geneNameSearch}*/}
-                               {/*onChange={this.handleSearch} maxLength={16}/>*/}
-                        <Autocomplete label='Search Gene Usage'
-                                      source={this.props.geneOptions}
-                                      value={this.state.geneNameSearch}
-                                      multiple={false}
-                                      onQueryChange={(geneQuery) => {
-                                          this.handleSearch(geneQuery);
-                                          this.setState({ geneNameSearch: geneQuery });
-                                      }}
-                                      onChange={(searchText) => {
-                                          console.log('handling change?',searchText)
-                                          this.acceptGeneHandler(searchText);
-                                          this.setState({ geneNameSearch: searchText });
-                                      }}
-                        />
-                        {view === XENA_VIEW &&
-                        <div style={{display: 'inline'}}>
-                            <Button raised primary>Xena</Button>
-                            <Button raised onClick={() => showPathways()}>Pathways</Button>
-                        </div>
-                        }
-                        {view === PATHWAYS_VIEW &&
-                        <div style={{display: 'inline'}}>
-                            <Button raised onClick={() => showXena()}>Xena</Button>
-                            <Button raised primary>Pathways</Button>
-                        </div>
-                        }
-                        <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
-                            <GithubIcon/>
-                        </a>
+                        <table>
+                            <tr>
+                                <td width="35%">
+                                    <Autocomplete label='Find Gene'
+                                                  source={this.props.geneOptions}
+                                                  value={this.state.geneNameSearch}
+                                                  multiple={false}
+                                                  onQueryChange={(geneQuery) => {
+                                                      this.handleSearch(geneQuery);
+                                                      this.setState({geneNameSearch: geneQuery});
+                                                  }}
+                                                  onChange={(searchText) => {
+                                                      this.acceptGeneHandler(searchText);
+                                                      this.setState({geneNameSearch: searchText});
+                                                  }}
+                                    />
+                                </td>
+                                <td width="50%">
+                                    {view === XENA_VIEW &&
+                                    <div>
+                                        <Button raised primary>Xena</Button>
+                                        <Button raised onClick={() => showPathways()}>Pathways</Button>
+                                    </div>
+                                    }
+                                    {view === PATHWAYS_VIEW &&
+                                    <div >
+                                        <Button raised onClick={() => showXena()}>Xena</Button>
+                                        <Button raised primary>Pathways</Button>
+                                    </div>
+                                    }
+                                </td>
+                                <td width="10%">
+                                    <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
+                                        <GithubIcon/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
                     </Navigation>
                 </AppBar>
 
-        </div>)
+            </div>)
     }
 
 }
