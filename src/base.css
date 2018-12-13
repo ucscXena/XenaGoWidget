@@ -86,3 +86,11 @@ body {
     color: white;
     background-color: white;
 }
+
+.highlight{
+    color: mediumpurple;
+    background-color: mediumpurple;
+}
+
+.nohighlight {
+}

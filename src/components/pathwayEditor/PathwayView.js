@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
 import FaTrash from 'react-icons/lib/fa/trash';
+import BaseStyle from '../../../src/base.css';
 
 
 export default class PathwayView extends PureComponent {
@@ -11,6 +12,7 @@ export default class PathwayView extends PureComponent {
     constructor(props) {
         super(props);
     }
+
 
     selectPathway = (p) => {
         this.props.clickPathwayHandler(p);
@@ -21,16 +23,18 @@ export default class PathwayView extends PureComponent {
     };
 
     render() {
-        if (this.props.selectedPathwaySet.pathway) {
+        console.log('updated pathway  in PathwayView ',this.props.selectedPathwaySet)
+        if (this.props.selectedPathwaySet
+            && this.props.selectedPathwaySet.pathway
+            && this.props.selectedPathwaySet.pathway.length > 0) {
             return this.props.selectedPathwaySet.pathway.map(p => {
+                if( p.highlight) console.log('highlight',p.golabel)
                 return (
                     <Row key={p.golabel + p.goid}>
                         <Col md={8}>
-                            {p.highlight ? 'T': 'F'}
-                            <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
+                            <Button raised={p.highlight} onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
                         <Col md={2}>
-                            {p.highlight ? 'T': 'F'}
                             <Button onClick={ () => this.removePathway(p)}><FaTrash/></Button>
                         </Col>
                     </Row>
@@ -38,7 +42,7 @@ export default class PathwayView extends PureComponent {
             })
         }
         else {
-            <div></div>
+            return <div></div>
         }
     }
 
@@ -46,7 +50,7 @@ export default class PathwayView extends PureComponent {
 }
 
 PathwayView.propTypes = {
-    selectedPathwaySet: PropTypes.any.isRequired,
+    selectedPathwaySet: PropTypes.any,
     clickPathwayHandler: PropTypes.any.isRequired,
     removePathwayHandler: PropTypes.any.isRequired,
 };

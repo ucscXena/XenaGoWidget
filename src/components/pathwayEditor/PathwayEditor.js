@@ -3,7 +3,7 @@ import PureComponent from "../PureComponent";
 import PathwayView from "./PathwayView";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
-import { BrowseButton } from "react-toolbox/lib/button";
+import {BrowseButton} from "react-toolbox/lib/button";
 import {Chip} from 'react-toolbox/lib/chip';
 import GeneView from "./GeneView";
 import PropTypes from 'prop-types';
@@ -11,9 +11,7 @@ import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 import Fafresh from 'react-icons/lib/fa/refresh';
-import FaTrash from 'react-icons/lib/fa/trash';
 import Input from 'react-toolbox/lib/input';
-import PathwaySetsView from "./PathwaySetsView";
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -32,16 +30,17 @@ export default class PathwayEditor extends PureComponent {
             geneQuery: '',
             reference: refGene['hg38'],
             limit: 25,
+            selectedPathwayState: null,
         }
     }
 
     handleChange = e => {
         let file = e.target.files[0];
-        let {uploadHandler } = this.props;
+        let {uploadHandler} = this.props;
 
         let result = {};
         let fr = new FileReader();
-        fr.onload = function(e) {
+        fr.onload = function (e) {
             result = JSON.parse(e.target.result);
             uploadHandler(result);
         };
@@ -50,69 +49,67 @@ export default class PathwayEditor extends PureComponent {
     };
 
     highlightGenes = (genes) => {
-        // console.log('highlight genes in pathway editor',genes);
         // we can reset the state then
         // TODO: provide a "higlight view as state to pathway view"
-        if(genes && this.state.selectedPathwayState){
+        if (genes && this.state.selectedPathwayState) {
             // console.log('search over this state',this.state.selectedPathwayState)
-            let newPathways = this.state.selectedPathwayState.pathway.map( p => {
-                p.highlight = p.gene.indexOf(genes)>=0 ;
-                if(p.highlight) console.log('match',p.golabel)
-                return p ;
-            });
             let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
-            newSelectedPathwayState.pathway  = newPathways ;
-            console.log('OLD pathway state',this.state.selectedPathwayState)
-            this.setState({
-                selectedPathwaySet: newSelectedPathwayState
+            console.log('INPUT pathway state', this.state.selectedPathwayState)
+            let newState = newSelectedPathwayState.pathway.map(p => {
+                p.highlight = p.gene.indexOf(genes) >= 0;
+                if (p.highlight) console.log('match', p.golabel);
+                return p;
             });
-            console.log('new pathway state',newSelectedPathwayState)
+            newSelectedPathwayState.pathway = newState;
+            console.log('OUTPUT pathway state', newSelectedPathwayState)
+            // let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
+            // newSelectedPathwayState.pathway  = newPathways ;
+            console.log('OLD pathway state', this.state.selectedPathwayState)
+            this.setState({
+                selectedPathwayState: newSelectedPathwayState
+            });
+            console.log('new pathway state', newSelectedPathwayState)
         }
     };
 
-    findPathwayState(){
+    findPathwayStateIfEmpty() {
+        if (this.state.selectedPathwayState) return;
         let pathwaySet = this.props.pathwaySets.find(f => f.selected === true);
         this.setState({
-            selectedPathwayState : pathwaySet,
+            selectedPathwayState: pathwaySet,
         });
     }
 
-    componentDidMount(){
-        this.findPathwayState();
+    componentDidMount() {
+        console.log('MOUNT selectedPathwayState', this.state.selectedPathwayState);
+        this.findPathwayStateIfEmpty();
     }
 
-    componentDidUpdate(){
-        this.findPathwayState();
+    componentDidUpdate() {
+        console.log('UPDATE selectedPathwayState', this.state.selectedPathwayState);
+        this.findPathwayStateIfEmpty();
     }
 
     render() {
+        console.log('changed selected pathway set', this.state.selectedPathwaySet, this.state.selectedPathwayState)
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
-                    {/*<Col md={3}>*/}
-                    {/*<Chip>Views</Chip>*/}
-                    {/*</Col>*/}
                     <Col md={6}>
-                        <Button onClick={ () => this.downloadView()}>
+                        <Button onClick={() => this.downloadView()}>
                             Download <FaCloudDownload/>
                         </Button>
                         <BrowseButton label="Upload"
-                                      onChange={ this.handleChange}
+                                      onChange={this.handleChange}
                         >
                             <FaCloudUpload/>
                         </BrowseButton>
-                        <Button onClick={ () => this.props.resetHandler()}>
+                        <Button onClick={() => this.props.resetHandler()}>
                             Reset <Fafresh/>
                         </Button>
                     </Col>
-                    {/*<Col md={3}>*/}
-                        {/*<Chip>Genes</Chip>*/}
-                    {/*</Col>*/}
                 </Row>
                 <Row>
-                    {/*<Col md={3}>*/}
-                        {/*<Chip>Views</Chip>*/}
-                    {/*</Col>*/}
                     <Col md={7}>
                         <Chip>Gene Sets</Chip>
                     </Col>
@@ -120,30 +117,7 @@ export default class PathwayEditor extends PureComponent {
                         <Chip>Genes</Chip>
                     </Col>
                 </Row>
-                {/*<Row>*/}
-                {/*<Col md={3}>*/}
-                {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                {/*</Col>*/}
-                {/*<Col md={6}>*/}
-                {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                {/*</Col>*/}
-                {/*<Col md={3}>*/}
-                {/*<Button raised primary><FaCloudUpload/></Button>*/}
-                {/*<Button raised primary><FaCloudDownload/></Button>*/}
-                {/*</Col>*/}
-                {/*</Row>*/}
                 <Row>
-                    {/*<Col md={2}>*/}
-                    {/*<Input type='text' label='New View' name='newView' value={this.state.newView}*/}
-                    {/*onChange={(newView) => this.setState({newView: newView})}*/}
-                    {/*maxLength={16}/>*/}
-                    {/*</Col>*/}
-                    {/*<Col md={1}>*/}
-                    {/*<Button style={{marginTop: 20}} raised primary*/}
-                    {/*onClick={() => this.handleAddNewView(this.state.newView)}><FaPlusCircle/></Button>*/}
-                    {/*</Col>*/}
                     <Col md={5}>
                         <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.newGeneSet}
                                onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
@@ -163,16 +137,13 @@ export default class PathwayEditor extends PureComponent {
                                       onChange={(newGene) => {
                                           this.setState({newGene: newGene})
                                       }}
-                                      disabled={this.state.newGene.length>0}
+                                      disabled={this.state.newGene.length > 0}
                         />
-                        {/*<Input type='text' label='New Gene' name='newGene' value={this.state.newGene} maxLength={16}*/}
-                        {/*onChange={(newGene) => this.setState({newGene: newGene})}*/}
-                        {/*/>*/}
                     </Col>
                     }
                     {this.state.selectedPathway &&
                     <Col md={1}>
-                        {this.state.newGene && this.state.newGene.length===1 &&
+                        {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
                                 onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
                         }
@@ -180,16 +151,11 @@ export default class PathwayEditor extends PureComponent {
                     }
                 </Row>
                 <Row>
-                    {/*<Col md={3}>*/}
-                    {/*<PathwaySetsView pathwaySets={this.props.pathwaySets}/>*/}
-                    {/*</Col>*/}
                     <Col md={7}>
-                        { this.state.selectedPathwayState &&
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
                                      selectedPathwaySet={this.state.selectedPathwayState}
                         />
-                        }
                     </Col>
                     <Col md={3}>
                         {this.state.selectedPathway &&
@@ -227,10 +193,6 @@ export default class PathwayEditor extends PureComponent {
         })
     };
 
-    handleAddNewView(newView) {
-        console.log('adding new view: ' + JSON.stringify(newView))
-    }
-
     handleAddNewGeneSet(newGeneSet) {
         this.props.addGeneSetHandler(newGeneSet);
         //
@@ -251,11 +213,11 @@ export default class PathwayEditor extends PureComponent {
 
     queryNewGenes(geneQuery) {
         let {reference: {host, name}, limit} = this.state;
-        if(geneQuery.trim().length===0){
+        if (geneQuery.trim().length === 0) {
             this.setState({
                 geneOptions: []
             });
-            return ;
+            return;
         }
         let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
         subscriber.subscribe(matches => {
@@ -270,11 +232,11 @@ export default class PathwayEditor extends PureComponent {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         let exportObj = selectedPathwayState.pathway;
         let now = new Date();
-        let dateString = now.toLocaleDateString()+'-'+now.toLocaleTimeString();
-        let exportName = 'xenaGoView-'+dateString;
+        let dateString = now.toLocaleDateString() + '-' + now.toLocaleTimeString();
+        let exportName = 'xenaGoView-' + dateString;
         let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
         let downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href",     dataStr);
+        downloadAnchorNode.setAttribute("href", dataStr);
         downloadAnchorNode.setAttribute("download", exportName + ".json");
         document.body.appendChild(downloadAnchorNode); // required for firefox
         downloadAnchorNode.click();

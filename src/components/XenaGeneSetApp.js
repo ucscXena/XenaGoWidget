@@ -48,7 +48,8 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         let renderHeight = COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT;
         this.state = {
-            view: XENA_VIEW,
+            // view: XENA_VIEW,
+            view: PATHWAYS_VIEW,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
