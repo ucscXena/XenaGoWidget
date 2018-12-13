@@ -6,7 +6,6 @@ import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import {XENA_VIEW,PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
 import BaseStyle from '../../src/base.css'
-import Input from "react-toolbox/lib/input";
 import * as PropTypes from "underscore";
 import Autocomplete from "react-toolbox/lib/autocomplete";
 
@@ -43,6 +42,7 @@ export default class NavigationBar extends PureComponent {
 
     render() {
         let {showPathways,showXena,view} = this.props ;
+        console.log('rendering nav bar',this.state)
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -55,12 +55,14 @@ export default class NavigationBar extends PureComponent {
                                       source={this.props.geneOptions}
                                       value={this.state.geneNameSearch}
                                       multiple={false}
-                                      onQueryChange={(geneQuery) => this.handleSearch(geneQuery)}
+                                      onQueryChange={(geneQuery) => {
+                                          this.handleSearch(geneQuery);
+                                          this.setState({ geneNameSearch: geneQuery });
+                                      }}
                                       onChange={(searchText) => {
-                                          this.setState({
-                                              geneNameSearch: searchText
-                                          });
+                                          console.log('handling change?',searchText)
                                           this.acceptGeneHandler(searchText);
+                                          this.setState({ geneNameSearch: searchText });
                                       }}
                         />
                         {view === XENA_VIEW &&
