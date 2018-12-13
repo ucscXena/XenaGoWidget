@@ -45,6 +45,11 @@ body {
     padding-left: 15px;
 }
 
+.highlightChip{
+    /*background-color: red;*/
+    color: firebrick;
+    font-weight: bolder;
+}
 
 .pathwayChip {
     color: gray;
