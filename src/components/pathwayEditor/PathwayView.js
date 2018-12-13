@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from "../PureComponent";
 import PropTypes from 'prop-types';
-import {Grid, Row, Col} from 'react-material-responsive-grid';
+import {Row, Col} from 'react-material-responsive-grid';
 import {Button} from 'react-toolbox/lib/button';
 import FaTrash from 'react-icons/lib/fa/trash';
 
@@ -12,6 +12,7 @@ export default class PathwayView extends PureComponent {
         super(props);
     }
 
+
     selectPathway = (p) => {
         this.props.clickPathwayHandler(p);
     };
@@ -21,12 +22,14 @@ export default class PathwayView extends PureComponent {
     };
 
     render() {
-        if (this.props.selectedPathwaySet.pathway) {
+        if (this.props.selectedPathwaySet
+            && this.props.selectedPathwaySet.pathway
+            && this.props.selectedPathwaySet.pathway.length > 0) {
             return this.props.selectedPathwaySet.pathway.map(p => {
                 return (
                     <Row key={p.golabel + p.goid}>
                         <Col md={8}>
-                            <Button onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
+                            <Button raised={p.highlight} onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
                         <Col md={2}>
                             <Button onClick={ () => this.removePathway(p)}><FaTrash/></Button>
@@ -36,7 +39,7 @@ export default class PathwayView extends PureComponent {
             })
         }
         else {
-            <div></div>
+            return <div></div>
         }
     }
 
@@ -44,7 +47,7 @@ export default class PathwayView extends PureComponent {
 }
 
 PathwayView.propTypes = {
-    selectedPathwaySet: PropTypes.any.isRequired,
+    selectedPathwaySet: PropTypes.any,
     clickPathwayHandler: PropTypes.any.isRequired,
     removePathwayHandler: PropTypes.any.isRequired,
 };

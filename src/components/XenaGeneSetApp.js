@@ -18,13 +18,18 @@ import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
 
+let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+let {sparseDataMatchPartialField, refGene} = xenaQuery;
 
+
+export const XENA_VIEW = 'xena';
+export const PATHWAYS_VIEW = 'pathways';
 const EXPAND_HEIGHT = 800;
 const COMPACT_HEIGHT = 500;
 const COMPACT_VIEW_DEFAULT = false;
 // export const FILTER_PERCENTAGE = 0.005;
 export const FILTER_PERCENTAGE = 0;
-export const MIN_FILTER = 2 ;
+export const MIN_FILTER = 2;
 
 
 export const LABEL_A = 'A';
@@ -43,7 +48,8 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         let renderHeight = COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT;
         this.state = {
-            view: 'xena',
+            view: XENA_VIEW,
+            // view: PATHWAYS_VIEW,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -58,8 +64,29 @@ export default class XenaGeneSetApp extends PureComponent {
             geneData: [{}, {}],
             pathwayData: [{}, {}],
             showPathwayDetails: true,
+            geneHits: [],
+            selectedGene: undefined,
+            reference: refGene['hg38'],
+            limit: 25,
         };
     }
+
+    queryGenes = (geneQuery) => {
+        let {reference: {host, name}, limit} = this.state;
+        if (geneQuery.trim().length === 0) {
+            this.setState({
+                geneHits: []
+            });
+            return;
+        }
+        let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+        subscriber.subscribe(matches => {
+                this.setState({
+                    geneHits: matches
+                })
+            }
+        )
+    };
 
     loadSelectedState() {
         let pathways = this.getActiveApp().pathway;
@@ -264,13 +291,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
     showPathways = () => {
         this.setState({
-            view: 'pathways'
+            view: PATHWAYS_VIEW
         })
     };
 
     showXena = () => {
         this.setState({
-            view: 'xena'
+            view: XENA_VIEW
         })
     };
 
@@ -364,8 +391,8 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
-    getSelectedCohort(pathwayData){
-        if(this.state.cohortData){
+    getSelectedCohort(pathwayData) {
+        if (this.state.cohortData) {
             return this.state.cohortData.find(c => c.name === pathwayData.cohort);
         }
     }
@@ -459,6 +486,59 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    searchHandler = (geneQuery) => {
+        this.queryGenes(geneQuery);
+    };
+
+    acceptGeneHandler = (geneName) => {
+        // cohortIndex: 0
+        // expression: {affected: 111, total: 183}
+        // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
+        // tissue: "Header"
+        if(this.state.view === XENA_VIEW){
+            let pathwayObject = {
+                goid: "nomatter",
+                golabel: "nomatter",
+                gene: [geneName],
+            };
+            let geneHoverObject = {
+                tissue: "Header",
+                cohortIndex: 0,
+                expression:{},
+                pathway: pathwayObject,
+            };
+            this.geneHover(geneHoverObject);
+            geneHoverObject.cohortIndex = 1 ;
+            // redo for the other cohort
+            this.geneHover(geneHoverObject);
+        }
+        else
+        if(this.state.view === PATHWAYS_VIEW){
+            this.pathwayEditorGeneHandler(geneName)
+        }
+    };
+
+    pathwayEditorGeneHandler = (geneName) => {
+        // the input is ["<Gene Name"]
+
+        // cohortIndex: 0
+        // expression: {affected: 111, total: 183}
+        // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
+        // tissue: "Header"
+        let pathwayObject = {
+            goid: "nomatter",
+            golabel: "nomatter",
+            gene: geneName,
+        };
+        let geneHoverObject = {
+            tissue: "Header",
+            cohortIndex: 0,
+            expression:{},
+            pathway: pathwayObject,
+        };
+        this.refs['pathway-editor'].highlightGenes(geneName)
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         let localPathways = AppStorageHandler.getPathway();
@@ -475,9 +555,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                showXena={this.showXena}
                                compactView={this.state.compactView}
                                view={this.state.view}
+                               searchHandler={this.searchHandler}
+                               geneOptions={this.state.geneHits}
+                               acceptGeneHandler={this.acceptGeneHandler}
                 />
 
-                {this.state.view === 'xena' && this.state.apps &&
+                {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
                     <Grid>
                         <Row>
@@ -485,12 +568,15 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <table>
                                     <tbody>
                                     <tr>
-                                        <td width={this.state.showPathwayDetails ? 200 : 20} style={{paddingLeft:leftPadding}}>
+                                        <td width={this.state.showPathwayDetails ? 200 : 20}
+                                            style={{paddingLeft: leftPadding}}>
                                             {this.state.showPathwayDetails &&
-                                            <FaArrowRight onClick={this.hideGeneSetDetail} className={BaseStyle.mouseHover}/>
+                                            <FaArrowRight onClick={this.hideGeneSetDetail}
+                                                          className={BaseStyle.mouseHover}/>
                                             }
                                             {!this.state.showPathwayDetails &&
-                                            <FaArrowLeft onClick={this.showGeneSetDetail}  className={BaseStyle.mouseHover}/>
+                                            <FaArrowLeft onClick={this.showGeneSetDetail}
+                                                         className={BaseStyle.mouseHover}/>
                                             }
                                         </td>
                                         <td>
@@ -498,10 +584,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                         </td>
                                         <td width={this.state.showPathwayDetails ? 200 : 20}>
                                             {this.state.showPathwayDetails &&
-                                            <FaArrowLeft onClick={this.hideGeneSetDetail} className={BaseStyle.mouseHover}/>
+                                            <FaArrowLeft onClick={this.hideGeneSetDetail}
+                                                         className={BaseStyle.mouseHover}/>
                                             }
                                             {!this.state.showPathwayDetails &&
-                                            <FaArrowRight onClick={this.showGeneSetDetail}  className={BaseStyle.mouseHover}/>
+                                            <FaArrowRight onClick={this.showGeneSetDetail}
+                                                          className={BaseStyle.mouseHover}/>
                                             }
                                         </td>
                                     </tr>
@@ -513,7 +601,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={0}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[0])}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
                                                 onClickMethod={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
@@ -538,7 +626,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 cohortIndex={1}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort = {this.getSelectedCohort(this.state.pathwayData[1])}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[1])}
                                                 onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
@@ -584,7 +672,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     </Grid>
                 </div>
                 }
-                {this.state.view === 'pathways' &&
+                {this.state.view === PATHWAYS_VIEW &&
                 <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
                                selectedPathway={this.state.selectedPathway}
                                removeGeneHandler={this.removeGene}

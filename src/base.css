@@ -69,3 +69,25 @@ body {
     cursor: pointer;
 }
 
+.wideNavigation{
+    width: 400px;
+    display:inline;
+}
+
+.inlineSearch{
+    width: 200px;
+    display:inline;
+    color: white;
+    background-color: white;
+}
+.inlineSearchBox{
+    width: 150px;
+    display:inline;
+    color: white;
+    background-color: white;
+}
+
+.input .autocomplete {
+    color: white;
+    background-color: white;
+}
