@@ -50,22 +50,23 @@ export default class PathwayEditor extends PureComponent {
     };
 
     highlightGenes = (genes) => {
-        console.log('highlight genes in pathway editor',genes);
-
+        // console.log('highlight genes in pathway editor',genes);
         // we can reset the state then
         // TODO: provide a "higlight view as state to pathway view"
         if(genes && this.state.selectedPathwayState){
             // console.log('search over this state',this.state.selectedPathwayState)
-            this.state.selectedPathwayState.pathway.forEach( p => {
-                if(p.gene.indexOf(genes[0])>=0){
-                    console.log('pathway DOES contains gene', p.golabel)
-                }else{
-                    console.log('pathway NOT contains gene', p.golabel)
-
-                    console.log(p.gene, ' vs ',genes[0], p.gene.indexOf(genes[0]) )
-                }
-                // console.log(p,genes)
-            })
+            let newPathways = this.state.selectedPathwayState.pathway.map( p => {
+                p.highlight = p.gene.indexOf(genes)>=0 ;
+                if(p.highlight) console.log('match',p.golabel)
+                return p ;
+            });
+            let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
+            newSelectedPathwayState.pathway  = newPathways ;
+            console.log('OLD pathway state',this.state.selectedPathwayState)
+            this.setState({
+                selectedPathwaySet: newSelectedPathwayState
+            });
+            console.log('new pathway state',newSelectedPathwayState)
         }
     };
 
