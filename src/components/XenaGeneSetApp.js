@@ -310,7 +310,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
-        console.log('HOVERing a gene', geneHover)
         this.setState(
             {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
@@ -488,22 +487,10 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     searchHandler = (geneQuery) => {
-        console.log('handling global search:', geneQuery)
         this.queryGenes(geneQuery);
-        if (this.state.view === XENA_VIEW) {
-            // handling search state
-            console.log('searching for xean')
-        }
-        else if (this.state.view === PATHWAYS_VIEW) {
-            console.log('searching for pathways')
-        }
     };
 
     acceptGeneHandler = (geneName) => {
-        console.log('gene accpeted', geneName);
-
-        // the input is ["<Gene Name"]
-
         // cohortIndex: 0
         // expression: {affected: 111, total: 183}
         // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
@@ -512,7 +499,7 @@ export default class XenaGeneSetApp extends PureComponent {
             let pathwayObject = {
                 goid: "nomatter",
                 golabel: "nomatter",
-                gene: geneName,
+                gene: [geneName],
             };
             let geneHoverObject = {
                 tissue: "Header",
@@ -520,7 +507,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 expression:{},
                 pathway: pathwayObject,
             };
-            console.log('hovering with',geneHoverObject)
             this.geneHover(geneHoverObject);
             geneHoverObject.cohortIndex = 1 ;
             // redo for the other cohort
@@ -533,8 +519,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     pathwayEditorGeneHandler = (geneName) => {
-        console.log('gene accpeted', geneName);
-
         // the input is ["<Gene Name"]
 
         // cohortIndex: 0

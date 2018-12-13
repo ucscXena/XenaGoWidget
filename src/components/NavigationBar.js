@@ -47,6 +47,7 @@ export default class NavigationBar extends PureComponent {
                 <AppBar title='Xena Geneset Widget Demo'>
                     <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
                         <table>
+                            <tbody>
                             <tr>
                                 <td width="35%">
                                     <Autocomplete
@@ -85,6 +86,7 @@ export default class NavigationBar extends PureComponent {
                                     </a>
                                 </td>
                             </tr>
+                            </tbody>
                         </table>
                     </Navigation>
                 </AppBar>
