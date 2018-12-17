@@ -125,7 +125,7 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            referenceLayout, selectedPathways, hoveredPathways
+            selectedPathways, hoveredPathways
         } = this.props;
 
 
@@ -135,7 +135,6 @@ class PathwayScoresView extends PureComponent {
                     width={width}
                     height={height}
                     layout={layout}
-                    referenceLayout={referenceLayout}
                     draw={DrawFunctions.drawTissueView}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
@@ -147,7 +146,6 @@ class PathwayScoresView extends PureComponent {
                     height={height}
                     offset={offset}
                     layout={layout}
-                    referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     associateData={associateData}
@@ -168,16 +166,15 @@ PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
-    selected: PropTypes.any,
-    referencePathways: PropTypes.any,
-    selectedPathways: PropTypes.any,
-    hoveredPathways: PropTypes.any,
+    selected: PropTypes.any.isRequired,
+    selectedPathways: PropTypes.any.isRequired,
+    hoveredPathways: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
-    filter: PropTypes.any,
-    selectedSort: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    shareGlobalGeneData: PropTypes.any,
+    filter: PropTypes.any.isRequired,
+    selectedSort: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    shareGlobalGeneData: PropTypes.any.isRequired,
 };
 
 
@@ -213,7 +210,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -263,8 +260,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
-        let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
         let layoutData = layout(width, returnedValue.data);
 
         // set affected versus total
@@ -274,24 +269,20 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
 
-
         internalData = returnedValue.data;
 
         return (
-
             <Grid>
                 <Row>
                     <PathwayScoresView
                         {...this.props}
                         width={width}
                         layout={layoutData}
-                        referenceLayout={referenceLayout}
                         hoveredPathways={hoveredPathways}
                         shareGlobalGeneData={shareGlobalGeneData}
                         data={{
                             expression,
                             pathways: returnedValue.pathways,
-                            referencePathways,
                             samples,
                             selectedPathways,
                             sortedSamples: returnedValue.sortedSamples
@@ -299,9 +290,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                         associateData={returnedValue.data}/>
                 </Row>
             </Grid>
-
-        )
-            ;
+        );
     }
 
 

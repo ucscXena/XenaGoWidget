@@ -97,7 +97,6 @@ export default class XenaGoViewer extends PureComponent {
                 expression,
                 samples,
                 pathways,
-                referencePathways: this.props.pathways,
                 copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
@@ -392,7 +391,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    min={MIN_FILTER}
                                                    selectedSort={this.state.selectedGeneSort}
                                                    selectedCohort={this.state.selectedCohortData}
-                                                   referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
@@ -422,14 +420,14 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
-    appData: PropTypes.any,
-    renderHeight: PropTypes.any,
-    renderOffset: PropTypes.any,
-    pathwaySelect: PropTypes.any,
-    pathways: PropTypes.any,
-    geneHover: PropTypes.any,
-    populateGlobal: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    shareGlobalGeneData: PropTypes.any,
-    geneDataStats: PropTypes.any,
+    appData: PropTypes.any.isRequired,
+    renderHeight: PropTypes.any.isRequired,
+    renderOffset: PropTypes.any.isRequired,
+    pathwaySelect: PropTypes.any.isRequired,
+    pathways: PropTypes.any.isRequired,
+    geneHover: PropTypes.any.isRequired,
+    populateGlobal: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    shareGlobalGeneData: PropTypes.any.isRequired,
+    geneDataStats: PropTypes.any.isRequired,
 };
