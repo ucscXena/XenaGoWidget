@@ -13,6 +13,8 @@ import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
 export const GENE_LABEL_HEIGHT = 50;
+const UP_BUFFER = 4;
+const DOWN_BUFFER = 1;
 
 const style = {
     fadeIn: {
@@ -53,13 +55,13 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     let index = 0;
     switch (cohortIndex) {
         case 0:
-            index = y <= (height - labelHeight) ? Math.trunc(y * count / (height - labelHeight)) : -1;
+            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc(y * count / (height - (labelHeight + UP_BUFFER) )) : -1;
             break;
         case 1:
-            index = y < labelHeight ? -1 : Math.trunc((y - labelHeight) * count / (height - labelHeight));
+            index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
             break;
         default:
-            console.log('error', y, height, labelHeight, count, cohortIndex)
+            console.log('error', y, height, labelHeight, count, cohortIndex,UP_BUFFER)
 
     }
     return index;
@@ -74,7 +76,6 @@ function getPointData(event, props) {
     let pathwayIndex = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
-
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
@@ -194,7 +195,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             return;
         }
         let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
-        let filename = selectedCohort.name.replace(/ /g,'_')+'_'+selectedPathways[0]+'_'+cohortIndex+'.json';
+        let filename = selectedCohort.name.replace(/ /g, '_') + '_' + selectedPathways[0] + '_' + cohortIndex + '.json';
         // let filename = "export.json";
         let contentType = "application/json;charset=utf-8;";
         // a hacky way to do this
