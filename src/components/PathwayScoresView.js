@@ -104,7 +104,7 @@ class PathwayScoresView extends PureComponent {
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
     }
 
-    onMouseOut = (event) => {
+    onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
     };

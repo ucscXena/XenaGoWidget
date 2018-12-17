@@ -180,7 +180,7 @@ GeneSetSvgSelector.propTypes = {
     pathways: PropTypes.any.isRequired,
     width: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
-    hoveredPathways: PropTypes.any.isRequired,
+    hoveredPathways: PropTypes.any,
     labelHeight: PropTypes.any.isRequired,
     topOffset: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,

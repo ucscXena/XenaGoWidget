@@ -109,7 +109,7 @@ SVGLabels.propTypes = {
     height: PropTypes.any.isRequired,
     offset: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
-    onMouseOver: PropTypes.any.isRequired,
+    onMouseMove: PropTypes.any.isRequired,
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
