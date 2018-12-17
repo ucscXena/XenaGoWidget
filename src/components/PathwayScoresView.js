@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
-import spinner from '../css/ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -125,9 +124,8 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways
+            selectedPathways, hoveredPathways, highlightedGene
         } = this.props;
-
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -148,6 +146,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
+                    highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
@@ -175,6 +174,7 @@ PathwayScoresView.propTypes = {
     selectedSort: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
+    highlightedGene: PropTypes.any,
 };
 
 
@@ -194,7 +194,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             return;
         }
         let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
-        console.log('Downloading data from ', selectedCohort, selectedPathways, cohortIndex);
         let filename = selectedCohort.name.replace(/ /g,'_')+'_'+selectedPathways[0]+'_'+cohortIndex+'.json';
         // let filename = "export.json";
         let contentType = "application/json;charset=utf-8;";

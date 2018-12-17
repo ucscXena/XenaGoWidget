@@ -2,7 +2,6 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
-import {intersection} from 'underscore';
 import {getGeneColorMask} from '../functions/ColorFunctions'
 
 
@@ -22,41 +21,23 @@ export default class SVGLabels extends PureComponent {
         super(props);
     }
 
-    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask, cohortIndex) {
+    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask, cohortIndex, highlightedGene) {
 
         if (layout[0].size <= 1) {
             return;
         }
 
         const numSamples = this.props.data.samples.length;
-
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
-                let labelString = '';
                 let hovered, selected;
-                let labelKey = '';
-                if (geneLength === 1) {
-                    labelString = d.gene[0];
-                    hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
-                    selected = selectedPathways.indexOf(labelString) >= 0;
-                    labelKey = d.gene[0];
-                }
-                else {
-                    labelString = '(' + d.gene.length + ') ';
-                    // pad for 1000, so 4 + 2 parans
-                    while (labelString.length < 5) {
-                        labelString += ' ';
-                    }
-                    labelString += d.golabel;
-                    // }
-                    selected = selectedPathways.indexOf(d.golabel) >= 0;
-
-                    hovered = intersection(hoveredPathways, d.gene).length > 0;
-                    hovered = hovered || hoveredPathways.indexOf(d.golabel) === 0;
-                    labelKey = d.golabel;
-                }
+                let labelKey = d.gene[0];
+                let labelString = labelKey; // can this go away?
+                hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                selected = selectedPathways.indexOf(labelString) >= 0;
+                let highlighted = highlightedGene === labelKey;
                 return (
                     <HeaderLabel
                         labelHeight={labelHeight}
@@ -68,6 +49,7 @@ export default class SVGLabels extends PureComponent {
                         item={d}
                         selected={selected}
                         hovered={hovered}
+                        highlighted={highlighted}
                         labelString={labelString}
                         colorMask={colorMask}
                         key={labelKey + '-' + cohortIndex}
@@ -78,7 +60,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay() {
-        let {geneLabelHeight, width, height, layout, associateData, cohortIndex, hoveredPathways, data: {pathways}} = this.props;
+        let {geneLabelHeight, width, height, layout, associateData, cohortIndex, hoveredPathways, highlightedGene, data: {pathways}} = this.props;
 
         if (associateData.length === 0) {
             return;
@@ -86,7 +68,7 @@ export default class SVGLabels extends PureComponent {
 
         // draw genes
         let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
-        return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex);
+        return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex, highlightedGene);
     }
 
     render() {
