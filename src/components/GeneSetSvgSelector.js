@@ -3,6 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
+    getHighlightedColor,
     getPathwayColorMask,
     scoreData,
 } from "../functions/ColorFunctions";
@@ -23,9 +24,10 @@ export class GeneSetSvgSelector extends PureComponent {
      * @param width
      * @param labelHeight
      * @param colorMask
+     * @param highlighted
      * @returns {*}
      */
-    labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, colorMask) {
+    labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted) {
 
         if (selected) {
             return {
@@ -52,6 +54,18 @@ export class GeneSetSvgSelector extends PureComponent {
                 cursor: 'pointer'
             }
         }
+        else if (highlighted) {
+            return {
+                top: labelOffset,
+                left: left,
+                height: labelHeight,
+                width: width,
+                strokeWidth: 1,
+                borderRadius: '15px',
+                boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
+                cursor: 'pointer'
+            }
+        }
         else {
             return {
                 top: labelOffset,
@@ -72,7 +86,7 @@ export class GeneSetSvgSelector extends PureComponent {
         colorString += ',';
         colorString += colorMask[2];
         colorString += ',';
-        colorString += isNaN(score)? 0 : score + ')';
+        colorString += isNaN(score) ? 0 : score + ')';
         return {
             top: 0,
             left: 0,
@@ -109,14 +123,17 @@ export class GeneSetSvgSelector extends PureComponent {
     };
 
 
-
     render() {
-        let {pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, labelOffset, left} = this.props;
+        let {pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
             )
         }
+
+        console.log('GSSS pathways', pathways)
+        console.log('GSSS highlightedGene', highlightedGene)
+
 
         let newRefPathways = pathways.map(r => {
 
@@ -145,12 +162,13 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
+            let highlighted = p.gene.indexOf(highlightedGene) >= 0
             let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length);
             let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length);
 
             return (
                 <svg
-                    style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask)}
+                    style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
@@ -186,4 +204,5 @@ GeneSetSvgSelector.propTypes = {
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     onMouseOut: PropTypes.any.isRequired,
+    highlightedGene: PropTypes.any,
 };
