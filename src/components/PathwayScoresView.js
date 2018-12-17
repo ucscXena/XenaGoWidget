@@ -125,32 +125,17 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
+            referenceLayout, selectedPathways, hoveredPathways
         } = this.props;
 
-        let titleString, filterString;
-        if (selected) {
-            titleString = selected.golabel + (selected.goid ? ' (' + selected.goid + ')' : '');
-            filterString = filter.indexOf('All') === 0 ? '' : filter;
-        }
-        else {
-            titleString = titleText ? titleText : '';
-            filterString = filter.indexOf('All') === 0 ? '' : filter;
-        }
-
-        let stat = loading ? <img src={spinner}/> : null;
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
-                {!this.props.hideTitle &&
-                <h3>{titleString} {stat}</h3>
-                }
                 <CanvasDrawing
                     width={width}
                     height={height}
                     layout={layout}
                     referenceLayout={referenceLayout}
-                    filter={filterString}
                     draw={DrawFunctions.drawTissueView}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
@@ -184,8 +169,6 @@ PathwayScoresView.propTypes = {
     offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
     selected: PropTypes.any,
-    titleText: PropTypes.string,
-    hideTitle: PropTypes.bool,
     referencePathways: PropTypes.any,
     selectedPathways: PropTypes.any,
     hoveredPathways: PropTypes.any,

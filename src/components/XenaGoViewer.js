@@ -341,7 +341,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator, renderHeight, renderOffset, cohortIndex} = this.props;
+        let {renderHeight, renderOffset, cohortIndex} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
@@ -385,7 +385,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    ref='pathwayscoreview'
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
-                                                   statGenerator={statGenerator}
                                                    filter={this.state.geneExpressionFilter}
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
@@ -398,7 +397,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
-                                                   hideTitle={true}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
@@ -425,12 +423,9 @@ export default class XenaGoViewer extends PureComponent {
 
 XenaGoViewer.propTypes = {
     appData: PropTypes.any,
-    statGenerator: PropTypes.any,
-    stats: PropTypes.any,
     renderHeight: PropTypes.any,
     renderOffset: PropTypes.any,
     pathwaySelect: PropTypes.any,
-    // pathwayHover: PropTypes.any,
     pathways: PropTypes.any,
     geneHover: PropTypes.any,
     populateGlobal: PropTypes.any,

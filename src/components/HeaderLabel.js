@@ -94,16 +94,15 @@ export class HeaderLabel extends PureComponent {
 }
 
 HeaderLabel.propTypes = {
-    labelOffset: PropTypes.any,
-    labelHeight: PropTypes.any,
-    colorString: PropTypes.string,
-    left: PropTypes.any,
-    width: PropTypes.any,
-    labelString: PropTypes.string,
-    numSamples: PropTypes.number,
-    item: PropTypes.any,
-    selected: PropTypes.any,
-    hovered: PropTypes.any,
-    colorMask: PropTypes.any,
-    geneLength: PropTypes.any,
+    labelOffset: PropTypes.any.isRequired,
+    labelHeight: PropTypes.any.isRequired,
+    left: PropTypes.any.isRequired,
+    width: PropTypes.any.isRequired,
+    labelString: PropTypes.string.isRequired,
+    numSamples: PropTypes.number.isRequired,
+    item: PropTypes.any.isRequired,
+    selected: PropTypes.any.isRequired,
+    hovered: PropTypes.any.isRequired,
+    colorMask: PropTypes.any.isRequired,
+    geneLength: PropTypes.any.isRequired,
 };
