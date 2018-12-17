@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
-import CanvasDrawing from "../CanvasDrawing";
+import CanvasDrawing from "./CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
@@ -46,34 +46,21 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 
 
     onMouseOut = (event) => {
-        let {onHover} = this.props;
-        onHover(null);
+        this.props.onHover(null);
     };
 
     onHover = (event) => {
-        let {onHover} = this.props;
-        if (onHover) {
-            let pointData = getPointData(event, this.props);
-            onHover(pointData);
-        }
-        else {
-            onHover(null);
-        }
+        let pointData = getPointData(event, this.props);
+        this.props.onHover(pointData);
     };
 
     onClick = (event) => {
-        let {onClick} = this.props;
-        if (onClick) {
-            onClick(getPointData(event, this.props))
-        }
-        else{
-            alert('not found')
-        }
+        this.props.onClick(getPointData(event, this.props))
     };
 
     render() {
 
-        let {data, cohortIndex, filter, selectedSort, labelHeight, width, selectedCohort} = this.props;
+        let {data, cohortIndex, filter, labelHeight, width, selectedCohort} = this.props;
         const {expression, pathways, samples, copyNumber, referencePathways} = data;
         if (!data || !data.pathways) {
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
@@ -149,9 +136,8 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 }
 
 VerticalPathwaySetScoresView.propTypes = {
-    data: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    onClick: PropTypes.any,
-    onHover: PropTypes.any,
-    onMouseOut: PropTypes.any,
+    data: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    onClick: PropTypes.any.isRequired,
+    onHover: PropTypes.any.isRequired,
 };

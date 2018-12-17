@@ -1,7 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
 import {Dropdown} from "react-toolbox";
 
 

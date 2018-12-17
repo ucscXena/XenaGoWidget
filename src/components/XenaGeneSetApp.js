@@ -7,13 +7,13 @@ import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
-import {AppStorageHandler} from "./AppStorageHandler";
+import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
-import BaseStyle from '../../src/base.css';
+import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
@@ -491,10 +491,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     acceptGeneHandler = (geneName) => {
-        // cohortIndex: 0
-        // expression: {affected: 111, total: 183}
-        // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
-        // tissue: "Header"
         if(this.state.view === XENA_VIEW){
             let pathwayObject = {
                 goid: "nomatter",
@@ -519,23 +515,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     pathwayEditorGeneHandler = (geneName) => {
-        // the input is ["<Gene Name"]
-
-        // cohortIndex: 0
-        // expression: {affected: 111, total: 183}
-        // pathway: {goid: "GO:0097193", golabel: "Intrinsic apoptotic pathway", gene: Array(1), density: 111, index: 16, …}
-        // tissue: "Header"
-        let pathwayObject = {
-            goid: "nomatter",
-            golabel: "nomatter",
-            gene: geneName,
-        };
-        let geneHoverObject = {
-            tissue: "Header",
-            cohortIndex: 0,
-            expression:{},
-            pathway: pathwayObject,
-        };
         this.refs['pathway-editor'].highlightGenes(geneName)
     };
 

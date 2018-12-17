@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
-import '../base.css';
+import '../css/base.css';
 import HoverGeneView from "./HoverGeneView";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
@@ -19,7 +19,7 @@ let copyNumberViewKey = 'copy number for pathway view';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
-import {AppStorageHandler} from "./AppStorageHandler";
+import {AppStorageHandler} from "../service/AppStorageHandler";
 import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
@@ -97,7 +97,6 @@ export default class XenaGoViewer extends PureComponent {
                 expression,
                 samples,
                 pathways,
-                referencePathways: this.props.pathways,
                 copyNumber,
                 selectedPathway: pathwayClickData.pathway
             },
@@ -341,7 +340,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {statGenerator, renderHeight, renderOffset, cohortIndex} = this.props;
+        let {renderHeight, renderOffset, cohortIndex} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
@@ -385,7 +384,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    ref='pathwayscoreview'
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
-                                                   statGenerator={statGenerator}
                                                    filter={this.state.geneExpressionFilter}
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
@@ -393,12 +391,10 @@ export default class XenaGoViewer extends PureComponent {
                                                    min={MIN_FILTER}
                                                    selectedSort={this.state.selectedGeneSort}
                                                    selectedCohort={this.state.selectedCohortData}
-                                                   referencePathways={this.state.pathwayData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
-                                                   hideTitle={true}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
@@ -424,17 +420,14 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
-    appData: PropTypes.any,
-    statGenerator: PropTypes.any,
-    stats: PropTypes.any,
-    renderHeight: PropTypes.any,
-    renderOffset: PropTypes.any,
-    pathwaySelect: PropTypes.any,
-    // pathwayHover: PropTypes.any,
-    pathways: PropTypes.any,
-    geneHover: PropTypes.any,
-    populateGlobal: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    shareGlobalGeneData: PropTypes.any,
-    geneDataStats: PropTypes.any,
+    appData: PropTypes.any.isRequired,
+    renderHeight: PropTypes.any.isRequired,
+    renderOffset: PropTypes.any.isRequired,
+    pathwaySelect: PropTypes.any.isRequired,
+    pathways: PropTypes.any.isRequired,
+    geneHover: PropTypes.any.isRequired,
+    populateGlobal: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    shareGlobalGeneData: PropTypes.any.isRequired,
+    geneDataStats: PropTypes.any.isRequired,
 };

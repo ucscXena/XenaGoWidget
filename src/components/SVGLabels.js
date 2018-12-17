@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {intersection} from 'underscore';
-import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
+import {getGeneColorMask} from '../functions/ColorFunctions'
 
 
 let styles = {
@@ -28,10 +28,6 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-        // const highestScore = pathways.reduce((max, current) => {
-        //     let score = current.density / current.gene.length;
-        //     return (max > score) ? max : score;
-        // }, 0);
         const numSamples = this.props.data.samples.length;
 
         if (pathways.length === layout.length) {
@@ -42,14 +38,12 @@ export default class SVGLabels extends PureComponent {
                 let hovered, selected;
                 let labelKey = '';
                 if (geneLength === 1) {
-                    // labelString = cohortIndex === 1 ? d.gene[0] : '';
                     labelString = d.gene[0];
                     hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                     selected = selectedPathways.indexOf(labelString) >= 0;
                     labelKey = d.gene[0];
                 }
                 else {
-                    // if(cohortIndex===1){
                     labelString = '(' + d.gene.length + ') ';
                     // pad for 1000, so 4 + 2 parans
                     while (labelString.length < 5) {
@@ -111,12 +105,12 @@ export default class SVGLabels extends PureComponent {
     }
 }
 SVGLabels.propTypes = {
-    width: PropTypes.any,
-    height: PropTypes.any,
-    offset: PropTypes.any,
-    onClick: PropTypes.any,
-    onMouseOver: PropTypes.any,
-    onMouseOut: PropTypes.any,
-    geneLabelHeight: PropTypes.any,
-    cohortIndex: PropTypes.any,
+    width: PropTypes.any.isRequired,
+    height: PropTypes.any.isRequired,
+    offset: PropTypes.any.isRequired,
+    onClick: PropTypes.any.isRequired,
+    onMouseOver: PropTypes.any.isRequired,
+    onMouseOut: PropTypes.any.isRequired,
+    geneLabelHeight: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
 };

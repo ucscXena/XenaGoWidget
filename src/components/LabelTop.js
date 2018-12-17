@@ -14,7 +14,6 @@ export class LabelTop extends PureComponent {
 
     render() {
         let fontSize = 15 ;
-        let height= 15 ;
         let y = 12;
         let x = 7;
         return (

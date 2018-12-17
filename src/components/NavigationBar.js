@@ -4,10 +4,10 @@ import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
 import {XENA_VIEW, PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
-import BaseStyle from '../../src/base.css'
+import BaseStyle from '../css/base.css'
 import * as PropTypes from "underscore";
 import Autocomplete from "react-toolbox/lib/autocomplete";
-import AutocompleteTheme from "../../src/autocomplete.css";
+import AutocompleteTheme from "../css/autocomplete.css";
 
 
 const GithubIcon = () => (
@@ -97,9 +97,9 @@ export default class NavigationBar extends PureComponent {
 }
 
 NavigationBar.propTypes = {
-    searchHandler: PropTypes.any,
-    acceptGeneHandler: PropTypes.any,
-    view: PropTypes.any,
-    showPathways: PropTypes.any,
-    showXena: PropTypes.any,
+    searchHandler: PropTypes.any.isRequired,
+    acceptGeneHandler: PropTypes.any.isRequired,
+    view: PropTypes.any.isRequired,
+    showPathways: PropTypes.any.isRequired,
+    showXena: PropTypes.any.isRequired,
 };

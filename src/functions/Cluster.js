@@ -1,15 +1,4 @@
-module.exports = Cluster
-
-/**
- * All supported linkage functions.
- * You can add your own globally or use them for whatever you want.
- */
-
-// Cluster.linkages = {
-//     'single': singleLink,
-//     'complete': completeLink,
-//     'average': averageLink,
-// }
+module.exports = Cluster;
 
 
 /**
@@ -34,18 +23,18 @@ Cluster.prototype.reduce = function () {
         }
     }
 
-    clusters = this.clusters = clusters.slice()
-    clusters[minI] = clusters[minI].concat(clusters[minJ])
-    clusters.splice(minJ, 1)
+    clusters = this.clusters = clusters.slice();
+    clusters[minI] = clusters[minI].concat(clusters[minJ]);
+    clusters.splice(minJ, 1);
     var level = {
         linkage: minLinkage,
         clusters: clusters,
         from: j,
         to: i,
-    }
-    this.levels.push(level)
+    };
+    this.levels.push(level);
     return level
-}
+};
 
 /**
  * Calculate the linkage between two clusters.
@@ -61,7 +50,7 @@ Cluster.prototype.linkageOf = function (clusterA, clusterB) {
     }
 
     return this.linkage(distances)
-}
+};
 
 /**
  * Calculate the distance between two inputs.
@@ -70,7 +59,7 @@ Cluster.prototype.linkageOf = function (clusterA, clusterB) {
 Cluster.prototype.distanceOf = function (i, j) {
     if (i > j) return this.distances[i][j]
     return this.distances[j][i]
-}
+};
 
 /**
  * Create the upper triangle of the symmetric, distance matrix.
@@ -89,24 +78,6 @@ function createDistanceArray(input, distance) {
     return matrix
 }
 
-/*
- * Predefined linkage functions
- */
-
-function singleLink(distances) {
-    return Math.min.apply(null, distances)
-}
-
-function completeLink(distances) {
-    return Math.max.apply(null, distances)
-}
-
-function averageLink(distances) {
-    let sum = distances.reduce(function (a, b) {
-        return a + b
-    });
-    return sum / distances.length
-}
 
 function Cluster(options) {
     if (!(this instanceof Cluster)) return new Cluster(options)

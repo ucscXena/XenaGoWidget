@@ -1,10 +1,10 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import CanvasDrawing from "../CanvasDrawing";
+import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
-import spinner from './ajax-loader.gif';
+import spinner from '../css/ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -125,32 +125,16 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            titleText, selected, filter, referenceLayout, selectedPathways, hoveredPathways
+            selectedPathways, hoveredPathways
         } = this.props;
 
-        let titleString, filterString;
-        if (selected) {
-            titleString = selected.golabel + (selected.goid ? ' (' + selected.goid + ')' : '');
-            filterString = filter.indexOf('All') === 0 ? '' : filter;
-        }
-        else {
-            titleString = titleText ? titleText : '';
-            filterString = filter.indexOf('All') === 0 ? '' : filter;
-        }
-
-        let stat = loading ? <img src={spinner}/> : null;
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
-                {!this.props.hideTitle &&
-                <h3>{titleString} {stat}</h3>
-                }
                 <CanvasDrawing
                     width={width}
                     height={height}
                     layout={layout}
-                    referenceLayout={referenceLayout}
-                    filter={filterString}
                     draw={DrawFunctions.drawTissueView}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
@@ -162,7 +146,6 @@ class PathwayScoresView extends PureComponent {
                     height={height}
                     offset={offset}
                     layout={layout}
-                    referenceLayout={referenceLayout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     associateData={associateData}
@@ -183,18 +166,15 @@ PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
-    selected: PropTypes.any,
-    titleText: PropTypes.string,
-    hideTitle: PropTypes.bool,
-    referencePathways: PropTypes.any,
-    selectedPathways: PropTypes.any,
-    hoveredPathways: PropTypes.any,
+    selected: PropTypes.any.isRequired,
+    selectedPathways: PropTypes.any.isRequired,
+    hoveredPathways: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
-    filter: PropTypes.any,
-    selectedSort: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    shareGlobalGeneData: PropTypes.any,
+    filter: PropTypes.any.isRequired,
+    selectedSort: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    shareGlobalGeneData: PropTypes.any.isRequired,
 };
 
 
@@ -230,7 +210,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber, referencePathways}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -280,8 +260,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         returnedValue.index = cohortIndex;
         let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
 
-        let referenceWidth = Math.max(minWidth, minColWidth * referencePathways.length);
-        let referenceLayout = layout(referenceWidth ? referenceWidth : 0, referencePathways);
         let layoutData = layout(width, returnedValue.data);
 
         // set affected versus total
@@ -291,24 +269,20 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
         }
 
-
         internalData = returnedValue.data;
 
         return (
-
             <Grid>
                 <Row>
                     <PathwayScoresView
                         {...this.props}
                         width={width}
                         layout={layoutData}
-                        referenceLayout={referenceLayout}
                         hoveredPathways={hoveredPathways}
                         shareGlobalGeneData={shareGlobalGeneData}
                         data={{
                             expression,
                             pathways: returnedValue.pathways,
-                            referencePathways,
                             samples,
                             selectedPathways,
                             sortedSamples: returnedValue.sortedSamples
@@ -316,9 +290,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                         associateData={returnedValue.data}/>
                 </Row>
             </Grid>
-
-        )
-            ;
+        );
     }
 
 

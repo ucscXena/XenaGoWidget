@@ -1,5 +1,5 @@
 import React from 'react'
-import PureComponent from './PureComponent';
+import PureComponent from '../components/PureComponent';
 
 
 // synchronizing gene sorts between pathways

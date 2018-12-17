@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Chip, Avatar, List, ListItem, ListSubHeader} from "react-toolbox";
-import BaseStyle from '../../src/base.css';
+import BaseStyle from '../css/base.css';
 
 export default class HoverGeneView extends PureComponent {
 
