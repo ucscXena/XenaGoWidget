@@ -131,12 +131,7 @@ export class GeneSetSvgSelector extends PureComponent {
             )
         }
 
-        console.log('GSSS pathways', pathways)
-        console.log('GSSS highlightedGene', highlightedGene)
-
-
         let newRefPathways = pathways.map(r => {
-
             return {
                 goid: r.goid,
                 golabel: r.golabel,

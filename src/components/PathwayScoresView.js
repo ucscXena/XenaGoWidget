@@ -127,8 +127,6 @@ class PathwayScoresView extends PureComponent {
             selectedPathways, hoveredPathways, highlightedGene
         } = this.props;
 
-        console.log('PSV highlgighted gene:',highlightedGene);
-
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
                 <CanvasDrawing
@@ -196,7 +194,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             return;
         }
         let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
-        console.log('Downloading data from ', selectedCohort, selectedPathways, cohortIndex);
         let filename = selectedCohort.name.replace(/ /g,'_')+'_'+selectedPathways[0]+'_'+cohortIndex+'.json';
         // let filename = "export.json";
         let contentType = "application/json;charset=utf-8;";

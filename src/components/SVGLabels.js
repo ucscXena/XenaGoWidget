@@ -27,10 +27,7 @@ export default class SVGLabels extends PureComponent {
             return;
         }
 
-        console.log('SVGLABEL highlgithed',highlightedGene)
-
         const numSamples = this.props.data.samples.length;
-
         if (pathways.length === layout.length) {
             return layout.map((el, i) => {
                 let d = pathways[i];
