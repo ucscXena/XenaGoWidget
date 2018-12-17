@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
-import spinner from '../css/ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -125,9 +124,10 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways
+            selectedPathways, hoveredPathways, highlightedGene
         } = this.props;
 
+        console.log(highlightedGene);
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -148,6 +148,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
+                    highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
@@ -175,6 +176,7 @@ PathwayScoresView.propTypes = {
     selectedSort: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
+    highlightedGene: PropTypes.any,
 };
 
 
