@@ -298,12 +298,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     geneHighlight = (geneName) => {
+        console.log('setting gene highlight name',geneName);
         this.setState(
             {
                 highlightedGene: geneName
             }
         );
-    }
+    };
 
     geneHover = (geneHover) => {
         this.setState(

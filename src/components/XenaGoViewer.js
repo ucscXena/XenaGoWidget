@@ -394,6 +394,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}
+                                                   highlightedGene={this.props.highlightedGene}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
                                                    cohortIndex={this.state.key}

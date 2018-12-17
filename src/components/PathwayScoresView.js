@@ -127,7 +127,7 @@ class PathwayScoresView extends PureComponent {
             selectedPathways, hoveredPathways, highlightedGene
         } = this.props;
 
-        console.log(highlightedGene);
+        console.log('PSV highlgighted gene:',highlightedGene);
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>

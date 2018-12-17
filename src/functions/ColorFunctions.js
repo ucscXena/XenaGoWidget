@@ -2,6 +2,10 @@ export function getSelectColor() {
     return '#113871';
 }
 
+export function getHighlightedColor() {
+    return '#EEDD82';
+}
+
 export function getWhiteColor() {
     return '#F7FFF7';
 }
