@@ -619,8 +619,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderOffset={0}
                                               pathways={pathways}
                                               highlightedGene={this.state.highlightedGene}
-                                              // hoveredPathways={this.state.hoveredPathways}
-                                              // selectedPathways={this.state.selectedPathways}
                                               geneDataStats={this.state.geneData[0]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
@@ -634,8 +632,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderOffset={(this.state.renderHeight)}
                                               pathways={pathways}
                                               highlightedGene={this.state.highlightedGene}
-                                              // hoveredPathways={this.state.hoveredPathways}
-                                              // selectedPathways={this.state.selectedPathways}
                                               geneDataStats={this.state.geneData[1]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}

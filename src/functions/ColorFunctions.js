@@ -3,7 +3,7 @@ export function getSelectColor() {
 }
 
 export function getHighlightedColor() {
-    return '#EEDD82';
+    return '#DD55DD';
 }
 
 export function getWhiteColor() {
