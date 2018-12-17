@@ -84,8 +84,8 @@ CanvasDrawing.propTypes = {
     width: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    onHover: PropTypes.any.isRequired,
-    onMouseOut: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
+    onHover: PropTypes.any,
+    onMouseOut: PropTypes.any,
+    onClick: PropTypes.any,
 };
 

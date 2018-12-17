@@ -25,7 +25,6 @@ export default class NavigationBar extends PureComponent {
         super(props);
         this.state = {
             geneNameSearch: '',
-            // geneOptions: [],
         }
     }
 
@@ -97,9 +96,10 @@ export default class NavigationBar extends PureComponent {
 }
 
 NavigationBar.propTypes = {
-    searchHandler: PropTypes.any.isRequired,
-    acceptGeneHandler: PropTypes.any.isRequired,
-    view: PropTypes.any.isRequired,
-    showPathways: PropTypes.any.isRequired,
-    showXena: PropTypes.any.isRequired,
+    searchHandler: PropTypes.any,
+    acceptGeneHandler: PropTypes.any,
+    view: PropTypes.any,
+    showPathways: PropTypes.any,
+    showXena: PropTypes.any,
+    geneOptions: PropTypes.any,
 };

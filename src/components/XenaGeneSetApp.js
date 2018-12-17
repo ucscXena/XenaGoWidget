@@ -24,10 +24,7 @@ let {sparseDataMatchPartialField, refGene} = xenaQuery;
 
 export const XENA_VIEW = 'xena';
 export const PATHWAYS_VIEW = 'pathways';
-const EXPAND_HEIGHT = 800;
 const COMPACT_HEIGHT = 500;
-const COMPACT_VIEW_DEFAULT = false;
-// export const FILTER_PERCENTAGE = 0.005;
 export const FILTER_PERCENTAGE = 0;
 export const MIN_FILTER = 2;
 
@@ -46,7 +43,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     constructor(props) {
         super(props);
-        let renderHeight = COMPACT_VIEW_DEFAULT ? COMPACT_HEIGHT : EXPAND_HEIGHT;
         this.state = {
             view: XENA_VIEW,
             // view: PATHWAYS_VIEW,
@@ -57,8 +53,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     selected: true
                 }
             ],
-            compactView: COMPACT_VIEW_DEFAULT,
-            renderHeight: renderHeight,
+            renderHeight: COMPACT_HEIGHT,
             hoveredPathways: [],
             selectedPathways: [],
             geneData: [{}, {}],
@@ -126,7 +121,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     componentDidMount() {
         this.loadSelectedState();
-        this.makeCompact(true);
     }
 
     loadCohorts() {
@@ -298,14 +292,6 @@ export default class XenaGeneSetApp extends PureComponent {
     showXena = () => {
         this.setState({
             view: XENA_VIEW
-        })
-    };
-
-
-    makeCompact = (value) => {
-        this.setState({
-            compactView: value,
-            renderHeight: value ? COMPACT_HEIGHT : EXPAND_HEIGHT,
         })
     };
 
@@ -520,7 +506,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     render() {
         let pathways = this.getActiveApp().pathway;
-        let localPathways = AppStorageHandler.getPathway();
+        // let localPathways = AppStorageHandler.getPathway();
         const BORDER_OFFSET = 2;
 
         let leftPadding = this.state.showPathwayDetails ? 180 : 20;
@@ -528,11 +514,8 @@ export default class XenaGeneSetApp extends PureComponent {
         return (
             <div>
 
-                <NavigationBar pathways={localPathways}
-                               makeCompact={this.makeCompact}
-                               showPathways={this.showPathways}
+                <NavigationBar showPathways={this.showPathways}
                                showXena={this.showXena}
-                               compactView={this.state.compactView}
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
@@ -581,7 +564,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
-                                                onClickMethod={this.globalPathwaySelect}
+                                                onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
                                             />
