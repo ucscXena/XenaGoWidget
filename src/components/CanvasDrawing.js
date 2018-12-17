@@ -1,5 +1,3 @@
-// React component to manages redrawing a canvas element.
-
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
@@ -12,8 +10,6 @@ let styles = {
         left: 0,
         top: 0,
         zIndex: 1,
-        // border: 'solid 0.1px',
-        // boxShadow: '0 2px 2px 0 rgba(0, 0, 0, .14)'
     }
     , labels: {
         position: 'relative',
@@ -29,11 +25,8 @@ let styles = {
     , overlay: {
         position: 'absolute'
         , top: 0
-        // ,width:'25px !important'
         , display: 'block'
         , zIndex: 9999
-        // , color: 'green'
-        // , backgroundColor: 'blue'
         , opacity: 1
     }
 };
@@ -87,12 +80,12 @@ export default class CanvasDrawing extends Component {
     }
 }
 CanvasDrawing.propTypes = {
-    draw: PropTypes.any,
-    width: PropTypes.any,
-    height: PropTypes.any,
-    cohortIndex: PropTypes.any,
-    onHover: PropTypes.any,
-    onMouseOut: PropTypes.any,
-    onClick: PropTypes.any,
+    draw: PropTypes.any.isRequired,
+    width: PropTypes.any.isRequired,
+    height: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
+    onHover: PropTypes.any.isRequired,
+    onMouseOut: PropTypes.any.isRequired,
+    onClick: PropTypes.any.isRequired,
 };
 

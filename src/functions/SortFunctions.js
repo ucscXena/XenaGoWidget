@@ -93,28 +93,6 @@ function sortColumnDensities(prunedColumns) {
 
 
 /**
- *
- * @param prunedColumns
- */
-export function overallSort(prunedColumns) {
-    let sortedColumns = sortColumnDensities(prunedColumns);
-
-    let renderedData = transpose(sortedColumns.data);
-
-    renderedData = renderedData.sort(function (a, b) {
-        return sum(b) - sum(a)
-    });
-
-    renderedData = transpose(renderedData);
-
-    let returnColumns = {};
-
-    returnColumns.data = renderedData;
-
-    return returnColumns;
-}
-
-/**
  * Sort by column density followed by row.
  * https://github.com/nathandunn/XenaGoWidget/issues/67
  *

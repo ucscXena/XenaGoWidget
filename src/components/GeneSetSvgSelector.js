@@ -11,10 +11,6 @@ export class GeneSetSvgSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            value: props.selected,
-            pathways: props.pathways,
-        };
     }
 
     /**
@@ -97,7 +93,7 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     };
 
-    onMouseOut = (geneSet, event) => {
+    onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
     };
@@ -181,16 +177,13 @@ export class GeneSetSvgSelector extends PureComponent {
 }
 
 GeneSetSvgSelector.propTypes = {
-    pathways: PropTypes.any,
-    layout: PropTypes.any,
-    width: PropTypes.any,
-    referenceLayout: PropTypes.any,
-    selectedPathways: PropTypes.any,
-    hoveredPathways: PropTypes.any,
-    associateData: PropTypes.any,
-    labelHeight: PropTypes.any,
-    topOffset: PropTypes.any,
-    onClick: PropTypes.any,
-    onHover: PropTypes.any,
-    onMouseOut: PropTypes.any,
+    pathways: PropTypes.any.isRequired,
+    width: PropTypes.any.isRequired,
+    selectedPathways: PropTypes.any.isRequired,
+    hoveredPathways: PropTypes.any.isRequired,
+    labelHeight: PropTypes.any.isRequired,
+    topOffset: PropTypes.any.isRequired,
+    onClick: PropTypes.any.isRequired,
+    onHover: PropTypes.any.isRequired,
+    onMouseOut: PropTypes.any.isRequired,
 };

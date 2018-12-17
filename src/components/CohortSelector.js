@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import BaseStyle from '../../src/base.css';
+import BaseStyle from '../css/base.css';
 
 
 export class CohortSelector extends PureComponent {

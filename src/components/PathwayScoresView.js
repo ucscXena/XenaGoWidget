@@ -1,10 +1,10 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import CanvasDrawing from "../CanvasDrawing";
+import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
-import spinner from './ajax-loader.gif';
+import spinner from '../css/ajax-loader.gif';
 import SVGLabels from "./SVGLabels";
 import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';

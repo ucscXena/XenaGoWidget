@@ -1,7 +1,6 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
-import {transpose} from '../functions/SortFunctions'
 import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
 import {GENE_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
@@ -30,12 +29,6 @@ function findRegions(height, count) {
 
 function regionColor(data) {
     let p = sum(data) / data.length;
-    let scale = 5;
-    return 255 * p / scale;
-}
-
-function pathwayColor(data, geneCount) {
-    let p = sum(data) / geneCount;
     let scale = 5;
     return 255 * p / scale;
 }

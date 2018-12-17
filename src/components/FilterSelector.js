@@ -51,19 +51,9 @@ export class FilterSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            value: props.selected,
-            pathwayData: props.pathwayData,
-        };
     }
 
     setSelected = (targetValue) => {
-        if (targetValue) {
-            this.setState({value: targetValue});
-        }
-        else {
-            this.setState({value: null});
-        }
         this.props.onChange(targetValue);
     };
 
@@ -79,7 +69,6 @@ export class FilterSelector extends PureComponent {
 
         const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
         labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
-        // labelValues.unshift({label:'Copy Number ('+copyNumberCount+')',value:'CopyNumber'});
 
         const filterLabel = 'Filter (' + total + ')';
 
@@ -95,10 +84,10 @@ export class FilterSelector extends PureComponent {
 
 FilterSelector.propTypes = {
     filters: PropTypes.object.isRequired,
-    pathwayData: PropTypes.any,
-    geneList: PropTypes.any,
-    onChange: PropTypes.any,
-    selected: PropTypes.any,
-    amplificationThreshold: PropTypes.any,
-    deletionThreshold: PropTypes.any,
+    pathwayData: PropTypes.any.isRequired,
+    geneList: PropTypes.any.isRequired,
+    onChange: PropTypes.any.isRequired,
+    selected: PropTypes.any.isRequired,
+    amplificationThreshold: PropTypes.any.isRequired,
+    deletionThreshold: PropTypes.any.isRequired,
 };

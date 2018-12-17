@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
-import CanvasDrawing from "../CanvasDrawing";
+import CanvasDrawing from "./CanvasDrawing";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
