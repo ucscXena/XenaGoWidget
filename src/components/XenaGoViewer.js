@@ -171,16 +171,11 @@ export default class XenaGoViewer extends PureComponent {
                 expression.total = pathwayHover.secondNumSamples;
             }
             let sampleFirst = this.state.geneData.pathways[0];
-            let inputHover = {
-                golabel: sampleFirst.golabel,
-                goid: sampleFirst.goid,
-                gene: newHover,
-            };
 
             let hoverData = {
                 tissue: "Header",
                 expression: expression,
-                pathway: inputHover,
+                pathway: pathwayHover,
             };
             this.setState(
                 {
