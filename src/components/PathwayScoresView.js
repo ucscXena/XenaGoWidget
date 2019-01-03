@@ -5,7 +5,7 @@ import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
 import SVGLabels from "./SVGLabels";
-import {hierarchicalSort, clusterSort, synchronizedSort} from '../functions/SortFunctions';
+import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
@@ -172,7 +172,6 @@ PathwayScoresView.propTypes = {
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
-    selectedSort: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
@@ -210,7 +209,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, selectedSort, min, filter, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -242,15 +241,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
         if (cohortIndex === 0) {
-            switch (selectedSort) {
-                case 'Hierarchical':
-                    returnedValue = hierarchicalSort(prunedColumns);
-                    break;
-                case 'Cluster':
-                default:
-                    returnedValue = clusterSort(prunedColumns);
-                    break;
-            }
+            returnedValue = clusterSort(prunedColumns);
             PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         }
         else {

@@ -11,7 +11,6 @@ import {FilterSelector} from "./FilterSelector";
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick, pluck, flatten} from 'underscore';
-import {SortSelector} from "./SortSelector";
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
@@ -63,14 +62,8 @@ export default class XenaGoViewer extends PureComponent {
         this.state.highlightedGene = this.props.highlightedGene;
 
         let cohortIndex = this.state.key;
-        let sortString = AppStorageHandler.getSortState(cohortIndex);
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-
-        if (sortString) {
-            this.state.selectedGeneSort = sortString;
-            this.state.selectedTissueSort = sortString;
-        }
 
         if (filterString) {
             this.state.geneExpressionFilter = filterString;
@@ -208,11 +201,6 @@ export default class XenaGoViewer extends PureComponent {
                 hoveredPathways: genesHovered
             }
         );
-    };
-
-    sortGeneType = (sortString) => {
-        this.setState({selectedGeneSort: sortString});
-        AppStorageHandler.storeSortState(sortString, this.state.key)
     };
 
     filterGeneType = (filter) => {
@@ -355,9 +343,6 @@ export default class XenaGoViewer extends PureComponent {
                                         <Button onClick={this.callDownload} floating mini>
                                             <FaDownload/>
                                         </Button>
-                                        <SortSelector sortTypes={this.state.sortTypes}
-                                                      selected={this.state.selectedGeneSort}
-                                                      onChange={this.sortGeneType}/>
                                         <FilterSelector filters={filteredMutationVector}
                                                         selected={this.state.geneExpressionFilter}
                                                         pathwayData={this.state.geneData}
@@ -385,7 +370,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    geneList={geneList}
                                                    loading={cohortLoading}
                                                    min={MIN_FILTER}
-                                                   selectedSort={this.state.selectedGeneSort}
                                                    selectedCohort={this.state.selectedCohortData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}

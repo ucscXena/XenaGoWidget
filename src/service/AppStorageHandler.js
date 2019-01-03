@@ -10,10 +10,7 @@ import DefaultPathWays from "../data/tgac";
 
 const DefaultApp = {
     renderOffset: 5,
-    selectedTissueSort: 'Cluster',
-    selectedGeneSort: 'Cluster',
     selectedPathways: [],
-    sortTypes: ['Cluster', 'Hierarchical'],
     pathwayData: {
         cohort: 'TCGA Ovarian Cancer (OV)',
         copyNumber: [],
@@ -148,17 +145,6 @@ export class AppStorageHandler extends PureComponent {
         let selectedValue = selected.selected ? selected.selected : selected;
         appState.sortState[cohortIndex] = {selected: selectedValue};
         AppStorageHandler.storeAppState(appState);
-    }
-
-    static getSortState(cohortIndex) {
-        let appState = AppStorageHandler.getAppState();
-        if (appState && appState.sortState && appState.sortState[cohortIndex]) {
-            let returnValue = appState.sortState[cohortIndex];
-            if (returnValue && returnValue.selected) {
-                return returnValue.selected;
-            }
-        }
-        return 'Cluster'
     }
 
     static storeCohortState(selected, cohortIndex) {
