@@ -28,42 +28,6 @@ function linkage(distances) {
     return distances.reduce((d) => d > max ? d : max);
 }
 
-/**
- * Populates density for each column
- * @param prunedColumns
- */
-function sortColumnHierarchical(prunedColumns) {
-    let sortedPathways = prunedColumns.pathways.map((el, index) => {
-        let pathway = JSON.parse(JSON.stringify(el));
-        pathway.density = sumInstances(prunedColumns.data[index]);
-        pathway.index = index;
-        return pathway;
-    });
-    let sortedColumns = {};
-    sortedColumns.pathways = sortedPathways;
-    sortedColumns.samples = prunedColumns.samples;
-    sortedColumns.data = prunedColumns.data;
-
-
-    let levels = cluster({
-        input: sortedColumns.data,
-        distance: distance,
-        linkage: linkage,
-    });
-
-    let clusterIndices = levels[levels.length - 1].clusters[0];
-
-    let renderedArray = clusterIndices.map((el, i) => {
-        return sortedColumns.data[el]
-    });
-    let renderedIndices = clusterIndices.map((el, i) => {
-        return sortedColumns.pathways[el]
-    });
-    sortedColumns.data = renderedArray;
-    sortedColumns.pathways = renderedIndices;
-
-    return sortedColumns;
-}
 
 function scoreColumns(prunedColumns) {
     return prunedColumns.pathways.map((el, index) => {
@@ -298,34 +262,4 @@ export function synchronizedSort(prunedColumns, geneList) {
     return returnColumns;
 }
 
-/**
- * @param prunedColumns
- */
-export function hierarchicalSort(prunedColumns) {
-    let sortedColumns = sortColumnHierarchical(prunedColumns);
-
-    let inputData = transpose(sortedColumns.data);
-    sortedColumns.data.push(sortedColumns.samples);
-    let renderedData = transpose(sortedColumns.data);
-
-
-    let levels = cluster({
-        input: inputData,
-        distance: distance,
-        linkage: linkage,
-    });
-
-    let clusters = levels[levels.length - 1].clusters[0];
-
-    let returnData = clusters.map(el => renderedData[el])
-    renderedData = transpose(returnData);
-
-    let returnColumns = {};
-    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = sortedColumns.samples;
-    returnColumns.pathways = sortedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
-    return returnColumns;
-}
 

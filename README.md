@@ -70,7 +70,6 @@ Demo: http://xenademo.berkeleybop.io/xena/
 - allow different ways to shade, including z-score, only percentage, etc. etc. 
 - allow creation of custom pathways sets by selecting available genes (with lookup)
 - allow hiding pathways
-- show trees for hierarchical clustering 
 - show camplot
 - show annotations for hovered / selected (are these the functional annotations?)
 - integrate as new Xena page 
