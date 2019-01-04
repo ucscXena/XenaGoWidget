@@ -442,8 +442,8 @@ export default class XenaGeneSetApp extends PureComponent {
     populateGlobal = (pathwayData, cohortIndex) => {
         let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let densities = this.calculatePathwayDensity(pathwayData, filter, 0, cohortIndex);
-        let totals = this.calculatePathwayScore(pathwayData, filter, 0, cohortIndex);
+        let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
