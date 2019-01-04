@@ -166,13 +166,13 @@ export class AppStorageHandler extends PureComponent {
     }
 
 
-    static getAppData(pathways, renderHeight) {
+    static getAppData(pathways) {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
         if (storedPathway) {
             return storedPathway
         }
         else {
-            DefaultApp.renderHeight = renderHeight ;
+            // DefaultApp.renderHeight = renderHeight ;
             DefaultApp.pathwayData.pathways = pathways ;
             let app1 = Object.assign({}, DefaultApp);
             app1.key = 0 ;
