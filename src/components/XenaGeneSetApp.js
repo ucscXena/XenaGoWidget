@@ -543,7 +543,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             }
                                         </td>
                                         <td width={VERTICAL_SELECTOR_WIDTH-20}>
-                                            <LabelTop width={VERTICAL_SELECTOR_WIDTH}/>
+                                            <LabelTop width={VERTICAL_SELECTOR_WIDTH-20}/>
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
