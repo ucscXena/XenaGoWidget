@@ -21,7 +21,6 @@ const DefaultApp = {
     selectedCohort: 'TCGA Ovarian Cancer (OV)',
     cohortData: {},
     tissueExpressionFilter: 'All',
-    geneExpressionFilter: 'All',
     minFilter: 2,
     filterPercentage: 0.005,
     geneData: {

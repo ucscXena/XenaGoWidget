@@ -444,8 +444,8 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
-    populateGlobal = (pathwayData, cohortIndex) => {
-        let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
+    populateGlobal = (pathwayData, cohortIndex,appliedFilter ) => {
+        let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
         let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
@@ -472,7 +472,13 @@ export default class XenaGeneSetApp extends PureComponent {
                 pathwayData: [globalPathwayData0, globalPathwayData1],
                 selectedPathways: pathways,
             }
-        )
+        );
+        if(appliedFilter){
+            let newApps = JSON.parse(JSON.stringify(this.state.apps));
+            newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
+            this.setState({apps:newApps});
+        }
+
     };
 
     hideGeneSetDetail = () => {
@@ -562,6 +568,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalPathwaySetScoresView
                                                 data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
+                                                filter={this.state.apps[0].tissueExpressionFilter}
                                                 width={VERTICAL_GENESET_DETAIL_WIDTH}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
@@ -588,6 +595,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalPathwaySetScoresView
                                                 data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
+                                                filter={this.state.apps[1].tissueExpressionFilter}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayData[1])}

@@ -66,7 +66,6 @@ export default class XenaGoViewer extends PureComponent {
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
 
         if (filterString) {
-            this.state.geneExpressionFilter = filterString;
             this.state.tissueExpressionFilter = filterString;
         }
 
@@ -204,7 +203,8 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     filterGeneType = (filter) => {
-        this.setState({geneExpressionFilter: filter});
+        this.setState({tissueExpressionFilter: filter});
+        this.props.populateGlobal(this.state.pathwayData,this.state.key,filter);
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
@@ -344,12 +344,13 @@ export default class XenaGoViewer extends PureComponent {
                                             <FaDownload/>
                                         </Button>
                                         <FilterSelector filters={filteredMutationVector}
-                                                        selected={this.state.geneExpressionFilter}
+                                                        selected={this.state.tissueExpressionFilter}
                                                         pathwayData={this.state.geneData}
                                                         geneList={geneList}
                                                         amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
                                                         deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
-                                                        onChange={this.filterGeneType}/>
+                                                        onChange={this.filterGeneType}
+                                        />
                                         <HoverGeneView data={this.state.geneHoverData}/>
                                         <Dialog active={this.state.processing} title='Loading'>
                                             {this.state.selectedCohort}
@@ -365,7 +366,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    ref='pathwayscoreview'
                                                    data={this.state.geneData}
                                                    selected={this.state.geneData.selectedPathway}
-                                                   filter={this.state.geneExpressionFilter}
+                                                   filter={this.state.tissueExpressionFilter}
                                                    filterPercentage={this.state.filterPercentage}
                                                    geneList={geneList}
                                                    loading={cohortLoading}
