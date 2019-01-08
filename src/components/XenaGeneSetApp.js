@@ -506,7 +506,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     filterGeneType = (filter,cohort) => {
         console.log('globally filtering for ',filter,' and ',cohort)
-        // this.setState({geneExpressionFilter: filter});
     };
 
     render() {
