@@ -444,8 +444,10 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
-    populateGlobal = (pathwayData, cohortIndex) => {
-        let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
+    populateGlobal = (pathwayData, cohortIndex,appliedFilter ) => {
+        console.log('input pathway data',pathwayData)
+        let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
+        // let filter = this.state.apps[cohortIndex].tissueExpressionFilter;
 
         let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
@@ -472,7 +474,13 @@ export default class XenaGeneSetApp extends PureComponent {
                 pathwayData: [globalPathwayData0, globalPathwayData1],
                 selectedPathways: pathways,
             }
-        )
+        );
+        if(appliedFilter){
+            let newApps = JSON.parse(JSON.stringify(this.state.apps));
+            newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
+            this.setState({apps:newApps});
+        }
+
     };
 
     hideGeneSetDetail = () => {
@@ -506,6 +514,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     filterGeneType = (filter,cohort) => {
         console.log('globally filtering for ',filter,' and ',cohort)
+        // same as populate data
     };
 
     render() {

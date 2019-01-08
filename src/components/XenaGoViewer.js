@@ -204,7 +204,8 @@ export default class XenaGoViewer extends PureComponent {
 
     filterGeneType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-        this.props.filterGeneType(filter,this.state.key);
+        // this.props.filterGeneType(filter,this.state.key);
+        this.props.populateGlobal(this.state.pathwayData,this.state.key,filter);
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
@@ -349,7 +350,8 @@ export default class XenaGoViewer extends PureComponent {
                                                         geneList={geneList}
                                                         amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
                                                         deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
-                                                        onChange={this.filterGeneType}/>
+                                                        onChange={this.filterGeneType}
+                                        />
                                         <HoverGeneView data={this.state.geneHoverData}/>
                                         <Dialog active={this.state.processing} title='Loading'>
                                             {this.state.selectedCohort}
