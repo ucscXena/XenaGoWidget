@@ -227,6 +227,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
 
         let associatedData = findAssociatedData(hashAssociation);
+        console.log('PATHWAY associated data',associatedData)
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
 

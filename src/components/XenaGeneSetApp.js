@@ -510,11 +510,6 @@ export default class XenaGeneSetApp extends PureComponent {
         this.refs['pathway-editor'].highlightGenes(geneName)
     };
 
-    filterGeneType = (filter,cohort) => {
-        console.log('globally filtering for ',filter,' and ',cohort)
-        // same as populate data
-    };
-
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -573,6 +568,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalPathwaySetScoresView
                                                 data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
+                                                filter={this.state.apps[0].tissueExpressionFilter}
                                                 width={VERTICAL_GENESET_DETAIL_WIDTH}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
@@ -599,6 +595,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalPathwaySetScoresView
                                                 data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
+                                                filter={this.state.apps[1].tissueExpressionFilter}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayData[1])}
@@ -626,7 +623,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
-                                              filterGeneType={this.filterGeneType}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -640,7 +636,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
-                                              filterGeneType={this.filterGeneType}
                                 />
                             </Col>
                         </Row>

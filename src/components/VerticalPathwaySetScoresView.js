@@ -138,6 +138,10 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
 VerticalPathwaySetScoresView.propTypes = {
     data: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
+    filter: PropTypes.any.isRequired,
+    width: PropTypes.any.isRequired,
+    labelHeight: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
+    onMouseOut: PropTypes.any.isRequired,
 };

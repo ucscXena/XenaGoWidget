@@ -204,7 +204,6 @@ export default class XenaGoViewer extends PureComponent {
 
     filterGeneType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-        // this.props.filterGeneType(filter,this.state.key);
         this.props.populateGlobal(this.state.pathwayData,this.state.key,filter);
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
@@ -414,5 +413,4 @@ XenaGoViewer.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any, // optional
-    filterGeneType: PropTypes.any,
 };
