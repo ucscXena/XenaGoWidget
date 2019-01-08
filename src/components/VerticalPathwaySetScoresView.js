@@ -89,7 +89,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
             pathways,
             samples,
             filter,
-            MIN_FILTER,
+            min:MIN_FILTER,
             cohortIndex,
             selectedCohort
         };
