@@ -17,6 +17,7 @@ import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
+import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -29,7 +30,7 @@ const VIEWER_HEIGHT = 500;
 const VERTICAL_SELECTOR_WIDTH = 220;
 const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
-const ARROW_WIDTH = 20 ;
+const ARROW_WIDTH = 20;
 
 export const FILTER_PERCENTAGE = 0;
 export const MIN_FILTER = 2;
@@ -130,43 +131,34 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     loadCohorts() {
-        let cohortPreferredURL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
-        fetch(cohortPreferredURL)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                return response;
-            })
-            .then((response) => {
-                response.json().then(data => {
-                    let cohortData = Object.keys(data)
-                        .filter(cohort => {
-                            return (data[cohort].viewInPathway) && data[cohort][mutationKey]
-                        })
-                        .map(cohort => {
-                            let mutation = data[cohort][mutationKey];
-                            let copyNumberView = data[cohort][copyNumberViewKey];
-                            return {
-                                name: cohort,
-                                mutationDataSetId: mutation.dataset,
-                                copyNumberDataSetId: copyNumberView.dataset,
-                                amplificationThreshold: copyNumberView.amplificationThreshold,
-                                deletionThreshold: copyNumberView.deletionThreshold,
-                                host: mutation.host
-                            }
-                        });
-                    this.setState({
-                        cohortData: cohortData
-                    });
-                    // return data;
+        try {
+            let data = defaultDatasetForGeneset;
+            let cohortData = Object.keys(data)
+                .filter(cohort => {
+                    return (data[cohort].viewInPathway) && data[cohort][mutationKey]
+                })
+                .map(cohort => {
+                    let mutation = data[cohort][mutationKey];
+                    let copyNumberView = data[cohort][copyNumberViewKey];
+                    return {
+                        name: cohort,
+                        mutationDataSetId: mutation.dataset,
+                        copyNumberDataSetId: copyNumberView.dataset,
+                        amplificationThreshold: copyNumberView.amplificationThreshold,
+                        deletionThreshold: copyNumberView.deletionThreshold,
+                        host: mutation.host
+                    }
                 });
-            })
-            .catch(() => {
-                this.setState({
-                    loadState: 'error'
-                });
+            this.setState({
+                cohortData: cohortData
             });
+        }
+        catch (e) {
+            console.error(e);
+            this.setState({
+                loadState: 'error'
+            });
+        }
     }
 
 
@@ -358,7 +350,7 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
-    // populates back to the top
+// populates back to the top
     shareGlobalGeneData = (geneData, cohortIndex) => {
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
@@ -444,7 +436,7 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
-    populateGlobal = (pathwayData, cohortIndex,appliedFilter ) => {
+    populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
         let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
@@ -473,10 +465,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 selectedPathways: pathways,
             }
         );
-        if(appliedFilter){
+        if (appliedFilter) {
             let newApps = JSON.parse(JSON.stringify(this.state.apps));
             newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
-            this.setState({apps:newApps});
+            this.setState({apps: newApps});
         }
 
     };
@@ -514,7 +506,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
 
-        let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH-ARROW_WIDTH: VERTICAL_GENESET_SUPPRESS_WIDTH;
+        let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
         return (
             <div>
@@ -548,8 +540,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                                          className={BaseStyle.mouseHover}/>
                                             }
                                         </td>
-                                        <td width={VERTICAL_SELECTOR_WIDTH-20}>
-                                            <LabelTop width={VERTICAL_SELECTOR_WIDTH-20}/>
+                                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                                            <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
@@ -578,7 +570,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             />
                                             }
                                         </td>
-                                        <td width={VERTICAL_SELECTOR_WIDTH-20}>
+                                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                                             <GeneSetSvgSelector pathways={pathways}
                                                                 hoveredPathways={this.state.hoveredPathways}
                                                                 selectedPathways={this.state.selectedPathways}
