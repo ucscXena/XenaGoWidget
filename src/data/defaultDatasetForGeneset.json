@@ -1,4 +1,4 @@
-export default {
+{
     "TCGA Liver Cancer (LIHC)":
         {
             "gene expression":

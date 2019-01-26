@@ -23,7 +23,6 @@ import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
-import oldDefaultDataset from "../data/oldDefaultDataset";
 
 
 function lowerCaseCompareName(a, b) {
@@ -49,8 +48,6 @@ const style = {
         expressionWidth: 400,
     },
 };
-
-const COHORT_PREFERRED_URL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
 
 
 export default class XenaGoViewer extends PureComponent {
@@ -210,17 +207,15 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    // shouldComponentUpdate(){
-    //     return this.state.pathwayData!=null || this.state.geneData!=null ;
-    // }
-
-    componentDidUpdate() {
-        // TODO: this SHOULD just be loaded once, not a performance concern now, though.
-        let data = oldDefaultDataset;
-
-
-        // TODO: use the newer version
-        // let data = defaultDatasetForGeneset;
+    loadCohortData(){
+        if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+            let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
+            this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
+        }
+        else{
+            return ;
+        }
+        let data = defaultDatasetForGeneset;
         let cohortData = Object.keys(data)
             .filter(cohort => {
                 return (data[cohort].viewInPathway) && data[cohort][mutationKey]
@@ -242,11 +237,13 @@ export default class XenaGoViewer extends PureComponent {
             loadState: 'loaded',
             cohortData
         });
-        if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-            let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-            this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
-        }
-        return data;
+        // return data;
+
+    }
+
+    componentDidUpdate() {
+        // TODO: this should come out of something else, as its not particularly performant to do it here
+        this.loadCohortData()
     }
 
     selectCohort = (selected) => {
