@@ -123,43 +123,43 @@ export default class XenaGeneSetApp extends PureComponent {
 
     componentDidUpdate() {
         this.forceState();
-        this.loadCohorts();
+        // this.loadCohorts();
     }
 
     componentDidMount() {
         this.loadSelectedState();
     }
 
-    loadCohorts() {
-        try {
-            let data = defaultDatasetForGeneset;
-            let cohortData = Object.keys(data)
-                .filter(cohort => {
-                    return (data[cohort].viewInPathway) && data[cohort][mutationKey]
-                })
-                .map(cohort => {
-                    let mutation = data[cohort][mutationKey];
-                    let copyNumberView = data[cohort][copyNumberViewKey];
-                    return {
-                        name: cohort,
-                        mutationDataSetId: mutation.dataset,
-                        copyNumberDataSetId: copyNumberView.dataset,
-                        amplificationThreshold: copyNumberView.amplificationThreshold,
-                        deletionThreshold: copyNumberView.deletionThreshold,
-                        host: mutation.host
-                    }
-                });
-            this.setState({
-                cohortData: cohortData
-            });
-        }
-        catch (e) {
-            console.error(e);
-            this.setState({
-                loadState: 'error'
-            });
-        }
-    }
+    // loadCohorts() {
+    //     // alert('loading cohort');
+    //     try {
+    //         let cohortData = Object.keys(defaultDatasetForGeneset)
+    //             .filter(cohort => {
+    //                 return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
+    //             })
+    //             .map(cohort => {
+    //                 let mutation = defaultDatasetForGeneset[cohort][mutationKey];
+    //                 let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
+    //                 return {
+    //                     name: cohort,
+    //                     mutationDataSetId: mutation.dataset,
+    //                     copyNumberDataSetId: copyNumberView.dataset,
+    //                     amplificationThreshold: copyNumberView.amplificationThreshold,
+    //                     deletionThreshold: copyNumberView.deletionThreshold,
+    //                     host: mutation.host
+    //                 }
+    //             });
+    //         this.setState({
+    //             cohortData: cohortData
+    //         });
+    //     }
+    //     catch (e) {
+    //         console.error(e);
+    //         this.setState({
+    //             loadState: 'error'
+    //         });
+    //     }
+    // }
 
 
     handleUpload = (file) => {
