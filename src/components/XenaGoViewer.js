@@ -23,6 +23,7 @@ import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
+import oldDefaultDataset from "../data/oldDefaultDataset";
 
 
 function lowerCaseCompareName(a, b) {
@@ -209,21 +210,18 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    componentWillMount() {
+    // shouldComponentUpdate(){
+    //     return this.state.pathwayData!=null || this.state.geneData!=null ;
+    // }
+
+    componentDidUpdate() {
         // TODO: this SHOULD just be loaded once, not a performance concern now, though.
-        // fetch(COHORT_PREFERRED_URL)
-        //     .then(function (response) {
-        //         if (!response.ok) {
-        //             throw Error(response.statusText);
-        //         }
-        //         return response;
-        //     })
-        //     .then((response) => {
-        //         response.json().then(data => {
-        // let cohortData = Object.keys(data)
-        let data = defaultDatasetForGeneset;
-        console.log(data)
-        let cohortData = Object.keys(defaultDatasetForGeneset)
+        let data = oldDefaultDataset;
+
+
+        // TODO: use the newer version
+        // let data = defaultDatasetForGeneset;
+        let cohortData = Object.keys(data)
             .filter(cohort => {
                 return (data[cohort].viewInPathway) && data[cohort][mutationKey]
             })
@@ -249,17 +247,10 @@ export default class XenaGoViewer extends PureComponent {
             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
         }
         return data;
-        // });
-        // })
-        // .catch(() => {
-        //     this.setState({
-        //         loadState: 'error'
-        //     });
-        // });
     }
 
     selectCohort = (selected) => {
-        if(Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object ) return ;
+        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
         AppStorageHandler.storeCohortState(selected, this.state.key);
         this.setState({
