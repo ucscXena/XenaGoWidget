@@ -22,6 +22,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
+import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 
 
 function lowerCaseCompareName(a, b) {
@@ -47,8 +48,6 @@ const style = {
         expressionWidth: 400,
     },
 };
-
-const COHORT_PREFERRED_URL = "https://raw.githubusercontent.com/ucscXena/cohortMetaData/master/defaultDataset.json";
 
 
 export default class XenaGoViewer extends PureComponent {
@@ -204,57 +203,51 @@ export default class XenaGoViewer extends PureComponent {
 
     filterGeneType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-        this.props.populateGlobal(this.state.pathwayData,this.state.key,filter);
+        this.props.populateGlobal(this.state.pathwayData, this.state.key, filter);
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    componentWillMount() {
-        // TODO: this SHOULD just be loaded once, not a performance concern now, though.
-        fetch(COHORT_PREFERRED_URL)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw Error(response.statusText);
+    loadCohortData(){
+        if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+            let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
+            this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
+        }
+        else{
+            return ;
+        }
+        let data = defaultDatasetForGeneset;
+        let cohortData = Object.keys(data)
+            .filter(cohort => {
+                return (data[cohort].viewInPathway) && data[cohort][mutationKey]
+            })
+            .map(cohort => {
+                let mutation = data[cohort][mutationKey];
+                let copyNumberView = data[cohort][copyNumberViewKey];
+                return {
+                    name: cohort,
+                    mutationDataSetId: mutation.dataset,
+                    copyNumberDataSetId: copyNumberView.dataset,
+                    amplificationThreshold: copyNumberView.amplificationThreshold,
+                    deletionThreshold: copyNumberView.deletionThreshold,
+                    host: mutation.host
                 }
-                return response;
             })
-            .then((response) => {
-                response.json().then(data => {
-                    let cohortData = Object.keys(data)
-                        .filter(cohort => {
-                            return (data[cohort].viewInPathway) && data[cohort][mutationKey]
-                        })
-                        .map(cohort => {
-                            let mutation = data[cohort][mutationKey];
-                            let copyNumberView = data[cohort][copyNumberViewKey];
-                            return {
-                                name: cohort,
-                                mutationDataSetId: mutation.dataset,
-                                copyNumberDataSetId: copyNumberView.dataset,
-                                amplificationThreshold: copyNumberView.amplificationThreshold,
-                                deletionThreshold: copyNumberView.deletionThreshold,
-                                host: mutation.host
-                            }
-                        })
-                        .sort(lowerCaseCompareName);
-                    this.setState({
-                        loadState: 'loaded',
-                        cohortData
-                    });
-                    if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-                        let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-                        this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
-                    }
-                    return data;
-                });
-            })
-            .catch(() => {
-                this.setState({
-                    loadState: 'error'
-                });
-            });
+            .sort(lowerCaseCompareName);
+        this.setState({
+            loadState: 'loaded',
+            cohortData
+        });
+        // return data;
+
+    }
+
+    componentDidUpdate() {
+        // TODO: this should come out of something else, as its not particularly performant to do it here
+        this.loadCohortData()
     }
 
     selectCohort = (selected) => {
+        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
         AppStorageHandler.storeCohortState(selected, this.state.key);
         this.setState({
@@ -311,7 +304,8 @@ export default class XenaGoViewer extends PureComponent {
     getGenesForPathways(pathways) {
         return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
     };
-    callDownload = () =>  {
+
+    callDownload = () => {
         this.refs['pathwayscoreview'].downloadData();
     };
 
