@@ -17,7 +17,6 @@ import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
-import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
