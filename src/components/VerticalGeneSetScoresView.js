@@ -33,7 +33,7 @@ function getPointData(event, props) {
 /**
  * Extends PathwaysScoreView (but the old one)
  */
-export default class VerticalPathwaySetScoresView extends PureComponent {
+export default class VerticalGeneSetScoresView extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -114,7 +114,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
                     {...this.props}
                     width={width}
                     layout={layout}
-                    draw={DrawFunctions.drawPathwayView}
+                    draw={DrawFunctions.drawGeneSetView}
                     cohortIndex={cohortIndex}
                     labelHeight={labelHeight}
                     height={totalHeight}
@@ -135,7 +135,7 @@ export default class VerticalPathwaySetScoresView extends PureComponent {
     }
 }
 
-VerticalPathwaySetScoresView.propTypes = {
+VerticalGeneSetScoresView.propTypes = {
     data: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,

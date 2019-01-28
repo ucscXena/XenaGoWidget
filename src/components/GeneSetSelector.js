@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
     getHighlightedColor,
-    getPathwayColorMask,
+    getGeneSetColorMask,
     scoreData,
 } from "../functions/ColorFunctions";
 
-export class GeneSetSvgSelector extends PureComponent {
+export class GeneSetSelector extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -149,7 +149,7 @@ export class GeneSetSvgSelector extends PureComponent {
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
-        let colorMask = getPathwayColorMask();
+        let colorMask = getGeneSetColorMask();
 
         return newRefPathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
@@ -189,7 +189,7 @@ export class GeneSetSvgSelector extends PureComponent {
 
 }
 
-GeneSetSvgSelector.propTypes = {
+GeneSetSelector.propTypes = {
     pathways: PropTypes.any.isRequired,
     width: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,

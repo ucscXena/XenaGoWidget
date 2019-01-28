@@ -9,14 +9,14 @@ import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
-import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
+import {GeneSetSelector} from "./GeneSetSelector";
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
-import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
+import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -524,7 +524,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     <tr>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
-                                            <VerticalPathwaySetScoresView
+                                            <VerticalGeneSetScoresView
                                                 data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
                                                 filter={this.state.apps[0].tissueExpressionFilter}
@@ -538,20 +538,20 @@ export default class XenaGeneSetApp extends PureComponent {
                                             }
                                         </td>
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                                            <GeneSetSvgSelector pathways={pathways}
-                                                                hoveredPathways={this.state.hoveredPathways}
-                                                                selectedPathways={this.state.selectedPathways}
-                                                                highlightedGene={this.state.highlightedGene}
-                                                                onClick={this.globalPathwaySelect}
-                                                                onHover={this.globalPathwayHover}
-                                                                onMouseOut={this.globalPathwayHover}
-                                                                labelHeight={18}
-                                                                topOffset={14}
-                                                                width={VERTICAL_SELECTOR_WIDTH}/>
+                                            <GeneSetSelector pathways={pathways}
+                                                             hoveredPathways={this.state.hoveredPathways}
+                                                             selectedPathways={this.state.selectedPathways}
+                                                             highlightedGene={this.state.highlightedGene}
+                                                             onClick={this.globalPathwaySelect}
+                                                             onHover={this.globalPathwayHover}
+                                                             onMouseOut={this.globalPathwayHover}
+                                                             labelHeight={18}
+                                                             topOffset={14}
+                                                             width={VERTICAL_SELECTOR_WIDTH}/>
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
-                                            <VerticalPathwaySetScoresView
+                                            <VerticalGeneSetScoresView
                                                 data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
                                                 filter={this.state.apps[1].tissueExpressionFilter}

@@ -18,7 +18,7 @@ export function getGeneColorMask() {
     return [26, 83, 92];
 }
 
-export function getPathwayColorMask() {
+export function getGeneSetColorMask() {
     return [255, 10, 10];
 }
 
