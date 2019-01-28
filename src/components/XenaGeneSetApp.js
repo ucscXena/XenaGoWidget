@@ -38,9 +38,9 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
-let mutationKey = 'simple somatic mutation';
-let copyNumberViewKey = 'copy number for pathway view';
-
+// let mutationKey = 'simple somatic mutation';
+// let copyNumberViewKey = 'copy number for pathway view';
+//
 /**
  * refactor that from index
  */
@@ -122,43 +122,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     componentDidUpdate() {
         this.forceState();
-        // this.loadCohorts();
     }
 
     componentDidMount() {
         this.loadSelectedState();
     }
-
-    // loadCohorts() {
-    //     // alert('loading cohort');
-    //     try {
-    //         let cohortData = Object.keys(defaultDatasetForGeneset)
-    //             .filter(cohort => {
-    //                 return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
-    //             })
-    //             .map(cohort => {
-    //                 let mutation = defaultDatasetForGeneset[cohort][mutationKey];
-    //                 let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
-    //                 return {
-    //                     name: cohort,
-    //                     mutationDataSetId: mutation.dataset,
-    //                     copyNumberDataSetId: copyNumberView.dataset,
-    //                     amplificationThreshold: copyNumberView.amplificationThreshold,
-    //                     deletionThreshold: copyNumberView.deletionThreshold,
-    //                     host: mutation.host
-    //                 }
-    //             });
-    //         this.setState({
-    //             cohortData: cohortData
-    //         });
-    //     }
-    //     catch (e) {
-    //         console.error(e);
-    //         this.setState({
-    //             loadState: 'error'
-    //         });
-    //     }
-    // }
 
 
     handleUpload = (file) => {

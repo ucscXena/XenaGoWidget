@@ -207,13 +207,13 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    loadCohortData(){
+    loadCohortData() {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
         }
-        else{
-            return ;
+        else {
+            return;
         }
         let data = defaultDatasetForGeneset;
         let cohortData = Object.keys(data)
@@ -223,10 +223,13 @@ export default class XenaGoViewer extends PureComponent {
             .map(cohort => {
                 let mutation = data[cohort][mutationKey];
                 let copyNumberView = data[cohort][copyNumberViewKey];
+                let genomeBackground = data[cohort]['genome background'];
                 return {
                     name: cohort,
                     mutationDataSetId: mutation.dataset,
                     copyNumberDataSetId: copyNumberView.dataset,
+                    genomeBackgroundCopyNumber: genomeBackground['copy number'],
+                    genomeBackgroundMutation: genomeBackground['mutation'],
                     amplificationThreshold: copyNumberView.amplificationThreshold,
                     deletionThreshold: copyNumberView.deletionThreshold,
                     host: mutation.host
@@ -237,6 +240,7 @@ export default class XenaGoViewer extends PureComponent {
             loadState: 'loaded',
             cohortData
         });
+        console.log('cohort data', cohortData)
         // return data;
 
     }
@@ -263,9 +267,20 @@ export default class XenaGoViewer extends PureComponent {
                 return Rx.Observable.zip(
                     sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                    (mutations, copyNumber) => ({mutations, samples, copyNumber}))
+                    datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, ['genome_event_K', 'total_pop_N']),
+                    datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, ['genome_event_K', 'total_pop_N']),
+                    (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+                        mutations,
+                        samples,
+                        copyNumber,
+                        genomeBackgroundMutation,
+                        genomeBackgroundCopyNumber
+                    }))
             })
-            .subscribe(({mutations, samples, copyNumber}) => {
+            .subscribe(({mutations, samples, copyNumber,genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+
+                console.log('mutation',genomeBackgroundMutation)
+                console.log('copy number',genomeBackgroundCopyNumber)
                 let pathwayData = {
                     copyNumber,
                     geneList,
