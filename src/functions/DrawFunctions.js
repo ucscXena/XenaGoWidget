@@ -145,7 +145,7 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
 export default {
 
 
-    drawTissueView(vg, props) {
+    drawGeneView(vg, props) {
         let {width, height, layout, cohortIndex, associateData} = props;
 
         clearScreen(vg, width, height);

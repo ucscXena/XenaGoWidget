@@ -134,7 +134,7 @@ class PathwayScoresView extends PureComponent {
                     width={width}
                     height={height}
                     layout={layout}
-                    draw={DrawFunctions.drawTissueView}
+                    draw={DrawFunctions.drawGeneView}
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     cohortIndex={cohortIndex}
