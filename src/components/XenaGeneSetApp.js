@@ -357,7 +357,7 @@ export default class XenaGeneSetApp extends PureComponent {
         }
     }
 
-    calculateAssociatedData(pathwayData, filter, min, cohortIndex){
+    calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
         // console.log('input puathway data',pathwayData)
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
@@ -376,17 +376,17 @@ export default class XenaGeneSetApp extends PureComponent {
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = pathwayData.samples;
         // console.log('output data',associatedData)
-        return associatedData ;
+        return associatedData;
     }
 
     calculateObserved(pathwayData, filter, min, cohortIndex) {
-        return  this.calculateAssociatedData(pathwayData,filter,min,cohortIndex).map(pathway => {
+        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
             return sumInstances(pathway);
         });
     }
 
     calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
-        return  this.calculateAssociatedData(pathwayData,filter,min,cohortIndex).map(pathway => {
+        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
             return sum(pathway);
         });
     }
@@ -396,58 +396,57 @@ export default class XenaGeneSetApp extends PureComponent {
      * Converts per-sample pathway data to
      * @param pathwayData
      */
-    calculateGeneSetExpected(pathwayData) {
+    calculateGeneSetExpected(pathwayData, filter) {
 
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
-        let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber ;
+        let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
         let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
 
+        // let's assume they are the same order for now since they were fetched with the same sample data
 
-        // // for each sample
-        // for line in fperSampleN.readlines():
-        // 	sample, N, K = string.split(line[:-1], '\t')
-        // 	N = int(N)  // total
-        // 	K = int(K)  // expected
-        // 	fout.write(sample)
-        //  // for each pathway
-        // 	for pathway in pathways:
-        // 		prob = 1.0
-        //
-        //      // calculate a probability across all genes that is diminishing
-        // 		n = len(pathway['gene'])
-        // 		for i in range (0, n):
-        // 			prob = prob * (N-K-i) / (N -i)
-        // 		prob = 1 - prob ########### prob (k>=1)
-        // 		fout.write('\t'+ str(float(prob)))
-        //
-        //      // add this probability to existing pathway probability
-        // 		dataDic[pathway['golabel']]= dataDic[pathway['golabel']] + prob
-        // 	fout.write('\n')
-        // fperSampleN.close()
-        // fout.close()
+        // // initiate to 0
+        let pathwayExpected = {};
 
+        for (let sampleIndex in pathwayData.samples) {
+
+            // TODO: if filter is all or copy number, or SNV . . etc.
+            let copyNumberBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
+            let copyNumberBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
+            let mutationBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
+            let mutationBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
+
+
+            // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
+            for (let pathway of pathwayData.pathways) {
+                let prob = 1.0;
+                let genesInPathway = pathway.gene.length;
+                for (let i = 0; i < genesInPathway; i++) {
+                    prob = prob * (copyNumberBackgroundTotal - copyNumberBackgroundExpected - i) / (copyNumberBackgroundTotal - i);
+                }
+                prob = 1 - prob;
+                pathwayExpected[pathway.golabel] = (pathwayExpected[pathway.golabel] ? pathwayExpected[pathway.golabel]: 0) + prob;
+            }
+        }
 
         // TODO we have an expected for the sample
-
-        let expected = {};
-        return expected;
+        return pathwayExpected;
     }
 
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let observations= this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
-        let expected = this.calculateGeneSetExpected(pathwayData);
-        console.log('filter',filter)
-        console.log('observed',observations)
-        console.log('totals',totals)
-        console.log('pathway data ',pathwayData)
-        console.log('expected',expected)
+        let expected = this.calculateGeneSetExpected(pathwayData, filter);
+        // console.log('filter', filter)
+        // console.log('observed', observations)
+        // console.log('totals', totals)
+        console.log('pathway data ', pathwayData)
+        console.log('expected', expected)
 
         // from https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L104
         // for each sample,
-           // for each pathway
+        // for each pathway
 
 
         // console.log('pathways',pathwayData)
