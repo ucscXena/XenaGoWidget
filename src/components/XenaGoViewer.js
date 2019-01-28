@@ -267,8 +267,8 @@ export default class XenaGoViewer extends PureComponent {
                 return Rx.Observable.zip(
                     sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                    datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, ['event_K', 'total_pop_N']),
-                    datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, ['event_K', 'total_pop_N']),
+                    datasetFetch(cohort.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+                    datasetFetch(cohort.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
                     (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
                         mutations,
                         samples,
@@ -279,8 +279,10 @@ export default class XenaGoViewer extends PureComponent {
             })
             .subscribe(({mutations, samples, copyNumber,genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
 
-                console.log('mutation',sum(genomeBackgroundMutation[1]))
-                console.log('copy number',sum(genomeBackgroundCopyNumber[1]))
+                // console.log('mutation',sum(genomeBackgroundMutation[1]))
+                // console.log('copy number',sum(genomeBackgroundCopyNumber[1]))
+                console.log('mutation',genomeBackgroundMutation)
+                console.log('copy number',genomeBackgroundCopyNumber)
                 let pathwayData = {
                     copyNumber,
                     geneList,
