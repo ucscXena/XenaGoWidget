@@ -136,8 +136,8 @@ export class GeneSetSelector extends PureComponent {
                 goid: r.goid,
                 golabel: r.golabel,
                 gene: r.gene,
-                firstDensity: r.firstDensity,
-                secondDensity: r.secondDensity,
+                firstObserved: r.firstObserved,
+                secondObserved: r.secondObserved,
                 firstTotal: r.firstTotal,
                 secondTotal: r.secondTotal,
                 firstNumSamples: r.firstNumSamples,
@@ -158,22 +158,22 @@ export class GeneSetSelector extends PureComponent {
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0
-            let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length);
-            let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length);
+            let firstScore = scoreData(p.firstObserved, p.firstNumSamples, p.gene.length);
+            let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
 
             return (
                 <svg
-                    style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
+                    style={this.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
-                    {p.firstDensity &&
+                    {p.firstObserved &&
                     <rect width={width / 2 - 1} x={0} height={labelHeight}
                           style={this.pillStyle(firstScore, colorMask)}/>
                     }
-                    {p.secondDensity &&
+                    {p.secondObserved &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
                           style={this.pillStyle(secondScore, colorMask)}/>
                     }

@@ -152,12 +152,12 @@ export default class XenaGoViewer extends PureComponent {
             // get the pathway
             let expression = {};
             if (this.props.cohortIndex === 0) {
-                expression.affected = pathwayHover.firstDensity;
+                expression.affected = pathwayHover.firstObserved;
                 expression.allGeneAffected = pathwayHover.firstTotal;
                 expression.total = pathwayHover.firstNumSamples;
             }
             else {
-                expression.affected = pathwayHover.secondDensity;
+                expression.affected = pathwayHover.secondObserved;
                 expression.allGeneAffected = pathwayHover.secondTotal;
                 expression.total = pathwayHover.secondNumSamples;
             }

@@ -438,32 +438,26 @@ export default class XenaGeneSetApp extends PureComponent {
         let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
         let expected = this.calculateGeneSetExpected(pathwayData, filter);
-        // console.log('filter', filter)
-        // console.log('observed', observations)
-        // console.log('totals', totals)
-        console.log('pathway data ', pathwayData)
-        console.log('expected', expected)
-
-        // from https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L104
-        // for each sample,
-        // for each pathway
 
 
         // console.log('pathways',pathwayData)
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
-                p.firstDensity = observations[index];
+                p.firstObserved = observations[index];
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
+                p.firstExpected = expected[p.golabel];
             }
             else {
-                p.secondDensity = observations[index];
+                p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
+                p.secondExpected = expected[p.golabel];
             }
             return p;
         });
+        console.log('pathways',pathways)
 
         let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
         let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
