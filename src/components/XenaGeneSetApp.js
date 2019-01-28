@@ -357,7 +357,8 @@ export default class XenaGeneSetApp extends PureComponent {
         }
     }
 
-    calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
+    calculateAssociatedData(pathwayData, filter, min, cohortIndex){
+        // console.log('input puathway data',pathwayData)
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
         hashAssociation.min = min;
@@ -374,31 +375,18 @@ export default class XenaGeneSetApp extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = pathwayData.samples;
+        // console.log('output data',associatedData)
+        return associatedData ;
+    }
 
-        return associatedData.map(pathway => {
+    calculateObserved(pathwayData, filter, min, cohortIndex) {
+        return  this.calculateAssociatedData(pathwayData,filter,min,cohortIndex).map(pathway => {
             return sumInstances(pathway);
         });
     }
 
     calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
-        hashAssociation.filter = filter;
-        hashAssociation.min = min;
-        hashAssociation.cohortIndex = cohortIndex;
-
-        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
-        let associatedData = findAssociatedData(hashAssociation);
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways: hashAssociation.pathways,
-            filterMin
-        };
-        let prunedColumns = findPruneData(hashForPrune);
-        prunedColumns.samples = pathwayData.samples;
-
-        return associatedData.map(pathway => {
+        return  this.calculateAssociatedData(pathwayData,filter,min,cohortIndex).map(pathway => {
             return sum(pathway);
         });
     }
@@ -406,17 +394,31 @@ export default class XenaGeneSetApp extends PureComponent {
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let observations= this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
+        console.log('observed',observations)
+        console.log('totals',totals)
+
+        // a list for each sample  [0] = expected_N, vs [1] total_pop_N
+        let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber ;
+        let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
+
+        // from https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L104
+        // for each sample,
+           // for each pathway
+
+        // TODO we have an expected for the sample
+
+        // console.log('pathways',pathwayData)
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
-                p.firstDensity = densities[index];
+                p.firstDensity = observations[index];
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
             }
             else {
-                p.secondDensity = densities[index];
+                p.secondDensity = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
             }
