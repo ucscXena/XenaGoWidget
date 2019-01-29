@@ -243,8 +243,6 @@ export default class XenaGoViewer extends PureComponent {
             loadState: 'loaded',
             cohortData
         });
-        console.log('cohort data', cohortData)
-        // return data;
 
     }
 
@@ -281,11 +279,6 @@ export default class XenaGoViewer extends PureComponent {
                     }))
             })
             .subscribe(({mutations, samples, copyNumber,genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-
-                // console.log('mutation',sum(genomeBackgroundMutation[1]))
-                // console.log('copy number',sum(genomeBackgroundCopyNumber[1]))
-                console.log('mutation',genomeBackgroundMutation)
-                console.log('copy number',genomeBackgroundCopyNumber)
                 let pathwayData = {
                     copyNumber,
                     geneList,

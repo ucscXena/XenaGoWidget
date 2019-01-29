@@ -358,7 +358,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
-        // console.log('input puathway data',pathwayData)
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
         hashAssociation.min = min;
@@ -375,7 +374,6 @@ export default class XenaGeneSetApp extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = pathwayData.samples;
-        // console.log('output data',associatedData)
         return associatedData;
     }
 
@@ -400,28 +398,22 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
-        // let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
-
-        console.log(genomeBackgroundCopyNumber)
-
+        let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
         // let's assume they are the same order for now since they were fetched with the same sample data
 
         // // initiate to 0
         let pathwayExpected = {};
-
+        // init data
         for (let pathway of pathwayData.pathways) {
             pathwayExpected[pathway.golabel] = 0 ;
         }
-
-        console.log('sample len',pathwayData.samples.length)
-
         for (let sampleIndex in pathwayData.samples) {
 
             // TODO: if filter is all or copy number, or SNV . . etc.
             let copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
             let copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
-            // let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
-            // let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
+            let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
+            let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
 
 
             // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
@@ -432,15 +424,9 @@ export default class XenaGeneSetApp extends PureComponent {
                     prob = prob * (copyNumberBackgroundTotal - copyNumberBackgroundExpected - i) / (copyNumberBackgroundTotal - i);
                 }
                 prob = 1 - prob;
-                if(pathway.golabel==='Notch signalling' ){
-                    console.log('BRCA?',prob,pathway.gene.length,pathwayData.samples[sampleIndex],pathway.golabel,copyNumberBackgroundExpected,copyNumberBackgroundTotal);
-                }
-                // if(sampleIndex<3) console.log('prob',prob)
                 pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + prob;
             }
         }
-
-        console.log('pathway expected',pathwayExpected);
 
         // TODO we have an expected for the sample
         return pathwayExpected;
