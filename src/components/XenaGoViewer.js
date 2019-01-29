@@ -15,6 +15,9 @@ import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolb
 
 let mutationKey = 'simple somatic mutation';
 let copyNumberViewKey = 'copy number for pathway view';
+let genomeBackgroundViewKey = 'genome background';
+let genomeBackgroundCopyNumberViewKey = 'copy number';
+let genomeBackgroundMutationViewKey = 'mutation';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
@@ -223,13 +226,13 @@ export default class XenaGoViewer extends PureComponent {
             .map(cohort => {
                 let mutation = data[cohort][mutationKey];
                 let copyNumberView = data[cohort][copyNumberViewKey];
-                let genomeBackground = data[cohort]['genome background'];
+                let genomeBackground = data[cohort][genomeBackgroundViewKey];
                 return {
                     name: cohort,
                     mutationDataSetId: mutation.dataset,
                     copyNumberDataSetId: copyNumberView.dataset,
-                    genomeBackgroundCopyNumber: genomeBackground['copy number'],
-                    genomeBackgroundMutation: genomeBackground['mutation'],
+                    genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
+                    genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
                     amplificationThreshold: copyNumberView.amplificationThreshold,
                     deletionThreshold: copyNumberView.deletionThreshold,
                     host: mutation.host
