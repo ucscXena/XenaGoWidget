@@ -7,6 +7,7 @@ import {
     getGeneSetColorMask,
     scoreData, scoreChiSquaredData,
 } from "../functions/ColorFunctions";
+import {interpolateNumber,interpolateRgb} from 'd3-interpolate';
 
 export class GeneSetSelector extends PureComponent {
 
@@ -78,16 +79,23 @@ export class GeneSetSelector extends PureComponent {
         }
     }
 
-    pillStyle(score, colorMask) {
-        let colorString = 'rgba(';
-        colorString += colorMask[0];
-        colorString += ',';
-        colorString += colorMask[1];
-        colorString += ',';
-        colorString += colorMask[2];
-        colorString += ',';
-        colorString += isNaN(score) ? 0 : score ;
-        colorString += ')';
+    scaleScore(score,inputMin,inputMax,outputMin,outputMax){
+        let alteredScore = score < inputMin ? inputMin : score ;
+        alteredScore = score > inputMax ? inputMax: alteredScore ;
+        alteredScore = alteredScore + inputMax;
+        alteredScore = alteredScore / (2.0 * inputMax) * outputMax + outputMin;
+        return alteredScore
+    }
+
+
+    interpoloateColor(score){
+        let colorInterpelator = interpolateRgb("blue","white", "red");
+        let alteredScore = this.scaleScore(score,-100,100,0,1);
+        return colorInterpelator(alteredScore);
+    }
+
+    pillStyle(score) {
+        let colorString = this.interpoloateColor(score);
 
         return {
             top: 0,
@@ -165,7 +173,6 @@ export class GeneSetSelector extends PureComponent {
             // let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
 
             let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
-
             let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
 
             return (
@@ -178,14 +185,14 @@ export class GeneSetSelector extends PureComponent {
                 >
                     {p.firstObserved &&
                     <rect width={width / 2 - 1} x={0} height={labelHeight}
-                          style={this.pillStyle(firstChiSquared, colorMask)}/>
+                          style={this.pillStyle(firstChiSquared)}/>
                     }
                     {p.secondObserved &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
-                          style={this.pillStyle(secondChiSquared, colorMask)}/>
+                          style={this.pillStyle(secondChiSquared)}/>
                     }
                     <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
-                          fill={'black'}
+                          fill={'white'}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
