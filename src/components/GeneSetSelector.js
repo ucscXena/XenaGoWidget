@@ -7,7 +7,9 @@ import {
     getGeneSetColorMask,
     scoreData, scoreChiSquaredData,
 } from "../functions/ColorFunctions";
-import {interpolateNumber,interpolateRgb} from 'd3-interpolate';
+import * as d3 from "d3";
+
+const interpolate = d3.scaleLinear().domain([-100,0,100]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(2.2));
 
 export class GeneSetSelector extends PureComponent {
 
@@ -79,6 +81,7 @@ export class GeneSetSelector extends PureComponent {
         }
     }
 
+    // TODO: move to the color function
     scaleScore(score,inputMin,inputMax,outputMin,outputMax){
         let alteredScore = score < inputMin ? inputMin : score ;
         alteredScore = score > inputMax ? inputMax: alteredScore ;
@@ -89,9 +92,8 @@ export class GeneSetSelector extends PureComponent {
 
 
     interpoloateColor(score){
-        let colorInterpelator = interpolateRgb("blue","white", "red");
-        let alteredScore = this.scaleScore(score,-100,100,0,1);
-        return colorInterpelator(alteredScore);
+        let colorString = interpolate(score);
+        return colorString;
     }
 
     pillStyle(score) {
@@ -191,8 +193,8 @@ export class GeneSetSelector extends PureComponent {
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
                           style={this.pillStyle(secondChiSquared)}/>
                     }
-                    <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
-                          fill={'white'}
+                    <text x={10} y={topOffset} fontFamily='Arial' fontWeight={'bold'} fontSize={12}
+                          fill={'black'}
                     >
                         {width < 10 ? '' : labelString}
                     </text>
