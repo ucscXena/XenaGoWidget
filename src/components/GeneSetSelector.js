@@ -160,17 +160,13 @@ export class GeneSetSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let highlighted = p.gene.indexOf(highlightedGene) >= 0
-            let firstScore = scoreData(p.firstObserved, p.firstNumSamples, p.gene.length);
-            let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
+            let highlighted = p.gene.indexOf(highlightedGene) >= 0;
+            // let firstScore = scoreData(p.firstObserved, p.firstNumSamples, p.gene.length);
+            // let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
 
             let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
-            // if(p.golabel==='Notch signaling' ){
-            //     console.log('ACC',p.golabel,p.firstObserved,p.firstExpected);
-            // }
 
             let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
-            console.log('chi',firstChiSquared,secondChiSquared)
 
             return (
                 <svg

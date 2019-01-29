@@ -402,10 +402,18 @@ export default class XenaGeneSetApp extends PureComponent {
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
         // let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
 
+        console.log(genomeBackgroundCopyNumber)
+
         // let's assume they are the same order for now since they were fetched with the same sample data
 
         // // initiate to 0
         let pathwayExpected = {};
+
+        for (let pathway of pathwayData.pathways) {
+            pathwayExpected[pathway.golabel] = 0 ;
+        }
+
+        console.log('sample len',pathwayData.samples.length)
 
         for (let sampleIndex in pathwayData.samples) {
 
@@ -424,9 +432,15 @@ export default class XenaGeneSetApp extends PureComponent {
                     prob = prob * (copyNumberBackgroundTotal - copyNumberBackgroundExpected - i) / (copyNumberBackgroundTotal - i);
                 }
                 prob = 1 - prob;
-                pathwayExpected[pathway.golabel] = (pathwayExpected[pathway.golabel] ? pathwayExpected[pathway.golabel]: 0) + prob;
+                if(pathway.golabel==='Notch signalling' ){
+                    console.log('BRCA?',prob,pathway.gene.length,pathwayData.samples[sampleIndex],pathway.golabel,copyNumberBackgroundExpected,copyNumberBackgroundTotal);
+                }
+                // if(sampleIndex<3) console.log('prob',prob)
+                pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + prob;
             }
         }
+
+        console.log('pathway expected',pathwayExpected);
 
         // TODO we have an expected for the sample
         return pathwayExpected;
