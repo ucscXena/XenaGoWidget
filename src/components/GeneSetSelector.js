@@ -5,7 +5,7 @@ import {intersection} from 'underscore';
 import {
     getHighlightedColor,
     getGeneSetColorMask,
-    scoreData,
+    scoreData, scoreChiSquaredData,
 } from "../functions/ColorFunctions";
 
 export class GeneSetSelector extends PureComponent {
@@ -86,7 +86,9 @@ export class GeneSetSelector extends PureComponent {
         colorString += ',';
         colorString += colorMask[2];
         colorString += ',';
-        colorString += isNaN(score) ? 0 : score + ')';
+        colorString += isNaN(score) ? 0 : score ;
+        colorString += ')';
+
         return {
             top: 0,
             left: 0,
@@ -130,7 +132,6 @@ export class GeneSetSelector extends PureComponent {
                 <div></div>
             )
         }
-
         let newRefPathways = pathways.map(r => {
             return {
                 goid: r.goid,
@@ -142,6 +143,8 @@ export class GeneSetSelector extends PureComponent {
                 secondTotal: r.secondTotal,
                 firstNumSamples: r.firstNumSamples,
                 secondNumSamples: r.secondNumSamples,
+                firstExpected: r.firstExpected,
+                secondExpected: r.secondExpected,
             };
         });
 
@@ -161,6 +164,14 @@ export class GeneSetSelector extends PureComponent {
             let firstScore = scoreData(p.firstObserved, p.firstNumSamples, p.gene.length);
             let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
 
+            let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
+            // if(p.golabel==='Notch signaling' ){
+            //     console.log('ACC',p.golabel,p.firstObserved,p.firstExpected);
+            // }
+
+            let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
+            console.log('chi',firstChiSquared,secondChiSquared)
+
             return (
                 <svg
                     style={this.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
@@ -171,11 +182,11 @@ export class GeneSetSelector extends PureComponent {
                 >
                     {p.firstObserved &&
                     <rect width={width / 2 - 1} x={0} height={labelHeight}
-                          style={this.pillStyle(firstScore, colorMask)}/>
+                          style={this.pillStyle(firstChiSquared, colorMask)}/>
                     }
                     {p.secondObserved &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
-                          style={this.pillStyle(secondScore, colorMask)}/>
+                          style={this.pillStyle(secondChiSquared, colorMask)}/>
                     }
                     <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
                           fill={'black'}

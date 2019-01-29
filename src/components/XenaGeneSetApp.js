@@ -400,7 +400,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
-        let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
+        // let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
 
         // let's assume they are the same order for now since they were fetched with the same sample data
 
@@ -410,10 +410,10 @@ export default class XenaGeneSetApp extends PureComponent {
         for (let sampleIndex in pathwayData.samples) {
 
             // TODO: if filter is all or copy number, or SNV . . etc.
-            let copyNumberBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
-            let copyNumberBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
-            let mutationBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
-            let mutationBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
+            let copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
+            let copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
+            // let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
+            // let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
 
 
             // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
@@ -439,8 +439,6 @@ export default class XenaGeneSetApp extends PureComponent {
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
         let expected = this.calculateGeneSetExpected(pathwayData, filter);
 
-
-        // console.log('pathways',pathwayData)
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
@@ -457,7 +455,6 @@ export default class XenaGeneSetApp extends PureComponent {
             }
             return p;
         });
-        console.log('pathways',pathways)
 
         let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
         let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
