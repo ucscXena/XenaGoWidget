@@ -81,23 +81,8 @@ export class GeneSetSelector extends PureComponent {
         }
     }
 
-    // TODO: move to the color function
-    scaleScore(score,inputMin,inputMax,outputMin,outputMax){
-        let alteredScore = score < inputMin ? inputMin : score ;
-        alteredScore = score > inputMax ? inputMax: alteredScore ;
-        alteredScore = alteredScore + inputMax;
-        alteredScore = alteredScore / (2.0 * inputMax) * outputMax + outputMin;
-        return alteredScore
-    }
-
-
-    interpoloateColor(score){
-        let colorString = interpolate(score);
-        return colorString;
-    }
-
     pillStyle(score) {
-        let colorString = this.interpoloateColor(score);
+        let colorString = interpolate(score);
 
         return {
             top: 0,
