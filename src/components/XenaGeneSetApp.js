@@ -17,6 +17,7 @@ import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
+import {izip, cycle} from 'itertools';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -389,6 +390,49 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
+    addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
+        // let total_prob = 0.0;
+        // let sign = 0;
+
+        // hack:
+        if (prob_list.length === 1) return prob_list[0];
+        else if (prob_list.length === 2) {
+            return prob_list[0] + prob_list[1] - (prob_list[0] * prob_list[1]);
+        }
+        return 0 ;
+
+
+        // for (let i = 1; i <= prob_list.length; i++) {
+        //     if (i % 2) {
+        //         sign = 1.0
+        //     }
+        //     else {
+        //         sign = -1.0
+        //     }
+        //     // https://www.npmjs.com/package/itertools
+        //
+        //     // const xs = [1, 2, 3, 4];
+        //     // const ys = ['hello', 'there'];
+        //     // for (const [x, y] of izip(xs, cycle(prob_list))) {
+        //     //     if(i < 5){
+        //     //         console.log(x, y);
+        //     //     }
+        //     // }
+        //     // 		for combo in combinations(prob_list, i):
+        //     // 			total_prob = total_prob + reduce(lambda x,y: x*y, combo, 1) * sign
+        // }
+        // return total_prob;
+    }
+
+    calculateExpectedProb(pathway, expected, total) {
+        let prob = 1.0;
+        let genesInPathway = pathway.gene.length;
+        for (let i = 0; i < genesInPathway; i++) {
+            prob = prob * (total - expected - i) / (total - i);
+        }
+        prob = 1 - prob;
+        return prob;
+    }
 
     /**
      * Converts per-sample pathway data to
@@ -405,7 +449,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathwayExpected = {};
         // init data
         for (let pathway of pathwayData.pathways) {
-            pathwayExpected[pathway.golabel] = 0 ;
+            pathwayExpected[pathway.golabel] = 0;
         }
         for (let sampleIndex in pathwayData.samples) {
 
@@ -418,13 +462,20 @@ export default class XenaGeneSetApp extends PureComponent {
 
             // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
             for (let pathway of pathwayData.pathways) {
-                let prob = 1.0;
-                let genesInPathway = pathway.gene.length;
-                for (let i = 0; i < genesInPathway; i++) {
-                    prob = prob * (copyNumberBackgroundTotal - copyNumberBackgroundExpected - i) / (copyNumberBackgroundTotal - i);
-                }
-                prob = 1 - prob;
-                pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + prob;
+                let sample_probs = [];
+
+                sample_probs.push(this.calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+                sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                let total_prob = this.addIndepProb(sample_probs);
+                // if(sampleIndex<10){
+                // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
+                //     if(pathway.golabel==='TP53 (Pancan Atlas)'){
+                //         console.log('sample probs',sample_probs)
+                //         console.log('total prob',total_prob)
+                //     }
+                // }
+                // pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + sample_probs[0];
+                pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
             }
         }
 
