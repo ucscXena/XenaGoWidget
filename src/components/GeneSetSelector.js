@@ -5,7 +5,7 @@ import {intersection} from 'underscore';
 import {
     getHighlightedColor,
     getGeneSetColorMask,
-    scoreData, scoreChiSquaredData,
+     scoreChiSquaredData,
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 
@@ -156,8 +156,6 @@ export class GeneSetSelector extends PureComponent {
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
-            // let firstScore = scoreData(p.firstObserved, p.firstNumSamples, p.gene.length);
-            // let secondScore = scoreData(p.secondObserved, p.secondNumSamples, p.gene.length);
 
             let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
             let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
