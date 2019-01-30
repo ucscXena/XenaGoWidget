@@ -8,7 +8,7 @@ import {
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 
-const interpolate = d3.scaleLinear().domain([-100,0,100]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(2.2));
+const interpolate = d3.scaleLinear().domain([-100,0,100]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1));
 
 export class GeneSetSelector extends PureComponent {
 
