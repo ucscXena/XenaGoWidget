@@ -1,5 +1,5 @@
 {
-  "name": "XenaGoWidget",
+  "name": "xena-go-widget",
   "version": "0.1.0",
   "description": "XenaGoWidget React component",
   "main": "lib/index.js",

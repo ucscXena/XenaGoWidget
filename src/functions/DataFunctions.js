@@ -127,3 +127,39 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     return returnArray;
 
 }
+
+export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
+    // let total_prob = 0.0;
+    // let sign = 0;
+
+    // hack:
+    if (prob_list.length === 1) {
+        return prob_list[0];
+    }
+    else if (prob_list.length === 2) {
+        return prob_list[0] + prob_list[1] - (prob_list[0] * prob_list[1]);
+    }
+    return 0;
+
+
+    // for (let i = 1; i <= prob_list.length; i++) {
+    //     if (i % 2) {
+    //         sign = 1.0
+    //     }
+    //     else {
+    //         sign = -1.0
+    //     }
+    //     // https://www.npmjs.com/package/itertools
+    //
+    //     // const xs = [1, 2, 3, 4];
+    //     // const ys = ['hello', 'there'];
+    //     // for (const [x, y] of izip(xs, cycle(prob_list))) {
+    //     //     if(i < 5){
+    //     //         console.log(x, y);
+    //     //     }
+    //     // }
+    //     // 		for combo in combinations(prob_list, i):
+    //     // 			total_prob = total_prob + reduce(lambda x,y: x*y, combo, 1) * sign
+    // }
+    // return total_prob;
+}

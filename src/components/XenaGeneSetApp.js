@@ -10,7 +10,7 @@ import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {addIndepProb, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
@@ -390,41 +390,6 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     }
 
-    addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
-        // let total_prob = 0.0;
-        // let sign = 0;
-
-        // hack:
-        if (prob_list.length === 1) {
-            return prob_list[0];
-        }
-        else if (prob_list.length === 2) {
-            return prob_list[0] + prob_list[1] - (prob_list[0] * prob_list[1]);
-        }
-        return 0;
-
-
-        // for (let i = 1; i <= prob_list.length; i++) {
-        //     if (i % 2) {
-        //         sign = 1.0
-        //     }
-        //     else {
-        //         sign = -1.0
-        //     }
-        //     // https://www.npmjs.com/package/itertools
-        //
-        //     // const xs = [1, 2, 3, 4];
-        //     // const ys = ['hello', 'there'];
-        //     // for (const [x, y] of izip(xs, cycle(prob_list))) {
-        //     //     if(i < 5){
-        //     //         console.log(x, y);
-        //     //     }
-        //     // }
-        //     // 		for combo in combinations(prob_list, i):
-        //     // 			total_prob = total_prob + reduce(lambda x,y: x*y, combo, 1) * sign
-        // }
-        // return total_prob;
-    }
 
     calculateExpectedProb(pathway, expected, total) {
         let prob = 1.0;
@@ -473,7 +438,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 if (!filter || filter === 'Mutation') {
                     sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
                 }
-                let total_prob = this.addIndepProb(sample_probs);
+                let total_prob = addIndepProb(sample_probs);
                 // if(sampleIndex<10){
                 // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
                 //     if(pathway.golabel==='TP53 (Pancan Atlas)'){
