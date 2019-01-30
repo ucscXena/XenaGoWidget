@@ -51,6 +51,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     onHover = (event) => {
         let pointData = getPointData(event, this.props);
+        console.log('vertical hover',event,pointData)
         this.props.onHover(pointData);
     };
 

@@ -135,6 +135,8 @@ export default class XenaGoViewer extends PureComponent {
 
         let isSelected = genePathwayHover !== undefined && pathwayHover.golabel === this.state.selectedPathways[0];
 
+        console.log('pathway hover',pathwayHover)
+
         // if no gene pathway then its a pathway instead of a gene
         if (genePathwayHover && !isSelected) {
             let expression = {affected: genePathwayHover.affected, total: genePathwayHover.total};
@@ -164,8 +166,6 @@ export default class XenaGoViewer extends PureComponent {
                 expression.allGeneAffected = pathwayHover.secondTotal;
                 expression.total = pathwayHover.secondNumSamples;
             }
-            let sampleFirst = this.state.geneData.pathways[0];
-
             let hoverData = {
                 tissue: "Header",
                 expression: expression,
@@ -360,7 +360,7 @@ export default class XenaGoViewer extends PureComponent {
                                                         deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
                                                         onChange={this.filterGeneType}
                                         />
-                                        <HoverGeneView data={this.state.geneHoverData}/>
+                                        <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
                                         <Dialog active={this.state.processing} title='Loading'>
                                             {this.state.selectedCohort}
                                         </Dialog>

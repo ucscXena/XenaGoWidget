@@ -28,8 +28,12 @@ export default class HoverGeneView extends PureComponent {
 
     }
 
+    getScore(data, cohortIndex) {
+        return Number.parseFloat(cohortIndex===0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
+    }
+
     render() {
-        let {data, title} = this.props;
+        let {data, title,cohortIndex} = this.props;
         if (data.tissue) {
             return (
                 <div>
@@ -79,6 +83,9 @@ export default class HoverGeneView extends PureComponent {
                         <div>
                             <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                         </div>
+                        <div>
+                            <span><strong>Score</strong> {this.getScore(data,cohortIndex)}</span>
+                        </div>
 
                     </div>
                     }
@@ -94,5 +101,6 @@ export default class HoverGeneView extends PureComponent {
 
 HoverGeneView.propTypes = {
     data: PropTypes.any.isRequired,
+    cohortIndex: PropTypes.any.isRequired,
     title: PropTypes.any,
 };

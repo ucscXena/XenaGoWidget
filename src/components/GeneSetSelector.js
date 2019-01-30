@@ -111,6 +111,7 @@ export class GeneSetSelector extends PureComponent {
 
     onHover = (geneSet, event) => {
         let {onHover} = this.props;
+        console.log('hovering with ',geneSet);
         if (onHover) {
             onHover(geneSet);
         }
@@ -128,6 +129,8 @@ export class GeneSetSelector extends PureComponent {
             )
         }
         let newRefPathways = pathways.map(r => {
+            let firstChiSquared = scoreChiSquaredData(r.firstObserved, r.firstExpected,r.firstNumSamples);
+            let secondChiSquared = scoreChiSquaredData(r.secondObserved, r.secondExpected,r.secondNumSamples);
             return {
                 goid: r.goid,
                 golabel: r.golabel,
@@ -140,6 +143,8 @@ export class GeneSetSelector extends PureComponent {
                 secondNumSamples: r.secondNumSamples,
                 firstExpected: r.firstExpected,
                 secondExpected: r.secondExpected,
+                firstChiSquared,
+                secondChiSquared,
             };
         });
 
@@ -157,9 +162,6 @@ export class GeneSetSelector extends PureComponent {
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
-            let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
-            let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
-
             return (
                 <svg
                     style={this.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
@@ -170,11 +172,11 @@ export class GeneSetSelector extends PureComponent {
                 >
                     {p.firstObserved &&
                     <rect width={width / 2 - 1} x={0} height={labelHeight}
-                          style={this.pillStyle(firstChiSquared)}/>
+                          style={this.pillStyle(p.firstChiSquared)}/>
                     }
                     {p.secondObserved &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
-                          style={this.pillStyle(secondChiSquared)}/>
+                          style={this.pillStyle(p.secondChiSquared)}/>
                     }
                     <text x={10} y={topOffset} fontFamily='Arial' fontWeight={'bold'} fontSize={12}
                           fill={'black'}
