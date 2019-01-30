@@ -128,13 +128,6 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
 
 }
 
-
-function multipleAll(array) {
-    let result = 1;
-    for (let value of array) result *= value;
-    return result;
-}
-
 // https://stackoverflow.com/a/45813619/1739366
 function getPermutations(array, size) {
 
@@ -158,7 +151,7 @@ function getPermutations(array, size) {
 export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
     let total_prob = 0.0;
     let sign = 0;
-    let xs = [0, 1]
+    let xs = range(0,prob_list.length);
     for (let i = 1; i <= prob_list.length; i++) {
         if (i % 2) {
             sign = 1.0
@@ -167,8 +160,7 @@ export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
             sign = -1.0
         }
         for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
-            y.sort();
-            total_prob = total_prob + sign * multipleAll(y);
+            total_prob = total_prob + sign * y.reduce( function(acc, value) { return acc * value});
         }
     }
     return total_prob;
