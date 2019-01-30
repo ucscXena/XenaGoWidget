@@ -18,6 +18,7 @@ import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
+import {scoreChiSquaredData} from "../functions/ColorFunctions";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -471,12 +472,14 @@ export default class XenaGeneSetApp extends PureComponent {
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
                 p.firstExpected = expected[p.golabel];
+                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
             }
             else {
                 p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
                 p.secondExpected = expected[p.golabel];
+                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
             }
             return p;
         });

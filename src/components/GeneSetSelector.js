@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
     getHighlightedColor,
-    getGeneSetColorMask,
-     scoreChiSquaredData,
+    getGeneSetColorMask, scoreChiSquaredData
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 
@@ -129,8 +128,6 @@ export class GeneSetSelector extends PureComponent {
             )
         }
         let newRefPathways = pathways.map(r => {
-            let firstChiSquared = scoreChiSquaredData(r.firstObserved, r.firstExpected,r.firstNumSamples);
-            let secondChiSquared = scoreChiSquaredData(r.secondObserved, r.secondExpected,r.secondNumSamples);
             return {
                 goid: r.goid,
                 golabel: r.golabel,
@@ -143,8 +140,8 @@ export class GeneSetSelector extends PureComponent {
                 secondNumSamples: r.secondNumSamples,
                 firstExpected: r.firstExpected,
                 secondExpected: r.secondExpected,
-                firstChiSquared,
-                secondChiSquared,
+                firstChiSquared: r.firstChiSquared,
+                secondChiSquared: r.secondChiSquared,
             };
         });
 
