@@ -395,11 +395,13 @@ export default class XenaGeneSetApp extends PureComponent {
         // let sign = 0;
 
         // hack:
-        if (prob_list.length === 1) return prob_list[0];
+        if (prob_list.length === 1) {
+            return prob_list[0];
+        }
         else if (prob_list.length === 2) {
             return prob_list[0] + prob_list[1] - (prob_list[0] * prob_list[1]);
         }
-        return 0 ;
+        return 0;
 
 
         // for (let i = 1; i <= prob_list.length; i++) {
@@ -444,6 +446,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
         let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
         // let's assume they are the same order for now since they were fetched with the same sample data
+        filter = filter.indexOf('All') === 0 ? '' : filter;
 
         // // initiate to 0
         let pathwayExpected = {};
@@ -464,8 +467,12 @@ export default class XenaGeneSetApp extends PureComponent {
             for (let pathway of pathwayData.pathways) {
                 let sample_probs = [];
 
-                sample_probs.push(this.calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
-                sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                if (!filter || filter === 'Copy Number') {
+                    sample_probs.push(this.calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+                }
+                if (!filter || filter === 'Mutation') {
+                    sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                }
                 let total_prob = this.addIndepProb(sample_probs);
                 // if(sampleIndex<10){
                 // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
