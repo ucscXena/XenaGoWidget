@@ -127,25 +127,7 @@ export class GeneSetSelector extends PureComponent {
                 <div></div>
             )
         }
-        let newRefPathways = pathways.map(r => {
-            return {
-                goid: r.goid,
-                golabel: r.golabel,
-                gene: r.gene,
-                firstObserved: r.firstObserved,
-                secondObserved: r.secondObserved,
-                firstTotal: r.firstTotal,
-                secondTotal: r.secondTotal,
-                firstNumSamples: r.firstNumSamples,
-                secondNumSamples: r.secondNumSamples,
-                firstExpected: r.firstExpected,
-                secondExpected: r.secondExpected,
-                firstChiSquared: r.firstChiSquared,
-                secondChiSquared: r.secondChiSquared,
-            };
-        });
-
-
+        let newRefPathways =  JSON.parse(JSON.stringify(pathways));
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
