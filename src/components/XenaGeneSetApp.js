@@ -463,8 +463,6 @@ export default class XenaGeneSetApp extends PureComponent {
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
         let expected = this.calculateGeneSetExpected(pathwayData, filter);
 
-        console.log('popualting global',pathwayData)
-
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {

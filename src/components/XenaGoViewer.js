@@ -135,8 +135,6 @@ export default class XenaGoViewer extends PureComponent {
 
         let isSelected = genePathwayHover !== undefined && pathwayHover.golabel === this.state.selectedPathways[0];
 
-        console.log('pathway hover',pathwayHover)
-
         // if no gene pathway then its a pathway instead of a gene
         if (genePathwayHover && !isSelected) {
             let expression = {affected: genePathwayHover.affected, total: genePathwayHover.total};
