@@ -2280,10 +2280,8 @@
         {
             "copy number":
                 {
-                    "host":
-                        "https://ucscpublic.xenahubs.net",
-                    "dataset":
-                        "ccle/nobulkdownload/CCLE_copynumber_byGene_2013-12-03_breast"
+                    "host": "https://ucscpublic.xenahubs.net",
+                    "dataset": "ccle/CCLE_copynumber_byGene_2013-12-03_breast"
                 }
             ,
             "simple somatic mutation":
@@ -2299,7 +2297,7 @@
                     "host":
                         "https://ucscpublic.xenahubs.net",
                     "dataset":
-                        "ccle/nobulkdownload/CCLE_copynumber_byGene_2013-12-03_breast",
+                        "ccle/CCLE_copynumber_byGene_2013-12-03_breast",
                     "amplificationThreshold":
                         2,
                     "deletionThreshold":
