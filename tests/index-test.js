@@ -4,20 +4,20 @@ import {render, unmountComponentAtNode} from 'react-dom'
 
 import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
 
-describe('Component', () => {
-  let node
+describe('Main App', () => {
+  let node;
 
   beforeEach(() => {
     node = document.createElement('div')
-  })
+  });
 
   afterEach(() => {
     unmountComponentAtNode(node)
-  })
+  });
 
-  it('displays a welcome message', () => {
+  it('Displays main menu', () => {
     render(<XenaGeneSetApp/>, node, () => {
-      expect(node.innerHTML).toContain('Welcome to React components')
+      expect(node.innerHTML).toContain('Xena Geneset Widget Demo')
     })
   })
 })
