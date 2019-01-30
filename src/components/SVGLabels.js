@@ -9,7 +9,7 @@ let styles = {
     overlay: {
         position: 'absolute'
         , display: 'block'
-        , zIndex: 1000
+        , zIndex: 10
         , opacity: 1
     }
 };
