@@ -10,11 +10,14 @@ import {FilterSelector} from "./FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
-import {pick, pluck, flatten} from 'underscore';
+import {pick, pluck, flatten, sum} from 'underscore';
 import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
 let copyNumberViewKey = 'copy number for pathway view';
+let genomeBackgroundViewKey = 'genome background';
+let genomeBackgroundCopyNumberViewKey = 'copy number';
+let genomeBackgroundMutationViewKey = 'mutation';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
@@ -152,12 +155,12 @@ export default class XenaGoViewer extends PureComponent {
             // get the pathway
             let expression = {};
             if (this.props.cohortIndex === 0) {
-                expression.affected = pathwayHover.firstDensity;
+                expression.affected = pathwayHover.firstObserved;
                 expression.allGeneAffected = pathwayHover.firstTotal;
                 expression.total = pathwayHover.firstNumSamples;
             }
             else {
-                expression.affected = pathwayHover.secondDensity;
+                expression.affected = pathwayHover.secondObserved;
                 expression.allGeneAffected = pathwayHover.secondTotal;
                 expression.total = pathwayHover.secondNumSamples;
             }
@@ -207,13 +210,13 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    loadCohortData(){
+    loadCohortData() {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
         }
-        else{
-            return ;
+        else {
+            return;
         }
         let data = defaultDatasetForGeneset;
         let cohortData = Object.keys(data)
@@ -223,10 +226,13 @@ export default class XenaGoViewer extends PureComponent {
             .map(cohort => {
                 let mutation = data[cohort][mutationKey];
                 let copyNumberView = data[cohort][copyNumberViewKey];
+                let genomeBackground = data[cohort][genomeBackgroundViewKey];
                 return {
                     name: cohort,
                     mutationDataSetId: mutation.dataset,
                     copyNumberDataSetId: copyNumberView.dataset,
+                    genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
+                    genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
                     amplificationThreshold: copyNumberView.amplificationThreshold,
                     deletionThreshold: copyNumberView.deletionThreshold,
                     host: mutation.host
@@ -237,7 +243,6 @@ export default class XenaGoViewer extends PureComponent {
             loadState: 'loaded',
             cohortData
         });
-        // return data;
 
     }
 
@@ -263,16 +268,26 @@ export default class XenaGoViewer extends PureComponent {
                 return Rx.Observable.zip(
                     sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
                     datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                    (mutations, copyNumber) => ({mutations, samples, copyNumber}))
+                    datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+                    datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+                    (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+                        mutations,
+                        samples,
+                        copyNumber,
+                        genomeBackgroundMutation,
+                        genomeBackgroundCopyNumber
+                    }))
             })
-            .subscribe(({mutations, samples, copyNumber}) => {
+            .subscribe(({mutations, samples, copyNumber,genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
                 let pathwayData = {
                     copyNumber,
                     geneList,
                     expression: mutations,
                     pathways: this.props.pathways,
                     cohort: cohort.name,
-                    samples
+                    samples,
+                    genomeBackgroundMutation,
+                    genomeBackgroundCopyNumber,
                 };
                 this.setState({
                     pathwayData: pathwayData,

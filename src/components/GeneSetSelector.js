@@ -4,11 +4,14 @@ import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
     getHighlightedColor,
-    getPathwayColorMask,
-    scoreData,
+    getGeneSetColorMask,
+     scoreChiSquaredData,
 } from "../functions/ColorFunctions";
+import * as d3 from "d3";
 
-export class GeneSetSvgSelector extends PureComponent {
+const interpolate = d3.scaleLinear().domain([-100,0,100]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(2.2));
+
+export class GeneSetSelector extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -78,15 +81,9 @@ export class GeneSetSvgSelector extends PureComponent {
         }
     }
 
-    pillStyle(score, colorMask) {
-        let colorString = 'rgba(';
-        colorString += colorMask[0];
-        colorString += ',';
-        colorString += colorMask[1];
-        colorString += ',';
-        colorString += colorMask[2];
-        colorString += ',';
-        colorString += isNaN(score) ? 0 : score + ')';
+    pillStyle(score) {
+        let colorString = interpolate(score);
+
         return {
             top: 0,
             left: 0,
@@ -130,18 +127,19 @@ export class GeneSetSvgSelector extends PureComponent {
                 <div></div>
             )
         }
-
         let newRefPathways = pathways.map(r => {
             return {
                 goid: r.goid,
                 golabel: r.golabel,
                 gene: r.gene,
-                firstDensity: r.firstDensity,
-                secondDensity: r.secondDensity,
+                firstObserved: r.firstObserved,
+                secondObserved: r.secondObserved,
                 firstTotal: r.firstTotal,
                 secondTotal: r.secondTotal,
                 firstNumSamples: r.firstNumSamples,
                 secondNumSamples: r.secondNumSamples,
+                firstExpected: r.firstExpected,
+                secondExpected: r.secondExpected,
             };
         });
 
@@ -149,7 +147,7 @@ export class GeneSetSvgSelector extends PureComponent {
         let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
-        let colorMask = getPathwayColorMask();
+        let colorMask = getGeneSetColorMask();
 
         return newRefPathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
@@ -157,27 +155,28 @@ export class GeneSetSvgSelector extends PureComponent {
             let hovered = intersection(genesToHover, p.gene).length > 0;
             hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
-            let highlighted = p.gene.indexOf(highlightedGene) >= 0
-            let firstScore = scoreData(p.firstDensity, p.firstNumSamples, p.gene.length);
-            let secondScore = scoreData(p.secondDensity, p.secondNumSamples, p.gene.length);
+            let highlighted = p.gene.indexOf(highlightedGene) >= 0;
+
+            let firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
+            let secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
 
             return (
                 <svg
-                    style={this.labelStyle((p.firstDensity + p.secondDensity) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
+                    style={this.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}
                     key={p.golabel}
                 >
-                    {p.firstDensity &&
+                    {p.firstObserved &&
                     <rect width={width / 2 - 1} x={0} height={labelHeight}
-                          style={this.pillStyle(firstScore, colorMask)}/>
+                          style={this.pillStyle(firstChiSquared)}/>
                     }
-                    {p.secondDensity &&
+                    {p.secondObserved &&
                     <rect width={width / 2} x={width / 2 + 1} height={labelHeight}
-                          style={this.pillStyle(secondScore, colorMask)}/>
+                          style={this.pillStyle(secondChiSquared)}/>
                     }
-                    <text x={10} y={topOffset} fontFamily='Arial' fontSize={12}
+                    <text x={10} y={topOffset} fontFamily='Arial' fontWeight={'bold'} fontSize={12}
                           fill={'black'}
                     >
                         {width < 10 ? '' : labelString}
@@ -189,7 +188,7 @@ export class GeneSetSvgSelector extends PureComponent {
 
 }
 
-GeneSetSvgSelector.propTypes = {
+GeneSetSelector.propTypes = {
     pathways: PropTypes.any.isRequired,
     width: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,

@@ -9,14 +9,15 @@ import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
-import {GeneSetSvgSelector} from "./GeneSetSvgSelector";
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {GeneSetSelector} from "./GeneSetSelector";
+import {addIndepProb, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
 import {sumInstances} from '../functions/util';
 import {LabelTop} from "./LabelTop";
-import VerticalPathwaySetScoresView from "./VerticalPathwaySetScoresView";
+import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
+import {izip, cycle} from 'itertools';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -38,9 +39,9 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
-let mutationKey = 'simple somatic mutation';
-let copyNumberViewKey = 'copy number for pathway view';
-
+// let mutationKey = 'simple somatic mutation';
+// let copyNumberViewKey = 'copy number for pathway view';
+//
 /**
  * refactor that from index
  */
@@ -122,43 +123,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     componentDidUpdate() {
         this.forceState();
-        // this.loadCohorts();
     }
 
     componentDidMount() {
         this.loadSelectedState();
     }
-
-    // loadCohorts() {
-    //     // alert('loading cohort');
-    //     try {
-    //         let cohortData = Object.keys(defaultDatasetForGeneset)
-    //             .filter(cohort => {
-    //                 return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
-    //             })
-    //             .map(cohort => {
-    //                 let mutation = defaultDatasetForGeneset[cohort][mutationKey];
-    //                 let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
-    //                 return {
-    //                     name: cohort,
-    //                     mutationDataSetId: mutation.dataset,
-    //                     copyNumberDataSetId: copyNumberView.dataset,
-    //                     amplificationThreshold: copyNumberView.amplificationThreshold,
-    //                     deletionThreshold: copyNumberView.deletionThreshold,
-    //                     host: mutation.host
-    //                 }
-    //             });
-    //         this.setState({
-    //             cohortData: cohortData
-    //         });
-    //     }
-    //     catch (e) {
-    //         console.error(e);
-    //         this.setState({
-    //             loadState: 'error'
-    //         });
-    //     }
-    // }
 
 
     handleUpload = (file) => {
@@ -389,7 +358,7 @@ export default class XenaGeneSetApp extends PureComponent {
         }
     }
 
-    calculatePathwayDensity(pathwayData, filter, min, cohortIndex) {
+    calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
         hashAssociation.min = min;
@@ -406,51 +375,106 @@ export default class XenaGeneSetApp extends PureComponent {
         };
         let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = pathwayData.samples;
+        return associatedData;
+    }
 
-        return associatedData.map(pathway => {
+    calculateObserved(pathwayData, filter, min, cohortIndex) {
+        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
             return sumInstances(pathway);
         });
     }
 
     calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
-        hashAssociation.filter = filter;
-        hashAssociation.min = min;
-        hashAssociation.cohortIndex = cohortIndex;
-
-        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
-        let associatedData = findAssociatedData(hashAssociation);
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways: hashAssociation.pathways,
-            filterMin
-        };
-        let prunedColumns = findPruneData(hashForPrune);
-        prunedColumns.samples = pathwayData.samples;
-
-        return associatedData.map(pathway => {
+        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
             return sum(pathway);
         });
+    }
+
+
+    calculateExpectedProb(pathway, expected, total) {
+        let prob = 1.0;
+        let genesInPathway = pathway.gene.length;
+        for (let i = 0; i < genesInPathway; i++) {
+            prob = prob * (total - expected - i) / (total - i);
+        }
+        prob = 1 - prob;
+        return prob;
+    }
+
+    /**
+     * Converts per-sample pathway data to
+     * @param pathwayData
+     */
+    calculateGeneSetExpected(pathwayData, filter) {
+
+        // a list for each sample  [0] = expected_N, vs [1] total_pop_N
+        let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
+        let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
+        // let's assume they are the same order for now since they were fetched with the same sample data
+        filter = filter.indexOf('All') === 0 ? '' : filter;
+
+        // // initiate to 0
+        let pathwayExpected = {};
+        // init data
+        for (let pathway of pathwayData.pathways) {
+            pathwayExpected[pathway.golabel] = 0;
+        }
+        for (let sampleIndex in pathwayData.samples) {
+
+            // TODO: if filter is all or copy number, or SNV . . etc.
+            let copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
+            let copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
+            let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
+            let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
+
+
+            // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
+            for (let pathway of pathwayData.pathways) {
+                let sample_probs = [];
+
+                if (!filter || filter === 'Copy Number') {
+                    sample_probs.push(this.calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+                }
+                if (!filter || filter === 'Mutation') {
+                    sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                }
+                let total_prob = addIndepProb(sample_probs);
+                // if(sampleIndex<10){
+                // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
+                //     if(pathway.golabel==='TP53 (Pancan Atlas)'){
+                //         console.log('sample probs',sample_probs)
+                //         console.log('total prob',total_prob)
+                //     }
+                // }
+                // pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + sample_probs[0];
+                pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
+            }
+        }
+
+        // TODO we have an expected for the sample
+        return pathwayExpected;
     }
 
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let densities = this.calculatePathwayDensity(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let expected = this.calculateGeneSetExpected(pathwayData, filter);
+
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
             if (cohortIndex === 0) {
-                p.firstDensity = densities[index];
+                p.firstObserved = observations[index];
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
+                p.firstExpected = expected[p.golabel];
             }
             else {
-                p.secondDensity = densities[index];
+                p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
+                p.secondExpected = expected[p.golabel];
             }
             return p;
         });
@@ -556,7 +580,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     <tr>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
-                                            <VerticalPathwaySetScoresView
+                                            <VerticalGeneSetScoresView
                                                 data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
                                                 filter={this.state.apps[0].tissueExpressionFilter}
@@ -570,20 +594,20 @@ export default class XenaGeneSetApp extends PureComponent {
                                             }
                                         </td>
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                                            <GeneSetSvgSelector pathways={pathways}
-                                                                hoveredPathways={this.state.hoveredPathways}
-                                                                selectedPathways={this.state.selectedPathways}
-                                                                highlightedGene={this.state.highlightedGene}
-                                                                onClick={this.globalPathwaySelect}
-                                                                onHover={this.globalPathwayHover}
-                                                                onMouseOut={this.globalPathwayHover}
-                                                                labelHeight={18}
-                                                                topOffset={14}
-                                                                width={VERTICAL_SELECTOR_WIDTH}/>
+                                            <GeneSetSelector pathways={pathways}
+                                                             hoveredPathways={this.state.hoveredPathways}
+                                                             selectedPathways={this.state.selectedPathways}
+                                                             highlightedGene={this.state.highlightedGene}
+                                                             onClick={this.globalPathwaySelect}
+                                                             onHover={this.globalPathwayHover}
+                                                             onMouseOut={this.globalPathwayHover}
+                                                             labelHeight={18}
+                                                             topOffset={14}
+                                                             width={VERTICAL_SELECTOR_WIDTH}/>
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
-                                            <VerticalPathwaySetScoresView
+                                            <VerticalGeneSetScoresView
                                                 data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
                                                 filter={this.state.apps[1].tissueExpressionFilter}

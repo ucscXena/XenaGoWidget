@@ -1,6 +1,7 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
 import {isEqual, omit} from 'underscore';
+import {izip, permutations} from 'itertools';
 
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
@@ -82,7 +83,6 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
 
-
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
@@ -126,4 +126,42 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
 
     return returnArray;
 
+}
+
+// https://stackoverflow.com/a/45813619/1739366
+function getPermutations(array, size) {
+
+    function p(t, i) {
+        if (t.length === size) {
+            result.push(t);
+            return;
+        }
+        if (i + 1 > array.length) {
+            return;
+        }
+        p(t.concat(array[i]), i + 1);
+        p(t, i + 1);
+    }
+
+    var result = [];
+    p([], 0);
+    return result;
+}
+
+export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
+    let total_prob = 0.0;
+    let sign = 0;
+    let xs = range(0,prob_list.length);
+    for (let i = 1; i <= prob_list.length; i++) {
+        if (i % 2) {
+            sign = 1.0
+        }
+        else {
+            sign = -1.0
+        }
+        for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
+            total_prob = total_prob + sign * y.reduce( function(acc, value) { return acc * value});
+        }
+    }
+    return total_prob;
 }

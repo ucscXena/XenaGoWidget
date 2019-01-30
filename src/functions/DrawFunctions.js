@@ -1,7 +1,7 @@
 import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
-import {getGeneColorMask, getPathwayColorMask} from '../functions/ColorFunctions'
+import {getGeneColorMask, getGeneSetColorMask} from '../functions/ColorFunctions'
 import {GENE_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
 function clearScreen(vg, width, height) {
@@ -100,7 +100,7 @@ function findPathwayData(pathwayWidth, count) {
 }
 
 
-function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
+function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let tissueCount = data[0].length;
 
     let img = ctx.createImageData(width, totalHeight);
@@ -145,7 +145,7 @@ function drawPathwayStub(ctx, width, totalHeight, layout, data, labelHeight, col
 export default {
 
 
-    drawTissueView(vg, props) {
+    drawGeneView(vg, props) {
         let {width, height, layout, cohortIndex, associateData} = props;
 
         clearScreen(vg, width, height);
@@ -157,11 +157,11 @@ export default {
 
     },
 
-    drawPathwayView(vg, props) {
+    drawGeneSetView(vg, props) {
         let {width, layout, labelHeight, cohortIndex, associatedData} = props;
         let totalHeight = labelHeight * layout.length;
         clearScreen(vg, width, totalHeight);
-        drawPathwayStub(vg, width, totalHeight, layout, associatedData, labelHeight, getPathwayColorMask(), cohortIndex);
+        drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex);
     },
 
 }
