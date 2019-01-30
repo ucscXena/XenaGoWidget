@@ -1,6 +1,7 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
 import {isEqual, omit} from 'underscore';
+import {izip, permutations} from 'itertools';
 
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
@@ -82,7 +83,6 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
 
-
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
@@ -128,38 +128,48 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
 
 }
 
+
+function multipleAll(array) {
+    let result = 1;
+    for (let value of array) result *= value;
+    return result;
+}
+
+// https://stackoverflow.com/a/45813619/1739366
+function getPermutations(array, size) {
+
+    function p(t, i) {
+        if (t.length === size) {
+            result.push(t);
+            return;
+        }
+        if (i + 1 > array.length) {
+            return;
+        }
+        p(t.concat(array[i]), i + 1);
+        p(t, i + 1);
+    }
+
+    var result = [];
+    p([], 0);
+    return result;
+}
+
 export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
-    // let total_prob = 0.0;
-    // let sign = 0;
-
-    // hack:
-    if (prob_list.length === 1) {
-        return prob_list[0];
+    let total_prob = 0.0;
+    let sign = 0;
+    let xs = [0, 1]
+    for (let i = 1; i <= prob_list.length; i++) {
+        if (i % 2) {
+            sign = 1.0
+        }
+        else {
+            sign = -1.0
+        }
+        for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
+            y.sort();
+            total_prob = total_prob + sign * multipleAll(y);
+        }
     }
-    else if (prob_list.length === 2) {
-        return prob_list[0] + prob_list[1] - (prob_list[0] * prob_list[1]);
-    }
-    return 0;
-
-
-    // for (let i = 1; i <= prob_list.length; i++) {
-    //     if (i % 2) {
-    //         sign = 1.0
-    //     }
-    //     else {
-    //         sign = -1.0
-    //     }
-    //     // https://www.npmjs.com/package/itertools
-    //
-    //     // const xs = [1, 2, 3, 4];
-    //     // const ys = ['hello', 'there'];
-    //     // for (const [x, y] of izip(xs, cycle(prob_list))) {
-    //     //     if(i < 5){
-    //     //         console.log(x, y);
-    //     //     }
-    //     // }
-    //     // 		for combo in combinations(prob_list, i):
-    //     // 			total_prob = total_prob + reduce(lambda x,y: x*y, combo, 1) * sign
-    // }
-    // return total_prob;
+    return total_prob;
 }
