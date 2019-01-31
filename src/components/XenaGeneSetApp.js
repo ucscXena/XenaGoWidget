@@ -471,6 +471,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 p.firstNumSamples = maxSamplesAffected;
                 p.firstExpected = expected[p.golabel];
                 p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
+                console.log('p.firstObserved',p.firstObserved,'p.firstExpected',p.firstExpected,'samples',p.firstNumSamples,'chi',p.firstChiSquared)
             }
             else {
                 p.secondObserved = observations[index];

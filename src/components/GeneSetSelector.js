@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {intersection} from 'underscore';
 import {
     getHighlightedColor,
-    getGeneSetColorMask, scoreChiSquaredData
+    getGeneSetColorMask
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 

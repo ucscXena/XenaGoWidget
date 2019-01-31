@@ -36,19 +36,10 @@ export function adjustScore(score) {
  *
  */
 export function scoreChiSquaredData(observed, expected, total) {
-
-
     let expected2 = total - expected;
     let observed2 = total - observed;
-
-    let chiSquaredValue = (expected - observed) * (expected - observed) / expected + (expected2 - observed2) / expected2;
-
+    let chiSquaredValue = Math.pow(expected - observed,2.0)  / expected + Math.pow(expected2 - observed2,2.0) / expected2;
     chiSquaredValue = chiSquaredValue * ((expected > observed) ? -1 : 1);
-
-    // if(expected > observed){
-    //     console.log('expected ',expected,'>',observed);
-    // }
-
     return chiSquaredValue;
 }
 
