@@ -8,7 +8,7 @@ import {
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 
-const interpolate = d3.scaleLinear().domain([-100,0,100]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1));
+let interpolate ;
 
 export class GeneSetSelector extends PureComponent {
 
@@ -120,7 +120,7 @@ export class GeneSetSelector extends PureComponent {
 
 
     render() {
-        let {pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
+        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
@@ -131,6 +131,9 @@ export class GeneSetSelector extends PureComponent {
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getGeneSetColorMask();
+        console.log('props',this.props.colorProps)
+        interpolate = d3.scaleLinear().domain([-geneStateColors.domain,0,geneStateColors.domain]).range([geneStateColors.lowColor,'white',geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
+        // interpolate = d3.scaleLinear().domain([-this.props.domain,0,this.props.domain]).range([this.props.lowColor,'white',this.props.highColor]).interpolate(d3.interpolateRgb.gamma(this.props.gamma));
 
         return newRefPathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;

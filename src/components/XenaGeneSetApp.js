@@ -71,6 +71,13 @@ export default class XenaGeneSetApp extends PureComponent {
             reference: refGene['hg38'],
             limit: 25,
             highlightedGene: undefined,
+            geneStateColors:{
+                domain:100,
+                lowColor:'blue',
+                midColor:'white',
+                highColor:'red',
+                gamma:1.0,
+            }
         };
     }
 
@@ -607,7 +614,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              onMouseOut={this.globalPathwayHover}
                                                              labelHeight={18}
                                                              topOffset={14}
-                                                             width={VERTICAL_SELECTOR_WIDTH}/>
+                                                             width={VERTICAL_SELECTOR_WIDTH}
+                                                             geneStateColors={this.state.geneStateColors}
+                                            />
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
