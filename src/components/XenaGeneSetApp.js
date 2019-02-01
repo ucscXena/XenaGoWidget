@@ -545,6 +545,12 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({showColorEditor: !this.state.showColorEditor});
     };
 
+    handleColorChange = (name,value) => {
+        console.log('parent, handle color change',name,value);
+        // this.setState({showColorEditor: !this.state.showColorEditor});
+        // geneStateColors={this.state.geneStateColors}
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -567,6 +573,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <div>
                     <ColorEditor active={this.state.showColorEditor}
                     handleToggle={this.handleColorToggle}
+                                 handleColorChange={this.handleColorChange}
                     />
                     <Grid>
                         <Row>

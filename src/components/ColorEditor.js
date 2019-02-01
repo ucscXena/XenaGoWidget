@@ -9,14 +9,19 @@ export class ColorEditor extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log('input color props',this.props)
         this.state = {
             active: this.props.active,
         };
     }
 
-    handleChange(input){
-        console.log('handling input',input,this.state)
-    }
+    handleChange = (name, value) => {
+        console.log('handling input', name,value, this.state)
+        // this.setState({...this.state, [name]: value});
+
+
+        this.props.handleColorChange(name,value)
+    };
 
 
     render() {
@@ -37,11 +42,16 @@ export class ColorEditor extends PureComponent {
                 onOverlayClick={handleToggle}
                 title='Edit Score Colors'
             >
-                <Input type='number' label='Domain' name='domain' value={this.state.domain} onChange={this.handleChange.bind(this, 'domain')} maxLength={16 } />
-                <Input type='number' label='Gamma' name='gamma' value={this.state.gamma} onChange={this.handleChange.bind(this, 'gamma')} maxLength={16 } />
-                <Input type='color' label='Low Color' name='lowColor' value={this.state.lowColor} onChange={this.handleChange.bind(this, 'lowColor')} maxLength={16 } />
-                <Input type='color' label='Mid Color' name='midColor' value={this.state.midColor} onChange={this.handleChange.bind(this, 'midColor')} maxLength={16 } />
-                <Input type='color' label='High Color' name='highColor' value={this.state.highColor} onChange={this.handleChange.bind(this, 'highColor')} maxLength={16 } />
+                <Input type='number' label='Domain' name='domain' value={this.state.domain}
+                       onChange={this.handleChange.bind(this, 'domain')} maxLength={16}/>
+                <Input type='number' label='Gamma' name='gamma' value={this.state.gamma}
+                       onChange={this.handleChange.bind(this, 'gamma')} maxLength={16}/>
+                <Input type='color' label='Low Color' name='lowColor' value={this.state.lowColor}
+                       onChange={this.handleChange.bind(this, 'lowColor')} maxLength={16}/>
+                <Input type='color' label='Mid Color' name='midColor' value={this.state.midColor}
+                       onChange={this.handleChange.bind(this, 'midColor')} maxLength={16}/>
+                <Input type='color' label='High Color' name='highColor' value={this.state.highColor}
+                       onChange={this.handleChange.bind(this, 'highColor')} maxLength={16}/>
             </Dialog>
         );
 
