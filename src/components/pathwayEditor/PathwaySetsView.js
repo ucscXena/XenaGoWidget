@@ -24,8 +24,6 @@ export default class PathwaySetsView extends PureComponent {
                     <Col md={3}>
                         <a role='button' onClick={()=>this.clone(pathway)}><FaClone/></a>
                         <a role='button' onClick={()=>this.view(pathway)}><FaEye/></a>
-                    {/*</Col>*/}
-                    {/*<Col md={1}>*/}
                         <a role='button' onClick={()=>this.deleteView(pathway)}><FaTrash/></a>
                     </Col>
                 </Row>

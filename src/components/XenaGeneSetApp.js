@@ -19,6 +19,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
+import {ColorEditor} from "./ColorEditor";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -40,9 +41,6 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
-// let mutationKey = 'simple somatic mutation';
-// let copyNumberViewKey = 'copy number for pathway view';
-//
 /**
  * refactor that from index
  */
@@ -53,6 +51,7 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         this.state = {
             view: XENA_VIEW,
+            showColorEditor: false,
             // view: PATHWAYS_VIEW,
             pathwaySets: [
                 {
@@ -71,6 +70,13 @@ export default class XenaGeneSetApp extends PureComponent {
             reference: refGene['hg38'],
             limit: 25,
             highlightedGene: undefined,
+            geneStateColors: {
+                domain: 100,
+                lowColor: 'blue',
+                midColor: 'white',
+                highColor: 'red',
+                gamma: 1.0,
+            }
         };
     }
 
@@ -262,6 +268,13 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    configureXena = () => {
+        // alert('configuring xena')
+        this.handleColorToggle();
+        // this.setState({
+        //     view: XENA_VIEW
+        // })
+    };
 
     geneHighlight = (geneName) => {
         this.setState(
@@ -470,15 +483,14 @@ export default class XenaGeneSetApp extends PureComponent {
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
                 p.firstExpected = expected[p.golabel];
-                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
-                console.log('p.firstObserved',p.firstObserved,'p.firstExpected',p.firstExpected,'samples',p.firstNumSamples,'chi',p.firstChiSquared)
+                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
             }
             else {
                 p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
                 p.secondExpected = expected[p.golabel];
-                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
+                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
             }
             return p;
         });
@@ -529,6 +541,21 @@ export default class XenaGeneSetApp extends PureComponent {
         this.refs['pathway-editor'].highlightGenes(geneName)
     };
 
+    handleColorToggle = () => {
+        this.setState({showColorEditor: !this.state.showColorEditor});
+    };
+
+    handleColorChange = (name, value) => {
+        console.log('parent, handle color change', name, value);
+        let newArray = JSON.parse(JSON.stringify(this.state.geneStateColors));
+        newArray[name] = value;
+        console.log('newArray: ', newArray)
+        this.setState({
+            geneStateColors: newArray
+        })
+
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -540,6 +567,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 <NavigationBar showPathways={this.showPathways}
                                showXena={this.showXena}
+                               configureXena={this.configureXena}
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
@@ -548,6 +576,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
+                    <ColorEditor active={this.state.showColorEditor}
+                                 handleToggle={this.handleColorToggle}
+                                 handleColorChange={this.handleColorChange}
+                                 colorSettings={this.state.geneStateColors}
+                    />
                     <Grid>
                         <Row>
                             <Col md={this.state.showPathwayDetails ? 5 : 2} style={{marginTop: 15}}>
@@ -607,7 +640,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              onMouseOut={this.globalPathwayHover}
                                                              labelHeight={18}
                                                              topOffset={14}
-                                                             width={VERTICAL_SELECTOR_WIDTH}/>
+                                                             width={VERTICAL_SELECTOR_WIDTH}
+                                                             geneStateColors={this.state.geneStateColors}
+                                            />
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&

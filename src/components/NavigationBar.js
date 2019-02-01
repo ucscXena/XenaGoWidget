@@ -38,7 +38,7 @@ export default class NavigationBar extends PureComponent {
 
 
     render() {
-        let {showPathways, showXena, view} = this.props;
+        let {configureXena, showPathways, showXena, view} = this.props;
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -48,6 +48,23 @@ export default class NavigationBar extends PureComponent {
                         <table>
                             <tbody>
                             <tr>
+                                <td width="8%">
+                                    {/*https://material.io/tools/icons/?style=baseline*/}
+                                    <IconMenu icon='more_vert' position='topLeft'
+                                              className={BaseStyle.menuStyle}>
+
+                                        <MenuItem value='download' icon='color_lens' caption='Edit Colors'
+                                                  onClick={() => configureXena()}/>
+                                        {view === XENA_VIEW &&
+                                        <MenuItem value='settings' onClick={() => showPathways()} icon='border_color'
+                                                  caption='Edit Pathways'/>
+                                        }
+                                        {view === PATHWAYS_VIEW &&
+                                        <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
+                                                  caption='Show GeneSet Viewer'/>
+                                        }
+                                    </IconMenu>
+                                </td>
                                 <td width="35%">
                                     <Autocomplete
                                         theme={AutocompleteTheme}
@@ -65,20 +82,6 @@ export default class NavigationBar extends PureComponent {
                                         }}
                                     />
                                 </td>
-                                <td width="50%">
-                                    {view === XENA_VIEW &&
-                                    <div>
-                                        <Button raised primary>Xena</Button>
-                                        <Button raised onClick={() => showPathways()}>Pathways</Button>
-                                    </div>
-                                    }
-                                    {view === PATHWAYS_VIEW &&
-                                    <div>
-                                        <Button raised onClick={() => showXena()}>Xena</Button>
-                                        <Button raised primary>Pathways</Button>
-                                    </div>
-                                    }
-                                </td>
                                 <td width="10%">
                                     <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                                         <GithubIcon/>
@@ -93,12 +96,14 @@ export default class NavigationBar extends PureComponent {
             </div>)
     }
 
+
 }
 
 NavigationBar.propTypes = {
     searchHandler: PropTypes.any,
     acceptGeneHandler: PropTypes.any,
     view: PropTypes.any,
+    configureXena: PropTypes.any,
     showPathways: PropTypes.any,
     showXena: PropTypes.any,
     geneOptions: PropTypes.any,
