@@ -41,9 +41,6 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
-// let mutationKey = 'simple somatic mutation';
-// let copyNumberViewKey = 'copy number for pathway view';
-//
 /**
  * refactor that from index
  */

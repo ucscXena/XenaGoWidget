@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
+import Input from "react-toolbox/lib/input";
 
 
 export class ColorEditor extends PureComponent {
@@ -13,11 +14,15 @@ export class ColorEditor extends PureComponent {
         };
     }
 
+    handleChange(input){
+        console.log('handling input',input)
+    }
+
 
     render() {
 
 
-        let {active,handleToggle} = this.props;
+        let {active, handleToggle} = this.props;
 
         let actions = [
             {label: "Cancel", onClick: handleToggle},
@@ -30,9 +35,18 @@ export class ColorEditor extends PureComponent {
                 active={active}
                 onEscKeyDown={handleToggle}
                 onOverlayClick={handleToggle}
-                title='My awesome dialog'
+                title='Edit Score Colors'
             >
-                <p>Here you can add arbitrary content. Components like Pickers are using dialogs now.</p>
+                <Input type='number' label='Domain' name='domain' value={this.state.domain} onChange={this.handleChange.bind(this, 'domain')} maxLength={16 } />
+                <Input type='number' label='Gamma' name='gamma' value={this.state.gamma} onChange={this.handleChange.bind(this, 'gamma')} maxLength={16 } />
+                <Input type='color' label='Low Color' name='lowColor' value={this.state.lowColor} onChange={this.handleChange.bind(this, 'lowColor')} maxLength={16 } />
+                <Input type='color' label='Mid Color' name='midColor' value={this.state.midColor} onChange={this.handleChange.bind(this, 'midColor')} maxLength={16 } />
+                <Input type='color' label='High Color' name='highColor' value={this.state.highColor} onChange={this.handleChange.bind(this, 'highColor')} maxLength={16 } />
+
+                {/*<b>Domain Max</b>*/}
+                {/*<input>100 </input>*/}
+                {/*<b>Gamma</b>*/}
+                {/*<input>1</input>*/}
             </Dialog>
         );
 
