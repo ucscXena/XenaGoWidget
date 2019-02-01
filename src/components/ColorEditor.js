@@ -9,7 +9,6 @@ export class ColorEditor extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('input color props',this.props)
         this.state = {
             active: this.props.active,
             colorSettings: this.props.colorSettings,
@@ -17,33 +16,25 @@ export class ColorEditor extends PureComponent {
     }
 
     handleChange = (name, value) => {
-        console.log('handling input', name,value, this.state)
+        // console.log('handling input', name,value, this.state)
         // this.setState({...this.state.colorSettings, [name]: value});
 
         let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
         newArray[name] = value;
-        console.log('newArray: ', newArray)
+        // console.log('newArray: ', newArray)
         this.setState({
             colorSettings: newArray
-        })
+        });
 
         this.props.handleColorChange(name,value)
     };
 
 
     render() {
-
-
         let {active, handleToggle} = this.props;
-
-        // let actions = [
-        //     {label: "Cancel", onClick: handleToggle},
-        //     {label: "Save", onClick: handleToggle}
-        // ];
 
         return (
             <Dialog
-                // actions={actions}
                 active={active}
                 onEscKeyDown={handleToggle}
                 onOverlayClick={handleToggle}
