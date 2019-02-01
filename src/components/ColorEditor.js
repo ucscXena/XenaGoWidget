@@ -16,21 +16,19 @@ export class ColorEditor extends PureComponent {
     }
 
     handleChange = (name, value) => {
-        // console.log('handling input', name,value, this.state)
         // this.setState({...this.state.colorSettings, [name]: value});
 
         let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
         newArray[name] = value;
-        // console.log('newArray: ', newArray)
         this.setState({
             colorSettings: newArray
         });
-
         this.props.handleColorChange(name,value)
     };
 
 
     render() {
+
         let {active, handleToggle} = this.props;
 
         return (
