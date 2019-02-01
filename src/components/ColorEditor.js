@@ -15,7 +15,7 @@ export class ColorEditor extends PureComponent {
     }
 
     handleChange(input){
-        console.log('handling input',input)
+        console.log('handling input',input,this.state)
     }
 
 
@@ -42,11 +42,6 @@ export class ColorEditor extends PureComponent {
                 <Input type='color' label='Low Color' name='lowColor' value={this.state.lowColor} onChange={this.handleChange.bind(this, 'lowColor')} maxLength={16 } />
                 <Input type='color' label='Mid Color' name='midColor' value={this.state.midColor} onChange={this.handleChange.bind(this, 'midColor')} maxLength={16 } />
                 <Input type='color' label='High Color' name='highColor' value={this.state.highColor} onChange={this.handleChange.bind(this, 'highColor')} maxLength={16 } />
-
-                {/*<b>Domain Max</b>*/}
-                {/*<input>100 </input>*/}
-                {/*<b>Gamma</b>*/}
-                {/*<input>1</input>*/}
             </Dialog>
         );
 
@@ -54,7 +49,3 @@ export class ColorEditor extends PureComponent {
 
 }
 
-ColorEditor.propTypes = {
-    active: PropTypes.any.required,
-    handleToggle: PropTypes.any.required,
-};

@@ -50,10 +50,10 @@ export default class NavigationBar extends PureComponent {
                             <tr>
                                 <td width="8%">
                                     {/*https://material.io/tools/icons/?style=baseline*/}
-                                    <IconMenu icon='more_vert' position='topLeft' raised
+                                    <IconMenu icon='more_vert' position='topLeft'
                                               className={BaseStyle.menuStyle}>
 
-                                        <MenuItem value='download' icon='color_lens' caption='Edit Colors' active={view===XENA_VIEW}
+                                        <MenuItem value='download' icon='color_lens' caption='Edit Colors'
                                                   onClick={() => configureXena()}/>
                                         {view === XENA_VIEW &&
                                         <MenuItem value='settings' onClick={() => showPathways()} icon='border_color'
