@@ -36,10 +36,6 @@ export default class NavigationBar extends PureComponent {
         this.props.acceptGeneHandler(text);
     };
 
-    configureXena() {
-        alert('confingoing xena')
-        return undefined;
-    }
 
     render() {
         let {configureXena, showPathways, showXena, view} = this.props;
@@ -68,7 +64,6 @@ export default class NavigationBar extends PureComponent {
                                                   caption='Show GeneSet Viewer'/>
                                         }
                                     </IconMenu>
-
                                 </td>
                                 <td width="35%">
                                     <Autocomplete

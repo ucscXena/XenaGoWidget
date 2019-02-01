@@ -19,6 +19,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
+import {ColorEditor} from "./ColorEditor";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -53,6 +54,7 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         this.state = {
             view: XENA_VIEW,
+            showColorEditor: false,
             // view: PATHWAYS_VIEW,
             pathwaySets: [
                 {
@@ -270,7 +272,8 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     configureXena = () => {
-        alert('configuring xena')
+        // alert('configuring xena')
+        this.handleColorToggle();
         // this.setState({
         //     view: XENA_VIEW
         // })
@@ -541,6 +544,10 @@ export default class XenaGeneSetApp extends PureComponent {
         this.refs['pathway-editor'].highlightGenes(geneName)
     };
 
+    handleColorToggle = () => {
+        this.setState({showColorEditor: !this.state.showColorEditor});
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -561,6 +568,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
+                    <ColorEditor active={this.state.showColorEditor}
+                    handleToggle={this.handleColorToggle}
+                    />
                     <Grid>
                         <Row>
                             <Col md={this.state.showPathwayDetails ? 5 : 2} style={{marginTop: 15}}>
