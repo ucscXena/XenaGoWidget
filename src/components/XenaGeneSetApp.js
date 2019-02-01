@@ -72,9 +72,9 @@ export default class XenaGeneSetApp extends PureComponent {
             highlightedGene: undefined,
             geneStateColors: {
                 domain: 100,
-                lowColor: 'blue',
-                midColor: 'white',
-                highColor: 'red',
+                lowColor: '#0000ff',
+                midColor: '#ffffff',
+                highColor: '#ff0000',
                 gamma: 1.0,
             }
         };
@@ -546,10 +546,8 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleColorChange = (name, value) => {
-        console.log('parent, handle color change', name, value);
         let newArray = JSON.parse(JSON.stringify(this.state.geneStateColors));
         newArray[name] = value;
-        console.log('newArray: ', newArray)
         this.setState({
             geneStateColors: newArray
         })

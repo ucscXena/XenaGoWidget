@@ -16,8 +16,6 @@ export class ColorEditor extends PureComponent {
     }
 
     handleChange = (name, value) => {
-        // this.setState({...this.state.colorSettings, [name]: value});
-
         let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
         newArray[name] = value;
         this.setState({

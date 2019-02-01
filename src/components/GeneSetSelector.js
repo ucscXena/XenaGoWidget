@@ -131,7 +131,7 @@ export class GeneSetSelector extends PureComponent {
         let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getGeneSetColorMask();
-        interpolate = d3.scaleLinear().domain([-geneStateColors.domain,0,geneStateColors.domain]).range([geneStateColors.lowColor,'white',geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
+        interpolate = d3.scaleLinear().domain([-geneStateColors.domain,0,geneStateColors.domain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
         // interpolate = d3.scaleLinear().domain([-this.props.domain,0,this.props.domain]).range([this.props.lowColor,'white',this.props.highColor]).interpolate(d3.interpolateRgb.gamma(this.props.gamma));
 
         return newRefPathways.map((p) => {
