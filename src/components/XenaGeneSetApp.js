@@ -70,12 +70,12 @@ export default class XenaGeneSetApp extends PureComponent {
             reference: refGene['hg38'],
             limit: 25,
             highlightedGene: undefined,
-            geneStateColors:{
-                domain:100,
-                lowColor:'blue',
-                midColor:'white',
-                highColor:'red',
-                gamma:1.0,
+            geneStateColors: {
+                domain: 100,
+                lowColor: 'blue',
+                midColor: 'white',
+                highColor: 'red',
+                gamma: 1.0,
             }
         };
     }
@@ -483,14 +483,14 @@ export default class XenaGeneSetApp extends PureComponent {
                 p.firstTotal = totals[index];
                 p.firstNumSamples = maxSamplesAffected;
                 p.firstExpected = expected[p.golabel];
-                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected,p.firstNumSamples);
+                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
             }
             else {
                 p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
                 p.secondExpected = expected[p.golabel];
-                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected,p.secondNumSamples);
+                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
             }
             return p;
         });
@@ -545,10 +545,15 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({showColorEditor: !this.state.showColorEditor});
     };
 
-    handleColorChange = (name,value) => {
-        console.log('parent, handle color change',name,value);
-        // this.setState({showColorEditor: !this.state.showColorEditor});
-        // geneStateColors={this.state.geneStateColors}
+    handleColorChange = (name, value) => {
+        console.log('parent, handle color change', name, value);
+        let newArray = JSON.parse(JSON.stringify(this.state.geneStateColors));
+        newArray[name] = value;
+        console.log('newArray: ', newArray)
+        this.setState({
+            geneStateColors: newArray
+        })
+
     };
 
     render() {
@@ -572,8 +577,9 @@ export default class XenaGeneSetApp extends PureComponent {
                 {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
                     <ColorEditor active={this.state.showColorEditor}
-                    handleToggle={this.handleColorToggle}
+                                 handleToggle={this.handleColorToggle}
                                  handleColorChange={this.handleColorChange}
+                                 colorSettings={this.state.geneStateColors}
                     />
                     <Grid>
                         <Row>
