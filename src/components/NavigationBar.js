@@ -38,7 +38,8 @@ export default class NavigationBar extends PureComponent {
 
 
     render() {
-        let {configureXena, showPathways, showXena, view} = this.props;
+        let {configureXena, showPathways, showXena, view,toggleShowReciprocalPathway,downloadRawHandler,showReciprocalPathway} = this.props;
+        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Pathway' ;
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -64,9 +65,12 @@ export default class NavigationBar extends PureComponent {
                                                   caption='Show GeneSet Viewer'/>
                                         }
                                         <MenuDivider />
-                                        <MenuItem value='cohortDownload1' onClick={() => this.props.downloadRawHandler(0)} icon='cloud_download'
+                                        <MenuItem value='showRecipricalPathways' onClick={() => toggleShowReciprocalPathway() }
+                                                  caption={showReciprocalPathwayLabel}/>
+                                        <MenuDivider />
+                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)} icon='cloud_download'
                                                   caption='Cohort 1 Data'/>
-                                        <MenuItem value='cohortDownload1' onClick={() => this.props.downloadRawHandler(1)} icon='cloud_download'
+                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(1)} icon='cloud_download'
                                                   caption='Cohort 2 Data'/>
 
                                     </IconMenu>
@@ -114,4 +118,6 @@ NavigationBar.propTypes = {
     showXena: PropTypes.any,
     geneOptions: PropTypes.any,
     downloadRawHandler: PropTypes.any,
+    toggleShowReciprocalPathway: PropTypes.any,
+    showReciprocalPathway: PropTypes.any,
 };

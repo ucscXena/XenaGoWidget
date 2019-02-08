@@ -51,8 +51,9 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         this.state = {
             view: XENA_VIEW,
-            showColorEditor: false,
             // view: PATHWAYS_VIEW,
+            showColorEditor: false,
+            showReciprocalPathway: false,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -554,6 +555,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
+    toggleShowReciprocalPathway = () =>{
+        this.setState({
+            showReciprocalPathway: !this.state.showReciprocalPathway
+        })
+    };
+
     callDownload = (cohortIndex) =>{
         this.refs['xena-go-app-'+cohortIndex].callDownload();
     };
@@ -575,6 +582,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
+                               toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
+                               showReciprocalPathway={this.state.showReciprocalPathway}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
@@ -645,6 +654,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              topOffset={14}
                                                              width={VERTICAL_SELECTOR_WIDTH}
                                                              geneStateColors={this.state.geneStateColors}
+                                                             showReciprocalPathway={this.state.showReciprocalPathway}
                                             />
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
