@@ -63,6 +63,8 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
                                                   caption='Show GeneSet Viewer'/>
                                         }
+                                        {/*<MenuItem value='cohortDownload1' onClick={() => this.props.toggleShowReciprocal} icon='cloud_download'*/}
+                                                  {/*caption='Show Reciprocal'/>*/}
                                         <MenuDivider />
                                         <MenuItem value='cohortDownload1' onClick={() => this.props.downloadRawHandler(0)} icon='cloud_download'
                                                   caption='Cohort 1 Data'/>
