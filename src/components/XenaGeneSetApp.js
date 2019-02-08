@@ -554,6 +554,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
+    callDownload = (cohortIndex) =>{
+        this.refs['xena-go-app-'+cohortIndex].callDownload();
+    };
+
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -570,6 +574,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
+                               downloadRawHandler={this.callDownload}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&

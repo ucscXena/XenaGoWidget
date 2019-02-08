@@ -347,9 +347,6 @@ export default class XenaGoViewer extends PureComponent {
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
                                     />
                                     <CardMedia>
-                                        <Button onClick={this.callDownload} floating mini>
-                                            <FaDownload/>
-                                        </Button>
                                         <FilterSelector filters={filteredMutationVector}
                                                         selected={this.state.tissueExpressionFilter}
                                                         pathwayData={this.state.geneData}

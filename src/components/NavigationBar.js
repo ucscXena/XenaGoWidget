@@ -63,6 +63,12 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
                                                   caption='Show GeneSet Viewer'/>
                                         }
+                                        <MenuDivider />
+                                        <MenuItem value='cohortDownload1' onClick={() => this.props.downloadRawHandler(0)} icon='cloud_download'
+                                                  caption='Cohort 1 Data'/>
+                                        <MenuItem value='cohortDownload1' onClick={() => this.props.downloadRawHandler(1)} icon='cloud_download'
+                                                  caption='Cohort 2 Data'/>
+
                                     </IconMenu>
                                 </td>
                                 <td width="35%">
@@ -107,4 +113,5 @@ NavigationBar.propTypes = {
     showPathways: PropTypes.any,
     showXena: PropTypes.any,
     geneOptions: PropTypes.any,
+    downloadRawHandler: PropTypes.any,
 };
