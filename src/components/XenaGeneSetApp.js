@@ -703,6 +703,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                addGeneSetHandler={this.addGeneSet}
                                uploadHandler={this.handleUpload}
                                resetHandler={this.handleReset}
+                               closeHandler={this.showXena}
                 />
                 }
             </div>);

@@ -10,7 +10,8 @@ import PropTypes from 'prop-types';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
-import Fafresh from 'react-icons/lib/fa/refresh';
+import FaRefresh from 'react-icons/lib/fa/refresh';
+import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 
@@ -85,15 +86,18 @@ export default class PathwayEditor extends PureComponent {
                 <Row>
                     <Col md={6}>
                         <Button onClick={() => this.downloadView()}>
-                            Download <FaCloudDownload/>
+                            Current GeneSet <FaCloudDownload/>
                         </Button>
-                        <BrowseButton label="Upload"
+                        <BrowseButton label="Load GeneSet (json)&nbsp;"
                                       onChange={this.handleChange}
                         >
                             <FaCloudUpload/>
                         </BrowseButton>
-                        <Button onClick={() => this.props.resetHandler()}>
-                            Reset <Fafresh/>
+                        <Button  onClick={() => this.props.resetHandler()}>
+                            Reset <FaRefresh/>
+                        </Button>
+                        <Button onClick={() => this.props.closeHandler()}>
+                            Done <FaClose/>
                         </Button>
                     </Col>
                 </Row>
@@ -240,4 +244,5 @@ PathwayEditor.propTypes = {
     removeGeneHandler: PropTypes.any,
     uploadHandler: PropTypes.any,
     resetHandler: PropTypes.any,
+    closeHandler: PropTypes.any,
 };
