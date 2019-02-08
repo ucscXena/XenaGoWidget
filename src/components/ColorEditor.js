@@ -3,10 +3,6 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
 import Input from "react-toolbox/lib/input";
-import Grid from "react-bootstrap/es/Grid";
-import Row from "react-bootstrap/es/Row";
-import Col from "react-bootstrap/es/Col";
-import Checkbox from "react-bootstrap/es/Checkbox";
 
 
 export class ColorEditor extends PureComponent {
@@ -42,9 +38,10 @@ export class ColorEditor extends PureComponent {
                 active={active}
                 onEscKeyDown={handleToggle}
                 onOverlayClick={handleToggle}
-                title='Edit Score Colors'
+                title='Edit Colors'
             >
                 <table width="100%">
+                    <tbody>
                     <tr>
                         <td>
                             High Color
@@ -68,7 +65,7 @@ export class ColorEditor extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            Mid Color&nbsp;
+                            Neutral Color
                         </td>
                         <td>
                             <Input type='color' name='midColor'
@@ -116,6 +113,19 @@ export class ColorEditor extends PureComponent {
                             />
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Gene Color Intensity
+                        </td>
+                        <td>
+                            <Input type='number' name='shadingValue'
+                                   value={this.state.colorSettings.shadingValue}
+                                   onChange={this.handleChange.bind(this, 'shadingValue')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
+                    </tbody>
                 </table>
             </Dialog>
         );
@@ -124,3 +134,9 @@ export class ColorEditor extends PureComponent {
 
 }
 
+ColorEditor.propTypes = {
+    active: PropTypes.any.isRequired,
+    colorSettings: PropTypes.any.isRequired,
+    handleToggle: PropTypes.any.isRequired,
+    handleColorChange: PropTypes.any.isRequired,
+};

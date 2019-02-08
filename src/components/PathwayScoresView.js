@@ -55,13 +55,13 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     let index = 0;
     switch (cohortIndex) {
         case 0:
-            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc(y * count / (height - (labelHeight + UP_BUFFER) )) : -1;
+            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc(y * count / (height - (labelHeight + UP_BUFFER))) : -1;
             break;
         case 1:
             index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
             break;
         default:
-            console.log('error', y, height, labelHeight, count, cohortIndex,UP_BUFFER)
+            console.log('error', y, height, labelHeight, count, cohortIndex, UP_BUFFER)
 
     }
     return index;
@@ -125,8 +125,9 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways, highlightedGene
+            selectedPathways, hoveredPathways, highlightedGene, shadingValue
         } = this.props;
+
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -155,6 +156,7 @@ class PathwayScoresView extends PureComponent {
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
+                    shadingValue={shadingValue}
                 />
             </div>
         );
@@ -175,6 +177,7 @@ PathwayScoresView.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
+    shadingValue: PropTypes.any,
 };
 
 

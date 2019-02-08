@@ -38,8 +38,8 @@ export default class NavigationBar extends PureComponent {
 
 
     render() {
-        let {configureXena, showPathways, showXena, view,toggleShowReciprocalPathway,downloadRawHandler,showReciprocalPathway} = this.props;
-        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Pathway' ;
+        let {editGeneSetColors, showPathways, showXena, view, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
+        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Pathway';
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -55,7 +55,7 @@ export default class NavigationBar extends PureComponent {
                                               className={BaseStyle.menuStyle}>
 
                                         <MenuItem value='download' icon='color_lens' caption='Edit Colors'
-                                                  onClick={() => configureXena()}/>
+                                                  onClick={() => editGeneSetColors()}/>
                                         {view === XENA_VIEW &&
                                         <MenuItem value='settings' onClick={() => showPathways()} icon='border_color'
                                                   caption='Edit Pathways'/>
@@ -64,13 +64,16 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
                                                   caption='Show GeneSet Viewer'/>
                                         }
-                                        <MenuDivider />
-                                        <MenuItem value='showRecipricalPathways' onClick={() => toggleShowReciprocalPathway() }
+                                        <MenuDivider/>
+                                        <MenuItem value='showRecipricalPathways'
+                                                  onClick={() => toggleShowReciprocalPathway()}
                                                   caption={showReciprocalPathwayLabel}/>
-                                        <MenuDivider />
-                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)} icon='cloud_download'
+                                        <MenuDivider/>
+                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
+                                                  icon='cloud_download'
                                                   caption='Cohort 1 Data'/>
-                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(1)} icon='cloud_download'
+                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(1)}
+                                                  icon='cloud_download'
                                                   caption='Cohort 2 Data'/>
 
                                     </IconMenu>
@@ -113,7 +116,7 @@ NavigationBar.propTypes = {
     searchHandler: PropTypes.any,
     acceptGeneHandler: PropTypes.any,
     view: PropTypes.any,
-    configureXena: PropTypes.any,
+    editGeneSetColors: PropTypes.any,
     showPathways: PropTypes.any,
     showXena: PropTypes.any,
     geneOptions: PropTypes.any,

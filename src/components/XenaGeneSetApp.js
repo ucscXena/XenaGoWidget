@@ -80,6 +80,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 highColor: '#ff0000',
                 gamma: 1.0,
                 linkDomains: true ,
+                shadingValue: 10,
             }
         };
     }
@@ -272,7 +273,7 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    configureXena = () => {
+    editGeneSetColors = () => {
         // alert('configuring xena')
         this.handleColorToggle();
         // this.setState({
@@ -579,7 +580,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 <NavigationBar showPathways={this.showPathways}
                                showXena={this.showXena}
-                               configureXena={this.configureXena}
+                               editGeneSetColors={this.editGeneSetColors}
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
@@ -693,6 +694,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
+                                              shadingValue={this.state.geneStateColors.shadingValue}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -706,6 +708,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
+                                              shadingValue={this.state.geneStateColors.shadingValue}
                                 />
                             </Col>
                         </Row>
