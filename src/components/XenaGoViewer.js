@@ -131,27 +131,31 @@ export default class XenaGoViewer extends PureComponent {
 
     setPathwayHover = (pathwayHover) => {
         let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
-        let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
 
-        let isSelected = genePathwayHover !== undefined && pathwayHover.golabel === this.state.selectedPathways[0];
+        console.log('seting the pathway hover ',pathwayHover)
 
+        // NOTE: I think this is all unused
+        // let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
+        // let isSelected = genePathwayHover !== undefined && pathwayHover.golabel === this.state.selectedPathways[0];
         // if no gene pathway then its a pathway instead of a gene
-        if (genePathwayHover && !isSelected) {
-            let expression = {affected: genePathwayHover.affected, total: genePathwayHover.total};
-
-            let hoverData = {
-                // tissue: "Header",
-                expression: expression,
-                pathway: genePathwayHover,
-            };
-            this.setState(
-                {
-                    hoveredPathways: newHover,
-                    geneHoverData: hoverData,
-                }
-            );
-        }
-        else if (pathwayHover) {
+        // if (genePathwayHover && !isSelected) {
+        //     console.log('geene hover!',genePathwayHover)
+        //     let expression = {affected: genePathwayHover.affected, total: genePathwayHover.total};
+        //
+        //     let hoverData = {
+        //         // tissue: "Header",
+        //         expression: expression,
+        //         pathway: genePathwayHover,
+        //     };
+        //     this.setState(
+        //         {
+        //             hoveredPathways: newHover,
+        //             geneHoverData: hoverData,
+        //         }
+        //     );
+        // }
+        // else
+        if (pathwayHover) {
             // get the pathway
             let expression = {};
             if (this.props.cohortIndex === 0) {
@@ -276,7 +280,7 @@ export default class XenaGoViewer extends PureComponent {
                         genomeBackgroundCopyNumber
                     }))
             })
-            .subscribe(({mutations, samples, copyNumber,genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
                 let pathwayData = {
                     copyNumber,
                     geneList,

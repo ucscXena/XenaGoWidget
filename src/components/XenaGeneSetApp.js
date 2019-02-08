@@ -51,8 +51,9 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
         this.state = {
             view: XENA_VIEW,
-            showColorEditor: false,
             // view: PATHWAYS_VIEW,
+            showColorEditor: false,
+            showReciprocalPathway: false,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -323,6 +324,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
+        console.log('global pathway hover',pathwayHover)
         this.setState({
             hoveredPathways: pathwayHover
         });
@@ -645,6 +647,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              topOffset={14}
                                                              width={VERTICAL_SELECTOR_WIDTH}
                                                              geneStateColors={this.state.geneStateColors}
+                                                             showReciprocalPathway={this.state.showReciprocalPathway}
                                             />
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>

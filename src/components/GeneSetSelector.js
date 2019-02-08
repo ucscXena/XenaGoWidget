@@ -56,7 +56,7 @@ export class GeneSetSelector extends PureComponent {
                 cursor: 'pointer'
             }
         }
-        else if (highlighted) {
+        else if (highlighted)  {
             return {
                 top: labelOffset,
                 left: left,
@@ -120,7 +120,7 @@ export class GeneSetSelector extends PureComponent {
 
 
     render() {
-        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
+        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left,showReciprocalPathway} = this.props;
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
@@ -136,9 +136,11 @@ export class GeneSetSelector extends PureComponent {
 
         return newRefPathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
-
-            let hovered = intersection(genesToHover, p.gene).length > 0;
-            hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
+            let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
+            if(showReciprocalPathway){
+                hovered = hovered ||  intersection(genesToHover, p.gene).length > 0;
+                hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
+            }
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
