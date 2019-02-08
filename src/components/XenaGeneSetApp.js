@@ -72,11 +72,14 @@ export default class XenaGeneSetApp extends PureComponent {
             limit: 25,
             highlightedGene: undefined,
             geneStateColors: {
-                domain: 100,
+                highDomain: 100,
+                midDomain: 0,
+                lowDomain: -100,
                 lowColor: '#0000ff',
                 midColor: '#ffffff',
                 highColor: '#ff0000',
                 gamma: 1.0,
+                linkDomains: true ,
             }
         };
     }
