@@ -555,6 +555,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
+    toggleShowReciprocalPathway = () =>{
+        this.setState({
+            showReciprocalPathway: !this.state.showReciprocalPathway
+        })
+    };
+
     callDownload = (cohortIndex) =>{
         this.refs['xena-go-app-'+cohortIndex].callDownload();
     };
@@ -576,6 +582,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
+                               toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
+                               showReciprocalPathway={this.state.showReciprocalPathway}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
