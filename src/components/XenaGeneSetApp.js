@@ -64,7 +64,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedPathways: [],
             geneData: [{}, {}],
             pathwayData: [{}, {}],
-            showPathwayDetails: true,
+            showPathwayDetails: false,
             geneHits: [],
             selectedGene: undefined,
             reference: refGene['hg38'],
