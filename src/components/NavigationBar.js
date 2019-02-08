@@ -39,7 +39,7 @@ export default class NavigationBar extends PureComponent {
 
     render() {
         let {editGeneSetColors, showPathways, showXena, view, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
-        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Pathway';
+        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
