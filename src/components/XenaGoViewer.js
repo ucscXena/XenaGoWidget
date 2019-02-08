@@ -132,8 +132,6 @@ export default class XenaGoViewer extends PureComponent {
     setPathwayHover = (pathwayHover) => {
         let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
 
-        console.log('seting the pathway hover ',pathwayHover)
-
         // NOTE: I think this is all unused
         // let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
         // let isSelected = genePathwayHover !== undefined && pathwayHover.golabel === this.state.selectedPathways[0];
