@@ -2,7 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
-import {getSelectColor,  getWhiteColor, getHighlightedColor, scoreData} from '../functions/ColorFunctions'
+import {getSelectColor, getWhiteColor, getHighlightedColor, scoreData} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
 
@@ -18,7 +18,7 @@ export class HeaderLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask,highlighted} = this.props;
+        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted} = this.props;
 
         let colorString = 'rgba(';
         colorString += colorMask[0];
@@ -56,8 +56,7 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-        else
-        if (highlighted) {
+        else if (highlighted) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -65,7 +64,7 @@ export class HeaderLabel extends PureComponent {
                 height: labelHeight,
                 width: width,
                 backgroundColor: colorString,
-                boxShadow: '0 0 2px 2px '+getHighlightedColor(),
+                boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
@@ -90,9 +89,9 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, item, geneLength, numSamples} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, numSamples, shadingValue} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        let colorDensity = scoreData(item.density, numSamples, geneLength);
+        let colorDensity = scoreData(item.density, numSamples, geneLength) * shadingValue;
         return (
             <svg
                 style={this.style(colorDensity)}
@@ -121,4 +120,5 @@ HeaderLabel.propTypes = {
     colorMask: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
+    shadingValue: PropTypes.any.isRequired,
 };

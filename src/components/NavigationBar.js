@@ -54,7 +54,7 @@ export default class NavigationBar extends PureComponent {
                                     <IconMenu icon='more_vert' position='topLeft'
                                               className={BaseStyle.menuStyle}>
 
-                                        <MenuItem value='download' icon='color_lens' caption='Edit Gene Set Colors'
+                                        <MenuItem value='download' icon='color_lens' caption='Edit Colors'
                                                   onClick={() => editGeneSetColors()}/>
                                         {view === XENA_VIEW &&
                                         <MenuItem value='settings' onClick={() => showPathways()} icon='border_color'

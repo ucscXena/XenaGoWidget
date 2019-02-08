@@ -19,7 +19,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
-import {GenSetColorEditor} from "./GenSetColorEditor";
+import {ColorEditor} from "./ColorEditor";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -80,6 +80,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 highColor: '#ff0000',
                 gamma: 1.0,
                 linkDomains: true ,
+                shadingValue: 10,
             }
         };
     }
@@ -591,10 +592,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
-                    <GenSetColorEditor active={this.state.showColorEditor}
-                                       handleToggle={this.handleColorToggle}
-                                       handleColorChange={this.handleColorChange}
-                                       colorSettings={this.state.geneStateColors}
+                    <ColorEditor active={this.state.showColorEditor}
+                                 handleToggle={this.handleColorToggle}
+                                 handleColorChange={this.handleColorChange}
+                                 colorSettings={this.state.geneStateColors}
                     />
                     <Grid>
                         <Row>
@@ -693,6 +694,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
+                                              shadingValue={this.state.geneStateColors.shadingValue}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -706,6 +708,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
+                                              shadingValue={this.state.geneStateColors.shadingValue}
                                 />
                             </Col>
                         </Row>

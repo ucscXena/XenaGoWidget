@@ -21,7 +21,7 @@ export default class SVGLabels extends PureComponent {
         super(props);
     }
 
-    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask, cohortIndex, highlightedGene) {
+    drawOverviewLabels(width, height, layout, pathways, selectedPathways, hoveredPathways, labelHeight, labelOffset, colorMask, cohortIndex, highlightedGene,shadingValue) {
 
         if (layout[0].size <= 1) {
             return;
@@ -53,6 +53,7 @@ export default class SVGLabels extends PureComponent {
                         labelString={labelString}
                         colorMask={colorMask}
                         key={labelKey + '-' + cohortIndex}
+                        shadingValue={shadingValue}
                     />
                 )
             });
@@ -60,7 +61,7 @@ export default class SVGLabels extends PureComponent {
     }
 
     drawTissueOverlay() {
-        let {geneLabelHeight, width, height, layout, associateData, cohortIndex, hoveredPathways, highlightedGene, data: {pathways}} = this.props;
+        let {shadingValue,geneLabelHeight, width, height, layout, associateData, cohortIndex, hoveredPathways, highlightedGene, data: {pathways}} = this.props;
 
         if (associateData.length === 0) {
             return;
@@ -68,7 +69,7 @@ export default class SVGLabels extends PureComponent {
 
         // draw genes
         let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
-        return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex, highlightedGene);
+        return this.drawOverviewLabels(width, height, layout, pathways, [], hoveredPathways, geneLabelHeight, offset, getGeneColorMask(), cohortIndex, highlightedGene,shadingValue);
     }
 
     render() {

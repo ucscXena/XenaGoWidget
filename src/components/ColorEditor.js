@@ -5,7 +5,7 @@ import Dialog from "react-toolbox/lib/dialog";
 import Input from "react-toolbox/lib/input";
 
 
-export class GenSetColorEditor extends PureComponent {
+export class ColorEditor extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ export class GenSetColorEditor extends PureComponent {
                 active={active}
                 onEscKeyDown={handleToggle}
                 onOverlayClick={handleToggle}
-                title='Edit Gene Set Shading'
+                title='Edit Colors'
             >
                 <table width="100%">
                     <tbody>
@@ -113,6 +113,18 @@ export class GenSetColorEditor extends PureComponent {
                             />
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            Gene Color Intensity
+                        </td>
+                        <td>
+                            <Input type='number' name='shadingValue'
+                                   value={this.state.colorSettings.shadingValue}
+                                   onChange={this.handleChange.bind(this, 'shadingValue')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </Dialog>
@@ -122,7 +134,7 @@ export class GenSetColorEditor extends PureComponent {
 
 }
 
-GenSetColorEditor.propTypes = {
+ColorEditor.propTypes = {
     active: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     handleToggle: PropTypes.any.isRequired,
