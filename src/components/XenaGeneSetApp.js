@@ -19,7 +19,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
-import {ColorEditor} from "./ColorEditor";
+import {GenSetColorEditor} from "./GenSetColorEditor";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -272,7 +272,7 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    configureXena = () => {
+    editGeneSetColors = () => {
         // alert('configuring xena')
         this.handleColorToggle();
         // this.setState({
@@ -579,7 +579,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 <NavigationBar showPathways={this.showPathways}
                                showXena={this.showXena}
-                               configureXena={this.configureXena}
+                               editGeneSetColors={this.editGeneSetColors}
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
@@ -591,10 +591,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
                 <div>
-                    <ColorEditor active={this.state.showColorEditor}
-                                 handleToggle={this.handleColorToggle}
-                                 handleColorChange={this.handleColorChange}
-                                 colorSettings={this.state.geneStateColors}
+                    <GenSetColorEditor active={this.state.showColorEditor}
+                                       handleToggle={this.handleColorToggle}
+                                       handleColorChange={this.handleColorChange}
+                                       colorSettings={this.state.geneStateColors}
                     />
                     <Grid>
                         <Row>
