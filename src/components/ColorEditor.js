@@ -36,9 +36,6 @@ export class ColorEditor extends PureComponent {
     render() {
 
         let {active, handleToggle} = this.props;
-        let col1 = 2;
-        let col2 = 5;
-        let col3 = 2;
 
         return (
             <Dialog
@@ -47,74 +44,79 @@ export class ColorEditor extends PureComponent {
                 onOverlayClick={handleToggle}
                 title='Edit Score Colors'
             >
-                <Grid>
-                    <Row>
-                        <Col md={col1}>
+                <table width="100%">
+                    <tr>
+                        <td>
                             High Color
-                        </Col>
-                        <Col md={col2}>
-                            <Input type='color' label='High Color' name='highColor'
+                        </td>
+                        <td>
+                            <Input type='color'
+                                   name='highColor'
                                    value={this.state.colorSettings.highColor}
-                                   onChange={this.handleChange.bind(this, 'highColor')} maxLength={16}/>
-                        </Col>
-                        <Col md={col3}>
-                            <Input type='number' label='High Domain' name='highDomain'
+                                   onChange={this.handleChange.bind(this, 'highColor')}
+                                   style={{width: 50, height: 40}}
+                            />
+                        </td>
+                        <td>
+                            <Input type='number'
+                                   name='highDomain'
                                    value={this.state.colorSettings.highDomain}
-                                   onChange={this.handleChange.bind(this, 'highDomain')} maxLength={16}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={col1}>
-                            Mid Color
-                        </Col>
-                        <Col md={col2}>
-                            <Input type='color' label='Mid Color' name='midColor'
+                                   onChange={this.handleChange.bind(this, 'highDomain')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Mid Color&nbsp;
+                        </td>
+                        <td>
+                            <Input type='color' name='midColor'
                                    value={this.state.colorSettings.midColor}
-                                   onChange={this.handleChange.bind(this, 'midColor')} maxLength={16}/>
-                        </Col>
-                        <Col md={col3}>
-                            <Input type='number' label='Mid Domain' name='midDomain'
+                                   onChange={this.handleChange.bind(this, 'midColor')}
+                                   style={{width: 50, height: 40}}
+                            />
+                        </td>
+                        <td>
+                            <Input type='number' name='midDomain'
                                    value={this.state.colorSettings.midDomain}
-                                   onChange={this.handleChange.bind(this, 'midDomain')} maxLength={16}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={col1}>
+                                   onChange={this.handleChange.bind(this, 'midDomain')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             Low Color
-                        </Col>
-                        <Col md={col2}>
-                            <Input type='color' label='Low Color' name='lowColor'
+                        </td>
+                        <td>
+                            <Input type='color' name='lowColor'
                                    value={this.state.colorSettings.lowColor}
-                                   onChange={this.handleChange.bind(this, 'lowColor')} maxLength={16}/>
-                        </Col>
-                        <Col md={col3}>
-                            <Input type='number' label='Low Domain' name='lowDomain'
+                                   onChange={this.handleChange.bind(this, 'lowColor')}
+                                   style={{width: 50, height: 40}}
+                            />
+                        </td>
+                        <td>
+                            <Input type='number' name='lowDomain'
                                    value={this.state.colorSettings.lowDomain}
-                                   onChange={this.handleChange.bind(this, 'lowDomain')} maxLength={16}/>
-                        </Col>
-                    </Row>
-                    {/*<Row>*/}
-                        {/*<Col md={col1}>*/}
-                            {/*Link Domains*/}
-                        {/*</Col>*/}
-                        {/*<Col md={col2}>*/}
-                            {/*<Checkbox*/}
-                                {/*checked={this.state.colorSettings.linkDomains}*/}
-                                {/*label='Link Domains'*/}
-                                {/*onChange={this.handleChange.bind(this, 'linkDomains')}*/}
-                            {/*/>*/}
-                        {/*</Col>*/}
-                    {/*</Row>*/}
-                    <Row>
-                        <Col md={col1}>
+                                   onChange={this.handleChange.bind(this, 'lowDomain')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             Gamma
-                        </Col>
-                        <Col md={col2}>
-                            <Input type='number' label='Gamma' name='gamma' value={this.state.colorSettings.gamma}
-                                   onChange={this.handleChange.bind(this, 'gamma')} maxLength={16}/>
-                        </Col>
-                    </Row>
-                </Grid>
+                        </td>
+                        <td>
+                            <Input type='number' name='gamma'
+                                   value={this.state.colorSettings.gamma}
+                                   onChange={this.handleChange.bind(this, 'gamma')}
+                                   style={{width: 50}}
+                            />
+                        </td>
+                    </tr>
+                </table>
             </Dialog>
         );
 
