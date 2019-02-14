@@ -41,6 +41,9 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
+export const MAX_GENE_WIDTH_PX = 80 ;// 8 or less
+export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * 85; // 85 genes
+
 /**
  * refactor that from index
  */

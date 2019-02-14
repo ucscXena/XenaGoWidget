@@ -7,7 +7,7 @@ import {partition, sumInstances} from '../functions/util';
 import SVGLabels from "./SVGLabels";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {FILTER_PERCENTAGE} from "./XenaGeneSetApp";
+import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 
@@ -252,7 +252,20 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
         returnedValue.index = cohortIndex;
-        let width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
+
+        // fix for #194
+        let genesInGeneSet = returnedValue.data.length ;
+        let width ;
+        if(genesInGeneSet < 8){
+            width = genesInGeneSet * MAX_GENE_WIDTH_PX;
+        }
+        else
+        if(genesInGeneSet > 85){
+            width = MAX_GENE_LAYOUT_WIDTH_PX ;
+        }
+        else{
+            width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
+        }
 
         let layoutData = layout(width, returnedValue.data);
 
