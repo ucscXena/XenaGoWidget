@@ -125,9 +125,10 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways, highlightedGene, shadingValue
+            selectedPathways, hoveredPathways,  shadingValue
         } = this.props;
 
+        // console.log('A:',hoveredPathways,highlightedGene)
 
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
@@ -148,7 +149,6 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
-                    highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}

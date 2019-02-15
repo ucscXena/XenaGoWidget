@@ -661,7 +661,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <GeneSetSelector pathways={pathways}
                                                              hoveredPathways={this.state.hoveredPathways}
                                                              selectedPathways={this.state.selectedPathways}
-                                                             highlightedGene={this.state.highlightedGene}
+                                                             // highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
                                                              onHover={this.globalPathwayHover}
                                                              onMouseOut={this.globalPathwayHover}
@@ -699,7 +699,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={0}
                                               pathways={pathways}
-                                              highlightedGene={this.state.highlightedGene}
+                                              // highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[0]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
@@ -715,7 +715,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={VIEWER_HEIGHT}
                                               pathways={pathways}
-                                              highlightedGene={this.state.highlightedGene}
+                                              // highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[1]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
