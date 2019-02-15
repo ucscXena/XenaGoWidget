@@ -41,8 +41,9 @@ export const MIN_FILTER = 2;
 export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
-export const MAX_GENE_WIDTH_PX = 80 ;// 8 or less
-export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * 85; // 85 genes
+export const MIN_GENE_WIDTH_PX = 80;// 8 or less
+export const MAX_GENE_WIDTH = 85 ;
+export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH ; // 85 genes
 
 /**
  * refactor that from index
@@ -74,6 +75,7 @@ export default class XenaGeneSetApp extends PureComponent {
             reference: refGene['hg38'],
             limit: 25,
             highlightedGene: undefined,
+            collapsed: true,
             geneStateColors: {
                 highDomain: 100,
                 midDomain: 0,
@@ -82,7 +84,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 midColor: '#ffffff',
                 highColor: '#ff0000',
                 gamma: 1.0,
-                linkDomains: true ,
+                linkDomains: true,
                 shadingValue: 10,
             }
         };
@@ -562,14 +564,20 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    toggleShowReciprocalPathway = () =>{
+    toggleShowReciprocalPathway = () => {
         this.setState({
             showReciprocalPathway: !this.state.showReciprocalPathway
         })
     };
 
-    callDownload = (cohortIndex) =>{
-        this.refs['xena-go-app-'+cohortIndex].callDownload();
+    callDownload = (cohortIndex) => {
+        this.refs['xena-go-app-' + cohortIndex].callDownload();
+    };
+
+    setCollapsed = (collapsed) => {
+       this.setState({
+           collapsed: collapsed
+       })
     };
 
     render() {
@@ -698,6 +706,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
                                               shadingValue={this.state.geneStateColors.shadingValue}
+                                              setCollapsed={this.setCollapsed}
+                                              collapsed={this.state.collapsed}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -712,6 +722,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
                                               shadingValue={this.state.geneStateColors.shadingValue}
+                                              setCollapsed={this.setCollapsed}
+                                              collapsed={this.state.collapsed}
                                 />
                             </Col>
                         </Row>

@@ -22,7 +22,7 @@ let Rx = require('ucsc-xena-client/dist/rx');
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "../service/AppStorageHandler";
-import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
@@ -324,6 +324,7 @@ export default class XenaGoViewer extends PureComponent {
         this.refs['pathwayscoreview'].downloadData();
     };
 
+
     render() {
 
         let filteredMutationVector = pick(mutationVector,
@@ -361,6 +362,18 @@ export default class XenaGoViewer extends PureComponent {
                                         {this.state.selectedCohort}
                                     </Dialog>
                                 </Card>
+                                {this.state.geneData.pathways.length > MAX_GENE_WIDTH &&
+                                <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
+                                    {this.props.collapsed &&
+                                    <Button icon='chevron_right' flat primary
+                                            onClick={() => this.props.setCollapsed(false)}>Expand</Button>
+                                    }
+                                    {!this.props.collapsed &&
+                                    <Button icon='chevron_left'
+                                            onClick={() => this.props.setCollapsed(true)}>Collapse</Button>
+                                    }
+                                </Card>
+                                }
                             </Col>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -385,6 +398,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
                                                    shadingValue={shadingValue}
+                                                   collapsed={this.props.collapsed}
                                 />
                             </Col>
                             }
@@ -418,4 +432,6 @@ XenaGoViewer.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any, // optional
+    setCollapsed: PropTypes.any,
+    collapsed: PropTypes.any,
 };
