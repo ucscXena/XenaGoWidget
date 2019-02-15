@@ -361,6 +361,10 @@ export default class XenaGoViewer extends PureComponent {
                                         {this.state.selectedCohort}
                                     </Dialog>
                                 </Card>
+                                <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
+                                    <Button icon='chevron-right' onClick={()=>this.props.expandWidth}>Expand</Button>
+                                    <Button icon='chevron-left' onClick={()=>this.props.collapseWidth}>Collapse</Button>
+                                </Card>
                             </Col>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -418,4 +422,6 @@ XenaGoViewer.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any, // optional
+    expandWidth: PropTypes.any,
+    collapseWidth: PropTypes.any,
 };
