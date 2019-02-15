@@ -342,7 +342,7 @@ export default class XenaGoViewer extends PureComponent {
                         <Row>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                             <Col md={3}>
-                                <Card style={{height: 400, width: style.gene.columnWidth, marginTop: 5}}>
+                                <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
                                                     onChange={this.selectCohort}
