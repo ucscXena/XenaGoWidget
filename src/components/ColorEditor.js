@@ -17,6 +17,9 @@ export class ColorEditor extends PureComponent {
 
     handleChange = (name, value) => {
         let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
+        if (name === 'shadingValue') {
+            value = 1 / (value / 100.0) ;
+        }
         newArray[name] = value;
         if (name === 'highDomain' && this.state.colorSettings.linkDomains) {
             newArray['lowDomain'] = -value;
@@ -44,7 +47,7 @@ export class ColorEditor extends PureComponent {
                     <tbody>
                     <tr>
                         <td>
-                            High Color
+                            Gene Set High Color
                         </td>
                         <td>
                             <Input type='color'
@@ -65,7 +68,7 @@ export class ColorEditor extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            Neutral Color
+                            Gene Set Neutral Color
                         </td>
                         <td>
                             <Input type='color' name='midColor'
@@ -84,7 +87,7 @@ export class ColorEditor extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            Low Color
+                            Gene Set Low Color
                         </td>
                         <td>
                             <Input type='color' name='lowColor'
@@ -103,7 +106,7 @@ export class ColorEditor extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            Gamma
+                            Gene Set Gamma
                         </td>
                         <td>
                             <Input type='number' name='gamma'
@@ -114,12 +117,17 @@ export class ColorEditor extends PureComponent {
                         </td>
                     </tr>
                     <tr>
+                        <td colSpan={3}>
+                            <hr/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
-                            Gene Color Intensity
+                            Gene Saturation Percent (%)
                         </td>
                         <td>
                             <Input type='number' name='shadingValue'
-                                   value={this.state.colorSettings.shadingValue}
+                                   value={100.0 / this.state.colorSettings.shadingValue}
                                    onChange={this.handleChange.bind(this, 'shadingValue')}
                                    style={{width: 50}}
                             />

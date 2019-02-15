@@ -96,7 +96,7 @@ export default class PathwayEditor extends PureComponent {
                         <Button  onClick={() => this.props.resetHandler()}>
                             Reset <FaRefresh/>
                         </Button>
-                        <Button onClick={() => this.props.closeHandler()}>
+                        <Button onClick={() => this.props.closeHandler()} raised primary>
                             Done <FaClose/>
                         </Button>
                     </Col>
