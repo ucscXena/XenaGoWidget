@@ -7,7 +7,7 @@ import {partition, sumInstances} from '../functions/util';
 import SVGLabels from "./SVGLabels";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH_PX} from "./XenaGeneSetApp";
+import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
 import {Grid, Row, Col} from 'react-material-responsive-grid';
 
@@ -212,7 +212,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed,geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -257,10 +257,10 @@ export default class PathwayScoresViewCache extends PureComponent {
         let genesInGeneSet = returnedValue.data.length ;
         let width ;
         if(genesInGeneSet < 8){
-            width = genesInGeneSet * MAX_GENE_WIDTH_PX;
+            width = genesInGeneSet * MIN_GENE_WIDTH_PX;
         }
         else
-        if(genesInGeneSet > 85){
+        if(genesInGeneSet > 85 && collapsed){
             width = MAX_GENE_LAYOUT_WIDTH_PX ;
         }
         else{
