@@ -128,8 +128,6 @@ class PathwayScoresView extends PureComponent {
             selectedPathways, hoveredPathways,  shadingValue
         } = this.props;
 
-        // console.log('A:',hoveredPathways,highlightedGene)
-
         return (
             <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
                 <CanvasDrawing

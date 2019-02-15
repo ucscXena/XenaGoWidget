@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
-import underscore from 'underscore'
+import underscore, {omit} from 'underscore'
 
 let styles = {
     canvas: {
@@ -33,7 +33,7 @@ let styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        if (this.vg && !underscore.isEqual(newProps, this.props)) {
+        if (this.vg && !underscore.isEqual(omit(newProps,['associateData']), omit(this.props,['associateData']))) {
             this.draw(newProps);
         }
     }
