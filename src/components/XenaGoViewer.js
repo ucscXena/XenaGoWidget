@@ -333,7 +333,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {renderHeight, renderOffset, cohortIndex,shadingValue} = this.props;
+        let {renderHeight, renderOffset, cohortIndex, shadingValue} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
@@ -348,20 +348,18 @@ export default class XenaGoViewer extends PureComponent {
                                                     onChange={this.selectCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
                                     />
-                                    <CardMedia>
-                                        <FilterSelector filters={filteredMutationVector}
-                                                        selected={this.state.tissueExpressionFilter}
-                                                        pathwayData={this.state.geneData}
-                                                        geneList={geneList}
-                                                        amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
-                                                        deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
-                                                        onChange={this.filterGeneType}
-                                        />
-                                        <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
-                                        <Dialog active={this.state.processing} title='Loading'>
-                                            {this.state.selectedCohort}
-                                        </Dialog>
-                                    </CardMedia>
+                                    <FilterSelector filters={filteredMutationVector}
+                                                    selected={this.state.tissueExpressionFilter}
+                                                    pathwayData={this.state.geneData}
+                                                    geneList={geneList}
+                                                    amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
+                                                    deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
+                                                    onChange={this.filterGeneType}
+                                    />
+                                    <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
+                                    <Dialog active={this.state.processing} title='Loading'>
+                                        {this.state.selectedCohort}
+                                    </Dialog>
                                 </Card>
                             </Col>
                             }
