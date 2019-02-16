@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
+import underscore from 'underscore'
 import {getSelectColor, getWhiteColor, getHighlightedColor, scoreData} from '../functions/ColorFunctions'
 
 export class HeaderLabel extends PureComponent {
@@ -11,6 +12,9 @@ export class HeaderLabel extends PureComponent {
         super(props);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return !underscore.isEqual(nextProps, this.props);
+    }
 
     /**
      * Score is from 0 to 1
@@ -79,7 +83,7 @@ export class HeaderLabel extends PureComponent {
                 width: width,
                 backgroundColor: colorString,
                 strokeWidth: 1,
-                cursor: 'pointer'
+                cursor: 'pointer',
             }
         }
     }
