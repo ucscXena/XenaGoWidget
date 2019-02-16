@@ -40,10 +40,8 @@ export default class LabelWrapper extends PureComponent {
         } = this.props;
 
 
-        let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
-        console.log('offset ',offset)
-
-
+        // let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
+        let offset = cohortIndex === 0 ? 225 : 250 ;
         return (
             <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}

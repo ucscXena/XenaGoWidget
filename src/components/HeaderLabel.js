@@ -83,7 +83,7 @@ export class HeaderLabel extends PureComponent {
                 width: width,
                 backgroundColor: colorString,
                 strokeWidth: 1,
-                cursor: 'pointer'
+                cursor: 'pointer',
             }
         }
     }

@@ -5,14 +5,6 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {getGeneColorMask} from '../functions/ColorFunctions'
 
 
-let styles = {
-    overlay: {
-        position: 'absolute'
-        , display: 'block'
-        , zIndex: 10
-        , opacity: 1
-    }
-};
 
 
 export default class LabelSet extends PureComponent {
@@ -36,8 +28,6 @@ export default class LabelSet extends PureComponent {
             , shadingValue
             , data
         } = this.props;
-        // let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
-        console.log(this.props)
         if (data && data.samples && associateData && associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
             return layout.map((el, i) => {
