@@ -28,7 +28,7 @@ export default class LabelSet extends PureComponent {
             , shadingValue
             , data
         } = this.props;
-        if (data && data.samples && associateData && associateData.length > 0 && pathways.length === layout.length) {
+        if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
             return layout.map((el, i) => {
                 let d = pathways[i];

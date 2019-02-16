@@ -1,8 +1,11 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
-import {isEqual, omit} from 'underscore';
 import {izip, permutations} from 'itertools';
+import LRU from 'lru-cache';
 
+
+let associateCache = new LRU({max: 500});
+let pruneDataCache = new LRU({max: 500});
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -38,28 +41,28 @@ export function pruneColumns(data, pathways, min) {
     };
 }
 
-let associationDataHash = null;
-let associationDataCache = null;
-
-let pruneHash = null;
-let pruneCache = null;
 
 export function findAssociatedData(inputHash) {
-    if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
-        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
-        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
-        associationDataHash = inputHash;
+    let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
+    let key = JSON.stringify(inputHash);
+    let data = associateCache.get(key);
+    if (!data) {
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)
+        associateCache.set(key,data);
     }
-    return associationDataCache;
+
+    return data;
 }
 
 export function findPruneData(inputHash) {
-    if (!isEqual(pruneHash, inputHash)) {
-        let {associatedData, pathways, filterMin} = inputHash;
-        pruneCache = pruneColumns(associatedData, pathways, filterMin);
-        pruneHash = inputHash;
+    let {associatedData, pathways, filterMin} = inputHash;
+    let key = JSON.stringify(inputHash);
+    let data = pruneDataCache.get(key);
+    if (!data) {
+        data = pruneColumns(associatedData, pathways, filterMin);
+        pruneDataCache.set(key,data);
     }
-    return pruneCache;
+    return data;
 }
 
 /**
@@ -72,11 +75,10 @@ export function findPruneData(inputHash) {
  * @param samples
  * @param filter
  * @param min
- * @param key
  * @param selectedCohort
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key, selectedCohort) {
+export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = times(pathways.length, () => times(samples.length, () => 0));
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
@@ -151,7 +153,7 @@ function getPermutations(array, size) {
 export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
     let total_prob = 0.0;
     let sign = 0;
-    let xs = range(0,prob_list.length);
+    let xs = range(0, prob_list.length);
     for (let i = 1; i <= prob_list.length; i++) {
         if (i % 2) {
             sign = 1.0
@@ -160,7 +162,9 @@ export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
             sign = -1.0
         }
         for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
-            total_prob = total_prob + sign * y.reduce( function(acc, value) { return acc * value});
+            total_prob = total_prob + sign * y.reduce(function (acc, value) {
+                return acc * value
+            });
         }
     }
     return total_prob;
