@@ -1,8 +1,9 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
-import {isEqual, omit} from 'underscore';
 import {izip, permutations} from 'itertools';
 
+const associateCache = {};
+const pruneDataCache = {};
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -38,10 +39,6 @@ export function pruneColumns(data, pathways, min) {
     };
 }
 
-let associateCache = {};
-let pruneCache = {};
-let pruneHash = null;
-let pruneDataCache = {};
 
 export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
