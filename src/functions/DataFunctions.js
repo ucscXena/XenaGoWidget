@@ -1,10 +1,11 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
 import {izip, permutations} from 'itertools';
+import {lru} from 'tiny-lru':
 
 
-let associateCache = {};
-let pruneDataCache = {};
+let associateCache = lru(500);
+let pruneDataCache = lru(500);
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -44,10 +45,10 @@ export function pruneColumns(data, pathways, min) {
 export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
     let key = JSON.stringify(inputHash);
-    let data = associateCache.key;
+    let data = associateCache.get(key);
     if (!data) {
         data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)
-        associateCache[key] = data;
+        associateCache.set(key,data);
     }
 
     return data;
@@ -56,10 +57,10 @@ export function findAssociatedData(inputHash) {
 export function findPruneData(inputHash) {
     let {associatedData, pathways, filterMin} = inputHash;
     let key = JSON.stringify(inputHash);
-    let data = pruneDataCache.key;
+    let data = pruneDataCache.get(key);
     if (!data) {
         data = pruneColumns(associatedData, pathways, filterMin);
-        pruneDataCache[key] = data;
+        pruneDataCache.set(key,data);
     }
     return data;
 }
