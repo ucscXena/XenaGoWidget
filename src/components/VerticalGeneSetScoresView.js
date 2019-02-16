@@ -90,7 +90,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             samples,
             filter,
             min:MIN_FILTER,
-            cohortIndex,
             selectedCohort
         };
         if (expression === undefined || expression.length === 0) {

@@ -386,8 +386,6 @@ export default class XenaGeneSetApp extends PureComponent {
         let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
         hashAssociation.filter = filter;
         hashAssociation.min = min;
-        hashAssociation.cohortIndex = cohortIndex;
-
         hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedData = findAssociatedData(hashAssociation);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);

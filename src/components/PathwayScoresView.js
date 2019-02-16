@@ -220,7 +220,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             samples,
             filter,
             min,
-            cohortIndex,
             selectedCohort
         };
         if (expression === undefined || expression.length === 0) {

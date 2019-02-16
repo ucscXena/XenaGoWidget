@@ -41,16 +41,29 @@ export function pruneColumns(data, pathways, min) {
 let associationDataHash = null;
 let associationDataCache = null;
 
+let associateCache = {};
+
 let pruneHash = null;
 let pruneCache = null;
 
 export function findAssociatedData(inputHash) {
-    if (!isEqual(omit(associationDataHash, ['cohortIndex']), omit(inputHash, ['cohortIndex']))) {
-        let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
-        associationDataCache = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
-        associationDataHash = inputHash;
-    }
-    return associationDataCache;
+    // let data = associateCache[inputHash];
+    // console.log('input hash',Object.keys(associateCache).length,inputHash,data);
+    // if (!data) {
+    // let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
+    // console.log('NOT using cache',associationDataHash,inputHash)
+    // associateCache[inputHash] = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
+    // data = associateCache[inputHash];
+    // }
+    // else {
+    //     console.log('USING CAHCE!!')
+    // }
+    // return memoize(inputHash => {
+    //     let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
+    //     return associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort)
+    // });
+    let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
+    return associateData(expression, copyNumber, geneList, pathways, samples, filter, min,  selectedCohort)
 }
 
 export function findPruneData(inputHash) {
@@ -72,11 +85,10 @@ export function findPruneData(inputHash) {
  * @param samples
  * @param filter
  * @param min
- * @param key
  * @param selectedCohort
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, key, selectedCohort) {
+export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = times(pathways.length, () => times(samples.length, () => 0));
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
@@ -151,7 +163,7 @@ function getPermutations(array, size) {
 export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
     let total_prob = 0.0;
     let sign = 0;
-    let xs = range(0,prob_list.length);
+    let xs = range(0, prob_list.length);
     for (let i = 1; i <= prob_list.length; i++) {
         if (i % 2) {
             sign = 1.0
@@ -160,7 +172,9 @@ export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
             sign = -1.0
         }
         for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
-            total_prob = total_prob + sign * y.reduce( function(acc, value) { return acc * value});
+            total_prob = total_prob + sign * y.reduce(function (acc, value) {
+                return acc * value
+            });
         }
     }
     return total_prob;
