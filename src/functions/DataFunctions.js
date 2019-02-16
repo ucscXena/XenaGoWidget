@@ -39,28 +39,31 @@ export function pruneColumns(data, pathways, min) {
 }
 
 let associateCache = {};
+let pruneCache = {};
 let pruneHash = null;
-let pruneCache = null;
+let pruneDataCache = {};
 
 export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = associateCache[key];
-    if(!data){
-        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min,  selectedCohort)
-        associateCache[key] = data ;
+    if (!data) {
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)
+        associateCache[key] = data;
     }
 
-    return data ;
+    return data;
 }
 
 export function findPruneData(inputHash) {
-    if (!isEqual(pruneHash, inputHash)) {
-        let {associatedData, pathways, filterMin} = inputHash;
-        pruneCache = pruneColumns(associatedData, pathways, filterMin);
-        pruneHash = inputHash;
+    let {associatedData, pathways, filterMin} = inputHash;
+    let key = JSON.stringify(inputHash);
+    let data = pruneDataCache[key];
+    if (!data) {
+        data = pruneColumns(associatedData, pathways, filterMin);
+        pruneDataCache[key] = data;
     }
-    return pruneCache;
+    return data;
 }
 
 /**
