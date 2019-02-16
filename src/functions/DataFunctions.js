@@ -38,32 +38,20 @@ export function pruneColumns(data, pathways, min) {
     };
 }
 
-let associationDataHash = null;
-let associationDataCache = null;
-
 let associateCache = {};
-
 let pruneHash = null;
 let pruneCache = null;
 
 export function findAssociatedData(inputHash) {
-    // let data = associateCache[inputHash];
-    // console.log('input hash',Object.keys(associateCache).length,inputHash,data);
-    // if (!data) {
-    // let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
-    // console.log('NOT using cache',associationDataHash,inputHash)
-    // associateCache[inputHash] = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort);
-    // data = associateCache[inputHash];
-    // }
-    // else {
-    //     console.log('USING CAHCE!!')
-    // }
-    // return memoize(inputHash => {
-    //     let {expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort} = inputHash;
-    //     return associateData(expression, copyNumber, geneList, pathways, samples, filter, min, cohortIndex, selectedCohort)
-    // });
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
-    return associateData(expression, copyNumber, geneList, pathways, samples, filter, min,  selectedCohort)
+    let key = JSON.stringify(inputHash);
+    let data = associateCache[key];
+    if(!data){
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min,  selectedCohort)
+        associateCache[key] = data ;
+    }
+
+    return data ;
 }
 
 export function findPruneData(inputHash) {
