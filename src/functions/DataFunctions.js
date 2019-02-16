@@ -1,7 +1,7 @@
 import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'underscore';
 import {izip, permutations} from 'itertools';
-import {lru} from 'tiny-lru':
+import lru from 'tiny-lru/lib/tiny-lru.es5'
 
 
 let associateCache = lru(500);
