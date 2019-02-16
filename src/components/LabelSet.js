@@ -15,7 +15,7 @@ let styles = {
 };
 
 
-export default class SVGLabels extends PureComponent {
+export default class LabelSet extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -73,21 +73,44 @@ export default class SVGLabels extends PureComponent {
     }
 
     render() {
-        const {width, height, onClick, onMouseMove, onMouseOut, offset} = this.props;
-
-
-        return (
-            <div style={{...styles.overlay, width, height, top: 74 + offset}}
-                 onMouseMove={onMouseMove}
-                 onMouseOut={onMouseOut}
-                 onClick={onClick}
-            >
-                {this.drawTissueOverlay()}
-            </div>
-        )
+        const {associateData,pathways,layout,hoveredPathways,selectedPathways,highlightedGene,labelHeight,labelOffset,numSamples,colorMask,cohortIndex,shadingValue} = this.props;
+        // let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
+        if (associateData.length >0 && pathways.length === layout.length) {
+            return layout.map((el, i) => {
+                let d = pathways[i];
+                let geneLength = d.gene.length;
+                let hovered, selected;
+                let labelKey = d.gene[0];
+                let labelString = labelKey; // can this go away?
+                hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                selected = selectedPathways.indexOf(labelString) >= 0;
+                let highlighted = highlightedGene === labelKey;
+                return (
+                    <HeaderLabel
+                        labelHeight={labelHeight}
+                        labelOffset={labelOffset}
+                        numSamples={numSamples}
+                        geneLength={geneLength}
+                        left={el.start}
+                        width={el.size}
+                        item={d}
+                        selected={selected}
+                        hovered={hovered}
+                        highlighted={highlighted}
+                        labelString={labelString}
+                        colorMask={colorMask}
+                        key={labelKey + '-' + cohortIndex}
+                        shadingValue={shadingValue}
+                    />
+                )
+            });
+        }
+        else{
+            return '<div></div>';
+        }
     }
 }
-SVGLabels.propTypes = {
+LabelSet.propTypes = {
     width: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
     offset: PropTypes.any.isRequired,

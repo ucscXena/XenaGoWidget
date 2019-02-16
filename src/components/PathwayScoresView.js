@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances} from '../functions/util';
-import SVGLabels from "./SVGLabels";
+import LabelWrapper from "./LabelWrapper";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
@@ -140,7 +140,7 @@ class PathwayScoresView extends PureComponent {
                     cohortIndex={cohortIndex}
                     data={data}
                 />
-                <SVGLabels
+                <LabelWrapper
                     width={width}
                     height={height}
                     offset={offset}
