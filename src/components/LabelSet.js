@@ -75,4 +75,5 @@ LabelSet.propTypes = {
     colorMask: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shadingValue: PropTypes.any.isRequired,
+    height: PropTypes.any.isRequired,
 };
