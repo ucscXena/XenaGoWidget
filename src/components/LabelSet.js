@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {getGeneColorMask} from '../functions/ColorFunctions'
-
-
+import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
 
 export default class LabelSet extends PureComponent {
@@ -22,7 +21,7 @@ export default class LabelSet extends PureComponent {
             , selectedPathways
             , highlightedGene
             , labelHeight
-            , labelOffset
+            , height
             , colorMask
             , cohortIndex
             , shadingValue
@@ -30,6 +29,7 @@ export default class LabelSet extends PureComponent {
         } = this.props;
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
+            let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
@@ -42,7 +42,7 @@ export default class LabelSet extends PureComponent {
                 return (
                     <HeaderLabel
                         labelHeight={labelHeight}
-                        labelOffset={labelOffset}
+                        labelOffset={offset}
                         numSamples={numSamples}
                         geneLength={geneLength}
                         left={el.start}
@@ -71,10 +71,9 @@ LabelSet.propTypes = {
     layout: PropTypes.any.isRequired,
     hoveredPathways: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
-    // highlightedGene: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
-    labelOffset: PropTypes.any.isRequired,
     colorMask: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shadingValue: PropTypes.any.isRequired,
+    height: PropTypes.any.isRequired,
 };

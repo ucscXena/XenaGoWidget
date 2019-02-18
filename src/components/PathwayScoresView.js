@@ -13,7 +13,7 @@ import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
 export const GENE_LABEL_HEIGHT = 50;
-const UP_BUFFER = 4;
+const UP_BUFFER = -3;
 const DOWN_BUFFER = 1;
 
 const style = {
@@ -55,7 +55,7 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     let index = 0;
     switch (cohortIndex) {
         case 0:
-            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc(y * count / (height - (labelHeight + UP_BUFFER))) : -1;
+            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc( (height - labelHeight - y) * count / (height - (labelHeight + UP_BUFFER))) : -1;
             break;
         case 1:
             index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
