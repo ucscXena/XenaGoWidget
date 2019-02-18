@@ -36,12 +36,10 @@ export default class LabelWrapper extends PureComponent {
             , cohortIndex
             , hoveredPathways
             , highlightedGene
+            , offset
             , data: {pathways}
         } = this.props;
 
-
-        // let offset = cohortIndex === 0 ? height - geneLabelHeight : 0;
-        let offset = cohortIndex === 0 ? 225 : 250 ;
         return (
             <div style={{...styles.overlay, width, height, top: 74 + offset}}
                  onMouseMove={onMouseMove}
@@ -56,7 +54,7 @@ export default class LabelWrapper extends PureComponent {
                     selectedPathways={[]}
                     highlightedGene={highlightedGene}
                     labelHeight={geneLabelHeight}
-                    labelOffset={offset}
+                    height={height}
                     colorMask={getGeneColorMask()}
                     cohortIndex={cohortIndex}
                     shadingValue={shadingValue}
