@@ -18,7 +18,7 @@ describe('Main App', () => {
 
   it('Displays main menu', () => {
     render(<XenaGeneSetApp/>, node, () => {
-      expect(node.innerHTML).toContain('Xena Geneset Widget Demo')
+      expect(node.innerHTML).toContain('Xena Gene Set Viewer')
     })
   })
 });

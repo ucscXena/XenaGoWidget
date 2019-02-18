@@ -44,7 +44,7 @@ export default class NavigationBar extends PureComponent {
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
-                <AppBar title='Xena Geneset Widget Demo'>
+                <AppBar title='Xena Gene Set Viewer'>
                     <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
                         <table>
                             <tbody>
