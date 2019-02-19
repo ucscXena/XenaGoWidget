@@ -3,7 +3,18 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
 import underscore from 'underscore'
-import {getSelectColor, getWhiteColor, getHighlightedColor, scoreData} from '../functions/ColorFunctions'
+import {
+    getSelectColor,
+    getWhiteColor,
+    getHighlightedColor,
+    scoreData,
+} from '../functions/ColorFunctions'
+import * as d3 from "d3";
+
+let interpolate ;
+const highColor = '#1A535C';
+const midColor = '#A4DDE6';
+const lowColor = '#FFFFFF';
 
 export class HeaderLabel extends PureComponent {
 
@@ -22,16 +33,9 @@ export class HeaderLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted} = this.props;
+        let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
 
-        let colorString = 'rgba(';
-        colorString += colorMask[0];
-        colorString += ',';
-        colorString += colorMask[1];
-        colorString += ',';
-        colorString += colorMask[2];
-        colorString += ',';
-        colorString += score + ')';
+        let colorString = interpolate(score);
 
         if (selected) {
             return {
@@ -93,9 +97,11 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, item, geneLength, numSamples, shadingValue} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        let colorDensity = scoreData(item.density, numSamples, geneLength) * shadingValue;
+        let colorDensity = scoreData(item.density, numSamples, geneLength) * colorSettings.shadingValue;
+        console.log('gene gamma',colorSettings.geneGamma)
+        interpolate = d3.scaleLinear().domain([0,0.5,1]).range([lowColor,midColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
                 style={this.style(colorDensity)}
@@ -121,8 +127,7 @@ HeaderLabel.propTypes = {
     item: PropTypes.any.isRequired,
     selected: PropTypes.any.isRequired,
     hovered: PropTypes.any.isRequired,
-    colorMask: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
-    shadingValue: PropTypes.any.isRequired,
+    colorSettings: PropTypes.any.isRequired,
 };

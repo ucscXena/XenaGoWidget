@@ -312,7 +312,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {renderHeight, renderOffset, cohortIndex, shadingValue} = this.props;
+        let {renderHeight, renderOffset, cohortIndex, colorSettings} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
@@ -374,7 +374,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
-                                                   shadingValue={shadingValue}
+                                                   colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
                                 />
                             </Col>

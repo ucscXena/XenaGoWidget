@@ -84,6 +84,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 midColor: '#ffffff',
                 highColor: '#ff0000',
                 gamma: 1.0,
+                geneGamma: 1.0,
                 linkDomains: true,
                 shadingValue: 10,
             }
@@ -703,7 +704,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={0}
-                                              shadingValue={this.state.geneStateColors.shadingValue}
+                                              colorSettings={this.state.geneStateColors}
                                               setCollapsed={this.setCollapsed}
                                               collapsed={this.state.collapsed}
                                 />
@@ -719,7 +720,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               populateGlobal={this.populateGlobal}
                                               shareGlobalGeneData={this.shareGlobalGeneData}
                                               cohortIndex={1}
-                                              shadingValue={this.state.geneStateColors.shadingValue}
+                                              colorSettings={this.state.geneStateColors}
                                               setCollapsed={this.setCollapsed}
                                               collapsed={this.state.collapsed}
                                 />

@@ -22,9 +22,8 @@ export default class LabelSet extends PureComponent {
             , highlightedGene
             , labelHeight
             , height
-            , colorMask
             , cohortIndex
-            , shadingValue
+            , colorSettings
             , data
         } = this.props;
         if (associateData.length > 0 && pathways.length === layout.length) {
@@ -52,9 +51,8 @@ export default class LabelSet extends PureComponent {
                         hovered={hovered}
                         highlighted={highlighted}
                         labelString={labelString}
-                        colorMask={colorMask}
                         key={labelKey + '-' + cohortIndex}
-                        shadingValue={shadingValue}
+                        colorSettings={colorSettings}
                     />
                 )
             });
@@ -72,8 +70,7 @@ LabelSet.propTypes = {
     hoveredPathways: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
-    colorMask: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    shadingValue: PropTypes.any.isRequired,
+    colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
 };
