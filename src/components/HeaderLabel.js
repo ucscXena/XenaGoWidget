@@ -101,7 +101,7 @@ export class HeaderLabel extends PureComponent {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.density, numSamples, geneLength) * colorSettings.shadingValue;
-        interpolate = d3.scaleLinear().domain([colorSettings.lowDomain,colorSettings.midDomain,colorSettings.highDomain]).range([colorSettings.lowColor,colorSettings.midColor,colorSettings.highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.gamma));
+        interpolate = d3.scaleLinear().domain([0,0.5,1]).range([colorSettings.lowColor,colorSettings.midColor,colorSettings.highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
                 style={this.style(colorDensity)}
