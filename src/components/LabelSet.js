@@ -24,7 +24,7 @@ export default class LabelSet extends PureComponent {
             , height
             , colorMask
             , cohortIndex
-            , shadingValue
+            , colorSettings
             , data
         } = this.props;
         if (associateData.length > 0 && pathways.length === layout.length) {
@@ -54,7 +54,7 @@ export default class LabelSet extends PureComponent {
                         labelString={labelString}
                         colorMask={colorMask}
                         key={labelKey + '-' + cohortIndex}
-                        shadingValue={shadingValue}
+                        colorSettings={colorSettings}
                     />
                 )
             });
@@ -74,6 +74,6 @@ LabelSet.propTypes = {
     labelHeight: PropTypes.any.isRequired,
     colorMask: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    shadingValue: PropTypes.any.isRequired,
+    colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
 };

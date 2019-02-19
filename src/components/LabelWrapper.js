@@ -24,7 +24,7 @@ export default class LabelWrapper extends PureComponent {
 
     render() {
         let {
-            shadingValue
+            colorSettings
             , geneLabelHeight
             , width
             , height
@@ -57,7 +57,7 @@ export default class LabelWrapper extends PureComponent {
                     height={height}
                     colorMask={getGeneColorMask()}
                     cohortIndex={cohortIndex}
-                    shadingValue={shadingValue}
+                    colorSettings={colorSettings}
                     data={this.props.data}
                 />
             </div>

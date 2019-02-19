@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import {Dropdown} from "react-toolbox";
 import underscore from 'underscore'
 import {getSelectColor, getWhiteColor, getHighlightedColor, scoreData} from '../functions/ColorFunctions'
+import * as d3 from "d3";
+
+let interpolate ;
 
 export class HeaderLabel extends PureComponent {
 
@@ -22,16 +25,18 @@ export class HeaderLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted} = this.props;
+        let {selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted,colorSettings} = this.props;
 
-        let colorString = 'rgba(';
-        colorString += colorMask[0];
-        colorString += ',';
-        colorString += colorMask[1];
-        colorString += ',';
-        colorString += colorMask[2];
-        colorString += ',';
-        colorString += score + ')';
+        let colorString = interpolate(score);
+
+        // let colorString = 'rgba(';
+        // colorString += colorMask[0];
+        // colorString += ',';
+        // colorString += colorMask[1];
+        // colorString += ',';
+        // colorString += colorMask[2];
+        // colorString += ',';
+        // colorString += score + ')';
 
         if (selected) {
             return {
@@ -93,9 +98,10 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
-        let {width, labelString, labelHeight, item, geneLength, numSamples, shadingValue} = this.props;
+        let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        let colorDensity = scoreData(item.density, numSamples, geneLength) * shadingValue;
+        let colorDensity = scoreData(item.density, numSamples, geneLength) * colorSettings.shadingValue;
+        interpolate = d3.scaleLinear().domain([colorSettings.lowDomain,colorSettings.midDomain,colorSettings.highDomain]).range([colorSettings.lowColor,colorSettings.midColor,colorSettings.highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.gamma));
         return (
             <svg
                 style={this.style(colorDensity)}
@@ -124,5 +130,5 @@ HeaderLabel.propTypes = {
     colorMask: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
-    shadingValue: PropTypes.any.isRequired,
+    colorSettings: PropTypes.any.isRequired,
 };
