@@ -101,7 +101,7 @@ export class HeaderLabel extends PureComponent {
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.density, numSamples, geneLength) * colorSettings.shadingValue;
         console.log('gene gamma',colorSettings.geneGamma)
-        interpolate = d3.scaleLinear().domain([0,0.5,1]).range([lowColor,midColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
+        interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
                 style={this.style(colorDensity)}
