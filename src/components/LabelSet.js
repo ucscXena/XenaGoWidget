@@ -22,7 +22,6 @@ export default class LabelSet extends PureComponent {
             , highlightedGene
             , labelHeight
             , height
-            , colorMask
             , cohortIndex
             , colorSettings
             , data
@@ -52,7 +51,6 @@ export default class LabelSet extends PureComponent {
                         hovered={hovered}
                         highlighted={highlighted}
                         labelString={labelString}
-                        colorMask={colorMask}
                         key={labelKey + '-' + cohortIndex}
                         colorSettings={colorSettings}
                     />
@@ -72,7 +70,6 @@ LabelSet.propTypes = {
     hoveredPathways: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
-    colorMask: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
