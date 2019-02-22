@@ -117,6 +117,11 @@ export class ColorEditor extends PureComponent {
                         </td>
                     </tr>
                     <tr>
+                        <td colSpan={3}>
+                            <hr/>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
                             Gene Gamma
                         </td>
@@ -126,11 +131,6 @@ export class ColorEditor extends PureComponent {
                                    onChange={this.handleChange.bind(this, 'geneGamma')}
                                    style={{width: 50}}
                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={3}>
-                            <hr/>
                         </td>
                     </tr>
                     <tr>
