@@ -60,7 +60,7 @@ export class HeaderLabel extends PureComponent {
                 backgroundColor: colorString,
                 strokeWidth: 1,
                 borderRadius: '15px',
-                boxShadow: '0 0 2px 2px green',
+                boxShadow: '0 0 2px 2px green inset',
                 cursor: 'pointer'
             }
         }
