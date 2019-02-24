@@ -42,8 +42,8 @@ export const LABEL_A = 'A';
 export const LABEL_B = 'B';
 
 export const MIN_GENE_WIDTH_PX = 80;// 8 or less
-export const MAX_GENE_WIDTH = 85 ;
-export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH ; // 85 genes
+export const MAX_GENE_WIDTH = 85;
+export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
 /**
  * refactor that from index
@@ -574,9 +574,9 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     setCollapsed = (collapsed) => {
-       this.setState({
-           collapsed: collapsed
-       })
+        this.setState({
+            collapsed: collapsed
+        })
     };
 
     render() {
@@ -607,9 +607,10 @@ export default class XenaGeneSetApp extends PureComponent {
                                  handleColorChange={this.handleColorChange}
                                  colorSettings={this.state.geneStateColors}
                     />
-                    <Grid>
-                        <Row>
-                            <Col md={this.state.showPathwayDetails ? 5 : 2} style={{marginTop: 15}}>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
                                 <table>
                                     <tbody>
                                     <tr>
@@ -660,7 +661,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <GeneSetSelector pathways={pathways}
                                                              hoveredPathways={this.state.hoveredPathways}
                                                              selectedPathways={this.state.selectedPathways}
-                                                             // highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
                                                              onHover={this.globalPathwayHover}
                                                              onMouseOut={this.globalPathwayHover}
@@ -689,16 +689,14 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tr>
                                     </tbody>
                                 </table>
-
-                            </Col>
-                            <Col md={7}>
+                            </td>
+                            <td>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={0}
                                               pathways={pathways}
-                                              // highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[0]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
@@ -714,7 +712,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={VIEWER_HEIGHT}
                                               pathways={pathways}
-                                              // highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[1]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
@@ -724,9 +721,10 @@ export default class XenaGeneSetApp extends PureComponent {
                                               setCollapsed={this.setCollapsed}
                                               collapsed={this.state.collapsed}
                                 />
-                            </Col>
-                        </Row>
-                    </Grid>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
                 }
                 {this.state.view === PATHWAYS_VIEW &&
