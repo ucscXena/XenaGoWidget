@@ -13,16 +13,18 @@ export class LabelTop extends PureComponent {
     }
 
     render() {
-        let fontSize = 15 ;
+        let fontSize = 16 ;
         let y = 12;
         let x = 7;
+        let color = 'gray';
+        let bolder = 'bolder';
         return (
             <svg style={{height: 15,marginLeft: 10,width:this.props.width}}>
-                <text x={x} y={y} fontFamily='Arial' fontSize={fontSize}
+                <text x={x} y={y} fontFamily='Arial' fontSize={fontSize} fill={color} fontWeight={bolder}
                 >
                     Cohort {LABEL_A}
                 </text>
-                <text x={x+this.props.width/2} y={y} fontFamily='Arial' fontSize={fontSize}
+                <text x={x+this.props.width/2} y={y} fontFamily='Arial' fontSize={fontSize} fill={color} fontWeight={bolder}
                 >
                     Cohort {LABEL_B}
                 </text>

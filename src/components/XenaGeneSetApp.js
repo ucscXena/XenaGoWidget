@@ -690,7 +690,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tbody>
                                 </table>
                             </td>
-                            <td>
+                            <td nowrap>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'

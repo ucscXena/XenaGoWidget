@@ -317,10 +317,14 @@ export default class XenaGoViewer extends PureComponent {
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
                 return (
-                    <Grid>
-                        <Row>
+                    <table>
+                        <tbody>
+                        <tr>
+                            {/*<Grid>*/}
+                            {/*<Row>*/}
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={3}>
+                            <td valign="top" style={{paddingRight:20,paddingLeft:20}}>
+                                {/*<Col md={3}>*/}
                                 <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -352,10 +356,11 @@ export default class XenaGoViewer extends PureComponent {
                                     }
                                 </Card>
                                 }
-                            </Col>
+                            </td>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <Col md={9}>
+                            <td>
+                                {/*<Col md={9}>*/}
                                 <PathwayScoresView height={renderHeight}
                                                    offset={renderOffset}
                                                    ref='pathwayscoreview'
@@ -377,10 +382,13 @@ export default class XenaGoViewer extends PureComponent {
                                                    colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
                                 />
-                            </Col>
+                                {/*</Col>*/}
+                            </td>
                             }
-                        </Row>
-                    </Grid>
+                        </tr>
+                        {/*</Grid>*/}
+                        </tbody>
+                    </table>
                 )
             }
         }
