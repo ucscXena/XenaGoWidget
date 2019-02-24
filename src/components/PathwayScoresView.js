@@ -9,7 +9,6 @@ import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 import {sum} from 'underscore';
-import {Grid, Row, Col} from 'react-material-responsive-grid';
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -55,7 +54,7 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     let index = 0;
     switch (cohortIndex) {
         case 0:
-            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc( (height - labelHeight - y) * count / (height - (labelHeight + UP_BUFFER))) : -1;
+            index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc((height - labelHeight - y) * count / (height - (labelHeight + UP_BUFFER))) : -1;
             break;
         case 1:
             index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
@@ -125,7 +124,7 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways,  colorSettings
+            selectedPathways, hoveredPathways, colorSettings
         } = this.props;
 
         return (
@@ -210,7 +209,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed,geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let hashAssociation = {
             expression,
@@ -251,16 +250,15 @@ export default class PathwayScoresViewCache extends PureComponent {
         returnedValue.index = cohortIndex;
 
         // fix for #194
-        let genesInGeneSet = returnedValue.data.length ;
-        let width ;
-        if(genesInGeneSet < 8){
+        let genesInGeneSet = returnedValue.data.length;
+        let width;
+        if (genesInGeneSet < 8) {
             width = genesInGeneSet * MIN_GENE_WIDTH_PX;
         }
-        else
-        if(genesInGeneSet > 85 && collapsed){
-            width = MAX_GENE_LAYOUT_WIDTH_PX ;
+        else if (genesInGeneSet > 85 && collapsed) {
+            width = MAX_GENE_LAYOUT_WIDTH_PX;
         }
-        else{
+        else {
             width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
         }
 
@@ -276,24 +274,20 @@ export default class PathwayScoresViewCache extends PureComponent {
         internalData = returnedValue.data;
 
         return (
-            <Grid>
-                <Row>
-                    <PathwayScoresView
-                        {...this.props}
-                        width={width}
-                        layout={layoutData}
-                        hoveredPathways={hoveredPathways}
-                        shareGlobalGeneData={shareGlobalGeneData}
-                        data={{
-                            expression,
-                            pathways: returnedValue.pathways,
-                            samples,
-                            selectedPathways,
-                            sortedSamples: returnedValue.sortedSamples
-                        }}
-                        associateData={returnedValue.data}/>
-                </Row>
-            </Grid>
+            <PathwayScoresView
+                {...this.props}
+                width={width}
+                layout={layoutData}
+                hoveredPathways={hoveredPathways}
+                shareGlobalGeneData={shareGlobalGeneData}
+                data={{
+                    expression,
+                    pathways: returnedValue.pathways,
+                    samples,
+                    selectedPathways,
+                    sortedSamples: returnedValue.sortedSamples
+                }}
+                associateData={returnedValue.data}/>
         );
     }
 
