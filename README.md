@@ -3,13 +3,16 @@
 React widget for analyzing expression of tissue samples within a pathway or set of genes.
 
 
-[![Documentation Status](https://readthedocs.org/projects/xena-geneset/badge/?version=latest)](https://xena-geneset.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/ucscXena/XenaGoWidget.svg?branch=develop)](https://travis-ci.org/ucscXena/XenaGoWidget)
+
+[Further documentation](docs/index.md)
+
 
 
 ## To Run
 
    npm install
+
    npm start
 
 ## To Build
