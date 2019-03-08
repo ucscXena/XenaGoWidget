@@ -16,6 +16,9 @@ const UP_BUFFER = -3;
 const DOWN_BUFFER = 1;
 
 const style = {
+    xenaGoView: {
+        opacity: 1,
+    },
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
@@ -128,7 +131,7 @@ class PathwayScoresView extends PureComponent {
         } = this.props;
 
         return (
-            <div ref='wrapper' className={style.wrapper} style={loading ? style.fadeOut : style.fadeIn}>
+            <div ref='wrapper' style={style.xenaGoView}>
                 <CanvasDrawing
                     width={width}
                     height={height}

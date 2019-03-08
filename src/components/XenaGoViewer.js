@@ -321,7 +321,7 @@ export default class XenaGoViewer extends PureComponent {
                         <tbody>
                         <tr>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td valign="top" style={{paddingRight: 20, paddingLeft: 20}}>
+                            <td valign="top" style={{paddingRight: 20, paddingLeft: 20,paddingTop: 0, paddingBottom: 0}}>
                                 <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -356,7 +356,7 @@ export default class XenaGoViewer extends PureComponent {
                             </td>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td>
+                            <td style={{padding: 0}}>
                                 <PathwayScoresView height={renderHeight}
                                                    offset={renderOffset}
                                                    ref='pathwayscoreview'
