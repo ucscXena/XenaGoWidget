@@ -5,16 +5,12 @@ import PureComponent from "../../src/components/PureComponent";
 import XenaGeneSetApp from "../../src/components/XenaGeneSetApp";
 
 
-
 class Demo extends PureComponent {
 
     render() {
         return (
             <div>
-
                 <XenaGeneSetApp/>
-
-
             </div>)
     }
 

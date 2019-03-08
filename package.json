@@ -1,7 +1,7 @@
 {
   "name": "ucsc-xena-geneset",
   "version": "0.1.1",
-  "description": "XenaGoWidget React component",
+  "description": "Xena Gene Set Viewer",
   "main": "lib/index.js",
   "module": "es/index.js",
   "files": [
