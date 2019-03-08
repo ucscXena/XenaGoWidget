@@ -39,7 +39,7 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
     let regions = findRegions(height, tissueCount);
     let img = ctx.createImageData(width, totalHeight);
 
-    let offsetHeight = cohortIndex === 0 ? 0 : labelHeight - 10 ;
+    let offsetHeight = cohortIndex === 0 ? 0 : labelHeight - 11 ;
 
     // for each row / geneSet
     layout.forEach(function (el, i) {
