@@ -72,7 +72,7 @@ export class HeaderLabel extends PureComponent {
                 height: labelHeight,
                 width: width,
                 backgroundColor: colorString,
-                boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
+                boxShadow: '0 0 2px 2px inset ' + getHighlightedColor(),
                 strokeWidth: 1,
                 cursor: 'pointer'
             }
