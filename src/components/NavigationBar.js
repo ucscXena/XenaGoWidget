@@ -36,6 +36,9 @@ export default class NavigationBar extends PureComponent {
         this.props.acceptGeneHandler(text);
     };
 
+    showHelp = () => {
+        window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about');
+    };
 
     render() {
         let {editGeneSetColors, showPathways, showXena, view, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
@@ -49,6 +52,14 @@ export default class NavigationBar extends PureComponent {
                         <table>
                             <tbody>
                             <tr>
+                                <td width="5%">
+                                    <Button icon='help' floating primary mini
+                                     onClick={ () => this.showHelp() }
+                                    />
+                                    {/*<IconMenu icon='more_vert' position='topLeft'*/}
+                                              {/*className={BaseStyle.menuStyle}>*/}
+                                    {/*</IconMenu>*/}
+                                </td>
                                 <td width="8%">
                                     {/*https://material.io/tools/icons/?style=baseline*/}
                                     <IconMenu icon='more_vert' position='topLeft'
@@ -78,7 +89,7 @@ export default class NavigationBar extends PureComponent {
 
                                     </IconMenu>
                                 </td>
-                                <td width="35%">
+                                <td width="30%">
                                     <Autocomplete
                                         theme={AutocompleteTheme}
                                         label='Find Gene'
