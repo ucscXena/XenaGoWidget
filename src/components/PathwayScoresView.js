@@ -127,7 +127,7 @@ class PathwayScoresView extends PureComponent {
     render() {
         const {
             loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways, colorSettings
+            selectedPathways, hoveredPathways, colorSettings, highlightedGene
         } = this.props;
 
         return (
@@ -149,6 +149,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
+                    highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}

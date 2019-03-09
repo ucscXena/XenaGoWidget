@@ -660,6 +660,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <GeneSetSelector pathways={pathways}
                                                              hoveredPathways={this.state.hoveredPathways}
                                                              selectedPathways={this.state.selectedPathways}
+                                                             highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
                                                              onHover={this.globalPathwayHover}
                                                              onMouseOut={this.globalPathwayHover}
