@@ -61,6 +61,7 @@ export default class XenaGoViewer extends PureComponent {
         this.state.processing = true;
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
+        this.state.highlightedGene = this.props.highlightedGene;
 
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
@@ -370,6 +371,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    selectedCohort={this.state.selectedCohortData}
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}
+                                                   highlightedGene={this.props.highlightedGene}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
                                                    cohortIndex={this.state.key}
@@ -410,6 +412,7 @@ XenaGoViewer.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
+    highlightedGene: PropTypes.any, // optional
     setCollapsed: PropTypes.any,
     collapsed: PropTypes.any,
 };

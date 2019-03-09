@@ -697,6 +697,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={0}
                                               pathways={pathways}
+                                              highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[0]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
@@ -712,6 +713,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               renderHeight={VIEWER_HEIGHT}
                                               renderOffset={VIEWER_HEIGHT}
                                               pathways={pathways}
+                                              highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[1]}
                                               geneHover={this.geneHover}
                                               populateGlobal={this.populateGlobal}
