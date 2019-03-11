@@ -81,6 +81,7 @@ export default class PathwayEditor extends PureComponent {
     }
 
     render() {
+        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20}}>
                 <Row>
@@ -146,7 +147,7 @@ export default class PathwayEditor extends PureComponent {
                     <Col md={7}>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
-                                     selectedPathwaySet={this.state.selectedPathwayState}
+                                     selectedPathwaySet={selectedPathwayState}
                         />
                     </Col>
                     <Col md={3}>
