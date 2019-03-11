@@ -56,7 +56,7 @@ export default class XenaGeneSetApp extends PureComponent {
             view: XENA_VIEW,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
-            showReciprocalPathway: true,
+            showReciprocalPathway: false,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
