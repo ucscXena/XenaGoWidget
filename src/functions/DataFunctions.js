@@ -80,7 +80,10 @@ export function findPruneData(inputHash) {
  */
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    let returnArray = times(pathways.length, () => times(samples.length, () => 0));
+    // let returnArray = times(pathways.length, () => times(samples.length, () => 0));
+    let returnArray = new Array(pathways.length).fill(0).map(() => new Array(samples.length).fill({total:0,mutation:0,cnv:0}));
+    console.log('returnarray',returnArray)
+    // console.log('matrix',matrix)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -92,7 +95,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
             let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
-                returnArray[index][sampleIndex.get(row.sample)] += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
             }
         }
     }
@@ -117,7 +121,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                         , selectedCohort ? selectedCohort.amplificationThreshold : 2
                         , selectedCohort ? selectedCohort.deletionThreshold : -2);
                     if (returnValue > 0) {
-                        returnArray[index][sampleEntryIndex] += returnValue;
+                        returnArray[index][sampleEntryIndex].total += returnValue;
+                        returnArray[index][sampleEntryIndex].cnv += returnValue;
                     }
                 }
             }
