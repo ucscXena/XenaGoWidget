@@ -140,7 +140,6 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     cohortIndex={cohortIndex}
-                    data={data}
                 />
                 <LabelWrapper
                     width={width}
