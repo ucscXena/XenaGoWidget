@@ -16,7 +16,15 @@ class Demo extends PureComponent {
 
 
     render() {
-        initializeReactGA();
+
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+            console.log('Xena Gene Set Viewer Dev environment')
+        } else {
+            // production code
+            console.log('Xena Gene Set Viewer Initialized')
+            initializeReactGA();
+        }
+
         return (
             <div>
                 <Helmet>
