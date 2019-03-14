@@ -28,10 +28,18 @@ function findRegions(height, count) {
 }
 
 function regionColor(data) {
-    let p = sum(data) / data.length;
+    let total = sumTotal(data);
+    let p = total / data.length;
     let scale = 5;
     return 255 * p / scale;
 }
+
+function sumTotal(inputArray){
+    let total = 0 ;
+    inputArray.forEach( i => total += i.total);
+    return total ;
+}
+
 
 function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let height = totalHeight - labelHeight;
