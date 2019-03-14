@@ -49,7 +49,7 @@ export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = associateCache.get(key);
-    if (!data) {
+    if (true || !data) {
         data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort);
         associateCache.set(key,data);
     }

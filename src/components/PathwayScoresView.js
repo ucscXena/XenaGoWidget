@@ -250,6 +250,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
+        console.log('returned value',returnedValue)
         returnedValue.index = cohortIndex;
 
         // fix for #194
