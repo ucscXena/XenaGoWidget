@@ -248,7 +248,6 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
         else {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            console.log('PSV A',prunedColumns)
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
         returnedValue.index = cohortIndex;
