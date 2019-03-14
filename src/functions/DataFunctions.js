@@ -69,8 +69,7 @@ export function findPruneData(inputHash) {
 }
 
 export function createEmptyArray(pathwayLength,sampleLength){
-    // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
-    return times(pathwayLength, () => times(sampleLength, () => JSON.stringify(DEFAULT_DATA_VALUE)));
+    return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
 }
 
 /**
@@ -89,7 +88,6 @@ export function createEmptyArray(pathwayLength,sampleLength){
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = createEmptyArray(pathways.length,samples.length)
-    console.log('B:',returnArray)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
