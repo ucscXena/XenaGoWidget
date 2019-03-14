@@ -7,9 +7,7 @@ import lru from 'tiny-lru/lib/tiny-lru.es5'
 let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
-// export const DEFAULT_DATA_HEADER= ['total','mutation','cnv'];
-export const DEFAULT_DATA_ARRAY= [0,0,0];
-export const DEFAULT_DATA_ARRAY_HEADERS = {total:0,mutation:1,cnv:2};
+export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0};
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -72,11 +70,8 @@ export function findPruneData(inputHash) {
 
 export function createEmptyArray(pathwayLength,sampleLength){
     // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
-    // return times(pathwayLength, () => times(sampleLength, () => DEFAULT_DATA_VALUE));
-    return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_ARRAY))));
-    // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
+    return times(pathwayLength, () => times(sampleLength, () => JSON.stringify(DEFAULT_DATA_VALUE)));
 }
-
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -106,8 +101,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
             let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
-                returnArray[index][sampleIndex.get(row.sample)][DEFAULT_DATA_ARRAY_HEADERS.total] += effectValue;
-                returnArray[index][sampleIndex.get(row.sample)][DEFAULT_DATA_ARRAY_HEADERS.mutation] += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
             }
         }
     }
@@ -132,8 +127,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                         , selectedCohort ? selectedCohort.amplificationThreshold : 2
                         , selectedCohort ? selectedCohort.deletionThreshold : -2);
                     if (returnValue > 0) {
-                        returnArray[index][sampleEntryIndex][DEFAULT_DATA_ARRAY_HEADERS.total] += returnValue;
-                        returnArray[index][sampleEntryIndex][DEFAULT_DATA_ARRAY_HEADERS.cnv] += returnValue;
+                        returnArray[index][sampleEntryIndex].total += returnValue;
+                        returnArray[index][sampleEntryIndex].cnv += returnValue;
                     }
                 }
             }
