@@ -210,6 +210,7 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
 
 export function synchronizedSort(prunedColumns, geneList) {
 
+    console.log('purned',prunedColumns)
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = scoreColumns(prunedColumns);
     let missingColumns = generateMissingColumns(sortedColumns.pathways, geneList);
@@ -227,6 +228,8 @@ export function synchronizedSort(prunedColumns, geneList) {
         return b.density - a.density
     });
     // refilter data by index
+    console.log(sortedColumns.data)
+    console.log('first',sortedColumns.data[0])
     let columnLength = sortedColumns.data[0].length;
     sortedColumns.data = sortedColumns.pathways.map(el => {
         let columnData = sortedColumns.data[el.index];

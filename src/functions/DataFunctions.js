@@ -30,7 +30,8 @@ export let getGenePathwayLookup = pathways => {
 };
 
 export function pruneColumns(data, pathways, min) {
-    let columnScores = data.map(sum);
+    // TODO: we need to map the sum off each column
+    let columnScores = data.map( d => sum(d.total));
 
     let prunedPathways = pathways.filter((el, i) => columnScores[i] >= min);
     let prunedAssociations = data.filter((el, i) => columnScores[i] >= min);
