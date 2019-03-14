@@ -28,16 +28,14 @@ function findRegions(height, count) {
 }
 
 function regionColor(data) {
-    let total = sumTotal(data);
+    let total = data.reduce(sumDataTotal);
     let p = total / data.length;
     let scale = 5;
     return 255 * p / scale;
 }
 
-function sumTotal(inputArray){
-    let total = 0 ;
-    inputArray.forEach( i => total += i.total);
-    return total ;
+export function sumDataTotal(total,data){
+    return total + data.total;
 }
 
 

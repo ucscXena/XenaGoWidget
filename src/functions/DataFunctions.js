@@ -81,10 +81,12 @@ export function findPruneData(inputHash) {
  */
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    // let returnArray = times(pathways.length, () => times(samples.length, () => 0));
+    console.log('A:',times(pathways.length, () => times(samples.length, () => 0)));
     let returnArray = new Array(pathways.length).fill(0).map(() => new Array(samples.length).fill({total:0,mutation:0,cnv:0}));
-    console.log('returnarray',returnArray)
-    // console.log('matrix',matrix)
+    console.log('B:',returnArray)
+    // // console.log('matrix',matrix)
+    // let returnArray = JSON.parse(JSON.stringify(outputArray));
+    // console.log('C:',returnArray)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 

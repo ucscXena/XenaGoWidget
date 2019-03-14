@@ -4,6 +4,7 @@ import {render, unmountComponentAtNode} from 'react-dom'
 
 import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
 import {addIndepProb} from "../src/functions/DataFunctions";
+import {sumDataTotal} from "../src/functions/DrawFunctions";
 
 describe('Main App', () => {
   let node;
@@ -46,4 +47,32 @@ describe('Test statistical function', () => {
     it('Calculates multiple function properly 3', () => {
         expect([addIndepProb([0.8,0.05])]).toContain(0.81)
     });
+});
+
+
+describe('Test array fill', () => {
+    let node;
+
+    beforeEach(() => {
+        node = document.createElement('div')
+    });
+
+    afterEach(() => {
+        unmountComponentAtNode(node)
+    });
+
+    it('Calculates single function properly', () => {
+        let returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        expect(returnArray.length,20);
+        expect(returnArray[0].length,5);
+        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+    });
+
+    it('Test simple reduce of JSON',() => {
+
+        let inputArray = [ {total:8,mutation:0,cnv:4},{total:2,mutation:0,cnv:2},{total:5,mutation:0,cnv:2},{total:7,mutation:0,cnv:3}];
+        let total = inputArray.reduce(sumDataTotal);
+        expect(total,8+2+7);
+    });
+
 });
