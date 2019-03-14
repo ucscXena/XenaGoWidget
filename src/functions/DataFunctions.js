@@ -8,8 +8,8 @@ let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
 // export const DEFAULT_DATA_HEADER= ['total','mutation','cnv'];
-export const DEFAULT_DATA_ARRAY= [0,0,0];
-export const DEFAULT_DATA_ARRAY_HEADERS = {total:0,mutation:1,cnv:2};
+// export const DEFAULT_DATA_ARRAY= [0,0,0];
+// export const DEFAULT_DATA_ARRAY_HEADERS = {total:0,mutation:1,cnv:2};
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -71,12 +71,8 @@ export function findPruneData(inputHash) {
 }
 
 export function createEmptyArray(pathwayLength,sampleLength){
-    // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
-    // return times(pathwayLength, () => times(sampleLength, () => DEFAULT_DATA_VALUE));
-    return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_ARRAY))));
-    // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
+    return times(pathwayLength, () => times(sampleLength, () => 0));
 }
-
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -93,8 +89,12 @@ export function createEmptyArray(pathwayLength,sampleLength){
  */
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    let returnArray = createEmptyArray(pathways.length,samples.length)
-    console.log('B:',returnArray)
+    // let cnvArray = createEmptyArray(pathways.length,samples.length)
+    let cnvArray = times(pathways.length, () => times(samples.length, () => 0));
+    // let mutationArray = createEmptyArray(pathways.length,samples.length)
+    let mutationArray = times(pathways.length, () => times(samples.length, () => 0));
+    console.log('B:',cnvArray)
+    console.log('C:',mutationArray)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -106,8 +106,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
             let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
-                returnArray[index][sampleIndex.get(row.sample)][DEFAULT_DATA_ARRAY_HEADERS.total] += effectValue;
-                returnArray[index][sampleIndex.get(row.sample)][DEFAULT_DATA_ARRAY_HEADERS.mutation] += effectValue;
+                mutationArray[index][sampleIndex.get(row.sample)] += effectValue;
+                mutationArray[index][sampleIndex.get(row.sample)] += effectValue;
             }
         }
     }
@@ -132,8 +132,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                         , selectedCohort ? selectedCohort.amplificationThreshold : 2
                         , selectedCohort ? selectedCohort.deletionThreshold : -2);
                     if (returnValue > 0) {
-                        returnArray[index][sampleEntryIndex][DEFAULT_DATA_ARRAY_HEADERS.total] += returnValue;
-                        returnArray[index][sampleEntryIndex][DEFAULT_DATA_ARRAY_HEADERS.cnv] += returnValue;
+                        cnvArray[index][sampleEntryIndex] += returnValue;
+                        cnvArray[index][sampleEntryIndex] += returnValue;
                     }
                 }
             }
@@ -142,7 +142,7 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     }
 
 
-    return returnArray;
+    return mutationArray;
 
 }
 
