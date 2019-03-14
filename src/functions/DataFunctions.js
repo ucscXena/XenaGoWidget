@@ -48,7 +48,7 @@ export function findAssociatedData(inputHash) {
     let key = JSON.stringify(inputHash);
     let data = associateCache.get(key);
     if (!data) {
-        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort);
         associateCache.set(key,data);
     }
 
@@ -66,6 +66,11 @@ export function findPruneData(inputHash) {
     return data;
 }
 
+export function createEmptyArray(pathwayLength,sampleLength){
+    let defaultValue = {total:0,mutation:0,cnv:0};
+    return Array(pathwayLength).fill(Array(sampleLength).fill(defaultValue));
+}
+
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
@@ -81,12 +86,8 @@ export function findPruneData(inputHash) {
  */
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    console.log('A:',times(pathways.length, () => times(samples.length, () => 0)));
-    let returnArray = new Array(pathways.length).fill(0).map(() => new Array(samples.length).fill({total:0,mutation:0,cnv:0}));
+    let returnArray = createEmptyArray(pathways.length,samples.length)
     console.log('B:',returnArray)
-    // // console.log('matrix',matrix)
-    // let returnArray = JSON.parse(JSON.stringify(outputArray));
-    // console.log('C:',returnArray)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 

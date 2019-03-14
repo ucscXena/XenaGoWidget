@@ -3,7 +3,7 @@ import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
 
 import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
-import {addIndepProb} from "../src/functions/DataFunctions";
+import {addIndepProb, createEmptyArray} from "../src/functions/DataFunctions";
 import {sumDataTotal} from "../src/functions/DrawFunctions";
 
 describe('Main App', () => {
@@ -62,12 +62,28 @@ describe('Test array fill', () => {
     });
 
     it('Calculates single function properly', () => {
-        let returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        let returnArray = new Array(20).fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
         expect(returnArray.length,20);
         expect(returnArray[0].length,5);
         expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        returnArray[5][3] = {total:7,mutation:3,cnv:1};
+        expect(returnArray[5][3],{total:7,mutation:3,cnv:1});
+        returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+
     });
 
+    it('Create a simple array', () => {
+        let returnArray = createEmptyArray(20,5);
+        expect(returnArray.length,20);
+        expect(returnArray[0].length,5);
+        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        returnArray[5][3] = {total:7,mutation:3,cnv:1};
+        expect(returnArray[5][3],{total:7,mutation:3,cnv:1});
+        returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+
+    });
     it('Test simple reduce of JSON',() => {
 
         let inputArray = [ {total:8,mutation:0,cnv:4},{total:2,mutation:0,cnv:2},{total:5,mutation:0,cnv:2},{total:7,mutation:0,cnv:3}];
