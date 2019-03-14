@@ -3,8 +3,9 @@ import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
 
 import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
-import {addIndepProb, createEmptyArray} from "../src/functions/DataFunctions";
+import {addIndepProb, createEmptyArray, DEFAULT_DATA_VALUE} from "../src/functions/DataFunctions";
 import {sumDataTotal} from "../src/functions/DrawFunctions";
+import {times} from "underscore";
 
 describe('Main App', () => {
   let node;
@@ -62,7 +63,9 @@ describe('Test array fill', () => {
     });
 
     it('Calculates single function properly', () => {
-        let returnArray = new Array(20).fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        // let returnArray = new Array(20).fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        // let returnArray = times(20,fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
+        let returnArray = times(20, () => times(5, () => DEFAULT_DATA_VALUE));
         expect(returnArray.length,20);
         expect(returnArray[0].length,5);
         expect(returnArray[5][3],{total:0,mutation:0,cnv:0});

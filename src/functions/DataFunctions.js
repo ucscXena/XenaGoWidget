@@ -7,6 +7,8 @@ import lru from 'tiny-lru/lib/tiny-lru.es5'
 let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
+export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0};
+
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
@@ -67,8 +69,8 @@ export function findPruneData(inputHash) {
 }
 
 export function createEmptyArray(pathwayLength,sampleLength){
-    let defaultValue = {total:0,mutation:0,cnv:0};
-    return Array(pathwayLength).fill(Array(sampleLength).fill(defaultValue));
+    // return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
+    return times(pathwayLength, () => times(sampleLength, () => JSON.stringify(DEFAULT_DATA_VALUE)));
 }
 
 /**
