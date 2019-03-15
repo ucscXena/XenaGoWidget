@@ -115,10 +115,7 @@ function drawGeneWithColorType(ctx, width, totalHeight, layout, data, labelHeigh
 
             let mutationColor = regionColor(d, 'mutation');
             let cnvColor = regionColor(d, 'cnv');
-            let totalColor = regionColor(d, 'total');
-            // if (mutationColor !== cnvColor) {
-            //     console.log('A', d, cnvColor, mutationColor, totalColor)
-            // }
+            // let totalColor = regionColor(d, 'total');
 
 
             for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
@@ -126,10 +123,6 @@ function drawGeneWithColorType(ctx, width, totalHeight, layout, data, labelHeigh
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4,
                     buffMid = (buffEnd - buffStart) / 2 + buffStart;
-                // if (buffStart < 20000 && cnvColor !== mutationColor) {
-                //     console.log('expression 2 bit', buffStart, buffMid, buffEnd, el, rs, r, pxRow, y, width, d, cnvColor, mutationColor)
-                // }
-
                 for (let l = buffStart; l < buffMid; l += 4) {
                     img.data[l] = cnvColorMask[0];
                     img.data[l + 1] = cnvColorMask[1];
@@ -218,15 +211,20 @@ export default {
 
 
     drawGeneView(vg, props) {
-        let {width, height, layout, cohortIndex, associateData} = props;
+        let {width, height, layout, cohortIndex, associateData,viewType} = props;
 
         clearScreen(vg, width, height);
 
         if (associateData.length === 0) {
             return;
         }
-        drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
-        // drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+
+        // drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+        if(viewType && viewType==='COLOR_BY_TYPE'){
+            drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+        }else{
+            drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+        }
 
     },
 

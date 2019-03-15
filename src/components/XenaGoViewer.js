@@ -374,6 +374,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    highlightedGene={this.props.highlightedGene}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
+                                                   viewType={'COLOR_BY_TYPE'}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
