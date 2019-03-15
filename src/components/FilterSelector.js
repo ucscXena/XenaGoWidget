@@ -1,8 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
-import {sumTotals} from '../functions/util';
+import {pick, groupBy, mapObject, pluck, flatten,sum} from 'underscore';
 import {Dropdown} from "react-toolbox";
 import {getCopyNumberValue} from "../functions/DataFunctions";
 
@@ -65,7 +64,7 @@ export class FilterSelector extends PureComponent {
         let counts = compileData(Object.keys(filters), pathwayData, geneList, amplificationThreshold, deletionThreshold);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
-        let total = sumTotals(Object.values(counts));
+        let total = sum(Object.values(counts));
 
         const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
         labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
