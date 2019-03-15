@@ -399,7 +399,6 @@ export default class XenaGeneSetApp extends PureComponent {
             filterMin
         };
         let prunedColumns = findPruneData(hashForPrune);
-        console.log('pruned data',prunedColumns)
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }
