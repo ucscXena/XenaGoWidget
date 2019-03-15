@@ -313,7 +313,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = this.getGenesForPathways(this.props.pathways);
 
-        let {renderHeight, renderOffset, cohortIndex, colorSettings} = this.props;
+        let {renderHeight, renderOffset, cohortIndex} = this.props;
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {

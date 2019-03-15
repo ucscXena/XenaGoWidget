@@ -42,9 +42,13 @@ body {
     padding-left: 15px;
 }
 
-.highlightChip{
-    /*background-color: red;*/
+.mutationColor{
     color: firebrick;
+    font-weight: bolder;
+}
+
+.cnvColor{
+    color: cornflowerblue;
     font-weight: bolder;
 }
 
