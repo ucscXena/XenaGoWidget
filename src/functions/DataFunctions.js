@@ -7,6 +7,9 @@ import lru from 'tiny-lru/lib/tiny-lru.es5'
 let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
+// NOTE: this should be false for production.
+let ignoreCache = true ;
+
 export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0};
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
@@ -49,7 +52,7 @@ export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = associateCache.get(key);
-    if (true || !data) {
+    if (ignoreCache || !data) {
         data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort);
         associateCache.set(key,data);
     }
@@ -61,7 +64,7 @@ export function findPruneData(inputHash) {
     let {associatedData, pathways, filterMin} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = pruneDataCache.get(key);
-    if (!data) {
+    if (ignoreCache || !data) {
         data = pruneColumns(associatedData, pathways, filterMin);
         pruneDataCache.set(key,data);
     }

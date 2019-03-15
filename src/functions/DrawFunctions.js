@@ -32,10 +32,6 @@ var colorCount = 0 ;
 function regionColor(data) {
     // let total = data.reduce(sumDataTotal(0));
     let total = sumDataTotalSimple(data);
-    if(colorCount<100){
-        console.log('total',total)
-        ++colorCount
-    }
     let p = total / data.length;
     let scale = 5;
     return 255 * p / scale;
@@ -76,9 +72,6 @@ function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, 
 
             let color = regionColor(d);
 
-            if(colorCount<100){
-                console.log('color',color);
-            }
 
             for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
                 let pxRow = y * width,
