@@ -78,8 +78,8 @@ export function clusterSort(prunedColumns) {
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
+            if (a[index].total !== b[index].total) {
+                return b[index].total - a[index].total;
             }
         }
         return sumTotals(b) - sumTotals(a)
@@ -245,8 +245,8 @@ export function synchronizedSort(prunedColumns, geneList) {
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
+            if (a[index].total !== b[index].total) {
+                return b[index].total - a[index].total;
             }
         }
         return sumTotals(b) - sumTotals(a)
