@@ -271,7 +271,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         let samplesLength = returnedValue.data[0].length;
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
+            returnedValue.pathways[d].affected = sum(returnedValue.data[d].total);
         }
 
         internalData = returnedValue.data;
