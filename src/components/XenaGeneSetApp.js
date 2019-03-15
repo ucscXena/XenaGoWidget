@@ -13,7 +13,7 @@ import {addIndepProb, findAssociatedData, findPruneData} from '../functions/Data
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
-import {sumInstances} from '../functions/util';
+import {sumInstances, sumTotals} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
@@ -399,6 +399,7 @@ export default class XenaGeneSetApp extends PureComponent {
             filterMin
         };
         let prunedColumns = findPruneData(hashForPrune);
+        console.log('pruned data',prunedColumns)
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }
@@ -411,7 +412,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
         return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
-            return sum(pathway);
+            return sumTotals(pathway);
         });
     }
 

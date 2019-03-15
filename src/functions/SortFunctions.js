@@ -1,6 +1,6 @@
 import React from "react";
 import cluster from '../functions/Cluster';
-import {sum, sumInstances} from '../functions/util';
+import {sumTotals, sumInstances} from '../functions/util';
 
 export function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
@@ -82,7 +82,7 @@ export function clusterSort(prunedColumns) {
                 return b[index] - a[index];
             }
         }
-        return sum(b) - sum(a)
+        return sumTotals(b) - sumTotals(a)
     });
     renderedData = transpose(renderedData);
     let returnColumns = {};
@@ -105,7 +105,7 @@ export function clusterSampleSort(prunedColumns) {
     // - samples = N sample descriptions
     let transposedData = transpose(prunedColumns.data);
     let summedSamples = transposedData.map((d, index) => {
-        return {index: index, score: sum(d)}
+        return {index: index, score: sumTotals(d)}
     }).sort((a, b) => b.score - a.score);
     let sortedTransposedData = [];
     summedSamples.forEach((d,i) => {
@@ -194,7 +194,7 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
                 return b[index] - a[index];
             }
         }
-        return sum(b) - sum(a)
+        return sumTotals(b) - sumTotals(a)
     });
 
     renderedData = transpose(renderedData);
@@ -249,7 +249,7 @@ export function synchronizedSort(prunedColumns, geneList) {
                 return b[index] - a[index];
             }
         }
-        return sum(b) - sum(a)
+        return sumTotals(b) - sumTotals(a)
     });
 
     renderedData = transpose(renderedData);

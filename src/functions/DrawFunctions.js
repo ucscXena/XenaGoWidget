@@ -1,4 +1,4 @@
-import {sum, reduceByKey, map2, /*partition, */partitionN} from './util';
+import {sumTotals, reduceByKey, map2, /*partition, */partitionN} from './util';
 import {range} from 'underscore';
 import React from "react";
 import {getGeneColorMask, getGeneSetColorMask} from '../functions/ColorFunctions'
