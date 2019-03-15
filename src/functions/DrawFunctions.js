@@ -37,10 +37,6 @@ function regionColor(data) {
     return 255 * p / scale;
 }
 
-export function sumDataTotal(total,data){
-    return  data.total + total;
-}
-
 export function sumDataTotalSimple(data){
     let total = 0 ;
     data.forEach(d => total += d.total);
@@ -48,7 +44,7 @@ export function sumDataTotalSimple(data){
 }
 
 
-function drawExpressionData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
+function drawGeneDataTotal(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
     let height = totalHeight - labelHeight;
     let tissueCount = data[0].length;
     let regions = findRegions(height, tissueCount);
@@ -169,7 +165,7 @@ export default {
         if (associateData.length === 0) {
             return;
         }
-        drawExpressionData(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+        drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
 
     },
 
