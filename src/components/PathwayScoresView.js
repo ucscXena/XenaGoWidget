@@ -3,7 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
-import {partition, sumInstances} from '../functions/util';
+import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -114,8 +114,8 @@ class PathwayScoresView extends PureComponent {
 
     onHover = (event) => {
         let {onHover} = this.props;
-        if (onHover) {
-            let pointData = getPointData(event, this.props);
+        let pointData = getPointData(event, this.props);
+        if (pointData) {
             onHover(pointData);
         }
         else {
@@ -126,7 +126,7 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            loading, width, height, layout, data, associateData, offset, cohortIndex,
+            width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene
         } = this.props;
 
@@ -271,7 +271,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         let samplesLength = returnedValue.data[0].length;
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sum(returnedValue.data[d].total);
+            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
         }
 
         internalData = returnedValue.data;
