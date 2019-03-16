@@ -141,6 +141,7 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     cohortIndex={cohortIndex}
+                    data={data} // updated data forces refresh
                     viewType={viewType}
                 />
                 <LabelWrapper

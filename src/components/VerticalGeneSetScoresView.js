@@ -122,6 +122,12 @@ export default class VerticalGeneSetScoresView extends PureComponent {
                     onHover={this.onHover}
                     onClick={this.onClick}
                     onMouseOut={this.onMouseOut}
+                    data={{
+                        expression,
+                        pathways: returnedValue.pathways,
+                        samples,
+                        sortedSamples: returnedValue.sortedSamples
+                    }}
                 />
             </div>
         )
