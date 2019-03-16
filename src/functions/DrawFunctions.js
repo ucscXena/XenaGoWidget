@@ -4,6 +4,8 @@ import React from "react";
 import {getCNVColorMask, getGeneColorMask, getGeneSetColorMask, getMutationColorMask} from '../functions/ColorFunctions'
 import {GENE_LABEL_HEIGHT} from "../components/PathwayScoresView";
 
+export const COLOR_BY_TYPE = 'COLOR_BY_TYPE';
+
 function clearScreen(vg, width, height) {
     vg.save();
     vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
@@ -30,7 +32,7 @@ function findRegions(height, count) {
 function regionColor(data, type) {
     // let total = data.reduce(sumDataTotal(0));
     let total = sumDataTotalSimple(data, type);
-    if(total===0) return 0 ;
+    if (total === 0) return 0;
     let p = total / data.length;
     let scale = 5;
     return 255 * p / scale;
@@ -211,7 +213,7 @@ export default {
 
 
     drawGeneView(vg, props) {
-        let {width, height, layout, cohortIndex, associateData,viewType} = props;
+        let {width, height, layout, cohortIndex, associateData, viewType} = props;
 
         clearScreen(vg, width, height);
 
@@ -220,9 +222,9 @@ export default {
         }
 
         // drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
-        if(viewType && viewType==='COLOR_BY_TYPE'){
+        if (viewType && viewType === COLOR_BY_TYPE) {
             drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
-        }else{
+        } else {
             drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
         }
 

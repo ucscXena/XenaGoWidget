@@ -26,6 +26,7 @@ import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import FaDownload from 'react-icons/lib/fa/download';
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
+import {COLOR_BY_TYPE, VIEW_TYPE} from "../functions/DrawFunctions";
 
 
 function lowerCaseCompareName(a, b) {
@@ -322,7 +323,8 @@ export default class XenaGoViewer extends PureComponent {
                         <tbody>
                         <tr>
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td valign="top" style={{paddingRight: 20, paddingLeft: 20,paddingTop: 0, paddingBottom: 0}}>
+                            <td valign="top"
+                                style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                                 <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     selectedCohort={this.state.selectedCohort}
@@ -374,12 +376,12 @@ export default class XenaGoViewer extends PureComponent {
                                                    highlightedGene={this.props.highlightedGene}
                                                    onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
-                                                   viewType={'COLOR_BY_TYPE'}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
                                                    colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
+                                                   viewType={this.props.showColorByType ? COLOR_BY_TYPE : 'total'}
                                 />
                             </td>
                             }
@@ -416,4 +418,5 @@ XenaGoViewer.propTypes = {
     highlightedGene: PropTypes.any, // optional
     setCollapsed: PropTypes.any,
     collapsed: PropTypes.any,
+    showColorByType: PropTypes.any,
 };
