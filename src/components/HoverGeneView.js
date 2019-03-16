@@ -49,7 +49,15 @@ export default class HoverGeneView extends PureComponent {
                         }
                         {data.expression != null &&
                         <Chip>
-                            <span className={data.expression===0 ? '' : BaseStyle.highlightChip}><strong>Hits</strong> {data.expression}</span>
+                            {data.expression.cnv!==0 &&
+                            <span
+                                className={data.expression.cnv === 0 ? '' : BaseStyle.cnvColor}><strong>CNV</strong> {data.expression.cnv}</span>
+                            }
+                            {data.expression.mutation!==0 &&
+                            <span
+                                className={data.expression.mutation === 0 ? '' : BaseStyle.mutationColor}> <strong>Mut</strong> {data.expression.mutation}</span>
+                            }
+                            {/*<span className={data.expression.total===0 ? '' : BaseStyle.highlightChip}><strong>Hits</strong> {data.expression.total}</span>*/}
                         </Chip>
                         }
                         {data.tissue &&

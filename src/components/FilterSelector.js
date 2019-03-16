@@ -1,8 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
-import {sum} from '../functions/util';
+import {pick, groupBy, mapObject, pluck, flatten,sum} from 'underscore';
 import {Dropdown} from "react-toolbox";
 import {getCopyNumberValue} from "../functions/DataFunctions";
 

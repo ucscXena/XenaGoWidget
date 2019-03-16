@@ -61,7 +61,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     render() {
 
         let {data, cohortIndex, filter, labelHeight, width, selectedCohort} = this.props;
-        const {expression, pathways, samples, copyNumber, referencePathways} = data;
+        console.log('data',data)
+        const {expression, pathways, samples, copyNumber} = data;
         if (!data || !data.pathways) {
             return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
         }

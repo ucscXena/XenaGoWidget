@@ -10,13 +10,21 @@ export function getWhiteColor() {
     return '#F7FFF7';
 }
 
-export function getDarkColor() {
-    return '#1A535C';
+export function getCNVColorMask() {
+    // return '#1A535C';
+    return [0, 0, 200];
+}
+
+export function getMutationColorMask() {
+    // return '#DD55DD';
+    return [250, 0, 0];
+    // return [26, 83, 92];
 }
 
 export function getGeneColorMask() {
     return [26, 83, 92];
 }
+
 
 export function getGeneSetColorMask() {
     return [255, 10, 10];

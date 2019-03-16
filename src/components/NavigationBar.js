@@ -41,8 +41,9 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-        let {editGeneSetColors, showPathways, showXena, view, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
+        let {editGeneSetColors, showPathways, showXena, view, showColorByType, toggleShowColorByType, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
+        let showColorByTypeLabel = (showColorByType ? 'Hide' : 'Show') + ' Color By Type Gene Set';
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -54,14 +55,10 @@ export default class NavigationBar extends PureComponent {
                             <tr>
                                 <td width="5%">
                                     <Button icon='help' floating primary mini
-                                     onClick={ () => this.showHelp() }
+                                            onClick={() => this.showHelp()}
                                     />
-                                    {/*<IconMenu icon='more_vert' position='topLeft'*/}
-                                              {/*className={BaseStyle.menuStyle}>*/}
-                                    {/*</IconMenu>*/}
                                 </td>
                                 <td width="8%">
-                                    {/*https://material.io/tools/icons/?style=baseline*/}
                                     <IconMenu icon='more_vert' position='topLeft'
                                               className={BaseStyle.menuStyle}>
 
@@ -76,9 +73,12 @@ export default class NavigationBar extends PureComponent {
                                                   caption='Show GeneSet Viewer'/>
                                         }
                                         <MenuDivider/>
-                                        <MenuItem value='showRecipricalPathways'
+                                        <MenuItem value='showReciprocalPathways'
                                                   onClick={() => toggleShowReciprocalPathway()}
                                                   caption={showReciprocalPathwayLabel}/>
+                                        <MenuItem value='showColorByType'
+                                                  onClick={() => toggleShowColorByType()}
+                                                  caption={showColorByTypeLabel}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
@@ -134,4 +134,5 @@ NavigationBar.propTypes = {
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
+    toggleShowColorByType: PropTypes.any,
 };
