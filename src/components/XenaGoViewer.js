@@ -19,12 +19,10 @@ let genomeBackgroundViewKey = 'genome background';
 let genomeBackgroundCopyNumberViewKey = 'copy number';
 let genomeBackgroundMutationViewKey = 'mutation';
 let Rx = require('ucsc-xena-client/dist/rx');
-import {Grid, Row, Col} from 'react-material-responsive-grid';
 import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
-import FaDownload from 'react-icons/lib/fa/download';
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 import {COLOR_BY_TYPE, VIEW_TYPE} from "../functions/DrawFunctions";
 
