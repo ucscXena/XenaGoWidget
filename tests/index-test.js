@@ -4,7 +4,7 @@ import {render, unmountComponentAtNode} from 'react-dom'
 
 import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
 import {addIndepProb, createEmptyArray, DEFAULT_DATA_VALUE} from "../src/functions/DataFunctions";
-import { sumDataTotalSimple} from "../src/functions/DrawFunctions";
+import { sumDataByType} from "../src/functions/DrawFunctions";
 import {times} from "underscore";
 
 describe('Main App', () => {
@@ -90,7 +90,7 @@ describe('Test array fill', () => {
 
     it('Test simple reduce of JSON',() => {
         let inputArray = [ {total:8,mutation:0,cnv:4},{total:2,mutation:0,cnv:2},{total:5,mutation:0,cnv:2},{total:7,mutation:0,cnv:3}];
-        let total = sumDataTotalSimple(inputArray,'total');
+        let total = sumDataByType(inputArray,'total');
         // console.log(JSON.stringify(total))
         // console.log(3)
         expect(total===8+2+5+7);

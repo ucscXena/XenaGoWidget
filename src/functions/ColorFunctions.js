@@ -11,14 +11,31 @@ export function getWhiteColor() {
 }
 
 export function getCNVColorMask() {
-    // return '#1A535C';
     return [0, 0, 200];
 }
 
 export function getMutationColorMask() {
-    // return '#DD55DD';
     return [250, 0, 0];
-    // return [26, 83, 92];
+}
+
+export function getCNVHighColorMask() {
+    return [255, 0, 0];
+}
+
+export function getCNVLowColorMask() {
+    return [0, 0, 255];
+}
+
+export function getMutation4ColorMask() {
+    return [255, 0, 0];
+}
+
+export function getMutation3ColorMask() {
+    return [250, 165, 0];
+}
+
+export function getMutation2ColorMask() {
+    return [0, 0, 255];
 }
 
 export function getGeneColorMask() {
