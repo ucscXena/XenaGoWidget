@@ -10,10 +10,18 @@ let pruneDataCache = lru(500);
 // NOTE: this should be false for production.
 let ignoreCache = false;
 
-export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0};
+export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0,mutation4:0,mutation3:0,mutation2:0,cnvHigh:0,cnvLow:0};
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
+}
+
+export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold )) ? 1 : 0;
+}
+
+export function getCopyNumberLow(copyNumberValue, deletionThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
 
 /**
@@ -98,12 +106,29 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
+
             let effectValue = getMutationScore(row.effect, min);
+            let effectScore = mutationScores[row.effect];
             let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
                 returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
                 returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
+
+                switch(effectScore){
+                    case 4:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1 ;
+                        break;
+                    case 3:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1 ;
+                        break;
+                    case 2:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1 ;
+                        break;
+                    default:
+                }
+
+                //
             }
         }
     }
@@ -130,6 +155,8 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                     if (returnValue > 0) {
                         returnArray[index][sampleEntryIndex].total += returnValue;
                         returnArray[index][sampleEntryIndex].cnv += returnValue;
+                        returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.amplificationThreshold : 2);
+                        returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.deletionThreshold : -2);
                     }
                 }
             }
