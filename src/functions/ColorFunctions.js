@@ -27,15 +27,15 @@ export function getCNVLowColorMask() {
 }
 
 export function getMutation4ColorMask() {
-    return [255, 0, 0];
+    return [155, 100, 0];
 }
 
 export function getMutation3ColorMask() {
-    return [250, 165, 0];
+    return [150, 165, 0];
 }
 
 export function getMutation2ColorMask() {
-    return [0, 0, 255];
+    return [0, 100, 155];
 }
 
 export function getGeneColorMask() {

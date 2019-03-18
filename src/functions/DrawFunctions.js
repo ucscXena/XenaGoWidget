@@ -136,14 +136,10 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
             let mutationScore = sumDataByType(d, 'mutation');
 
             let cnvColorMask = cnvHighScore > cnvLowScore ? cnvHighColorMask : cnvLowColorMask;
-            // take the mightest one
+            // take the highest one
             let mutationColorMask = mutation4Score > mutation3Score ? mutation4ColorMask : (mutation3Score > mutation2Score ? mutation3ColorMask : mutation2ColorMask);
             let cnvColor = cnvScore === 0 ? 0 : 255;
             let mutationColor = mutationScore === 0 ? 0 : 255;
-
-            // let totalColor = regionColor(d, 'total');
-
-
             for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
                 let pxRow = y * width,
                     buffStart = (pxRow + el.start) * 4,
