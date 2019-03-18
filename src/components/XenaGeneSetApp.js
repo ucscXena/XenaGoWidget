@@ -750,7 +750,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-1'
                                               renderHeight={VIEWER_HEIGHT}
-                                              renderOffset={VIEWER_HEIGHT}
+                                              renderOffset={VIEWER_HEIGHT-3}
                                               pathways={pathways}
                                               highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[1]}
