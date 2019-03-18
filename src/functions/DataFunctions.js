@@ -1,5 +1,5 @@
 import mutationScores from '../data/mutationVector';
-import {sum, times, memoize, range} from 'underscore';
+import {sum, times, memoize, range} from 'ucsc-xena-client/dist/underscore_ext';
 import {izip, permutations} from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5'
 
