@@ -20,20 +20,20 @@ export default class HoverGeneView extends PureComponent {
     }
 
     getAffectedPathway(data) {
-        let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length) ;
+        let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length);
         returnString += '  (';
-        returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total* data.pathway.gene.length)) * 100.0).toFixed(0);
+        returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0);
         returnString += '%)';
         return returnString;
 
     }
 
     getScore(data, cohortIndex) {
-        return Number.parseFloat(cohortIndex===0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
+        return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
     }
 
     render() {
-        let {data, title,cohortIndex} = this.props;
+        let {data, title, cohortIndex} = this.props;
         if (data.tissue) {
             return (
                 <div>
@@ -49,31 +49,31 @@ export default class HoverGeneView extends PureComponent {
                         }
                         {data.expression != null &&
                         <Chip>
-                            {data.expression.cnvHigh!==0 &&
+                            {data.expression.cnvHigh !== 0 &&
                             <span
-                                className={data.expression.cnvHigh === 0 ? '' : BaseStyle.cnvColor}><strong>CNV High</strong> {data.expression.cnvHigh}</span>
+                                className={data.expression.cnvHigh === 0 ? '' : BaseStyle.cnvColor}><strong>CNV High</strong>{data.expression.cnvHigh > 1 ? data.expression.cnvHigh : ''}</span>
                             }
-                            {data.expression.cnvLow!==0 &&
+                            {data.expression.cnvLow !== 0 &&
                             <span
-                                className={data.expression.cnvLow === 0 ? '' : BaseStyle.cnvColor}><strong>CNV Low</strong> {data.expression.cnvLow}</span>
+                                className={data.expression.cnvLow === 0 ? '' : BaseStyle.cnvColor}><strong>CNV Low</strong> {data.expression.cnvLow > 1 ? data.expression.cnvLow : ''}</span>
                             }
-                            {data.expression.mutation2!==0 &&
+                            {data.expression.mutation2 !== 0 &&
                             <span
-                                className={data.expression.mutation2 === 0 ? '' : BaseStyle.mutationColor}> <strong>Mut (2)</strong> {data.expression.mutation2}</span>
+                                className={data.expression.mutation2 === 0 ? '' : BaseStyle.mutationColor}> <strong>Missense / Inframe </strong> {data.expression.mutation2 > 1 ? data.expression.mutation2 : ''}</span>
                             }
-                            {data.expression.mutation3!==0 &&
+                            {data.expression.mutation3 !== 0 &&
                             <span
-                                className={data.expression.mutation3 === 0 ? '' : BaseStyle.mutationColor}> <strong>Mut (3)</strong> {data.expression.mutation3}</span>
+                                className={data.expression.mutation3 === 0 ? '' : BaseStyle.mutationColor}> <strong>Splice</strong> {data.expression.mutation3 > 1 ? data.expression.mutation3 : ''}</span>
                             }
-                            {data.expression.mutation4!==0 &&
+                            {data.expression.mutation4 !== 0 &&
                             <span
-                                className={data.expression.mutation4 === 0 ? '' : BaseStyle.mutationColor}> <strong>Mut (4)</strong> {data.expression.mutation4}</span>
+                                className={data.expression.mutation4 === 0 ? '' : BaseStyle.mutationColor}> <strong>Deleterious</strong> {data.expression.mutation4 > 1 ? data.expression.mutation4 : ''}</span>
                             }
                         </Chip>
                         }
                         {data.tissue &&
                         <Chip>
-                            <span style={{margin:0}}>
+                            <span style={{margin: 0}}>
                                 <strong>Sample</strong>
                                 <span>{data.tissue}</span>
                                 </span>
@@ -81,7 +81,7 @@ export default class HoverGeneView extends PureComponent {
                         }
                     </div>
                     }
-                    {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression && data.expression.total>0 &&
+                    {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression && data.expression.total > 0 &&
                     <div>
                         <Chip>
                             <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -103,7 +103,7 @@ export default class HoverGeneView extends PureComponent {
                             <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                         </div>
                         <div>
-                            <span><strong>Score</strong> {this.getScore(data,cohortIndex)}</span>
+                            <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
                         </div>
 
                     </div>
