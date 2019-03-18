@@ -47,8 +47,33 @@ body {
     font-weight: bolder;
 }
 
+.mutation2Color{
+    color: #2777b4;
+    font-weight: bolder;
+}
+
+.mutation3Color{
+    color: #ff7f0e;
+    font-weight: bolder;
+}
+
+.mutation4Color{
+    color: #0000ff;
+    font-weight: bolder;
+}
+
 .cnvColor{
     color: cornflowerblue;
+    font-weight: bolder;
+}
+
+.cnvHighColor{
+    color: #ff0000;
+    font-weight: bolder;
+}
+
+.cnvLowColor{
+    color: #0000ff;
     font-weight: bolder;
 }
 
