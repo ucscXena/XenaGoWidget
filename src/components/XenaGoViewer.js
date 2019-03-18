@@ -24,7 +24,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
-import {COLOR_BY_TYPE, VIEW_TYPE} from "../functions/DrawFunctions";
+import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../functions/DrawFunctions";
 
 
 function lowerCaseCompareName(a, b) {
@@ -314,6 +314,17 @@ export default class XenaGoViewer extends PureComponent {
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
+        let viewType = COLOR_TOTAL ;
+        console.log(this.props.showColorByType,this.props.showColorByTypeDetail,this.props.showColorTotal)
+        if(this.props.showColorByType){
+            viewType = COLOR_BY_TYPE;
+        }
+        else
+        if(this.props.showColorByTypeDetail){
+            viewType = COLOR_BY_TYPE_DETAIL;
+        }
+
+
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
                 return (
@@ -379,7 +390,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    shareGlobalGeneData={this.props.shareGlobalGeneData}
                                                    colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
-                                                   viewType={this.props.showColorByType ? COLOR_BY_TYPE : 'total'}
+                                                   viewType={viewType}
                                 />
                             </td>
                             }

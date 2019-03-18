@@ -12,6 +12,8 @@ import {
 } from "./ColorFunctions";
 
 export const COLOR_BY_TYPE = 'COLOR_BY_TYPE';
+export const COLOR_BY_TYPE_DETAIL = 'COLOR_BY_TYPE_DETAIL';
+export const COLOR_TOTAL = 'COLOR_TOTAL';
 
 function clearScreen(vg, width, height) {
     vg.save();
@@ -303,10 +305,17 @@ export default {
             return;
         }
 
-        if (viewType && viewType === COLOR_BY_TYPE) {
-            // drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+
+        console.log('view type',viewType)
+
+        if (viewType && viewType === COLOR_BY_TYPE_DETAIL) {
             drawGeneWithManyColorTypes(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
-        } else {
+        }
+        else
+        if (viewType && viewType === COLOR_BY_TYPE) {
+            drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+        }
+        else {
             drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
         }
 
