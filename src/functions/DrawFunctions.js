@@ -147,6 +147,8 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
                     buffStart = (pxRow + el.start) * 4,
                     buffEnd = (pxRow + el.start + el.size) * 4,
                     buffMid = (buffEnd - buffStart) / 2 + buffStart;
+                // buffMid has to be a multiple of 4
+                buffMid += buffMid%4 ;
                 for (let l = buffStart; l < buffMid; l += 4) {
                     img.data[l] = cnvColorMask[0];
                     img.data[l + 1] = cnvColorMask[1];
