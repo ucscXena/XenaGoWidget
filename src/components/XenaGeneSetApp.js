@@ -652,6 +652,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     <tr>
                                         <td colSpan={3}>
                                             <Legend/>
+                                            <br/>
                                         </td>
                                     </tr>
                                     <tr>
