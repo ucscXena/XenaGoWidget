@@ -9,23 +9,41 @@ export class Legend extends PureComponent {
 
     render() {
         return (
-            <Card>
-                {/*<Chip>*/}
-                    <span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong></span>
-                {/*</Chip>*/}
-                {/*<Chip>*/}
-                    <span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong></span>
-                {/*</Chip>*/}
-                {/*<Chip>*/}
-                    <span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong></span>
-                {/*</Chip>*/}
-                {/*<Chip>*/}
-                    <span className={BaseStyle.mutation3Color}><strong>Splice</strong></span>
-                {/*</Chip>*/}
-                {/*<Chip>*/}
-                    <span className={BaseStyle.mutation4Color}><strong>Deleterious</strong></span>
-                {/*</Chip>*/}
-            </Card>
-        )
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong></span></Chip>
+                    {/*</td>*/}
+                    {/*<td colSpan={2}>*/}
+                        <Chip>
+                        <span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong></span>
+                        </Chip>
+                    </td>
+                </tr>
+                <tr>
+                   <td>
+                       <Chip>
+                           <span className={BaseStyle.mutation4Color}><strong>Deleterious</strong></span>
+                       </Chip>
+                   </td>
+                </tr>
+                <tr>
+                    <td>
+                        <Chip>
+                            <span className={BaseStyle.mutation3Color}><strong>Splice</strong></span>
+                        </Chip>
+                        {/*</td>*/}
+                        {/*<td>*/}
+                        <Chip>
+                        <span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong></span>
+                        </Chip>
+                    {/*</td>*/}
+                    {/*<td>*/}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    )
     }
-}
+    }
