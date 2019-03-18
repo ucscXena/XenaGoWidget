@@ -41,9 +41,11 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-        let {editGeneSetColors, showPathways, showXena, view, showColorByType, toggleShowColorByType, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
+        let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,
+            showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+            toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
-        let showColorByTypeLabel = (showColorByType ? 'Hide' : 'Show') + ' Color By Type Gene Set';
+        // let showColorByTypeLabel = (showColorByType ? 'Hide' : 'Show') + ' Color By Type Gene Set';
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -76,9 +78,13 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='showReciprocalPathways'
                                                   onClick={() => toggleShowReciprocalPathway()}
                                                   caption={showReciprocalPathwayLabel}/>
-                                        <MenuItem value='showColorByType'
-                                                  onClick={() => toggleShowColorByType()}
-                                                  caption={showColorByTypeLabel}/>
+                                        <MenuDivider/>
+                                        <MenuItem onClick={() => activateShowColorByTypeDetail()}
+                                                  caption={`${showColorByTypeDetail ? '(x)' : 'Show'} Detailed Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => activateShowColorByType()}
+                                                  caption={`${showColorByType ? '(x)' : 'Show'} Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => activateShowColorTotal()}
+                                                  caption={`${showColorTotal ? '(x)' : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
@@ -134,5 +140,10 @@ NavigationBar.propTypes = {
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
-    toggleShowColorByType: PropTypes.any,
+    showColorByTypeDetail: PropTypes.any,
+    showColorByType: PropTypes.any,
+    showColorTotal: PropTypes.any,
+    activateShowColorByType: PropTypes.any,
+    activateShowColorByTypeDetail: PropTypes.any,
+    activateShowColorTotal: PropTypes.any,
 };
