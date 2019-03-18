@@ -26,18 +26,19 @@ export function getCNVLowColorMask() {
     return [0, 0, 255];
 }
 
-export function getMutation4ColorMask() {
-    return [155, 100, 0];
-    // return [255, 0, 0];
+export function getMutation4ColorMask() { // same as CNV deleteion, loss of function
+    // return [155, 100, 0];
+    return [0, 0, 255];
 }
 
-export function getMutation3ColorMask() {
-    return [150, 165, 0];
+export function getMutation3ColorMask() { //same as Xena VS, splice
+    // return [150, 165, 0];
+    return [255, 127, 14]
 }
 
-export function getMutation2ColorMask() {
-    return [0, 100, 155];
-    // return [0, 0, 255];
+export function getMutation2ColorMask() { // same as Xena VS, missense/in_frame
+    //return [0, 100, 155];
+    return [31, 119, 180];
 }
 
 export function getGeneColorMask() {
