@@ -650,19 +650,13 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <table>
                                     <tbody>
                                     <tr>
-                                        <td colSpan={3}>
-                                            <Legend/>
-                                            <br/>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
                                         >
                                             {this.state.showPathwayDetails &&
                                             <div style={{paddingLeft: leftPadding}}>
                                                 <FaArrowRight onClick={this.hideGeneSetDetail}
                                                               className={BaseStyle.mouseHover}/>
-                                            </div>
+                                         i  </div>
                                             }
                                             {!this.state.showPathwayDetails &&
                                             <FaArrowLeft onClick={this.showGeneSetDetail}
