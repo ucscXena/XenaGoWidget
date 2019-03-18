@@ -11,6 +11,7 @@ let styles = {
         , display: 'block'
         , zIndex: 10
         , opacity: 1
+        , cursor: 'crosshair'
     }
 };
 
