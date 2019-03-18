@@ -100,6 +100,16 @@ body {
     cursor: pointer;
 }
 
+.hoverScore{
+    color: white;
+    display: inline;
+    font-weight: bold;
+    background-color: #333333;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
 .wideNavigation{
     width: 400px;
     display:inline;
