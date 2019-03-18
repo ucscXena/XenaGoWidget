@@ -48,28 +48,38 @@ export default class HoverGeneView extends PureComponent {
                         </Chip>
                         }
                         {data.expression != null &&
-                        <Chip>
+                        <div>
                             {data.expression.cnvHigh !== 0 &&
+                            <Chip>
                             <span
-                                className={data.expression.cnvHigh === 0 ? '' : BaseStyle.cnvHighColor}><strong>CNV High</strong>{data.expression.cnvHigh > 1 ? data.expression.cnvHigh : ''}</span>
+                                className={data.expression.cnvHigh === 0 ? '' : BaseStyle.cnvHighColor}><strong>CNV Amplification</strong>{data.expression.cnvHigh > 1 ? data.expression.cnvHigh : ''}</span>
+                            </Chip>
                             }
                             {data.expression.cnvLow !== 0 &&
+                            <Chip>
                             <span
-                                className={data.expression.cnvLow === 0 ? '' : BaseStyle.cnvLowColor}><strong>CNV Low</strong> {data.expression.cnvLow > 1 ? data.expression.cnvLow : ''}</span>
+                                className={data.expression.cnvLow === 0 ? '' : BaseStyle.cnvLowColor}><strong>CNV Deletion</strong> {data.expression.cnvLow > 1 ? data.expression.cnvLow : ''}</span>
+                            </Chip>
                             }
                             {data.expression.mutation2 !== 0 &&
+                            <Chip>
                             <span
                                 className={data.expression.mutation2 === 0 ? '' : BaseStyle.mutation2Color}> <strong>Missense / Inframe </strong> {data.expression.mutation2 > 1 ? data.expression.mutation2 : ''}</span>
+                            </Chip>
                             }
                             {data.expression.mutation3 !== 0 &&
+                            <Chip>
                             <span
                                 className={data.expression.mutation3 === 0 ? '' : BaseStyle.mutation3Color}> <strong>Splice</strong> {data.expression.mutation3 > 1 ? data.expression.mutation3 : ''}</span>
+                            </Chip>
                             }
                             {data.expression.mutation4 !== 0 &&
+                            <Chip>
                             <span
                                 className={data.expression.mutation4 === 0 ? '' : BaseStyle.mutation4Color}> <strong>Deleterious</strong> {data.expression.mutation4 > 1 ? data.expression.mutation4 : ''}</span>
+                            </Chip>
                             }
-                        </Chip>
+                        </div>
                         }
                         {data.tissue &&
                         <Chip>
