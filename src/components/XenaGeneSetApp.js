@@ -19,6 +19,7 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
+import {Legend} from "./Legend";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -648,6 +649,11 @@ export default class XenaGeneSetApp extends PureComponent {
                             <td>
                                 <table>
                                     <tbody>
+                                    <tr>
+                                        <td colSpan={3}>
+                                            <Legend/>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
                                         >
