@@ -70,19 +70,29 @@ function sortColumnDensities(prunedColumns) {
  */
 export function clusterSort(prunedColumns) {
     let sortedColumns = sortColumnDensities(prunedColumns);
+    console.log('sorted columns', sortedColumns)
 
     // let sortedPathways = scoreColumns(prunedColumns);
 
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
+    // sort samples first based on what gene in position 1 has the highest total
+    // total is hits of +1 from all sources
+    // if all are equal, then take the sum of all hit totals as a tiebreaker
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
             if (a[index].total !== b[index].total) {
                 return b[index].total - a[index].total;
             }
         }
-        return sumTotals(b) - sumTotals(a)
+        let sumOfTotals = sumTotals(b) - sumTotals(a)
+        if (sumOfTotals !== 0) {
+            return sumOfTotals;
+        }
+        else {
+           return sumInstances(b) - sumInstances(a);
+        }
     });
     renderedData = transpose(renderedData);
     let returnColumns = {};
@@ -108,7 +118,7 @@ export function clusterSampleSort(prunedColumns) {
         return {index: index, score: sumTotals(d)}
     }).sort((a, b) => b.score - a.score);
     let sortedTransposedData = [];
-    summedSamples.forEach((d,i) => {
+    summedSamples.forEach((d, i) => {
         sortedTransposedData[i] = transposedData[d.index];
     });
     let untransposedData = transpose(sortedTransposedData);
