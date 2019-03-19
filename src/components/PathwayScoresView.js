@@ -18,8 +18,8 @@ const DOWN_BUFFER = 1;
 const style = {
     xenaGoView: {
         opacity: 1,
-        border: 'solid black 0.5px',
-        boxShadow: '3px 3px 2px 1px #ccc'
+        // border: 'solid black 0.5px',
+        boxShadow: '0 0 2px 2px #ccc '
 },
     fadeIn: {
         opacity: 1,
