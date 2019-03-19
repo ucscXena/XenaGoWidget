@@ -80,13 +80,14 @@ export function clusterSort(prunedColumns) {
     // sort samples first based on what gene in position 1 has the highest total
     // total is hits of +1 from all sources
     // if all are equal, then take the sum of all hit totals as a tiebreaker
+    // if all are equal, then take the sum of all hit instances (all hits just equal 1) as a tiebreaker
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
             if (a[index].total !== b[index].total) {
                 return b[index].total - a[index].total;
             }
         }
-        let sumOfTotals = sumTotals(b) - sumTotals(a)
+        let sumOfTotals = sumTotals(b) - sumTotals(a);
         if (sumOfTotals !== 0) {
             return sumOfTotals;
         }
