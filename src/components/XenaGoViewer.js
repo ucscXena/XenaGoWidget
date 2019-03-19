@@ -25,7 +25,8 @@ import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import Button from "react-toolbox/lib/button";
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../functions/DrawFunctions";
-import {Legend} from "./Legend";
+import {DetailedLegend} from "./DetailedLegend";
+import {TwoColorLegend} from "./TwoColorLegend";
 
 
 function lowerCaseCompareName(a, b) {
@@ -365,7 +366,12 @@ export default class XenaGoViewer extends PureComponent {
                                     }
                                 </Card>
                                 }
-                                <Legend/>
+                                {viewType === COLOR_BY_TYPE_DETAIL &&
+                                <DetailedLegend/>
+                                }
+                                {viewType === COLOR_BY_TYPE &&
+                                <TwoColorLegend/>
+                                }
                             </td>
                             }
                             {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&

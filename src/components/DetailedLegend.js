@@ -4,7 +4,7 @@ import PureComponent from './PureComponent';
 import {Card, Chip, Avatar, List, ListItem, ListSubHeader} from "react-toolbox";
 import BaseStyle from '../css/base.css';
 
-export class Legend extends PureComponent {
+export class DetailedLegend extends PureComponent {
 
     render() {
         return (
