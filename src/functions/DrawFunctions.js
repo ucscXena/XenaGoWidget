@@ -255,8 +255,6 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
     let sampleRegions = findPathwayData(width, tissueCount);
 
 
-    console.log('regions', sampleRegions)
-
     layout.forEach(function (el, i) {
         //     // TODO: may be faster to transform the whole data cohort at once
         let rowData = data[i];
@@ -272,8 +270,6 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
             //         // TODO: should pass in geneList for each pathway and amortize over that . . .
             let color = regionColor(d, 'total');
             color = color > 255 ? 255 : color;
-
-            if (i < 2) console.log(d, color);
 
             let pxRow = el.start * 4 * img.width; // first column and row in the block
 
@@ -307,8 +303,6 @@ export default {
             return;
         }
 
-
-        console.log('view type',viewType)
 
         if (viewType && viewType === COLOR_BY_TYPE_DETAIL) {
             drawGeneWithManyColorTypes(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);

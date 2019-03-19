@@ -316,7 +316,6 @@ export default class XenaGoViewer extends PureComponent {
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
         let viewType = COLOR_TOTAL ;
-        console.log(this.props.showColorByType,this.props.showColorByTypeDetail,this.props.showColorTotal)
         if(this.props.showColorByType){
             viewType = COLOR_BY_TYPE;
         }
