@@ -80,11 +80,11 @@ export default class NavigationBar extends PureComponent {
                                                   caption={showReciprocalPathwayLabel}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => activateShowColorByTypeDetail()}
-                                                  caption={`${showColorByTypeDetail ? '(x)' : 'Show'} Detailed Type of Gene Set Effect`}/>
+                                                  caption={`${showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
                                         <MenuItem onClick={() => activateShowColorByType()}
-                                                  caption={`${showColorByType ? '(x)' : 'Show'} Type of Gene Set Effect`}/>
+                                                  caption={`${showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
                                         <MenuItem onClick={() => activateShowColorTotal()}
-                                                  caption={`${showColorTotal ? '(x)' : 'Show'} Total Gene Set Effect`}/>
+                                                  caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
