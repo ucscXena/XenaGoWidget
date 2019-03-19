@@ -70,9 +70,6 @@ function sortColumnDensities(prunedColumns) {
  */
 export function clusterSort(prunedColumns) {
     let sortedColumns = sortColumnDensities(prunedColumns);
-    console.log('sorted columns', sortedColumns)
-
-    // let sortedPathways = scoreColumns(prunedColumns);
 
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);

@@ -50,7 +50,7 @@ export default class HoverGeneView extends PureComponent {
                         }
                         {data.expression != null &&
                         <div>
-                            {data.expression.cnvHigh !== 0 &&
+                            {data.selectCnv && data.expression.cnvHigh > 0 &&
                             <Chip>
                             <span
                                 className={data.expression.cnvHigh === 0 ? '' : BaseStyle.cnvHighColor}><strong>CNV Amplification</strong>
@@ -58,7 +58,7 @@ export default class HoverGeneView extends PureComponent {
                             </span>
                             </Chip>
                             }
-                            {data.expression.cnvLow !== 0 &&
+                            {data.selectCnv && data.expression.cnvLow > 0 &&
                             <Chip>
                             <span
                                 className={data.expression.cnvLow === 0 ? '' : BaseStyle.cnvLowColor}><strong>CNV Deletion</strong>
@@ -66,7 +66,7 @@ export default class HoverGeneView extends PureComponent {
                                 </span>
                             </Chip>
                             }
-                            {data.expression.mutation2 !== 0 &&
+                            {!data.selectCnv && data.expression.mutation2 > 0 &&
                             <Chip>
                             <span
                                 className={data.expression.mutation2 === 0 ? '' : BaseStyle.mutation2Color}> <strong>Missense / Inframe </strong>
@@ -74,7 +74,7 @@ export default class HoverGeneView extends PureComponent {
                                 </span>
                             </Chip>
                             }
-                            {data.expression.mutation3 !== 0 &&
+                            {!data.selectCnv && data.expression.mutation3 > 0 &&
                             <Chip>
                             <span
                                 className={data.expression.mutation3 === 0 ? '' : BaseStyle.mutation3Color}> <strong>Splice</strong>
@@ -82,7 +82,7 @@ export default class HoverGeneView extends PureComponent {
                             </span>
                             </Chip>
                             }
-                            {data.expression.mutation4 !== 0 &&
+                            {!data.selectCnv && data.expression.mutation4 > 0 &&
                             <Chip>
                             <span
                                 className={data.expression.mutation4 === 0 ? '' : BaseStyle.mutation4Color}> <strong>Deleterious</strong>

@@ -69,19 +69,24 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     return index;
 };
 
-let pathwayIndexFromX = (x, layout) =>
-    layout.findIndex(({start, size}) => start <= x && x < start + size);
+let pathwayIndexFromX = (x, layout) => {
+    let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
+    let layoutInstance = layout[pathwayIndex];
+    let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
+    return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+};
 
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
-    let pathwayIndex = pathwayIndexFromX(x, layout);
+    let {pathwayIndex,selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression,
+        expression:expression,
+        selectCnv:selectCnv
     };
 }
 
