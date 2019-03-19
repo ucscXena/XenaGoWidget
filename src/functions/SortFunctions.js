@@ -79,18 +79,20 @@ export function clusterSort(prunedColumns) {
     // if all are equal, then take the sum of all hit totals as a tiebreaker
     // if all are equal, then take the sum of all hit instances (all hits just equal 1) as a tiebreaker
     renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index].total !== b[index].total) {
-                return b[index].total - a[index].total;
-            }
-        }
-        let sumOfTotals = sumTotals(b) - sumTotals(a);
-        if (sumOfTotals !== 0) {
-            return sumOfTotals;
-        }
-        else {
-           return sumInstances(b) - sumInstances(a);
-        }
+        console.log(a[0],b[0])
+        if(b[0].cnvHigh !== a[0].cnvHigh) return b[0].cnvHigh - a[0].cnvHigh;
+        if(b[0].cnvLow !== a[0].cnvLow) return b[0].cnvLow - a[0].cnvLow;
+        if(b[0].mutation4 !== a[0].mutation4) return b[0].mutation4 - a[0].mutation4;
+        if(b[0].mutation3 !== a[0].mutation3) return b[0].mutation3 - a[0].mutation3;
+        if(b[0].mutation2 !== a[0].mutation2) return b[0].mutation2 - a[0].mutation2;
+
+        // for (let index = 0; index < a.length; ++index) {
+        //     if (a[index].total !== b[index].total) {
+        //         return b[index].total - a[index].total;
+        //     }
+        // }
+
+        return a[1] - b[1];
     });
     renderedData = transpose(renderedData);
     let returnColumns = {};
