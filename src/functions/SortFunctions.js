@@ -55,6 +55,23 @@ function sortColumnDensities(prunedColumns) {
     return sortedColumns;
 }
 
+export function sortByType(renderedData){
+    // sort samples first based on what gene in position 1 has the highest value
+    // proceed to each gene
+    return renderedData.sort(function (a, b) {
+        // a = sample of a.length -1 genes
+        // b = sample of b.length -1 genes
+        for (let index = 0; index < a.length; ++index) {
+            if (b[index].cnvHigh !== a[index].cnvHigh) return b[index].cnvHigh - a[index].cnvHigh;
+            if (b[index].cnvLow !== a[index].cnvLow) return b[index].cnvLow - a[index].cnvLow;
+            if (b[index].mutation4 !== a[index].mutation4) return b[index].mutation4 - a[index].mutation4;
+            if (b[index].mutation3 !== a[index].mutation3) return b[index].mutation3 - a[index].mutation3;
+            if (b[index].mutation2 !== a[index].mutation2) return b[index].mutation2 - a[index].mutation2;
+        }
+        // sort by sample name
+        return a[a.length-1] - b[b.length-1];
+    });
+}
 
 /**
  * Sort by column density followed by row.
@@ -73,27 +90,7 @@ export function clusterSort(prunedColumns) {
 
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
-
-    // sort samples first based on what gene in position 1 has the highest total
-    // total is hits of +1 from all sources
-    // if all are equal, then take the sum of all hit totals as a tiebreaker
-    // if all are equal, then take the sum of all hit instances (all hits just equal 1) as a tiebreaker
-    renderedData = renderedData.sort(function (a, b) {
-        console.log(a[0],b[0])
-        if(b[0].cnvHigh !== a[0].cnvHigh) return b[0].cnvHigh - a[0].cnvHigh;
-        if(b[0].cnvLow !== a[0].cnvLow) return b[0].cnvLow - a[0].cnvLow;
-        if(b[0].mutation4 !== a[0].mutation4) return b[0].mutation4 - a[0].mutation4;
-        if(b[0].mutation3 !== a[0].mutation3) return b[0].mutation3 - a[0].mutation3;
-        if(b[0].mutation2 !== a[0].mutation2) return b[0].mutation2 - a[0].mutation2;
-
-        // for (let index = 0; index < a.length; ++index) {
-        //     if (a[index].total !== b[index].total) {
-        //         return b[index].total - a[index].total;
-        //     }
-        // }
-
-        return a[1] - b[1];
-    });
+    renderedData = sortByType(renderedData);
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
@@ -253,15 +250,7 @@ export function synchronizedSort(prunedColumns, geneList) {
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index].total !== b[index].total) {
-                return b[index].total - a[index].total;
-            }
-        }
-        return sumTotals(b) - sumTotals(a)
-    });
-
+    renderedData = sortByType(renderedData);
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
