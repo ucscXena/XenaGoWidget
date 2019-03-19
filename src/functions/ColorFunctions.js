@@ -11,11 +11,11 @@ export function getWhiteColor() {
 }
 
 export function getCNVColorMask() {
-    return [0, 0, 200];
+    return [250, 0, 0];
 }
 
 export function getMutationColorMask() {
-    return [250, 0, 0];
+    return [0, 0, 200];
 }
 
 export function getCNVHighColorMask() {

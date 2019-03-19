@@ -42,11 +42,6 @@ body {
     padding-left: 15px;
 }
 
-.mutationColor{
-    color: firebrick;
-    font-weight: bolder;
-}
-
 .mutation2Color{
     color: #2777b4;
     font-weight: bolder;
@@ -62,8 +57,13 @@ body {
     font-weight: bolder;
 }
 
-.cnvColor{
+.mutationColor{
     color: cornflowerblue;
+    font-weight: bolder;
+}
+
+.cnvColor{
+    color: firebrick;
     font-weight: bolder;
 }
 
