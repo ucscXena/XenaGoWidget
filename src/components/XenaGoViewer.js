@@ -257,33 +257,15 @@ export default class XenaGoViewer extends PureComponent {
                     }))
             })
             .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                let pathwayData = {
-                    copyNumber,
-                    geneList,
-                    expression: mutations,
-                    pathways: this.props.pathways,
-                    cohort: cohort.name,
+                this.handleCohortData({
+                    mutations,
                     samples,
+                    copyNumber,
                     genomeBackgroundMutation,
                     genomeBackgroundCopyNumber,
-                };
-                this.setState({
-                    pathwayData: pathwayData,
-                    processing: false,
+                    geneList,
+                    cohort
                 });
-                this.props.populateGlobal(pathwayData, this.props.cohortIndex);
-                if (this.state.selectedPathways.length > 0) {
-                    this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
-                } else {
-                    this.setState({
-                        geneData: {
-                            copyNumber: [],
-                            expression: [],
-                            pathways: [],
-                            samples: [],
-                        },
-                    });
-                }
             });
     };
 
@@ -294,7 +276,7 @@ export default class XenaGoViewer extends PureComponent {
 
         if (subCohort === 'All') {
             this.selectCohort(this.state.selectedCohort);
-            return ;
+            return;
         }
 
         let samples = subCohortSamplesArray.slice(1);
@@ -317,33 +299,15 @@ export default class XenaGoViewer extends PureComponent {
                 genomeBackgroundCopyNumber
             }))
             .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                let pathwayData = {
-                    copyNumber,
-                    geneList,
-                    expression: mutations,
-                    pathways: this.props.pathways,
-                    cohort: cohort.name,
+                this.handleCohortData({
+                    mutations,
                     samples,
+                    copyNumber,
                     genomeBackgroundMutation,
                     genomeBackgroundCopyNumber,
-                };
-                this.setState({
-                    pathwayData: pathwayData,
-                    processing: false,
+                    geneList,
+                    cohort
                 });
-                this.props.populateGlobal(pathwayData, this.props.cohortIndex);
-                if (this.state.selectedPathways.length > 0) {
-                    this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
-                } else {
-                    this.setState({
-                        geneData: {
-                            copyNumber: [],
-                            expression: [],
-                            pathways: [],
-                            samples: [],
-                        },
-                    });
-                }
             });
     };
 
@@ -473,6 +437,39 @@ export default class XenaGoViewer extends PureComponent {
 
     getCohortLabel(cohortIndex) {
         return cohortIndex === 0 ? LABEL_A : LABEL_B;
+    }
+
+    handleCohortData(input) {
+        let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+
+        let pathwayData = {
+            copyNumber,
+            geneList,
+            expression: mutations,
+            pathways: this.props.pathways,
+            cohort: cohort.name,
+            samples,
+            genomeBackgroundMutation,
+            genomeBackgroundCopyNumber,
+        };
+        this.setState({
+            pathwayData: pathwayData,
+            processing: false,
+        });
+        this.props.populateGlobal(pathwayData, this.props.cohortIndex);
+        if (this.state.selectedPathways.length > 0) {
+            this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        } else {
+            this.setState({
+                geneData: {
+                    copyNumber: [],
+                    expression: [],
+                    pathways: [],
+                    samples: [],
+                },
+            });
+        }
+
     }
 }
 
