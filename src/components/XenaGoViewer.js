@@ -63,6 +63,7 @@ export default class XenaGoViewer extends PureComponent {
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
         this.state.highlightedGene = this.props.highlightedGene;
+        this.state.subCohortData = [];
 
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
@@ -140,8 +141,7 @@ export default class XenaGoViewer extends PureComponent {
                 expression.affected = pathwayHover.firstObserved;
                 expression.allGeneAffected = pathwayHover.firstTotal;
                 expression.total = pathwayHover.firstNumSamples;
-            }
-            else {
+            } else {
                 expression.affected = pathwayHover.secondObserved;
                 expression.allGeneAffected = pathwayHover.secondTotal;
                 expression.total = pathwayHover.secondNumSamples;
@@ -171,8 +171,7 @@ export default class XenaGoViewer extends PureComponent {
         if (geneHoverProps == null) {
             geneHoverProps = {};
             genesHovered = [];
-        }
-        else {
+        } else {
             genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
         }
 
@@ -194,8 +193,7 @@ export default class XenaGoViewer extends PureComponent {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
-        }
-        else {
+        } else {
             return;
         }
         let data = defaultDatasetForGeneset;
@@ -259,37 +257,59 @@ export default class XenaGoViewer extends PureComponent {
                     }))
             })
             .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                let pathwayData = {
-                    copyNumber,
-                    geneList,
-                    expression: mutations,
-                    pathways: this.props.pathways,
-                    cohort: cohort.name,
+                this.handleCohortData({
+                    mutations,
                     samples,
+                    copyNumber,
                     genomeBackgroundMutation,
                     genomeBackgroundCopyNumber,
-                };
-                this.setState({
-                    pathwayData: pathwayData,
-                    processing: false,
+                    geneList,
+                    cohort
                 });
-                this.props.populateGlobal(pathwayData, this.props.cohortIndex);
-                if (this.state.selectedPathways.length > 0) {
-                    this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
-                }
-                else {
-                    this.setState({
-                        geneData: {
-                            copyNumber: [],
-                            expression: [],
-                            pathways: [],
-                            samples: [],
-                        },
-                    });
-                }
             });
     };
 
+    selectSubCohort = (subCohortSamples) => {
+
+        let subCohortSamplesArray = subCohortSamples.split(",");
+        let subCohort = subCohortSamplesArray.slice(0, 1)[0];
+
+        if (subCohort === 'All') {
+            this.selectCohort(this.state.selectedCohort);
+            return;
+        }
+
+        let samples = subCohortSamplesArray.slice(1);
+        let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
+        this.setState({
+                processing: true
+            }
+        );
+        let geneList = this.getGenesForPathways(this.props.pathways);
+        Rx.Observable.zip(
+            sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+            datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
+            datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+            datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+            (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+                mutations,
+                samples,
+                copyNumber,
+                genomeBackgroundMutation,
+                genomeBackgroundCopyNumber
+            }))
+            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+                this.handleCohortData({
+                    mutations,
+                    samples,
+                    copyNumber,
+                    genomeBackgroundMutation,
+                    genomeBackgroundCopyNumber,
+                    geneList,
+                    cohort
+                });
+            });
+    };
 
     getGenesForNamedPathways(selectedPathways, pathways) {
         let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
@@ -316,12 +336,10 @@ export default class XenaGoViewer extends PureComponent {
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
-        let viewType = COLOR_TOTAL ;
-        if(this.props.showColorByType){
+        let viewType = COLOR_TOTAL;
+        if (this.props.showColorByType) {
             viewType = COLOR_BY_TYPE;
-        }
-        else
-        if(this.props.showColorByTypeDetail){
+        } else if (this.props.showColorByTypeDetail) {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
 
@@ -337,8 +355,10 @@ export default class XenaGoViewer extends PureComponent {
                                 style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                                 <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
+                                                    subCohorts={this.state.subCohortData}
                                                     selectedCohort={this.state.selectedCohort}
                                                     onChange={this.selectCohort}
+                                                    onChangeSubCohort={this.selectSubCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
                                     />
                                     <FilterSelector filters={filteredMutationVector}
@@ -417,6 +437,39 @@ export default class XenaGoViewer extends PureComponent {
 
     getCohortLabel(cohortIndex) {
         return cohortIndex === 0 ? LABEL_A : LABEL_B;
+    }
+
+    handleCohortData(input) {
+        let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+
+        let pathwayData = {
+            copyNumber,
+            geneList,
+            expression: mutations,
+            pathways: this.props.pathways,
+            cohort: cohort.name,
+            samples,
+            genomeBackgroundMutation,
+            genomeBackgroundCopyNumber,
+        };
+        this.setState({
+            pathwayData: pathwayData,
+            processing: false,
+        });
+        this.props.populateGlobal(pathwayData, this.props.cohortIndex);
+        if (this.state.selectedPathways.length > 0) {
+            this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        } else {
+            this.setState({
+                geneData: {
+                    copyNumber: [],
+                    expression: [],
+                    pathways: [],
+                    samples: [],
+                },
+            });
+        }
+
     }
 }
 
