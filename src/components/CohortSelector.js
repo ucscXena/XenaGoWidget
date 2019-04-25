@@ -57,14 +57,6 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
-                {/*<div style={{*/}
-                {/*    marginTop: 10,*/}
-                {/*    marginLeft: 10,*/}
-                {/*    marginBottom: 3,*/}
-                {/*    fontSize: "large",*/}
-                {/*    color: "gray",*/}
-                {/*    fontWeight: "bold"*/}
-                {/*}}>Sub-Cohort {this.props.selectedCohort}</div>*/}
                 {selectedSubCohort &&
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChangeSubCohort}
