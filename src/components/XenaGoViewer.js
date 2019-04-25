@@ -68,6 +68,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
+        console.log('cohort',cohort);
 
         if (filterString) {
             this.state.tissueExpressionFilter = filterString;
@@ -232,7 +233,10 @@ export default class XenaGoViewer extends PureComponent {
     selectCohort = (selected) => {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        AppStorageHandler.storeCohortState(selected, this.state.key);
+        let selectedObject = {
+            selected: selected
+        };
+        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
@@ -278,6 +282,11 @@ export default class XenaGoViewer extends PureComponent {
             this.selectCohort(this.state.selectedCohort);
             return;
         }
+        let selectedObject = {
+            selected: this.state.selectedCohort,
+            selectedSubCohort: subCohort,
+        };
+        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
 
         let samples = subCohortSamplesArray.slice(1);
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
