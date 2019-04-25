@@ -83,6 +83,6 @@ CohortSelector.propTypes = {
     subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
-    selectedSubCohort: PropTypes.string.isRequired,
+    selectedSubCohort: PropTypes.string,
     onChange: PropTypes.any.isRequired,
 };

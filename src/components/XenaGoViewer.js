@@ -242,6 +242,9 @@ export default class XenaGoViewer extends PureComponent {
             processing: true,
         });
         let geneList = this.getGenesForPathways(this.props.pathways);
+
+
+
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
             intersection)
