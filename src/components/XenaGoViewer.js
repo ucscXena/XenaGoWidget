@@ -241,11 +241,11 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = this.getGenesForPathways(this.props.pathways);
 
 
-        console.log("A",cohort)
+        console.log("A", cohort)
         let data = Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection).subscribe( d => {
-                console.log(d)
+            intersection).subscribe(d => {
+            console.log(d)
         })
         console.log("B")
 
@@ -298,8 +298,15 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     selectSubCohort = (subCohortSamples) => {
+
         let subCohortSamplesArray = subCohortSamples.split(",");
         let subCohort = subCohortSamplesArray.slice(0, 1)[0];
+
+        if (subCohort === 'All') {
+            this.selectCohort(this.state.selectedCohort);
+            return ;
+        }
+
         let samples = subCohortSamplesArray.slice(1);
         console.log('selecting sub cohort: ', subCohort);
         console.log('selecting sub cohort samples: ', samples);
@@ -307,7 +314,7 @@ export default class XenaGoViewer extends PureComponent {
         // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         // let cohort = this.state.cohortData.find(c => c.name === selected);
         // let cohort = AppStorageHandler.getCohortState(this.state.key);
-        
+
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
         console.log('cohort', cohort)
         // AppStorageHandler.storeCohortState(selected, this.state.key);
@@ -323,11 +330,11 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = this.getGenesForPathways(this.props.pathways);
 
 
-        console.log("C",cohort)
+        console.log("C", cohort)
         let data = Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection).subscribe( d => {
-                console.log(d)
+            intersection).subscribe(d => {
+            console.log(d)
         })
         console.log("D")
 
