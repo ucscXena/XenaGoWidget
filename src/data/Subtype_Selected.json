@@ -6004,7 +6004,7 @@
       "TCGA-WS-AB45-01"
     ]
   },
-  "TCGA Rectal Cancer (": {
+  "TCGA Rectal Cancer (READ)": {
     "GI.CIN": [
       "TCGA-2H-A9GF-01",
       "TCGA-2H-A9GH-01",
@@ -8013,7 +8013,7 @@
       "TCGA-P4-A5EA-01"
     ]
   },
-  "TCGA Liver Cancer (LIHC) ": {
+  "TCGA Liver Cancer (LIHC)": {
     "LIHC.NA": [
       "TCGA-CC-5259-01",
       "TCGA-CC-A123-01",
