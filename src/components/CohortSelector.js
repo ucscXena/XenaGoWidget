@@ -9,7 +9,8 @@ export class CohortSelector extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            selectedCohort: props.selectedCohort
+            selectedCohort: props.selectedCohort,
+            selectedSubCohort: props.selectedSubCohort
         };
     }
 
@@ -25,7 +26,14 @@ export class CohortSelector extends PureComponent {
     render() {
         return (
             <div>
-                <div style={{marginTop:10,marginLeft:10,marginBottom:3,fontSize:"large",color:"gray",fontWeight:"bold"}}>Select Cohort {this.props.cohortLabel}</div>
+                <div style={{
+                    marginTop: 10,
+                    marginLeft: 10,
+                    marginBottom: 3,
+                    fontSize: "large",
+                    color: "gray",
+                    fontWeight: "bold"
+                }}>Select Cohort {this.props.cohortLabel}</div>
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
                         value={this.state.selectedCohort}
@@ -41,6 +49,30 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
+                {/*<div style={{*/}
+                {/*    marginTop: 10,*/}
+                {/*    marginLeft: 10,*/}
+                {/*    marginBottom: 3,*/}
+                {/*    fontSize: "large",*/}
+                {/*    color: "gray",*/}
+                {/*    fontWeight: "bold"*/}
+                {/*}}>Sub-Cohort {this.props.selectedCohort}</div>*/}
+                <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                        onChange={this.onChange}
+                        value={this.state.selectedSubCohort}
+                        className={BaseStyle.softflow}
+                >
+                    <option>All</option>
+                    {
+                        this.props.subCohorts.map(c => {
+                            return (
+                                <option value={c.name} key={c.name}>
+                                    {c.name}
+                                </option>
+                            )
+                        })
+                    }
+                </select>
             </div>
         );
     }
@@ -48,7 +80,9 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
     cohorts: PropTypes.array.isRequired,
+    subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
+    selectedSubCohort: PropTypes.string.isRequired,
     onChange: PropTypes.any.isRequired,
 };

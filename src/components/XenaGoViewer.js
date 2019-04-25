@@ -63,6 +63,7 @@ export default class XenaGoViewer extends PureComponent {
         this.state.loadState = 'Loading';
         this.state.hoveredPathways = [];
         this.state.highlightedGene = this.props.highlightedGene;
+        this.state.subCohortData  = [];
 
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
@@ -337,6 +338,7 @@ export default class XenaGoViewer extends PureComponent {
                                 style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                                 <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                     <CohortSelector cohorts={this.state.cohortData}
+                                                    subCohorts={this.state.subCohortData}
                                                     selectedCohort={this.state.selectedCohort}
                                                     onChange={this.selectCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
