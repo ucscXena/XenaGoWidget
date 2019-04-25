@@ -11,7 +11,8 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohort: props.selectedSubCohort
+            selectedSubCohort: props.selectedSubCohort,
+            selectedSubSamples: props.selectedSubCohort
         };
     }
 
@@ -23,6 +24,10 @@ export class CohortSelector extends PureComponent {
         }
     };
 
+    onChangeSubCohort = (event) => {
+        this.setState({selectedSubCohort: event.target.value});
+        this.props.onChangeSubCohort(event.target.value);
+    };
 
     render() {
 
@@ -71,7 +76,7 @@ export class CohortSelector extends PureComponent {
                 {/*}}>Sub-Cohort {this.props.selectedCohort}</div>*/}
                 {selectedSubCohort &&
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                        onChange={this.onChange}
+                        onChange={this.onChangeSubCohort}
                         value={this.state.selectedSubCohort}
                         className={BaseStyle.softflow}
                 >
@@ -79,7 +84,7 @@ export class CohortSelector extends PureComponent {
                     {
                         Object.entries(selectedSubCohort).map(c => {
                                 return (
-                                    <option value={c[0]} key={c[0]}>
+                                    <option value={c} key={c[0]}>
                                         {c[0]}
                                     </option>
                                 )
@@ -100,4 +105,5 @@ CohortSelector.propTypes = {
     selectedCohort: PropTypes.string.isRequired,
     selectedSubCohort: PropTypes.string,
     onChange: PropTypes.any.isRequired,
+    onChangeSubCohort: PropTypes.any.isRequired,
 };
