@@ -19,6 +19,10 @@ const GithubIcon = () => (
     </svg>
 );
 
+const XenaIcon = () => (
+    <img src="images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
+);
+
 export default class NavigationBar extends PureComponent {
 
     constructor(props) {
@@ -50,7 +54,7 @@ export default class NavigationBar extends PureComponent {
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
-                <AppBar title='Xena Gene Set Viewer'>
+                <AppBar title='Xena Gene Set Viewer' leftIcon={<XenaIcon />}>
                     <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
                         <table>
                             <tbody>
