@@ -31,16 +31,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-        let selectedSubCohort = subCohorts[this.state.selectedCohort]
-        console.log(subCohorts)
-        if (selectedSubCohort) {
-            console.log(selectedSubCohort)
-            // for(let key of Object.keys(subCohorts)){
-            //     console.log(key,this.state.selectedCohort)
-            //     console.log(subCohorts[key])
-            // }
-        }
-
+        let selectedSubCohort = subCohorts[this.state.selectedCohort];
         return (
             <div>
                 <div style={{
