@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
+import subCohorts from '../data/Subtype_Selected';
 
 
 export class CohortSelector extends PureComponent {
@@ -24,6 +25,17 @@ export class CohortSelector extends PureComponent {
 
 
     render() {
+
+        let selectedSubCohort = subCohorts[this.state.selectedCohort]
+        console.log(subCohorts)
+        if (selectedSubCohort) {
+            console.log(selectedSubCohort)
+            // for(let key of Object.keys(subCohorts)){
+            //     console.log(key,this.state.selectedCohort)
+            //     console.log(subCohorts[key])
+            // }
+        }
+
         return (
             <div>
                 <div style={{
@@ -57,6 +69,7 @@ export class CohortSelector extends PureComponent {
                 {/*    color: "gray",*/}
                 {/*    fontWeight: "bold"*/}
                 {/*}}>Sub-Cohort {this.props.selectedCohort}</div>*/}
+                {selectedSubCohort &&
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
                         value={this.state.selectedSubCohort}
@@ -64,15 +77,17 @@ export class CohortSelector extends PureComponent {
                 >
                     <option>All</option>
                     {
-                        this.props.subCohorts.map(c => {
-                            return (
-                                <option value={c.name} key={c.name}>
-                                    {c.name}
-                                </option>
-                            )
-                        })
+                        Object.entries(selectedSubCohort).map(c => {
+                                return (
+                                    <option value={c[0]} key={c[0]}>
+                                        {c[0]}
+                                    </option>
+                                )
+                            }
+                        )
                     }
                 </select>
+                }
             </div>
         );
     }
