@@ -306,8 +306,10 @@ export default class XenaGoViewer extends PureComponent {
         // console.log('cohort data: ',this.state.cohortData);
         // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         // let cohort = this.state.cohortData.find(c => c.name === selected);
-        let cohort = AppStorageHandler.getCohortState(this.state.key);
-        console.log('conohrt', cohort)
+        // let cohort = AppStorageHandler.getCohortState(this.state.key);
+        
+        let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
+        console.log('cohort', cohort)
         // AppStorageHandler.storeCohortState(selected, this.state.key);
         // this.setState({
         //     selectedCohort: selected,
