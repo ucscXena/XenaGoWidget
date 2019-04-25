@@ -239,16 +239,6 @@ export default class XenaGoViewer extends PureComponent {
             processing: true,
         });
         let geneList = this.getGenesForPathways(this.props.pathways);
-
-
-        console.log("A", cohort)
-        let data = Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection).subscribe(d => {
-            console.log(d)
-        })
-        console.log("B")
-
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
             intersection)
@@ -308,36 +298,12 @@ export default class XenaGoViewer extends PureComponent {
         }
 
         let samples = subCohortSamplesArray.slice(1);
-        console.log('selecting sub cohort: ', subCohort);
-        console.log('selecting sub cohort samples: ', samples);
-        // console.log('cohort data: ',this.state.cohortData);
-        // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-        // let cohort = this.state.cohortData.find(c => c.name === selected);
-        // let cohort = AppStorageHandler.getCohortState(this.state.key);
-
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
-        console.log('cohort', cohort)
-        // AppStorageHandler.storeCohortState(selected, this.state.key);
-        // this.setState({
-        //     selectedCohort: selected,
-        //     selectedCohortData: cohort,
-        //     processing: true,
-        // });
         this.setState({
                 processing: true
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
-
-
-        console.log("C", cohort)
-        let data = Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection).subscribe(d => {
-            console.log(d)
-        })
-        console.log("D")
-
         Rx.Observable.zip(
             sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
             datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
