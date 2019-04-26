@@ -298,7 +298,8 @@ export default class XenaGoViewer extends PureComponent {
             selectedCohort = subCohortSamples.selected ;
             subCohort = subCohortSamples.selectedSubCohort ;
             let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples.selectedSubCohort];
-            console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
+            // console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
+            console.log('input sub.2',subCohortSamples,'-',this.state.selectedCohort,'-',subCohortSamples.selectedSubCohort,'-',selectedSubCohort)
             // console.log('AA',selectedSubCohort)
             samples = Object.entries(selectedSubCohort).map( c => {
                 return c[1]
@@ -306,14 +307,12 @@ export default class XenaGoViewer extends PureComponent {
         }
         else {
             // get samples for cohort array
-            // import subCohorts from '../data/Subtype_Selected';
-            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples.selectedSubCohort];
-            console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
-            // console.log('AA',selectedSubCohort)
+            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples];
+            console.log('input sub.3',subCohortSamples,'-',this.state.selectedCohort,'-',subCohortSamples.selectedSubCohort,'-',selectedSubCohort)
             samples = Object.entries(selectedSubCohort).map( c => {
                 return c[1]
             });
-            // console.log('AAA',selectedSubCohort,' vs ',samples);
+            console.log('AAA',selectedSubCohort,' vs ',samples);
         }
 
         if (subCohort === 'All') {

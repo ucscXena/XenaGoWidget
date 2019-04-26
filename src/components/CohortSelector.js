@@ -11,10 +11,8 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
-
-            
-            selectedSubCohort: props.selectedSubCohort,
-            selectedSubSamples: props.selectedSubCohort
+            // selectedSubCohort: props.selectedSubCohort,
+            // selectedSubSamples: props.selectedSubCohort
         };
     }
 
@@ -34,8 +32,8 @@ export class CohortSelector extends PureComponent {
     render() {
 
         let selectedSubCohort = subCohorts[this.state.selectedCohort];
-        console.log('seelected sub cohorts',selectedSubCohort)
-        console.log('seelected sub cohorts state',this.state.selectedSubCohort)
+        console.log('seelected sub cohorts',selectedSubCohort);
+        console.log('seelected sub cohorts state',this.state.selectedSubCohort);
         return (
             <div>
                 <div style={{
@@ -71,7 +69,7 @@ export class CohortSelector extends PureComponent {
                     {
                         Object.entries(selectedSubCohort).map(c => {
                                 return (
-                                    <option value={c} key={c[0]}>
+                                    <option value={c[0]} key={c[0]}>
                                         {c[0]}
                                     </option>
                                 )
