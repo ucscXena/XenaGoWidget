@@ -27,6 +27,7 @@ import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../functions/DrawFunctions";
 import {DetailedLegend} from "./DetailedLegend";
 import {TwoColorLegend} from "./TwoColorLegend";
+import subCohorts from '../data/Subtype_Selected';
 
 
 function lowerCaseCompareName(a, b) {
@@ -68,13 +69,13 @@ export default class XenaGoViewer extends PureComponent {
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-
         if (filterString) {
             this.state.tissueExpressionFilter = filterString;
         }
 
         if (cohort && cohort.selected) {
             this.state.selectedCohort = cohort.selected;
+            this.state.selectedSubCohort = cohort.selectedSubCohort;
         }
     }
 
@@ -192,7 +193,11 @@ export default class XenaGoViewer extends PureComponent {
     loadCohortData() {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-            this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
+            if (selectedCohort2.selectedSubCohort) {
+                this.selectSubCohort(selectedCohort2);
+            } else {
+                this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
+            }
         } else {
             return;
         }
@@ -232,7 +237,10 @@ export default class XenaGoViewer extends PureComponent {
     selectCohort = (selected) => {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
-        AppStorageHandler.storeCohortState(selected, this.state.key);
+        let selectedObject = {
+            selected: selected
+        };
+        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         this.setState({
             selectedCohort: selected,
             selectedCohortData: cohort,
@@ -269,20 +277,35 @@ export default class XenaGoViewer extends PureComponent {
             });
     };
 
-    selectSubCohort = (subCohortSamples) => {
+    selectSubCohort = (subCohortSelected) => {
+        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
 
-        let subCohortSamplesArray = subCohortSamples.split(",");
-        let subCohort = subCohortSamplesArray.slice(0, 1)[0];
-
-        if (subCohort === 'All') {
-            this.selectCohort(this.state.selectedCohort);
-            return;
+        // let subCohortSamplesArray, subCohort, samples;
+        let samples, selectedObject;
+        let selectedCohort = this.state.selectedCohort;
+        if (typeof subCohortSelected === 'object') {
+            samples = selectedSubCohort;
+            selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];;
+        } else {
+            // get samples for cohort array
+            if (subCohortSelected === 'All') {
+                this.selectCohort(this.state.selectedCohort);
+                return;
+            }
+            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSelected];
+            samples = Object.entries(selectedSubCohort).map(c => {
+                return c[1]
+            });
+            selectedObject = {
+                selected: selectedCohort,
+                selectedSubCohort: subCohortSelected,
+            };
         }
-
-        let samples = subCohortSamplesArray.slice(1);
+        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
         this.setState({
-                processing: true
+                processing: true,
+                selectedSubCohort: selectedObject.selectedSubCohort
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
@@ -343,7 +366,6 @@ export default class XenaGoViewer extends PureComponent {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
 
-
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
                 return (
@@ -357,6 +379,7 @@ export default class XenaGoViewer extends PureComponent {
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     subCohorts={this.state.subCohortData}
                                                     selectedCohort={this.state.selectedCohort}
+                                                    selectedSubCohort={this.state.selectedSubCohort}
                                                     onChange={this.selectCohort}
                                                     onChangeSubCohort={this.selectSubCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}

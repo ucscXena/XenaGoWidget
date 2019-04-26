@@ -12,7 +12,6 @@ export class CohortSelector extends PureComponent {
         this.state = {
             selectedCohort: props.selectedCohort,
             selectedSubCohort: props.selectedSubCohort,
-            selectedSubSamples: props.selectedSubCohort
         };
     }
 
@@ -31,7 +30,8 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-        let selectedSubCohort = subCohorts[this.state.selectedCohort];
+        let subCohortsForSelected = subCohorts[this.state.selectedCohort];
+        let {cohorts,cohortLabel} = this.props ;
         return (
             <div>
                 <div style={{
@@ -41,14 +41,14 @@ export class CohortSelector extends PureComponent {
                     fontSize: "large",
                     color: "gray",
                     fontWeight: "bold"
-                }}>Select Cohort {this.props.cohortLabel}</div>
+                }}>Select Cohort {cohortLabel}</div>
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
                         value={this.state.selectedCohort}
                         className={BaseStyle.softflow}
                 >
                     {
-                        this.props.cohorts.map(c => {
+                        cohorts.map(c => {
                             return (
                                 <option value={c.name} key={c.name}>
                                     {c.name}
@@ -57,7 +57,7 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
-                {selectedSubCohort &&
+                {subCohortsForSelected &&
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChangeSubCohort}
                         value={this.state.selectedSubCohort}
@@ -65,9 +65,9 @@ export class CohortSelector extends PureComponent {
                 >
                     <option>All</option>
                     {
-                        Object.entries(selectedSubCohort).map(c => {
+                        Object.entries(subCohortsForSelected).map(c => {
                                 return (
-                                    <option value={c} key={c[0]}>
+                                    <option value={c[0]} key={c[0]}>
                                         {c[0]}
                                     </option>
                                 )
