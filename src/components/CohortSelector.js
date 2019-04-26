@@ -11,6 +11,8 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
+
+            
             selectedSubCohort: props.selectedSubCohort,
             selectedSubSamples: props.selectedSubCohort
         };
@@ -32,6 +34,8 @@ export class CohortSelector extends PureComponent {
     render() {
 
         let selectedSubCohort = subCohorts[this.state.selectedCohort];
+        console.log('seelected sub cohorts',selectedSubCohort)
+        console.log('seelected sub cohorts state',this.state.selectedSubCohort)
         return (
             <div>
                 <div style={{

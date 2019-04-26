@@ -407,6 +407,7 @@ export default class XenaGoViewer extends PureComponent {
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     subCohorts={this.state.subCohortData}
                                                     selectedCohort={this.state.selectedCohort}
+                                                    selectedSubCohort={this.state.selectedSubCohort}
                                                     onChange={this.selectCohort}
                                                     onChangeSubCohort={this.selectSubCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
