@@ -226,7 +226,7 @@ export default class XenaGoViewer extends PureComponent {
                 }
             })
             .sort(lowerCaseCompareName);
-        console.log('loading cohort data with',cohortData,'and',data)
+        console.log('loading cohort data with', cohortData, 'and', data)
         this.setState({
             loadState: 'loaded',
             cohortData
@@ -282,56 +282,61 @@ export default class XenaGoViewer extends PureComponent {
             });
     };
 
-    selectSubCohort = (subCohortSamples) => {
+    selectSubCohort = (subCohortSelected) => {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
 
-        let subCohortSamplesArray, subCohort, samples;
-        let selectedCohort  = this.state.selectedCohort;
-        console.log('input sub',subCohortSamples);
-        if (typeof subCohortSamples === 'string' && subCohortSamples.indexOf(",") > 0) {
-            subCohortSamplesArray = subCohortSamples.split(",");
-            console.log('input sub.1',subCohortSamples,subCohortSamplesArray)
-            subCohort = subCohortSamplesArray.slice(0, 1)[0];
-            samples = subCohortSamplesArray.slice(1);
-        }
-        else if( typeof subCohortSamples === 'object'){
-            selectedCohort = subCohortSamples.selected ;
-            subCohort = subCohortSamples.selectedSubCohort ;
-            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples.selectedSubCohort];
+        // let subCohortSamplesArray, subCohort, samples;
+        let samples;
+        let selectedCohort = this.state.selectedCohort;
+        let selectedObject;
+        console.log('input sub', subCohortSelected);
+        // if (typeof subCohortSelected === 'string' && subCohortSelected.indexOf(",") > 0) {
+        //     subCohortSamplesArray = subCohortSelected.split(",");
+        //     console.log('input sub.1',subCohortSelected,subCohortSamplesArray)
+        //     subCohort = subCohortSamplesArray.slice(0, 1)[0];
+        //     samples = subCohortSamplesArray.slice(1);
+        // }
+        // else
+        if (typeof subCohortSelected === 'object') {
+            selectedCohort = subCohortSelected.selected;
+            // subCohort = subCohortSamples.selectedSubCohort ;
+            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
             // console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
-            console.log('input sub.2',subCohortSamples,'-',this.state.selectedCohort,'-',subCohortSamples.selectedSubCohort,'-',selectedSubCohort)
+            console.log('input sub.2', subCohortSelected, '-', this.state.selectedCohort, '-', subCohortSelected.selectedSubCohort, '-', selectedSubCohort)
             // console.log('AA',selectedSubCohort)
-            samples = Object.entries(selectedSubCohort).map( c => {
-                return c[1]
-            });
-        }
-        else {
+            // samples = Object.entries(selectedSubCohort.selectedSubCohort).map(c => {
+            //     return c[1]
+            // });
+            samples = selectedSubCohort;
+            selectedObject = subCohortSelected;
+        } else {
             // get samples for cohort array
-            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples];
-            console.log('input sub.3',subCohortSamples,'-',this.state.selectedCohort,'-',subCohortSamples.selectedSubCohort,'-',selectedSubCohort)
-            samples = Object.entries(selectedSubCohort).map( c => {
+            if (subCohortSelected === 'All') {
+                this.selectCohort(this.state.selectedCohort);
+                return;
+            }
+            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSelected];
+            console.log('input sub.3', subCohortSelected, '-', this.state.selectedCohort, '-', subCohortSelected.selectedSubCohort, '-', selectedSubCohort)
+            samples = Object.entries(selectedSubCohort).map(c => {
                 return c[1]
             });
-            console.log('AAA',selectedSubCohort,' vs ',samples);
+            console.log('AAA', selectedSubCohort, ' vs ', samples);
+            selectedObject = {
+                selected: selectedCohort,
+                selectedSubCohort: subCohortSelected,
+            };
         }
 
-        if (subCohort === 'All') {
-            this.selectCohort(this.state.selectedCohort);
-            return;
-        }
-        let selectedObject = {
-            selected: selectedCohort,
-            selectedSubCohort: subCohort,
-        };
-        console.log('subcohort storing cohort state',selectedObject);
-        console.log('cohort data',this.state.cohortData);
+        console.log('subcohort storing cohort state', selectedObject);
+        console.log('cohort data', this.state.cohortData);
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
 
-        console.log('selected cohort',this.state.selectedCohort)
+        console.log('selected cohort', this.state.selectedCohort)
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
-        console.log('FOUND cohort',cohort)
+        console.log('FOUND cohort', cohort)
         this.setState({
-                processing: true
+                processing: true,
+                selectedSubCohort: selectedObject.selectedSubCohort
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
@@ -392,6 +397,7 @@ export default class XenaGoViewer extends PureComponent {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
 
+        console.log('XGV state', this.state)
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
