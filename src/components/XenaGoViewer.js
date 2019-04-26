@@ -226,6 +226,7 @@ export default class XenaGoViewer extends PureComponent {
                 }
             })
             .sort(lowerCaseCompareName);
+        console.log('loading cohort data with',cohortData,'and',data)
         this.setState({
             loadState: 'loaded',
             cohortData
@@ -282,17 +283,32 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     selectSubCohort = (subCohortSamples) => {
+        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
 
         let subCohortSamplesArray, subCohort, samples;
+        let selectedCohort  = this.state.selectedCohort;
         console.log('input sub',subCohortSamples);
         if (typeof subCohortSamples === 'string' && subCohortSamples.indexOf(",") > 0) {
             subCohortSamplesArray = subCohortSamples.split(",");
+            console.log('input sub.1',subCohortSamples,subCohortSamplesArray)
             subCohort = subCohortSamplesArray.slice(0, 1)[0];
             samples = subCohortSamplesArray.slice(1);
-        } else {
+        }
+        else if( typeof subCohortSamples === 'object'){
+            selectedCohort = subCohortSamples.selected ;
+            subCohort = subCohortSamples.selectedSubCohort ;
+            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples.selectedSubCohort];
+            console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
+            // console.log('AA',selectedSubCohort)
+            samples = Object.entries(selectedSubCohort).map( c => {
+                return c[1]
+            });
+        }
+        else {
             // get samples for cohort array
             // import subCohorts from '../data/Subtype_Selected';
             let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSamples.selectedSubCohort];
+            console.log('input sub.2',subCohorts,subCohortSamples,selectedSubCohort)
             // console.log('AA',selectedSubCohort)
             samples = Object.entries(selectedSubCohort).map( c => {
                 return c[1]
@@ -305,12 +321,16 @@ export default class XenaGoViewer extends PureComponent {
             return;
         }
         let selectedObject = {
-            selected: this.state.selectedCohort,
+            selected: selectedCohort,
             selectedSubCohort: subCohort,
         };
+        console.log('subcohort storing cohort state',selectedObject);
+        console.log('cohort data',this.state.cohortData);
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
 
+        console.log('selected cohort',this.state.selectedCohort)
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
+        console.log('FOUND cohort',cohort)
         this.setState({
                 processing: true
             }
