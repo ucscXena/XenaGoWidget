@@ -2,14 +2,19 @@ import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
-import {getGeneColorMask} from '../functions/ColorFunctions'
+import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
+const MAX_SCORE = 100;
 
 export default class LabelSet extends PureComponent {
 
     constructor(props) {
         super(props);
+    }
+
+    getRandomHeight() {
+        return Math.round(Math.random() * MAX_SCORE);
     }
 
     render() {
@@ -28,6 +33,7 @@ export default class LabelSet extends PureComponent {
         } = this.props;
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
+            const possibleHeight = height - GENE_LABEL_HEIGHT - MAX_SCORE;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
             return layout.map((el, i) => {
                 let d = pathways[i];
@@ -38,26 +44,48 @@ export default class LabelSet extends PureComponent {
                 hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
+                let randomHeight = this.getRandomHeight();
+                // offset + (cohortIndex===0 ? -labelHeight : labelHeight)
+                let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
+                console.log(cohortIndex, labelOffset, height, labelHeight);
+                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight + MAX_SCORE;
                 return (
-                    <HeaderLabel
-                        labelHeight={labelHeight}
-                        labelOffset={offset}
-                        numSamples={numSamples}
-                        geneLength={geneLength}
-                        left={el.start}
-                        width={el.size}
-                        item={d}
-                        selected={selected}
-                        hovered={hovered}
-                        highlighted={highlighted}
-                        labelString={labelString}
-                        key={labelKey + '-' + cohortIndex}
-                        colorSettings={colorSettings}
-                    />
+                    <div key={`${labelKey}-${cohortIndex}-outer`}>
+                        <DiffLabel
+                            labelHeight={randomHeight}
+                            labelOffset={actualOffset}
+                            numSamples={numSamples}
+                            geneLength={geneLength}
+                            left={el.start}
+                            width={el.size}
+                            item={d}
+                            selected={selected}
+                            hovered={hovered}
+                            highlighted={highlighted}
+                            labelString={labelString}
+                            key={labelKey + '-' + cohortIndex + 'diff'}
+                            cohortIndex={cohortIndex}
+                            colorSettings={colorSettings}
+                        />
+                        <HeaderLabel
+                            labelHeight={labelHeight}
+                            labelOffset={offset}
+                            numSamples={numSamples}
+                            geneLength={geneLength}
+                            left={el.start}
+                            width={el.size}
+                            item={d}
+                            selected={selected}
+                            hovered={hovered}
+                            highlighted={highlighted}
+                            labelString={labelString}
+                            key={labelKey + '-' + cohortIndex}
+                            colorSettings={colorSettings}
+                        />
+                    </div>
                 )
             });
-        }
-        else {
+        } else {
             return <div></div>;
         }
     }
