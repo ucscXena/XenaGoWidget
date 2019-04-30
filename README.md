@@ -23,16 +23,16 @@ React widget for analyzing expression of tissue samples within a pathway or set 
 
 Demo: http://xenademo.berkeleybop.io/xena/
 
-<a href="images/bladder1.png">
-  <img src="images/bladder1.png" alt="Bladder example" height="400">
+<a href="docs/images/bladder1.png">
+  <img src="docs/images/bladder1.png" alt="Bladder example" height="400">
 </a>
 
-<a href="images/brca1.png">
-  <img src="images/brca1.png" alt="BRCA example" height="400">
+<a href="docs/images/brca1.png">
+  <img src="docs/images/brca1.png" alt="BRCA example" height="400">
 </a>
 
-<a href="images/meso1.png">
-  <img src="images/meso1.png" alt="Meso example" height="400">
+<a href="docs/images/meso1.png">
+  <img src="docs/images/meso1.png" alt="Meso example" height="400">
 </a>
 
 

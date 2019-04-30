@@ -35,7 +35,7 @@ class Demo extends PureComponent {
                     link={[
                         {"rel": "icon",
                             "type": "image/png",
-                            "href": "images/xenalogo_hfz_icon.ico"
+                            "href": "src/images/xenalogo_hfz_icon.ico"
                         }
                     ]}
                 />
