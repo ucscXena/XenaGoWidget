@@ -35,7 +35,7 @@ class Demo extends PureComponent {
                     link={[
                         {"rel": "icon",
                             "type": "image/png",
-                            "href": "https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/images/xenalogo_hfz_icon.ico"
+                            "href": "https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_hfz_icon.ico"
                         }
                     ]}
                 />
