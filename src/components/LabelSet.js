@@ -5,7 +5,7 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
-const MAX_SCORE = 100;
+const MAX_SCORE = 300;
 
 export default class LabelSet extends PureComponent {
 
@@ -33,7 +33,7 @@ export default class LabelSet extends PureComponent {
         } = this.props;
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
-            const possibleHeight = height - GENE_LABEL_HEIGHT - MAX_SCORE;
+            const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
             return layout.map((el, i) => {
                 let d = pathways[i];
@@ -47,8 +47,8 @@ export default class LabelSet extends PureComponent {
                 let randomHeight = this.getRandomHeight();
                 // offset + (cohortIndex===0 ? -labelHeight : labelHeight)
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-                console.log(cohortIndex, labelOffset, height, labelHeight);
-                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight + MAX_SCORE;
+                // console.log(cohortIndex, labelOffset, height, labelHeight);
+                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
                         <DiffLabel
