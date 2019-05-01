@@ -41,6 +41,8 @@ export default class LabelWrapper extends PureComponent {
             , data: {pathways}
         } = this.props;
 
+        console.log('LW',JSON.parse(JSON.stringify(pathways)))
+
         return (
             <div style={{...styles.overlay, width, height, top: 77 + offset}}
                  onMouseMove={onMouseMove}

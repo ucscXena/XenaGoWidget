@@ -27,7 +27,10 @@ export default class LabelSet extends PureComponent {
             , colorSettings
             , data
         } = this.props;
+
+        console.log('1 LS: input pathways',JSON.parse(JSON.stringify(pathways)));
         if (associateData.length > 0 && pathways.length === layout.length) {
+            console.log('2 LS: input pathways',JSON.parse(JSON.stringify(pathways)));
             const numSamples = data.samples.length;
             // const possibleHeight = height - GENE_LABEL_HEIGHT ;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
@@ -43,9 +46,10 @@ export default class LabelSet extends PureComponent {
                 let highlighted = highlightedGene === labelKey;
                 let maxScore = height / MAX_SCORE ;
                 let randomHeight = d.diffScore * maxScore;
+                // let randomHeight = Math.random()*100;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
-                // console.log(cohortIndex,d.diffScore)
+                // console.log(cohortIndex,JSON.parse(JSON.stringify(pathways)),i,JSON.stringify(d.diffScore))
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
                         { ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 && d.diffScore < 0) &&

@@ -367,6 +367,7 @@ export default class XenaGoViewer extends PureComponent {
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
+                console.log('XGV gene data',JSON.parse(JSON.stringify(this.state.geneData)))
                 return (
                     <table>
                         <tbody>

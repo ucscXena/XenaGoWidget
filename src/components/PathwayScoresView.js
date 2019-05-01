@@ -106,11 +106,15 @@ class PathwayScoresView extends PureComponent {
     };
 
     componentWillMount() {
+        console.log('PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+        console.log('PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
     }
 
     componentDidUpdate() {
+        console.log('PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+        console.log('PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
     }
 
     onMouseOut = () => {
@@ -136,6 +140,8 @@ class PathwayScoresView extends PureComponent {
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType
         } = this.props;
+
+        console.log('PSV',JSON.parse(JSON.stringify(data.pathways)));
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -223,6 +229,8 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
+        console.log('PSVC: input data',pathways)
+
         let hashAssociation = {
             expression,
             copyNumber,
@@ -278,10 +286,14 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
+        // console.log('input returned value',returnedValue)
+        console.log('PSVC input returned value',JSON.parse(JSON.stringify(returnedValue.pathways)))
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
         }
+
+        console.log('PSVC output returned value',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
         internalData = returnedValue.data;
 

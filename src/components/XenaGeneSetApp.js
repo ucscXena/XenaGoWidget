@@ -360,8 +360,9 @@ export default class XenaGeneSetApp extends PureComponent {
     shareGlobalGeneData = (geneData, cohortIndex) => {
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
+        console.log('XGSA input finalGeneData', geneData0,geneData1)
         let finalGeneData = this.calculateDiffs(geneData0, geneData1);
-        // console.log('output finalGeneData', finalGeneData)
+        console.log('XGSA output finalGeneData', geneData0,geneData1)
         this.setState({
             geneData: finalGeneData
         });
