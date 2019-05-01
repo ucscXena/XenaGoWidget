@@ -47,7 +47,7 @@ export default class LabelSet extends PureComponent {
                 let randomHeight = this.getRandomHeight();
                 // offset + (cohortIndex===0 ? -labelHeight : labelHeight)
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-                // console.log(cohortIndex, labelOffset, height, labelHeight);
+                // console.log(cohortIndex, labelOffset, height, labelHeight,d);
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
