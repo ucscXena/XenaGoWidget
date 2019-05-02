@@ -33,50 +33,21 @@ export class DiffLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, highlighted,cohortIndex} = this.props;
+        let {labelOffset, left, width, labelHeight, cohortIndex} = this.props;
 
         // let colorString = interpolate(score);
         let colorString = cohortIndex === 0 ? 'green' : 'hotpink';
 
-
-
-        if (hovered) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
-                strokeWidth: 1,
-                borderRadius: '15px',
-                boxShadow: '0 0 2px 2px green inset',
-                cursor: 'pointer'
-            }
-        } else if (highlighted) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
-                boxShadow: '0 0 2px 2px inset ' + getHighlightedColor(),
-                strokeWidth: 1,
-                cursor: 'pointer'
-            }
-        } else {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
-                strokeWidth: 1,
-                opacity: 0.5,
-                cursor: 'pointer',
-            }
+        return {
+            position: 'absolute',
+            top: labelOffset,
+            left: left,
+            height: labelHeight,
+            width: width,
+            backgroundColor: colorString,
+            strokeWidth: 1,
+            opacity: 0.5,
+            cursor: 'pointer',
         }
     }
 
@@ -114,9 +85,6 @@ DiffLabel.propTypes = {
     labelString: PropTypes.string.isRequired,
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
-    selected: PropTypes.any.isRequired,
-    hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
-    highlighted: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
 };

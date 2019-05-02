@@ -77,6 +77,17 @@ export default class XenaGoViewer extends PureComponent {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        let returnValue = super.shouldComponentUpdate(nextProps,nextState);
+        // if(returnValue && this.props.geneDataStats.length >0 ){
+        //     console.log(this.state.key,returnValue,'should',JSON.parse(JSON.stringify(this.props.geneDataStats)),JSON.parse(JSON.stringify(nextProps.geneDataStats)))
+        // }
+        // return !isEqual(nextProps, this.props) ||
+        //     !isEqual(nextState, this.state);
+        return returnValue ;
+    }
+
+
 
     setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
@@ -367,7 +378,7 @@ export default class XenaGoViewer extends PureComponent {
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
-                console.log('XGV gene data',JSON.parse(JSON.stringify(this.state.geneData)))
+                console.log(this.props.cohortIndex,'XGV gene data',JSON.parse(JSON.stringify(this.state.geneData)))
                 return (
                     <table>
                         <tbody>

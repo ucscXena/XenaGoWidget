@@ -28,9 +28,9 @@ export default class LabelSet extends PureComponent {
             , data
         } = this.props;
 
-        console.log('1 LS: input pathways',JSON.parse(JSON.stringify(pathways)));
+        console.log(cohortIndex,'LS: input pathways',JSON.parse(JSON.stringify(pathways)));
         if (associateData.length > 0 && pathways.length === layout.length) {
-            console.log('2 LS: input pathways',JSON.parse(JSON.stringify(pathways)));
+            console.log(cohortIndex,'LS: executing pathways',JSON.parse(JSON.stringify(pathways)));
             const numSamples = data.samples.length;
             // const possibleHeight = height - GENE_LABEL_HEIGHT ;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
@@ -61,9 +61,6 @@ export default class LabelSet extends PureComponent {
                             left={el.start}
                             width={el.size}
                             item={d}
-                            selected={selected}
-                            hovered={hovered}
-                            highlighted={highlighted}
                             labelString={labelString}
                             key={labelKey + '-' + cohortIndex + 'diff'}
                             cohortIndex={cohortIndex}

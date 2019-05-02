@@ -106,16 +106,16 @@ class PathwayScoresView extends PureComponent {
     };
 
     componentWillMount() {
-        console.log('PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
+        console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-        console.log('PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
+        console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
     }
 
-    componentDidUpdate() {
-        console.log('PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-        console.log('PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    }
+    // componentDidUpdate() {
+    //     console.log(this.props.cohortIndex,'PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+    //     console.log(this.props.cohortIndex,'PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    // }
 
     onMouseOut = () => {
         let {onHover} = this.props;
@@ -141,7 +141,9 @@ class PathwayScoresView extends PureComponent {
             viewType
         } = this.props;
 
-        console.log('PSV',JSON.parse(JSON.stringify(data.pathways)));
+        console.log(cohortIndex,'PSV pre-share',JSON.parse(JSON.stringify(data.pathways)));
+            this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+        console.log(cohortIndex,'PSV post-share',JSON.parse(JSON.stringify(data.pathways)));
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
