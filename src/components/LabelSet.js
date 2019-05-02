@@ -5,7 +5,7 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
-const MAX_SCORE = 50;
+const MAX_SCORE = 200;
 
 export default class LabelSet extends PureComponent {
 
@@ -52,7 +52,7 @@ export default class LabelSet extends PureComponent {
                 // console.log(cohortIndex,JSON.parse(JSON.stringify(pathways)),i,JSON.stringify(d.diffScore))
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
-                        { ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 && d.diffScore < 0) &&
+                        { ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={randomHeight}
                             labelOffset={actualOffset}

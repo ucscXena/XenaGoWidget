@@ -105,11 +105,11 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    componentWillMount() {
-        console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-        console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    }
+    // componentWillMount() {
+    //     console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+    //     console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    // }
 
     // componentDidUpdate() {
     //     console.log(this.props.cohortIndex,'PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
