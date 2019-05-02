@@ -45,7 +45,7 @@ export default class LabelSet extends PureComponent {
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
                 let maxScore = height / MAX_SCORE ;
-                let randomHeight = d.diffScore * maxScore;
+                let randomHeight = Math.abs(d.diffScore) * maxScore;
                 // let randomHeight = Math.random()*100;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
