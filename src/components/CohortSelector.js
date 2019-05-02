@@ -63,7 +63,7 @@ export class CohortSelector extends PureComponent {
                         value={this.state.selectedSubCohort}
                         className={BaseStyle.softflow}
                 >
-                    <option>All</option>
+                    <option>All Subtypes</option>
                     {
                         Object.entries(subCohortsForSelected).map(c => {
                                 return (
