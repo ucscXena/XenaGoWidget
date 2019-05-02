@@ -284,11 +284,11 @@ export default class XenaGoViewer extends PureComponent {
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
         if (typeof subCohortSelected === 'object') {
-            samples = selectedSubCohort;
+            samples = subCohortSelected.selectedSubCohort;
             selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];;
         } else {
             // get samples for cohort array
-            if (subCohortSelected === 'All') {
+            if (subCohortSelected === 'All Subtypes') {
                 this.selectCohort(this.state.selectedCohort);
                 return;
             }
