@@ -294,11 +294,19 @@ export default class XenaGoViewer extends PureComponent {
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
         if (typeof subCohortSelected === 'object') {
-            samples = selectedSubCohort;
-            selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];;
+            if (typeof subCohortSelected.selectedSubCohort === 'string') {
+                // selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
+                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
+                selectedObject = {
+                    selected: this.state.selectedCohort,
+                    selectedSubCohort: subCohortSelected.selectedSubCohort,
+                };
+            } else {
+                console.error("Unsure how to handle input", JSON.stringify(subCohortSelected))
+            }
         } else {
             // get samples for cohort array
-            if (subCohortSelected === 'All') {
+            if (subCohortSelected === 'All Subtypes') {
                 this.selectCohort(this.state.selectedCohort);
                 return;
             }
@@ -319,29 +327,35 @@ export default class XenaGoViewer extends PureComponent {
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
-        Rx.Observable.zip(
-            sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
-            datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-            datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
-            datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
-            (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                mutations,
-                samples,
-                copyNumber,
-                genomeBackgroundMutation,
-                genomeBackgroundCopyNumber
-            }))
-            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                this.handleCohortData({
+         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+        ).subscribe((sampleArray) => {
+            let finalSamples = intersection(sampleArray[0],sampleArray[1],samples)
+            samples = intersection(finalSamples,samples);
+            Rx.Observable.zip(
+                sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+                datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
+                datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+                datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+                (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
                     mutations,
                     samples,
                     copyNumber,
                     genomeBackgroundMutation,
-                    genomeBackgroundCopyNumber,
-                    geneList,
-                    cohort
+                    genomeBackgroundCopyNumber
+                }))
+                .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+                    this.handleCohortData({
+                        mutations,
+                        samples,
+                        copyNumber,
+                        genomeBackgroundMutation,
+                        genomeBackgroundCopyNumber,
+                        geneList,
+                        cohort
+                    });
                 });
-            });
+        });
     };
 
     getGenesForNamedPathways(selectedPathways, pathways) {

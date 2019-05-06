@@ -73,8 +73,13 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
 let pathwayIndexFromX = (x, layout) => {
     let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
     let layoutInstance = layout[pathwayIndex];
-    let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
-    return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+    if(layoutInstance){
+        let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
+        return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+    }
+    else{
+        return {pathwayIndex: pathwayIndex, selectCnv: false};
+    }
 };
 
 function getPointData(event, props) {
