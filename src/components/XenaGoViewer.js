@@ -281,19 +281,18 @@ export default class XenaGoViewer extends PureComponent {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
 
         // let subCohortSamplesArray, subCohort, samples;
-        let selectedSamples, selectedObject;
+        let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
         if (typeof subCohortSelected === 'object') {
-            if(typeof subCohortSelected.selectedSubCohort === 'string'){
+            if (typeof subCohortSelected.selectedSubCohort === 'string') {
                 // selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
-                selectedSamples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
+                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
                 selectedObject = {
                     selected: this.state.selectedCohort,
                     selectedSubCohort: subCohortSelected.selectedSubCohort,
                 };
-            }
-            else{
-                console.error("Unsure how to handle input",JSON.stringify(subCohortSelected))
+            } else {
+                console.error("Unsure how to handle input", JSON.stringify(subCohortSelected))
             }
         } else {
             // get samples for cohort array
@@ -302,7 +301,7 @@ export default class XenaGoViewer extends PureComponent {
                 return;
             }
             let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSelected];
-            selectedSamples = Object.entries(selectedSubCohort).map(c => {
+            samples = Object.entries(selectedSubCohort).map(c => {
                 return c[1]
             });
             selectedObject = {
@@ -318,36 +317,45 @@ export default class XenaGoViewer extends PureComponent {
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
-        console.log('gene list',geneList)
-        Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+        // console.log('gene list', geneList);
+        console.log("input samples", samples)
+        let output = Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection)
-            .flatMap((samples) => {
-                console.log("samples",samples)
-                return Rx.Observable.zip(
-                    sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
-                    datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                    datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
-                    datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                    (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                        mutations,
-                        samples,
-                        copyNumber,
-                        genomeBackgroundMutation,
-                        genomeBackgroundCopyNumber
-                    }))
-                    .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                        console.log('handling cohort data ')
-                        this.handleCohortData({
-                            mutations,
-                            samples,
-                            copyNumber,
-                            genomeBackgroundMutation,
-                            genomeBackgroundCopyNumber,
-                            geneList,
-                            cohort
-                        });
-                    });
+        ).subscribe((sampleArray) => {
+            console.log(sampleArray,samples)
+            let finalSamples = intersection(sampleArray[0],sampleArray[1],samples)
+            finalSamples = intersection(finalSamples,samples)
+            console.log("output samples:" ,finalSamples);
+        });
+        console.log("output", output);
+
+        // .flatMap((foundSamples) => {
+        //     console.log("samples",foundSamples)
+        // });
+        // console.log("output")
+        Rx.Observable.zip(
+            sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+            datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
+            datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+            datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+            (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+                mutations,
+                samples,
+                copyNumber,
+                genomeBackgroundMutation,
+                genomeBackgroundCopyNumber
+            }))
+            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+                console.log('handling cohort data ')
+                this.handleCohortData({
+                    mutations,
+                    samples,
+                    copyNumber,
+                    genomeBackgroundMutation,
+                    genomeBackgroundCopyNumber,
+                    geneList,
+                    cohort
+                });
             });
     };
 
