@@ -335,7 +335,6 @@ export default class XenaGoViewer extends PureComponent {
                     genomeBackgroundCopyNumber
                 }))
                 .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                    console.log('handling cohort data ')
                     this.handleCohortData({
                         mutations,
                         samples,
