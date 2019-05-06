@@ -185,7 +185,6 @@ export default class XenaGoViewer extends PureComponent {
             genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
         }
 
-        // console.log('hovering a gene',geneHoverProps)
         this.setState(
             {
                 geneHoverData: geneHoverProps,
@@ -392,7 +391,6 @@ export default class XenaGoViewer extends PureComponent {
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {
-                console.log(this.props.cohortIndex,'XGV gene data',JSON.parse(JSON.stringify(this.state.geneData)))
                 return (
                     <table>
                         <tbody>

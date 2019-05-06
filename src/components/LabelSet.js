@@ -5,7 +5,6 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
-const MAX_SCORE = 200;
 const ENHANCEMENT = 5 ;
 
 export default class LabelSet extends PureComponent {
@@ -29,9 +28,7 @@ export default class LabelSet extends PureComponent {
             , data
         } = this.props;
 
-        console.log(cohortIndex,'LS: input pathways',JSON.parse(JSON.stringify(pathways)));
         if (associateData.length > 0 && pathways.length === layout.length) {
-            console.log(cohortIndex,'LS: executing pathways',JSON.parse(JSON.stringify(pathways)));
             const numSamples = data.samples.length;
             // const possibleHeight = height - GENE_LABEL_HEIGHT ;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
@@ -45,14 +42,10 @@ export default class LabelSet extends PureComponent {
                 hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
-                // let maxScore = height / MAX_SCORE ;
-                // console.log('input diff score',d.diffScore)
                 let randomHeight = Math.round(Math.abs(d.diffScore) * height * ENHANCEMENT) ;
                 randomHeight = randomHeight > height ? height : randomHeight;
-                // let randomHeight = Math.random()*100;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
-                // console.log(cohortIndex,JSON.parse(JSON.stringify(pathways)),i,JSON.stringify(d.diffScore))
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
                         { ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&

@@ -19,7 +19,7 @@ const style = {
         opacity: 1,
         // border: 'solid black 0.5px',
         boxShadow: '0 0 2px 2px #ccc '
-},
+    },
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
@@ -73,11 +73,10 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
 let pathwayIndexFromX = (x, layout) => {
     let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
     let layoutInstance = layout[pathwayIndex];
-    if(layoutInstance){
+    if (layoutInstance) {
         let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
         return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
-    }
-    else{
+    } else {
         return {pathwayIndex: pathwayIndex, selectCnv: false};
     }
 };
@@ -85,14 +84,14 @@ let pathwayIndexFromX = (x, layout) => {
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
-    let {pathwayIndex,selectCnv} = pathwayIndexFromX(x, layout);
+    let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression:expression,
-        selectCnv:selectCnv
+        expression: expression,
+        selectCnv: selectCnv
     };
 }
 
@@ -132,8 +131,7 @@ class PathwayScoresView extends PureComponent {
         let pointData = getPointData(event, this.props);
         if (pointData) {
             onHover(pointData);
-        }
-        else {
+        } else {
             onHover(null);
         }
     };
@@ -146,9 +144,7 @@ class PathwayScoresView extends PureComponent {
             viewType
         } = this.props;
 
-        console.log(cohortIndex,'PSV pre-share',JSON.parse(JSON.stringify(data.pathways)));
-            this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-        console.log(cohortIndex,'PSV post-share',JSON.parse(JSON.stringify(data.pathways)));
+        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -236,8 +232,6 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
-        console.log('PSVC: input data',pathways)
-
         let hashAssociation = {
             expression,
             copyNumber,
@@ -269,8 +263,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         if (cohortIndex === 0) {
             returnedValue = clusterSort(prunedColumns);
             PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        }
-        else {
+        } else {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
@@ -281,11 +274,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         let width;
         if (genesInGeneSet < 8) {
             width = genesInGeneSet * MIN_GENE_WIDTH_PX;
-        }
-        else if (genesInGeneSet > 85 && collapsed) {
+        } else if (genesInGeneSet > 85 && collapsed) {
             width = MAX_GENE_LAYOUT_WIDTH_PX;
-        }
-        else {
+        } else {
             width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
         }
 
@@ -293,14 +284,10 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
-        // console.log('input returned value',returnedValue)
-        console.log('PSVC input returned value',JSON.parse(JSON.stringify(returnedValue.pathways)))
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
         }
-
-        console.log('PSVC output returned value',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
         internalData = returnedValue.data;
 
