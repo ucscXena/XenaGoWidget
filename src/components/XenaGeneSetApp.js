@@ -436,6 +436,7 @@ export default class XenaGeneSetApp extends PureComponent {
      */
     calculateGeneSetExpected(pathwayData, filter) {
 
+        console.log('calculating expecte gene set',pathwayData)
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
         let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
