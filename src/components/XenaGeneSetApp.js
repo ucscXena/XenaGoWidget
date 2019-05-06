@@ -347,10 +347,12 @@ export default class XenaGeneSetApp extends PureComponent {
     calculateDiffs(geneData0, geneData1) {
         // console.log('gene data 0 lengths:',geneData0.length,geneData1.length)
         if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
+            // console.log(geneData0,geneData1)
             for (let geneIndex in geneData0) {
-                let diffScore = geneData0[geneIndex].density - geneData1[geneIndex].density;
+                let diffScore = (geneData0[geneIndex].density / geneData0[geneIndex].total) - (geneData1[geneIndex].density/geneData1[geneIndex].total) ;
                 geneData0[geneIndex].diffScore = diffScore;
                 geneData1[geneIndex].diffScore = diffScore;
+                // console.log('DIFF CALC',geneData0[geneIndex].gene[0],geneData0[geneIndex],geneData1[geneIndex],diffScore)
             }
         }
         return [geneData0, geneData1]
