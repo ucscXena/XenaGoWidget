@@ -10,8 +10,8 @@ import {FilterSelector} from "./FilterSelector";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
-import {pick, pluck, flatten, sum} from 'underscore';
-import {Card, Chip, CardActions, CardMedia, CardTitle, Layout} from "react-toolbox";
+import {pick, pluck, flatten} from 'underscore';
+import {Card,Dialog,Button} from "react-toolbox";
 
 let mutationKey = 'simple somatic mutation';
 let copyNumberViewKey = 'copy number for pathway view';
@@ -19,10 +19,8 @@ let genomeBackgroundViewKey = 'genome background';
 let genomeBackgroundCopyNumberViewKey = 'copy number';
 let genomeBackgroundMutationViewKey = 'mutation';
 let Rx = require('ucsc-xena-client/dist/rx');
-import Dialog from 'react-toolbox/lib/dialog';
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
-import Button from "react-toolbox/lib/button";
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../functions/DrawFunctions";
 import {DetailedLegend} from "./DetailedLegend";
@@ -78,6 +76,17 @@ export default class XenaGoViewer extends PureComponent {
             this.state.selectedSubCohort = cohort.selectedSubCohort;
         }
     }
+
+    shouldComponentUpdate(nextProps, nextState){
+        let returnValue = super.shouldComponentUpdate(nextProps,nextState);
+        // if(returnValue && this.props.geneDataStats.length >0 ){
+        //     console.log(this.state.key,returnValue,'should',JSON.parse(JSON.stringify(this.props.geneDataStats)),JSON.parse(JSON.stringify(nextProps.geneDataStats)))
+        // }
+        // return !isEqual(nextProps, this.props) ||
+        //     !isEqual(nextState, this.state);
+        return returnValue ;
+    }
+
 
 
     setPathwayState(newSelection, pathwayClickData) {
@@ -455,6 +464,8 @@ export default class XenaGoViewer extends PureComponent {
                                                    colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
                                                    viewType={viewType}
+                                                   showDiffLayer={this.props.showDiffLayer}
+                                                   showDetailLayer={this.props.showDetailLayer}
                                 />
                             </td>
                             }
@@ -525,4 +536,6 @@ XenaGoViewer.propTypes = {
     setCollapsed: PropTypes.any,
     collapsed: PropTypes.any,
     showColorByType: PropTypes.any,
+    showDiffLayer: PropTypes.any,
+    showDetailLayer: PropTypes.any,
 };

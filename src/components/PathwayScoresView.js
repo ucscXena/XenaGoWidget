@@ -19,7 +19,7 @@ const style = {
         opacity: 1,
         // border: 'solid black 0.5px',
         boxShadow: '0 0 2px 2px #ccc '
-},
+    },
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
@@ -73,11 +73,10 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
 let pathwayIndexFromX = (x, layout) => {
     let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
     let layoutInstance = layout[pathwayIndex];
-    if(layoutInstance){
+    if (layoutInstance) {
         let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
         return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
-    }
-    else{
+    } else {
         return {pathwayIndex: pathwayIndex, selectCnv: false};
     }
 };
@@ -85,14 +84,14 @@ let pathwayIndexFromX = (x, layout) => {
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
-    let {pathwayIndex,selectCnv} = pathwayIndexFromX(x, layout);
+    let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression:expression,
-        selectCnv:selectCnv
+        expression: expression,
+        selectCnv: selectCnv
     };
 }
 
@@ -110,13 +109,17 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    componentWillMount() {
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    }
+    // componentWillMount() {
+    //     console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+    //     console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    // }
 
-    componentDidUpdate() {
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    }
+    // componentDidUpdate() {
+    //     console.log(this.props.cohortIndex,'PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+    //     console.log(this.props.cohortIndex,'PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
+    // }
 
     onMouseOut = () => {
         let {onHover} = this.props;
@@ -128,8 +131,7 @@ class PathwayScoresView extends PureComponent {
         let pointData = getPointData(event, this.props);
         if (pointData) {
             onHover(pointData);
-        }
-        else {
+        } else {
             onHover(null);
         }
     };
@@ -139,11 +141,14 @@ class PathwayScoresView extends PureComponent {
         const {
             width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
-            viewType
+            viewType, showDetailLayer
         } = this.props;
+
+        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
+                {showDetailLayer &&
                 <CanvasDrawing
                     width={width}
                     height={height}
@@ -155,6 +160,7 @@ class PathwayScoresView extends PureComponent {
                     data={data} // updated data forces refresh
                     viewType={viewType}
                 />
+                }
                 <LabelWrapper
                     width={width}
                     height={height}
@@ -171,6 +177,7 @@ class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
+                    showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
         );
@@ -192,6 +199,8 @@ PathwayScoresView.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
+    showDiffLayer: PropTypes.any,
+    showDetailLayer: PropTypes.any,
 };
 
 
@@ -259,8 +268,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         if (cohortIndex === 0) {
             returnedValue = clusterSort(prunedColumns);
             PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        }
-        else {
+        } else {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
         }
@@ -271,11 +279,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         let width;
         if (genesInGeneSet < 8) {
             width = genesInGeneSet * MIN_GENE_WIDTH_PX;
-        }
-        else if (genesInGeneSet > 85 && collapsed) {
+        } else if (genesInGeneSet > 85 && collapsed) {
             width = MAX_GENE_LAYOUT_WIDTH_PX;
-        }
-        else {
+        } else {
             width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
         }
 

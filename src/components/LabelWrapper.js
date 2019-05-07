@@ -60,6 +60,7 @@ export default class LabelWrapper extends PureComponent {
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
                     data={this.props.data}
+                    showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
         )
@@ -74,4 +75,5 @@ LabelWrapper.propTypes = {
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
+    showDiffLayer: PropTypes.any,
 };
