@@ -342,14 +342,11 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     calculateDiffs(geneData0, geneData1) {
-        // console.log('gene data 0 lengths:',geneData0.length,geneData1.length)
         if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
-            // console.log(geneData0,geneData1)
             for (let geneIndex in geneData0) {
                 let diffScore = (geneData0[geneIndex].density / geneData0[geneIndex].total) - (geneData1[geneIndex].density/geneData1[geneIndex].total) ;
                 geneData0[geneIndex].diffScore = diffScore;
                 geneData1[geneIndex].diffScore = diffScore;
-                // console.log('DIFF CALC',geneData0[geneIndex].gene[0],geneData0[geneIndex],geneData1[geneIndex],diffScore)
             }
         }
         return [geneData0, geneData1]
@@ -359,9 +356,7 @@ export default class XenaGeneSetApp extends PureComponent {
     shareGlobalGeneData = (geneData, cohortIndex) => {
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
-        console.log('XGSA input ....', JSON.parse(JSON.stringify(geneData0)),'A',JSON.parse(JSON.stringify(geneData1)))
         let finalGeneData = this.calculateDiffs(geneData0, geneData1);
-        console.log('XGSA output finalGeneData', JSON.parse(JSON.stringify(finalGeneData)));
         this.setState({
             geneData: finalGeneData
         });
