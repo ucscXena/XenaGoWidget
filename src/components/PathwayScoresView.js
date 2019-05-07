@@ -141,13 +141,14 @@ class PathwayScoresView extends PureComponent {
         const {
             width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
-            viewType
+            viewType, showDetailLayer
         } = this.props;
 
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
+                {showDetailLayer &&
                 <CanvasDrawing
                     width={width}
                     height={height}
@@ -159,6 +160,7 @@ class PathwayScoresView extends PureComponent {
                     data={data} // updated data forces refresh
                     viewType={viewType}
                 />
+                }
                 <LabelWrapper
                     width={width}
                     height={height}
@@ -175,6 +177,7 @@ class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
+                    showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
         );
@@ -196,6 +199,8 @@ PathwayScoresView.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
+    showDiffLayer: PropTypes.any,
+    showDetailLayer: PropTypes.any,
 };
 
 

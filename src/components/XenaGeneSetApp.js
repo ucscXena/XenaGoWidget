@@ -1,9 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import {sum} from 'underscore';
-import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
-import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
@@ -16,10 +13,8 @@ import BaseStyle from '../css/base.css';
 import {sumInstances, sumTotals} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {izip, cycle} from 'itertools';
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
-import {DetailedLegend} from "./DetailedLegend";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -61,6 +56,8 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorByType: false,
             showColorByTypeDetail: true,
             showColorTotal: false,
+            showDetailLayer: true,
+            showDiffLayer: true,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -584,6 +581,18 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    toggleShowDiffLayer = () => {
+        this.setState({
+            showDiffLayer: !this.state.showDiffLayer
+        })
+    };
+
+    toggleShowDetailLayer = () => {
+        this.setState({
+            showDetailLayer: !this.state.showDetailLayer
+        })
+    };
+
     activateShowColorByType = () => {
         this.setState({
             showColorByType: true,
@@ -636,6 +645,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
+                               toggleShowDiffLayer={this.toggleShowDiffLayer}
+                               toggleShowDetailLayer={this.toggleShowDetailLayer}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
                                activateShowColorTotal={this.activateShowColorTotal}
@@ -643,6 +654,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
+                               showDiffLayer={this.state.showDiffLayer}
+                               showDetailLayer={this.state.showDetailLayer}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
@@ -755,6 +768,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
+                                              showDiffLayer={this.state.showDiffLayer}
+                                              showDetailLayer={this.state.showDetailLayer}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -774,6 +789,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
+                                              showDiffLayer={this.state.showDiffLayer}
+                                              showDetailLayer={this.state.showDetailLayer}
                                 />
                             </td>
                         </tr>

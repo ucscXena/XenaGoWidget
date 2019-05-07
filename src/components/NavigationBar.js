@@ -46,8 +46,8 @@ export default class NavigationBar extends PureComponent {
 
     render() {
         let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,
-            showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
-            toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
+            showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+            toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
         // let showColorByTypeLabel = (showColorByType ? 'Hide' : 'Show') + ' Color By Type Gene Set';
         return (
@@ -89,6 +89,11 @@ export default class NavigationBar extends PureComponent {
                                                   caption={`${showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
                                         <MenuItem onClick={() => activateShowColorTotal()}
                                                   caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
+                                        <MenuDivider/>
+                                        <MenuItem onClick={() => toggleShowDiffLayer()}
+                                                  caption={`${showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
+                                        <MenuItem onClick={() => toggleShowDetailLayer()}
+                                                  caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
@@ -143,7 +148,11 @@ NavigationBar.propTypes = {
     geneOptions: PropTypes.any,
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
+    toggleShowDiffLayer: PropTypes.any,
+    toggleShowDetailLayer: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
+    showDiffLayer: PropTypes.any,
+    showDetailLayer: PropTypes.any,
     showColorByTypeDetail: PropTypes.any,
     showColorByType: PropTypes.any,
     showColorTotal: PropTypes.any,

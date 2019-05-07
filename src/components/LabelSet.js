@@ -26,6 +26,7 @@ export default class LabelSet extends PureComponent {
             , cohortIndex
             , colorSettings
             , data
+            , showDiffLayer
         } = this.props;
 
         if (associateData.length > 0 && pathways.length === layout.length) {
@@ -48,7 +49,7 @@ export default class LabelSet extends PureComponent {
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
-                        { ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
+                        { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={randomHeight}
                             labelOffset={actualOffset}
@@ -97,4 +98,5 @@ LabelSet.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
+    showDiffLayer: PropTypes.any,
 };
