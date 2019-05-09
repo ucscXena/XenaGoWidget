@@ -32,7 +32,7 @@ function linkage(distances) {
 function scoreColumns(prunedColumns) {
     return prunedColumns.pathways.map((el, index) => {
         let pathway = JSON.parse(JSON.stringify(el));
-        pathway.density = sumInstances(prunedColumns.data[index]);
+        pathway.samplesAffected = sumInstances(prunedColumns.data[index]);
         pathway.index = index;
         return pathway;
     });
@@ -46,7 +46,7 @@ function sortColumnDensities(prunedColumns) {
 
     let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
     sortedColumns.pathways = scoreColumns(prunedColumns);
-    sortedColumns.pathways.sort((a, b) => b.density - a.density);
+    sortedColumns.pathways.sort((a, b) => b.samplesAffected - a.samplesAffected);
 
     // refilter data by index
     sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
@@ -176,7 +176,7 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
         if (index1 >= 0 && index2 >= 0) {
             return geneSetList.indexOf(geneSetA) - geneSetList.indexOf(geneSetB)
         }
-        return b.density - a.density
+        return b.samplesAffected - a.samplesAffected
     });
     // refilter data by index
     let columnLength = sortedColumns.data[0].length;
@@ -231,7 +231,7 @@ export function synchronizedSort(prunedColumns, geneList) {
         if (index1 >= 0 && index2 >= 0) {
             return geneList.indexOf(geneA) - geneList.indexOf(geneB)
         }
-        return b.density - a.density
+        return b.samplesAffected - a.samplesAffected
     });
     // refilter data by index
     let columnLength = sortedColumns.data[0].length;
