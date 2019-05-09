@@ -106,7 +106,7 @@ export class HeaderLabel extends PureComponent {
                 style={this.style(colorDensity)}
                 className={className}
             >
-                <text x={-labelHeight + 2} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
+                <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
                 >
                     {width < 10 ? '' : labelString}
