@@ -73,6 +73,45 @@ export function sortByType(renderedData){
     });
 }
 
+// sorts, but places an original index
+export function sortPathwaysByDiffScore(pathways) {
+
+    for(let p in pathways){
+        pathways[p].origIndex = Number(p) ;
+    }
+
+    return pathways.sort( (a,b) => {
+        return b.diffScore - a.diffScore ;
+    });
+}
+
+export function sortAssociatedDataByDiffScore(pathways,associatedData) {
+
+    console.log('Input pathways',pathways)
+    let returnedData = [];
+    for(let i in associatedData ){
+        console.log('i',i,associatedData[i],typeof associatedData[i],associatedData[i].length)
+        returnedData[pathways.origIndex] = associatedData[i]
+    }
+    console.log(returnedData,associatedData)
+
+    // let sortedColumns = sortColumnDiffs(prunedColumns);
+    //
+    // sortedColumns.data.push(prunedColumns.samples);
+    // let renderedData = transpose(sortedColumns.data);
+    // renderedData = sortByType(renderedData);
+    // renderedData = transpose(renderedData);
+    // let returnColumns = {};
+    // returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    // returnColumns.samples = sortedColumns.samples;
+    // returnColumns.pathways = sortedColumns.pathways;
+    // returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+    //
+    // return returnColumns;
+
+    return associatedData;
+}
+
 /**
  * Sort by column density followed by row.
  * https://github.com/nathandunn/XenaGoWidget/issues/67

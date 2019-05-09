@@ -5,7 +5,12 @@ import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
-import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
+import {
+    clusterSort,
+    sortAssociatedDataByDiffScore,
+    sortPathwaysByDiffScore,
+    synchronizedSort
+} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 
@@ -144,7 +149,22 @@ class PathwayScoresView extends PureComponent {
             viewType, showDetailLayer
         } = this.props;
 
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+        console.log("PSV input pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
+
+        this.props.shareGlobalGeneData(data.pathways, cohortIndex);
+        console.log("PSV output pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
+        console.log("PSV output data",JSON.parse(JSON.stringify(data)),JSON.parse(JSON.stringify(associateData)),cohortIndex);
+
+        // sort based on diffs
+        // both are destruyct
+        let returnedData = associateData ;
+        if(data.pathways && data.pathways[0].diffScore){
+            console.log("INPUT PATHWAYS",data.pathways);
+            data.pathways = sortPathwaysByDiffScore(data.pathways);
+            console.log("OUTPUT PATHWAYS",data.pathways);
+            returnedData = sortAssociatedDataByDiffScore(data.pathways,associateData);
+        }
+
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -155,7 +175,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     draw={DrawFunctions.drawGeneView}
                     selectedPathways={selectedPathways}
-                    associateData={associateData}
+                    associateData={returnedData}
                     cohortIndex={cohortIndex}
                     data={data} // updated data forces refresh
                     viewType={viewType}
@@ -169,7 +189,7 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
-                    associateData={associateData}
+                    associateData={returnedData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}
@@ -264,15 +284,24 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
+        console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)))
 
         if (cohortIndex === 0) {
             returnedValue = clusterSort(prunedColumns);
+            console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
             PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         } else {
             PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
             returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+            console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
         }
         returnedValue.index = cohortIndex;
+
+        console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
+
+        if(returnedValue.pathways[0].diffScore){
+            console.log('found a valid diffScore! ')
+        }
 
         // fix for #194
         let genesInGeneSet = returnedValue.data.length;
@@ -295,6 +324,8 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
 
         internalData = returnedValue.data;
+
+        console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
         return (
             <PathwayScoresView
