@@ -144,6 +144,7 @@ class PathwayScoresView extends PureComponent {
             viewType, showDetailLayer
         } = this.props;
 
+        // this supports both diffScore and coh-hovering
         this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
 
         return (
