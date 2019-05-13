@@ -3,6 +3,9 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
 import subCohorts from '../data/Subtype_Selected';
+import {Button} from 'react-toolbox/lib/button';
+import FaFilter from 'react-icons/lib/fa/filter';
+import {SubCohortSelector} from "./SubCohortSelector";
 
 
 export class CohortSelector extends PureComponent {
@@ -23,9 +26,17 @@ export class CohortSelector extends PureComponent {
         }
     };
 
+    handleSubCohortToggle = (event) => {
+        this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
+
+    };
+
     onChangeSubCohort = (event) => {
         this.setState({selectedSubCohort: event.target.value});
-        this.props.onChangeSubCohort(event.target.value);
+    };
+
+    selectCohortSelection = () => {
+        this.setState({showSubCohortSelector: true});
     };
 
     render() {
@@ -34,6 +45,10 @@ export class CohortSelector extends PureComponent {
         let {cohorts,cohortLabel} = this.props ;
         return (
             <div>
+                <SubCohortSelector active={this.state.showSubCohortSelector}
+                                   handleToggle={this.handleSubCohortToggle}
+                                   handleSubCohortChange={this.onChangeSubCohort}
+                />
                 <div style={{
                     marginTop: 10,
                     marginLeft: 10,
@@ -58,23 +73,10 @@ export class CohortSelector extends PureComponent {
                     }
                 </select>
                 {subCohortsForSelected &&
-                <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                        onChange={this.onChangeSubCohort}
-                        value={this.state.selectedSubCohort}
-                        className={BaseStyle.softflow}
-                >
-                    <option>All Subtypes</option>
-                    {
-                        Object.entries(subCohortsForSelected).map(c => {
-                                return (
-                                    <option value={c[0]} key={c[0]}>
-                                        {c[0]}
-                                    </option>
-                                )
-                            }
-                        )
-                    }
-                </select>
+                   <Button onClick={this.selectCohortSelection} label='All Subtypes'>
+                       <FaFilter/>
+                   </Button>
+
                 }
             </div>
         );
