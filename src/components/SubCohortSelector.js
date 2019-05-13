@@ -2,7 +2,6 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
-import Input from "react-toolbox/lib/input";
 
 
 export class SubCohortSelector extends PureComponent {
@@ -33,7 +32,7 @@ export class SubCohortSelector extends PureComponent {
 
     render() {
 
-        let {active, handleToggle} = this.props;
+        let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
 
         return (
             <Dialog
@@ -46,7 +45,7 @@ export class SubCohortSelector extends PureComponent {
                     <tbody>
                     <tr>
                         <td>
-                            ({this.props.cohortLabel}) Select Sub Cohorts for {this.props.selectedCohort}
+                            ({cohortLabel}) Select Sub Cohorts for {selectedCohort}
                         </td>
                     </tr>
                     <tr>
