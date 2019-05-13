@@ -51,7 +51,16 @@ export class SubCohortSelector extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-
+                            <ul>
+                                <li>All</li>
+                                {
+                                    Object.keys(this.props.subCohortsForSelected).map( cs =>{
+                                       return (
+                                           <li>{cs}</li>
+                                       )
+                                    })
+                                }
+                            </ul>
                         </td>
                     </tr>
                     </tbody>
@@ -68,5 +77,6 @@ SubCohortSelector.propTypes = {
     handleToggle: PropTypes.any.isRequired,
     handleSubCohortChange: PropTypes.any.isRequired,
     selectedCohort: PropTypes.any.isRequired,
-    selectedSubCohort: PropTypes.any.isRequired,
+    selectedSubCohort: PropTypes.any,
+    subCohortsForSelected: PropTypes.any,
 };
