@@ -46,26 +46,12 @@ export class SubCohortSelector extends PureComponent {
                     <tbody>
                     <tr>
                         <td>
-                            Gene Gamma
-                        </td>
-                        <td>
-                            {/*<Input type='number' name='gamma'*/}
-                            {/*       value={this.state.colorSettings.geneGamma}*/}
-                            {/*       onChange={this.handleChange.bind(this, 'geneGamma')}*/}
-                            {/*       style={{width: 50}}*/}
-                            {/*/>*/}
+                            ({this.props.cohortLabel}) Select Sub Cohorts for {this.props.selectedCohort}
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Gene Saturation Percent (%)
-                        </td>
-                        <td>
-                            {/*<Input type='number' name='shadingValue'*/}
-                            {/*       value={100.0 / this.state.colorSettings.shadingValue}*/}
-                            {/*       onChange={this.handleChange.bind(this, 'shadingValue')}*/}
-                            {/*       style={{width: 50}}*/}
-                            {/*/>*/}
+
                         </td>
                     </tr>
                     </tbody>
@@ -81,4 +67,6 @@ SubCohortSelector.propTypes = {
     active: PropTypes.any.isRequired,
     handleToggle: PropTypes.any.isRequired,
     handleSubCohortChange: PropTypes.any.isRequired,
+    selectedCohort: PropTypes.any.isRequired,
+    selectedSubCohort: PropTypes.any.isRequired,
 };
