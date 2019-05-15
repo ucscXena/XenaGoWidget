@@ -2,37 +2,32 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
+import Checkbox from "react-toolbox/lib/checkbox";
 
 
 export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
+        con
         this.state = {
             active: this.props.active,
         };
     }
 
-    // handleChange = (name, value) => {
-    //     let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
-    //     if (name === 'shadingValue') {
-    //         value = 1 / (value / 100.0) ;
-    //     }
-    //     newArray[name] = value;
-    //     if (name === 'highDomain' && this.state.colorSettings.linkDomains) {
-    //         newArray['lowDomain'] = -value;
-    //         this.props.handleSubCohortChange('lowDomain', -value)
-    //     }
-    //     this.setState({
-    //         colorSettings: newArray
-    //     });
-    //     this.props.handleSubCohortChange(name, value)
-    // };
+    handleChange = (value,field) => {
+        // alert('handing change - '+field+' - '+value);
+        console.log(value,field)
+
+        // this.setState({...this.state, [field]: value});
+    };
 
 
     render() {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+
+        console.log('selected sub cohorts',subCohortsForSelected,this.props.selectedSubCohort);
 
         return (
             <Dialog
@@ -50,16 +45,21 @@ export class SubCohortSelector extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            <ul>
-                                <li>All</li>
+                            <Checkbox label='All' key='All'
+                                      checked={true}
+                                      onChange={ (value) => this.handleChange(value,'All')}
+                            />
                                 {
-                                    Object.keys(this.props.subCohortsForSelected).map( cs =>{
+                                    Object.keys(subCohortsForSelected).map( cs =>{
                                        return (
-                                           <li>{cs}</li>
+                                           <Checkbox label={cs} key={cs}
+                                                     checked={true}
+                                                     onChange={ (value) => this.handleChange(value,{cs})}
+                                                     />
                                        )
                                     })
                                 }
-                            </ul>
+                            {/*</ul>*/}
                         </td>
                     </tr>
                     </tbody>
