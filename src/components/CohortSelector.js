@@ -12,10 +12,10 @@ export class CohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log(props)
+        console.log('cohort selected',props)
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohorts: props.selectedSubCohorts,
+            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : [],
             showSubCohortSelector: false,
         };
     }
@@ -51,7 +51,7 @@ export class CohortSelector extends PureComponent {
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}
                                    selectedCohort={this.state.selectedCohort}
-                                   selectedSubCohorts={this.state.selectedSubCohort}
+                                   selectedSubCohorts={this.state.selectedSubCohorts}
                                    subCohortsForSelected={subCohortsForSelected}
                                    cohortLabel={this.props.cohortLabel}
                 />

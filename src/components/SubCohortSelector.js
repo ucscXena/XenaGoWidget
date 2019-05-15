@@ -9,15 +9,26 @@ export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('super props',props)
-
+        console.log('super props',props);
         let {subCohortsForSelected,selectedSubCohorts} = props;
+        console.log('selected sub cohorts',selectedSubCohorts,subCohortsForSelected)
+        // let subCohortsNames = Object.keys(subCohortsForSelected);
+        let subCohortsNames = Object.keys(selectedSubCohorts);
+        let selected = {};
 
-
-
-
+        let allSelected = true ;
+        Object.keys(subCohortsForSelected).map( cs =>{
+            selected[cs] =  subCohortsNames.indexOf(cs)>=0;
+            console.log('cs',cs,subCohortsNames,selected[cs]);
+            if(allSelected){
+                allSelected = selected[cs];
+            }
+        });
+        console.log('selected -> ',subCohortsForSelected,selectedSubCohorts,selected);
         this.state = {
             active: this.props.active,
+            selected,
+            allSelected,
         };
     }
 
@@ -25,13 +36,29 @@ export class SubCohortSelector extends PureComponent {
         // alert('handing change - '+field+' - '+value);
         console.log('handling change',value,field)
 
-        // this.setState({...this.state, [field]: value});
+        let newSelected = JSON.parse(JSON.stringify(this.state.selected)) ;
+
+        if(field==='All'){
+            newSelected = Object.keys(newSelected).map( s => {
+                newSelected[s] = true ;
+                return newSelect ;
+            });
+            console.log('selected All . . . should be all true',newSelected)
+        }
+
+
+        newSelected[field] = value ;
+
+        this.setState({
+            selected:newSelected
+        })
     };
 
 
     render() {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+        let {selected,allSelected} = this.state ;
 
         console.log('selected sub cohorts',subCohortsForSelected,this.props.selectedSubCohorts);
         console.log('state',this.state)
@@ -53,14 +80,14 @@ export class SubCohortSelector extends PureComponent {
                     <tr>
                         <td>
                             <Checkbox label='All' key='All'
-                                      checked={true}
+                                      checked={allSelected}
                                       onChange={ (value) => this.handleChange(value,'All')}
                             />
                                 {
                                     Object.keys(subCohortsForSelected).map( cs =>{
                                        return (
                                            <Checkbox label={cs} key={cs}
-                                                     checked={true}
+                                                     checked={selected[cs]}
                                                      onChange={ (value) => this.handleChange(value,{cs})}
                                                      />
                                        )

@@ -295,10 +295,10 @@ export default class XenaGoViewer extends PureComponent {
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohort === 'string') {
                 // selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
-                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohorts];
+                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
                 selectedObject = {
                     selected: this.state.selectedCohort,
-                    selectedSubCohort: subCohortSelected.selectedSubCohort,
+                    selectedSubCohorts: subCohortSelected.selectedSubCohorts,
                 };
             } else {
                 console.error("Unsure how to handle input", JSON.stringify(subCohortSelected))
@@ -309,20 +309,21 @@ export default class XenaGoViewer extends PureComponent {
                 this.selectCohort(this.state.selectedCohort);
                 return;
             }
-            let selectedSubCohort = subCohorts[this.state.selectedCohort][subCohortSelected];
-            samples = Object.entries(selectedSubCohort).map(c => {
+            let selectedSubCohorts = subCohorts[this.state.selectedCohort][subCohortSelected];
+            console.log('selected sub cohorts',selectedSubCohorts)
+            samples = Object.entries(selectedSubCohorts).map(c => {
                 return c[1]
             });
             selectedObject = {
                 selected: selectedCohort,
-                selectedSubCohort: subCohortSelected,
+                selectedSubCohorts: subCohortSelected,
             };
         }
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
         this.setState({
                 processing: true,
-                selectedSubCohort: selectedObject.selectedSubCohort
+                selectedSubCohorts: selectedObject.selectedSubCohorts
             }
         );
         let geneList = this.getGenesForPathways(this.props.pathways);
