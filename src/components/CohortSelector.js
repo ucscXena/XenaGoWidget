@@ -15,7 +15,7 @@ export class CohortSelector extends PureComponent {
         console.log(props)
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohort: props.selectedSubCohort,
+            selectedSubCohorts: props.selectedSubCohorts,
             showSubCohortSelector: false,
         };
     }
@@ -51,7 +51,7 @@ export class CohortSelector extends PureComponent {
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}
                                    selectedCohort={this.state.selectedCohort}
-                                   selectedSubCohort={this.state.selectedSubCohort}
+                                   selectedSubCohorts={this.state.selectedSubCohort}
                                    subCohortsForSelected={subCohortsForSelected}
                                    cohortLabel={this.props.cohortLabel}
                 />
@@ -94,7 +94,7 @@ CohortSelector.propTypes = {
     subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
-    selectedSubCohort: PropTypes.string,
+    selectedSubCohorts: PropTypes.string,
     onChange: PropTypes.any.isRequired,
     onChangeSubCohort: PropTypes.any.isRequired,
 };

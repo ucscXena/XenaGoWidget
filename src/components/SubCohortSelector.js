@@ -9,7 +9,13 @@ export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        con
+        console.log('super props',props)
+
+        let {subCohortsForSelected,selectedSubCohorts} = props;
+
+
+
+
         this.state = {
             active: this.props.active,
         };
@@ -17,7 +23,7 @@ export class SubCohortSelector extends PureComponent {
 
     handleChange = (value,field) => {
         // alert('handing change - '+field+' - '+value);
-        console.log(value,field)
+        console.log('handling change',value,field)
 
         // this.setState({...this.state, [field]: value});
     };
@@ -27,7 +33,8 @@ export class SubCohortSelector extends PureComponent {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
 
-        console.log('selected sub cohorts',subCohortsForSelected,this.props.selectedSubCohort);
+        console.log('selected sub cohorts',subCohortsForSelected,this.props.selectedSubCohorts);
+        console.log('state',this.state)
 
         return (
             <Dialog
@@ -76,6 +83,6 @@ SubCohortSelector.propTypes = {
     handleToggle: PropTypes.any.isRequired,
     handleSubCohortChange: PropTypes.any.isRequired,
     selectedCohort: PropTypes.any.isRequired,
-    selectedSubCohort: PropTypes.any,
+    selectedSubCohorts: PropTypes.any,
     subCohortsForSelected: PropTypes.any,
 };

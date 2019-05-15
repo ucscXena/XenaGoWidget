@@ -73,7 +73,7 @@ export default class XenaGoViewer extends PureComponent {
 
         if (cohort && cohort.selected) {
             this.state.selectedCohort = cohort.selected;
-            this.state.selectedSubCohort = cohort.selectedSubCohort;
+            this.state.selectedSubCohorts = cohort.selectedSubCohorts;
         }
     }
 
@@ -202,7 +202,7 @@ export default class XenaGoViewer extends PureComponent {
     loadCohortData() {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-            if (selectedCohort2.selectedSubCohort) {
+            if (selectedCohort2.selectedSubCohorts) {
                 this.selectSubCohort(selectedCohort2);
             } else {
                 this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
@@ -295,7 +295,7 @@ export default class XenaGoViewer extends PureComponent {
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohort === 'string') {
                 // selectedObject = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
-                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohort];
+                samples = subCohorts[this.state.selectedCohort][subCohortSelected.selectedSubCohorts];
                 selectedObject = {
                     selected: this.state.selectedCohort,
                     selectedSubCohort: subCohortSelected.selectedSubCohort,
@@ -402,7 +402,7 @@ export default class XenaGoViewer extends PureComponent {
                                     <CohortSelector cohorts={this.state.cohortData}
                                                     subCohorts={this.state.subCohortData}
                                                     selectedCohort={this.state.selectedCohort}
-                                                    selectedSubCohort={this.state.selectedSubCohort}
+                                                    selectedSubCohorts={this.state.selectedSubCohorts}
                                                     onChange={this.selectCohort}
                                                     onChangeSubCohort={this.selectSubCohort}
                                                     cohortLabel={this.getCohortLabel(cohortIndex)}
