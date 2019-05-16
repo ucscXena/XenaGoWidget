@@ -37,6 +37,7 @@ export class SubCohortSelector extends PureComponent {
         console.log('handling change',value,field)
 
         let newSelected = JSON.parse(JSON.stringify(this.state.selected)) ;
+        console.log('A',newSelected)
         let allSelected = this.state.allSelected;
 
         if(field==='All'){
@@ -44,16 +45,16 @@ export class SubCohortSelector extends PureComponent {
             Object.keys(newSelected).forEach( s => {
                 newSelected[s] = true ;
             });
-
-            console.log('selected All . . . should be all true',newSelected)
+            console.log('B',newSelected)
         }
         else{
             allSelected = false ;
+            newSelected[field] = value ;
         }
 
-
-        newSelected[field] = value ;
         console.log('input selected',this.state.selected,'vs',newSelected)
+
+
 
         this.setState({
             selected:newSelected,
@@ -96,7 +97,7 @@ export class SubCohortSelector extends PureComponent {
                                        return (
                                            <Checkbox label={cs} key={cs}
                                                      checked={selected[cs]}
-                                                     onChange={ (value) => this.handleChange(value,{cs})}
+                                                     onChange={ (value) => this.handleChange(value,cs)}
                                                      />
                                        )
                                     })
