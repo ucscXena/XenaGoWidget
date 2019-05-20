@@ -20,7 +20,7 @@ const GithubIcon = () => (
 );
 
 const XenaIcon = () => (
-    <img src="images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
+    <img src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 );
 
 export default class NavigationBar extends PureComponent {

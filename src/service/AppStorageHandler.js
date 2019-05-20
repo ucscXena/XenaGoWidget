@@ -73,13 +73,11 @@ export class AppStorageHandler extends PureComponent {
 
     static getAppState() {
         let storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
-        let finalSelection = storedPathwaySelection ? storedPathwaySelection : AppStorageHandler.getDefaultSelectionPathway();
-        return finalSelection;
+        return storedPathwaySelection ? storedPathwaySelection : AppStorageHandler.getDefaultSelectionPathway();
     }
 
     static getPathwaySelection() {
-        let pathwaySelection = AppStorageHandler.getAppState().selection;
-        return pathwaySelection;
+        return AppStorageHandler.getAppState().selection;
     }
 
     static storeAppState(selection) {
@@ -153,8 +151,8 @@ export class AppStorageHandler extends PureComponent {
             appState.cohortState = [];
         }
         // TODO: remove this hack
-        let selectedValue = selected.selected ? selected.selected : selected;
-        appState.cohortState[cohortIndex] = {selected: selectedValue};
+        // let selectedValue = selected.selected ? selected.selected : selected;
+        appState.cohortState[cohortIndex] = selected;
         AppStorageHandler.storeAppState(appState);
     }
 
