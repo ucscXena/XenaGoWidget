@@ -1,5 +1,5 @@
 import mutationScores from '../data/mutationVector';
-import {sum, times, memoize, range} from 'underscore';
+import {sum, times, memoize, range} from 'ucsc-xena-client/dist/underscore_ext';
 import {izip, permutations} from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5'
 
@@ -7,8 +7,21 @@ import lru from 'tiny-lru/lib/tiny-lru.es5'
 let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
+// NOTE: this should be false for production.
+let ignoreCache = false;
+
+export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0,mutation4:0,mutation3:0,mutation2:0,cnvHigh:0,cnvLow:0};
+
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
     return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
+}
+
+export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold )) ? 1 : 0;
+}
+
+export function getCopyNumberLow(copyNumberValue, deletionThreshold) {
+    return (!isNaN(copyNumberValue) && (copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
 
 /**
@@ -30,7 +43,8 @@ export let getGenePathwayLookup = pathways => {
 };
 
 export function pruneColumns(data, pathways, min) {
-    let columnScores = data.map(sum);
+    // TODO: we need to map the sum off each column
+    let columnScores = data.map( d => sum(d.total));
 
     let prunedPathways = pathways.filter((el, i) => columnScores[i] >= min);
     let prunedAssociations = data.filter((el, i) => columnScores[i] >= min);
@@ -46,8 +60,8 @@ export function findAssociatedData(inputHash) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = associateCache.get(key);
-    if (!data) {
-        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)
+    if (ignoreCache || !data) {
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort);
         associateCache.set(key,data);
     }
 
@@ -58,11 +72,15 @@ export function findPruneData(inputHash) {
     let {associatedData, pathways, filterMin} = inputHash;
     let key = JSON.stringify(inputHash);
     let data = pruneDataCache.get(key);
-    if (!data) {
+    if (ignoreCache || !data) {
         data = pruneColumns(associatedData, pathways, filterMin);
         pruneDataCache.set(key,data);
     }
     return data;
+}
+
+export function createEmptyArray(pathwayLength,sampleLength){
+    return times(pathwayLength, () => times(sampleLength, () => JSON.parse(JSON.stringify(DEFAULT_DATA_VALUE))));
 }
 
 /**
@@ -80,7 +98,7 @@ export function findPruneData(inputHash) {
  */
 export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    let returnArray = times(pathways.length, () => times(samples.length, () => 0));
+    let returnArray = createEmptyArray(pathways.length,samples.length)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -88,11 +106,29 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
+
             let effectValue = getMutationScore(row.effect, min);
+            let effectScore = mutationScores[row.effect];
             let pathwayIndices = genePathwayLookup(row.gene);
 
             for (let index of pathwayIndices) {
-                returnArray[index][sampleIndex.get(row.sample)] += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
+                returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
+
+                switch(effectScore){
+                    case 4:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1 ;
+                        break;
+                    case 3:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1 ;
+                        break;
+                    case 2:
+                        returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1 ;
+                        break;
+                    default:
+                }
+
+                //
             }
         }
     }
@@ -117,7 +153,10 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                         , selectedCohort ? selectedCohort.amplificationThreshold : 2
                         , selectedCohort ? selectedCohort.deletionThreshold : -2);
                     if (returnValue > 0) {
-                        returnArray[index][sampleEntryIndex] += returnValue;
+                        returnArray[index][sampleEntryIndex].total += returnValue;
+                        returnArray[index][sampleEntryIndex].cnv += returnValue;
+                        returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.amplificationThreshold : 2);
+                        returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.deletionThreshold : -2);
                     }
                 }
             }

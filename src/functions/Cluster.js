@@ -1,4 +1,3 @@
-module.exports = Cluster;
 
 
 /**
@@ -79,7 +78,7 @@ function createDistanceArray(input, distance) {
 }
 
 
-function Cluster(options) {
+export function Cluster(options) {
     if (!(this instanceof Cluster)) return new Cluster(options)
 
     if (!Array.isArray(options.input)) throw new TypeError('input must be an array')

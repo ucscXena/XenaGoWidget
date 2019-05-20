@@ -42,9 +42,38 @@ body {
     padding-left: 15px;
 }
 
-.highlightChip{
-    /*background-color: red;*/
+.mutation2Color{
+    color: #2777b4;
+    font-weight: bolder;
+}
+
+.mutation3Color{
+    color: #ff7f0e;
+    font-weight: bolder;
+}
+
+.mutation4Color{
+    color: #0000ff;
+    font-weight: bolder;
+}
+
+.mutationColor{
+    color: cornflowerblue;
+    font-weight: bolder;
+}
+
+.cnvColor{
     color: firebrick;
+    font-weight: bolder;
+}
+
+.cnvHighColor{
+    color: #ff0000;
+    font-weight: bolder;
+}
+
+.cnvLowColor{
+    color: #0000ff;
     font-weight: bolder;
 }
 
@@ -69,6 +98,16 @@ body {
 
 .mouseHover :hover{
     cursor: pointer;
+}
+
+.hoverScore{
+    color: white;
+    display: inline;
+    font-weight: bold;
+    background-color: #333333;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: 5px;
 }
 
 .wideNavigation{

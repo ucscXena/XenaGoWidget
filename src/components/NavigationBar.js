@@ -19,6 +19,10 @@ const GithubIcon = () => (
     </svg>
 );
 
+const XenaIcon = () => (
+    <img src="images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
+);
+
 export default class NavigationBar extends PureComponent {
 
     constructor(props) {
@@ -41,27 +45,26 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-        let {editGeneSetColors, showPathways, showXena, view, toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
+        let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,
+            showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+            toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
+        // let showColorByTypeLabel = (showColorByType ? 'Hide' : 'Show') + ' Color By Type Gene Set';
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
                       rel="stylesheet"/>
-                <AppBar title='Xena Gene Set Viewer'>
+                <AppBar title='Xena Gene Set Viewer' leftIcon={<XenaIcon />}>
                     <Navigation type='horizontal' className={BaseStyle.wideNavigation}>
                         <table>
                             <tbody>
                             <tr>
                                 <td width="5%">
                                     <Button icon='help' floating primary mini
-                                     onClick={ () => this.showHelp() }
+                                            onClick={() => this.showHelp()}
                                     />
-                                    {/*<IconMenu icon='more_vert' position='topLeft'*/}
-                                              {/*className={BaseStyle.menuStyle}>*/}
-                                    {/*</IconMenu>*/}
                                 </td>
                                 <td width="8%">
-                                    {/*https://material.io/tools/icons/?style=baseline*/}
                                     <IconMenu icon='more_vert' position='topLeft'
                                               className={BaseStyle.menuStyle}>
 
@@ -76,9 +79,16 @@ export default class NavigationBar extends PureComponent {
                                                   caption='Show GeneSet Viewer'/>
                                         }
                                         <MenuDivider/>
-                                        <MenuItem value='showRecipricalPathways'
+                                        <MenuItem value='showReciprocalPathways'
                                                   onClick={() => toggleShowReciprocalPathway()}
                                                   caption={showReciprocalPathwayLabel}/>
+                                        <MenuDivider/>
+                                        <MenuItem onClick={() => activateShowColorByTypeDetail()}
+                                                  caption={`${showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => activateShowColorByType()}
+                                                  caption={`${showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => activateShowColorTotal()}
+                                                  caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
@@ -134,4 +144,10 @@ NavigationBar.propTypes = {
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
+    showColorByTypeDetail: PropTypes.any,
+    showColorByType: PropTypes.any,
+    showColorTotal: PropTypes.any,
+    activateShowColorByType: PropTypes.any,
+    activateShowColorByTypeDetail: PropTypes.any,
+    activateShowColorTotal: PropTypes.any,
 };

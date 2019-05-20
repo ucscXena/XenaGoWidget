@@ -51,15 +51,15 @@ export function partition(n, m) {
 export function sumInstances(arr) {
     let total = 0;
     for (let i = 0; i < arr.length; ++i) {
-        total += arr[i] > 0 ? 1 : 0 ;
+        total += arr[i].total > 0 ? 1 : 0 ;
     }
     return total;
 }
 
-export function sum(arr) {
+export function sumTotals(arr) {
     let total = 0;
     for (let i = 0; i < arr.length; ++i) {
-        total += arr[i];
+        total += arr[i].total;
     }
     return total;
 }

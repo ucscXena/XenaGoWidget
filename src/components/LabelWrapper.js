@@ -11,6 +11,7 @@ let styles = {
         , display: 'block'
         , zIndex: 10
         , opacity: 1
+        , cursor: 'crosshair'
     }
 };
 
@@ -41,7 +42,7 @@ export default class LabelWrapper extends PureComponent {
         } = this.props;
 
         return (
-            <div style={{...styles.overlay, width, height, top: 74 + offset}}
+            <div style={{...styles.overlay, width, height, top: 77 + offset}}
                  onMouseMove={onMouseMove}
                  onMouseOut={onMouseOut}
                  onClick={onClick}

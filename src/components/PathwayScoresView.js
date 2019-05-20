@@ -3,7 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
-import {partition, sumInstances} from '../functions/util';
+import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
 import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -18,7 +18,9 @@ const DOWN_BUFFER = 1;
 const style = {
     xenaGoView: {
         opacity: 1,
-    },
+        // border: 'solid black 0.5px',
+        boxShadow: '0 0 2px 2px #ccc '
+},
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
@@ -69,19 +71,24 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
     return index;
 };
 
-let pathwayIndexFromX = (x, layout) =>
-    layout.findIndex(({start, size}) => start <= x && x < start + size);
+let pathwayIndexFromX = (x, layout) => {
+    let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
+    let layoutInstance = layout[pathwayIndex];
+    let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
+    return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+};
 
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
-    let pathwayIndex = pathwayIndexFromX(x, layout);
+    let {pathwayIndex,selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression,
+        expression:expression,
+        selectCnv:selectCnv
     };
 }
 
@@ -114,8 +121,8 @@ class PathwayScoresView extends PureComponent {
 
     onHover = (event) => {
         let {onHover} = this.props;
-        if (onHover) {
-            let pointData = getPointData(event, this.props);
+        let pointData = getPointData(event, this.props);
+        if (pointData) {
             onHover(pointData);
         }
         else {
@@ -126,8 +133,9 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            loading, width, height, layout, data, associateData, offset, cohortIndex,
-            selectedPathways, hoveredPathways, colorSettings, highlightedGene
+            width, height, layout, data, associateData, offset, cohortIndex,
+            selectedPathways, hoveredPathways, colorSettings, highlightedGene,
+            viewType
         } = this.props;
 
         return (
@@ -140,6 +148,8 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     associateData={associateData}
                     cohortIndex={cohortIndex}
+                    data={data} // updated data forces refresh
+                    viewType={viewType}
                 />
                 <LabelWrapper
                     width={width}
@@ -271,7 +281,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         let samplesLength = returnedValue.data[0].length;
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sum(returnedValue.data[d]);
+            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
         }
 
         internalData = returnedValue.data;

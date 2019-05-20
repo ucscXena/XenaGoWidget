@@ -1,6 +1,6 @@
 import React from "react";
 import cluster from '../functions/Cluster';
-import {sum, sumInstances} from '../functions/util';
+import {sumTotals, sumInstances} from '../functions/util';
 
 export function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
@@ -55,6 +55,23 @@ function sortColumnDensities(prunedColumns) {
     return sortedColumns;
 }
 
+export function sortByType(renderedData){
+    // sort samples first based on what gene in position 1 has the highest value
+    // proceed to each gene
+    return renderedData.sort(function (a, b) {
+        // a = sample of a.length -1 genes
+        // b = sample of b.length -1 genes
+        for (let index = 0; index < a.length; ++index) {
+            if (b[index].cnvHigh !== a[index].cnvHigh) return b[index].cnvHigh - a[index].cnvHigh;
+            if (b[index].cnvLow !== a[index].cnvLow) return b[index].cnvLow - a[index].cnvLow;
+            if (b[index].mutation4 !== a[index].mutation4) return b[index].mutation4 - a[index].mutation4;
+            if (b[index].mutation3 !== a[index].mutation3) return b[index].mutation3 - a[index].mutation3;
+            if (b[index].mutation2 !== a[index].mutation2) return b[index].mutation2 - a[index].mutation2;
+        }
+        // sort by sample name
+        return a[a.length-1] - b[b.length-1];
+    });
+}
 
 /**
  * Sort by column density followed by row.
@@ -71,19 +88,9 @@ function sortColumnDensities(prunedColumns) {
 export function clusterSort(prunedColumns) {
     let sortedColumns = sortColumnDensities(prunedColumns);
 
-    // let sortedPathways = scoreColumns(prunedColumns);
-
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
-
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
-            }
-        }
-        return sum(b) - sum(a)
-    });
+    renderedData = sortByType(renderedData);
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];
@@ -105,10 +112,10 @@ export function clusterSampleSort(prunedColumns) {
     // - samples = N sample descriptions
     let transposedData = transpose(prunedColumns.data);
     let summedSamples = transposedData.map((d, index) => {
-        return {index: index, score: sum(d)}
+        return {index: index, score: sumTotals(d)}
     }).sort((a, b) => b.score - a.score);
     let sortedTransposedData = [];
-    summedSamples.forEach((d,i) => {
+    summedSamples.forEach((d, i) => {
         sortedTransposedData[i] = transposedData[d.index];
     });
     let untransposedData = transpose(sortedTransposedData);
@@ -194,7 +201,7 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
                 return b[index] - a[index];
             }
         }
-        return sum(b) - sum(a)
+        return sumTotals(b) - sumTotals(a)
     });
 
     renderedData = transpose(renderedData);
@@ -243,15 +250,7 @@ export function synchronizedSort(prunedColumns, geneList) {
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
 
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
-            }
-        }
-        return sum(b) - sum(a)
-    });
-
+    renderedData = sortByType(renderedData);
     renderedData = transpose(renderedData);
     let returnColumns = {};
     returnColumns.sortedSamples = renderedData[renderedData.length - 1];

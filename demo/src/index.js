@@ -27,10 +27,21 @@ class Demo extends PureComponent {
 
         return (
             <div>
-                <Helmet>
-                    <title>Xena Gene Set Viewer</title>
-                    <meta name="description" content="Xena Gene Set Viewer" />
-                </Helmet>
+                <Helmet
+                    title="Xena Gene Set Viewer"
+                    meta={[
+                        { name: "description", content: "Xena Gene Set Viewer" }
+                    ]}
+                    link={[
+                        {"rel": "icon",
+                            "type": "image/png",
+                            "href": "images/xenalogo_hfz_icon.ico"
+                        }
+                    ]}
+                />
+                {/*    <title>Xena Gene Set Viewer</title>*/}
+                {/*    <meta name="description" content="Xena Gene Set Viewer" />*/}
+                {/*</Helmet>*/}
                 <XenaGeneSetApp/>
             </div>)
     }
