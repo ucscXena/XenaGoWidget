@@ -656,7 +656,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <div style={{paddingLeft: leftPadding}}>
                                                 <FaArrowRight onClick={this.hideGeneSetDetail}
                                                               className={BaseStyle.mouseHover}/>
-                                         i  </div>
+                                             </div>
                                             }
                                             {!this.state.showPathwayDetails &&
                                             <FaArrowLeft onClick={this.showGeneSetDetail}
