@@ -17,7 +17,7 @@ export class SubCohortSelector extends PureComponent {
         let selected = {};
 
         let allSelected = true ;
-        Object.keys(subCohortsForSelected).map( cs =>{
+        subCohortsForSelected.map( cs =>{
             selected[cs] =  subCohortsNames.indexOf(cs)>=0;
             console.log('cs',cs,subCohortsNames,selected[cs]);
             if(allSelected){
