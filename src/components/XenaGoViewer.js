@@ -80,17 +80,6 @@ export default class XenaGoViewer extends PureComponent {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-        let returnValue = super.shouldComponentUpdate(nextProps,nextState);
-        // if(returnValue && this.props.geneDataStats.length >0 ){
-        //     console.log(this.state.key,returnValue,'should',JSON.parse(JSON.stringify(this.props.geneDataStats)),JSON.parse(JSON.stringify(nextProps.geneDataStats)))
-        // }
-        // return !isEqual(nextProps, this.props) ||
-        //     !isEqual(nextState, this.state);
-        return returnValue ;
-    }
-
-
 
     setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
@@ -205,7 +194,6 @@ export default class XenaGoViewer extends PureComponent {
     loadCohortData() {
         if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-            console.log('XGV, loading cohort data ',selectedCohort2)
             if (selectedCohort2.selectedSubCohorts) {
                 this.selectSubCohort(selectedCohort2);
             } else {
@@ -257,7 +245,6 @@ export default class XenaGoViewer extends PureComponent {
             selected: selected,
             selectedSubCohorts: getSubCohortsOnlyForCohort(selected),
         };
-        console.log('XGV, selectyCohort cohort',cohort,selected,selectedObject);
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         this.setState({
             selectedCohort: selected,
@@ -302,13 +289,9 @@ export default class XenaGoViewer extends PureComponent {
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
 
-        console.log("XGV selecting sub cohort at the top level",subCohortSelected,selectedCohort)
-
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohorts === 'object') {
-                console.log("in sub subs?")
                     // let keysArray = Object.keys(subCohortSelected.selectedSubCohorts)
-                // console.log('keys array',keysArray,subCohortSelected.selectedSubCohorts)
                     samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
                     selectedObject = {
                         selected: this.state.selectedCohort,
@@ -325,7 +308,6 @@ export default class XenaGoViewer extends PureComponent {
                 return;
             }
             let selectedSubCohortSamples = getSamplesFromSubCohort(this.state.selectedCohort,subCohortSelected);
-            console.log('selected sub cohorts',selectedSubCohortSamples)
             samples = Object.entries(selectedSubCohortSamples).map(c => {
                 return c[1]
             });
@@ -333,7 +315,6 @@ export default class XenaGoViewer extends PureComponent {
                 selected: selectedCohort,
                 selectedSubCohorts: subCohortSelected,
             };
-            console.log('BB XGF, SSC',selectedObject)
         }
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
@@ -405,8 +386,6 @@ export default class XenaGoViewer extends PureComponent {
         } else if (this.props.showColorByTypeDetail) {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
-
-        console.log('XGV selected sub cohorts',this.state.selectedSubCohorts)
 
         if (this.state.loadState === 'loaded') {
             if (this.state.selectedPathways.length > 0) {

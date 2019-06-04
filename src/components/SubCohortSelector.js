@@ -9,9 +9,7 @@ export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('super props',props);
         let {subCohortsForSelected,selectedSubCohorts} = props;
-        console.log('selected sub cohorts',selectedSubCohorts,subCohortsForSelected)
         // let subCohortsNames = Object.keys(subCohortsForSelected);
         let subCohortsNames = Object.keys(selectedSubCohorts);
         let selected = {};
@@ -25,7 +23,6 @@ export class SubCohortSelector extends PureComponent {
         let allSelected = availableSubtypes===selectedSubTypes;
         subCohortsForSelected.map( cs =>{
             selected[cs] =  subCohortsNames.indexOf(cs)>=0;
-            console.log('cs',cs,subCohortsNames,selected[cs]);
             if(allSelected){
                 selected[cs] = true ;
             }
@@ -33,7 +30,6 @@ export class SubCohortSelector extends PureComponent {
             //     allSelected = selected[cs];
             // }
         });
-        console.log('selected -> ',subCohortsForSelected,selectedSubCohorts,selected);
         this.state = {
             active: this.props.active,
             selected,
@@ -42,13 +38,8 @@ export class SubCohortSelector extends PureComponent {
     }
 
     handleChange = (value,field) => {
-        // alert('handing change - '+field+' - '+value);
-        console.log('handling change',value,field)
-
         let newSelected = JSON.parse(JSON.stringify(this.state.selected)) ;
-        console.log('A',newSelected)
         let allSelected = this.state.allSelected;
-
 
         if(field==='All'){
             allSelected = true
@@ -63,10 +54,7 @@ export class SubCohortSelector extends PureComponent {
             allSelected = availableSubtypes === selectedSubTypes ;
         }
 
-        console.log('input selected',this.state.selected,'vs',newSelected)
-
         this.props.handleSubCohortChange(newSelected)
-
 
         this.setState({
             selected:newSelected,
@@ -79,9 +67,6 @@ export class SubCohortSelector extends PureComponent {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
         let {selected,allSelected} = this.state ;
-
-        console.log('selected sub cohorts',subCohortsForSelected,this.props.selectedSubCohorts);
-        console.log('state',this.state)
 
         return (
             <Dialog

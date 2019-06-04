@@ -13,7 +13,6 @@ export class CohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('cohort selected',props)
         this.state = {
             selectedCohort: props.selectedCohort,
             selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : [],
@@ -53,11 +52,7 @@ export class CohortSelector extends PureComponent {
             }
         );
 
-        console.log('onChangeSubCohort . . XXX ',newSelected)
-
         const selectedSubCohorts = Object.entries(newSelected).filter( s => s[1] ).map( t => t[0]);
-        console.log('selected subs onChangeSubCohort . . XXX ',selectedSubCohorts)
-
 
         let selectionObject = {
             selected:this.state.selectedCohort,
@@ -76,8 +71,6 @@ export class CohortSelector extends PureComponent {
         let {cohorts,cohortLabel} = this.props ;
         let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
         let subCohortLabel = this.generateSubCohortLabels(this.state.subCohortLabel);
-
-        console.log("subCohortsForSelected",subCohortsForSelected)
 
         return (
             <div>
