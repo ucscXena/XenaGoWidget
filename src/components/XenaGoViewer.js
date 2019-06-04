@@ -302,8 +302,11 @@ export default class XenaGoViewer extends PureComponent {
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
 
+        console.log("XGV selecting sub cohort at the top level",subCohortSelected,selectedCohort)
+
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohorts === 'object') {
+                console.log("in sub subs?")
                     // let keysArray = Object.keys(subCohortSelected.selectedSubCohorts)
                 // console.log('keys array',keysArray,subCohortSelected.selectedSubCohorts)
                     samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
