@@ -6,6 +6,11 @@ import subCohorts from '../data/Subtype_Selected';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
+import {
+    getSubCohortOnlysForCohort,
+    getSubCohortsForCohort,
+    getSubCohortsOnlyForCohort
+} from "../functions/CohortFunctions";
 
 
 export class CohortSelector extends PureComponent {
@@ -29,9 +34,8 @@ export class CohortSelector extends PureComponent {
         }
     };
 
-    handleSubCohortToggle = (newSelected) => {
+    handleSubCohortToggle = () => {
         this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
-
     };
 
 
@@ -44,10 +48,7 @@ export class CohortSelector extends PureComponent {
         if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
             return `All ${availableSubtypes} Subtypes`;
         }
-
-        let label = `(${selectedSubTypes}/${availableSubtypes}) Subtypes`;
-
-        return label ;
+        return `(${selectedSubTypes}/${availableSubtypes}) Subtypes`;
     };
 
     onChangeSubCohort = (newSelected) => {
@@ -64,12 +65,15 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-        let subCohortsForSelected = subCohorts[this.state.selectedCohort];
         let {cohorts,cohortLabel} = this.props ;
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
         let subCohortLabel = this.generateSubCohortLabels(this.state.subCohortLabel);
+
+        console.log("subCohortsForSelected",subCohortsForSelected)
 
         return (
             <div>
+                { subCohortsForSelected &&
                 <SubCohortSelector active={this.state.showSubCohortSelector}
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}
@@ -78,6 +82,7 @@ export class CohortSelector extends PureComponent {
                                    subCohortsForSelected={subCohortsForSelected}
                                    cohortLabel={this.props.cohortLabel}
                 />
+               }
                 <div style={{
                     marginTop: 10,
                     marginLeft: 10,
@@ -117,7 +122,7 @@ CohortSelector.propTypes = {
     subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
-    selectedSubCohorts: PropTypes.string,
+    selectedSubCohorts: PropTypes.any,
     onChange: PropTypes.any.isRequired,
     onChangeSubCohort: PropTypes.any.isRequired,
 };

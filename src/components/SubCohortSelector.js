@@ -94,7 +94,7 @@ export class SubCohortSelector extends PureComponent {
                                       onChange={ (value) => this.handleChange(value,'All')}
                             />
                                 {
-                                    Object.keys(subCohortsForSelected).map( cs =>{
+                                    subCohortsForSelected.map( cs =>{
                                        return (
                                            <Checkbox label={cs} key={cs}
                                                      checked={selected[cs]}
