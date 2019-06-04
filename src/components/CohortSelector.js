@@ -62,7 +62,7 @@ export class CohortSelector extends PureComponent {
         let selectionObject = {
             selected:this.state.selectedCohort,
             selectedSubCohorts:selectedSubCohorts,
-        }
+        };
 
         this.props.onChangeSubCohort(selectionObject)
     };
