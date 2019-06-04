@@ -54,6 +54,7 @@ export class SubCohortSelector extends PureComponent {
 
         console.log('input selected',this.state.selected,'vs',newSelected)
 
+        this.props.handleSubCohortChange(newSelected)
 
 
         this.setState({

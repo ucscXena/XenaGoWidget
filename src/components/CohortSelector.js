@@ -17,6 +17,7 @@ export class CohortSelector extends PureComponent {
             selectedCohort: props.selectedCohort,
             selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : [],
             showSubCohortSelector: false,
+            subCohortLabel: 'All Subtypes',
         };
     }
 
@@ -28,13 +29,33 @@ export class CohortSelector extends PureComponent {
         }
     };
 
-    handleSubCohortToggle = (event) => {
+    handleSubCohortToggle = (newSelected) => {
         this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
 
     };
 
-    onChangeSubCohort = (event) => {
-        this.setState({selectedSubCohort: event.target.value});
+
+
+    generateSubCohortLabels(){
+        let selectedSubCohorts = this.state.selectedSubCohorts;
+        let subCohortsForSelected = subCohorts[this.state.selectedCohort];
+        const availableSubtypes = Object.keys(subCohortsForSelected).length;
+        const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+        if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
+            return `All ${availableSubtypes} Subtypes`;
+        }
+
+        let label = `(${selectedSubTypes}/${availableSubtypes}) Subtypes`;
+
+        return label ;
+    };
+
+    onChangeSubCohort = (newSelected) => {
+        this.setState(
+        {
+                selectedSubCohorts: newSelected,
+            }
+        );
     };
 
     selectCohortSelection = () => {
@@ -45,6 +66,8 @@ export class CohortSelector extends PureComponent {
 
         let subCohortsForSelected = subCohorts[this.state.selectedCohort];
         let {cohorts,cohortLabel} = this.props ;
+        let subCohortLabel = this.generateSubCohortLabels(this.state.subCohortLabel);
+
         return (
             <div>
                 <SubCohortSelector active={this.state.showSubCohortSelector}
@@ -79,7 +102,7 @@ export class CohortSelector extends PureComponent {
                     }
                 </select>
                 {subCohortsForSelected &&
-                   <Button style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label='All Subtypes'>
+                   <Button style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
                        <FaFilter/>
                    </Button>
 
