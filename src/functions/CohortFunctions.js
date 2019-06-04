@@ -1,6 +1,6 @@
 import subCohorts from '../data/Subtype_Selected';
 
-export function getSubCohortsForCohort(cohort){
+function getSubCohortsForCohort(cohort){
     return subCohorts[cohort];
 }
 
