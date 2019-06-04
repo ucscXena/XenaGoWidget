@@ -16,13 +16,22 @@ export class SubCohortSelector extends PureComponent {
         let subCohortsNames = Object.keys(selectedSubCohorts);
         let selected = {};
 
-        let allSelected = true ;
+        const availableSubtypes = Object.keys(subCohortsForSelected).length;
+        let selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+        if(selectedSubTypes===0){
+            selectedSubTypes = availableSubtypes;
+        }
+
+        let allSelected = availableSubtypes===selectedSubTypes;
         subCohortsForSelected.map( cs =>{
             selected[cs] =  subCohortsNames.indexOf(cs)>=0;
             console.log('cs',cs,subCohortsNames,selected[cs]);
             if(allSelected){
-                allSelected = selected[cs];
+                selected[cs] = true ;
             }
+            // if(allSelected){
+            //     allSelected = selected[cs];
+            // }
         });
         console.log('selected -> ',subCohortsForSelected,selectedSubCohorts,selected);
         this.state = {
@@ -40,16 +49,18 @@ export class SubCohortSelector extends PureComponent {
         console.log('A',newSelected)
         let allSelected = this.state.allSelected;
 
+
         if(field==='All'){
             allSelected = true
             Object.keys(newSelected).forEach( s => {
                 newSelected[s] = true ;
             });
-            console.log('B',newSelected)
         }
         else{
-            allSelected = false ;
             newSelected[field] = value ;
+            const availableSubtypes = Object.keys(this.props.subCohortsForSelected).length;
+            let selectedSubTypes = Object.values(newSelected).filter( s => s ).length;
+            allSelected = availableSubtypes === selectedSubTypes ;
         }
 
         console.log('input selected',this.state.selected,'vs',newSelected)

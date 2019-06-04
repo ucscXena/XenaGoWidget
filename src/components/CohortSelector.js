@@ -7,8 +7,6 @@ import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
 import {
-    getSubCohortOnlysForCohort,
-    getSubCohortsForCohort,
     getSubCohortsOnlyForCohort
 } from "../functions/CohortFunctions";
 
