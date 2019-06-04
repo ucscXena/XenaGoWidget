@@ -6,9 +6,7 @@ import subCohorts from '../data/Subtype_Selected';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
-import {
-    getSubCohortsOnlyForCohort
-} from "../functions/CohortFunctions";
+import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
 
 
 export class CohortSelector extends PureComponent {
@@ -26,14 +24,13 @@ export class CohortSelector extends PureComponent {
 
     onChange = (event) => {
         this.setState({selectedCohort: event.target.value});
-        let {onChange} = this.props;
-        if (onChange) {
-            onChange(event.target.value);
-        }
+        this.props.onChange(event.target.value);
     };
 
     handleSubCohortToggle = () => {
         this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
+        // TODO: need to set the state here
+        // this.props.onChange(event.target.value);
     };
 
 
