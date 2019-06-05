@@ -6,7 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {createAssociatedDataKey, createDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 
 
@@ -226,6 +226,7 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -233,6 +234,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways,
             samples,
             filter,
+            filterMin,
             min,
             selectedCohort
         };
@@ -240,16 +242,9 @@ export default class PathwayScoresViewCache extends PureComponent {
             return <div>Loading...</div>
         }
 
-        let associatedData = findAssociatedData(hashAssociation);
-
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways,
-            filterMin
-        };
-        let prunedColumns = findPruneData(hashForPrune);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = samples;
         let returnedValue;
 

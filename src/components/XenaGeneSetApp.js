@@ -6,7 +6,7 @@ import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
-import {addIndepProb, findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {addIndepProb, createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
@@ -15,6 +15,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
+import update from "immutability-helper";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -396,11 +397,18 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
+        // let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
+        let hashAssociation = update(pathwayData, {
+            filter: {$set: filter},
+            min: {$set: min},
+            selectedCohort: {$set: this.getSelectedCohort(pathwayData)},
+        }
+        );
         hashAssociation.filter = filter;
         hashAssociation.min = min;
         hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
-        let associatedData = findAssociatedData(hashAssociation);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
         let hashForPrune = {
@@ -408,7 +416,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathways: hashAssociation.pathways,
             filterMin
         };
-        let prunedColumns = findPruneData(hashForPrune);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }

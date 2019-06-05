@@ -8,26 +8,6 @@ export function transpose(a) {
     return a.length === 0 ? a : a[0].map((_, c) => a.map(r => r[c]));
 }
 
-// Euclidean distance
-function distance(a, b) {
-    let d = 0;
-    for (let i = 0; i < a.length; i++) {
-        d += Math.abs(a[i] - b[i]);
-        // d += sum ;
-        // d += Math.pow(a[i] - b[i], 2);
-    }
-    // return Math.sqrt(d);
-    return d;
-}
-
-function linkage(distances) {
-// Single-linkage clustering
-//     return Math.min.apply(null, distances);
-    // complete-linkage clustering?
-    let max = 0;
-    return distances.reduce((d) => d > max ? d : max);
-}
-
 
 function scoreColumns(prunedColumns) {
     return prunedColumns.pathways.map((el, index) => {
@@ -51,6 +31,7 @@ function sortColumnDensities(prunedColumns) {
     // refilter data by index
     sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
     sortedColumns.samples = prunedColumns.samples;
+
 
     return sortedColumns;
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
 import CanvasDrawing from "./CanvasDrawing";
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
@@ -79,9 +79,9 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         // TODO: fix filter somehow?
         filter = filter ? filter : 'All';
 
-        // call
 
         // need to get an associatedData
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -89,21 +89,24 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             pathways,
             samples,
             filter,
+            filterMin,
             min:MIN_FILTER,
             selectedCohort
         };
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
-        let associatedData = findAssociatedData(hashAssociation);
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        console.log('VGSSSV assocated data key',associatedDataKey)
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
         let hashForPrune = {
             associatedData,
             pathways,
             filterMin
         };
-        let prunedColumns = findPruneData(hashForPrune);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
+        // let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
         let returnedValue = clusterSampleSort(prunedColumns);
 
