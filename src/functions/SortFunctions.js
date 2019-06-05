@@ -193,12 +193,10 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
 
 export function synchronizedSort(prunedColumns, geneList) {
 
-    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = scoreColumns(prunedColumns);
-    let missingColumns = generateMissingColumns(sortedColumns.pathways, geneList);
-    sortedColumns.pathways = [...sortedColumns.pathways, ...missingColumns];
-
-    sortedColumns.pathways.sort((a, b) => {
+    let pathways = scoreColumns(prunedColumns);
+    let missingColumns = generateMissingColumns(pathways, geneList);
+    pathways = [...pathways, ...missingColumns];
+    pathways.sort((a, b) => {
         let geneA = a.gene[0];
         let geneB = b.gene[0];
         let index1 = geneList.indexOf(geneA);
@@ -210,9 +208,9 @@ export function synchronizedSort(prunedColumns, geneList) {
         return b.samplesAffected - a.samplesAffected
     });
     // refilter data by index
-    let columnLength = sortedColumns.data[0].length;
-    sortedColumns.data = sortedColumns.pathways.map(el => {
-        let columnData = sortedColumns.data[el.index];
+    let columnLength = prunedColumns.data[0].length;
+    let data = pathways.map(el => {
+        let columnData = prunedColumns.data[el.index];
         if (columnData) {
             return columnData
         }
@@ -220,21 +218,16 @@ export function synchronizedSort(prunedColumns, geneList) {
             return Array.from(Array(columnLength), () => 0);
         }
     });
-
-    sortedColumns.samples = prunedColumns.samples;
-
-    sortedColumns.data.push(prunedColumns.samples);
-    let renderedData = transpose(sortedColumns.data);
-
+    data.push(prunedColumns.samples);
+    let renderedData = transpose(data);
     renderedData = sortByType(renderedData);
     renderedData = transpose(renderedData);
-    let returnColumns = {};
-    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = sortedColumns.samples;
-    returnColumns.pathways = sortedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
-    return returnColumns;
+    return {
+        sortedSamples : renderedData[renderedData.length - 1],
+        samples : prunedColumns.samples,
+        pathways : pathways,
+        data : renderedData.slice(0, data.length - 1),
+    };
 }
 
 
