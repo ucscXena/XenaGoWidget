@@ -1,7 +1,7 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Chip, Avatar, List, ListItem, ListSubHeader} from "react-toolbox";
+import {Chip} from "react-toolbox";
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from "./ScoreBadge";
 
@@ -13,9 +13,9 @@ export default class HoverGeneView extends PureComponent {
      * @returns {string}
      */
     getRatio(data) {
-        let returnString = data.expression.affected + '/' + data.expression.total;
+        let returnString = data.expression.samplesAffected + '/' + data.expression.total;
         returnString += '  (';
-        returnString += ((Number.parseFloat(data.expression.affected) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
+        returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
         returnString += '%)';
         return returnString;
     }

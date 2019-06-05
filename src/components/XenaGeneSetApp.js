@@ -337,6 +337,9 @@ export default class XenaGeneSetApp extends PureComponent {
         });
 
         this.state.apps.forEach((app, index) => {
+            if(pathwayHover){
+                pathwayHover.samplesAffected = index === 0 ? pathwayHover.firstObserved : pathwayHover.secondObserved;
+            }
             this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
         });
     };
@@ -471,14 +474,6 @@ export default class XenaGeneSetApp extends PureComponent {
                     sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
                 }
                 let total_prob = addIndepProb(sample_probs);
-                // if(sampleIndex<10){
-                // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
-                //     if(pathway.golabel==='TP53 (Pancan Atlas)'){
-                //         console.log('sample probs',sample_probs)
-                //         console.log('total prob',total_prob)
-                //     }
-                // }
-                // pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + sample_probs[0];
                 pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
             }
         }

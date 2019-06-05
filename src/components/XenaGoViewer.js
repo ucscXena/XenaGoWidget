@@ -141,10 +141,12 @@ export default class XenaGoViewer extends PureComponent {
             let expression = {};
             if (this.props.cohortIndex === 0) {
                 expression.affected = pathwayHover.firstObserved;
+                expression.samplesAffected = pathwayHover.firstObserved;
                 expression.allGeneAffected = pathwayHover.firstTotal;
                 expression.total = pathwayHover.firstNumSamples;
             } else {
                 expression.affected = pathwayHover.secondObserved;
+                expression.samplesAffected = pathwayHover.secondObserved;
                 expression.allGeneAffected = pathwayHover.secondTotal;
                 expression.total = pathwayHover.secondNumSamples;
             }
@@ -165,6 +167,7 @@ export default class XenaGoViewer extends PureComponent {
     hoverGene = (geneHoverProps) => {
         if (geneHoverProps) {
             geneHoverProps.cohortIndex = this.props.cohortIndex;
+            geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected
         }
         this.props.geneHover(geneHoverProps);
 

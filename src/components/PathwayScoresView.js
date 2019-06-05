@@ -109,18 +109,6 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    // componentWillMount() {
-    //     console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    //     console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    // }
-
-    // componentDidUpdate() {
-    //     console.log(this.props.cohortIndex,'PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    //     console.log(this.props.cohortIndex,'PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    // }
-
     onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
@@ -293,6 +281,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
         }
 
         internalData = returnedValue.data;
