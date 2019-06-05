@@ -22,7 +22,14 @@ export class CohortSelector extends PureComponent {
     }
 
     onChange = (event) => {
-        this.setState({selectedCohort: event.target.value});
+        // populate sleected sub cohrts for the cohorst
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
+        console.log('sub cohort for selected',subCohortsForSelected)
+        this.setState( {
+                selectedCohort: event.target.value,
+                selectedSubCohorts:subCohortsForSelected,
+        }
+            );
         this.props.onChange(event.target.value);
     };
 
@@ -40,6 +47,7 @@ export class CohortSelector extends PureComponent {
         if(!subCohortsForSelected) return '';
         const availableSubtypes = Object.keys(subCohortsForSelected).length;
         const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+        console.log('selected sub cohorts',selectedSubCohorts,selectedSubTypes)
         if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
             return `All ${availableSubtypes} Subtypes`;
         }
@@ -75,16 +83,14 @@ export class CohortSelector extends PureComponent {
 
         return (
             <div>
-                { subCohortsForSelected.length>0 &&
                 <SubCohortSelector active={this.state.showSubCohortSelector}
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}
                                    selectedCohort={this.state.selectedCohort}
                                    selectedSubCohorts={this.state.selectedSubCohorts}
                                    subCohortsForSelected={subCohortsForSelected}
-                                   cohortLabel={this.props.cohortLabel}
+                                   cohortLabel={subCohortLabel}
                 />
-               }
                 <div style={{
                     marginTop: 10,
                     marginLeft: 10,
@@ -108,6 +114,7 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
+                {/*{subCohortsForSelected.length>0 &&*/}
                 {subCohortsForSelected &&
                    <Button style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
                        <FaFilter/>

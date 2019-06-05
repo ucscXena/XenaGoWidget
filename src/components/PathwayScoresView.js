@@ -6,7 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
-import {createAssociatedDataKey, createDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 
 

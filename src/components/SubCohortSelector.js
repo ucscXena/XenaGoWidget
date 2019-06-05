@@ -3,14 +3,22 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
 import Checkbox from "react-toolbox/lib/checkbox";
+import {isEqual} from 'underscore';
+import update, {extend} from "immutability-helper";
 
 
 export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
-        let {subCohortsForSelected,selectedSubCohorts} = props;
-        // let subCohortsNames = Object.keys(subCohortsForSelected);
+        this.state = {
+            selectedSubCohorts:props.selectedSubCohorts,
+            allSelected:isEqual(props.selectedSubCohorts,props.subCohortsForSelected)
+        };
+    }
+
+    setSelected(){
+        let {subCohortsForSelected,selectedSubCohorts} = this.props;
         let subCohortsNames = Object.keys(selectedSubCohorts);
         let selected = {};
 
@@ -26,47 +34,70 @@ export class SubCohortSelector extends PureComponent {
             if(allSelected){
                 selected[cs] = true ;
             }
-            // if(allSelected){
-            //     allSelected = selected[cs];
-            // }
         });
-        this.state = {
+        this.setState( {
             active: this.props.active,
             selected,
             allSelected,
-        };
+        });
     }
 
     handleChange = (value,field) => {
-        let newSelected = JSON.parse(JSON.stringify(this.state.selected)) ;
-        let allSelected = this.state.allSelected;
+
+
+        console.log('state selected',this.state.selectedSubCohorts,value,field);
+        let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
+        // let allSelected = this.state.allSelected;
 
         if(field==='All'){
-            allSelected = true
-            Object.keys(newSelected).forEach( s => {
-                newSelected[s] = true ;
+            // allSelected = true;
+            this.setState({
+                selectedSubCohorts:this.props.subCohortsForSelected,
+                allSelected:true,
             });
         }
         else{
-            newSelected[field] = value ;
-            const availableSubtypes = Object.keys(this.props.subCohortsForSelected).length;
-            let selectedSubTypes = Object.values(newSelected).filter( s => s ).length;
-            allSelected = availableSubtypes === selectedSubTypes ;
+            if(value){
+                newSelected.push(field);
+            }
+            else{
+                let indexValue = newSelected.indexOf(field);
+                console.log('index value',indexValue,field,newSelected)
+                newSelected.splice(indexValue,1)
+            }
+            let allSelected = isEqual(this.props.subCohortsForSelected,newSelected) ;
+
+            this.setState({
+                selectedSubCohorts:newSelected,
+                allSelected,
+            })
         }
+        // const newSelectedObject = this.props.subCohortsForSelected.map( s => {
+        //     console.log('s',s)
+        //     return {
+        //         [s]:newSelected.indexOf(s)>=0
+        //     }
+        // });
+        let newSelectedObject = {};
+        for(let sc of this.props.subCohortsForSelected){
+            newSelectedObject[sc] = newSelected.indexOf(sc)>=0;
+        }
+        console.log('newly selected object',newSelectedObject);
+        let selectionObject = {
+            selected:this.props.selectedCohort,
+            selectedSubCohorts:newSelectedObject,
+        };
+        this.props.handleSubCohortChange(selectionObject);
 
-        this.props.handleSubCohortChange(newSelected)
-
-        this.setState({
-            selected:newSelected,
-            allSelected,
-        })
     };
 
 
     render() {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
-        let {selected,allSelected} = this.state ;
+
+        let {allSelected} = this.state ;
+
 
         return (
             <Dialog
@@ -93,7 +124,7 @@ export class SubCohortSelector extends PureComponent {
                                     subCohortsForSelected.map( cs =>{
                                        return (
                                            <Checkbox label={cs} key={cs}
-                                                     checked={selected[cs]}
+                                                     checked={this.state.selectedSubCohorts.indexOf(cs)>=0}
                                                      onChange={ (value) => this.handleChange(value,cs)}
                                                      />
                                        )
