@@ -61,11 +61,11 @@ export class CohortSelector extends PureComponent {
             }
         );
 
-        const selectedSubCohorts = Object.entries(newSelected).filter( s => s[1] ).map( t => t[0]);
+        // const selectedSubCohorts = Object.entries(newSelected).filter( s => s[1] ).map( t => t[0]);
 
         let selectionObject = {
             selected:this.state.selectedCohort,
-            selectedSubCohorts:selectedSubCohorts,
+            selectedSubCohorts:newSelected,
         };
 
         this.props.onChangeSubCohort(selectionObject)

@@ -55,6 +55,7 @@ export class SubCohortSelector extends PureComponent {
                 selectedSubCohorts:this.props.subCohortsForSelected,
                 allSelected:true,
             });
+            this.props.handleSubCohortChange(this.props.subCohortsForSelected);
         }
         else{
             if(value){
@@ -70,24 +71,9 @@ export class SubCohortSelector extends PureComponent {
             this.setState({
                 selectedSubCohorts:newSelected,
                 allSelected,
-            })
+            });
+            this.props.handleSubCohortChange(newSelected);
         }
-        // const newSelectedObject = this.props.subCohortsForSelected.map( s => {
-        //     console.log('s',s)
-        //     return {
-        //         [s]:newSelected.indexOf(s)>=0
-        //     }
-        // });
-        let newSelectedObject = {};
-        for(let sc of this.props.subCohortsForSelected){
-            newSelectedObject[sc] = newSelected.indexOf(sc)>=0;
-        }
-        console.log('newly selected object',newSelectedObject);
-        let selectionObject = {
-            selected:this.props.selectedCohort,
-            selectedSubCohorts:newSelectedObject,
-        };
-        this.props.handleSubCohortChange(selectionObject);
 
     };
 

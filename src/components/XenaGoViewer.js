@@ -292,6 +292,8 @@ export default class XenaGoViewer extends PureComponent {
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
 
+        console.log('sub cohort selected',subCohortSelected)
+
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohorts === 'object') {
                     // let keysArray = Object.keys(subCohortSelected.selectedSubCohorts)
