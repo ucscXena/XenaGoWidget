@@ -1,5 +1,4 @@
 import React from "react";
-import cluster from '../functions/Cluster';
 import {sumTotals, sumInstances} from '../functions/util';
 import update from "immutability-helper";
 
@@ -12,10 +11,10 @@ export function transpose(a) {
 
 function scoreColumns(prunedColumns) {
     return prunedColumns.pathways.map((el, index) => {
-        let pathway = JSON.parse(JSON.stringify(el));
-        pathway.samplesAffected = sumInstances(prunedColumns.data[index]);
-        pathway.index = index;
-        return pathway;
+        return update(el,{
+           samplesAffected:{$set:sumInstances(prunedColumns.data[index])},
+            index:{$set:index},
+        });
     });
 }
 
@@ -138,12 +137,11 @@ function generateMissingColumns(pathways, geneList) {
 }
 
 export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
-    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = scoreColumns(prunedColumns);
-    let missingColumns = generateMissingGeneSets(sortedColumns.pathways, geneSetList);
-    sortedColumns.pathways = [...sortedColumns.pathways, ...missingColumns];
+    let pathways = scoreColumns(prunedColumns);
+    let missingColumns = generateMissingGeneSets(pathways, geneSetList);
+    pathways = [...pathways, ...missingColumns];
 
-    sortedColumns.pathways.sort((a, b) => {
+    pathways.sort((a, b) => {
         let geneSetA = a.golabel;
         let geneSetB = b.golabel;
         let index1 = geneSetList.indexOf(geneSetA);
@@ -155,9 +153,9 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
         return b.samplesAffected - a.samplesAffected
     });
     // refilter data by index
-    let columnLength = sortedColumns.data[0].length;
-    sortedColumns.data = sortedColumns.pathways.map(el => {
-        let columnData = sortedColumns.data[el.index];
+    let columnLength = prunedColumns.data[0].length;
+    let data = pathways.map(el => {
+        let columnData = prunedColumns.data[el.index];
         if (columnData) {
             return columnData
         }
@@ -165,11 +163,9 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
             return Array.from(Array(columnLength), () => 0);
         }
     });
-
-    sortedColumns.samples = prunedColumns.samples;
-
-    sortedColumns.data.push(prunedColumns.samples);
-    let renderedData = transpose(sortedColumns.data);
+    // sortedColumns.samples = prunedColumns.samples;
+    data.push(prunedColumns.samples);
+    let renderedData = transpose(data);
 
     renderedData = renderedData.sort(function (a, b) {
         for (let index = 0; index < a.length; ++index) {
@@ -181,13 +177,12 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
     });
 
     renderedData = transpose(renderedData);
-    let returnColumns = {};
-    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    returnColumns.samples = sortedColumns.samples;
-    returnColumns.pathways = sortedColumns.pathways;
-    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
-    return returnColumns;
+    return {
+        sortedSamples : renderedData[renderedData.length - 1],
+        samples : prunedColumns.samples,
+        pathways,
+        data : renderedData.slice(0, data.length - 1),
+    };
 }
 
 
