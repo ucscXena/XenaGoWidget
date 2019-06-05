@@ -1,6 +1,7 @@
 import React from "react";
 import cluster from '../functions/Cluster';
 import {sumTotals, sumInstances} from '../functions/util';
+import update from "immutability-helper";
 
 export function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
@@ -23,17 +24,11 @@ function scoreColumns(prunedColumns) {
  * @param prunedColumns
  */
 function sortColumnDensities(prunedColumns) {
-
-    let sortedColumns = JSON.parse(JSON.stringify(prunedColumns));
-    sortedColumns.pathways = scoreColumns(prunedColumns);
-    sortedColumns.pathways.sort((a, b) => b.samplesAffected - a.samplesAffected);
-
-    // refilter data by index
-    sortedColumns.data = sortedColumns.pathways.map(el => sortedColumns.data[el.index]);
-    sortedColumns.samples = prunedColumns.samples;
-
-
-    return sortedColumns;
+    let pathways = scoreColumns(prunedColumns).sort((a, b) => b.samplesAffected - a.samplesAffected)
+    return update(prunedColumns, {
+       pathways:{$set:pathways} ,
+       data:{$set:pathways.map(el => prunedColumns.data[el.index])},
+    });
 }
 
 export function sortByType(renderedData){
