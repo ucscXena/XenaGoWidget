@@ -36,7 +36,8 @@ export class CohortSelector extends PureComponent {
 
     generateSubCohortLabels(){
         let selectedSubCohorts = this.state.selectedSubCohorts;
-        let subCohortsForSelected = subCohorts[this.state.selectedCohort];
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        if(!subCohortsForSelected) return '';
         const availableSubtypes = Object.keys(subCohortsForSelected).length;
         const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
         if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
@@ -70,11 +71,11 @@ export class CohortSelector extends PureComponent {
 
         let {cohorts,cohortLabel} = this.props ;
         let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
-        let subCohortLabel = this.generateSubCohortLabels(this.state.subCohortLabel);
+        let subCohortLabel = this.generateSubCohortLabels();
 
         return (
             <div>
-                { subCohortsForSelected &&
+                { subCohortsForSelected.length>0 &&
                 <SubCohortSelector active={this.state.showSubCohortSelector}
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}

@@ -5,7 +5,8 @@ function getSubCohortsForCohort(cohort){
 }
 
 export function getSubCohortsOnlyForCohort(cohort){
-    return Object.entries(getSubCohortsForCohort(cohort)).map( c => c[0]);
+    const subCohorts = getSubCohortsForCohort(cohort);
+    return subCohorts ? Object.entries(subCohorts).map( c => c[0]) : [];
 }
 
 export function getSamplesFromSubCohortList(cohort, subCohortArray){

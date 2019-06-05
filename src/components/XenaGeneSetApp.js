@@ -6,7 +6,7 @@ import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
-import {addIndepProb, findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {addIndepProb, createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
@@ -15,6 +15,7 @@ import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
+import update from "immutability-helper";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -174,8 +175,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     addGeneSet = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
 
         let newGeneSetObject = {
             goid: '',
@@ -186,16 +186,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
-            pathwaySets: allSets,
             selectedPathway: selectedPathwaySet,
         });
     };
 
     addGene = (selectedPathway, selectedGene) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
 
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -208,7 +206,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // add to the existing index
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+
+        let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
@@ -220,10 +219,8 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     removeGene = (selectedPathway, selectedGene) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-
         // get geneset to alter
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
 
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -236,7 +233,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // add to the existing index
 
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+        let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
@@ -248,9 +245,9 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     removePathway = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
+        let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // removes selected pathway
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
@@ -396,11 +393,17 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
+        let hashAssociation = update(pathwayData, {
+            filter: {$set: filter},
+            min: {$set: min},
+            selectedCohort: {$set: this.getSelectedCohort(pathwayData)},
+        }
+        );
         hashAssociation.filter = filter;
         hashAssociation.min = min;
         hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
-        let associatedData = findAssociatedData(hashAssociation);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
         let hashForPrune = {
@@ -408,7 +411,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathways: hashAssociation.pathways,
             filterMin
         };
-        let prunedColumns = findPruneData(hashForPrune);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }
