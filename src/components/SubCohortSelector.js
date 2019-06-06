@@ -63,10 +63,9 @@ export class SubCohortSelector extends PureComponent {
             }
             else{
                 let indexValue = newSelected.indexOf(field);
-                console.log('index value',indexValue,field,newSelected)
                 newSelected.splice(indexValue,1)
             }
-            let allSelected = isEqual(this.props.subCohortsForSelected,newSelected) ;
+            let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
 
             this.setState({
                 selectedSubCohorts:newSelected,
