@@ -19,11 +19,20 @@ export class SubCohortSelector extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        this.setState({
-        //     selectedSubCohorts:this.props.selectedSubCohorts,
-            originalSelectedSubCohorts:this.props.selectedSubCohorts,
-            allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
-        })
+        if(this.props.selectedCohort!==prevProps.selectedCohort){
+            this.setState({
+                selectedSubCohorts:this.props.selectedSubCohorts,
+                originalSelectedSubCohorts:this.props.selectedSubCohorts,
+                allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+            })
+        }
+        else{
+            this.setState({
+                //     selectedSubCohorts:this.props.selectedSubCohorts,
+                originalSelectedSubCohorts:this.props.selectedSubCohorts,
+                allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+            })
+        }
     }
 
     handleChange = (value,field) => {
