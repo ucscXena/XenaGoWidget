@@ -11,7 +11,7 @@ import {
     sortPathwaysByDiffScore,
     synchronizedSort
 } from '../functions/SortFunctions';
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 
 
@@ -114,18 +114,6 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    // componentWillMount() {
-    //     console.log(this.props.cohortIndex,'PSV CWM input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    //     console.log(this.props.cohortIndex,'PSV CWM output',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    // }
-
-    // componentDidUpdate() {
-    //     console.log(this.props.cohortIndex,'PSV CDU input',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    //     this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    //     console.log(this.props.cohortIndex,'PSV CDU output ',JSON.parse(JSON.stringify(this.props.data.pathways)))
-    // }
-
     onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
@@ -164,7 +152,6 @@ class PathwayScoresView extends PureComponent {
             console.log("OUTPUT PATHWAYS",data.pathways);
             returnedData = sortAssociatedDataByDiffScore(data.pathways,associateData);
         }
-
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -257,6 +244,7 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -264,6 +252,7 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways,
             samples,
             filter,
+            filterMin,
             min,
             selectedCohort
         };
@@ -271,16 +260,9 @@ export default class PathwayScoresViewCache extends PureComponent {
             return <div>Loading...</div>
         }
 
-        let associatedData = findAssociatedData(hashAssociation);
-
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways,
-            filterMin
-        };
-        let prunedColumns = findPruneData(hashForPrune);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = samples;
         let returnedValue;
 
@@ -321,6 +303,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
         }
 
         internalData = returnedValue.data;

@@ -6,6 +6,11 @@ import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
 import {addIndepProb, createEmptyArray, DEFAULT_DATA_VALUE} from "../src/functions/DataFunctions";
 import { sumDataByType} from "../src/functions/DrawFunctions";
 import {times} from "underscore";
+import {
+    getSamplesFromSubCohort,
+    getSamplesFromSubCohortList,
+     getSubCohortsOnlyForCohort
+} from "../src/functions/CohortFunctions";
 
 describe('Main App', () => {
   let node;
@@ -66,25 +71,26 @@ describe('Test array fill', () => {
         // let returnArray = new Array(20).fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
         // let returnArray = times(20,fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
         let returnArray = times(20, () => times(5, () => DEFAULT_DATA_VALUE));
-        expect(returnArray.length,20);
-        expect(returnArray[0].length,5);
-        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        expect(returnArray.length===20);
+        expect(returnArray[0].length===5);
+        expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0});
         returnArray[5][3] = {total:7,mutation:3,cnv:1};
-        expect(returnArray[5][3],{total:7,mutation:3,cnv:1});
+        expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
         returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
-        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        expect(returnArray[5][3]).toEqual({total:0,mutation:0,cnv:0});
 
     });
 
     it('Create a simple array', () => {
         let returnArray = createEmptyArray(20,5);
-        expect(returnArray.length,20);
-        expect(returnArray[0].length,5);
-        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        expect(returnArray.length).toEqual(20);
+        expect(returnArray[0].length).toEqual(5);
+        // expect(returnArray[5][3]).toEqual({total:0,mutation:0,cnv:0});
+        expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0});
         returnArray[5][3] = {total:7,mutation:3,cnv:1};
-        expect(returnArray[5][3],{total:7,mutation:3,cnv:1});
+        expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
         returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
-        expect(returnArray[5][3],{total:0,mutation:0,cnv:0});
+        expect(returnArray[5][3]).toEqual({total:0,mutation:0,cnv:0});
 
     });
 
@@ -95,4 +101,38 @@ describe('Test array fill', () => {
         // console.log(3)
         expect(total===8+2+5+7);
     });
+});
+
+describe('Test Sub Cohorts', () => {
+
+    let node;
+
+    beforeEach(() => {
+        node = document.createElement('div')
+    });
+
+    afterEach(() => {
+        unmountComponentAtNode(node)
+    });
+
+
+    it('Get sub all cohort samples cohort', () => {
+        let samples = getSamplesFromSubCohort('TCGA Ovarian Cancer (OV)','OVCA.Immunoreactive');
+        expect(107).toEqual(samples.length);
+    });
+
+    it('Get Sub cohorts for cohort', () => {
+        let subCohorts = getSubCohortsOnlyForCohort('TCGA Ovarian Cancer (OV)');
+        expect(["OVCA.Differentiated", "OVCA.Immunoreactive", "OVCA.Mesenchymal", "OVCA.Proliferative"]).toEqual(subCohorts);
+
+    });
+
+    // https://github.com/mjackson/expect
+    it('Get sub all cohort samples cohort', () => {
+        let samples = getSamplesFromSubCohortList('TCGA Ovarian Cancer (OV)',['OVCA.Immunoreactive','OVCA.Differentiated']);
+        expect(samples.length).toEqual(107+135);
+    });
+
+
+
 });

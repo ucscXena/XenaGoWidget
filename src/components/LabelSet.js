@@ -43,15 +43,15 @@ export default class LabelSet extends PureComponent {
                 hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
-                let randomHeight = Math.round(Math.abs(d.diffScore) * height * ENHANCEMENT) ;
-                randomHeight = randomHeight > height ? height : randomHeight;
+                let diffHeight = Math.round(Math.abs(d.diffScore) * (possibleHeight)* ENHANCEMENT) ;
+                diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - randomHeight ;
+                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
                         { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
-                            labelHeight={randomHeight}
+                            labelHeight={diffHeight}
                             labelOffset={actualOffset}
                             numSamples={numSamples}
                             geneLength={geneLength}
