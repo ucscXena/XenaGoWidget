@@ -22,7 +22,7 @@ export class SubCohortSelector extends PureComponent {
 
     componentDidUpdate(prevProps) {
         this.setState({
-            selectedSubCohorts:this.props.selectedSubCohorts,
+        //     selectedSubCohorts:this.props.selectedSubCohorts,
             originalSelectedSubCohorts:this.props.selectedSubCohorts,
             allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
         })
@@ -38,12 +38,12 @@ export class SubCohortSelector extends PureComponent {
             newSelected.splice(indexValue,1)
         }
         let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
-
+        console.log('handling change',this.state.selectedSubCohorts,newSelected);
         this.setState({
             selectedSubCohorts:newSelected,
             allSelected,
         });
-        this.props.handleSubCohortChange(newSelected);
+        // this.props.handleSubCohortChange(newSelected);
 
     };
 
@@ -70,7 +70,9 @@ export class SubCohortSelector extends PureComponent {
     render() {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
-        let {allSelected} = this.state ;
+        let {allSelected,selectedSubCohorts} = this.state ;
+
+        console.log('re-rendering',selectedSubCohorts)
 
         return (
             <Dialog
@@ -92,7 +94,7 @@ export class SubCohortSelector extends PureComponent {
                                     subCohortsForSelected.map( cs =>{
                                        return (
                                            <Checkbox label={cs} key={cs}
-                                                     checked={this.state.selectedSubCohorts.indexOf(cs)>=0}
+                                                     checked={selectedSubCohorts.indexOf(cs)>=0}
                                                      onChange={ (value) => this.handleChange(value,cs)}
                                                      />
                                        )
