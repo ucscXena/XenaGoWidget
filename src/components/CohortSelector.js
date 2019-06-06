@@ -51,7 +51,7 @@ export class CohortSelector extends PureComponent {
             } else {
                 return s;
             }
-        }).join(",");
+        }).join(", ");
     };
 
     generateSubCohortLabels(){
