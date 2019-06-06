@@ -124,16 +124,26 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+    componentDidMount() {
+        // this supp
+        const {
+            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
+            selectedPathways, hoveredPathways, colorSettings, highlightedGene,
+            viewType, showDetailLayer
+        } = this.props;
+        shareGlobalGeneData(data.pathways, cohortIndex);
+    }
+
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex,
+            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
 
         // this supports both diffScore and coh-hovering
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
+        shareGlobalGeneData(data.pathways, cohortIndex);
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -199,6 +209,8 @@ const minWidth = 400;
 const minColWidth = 12;
 
 let internalData = undefined;
+let lastAssociation = {};
+
 
 export default class PathwayScoresViewCache extends PureComponent {
 
@@ -236,27 +248,40 @@ export default class PathwayScoresViewCache extends PureComponent {
             filter,
             filterMin,
             min,
-            selectedCohort
+            selectedCohort,
+            cohortIndex,
         };
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
 
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-        let prunedColumns = findPruneData(associatedData,associatedDataKey);
-        prunedColumns.samples = samples;
-        let returnedValue;
+        let returnedValue = lastAssociation[associatedDataKey];
+        if(true || !returnedValue) {
+            let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+            let prunedColumns = findPruneData(associatedData,associatedDataKey);
+            prunedColumns.samples = samples;
 
+            if (cohortIndex === 0) {
+                returnedValue = clusterSort(prunedColumns);
+                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+            } else {
+                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+            }
+            returnedValue.index = cohortIndex;
 
-        if (cohortIndex === 0) {
-            returnedValue = clusterSort(prunedColumns);
-            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        } else {
-            PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+            // set affected versus total
+            let samplesLength = returnedValue.data[0].length;
+            for (let d in returnedValue.data) {
+                returnedValue.pathways[d].total = samplesLength;
+                returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+                returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
+            }
+
+            internalData = returnedValue.data;
+            lastAssociation[associatedDataKey] = returnedValue;
         }
-        returnedValue.index = cohortIndex;
 
         // fix for #194
         let genesInGeneSet = returnedValue.data.length;
@@ -271,15 +296,6 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         let layoutData = layout(width, returnedValue.data);
 
-        // set affected versus total
-        let samplesLength = returnedValue.data[0].length;
-        for (let d in returnedValue.data) {
-            returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-        }
-
-        internalData = returnedValue.data;
 
         return (
             <PathwayScoresView
