@@ -13,33 +13,15 @@ export class SubCohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedSubCohorts:props.selectedSubCohorts,
-            allSelected:isEqual(props.selectedSubCohorts,props.subCohortsForSelected)
+            allSelected:isEqual(props.selectedSubCohorts.sort(),props.subCohortsForSelected.sort())
         };
     }
 
-    setSelected(){
-        let {subCohortsForSelected,selectedSubCohorts} = this.props;
-        let subCohortsNames = Object.keys(selectedSubCohorts);
-        let selected = {};
-
-        const availableSubtypes = Object.keys(subCohortsForSelected).length;
-        let selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
-        if(selectedSubTypes===0){
-            selectedSubTypes = availableSubtypes;
-        }
-
-        let allSelected = availableSubtypes===selectedSubTypes;
-        subCohortsForSelected.map( cs =>{
-            selected[cs] =  subCohortsNames.indexOf(cs)>=0;
-            if(allSelected){
-                selected[cs] = true ;
-            }
-        });
-        this.setState( {
-            active: this.props.active,
-            selected,
-            allSelected,
-        });
+    componentDidUpdate(prevProps) {
+        this.setState({
+            selectedSubCohorts:this.props.selectedSubCohorts,
+            allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+        })
     }
 
     handleChange = (value,field) => {
@@ -80,9 +62,7 @@ export class SubCohortSelector extends PureComponent {
     render() {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
-
         let {allSelected} = this.state ;
-
 
         return (
             <Dialog
