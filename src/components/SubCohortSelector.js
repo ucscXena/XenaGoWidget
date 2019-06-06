@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
 import Checkbox from "react-toolbox/lib/checkbox";
 import {isEqual} from 'underscore';
+import {Button} from "react-toolbox/lib/button";
 
+
+let internalSubCohortSelectedState = {};
 
 export class SubCohortSelector extends PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
+            originalSelectedSubCohorts:props.selectedSubCohorts,
             selectedSubCohorts:props.selectedSubCohorts,
             allSelected:isEqual(props.selectedSubCohorts.sort(),props.subCohortsForSelected.sort())
         };
@@ -19,43 +23,49 @@ export class SubCohortSelector extends PureComponent {
     componentDidUpdate(prevProps) {
         this.setState({
             selectedSubCohorts:this.props.selectedSubCohorts,
+            originalSelectedSubCohorts:this.props.selectedSubCohorts,
             allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
         })
     }
 
     handleChange = (value,field) => {
-
-
         let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
-        // let allSelected = this.state.allSelected;
-
-        if(field==='All'){
-            // allSelected = true;
-            this.setState({
-                selectedSubCohorts:this.props.subCohortsForSelected,
-                allSelected:true,
-            });
-            this.props.handleSubCohortChange(this.props.subCohortsForSelected);
+        if(value){
+           newSelected.push(field);
         }
         else{
-            if(value){
-                newSelected.push(field);
-            }
-            else{
-                let indexValue = newSelected.indexOf(field);
-                newSelected.splice(indexValue,1)
-            }
-            let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
-
-            this.setState({
-                selectedSubCohorts:newSelected,
-                allSelected,
-            });
-            this.props.handleSubCohortChange(newSelected);
+            let indexValue = newSelected.indexOf(field);
+            newSelected.splice(indexValue,1)
         }
+        let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+
+        this.setState({
+            selectedSubCohorts:newSelected,
+            allSelected,
+        });
+        this.props.handleSubCohortChange(newSelected);
 
     };
 
+    selectAll(){
+        console.log('showing all',this.state.selectedSubCohorts,this.props.subCohortsForSelected)
+        this.setState({
+            selectedSubCohorts:this.props.subCohortsForSelected,
+            allSelected:true,
+        });
+        this.props.handleSubCohortChange(this.props.subCohortsForSelected);
+    }
+
+    updateSubCategories(){
+        this.props.handleSubCohortChange(this.state.selectedSubCohorts);
+    }
+
+    cancelUpdate(){
+        this.setState({
+            selectedSubCohorts:this.state.originalSelectedSubCohorts,
+        });
+        this.props.handleSubCohortChange(this.state.originalSelectedSubCohorts);
+    }
 
     render() {
 
@@ -78,11 +88,6 @@ export class SubCohortSelector extends PureComponent {
                     </tr>
                     <tr>
                         <td>
-                            <Checkbox label='All' key='All'
-                                      checked={allSelected}
-                                      disabled={allSelected}
-                                      onChange={ (value) => this.handleChange(value,'All')}
-                            />
                                 {
                                     subCohortsForSelected.map( cs =>{
                                        return (
@@ -93,6 +98,28 @@ export class SubCohortSelector extends PureComponent {
                                        )
                                     })
                                 }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <Button icon='save' label='Save' primary raised
+                                onClick={ () => this.updateSubCategories()}
+                        />
+                            {!allSelected &&
+                            <Button label={`Select All`} primary raised
+                                    onClick={() => this.selectAll()}
+                            />
+                            }
+                            {allSelected &&
+                            <Button label={`Select All`} primary raised disabled
+                                    onClick={() => this.selectAll()}
+                            />
+                            }
+                        {/*</td>*/}
+                        {/*<td>*/}
+                        <Button icon='cancel' label='Cancel' raised
+                                onClick={ () => this.cancelUpdate()}
+                        />
                         </td>
                     </tr>
                     </tbody>

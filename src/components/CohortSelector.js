@@ -6,6 +6,7 @@ import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
 import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
+import {isEqual} from 'underscore';
 
 
 export class CohortSelector extends PureComponent {
@@ -50,17 +51,25 @@ export class CohortSelector extends PureComponent {
     };
 
     onChangeSubCohort = (newSelected) => {
+        const changes = !isEqual(this.state.selectedSubCohorts,newSelected);
+        console.log(this.state.selectedSubCohorts,newSelected,changes);
+
+        this.setState({showSubCohortSelector:false});
+        if(!changes){
+            return ;
+        }
+
         this.setState(
         {
                 selectedSubCohorts: newSelected,
             }
         );
 
+
         let selectionObject = {
             selected:this.state.selectedCohort,
             selectedSubCohorts:newSelected,
         };
-
         this.props.onChangeSubCohort(selectionObject)
     };
 
