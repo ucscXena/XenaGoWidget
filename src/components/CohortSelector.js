@@ -2,7 +2,6 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
-import subCohorts from '../data/Subtype_Selected';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
@@ -15,21 +14,25 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : [],
+            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : getSubCohortsOnlyForCohort(props.selectedCohort),
             showSubCohortSelector: false,
             subCohortLabel: 'All Subtypes',
         };
     }
 
     onChange = (event) => {
-        this.setState({selectedCohort: event.target.value});
+        // populate selected sub cohorts for the cohorts
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
+        this.setState( {
+                selectedCohort: event.target.value,
+                selectedSubCohorts:subCohortsForSelected,
+        }
+            );
         this.props.onChange(event.target.value);
     };
 
     handleSubCohortToggle = () => {
         this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
-        // TODO: need to set the state here
-        // this.props.onChange(event.target.value);
     };
 
 
@@ -53,11 +56,9 @@ export class CohortSelector extends PureComponent {
             }
         );
 
-        const selectedSubCohorts = Object.entries(newSelected).filter( s => s[1] ).map( t => t[0]);
-
         let selectionObject = {
             selected:this.state.selectedCohort,
-            selectedSubCohorts:selectedSubCohorts,
+            selectedSubCohorts:newSelected,
         };
 
         this.props.onChangeSubCohort(selectionObject)
@@ -75,16 +76,14 @@ export class CohortSelector extends PureComponent {
 
         return (
             <div>
-                { subCohortsForSelected.length>0 &&
                 <SubCohortSelector active={this.state.showSubCohortSelector}
                                    handleToggle={this.handleSubCohortToggle}
                                    handleSubCohortChange={this.onChangeSubCohort}
                                    selectedCohort={this.state.selectedCohort}
                                    selectedSubCohorts={this.state.selectedSubCohorts}
                                    subCohortsForSelected={subCohortsForSelected}
-                                   cohortLabel={this.props.cohortLabel}
+                                   cohortLabel={subCohortLabel}
                 />
-               }
                 <div style={{
                     marginTop: 10,
                     marginLeft: 10,
@@ -108,7 +107,7 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
-                {subCohortsForSelected &&
+                {subCohortsForSelected.length>0 &&
                    <Button style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
                        <FaFilter/>
                    </Button>
