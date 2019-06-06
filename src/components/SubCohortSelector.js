@@ -7,8 +7,6 @@ import {isEqual} from 'underscore';
 import {Button} from "react-toolbox/lib/button";
 
 
-let internalSubCohortSelectedState = {};
-
 export class SubCohortSelector extends PureComponent {
 
     constructor(props) {

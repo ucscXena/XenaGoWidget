@@ -7,6 +7,9 @@ import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
 import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
 import {isEqual} from 'underscore';
+import {Tooltip} from "react-toolbox/lib";
+const TooltipButton = Tooltip(Button);
+
 
 
 export class CohortSelector extends PureComponent {
@@ -37,6 +40,19 @@ export class CohortSelector extends PureComponent {
     };
 
 
+    generateSubCohortDetails(){
+        let selectedSubCohorts = this.state.selectedSubCohorts;
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        if(!subCohortsForSelected) return '';
+        return Object.values(selectedSubCohorts).map( s => {
+            let splits = s.split(".");
+            if(splits.length>0) {
+                return splits[1];
+            } else {
+                return s;
+            }
+        }).join(",");
+    };
 
     generateSubCohortLabels(){
         let selectedSubCohorts = this.state.selectedSubCohorts;
@@ -82,6 +98,7 @@ export class CohortSelector extends PureComponent {
         let {cohorts,cohortLabel} = this.props ;
         let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
         let subCohortLabel = this.generateSubCohortLabels();
+        let subCohortDetails = this.generateSubCohortDetails();
 
         return (
             <div>
@@ -117,9 +134,9 @@ export class CohortSelector extends PureComponent {
                     }
                 </select>
                 {subCohortsForSelected.length>0 &&
-                   <Button style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
+                   <TooltipButton tooltip={subCohortDetails} style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
                        <FaFilter/>
-                   </Button>
+                   </TooltipButton>
 
                 }
             </div>
