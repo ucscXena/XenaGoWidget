@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Dialog from "react-toolbox/lib/dialog";
 import Checkbox from "react-toolbox/lib/checkbox";
 import {isEqual} from 'underscore';
-import update, {extend} from "immutability-helper";
 
 
 export class SubCohortSelector extends PureComponent {
@@ -27,7 +26,6 @@ export class SubCohortSelector extends PureComponent {
     handleChange = (value,field) => {
 
 
-        console.log('state selected',this.state.selectedSubCohorts,value,field);
         let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
         // let allSelected = this.state.allSelected;
 
