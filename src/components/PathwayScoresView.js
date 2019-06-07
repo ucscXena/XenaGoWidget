@@ -137,21 +137,27 @@ class PathwayScoresView extends PureComponent {
             viewType, showDetailLayer
         } = this.props;
 
-        console.log("PSV input pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
-
-        this.props.shareGlobalGeneData(data.pathways, cohortIndex);
-        console.log("PSV output pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
-        console.log("PSV output data",JSON.parse(JSON.stringify(data)),JSON.parse(JSON.stringify(associateData)),cohortIndex);
+        // console.log("PSV input pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
+        // this.props.shareGlobalGeneData(data.pathways, cohortIndex);
+        // console.log("PSV output pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
+        // console.log("PSV output data",JSON.parse(JSON.stringify(data)),JSON.parse(JSON.stringify(associateData)),cohortIndex);
 
         // sort based on diffs
         // both are destruyct
         let returnedData = associateData ;
-        if(data.pathways && data.pathways[0].diffScore){
-            console.log("INPUT PATHWAYS",data.pathways);
-            data.pathways = sortPathwaysByDiffScore(data.pathways);
-            console.log("OUTPUT PATHWAYS",data.pathways);
-            returnedData = sortAssociatedDataByDiffScore(data.pathways,associateData);
-        }
+        // if(data.pathways && data.pathways[0].diffScore){
+        //     if(cohortIndex === 0){
+        //         console.log("INPUT PATHWAYS",data.pathways);
+        //         data.pathways = sortPathwaysByDiffScore(data.pathways);
+        //         console.log("OUTPUT PATHWAYS",data.pathways);
+        //         returnedData = sortAssociatedDataByDiffScore(data.pathways,associateData);
+        //         PathwayScoresView.synchronizedGeneList = data.pathways.map(g => g.gene[0]);
+        //     }
+        //     else{
+        //         PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+        //         returnedData = synchronizedSort(data, PathwayScoresView.synchronizedGeneList);
+        //     }
+        // }
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -266,7 +272,8 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
-        console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)))
+        console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
+        // this.props.shareGlobalGeneData(pathways, cohortIndex);
 
         if (cohortIndex === 0) {
             returnedValue = clusterSort(prunedColumns);
@@ -281,10 +288,38 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
 
-        if(returnedValue.pathways[0].diffScore){
-            console.log('found a valid diffScore! ')
+        // set affected versus total
+        let samplesLength = returnedValue.data[0].length;
+        for (let d in returnedValue.data) {
+            returnedValue.pathways[d].total = samplesLength;
+            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
         }
 
+        internalData = returnedValue.data;
+
+        this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
+
+        console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
+
+
+        // if(returnedValue.pathways[0].diffScore){
+        //     console.log('found a valid diffScore! ')
+        //     if (cohortIndex === 0) {
+        //         returnedValue = clusterSort(prunedColumns);
+        //         console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
+        //         PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+        //     } else {
+        //         PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+        //         returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+        //         console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
+        //     }
+        // }
+
+
+
+
+        // this will go last
         // fix for #194
         let genesInGeneSet = returnedValue.data.length;
         let width;
@@ -298,17 +333,6 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         let layoutData = layout(width, returnedValue.data);
 
-        // set affected versus total
-        let samplesLength = returnedValue.data[0].length;
-        for (let d in returnedValue.data) {
-            returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-        }
-
-        internalData = returnedValue.data;
-
-        console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
         return (
             <PathwayScoresView

@@ -66,7 +66,7 @@ export function sortAssociatedDataByDiffScore(pathways,associatedData) {
     let returnedData = [];
     for(let i in associatedData ){
         console.log('i',i,associatedData[i],typeof associatedData[i],associatedData[i].length)
-        returnedData[pathways.origIndex] = associatedData[i]
+        returnedData[pathways[i].origIndex] = associatedData[i];
     }
     console.log(returnedData,associatedData)
 
@@ -226,6 +226,9 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
 
 
 export function synchronizedSort(prunedColumns, geneList) {
+
+
+    console.log('input columns',prunedColumns)
 
     let pathways = scoreColumns(prunedColumns);
     let missingColumns = generateMissingColumns(pathways, geneList);
