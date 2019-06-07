@@ -263,12 +263,12 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways:{$set:calculatedPathways},
             index:{$set:cohortIndex},
         });
-        if(cohortIndex===0){
-            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        }
-        else if(PathwayScoresView.synchronizedGeneList){
-            returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
-        }
+        // if(cohortIndex===0){
+        //     PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+        // }
+        // else if(PathwayScoresView.synchronizedGeneList){
+        //     returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
+        // }
 
         // console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
 
@@ -287,7 +287,6 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         if(!showClusterSort && returnedValue.pathways[0].diffScore){
             returnedValue = diffSort(returnedValue,cohortIndex!==0);
-
             // NOTE: we could also use this method, but we hope they have the same result
          //    if (cohortIndex === 0) {
          //        returnedValue = diffSort(returnedValue);
