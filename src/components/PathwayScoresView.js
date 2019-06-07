@@ -309,8 +309,9 @@ export default class PathwayScoresViewCache extends PureComponent {
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
                 console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
             } else {
-                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
+                // PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+                // returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
+                returnedValue = diffSort(returnedValue,true);
                 console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
             }
         }

@@ -119,8 +119,11 @@ export function clusterSort(prunedColumns) {
  * Populates density for each column
  * @param prunedColumns
  */
-function sortPathwaysDiffs(prunedColumns) {
-    let pathways = prunedColumns.pathways.sort((a, b) => b.diffScore - a.diffScore);
+function sortPathwaysDiffs(prunedColumns,reverse) {
+    reverse = reverse || false ;
+    let pathways = prunedColumns.pathways.sort((a, b) => {
+        return (b.diffScore - a.diffScore) * ( reverse ? -1 : 1);
+    });
     return update(prunedColumns, {
         pathways:{$set:pathways} ,
         data:{$set:pathways.map(el => prunedColumns.data[el.index])},
@@ -133,8 +136,6 @@ function sortPathwaysDiffs(prunedColumns) {
  */
 export function diffSort(prunedColumns) {
     let sortedColumns = sortPathwaysDiffs(prunedColumns);
-
-
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
     renderedData = sortByType(renderedData);
