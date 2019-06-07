@@ -48,45 +48,6 @@ export function sortByType(renderedData){
     });
 }
 
-// sorts, but places an original index
-export function sortPathwaysByDiffScore(pathways) {
-
-    for(let p in pathways){
-        pathways[p].origIndex = Number(p) ;
-    }
-
-    return pathways.sort( (a,b) => {
-        return b.diffScore - a.diffScore ;
-    });
-}
-
-export function sortAssociatedDataByDiffScore(pathways,associatedData) {
-
-    console.log('Input pathways',pathways)
-    let returnedData = [];
-    for(let i in associatedData ){
-        console.log('i',i,associatedData[i],typeof associatedData[i],associatedData[i].length)
-        returnedData[pathways[i].origIndex] = associatedData[i];
-    }
-    console.log(returnedData,associatedData)
-
-    // let sortedColumns = sortColumnDiffs(prunedColumns);
-    //
-    // sortedColumns.data.push(prunedColumns.samples);
-    // let renderedData = transpose(sortedColumns.data);
-    // renderedData = sortByType(renderedData);
-    // renderedData = transpose(renderedData);
-    // let returnColumns = {};
-    // returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-    // returnColumns.samples = sortedColumns.samples;
-    // returnColumns.pathways = sortedColumns.pathways;
-    // returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-    //
-    // return returnColumns;
-
-    return associatedData;
-}
-
 /**
  * Sort by column density followed by row.
  * https://github.com/nathandunn/XenaGoWidget/issues/67
@@ -173,24 +134,6 @@ export function clusterSampleSort(prunedColumns) {
     return returnColumns;
 }
 
-function generateMissingGeneSets(pathways, geneSetList) {
-    let pathwayGeneSets = pathways.map(p => p.golabel);
-    let missingGenes = geneSetList.filter(g => pathwayGeneSets.indexOf(g) < 0);
-    let returnColumns = [];
-    missingGenes.forEach(mg => {
-        let newPathway = {
-            density: 0,
-            goid: pathways[0].goid,
-            golabel: pathways[0].golabel,
-            index: -1,
-            gene: [mg],
-        };
-        returnColumns.push(newPathway);
-    });
-
-    return returnColumns;
-}
-
 function generateMissingColumns(pathways, geneList) {
 
     let pathwayGenes = pathways.map(p => p.gene[0]);
@@ -208,55 +151,6 @@ function generateMissingColumns(pathways, geneList) {
     });
 
     return returnColumns;
-}
-
-export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
-    let pathways = scoreColumns(prunedColumns);
-    let missingColumns = generateMissingGeneSets(pathways, geneSetList);
-    pathways = [...pathways, ...missingColumns];
-
-    pathways.sort((a, b) => {
-        let geneSetA = a.golabel;
-        let geneSetB = b.golabel;
-        let index1 = geneSetList.indexOf(geneSetA);
-        let index2 = geneSetList.indexOf(geneSetB);
-
-        if (index1 >= 0 && index2 >= 0) {
-            return geneSetList.indexOf(geneSetA) - geneSetList.indexOf(geneSetB)
-        }
-        return b.samplesAffected - a.samplesAffected
-    });
-    // refilter data by index
-    let columnLength = prunedColumns.data[0].length;
-    let data = pathways.map(el => {
-        let columnData = prunedColumns.data[el.index];
-        if (columnData) {
-            return columnData
-        }
-        else {
-            return Array.from(Array(columnLength), () => 0);
-        }
-    });
-    // sortedColumns.samples = prunedColumns.samples;
-    data.push(prunedColumns.samples);
-    let renderedData = transpose(data);
-
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
-            }
-        }
-        return sumTotals(b) - sumTotals(a)
-    });
-
-    renderedData = transpose(renderedData);
-    return {
-        sortedSamples : renderedData[renderedData.length - 1],
-        samples : prunedColumns.samples,
-        pathways,
-        data : renderedData.slice(0, data.length - 1),
-    };
 }
 
 export function synchronizedSort(prunedColumns, geneList,rescore) {

@@ -341,6 +341,12 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+    /**
+     * this nicely forces synchronization as well
+     * @param geneData0
+     * @param geneData1
+     * @returns {*[]}
+     */
     calculateDiffs(geneData0, geneData1) {
         if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
             const gene0List = geneData0.map( g => g.gene[0]);
@@ -350,9 +356,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 return gene0List.indexOf(aGene)-gene0List.indexOf(bGene);
             });
 
-
             for (let geneIndex in geneData0) {
-                // let diffScore = (geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total) - (geneData1[geneIndex].samplesAffected/geneData1[geneIndex].total) ;
                 let diffScore = (geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total) - (gene1Objects[geneIndex].samplesAffected/gene1Objects[geneIndex].total) ;
                 geneData0[geneIndex].diffScore = diffScore;
                 gene1Objects[geneIndex].diffScore = diffScore;
