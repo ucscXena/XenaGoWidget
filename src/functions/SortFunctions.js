@@ -118,6 +118,7 @@ export function clusterSort(prunedColumns) {
 /**
  * Populates density for each column
  * @param prunedColumns
+ * @param reverse
  */
 function sortPathwaysDiffs(prunedColumns,reverse) {
     reverse = reverse || false ;

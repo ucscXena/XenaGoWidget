@@ -281,6 +281,12 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways:{$set:calculatedPathways},
             index:{$set:cohortIndex},
         });
+        if(cohortIndex===0){
+            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+        }
+        else if(PathwayScoresView.synchronizedGeneList){
+            returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
+        }
 
         console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
 
