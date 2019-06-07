@@ -303,18 +303,18 @@ export default class PathwayScoresViewCache extends PureComponent {
         console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
 
-        // if(returnedValue.pathways[0].diffScore){
-        //     console.log('found a valid diffScore! ')
-        //     if (cohortIndex === 0) {
-        //         returnedValue = clusterSort(prunedColumns);
-        //         console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
-        //         PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        //     } else {
-        //         PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-        //         returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-        //         console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
-        //     }
-        // }
+        if(returnedValue.pathways[0].diffScore){
+            console.log('found a valid diffScore! ')
+            if (cohortIndex === 0) {
+            //     // returnedValue = clusterSort(prunedColumns);
+                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+                console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
+            } else {
+                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+            //     returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
+            }
+        }
 
 
 
