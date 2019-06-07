@@ -137,27 +137,7 @@ class PathwayScoresView extends PureComponent {
             viewType, showDetailLayer
         } = this.props;
 
-        // console.log("PSV input pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
-        // this.props.shareGlobalGeneData(data.pathways, cohortIndex);
-        // console.log("PSV output pathways",JSON.parse(JSON.stringify(data.pathways)),cohortIndex);
-        // console.log("PSV output data",JSON.parse(JSON.stringify(data)),JSON.parse(JSON.stringify(associateData)),cohortIndex);
-
-        // sort based on diffs
-        // both are destruyct
         let returnedData = associateData ;
-        // if(data.pathways && data.pathways[0].diffScore){
-        //     if(cohortIndex === 0){
-        //         console.log("INPUT PATHWAYS",data.pathways);
-        //         data.pathways = sortPathwaysByDiffScore(data.pathways);
-        //         console.log("OUTPUT PATHWAYS",data.pathways);
-        //         returnedData = sortAssociatedDataByDiffScore(data.pathways,associateData);
-        //         PathwayScoresView.synchronizedGeneList = data.pathways.map(g => g.gene[0]);
-        //     }
-        //     else{
-        //         PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-        //         returnedData = synchronizedSort(data, PathwayScoresView.synchronizedGeneList);
-        //     }
-        // }
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -248,7 +228,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
@@ -302,11 +282,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         /// TODO: maybe have it ONLY calcualte the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
-        // console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
-
-        if(allowDiffScore && returnedValue.pathways[0].diffScore){
-            // console.log('found a valid diffScore! ')
-
+        if(showClusterSort && returnedValue.pathways[0].diffScore){
             returnedValue = diffSort(returnedValue,cohortIndex!==0);
 
             // NOTE: we could also use this method, but we hope they have the same result
@@ -320,7 +296,7 @@ export default class PathwayScoresViewCache extends PureComponent {
          //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
          //    }
         }
-        else{
+        else if (!showClusterSort){
             if (cohortIndex === 0) {
                 returnedValue = clusterSort(prunedColumns);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
