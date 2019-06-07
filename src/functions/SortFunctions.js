@@ -116,6 +116,39 @@ export function clusterSort(prunedColumns) {
 }
 
 /**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortPathwaysDiffs(prunedColumns) {
+    let pathways = prunedColumns.pathways.sort((a, b) => b.diffScore - a.diffScore);
+    return update(prunedColumns, {
+        pathways:{$set:pathways} ,
+        data:{$set:pathways.map(el => prunedColumns.data[el.index])},
+    });
+}
+
+/**
+ * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
+ * @param prunedColumns
+ */
+export function diffSort(prunedColumns) {
+    let sortedColumns = sortPathwaysDiffs(prunedColumns);
+
+
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
+    renderedData = sortByType(renderedData);
+    renderedData = transpose(renderedData);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    return returnColumns;
+}
+
+/**
  * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
  * @param prunedColumns
  */
@@ -132,9 +165,9 @@ export function clusterSampleSort(prunedColumns) {
     summedSamples.forEach((d, i) => {
         sortedTransposedData[i] = transposedData[d.index];
     });
-    let untransposedData = transpose(sortedTransposedData);
+    let unTransposedData = transpose(sortedTransposedData);
     let returnColumns = prunedColumns;
-    returnColumns.data = untransposedData;
+    returnColumns.data = unTransposedData;
     return returnColumns;
 }
 
@@ -226,7 +259,6 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
 
 
 export function synchronizedSort(prunedColumns, geneList) {
-
 
     console.log('input columns',prunedColumns)
 

@@ -6,7 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {
-    clusterSort,
+    clusterSort, diffSort,
     sortAssociatedDataByDiffScore,
     sortPathwaysByDiffScore,
     synchronizedSort
@@ -306,12 +306,13 @@ export default class PathwayScoresViewCache extends PureComponent {
         if(returnedValue.pathways[0].diffScore){
             console.log('found a valid diffScore! ')
             if (cohortIndex === 0) {
-            //     // returnedValue = clusterSort(prunedColumns);
+                // console.log('input ',prunedColumns,returnedValue)
+                returnedValue = diffSort(returnedValue);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
                 console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
             } else {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            //     returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
                 console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
             }
         }
