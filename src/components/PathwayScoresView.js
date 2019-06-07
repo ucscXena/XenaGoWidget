@@ -6,13 +6,14 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {
-    clusterSort, diffSort,
+    clusterSort, diffSort, scoreColumns,
     sortAssociatedDataByDiffScore,
-    sortPathwaysByDiffScore,
+    sortPathwaysByDiffScore, synchronizedGeneList,
     synchronizedSort
 } from '../functions/SortFunctions';
 import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
+import update from "immutability-helper";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -275,16 +276,11 @@ export default class PathwayScoresViewCache extends PureComponent {
         console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
         // this.props.shareGlobalGeneData(pathways, cohortIndex);
 
-        if (cohortIndex === 0) {
-            returnedValue = clusterSort(prunedColumns);
-            console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
-            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        } else {
-            PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-            console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
-        }
-        returnedValue.index = cohortIndex;
+        let calculatedPathways = scoreColumns(prunedColumns);
+        returnedValue = update(prunedColumns, {
+            pathways:{$set:calculatedPathways},
+            index:{$set:cohortIndex},
+        });
 
         console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
 
@@ -296,14 +292,16 @@ export default class PathwayScoresViewCache extends PureComponent {
             returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
         }
 
-        internalData = returnedValue.data;
 
+        // send it to calculate the diffScores
+        /// TODO: maybe have it ONLY calcualte the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
         console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
+        const allowDiffScore = true ;
 
-        if(returnedValue.pathways[0].diffScore){
+        if(allowDiffScore && returnedValue.pathways[0].diffScore){
             console.log('found a valid diffScore! ')
             if (cohortIndex === 0) {
                 // console.log('input ',prunedColumns,returnedValue)
@@ -312,11 +310,23 @@ export default class PathwayScoresViewCache extends PureComponent {
                 console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
             } else {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
+                returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
                 console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
             }
         }
+        else{
+            if (cohortIndex === 0) {
+                returnedValue = clusterSort(prunedColumns);
+                console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
+                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+            } else {
+                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
+            }
+        }
 
+        internalData = returnedValue.data;
 
 
 
