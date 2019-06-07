@@ -342,9 +342,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     calculateDiffs(geneData0, geneData1) {
-        console.log('calculating diffs',JSON.parse(JSON.stringify(geneData0)),JSON.parse(JSON.stringify(geneData1)));
         if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
-            console.log('IN calculating diffs',JSON.parse(JSON.stringify(geneData0)),JSON.parse(JSON.stringify(geneData1)));
             const gene0List = geneData0.map( g => g.gene[0]);
             const gene1Objects = geneData1.sort( (a,b) => {
                 const aGene = a.gene[0];
@@ -359,11 +357,9 @@ export default class XenaGeneSetApp extends PureComponent {
                 geneData0[geneIndex].diffScore = diffScore;
                 gene1Objects[geneIndex].diffScore = diffScore;
             }
-            console.log('OUT calculating diffs',JSON.parse(JSON.stringify(geneData0)),JSON.parse(JSON.stringify(gene1Objects)));
             return [geneData0, gene1Objects]
         }
         else{
-            console.log('OUT calculating diffs',JSON.parse(JSON.stringify(geneData0)),JSON.parse(JSON.stringify(geneData1)));
             return [geneData0, geneData1];
         }
     }

@@ -7,8 +7,6 @@ import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
 import {
     clusterSort, diffSort, scoreColumns,
-    sortAssociatedDataByDiffScore,
-    sortPathwaysByDiffScore, synchronizedGeneList,
     synchronizedSort
 } from '../functions/SortFunctions';
 import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -101,6 +99,7 @@ function getPointData(event, props) {
     };
 }
 
+let allowDiffScore = true ;
 
 class PathwayScoresView extends PureComponent {
 
@@ -273,7 +272,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         prunedColumns.samples = samples;
         let returnedValue;
 
-        console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
+        // console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
         // this.props.shareGlobalGeneData(pathways, cohortIndex);
 
         let calculatedPathways = scoreColumns(prunedColumns);
@@ -285,10 +284,10 @@ export default class PathwayScoresViewCache extends PureComponent {
             PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
         }
         else if(PathwayScoresView.synchronizedGeneList){
-            returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
+            returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
         }
 
-        console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
+        // console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
@@ -303,33 +302,33 @@ export default class PathwayScoresViewCache extends PureComponent {
         /// TODO: maybe have it ONLY calcualte the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
-        console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
-
-        const allowDiffScore = true ;
+        // console.log('retuernd EXPRESSION data',JSON.parse(JSON.stringify(returnedValue.pathways)))
 
         if(allowDiffScore && returnedValue.pathways[0].diffScore){
-            console.log('found a valid diffScore! ')
+            // console.log('found a valid diffScore! ')
             if (cohortIndex === 0) {
                 // console.log('input ',prunedColumns,returnedValue)
                 returnedValue = diffSort(returnedValue);
-                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-                console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
-            } else {
-                // PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                // returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
-                returnedValue = diffSort(returnedValue,true);
-                console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
+                // PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+                // console.log("diffScore, index 0",JSON.parse(JSON.stringify(returnedValue)))
             }
+         // Not sure if this is still necessary
+        // else {
+        //         // PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+        //         // returnedValue = synchronizedGeneList(returnedValue, PathwayScoresView.synchronizedGeneList);
+        //         returnedValue = diffSort(returnedValue,true);
+        //         console.log("diffScore, index 1",JSON.parse(JSON.stringify(returnedValue)))
+        //     }
         }
         else{
             if (cohortIndex === 0) {
                 returnedValue = clusterSort(prunedColumns);
-                console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
+                // console.log("index 0",JSON.parse(JSON.stringify(returnedValue)))
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
             } else {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
                 returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-                console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
+                // console.log("index 1",JSON.parse(JSON.stringify(returnedValue)))
             }
         }
 

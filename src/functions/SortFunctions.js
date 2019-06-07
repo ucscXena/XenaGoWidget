@@ -259,54 +259,9 @@ export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
     };
 }
 
-export function synchronizedGeneList(prunedColumns, geneList) {
-
-    // console.log('input columns',prunedColumns)
-
-    // let pathways = scoreColumns(prunedColumns);
-    let pathways = prunedColumns.pathways;
-    let missingColumns = generateMissingColumns(pathways, geneList);
-    pathways = [...pathways, ...missingColumns];
-    pathways.sort((a, b) => {
-        let geneA = a.gene[0];
-        let geneB = b.gene[0];
-        let index1 = geneList.indexOf(geneA);
-        let index2 = geneList.indexOf(geneB);
-
-        if (index1 >= 0 && index2 >= 0) {
-            return geneList.indexOf(geneA) - geneList.indexOf(geneB)
-        }
-        return b.samplesAffected - a.samplesAffected
-    });
-    // refilter data by index
-    let columnLength = prunedColumns.data[0].length;
-    let data = pathways.map(el => {
-        let columnData = prunedColumns.data[el.index];
-        if (columnData) {
-            return columnData
-        }
-        else {
-            return Array.from(Array(columnLength), () => 0);
-        }
-    });
-    data.push(prunedColumns.samples);
-    let renderedData = transpose(data);
-    renderedData = sortByType(renderedData);
-    renderedData = transpose(renderedData);
-    return {
-        sortedSamples : renderedData[renderedData.length - 1],
-        samples : prunedColumns.samples,
-        pathways : pathways,
-        data : renderedData.slice(0, data.length - 1),
-    };
-}
-
-
-export function synchronizedSort(prunedColumns, geneList) {
-
-    console.log('input columns',prunedColumns)
-
-    let pathways = scoreColumns(prunedColumns);
+export function synchronizedSort(prunedColumns, geneList,rescore) {
+    rescore = rescore === undefined ? true : rescore ;
+    let pathways = rescore ? scoreColumns(prunedColumns) : prunedColumns.pathways ;
     let missingColumns = generateMissingColumns(pathways, geneList);
     pathways = [...pathways, ...missingColumns];
     pathways.sort((a, b) => {
