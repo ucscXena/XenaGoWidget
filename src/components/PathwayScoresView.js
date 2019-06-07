@@ -99,8 +99,6 @@ function getPointData(event, props) {
     };
 }
 
-let allowDiffScore = true ;
-
 class PathwayScoresView extends PureComponent {
 
     constructor(props) {
@@ -253,7 +251,12 @@ export default class PathwayScoresViewCache extends PureComponent {
         let returnedValue;
 
         // console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
-        // this.props.shareGlobalGeneData(pathways, cohortIndex);
+
+       // if(showClusterSort) {
+       //     if(cohortIndex === 0){
+       //         returnedValue = clusterSort(prunedColumns);
+       //     }
+       // }
 
         let calculatedPathways = scoreColumns(prunedColumns);
         returnedValue = update(prunedColumns, {
@@ -282,7 +285,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         /// TODO: maybe have it ONLY calcualte the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
-        if(showClusterSort && returnedValue.pathways[0].diffScore){
+        if(!showClusterSort && returnedValue.pathways[0].diffScore){
             returnedValue = diffSort(returnedValue,cohortIndex!==0);
 
             // NOTE: we could also use this method, but we hope they have the same result
@@ -296,7 +299,7 @@ export default class PathwayScoresViewCache extends PureComponent {
          //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
          //    }
         }
-        else if (!showClusterSort){
+        else if (showClusterSort){
             if (cohortIndex === 0) {
                 returnedValue = clusterSort(prunedColumns);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);

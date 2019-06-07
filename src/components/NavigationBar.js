@@ -95,9 +95,9 @@ export default class NavigationBar extends PureComponent {
                                                   caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
-                                                  caption={`${!showClusterSort? "\u2713" : 'Show'} Cluster Sort`}/>
+                                                  caption={`${showClusterSort? "\u2713" : 'Show'} Cluster Sort`}/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
-                                                  caption={`${showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
+                                                  caption={`${!showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
