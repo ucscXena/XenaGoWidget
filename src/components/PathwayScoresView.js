@@ -135,8 +135,6 @@ class PathwayScoresView extends PureComponent {
             viewType, showDetailLayer
         } = this.props;
 
-        let returnedData = associateData ;
-
         return (
             <div ref='wrapper' style={style.xenaGoView}>
                 {showDetailLayer &&
@@ -146,7 +144,7 @@ class PathwayScoresView extends PureComponent {
                     layout={layout}
                     draw={DrawFunctions.drawGeneView}
                     selectedPathways={selectedPathways}
-                    associateData={returnedData}
+                    associateData={associateData}
                     cohortIndex={cohortIndex}
                     data={data} // updated data forces refresh
                     viewType={viewType}
@@ -160,7 +158,7 @@ class PathwayScoresView extends PureComponent {
                     selectedPathways={selectedPathways}
                     hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
-                    associateData={returnedData}
+                    associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     onClick={this.onClick}
@@ -248,29 +246,12 @@ export default class PathwayScoresViewCache extends PureComponent {
         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = samples;
-        let returnedValue;
 
-        // console.log("input prnuned columns",JSON.parse(JSON.stringify(prunedColumns)));
-
-       // if(showClusterSort) {
-       //     if(cohortIndex === 0){
-       //         returnedValue = clusterSort(prunedColumns);
-       //     }
-       // }
-
-        let calculatedPathways = scoreColumns(prunedColumns);
-        returnedValue = update(prunedColumns, {
-            pathways:{$set:calculatedPathways},
-            index:{$set:cohortIndex},
-        });
-        // if(cohortIndex===0){
-        //     PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        // }
-        // else if(PathwayScoresView.synchronizedGeneList){
-        //     returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
-        // }
-
-        // console.log("returned vlaue ",JSON.parse(JSON.stringify(returnedValue)))
+       let calculatedPathways = scoreColumns(prunedColumns);
+       let returnedValue = update(prunedColumns, {
+           pathways:{$set:calculatedPathways},
+           index:{$set:cohortIndex},
+       });
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
