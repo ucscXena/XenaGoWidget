@@ -467,6 +467,7 @@ export default class XenaGoViewer extends PureComponent {
                                                    viewType={viewType}
                                                    showDiffLayer={this.props.showDiffLayer}
                                                    showDetailLayer={this.props.showDetailLayer}
+                                                   showClusterSort={this.props.showClusterSort}
                                 />
                             </td>
                             }
@@ -539,4 +540,5 @@ XenaGoViewer.propTypes = {
     showColorByType: PropTypes.any,
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
+    showClusterSort: PropTypes.any,
 };

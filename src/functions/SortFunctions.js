@@ -9,7 +9,7 @@ export function transpose(a) {
 }
 
 
-function scoreColumns(prunedColumns) {
+export function scoreColumns(prunedColumns) {
     return prunedColumns.pathways.map((el, index) => {
         return update(el,{
            samplesAffected:{$set:sumInstances(prunedColumns.data[index])},
@@ -77,6 +77,41 @@ export function clusterSort(prunedColumns) {
 }
 
 /**
+ * Populates density for each column
+ * @param prunedColumns
+ * @param reverse
+ */
+function sortPathwaysDiffs(prunedColumns,reverse) {
+    reverse = reverse || false ;
+    let pathways = prunedColumns.pathways.sort((a, b) => {
+        return (b.diffScore - a.diffScore) * ( reverse ? -1 : 1);
+    });
+    return update(prunedColumns, {
+        pathways:{$set:pathways} ,
+        data:{$set:pathways.map(el => prunedColumns.data[el.index])},
+    });
+}
+
+/**
+ * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
+ * @param prunedColumns
+ */
+export function diffSort(prunedColumns) {
+    let sortedColumns = sortPathwaysDiffs(prunedColumns);
+    sortedColumns.data.push(prunedColumns.samples);
+    let renderedData = transpose(sortedColumns.data);
+    renderedData = sortByType(renderedData);
+    renderedData = transpose(renderedData);
+    let returnColumns = {};
+    returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+    returnColumns.samples = sortedColumns.samples;
+    returnColumns.pathways = sortedColumns.pathways;
+    returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    return returnColumns;
+}
+
+/**
  * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
  * @param prunedColumns
  */
@@ -93,27 +128,9 @@ export function clusterSampleSort(prunedColumns) {
     summedSamples.forEach((d, i) => {
         sortedTransposedData[i] = transposedData[d.index];
     });
-    let untransposedData = transpose(sortedTransposedData);
+    let unTransposedData = transpose(sortedTransposedData);
     let returnColumns = prunedColumns;
-    returnColumns.data = untransposedData;
-    return returnColumns;
-}
-
-function generateMissingGeneSets(pathways, geneSetList) {
-    let pathwayGeneSets = pathways.map(p => p.golabel);
-    let missingGenes = geneSetList.filter(g => pathwayGeneSets.indexOf(g) < 0);
-    let returnColumns = [];
-    missingGenes.forEach(mg => {
-        let newPathway = {
-            density: 0,
-            goid: pathways[0].goid,
-            golabel: pathways[0].golabel,
-            index: -1,
-            gene: [mg],
-        };
-        returnColumns.push(newPathway);
-    });
-
+    returnColumns.data = unTransposedData;
     return returnColumns;
 }
 
@@ -136,59 +153,9 @@ function generateMissingColumns(pathways, geneList) {
     return returnColumns;
 }
 
-export function synchronizedGeneSetSort(prunedColumns, geneSetList) {
-    let pathways = scoreColumns(prunedColumns);
-    let missingColumns = generateMissingGeneSets(pathways, geneSetList);
-    pathways = [...pathways, ...missingColumns];
-
-    pathways.sort((a, b) => {
-        let geneSetA = a.golabel;
-        let geneSetB = b.golabel;
-        let index1 = geneSetList.indexOf(geneSetA);
-        let index2 = geneSetList.indexOf(geneSetB);
-
-        if (index1 >= 0 && index2 >= 0) {
-            return geneSetList.indexOf(geneSetA) - geneSetList.indexOf(geneSetB)
-        }
-        return b.samplesAffected - a.samplesAffected
-    });
-    // refilter data by index
-    let columnLength = prunedColumns.data[0].length;
-    let data = pathways.map(el => {
-        let columnData = prunedColumns.data[el.index];
-        if (columnData) {
-            return columnData
-        }
-        else {
-            return Array.from(Array(columnLength), () => 0);
-        }
-    });
-    // sortedColumns.samples = prunedColumns.samples;
-    data.push(prunedColumns.samples);
-    let renderedData = transpose(data);
-
-    renderedData = renderedData.sort(function (a, b) {
-        for (let index = 0; index < a.length; ++index) {
-            if (a[index] !== b[index]) {
-                return b[index] - a[index];
-            }
-        }
-        return sumTotals(b) - sumTotals(a)
-    });
-
-    renderedData = transpose(renderedData);
-    return {
-        sortedSamples : renderedData[renderedData.length - 1],
-        samples : prunedColumns.samples,
-        pathways,
-        data : renderedData.slice(0, data.length - 1),
-    };
-}
-
-
-export function synchronizedSort(prunedColumns, geneList) {
-
-    let pathways = scoreColumns(prunedColumns);
+export function synchronizedSort(prunedColumns, geneList,rescore) {
+    rescore = rescore === undefined ? true : rescore ;
+    let pathways = rescore ? scoreColumns(prunedColumns) : prunedColumns.pathways ;
     let missingColumns = generateMissingColumns(pathways, geneList);
     pathways = [...pathways, ...missingColumns];
     pathways.sort((a, b) => {

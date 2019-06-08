@@ -5,9 +5,13 @@ import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
-import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
+import {
+    clusterSort, diffSort, scoreColumns,
+    synchronizedSort
+} from '../functions/SortFunctions';
 import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
+import update from "immutability-helper";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -95,7 +99,6 @@ function getPointData(event, props) {
     };
 }
 
-
 class PathwayScoresView extends PureComponent {
 
     constructor(props) {
@@ -139,9 +142,6 @@ class PathwayScoresView extends PureComponent {
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
-
-        // this supports both diffScore and coh-hovering
-        shareGlobalGeneData(data.pathways, cohortIndex);
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -234,7 +234,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
@@ -254,33 +254,55 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
 
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        let returnedValue = lastAssociation[associatedDataKey];
-        if(true || !returnedValue) {
-            let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-            let prunedColumns = findPruneData(associatedData,associatedDataKey);
-            prunedColumns.samples = samples;
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
+        prunedColumns.samples = samples;
 
+       let calculatedPathways = scoreColumns(prunedColumns);
+       let returnedValue = update(prunedColumns, {
+           pathways:{$set:calculatedPathways},
+           index:{$set:cohortIndex},
+       });
+
+        // set affected versus total
+        let samplesLength = returnedValue.data[0].length;
+        for (let d in returnedValue.data) {
+            returnedValue.pathways[d].total = samplesLength;
+            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
+        }
+
+
+        // send it to calculate the diffScores
+        /// TODO: maybe have it ONLY calcualte the diff scores?
+        this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
+
+        if(!showClusterSort && returnedValue.pathways[0].diffScore){
+            returnedValue = diffSort(returnedValue,cohortIndex!==0);
+            // NOTE: we could also use this method, but we hope they have the same result
+         //    if (cohortIndex === 0) {
+         //        returnedValue = diffSort(returnedValue);
+         //        PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+         //    }
+         // // Not sure if this is still necessary
+         //    else {
+         //        PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+         //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
+         //    }
+        }
+        else if (showClusterSort){
             if (cohortIndex === 0) {
-                returnedValue = clusterSort(prunedColumns);
+                returnedValue = clusterSort(returnedValue);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
             } else {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
             }
-            returnedValue.index = cohortIndex;
-
-            // set affected versus total
-            let samplesLength = returnedValue.data[0].length;
-            for (let d in returnedValue.data) {
-                returnedValue.pathways[d].total = samplesLength;
-                returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-                returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-            }
-
-            internalData = returnedValue.data;
-            lastAssociation[associatedDataKey] = returnedValue;
         }
 
+        internalData = returnedValue.data;
+
+        // this will go last
         // fix for #194
         let genesInGeneSet = returnedValue.data.length;
         let width;

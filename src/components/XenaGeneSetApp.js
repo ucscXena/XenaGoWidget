@@ -58,6 +58,7 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorByTypeDetail: true,
             showColorTotal: false,
             showDetailLayer: true,
+            showClusterSort: false,
             showDiffLayer: true,
             pathwaySets: [
                 {
@@ -341,15 +342,31 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
+    /**
+     * this nicely forces synchronization as well
+     * @param geneData0
+     * @param geneData1
+     * @returns {*[]}
+     */
     calculateDiffs(geneData0, geneData1) {
         if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
+            const gene0List = geneData0.map( g => g.gene[0]);
+            const gene1Objects = geneData1.sort( (a,b) => {
+                const aGene = a.gene[0];
+                const bGene = b.gene[0];
+                return gene0List.indexOf(aGene)-gene0List.indexOf(bGene);
+            });
+
             for (let geneIndex in geneData0) {
-                let diffScore = (geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total) - (geneData1[geneIndex].samplesAffected/geneData1[geneIndex].total) ;
+                let diffScore = (geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total) - (gene1Objects[geneIndex].samplesAffected/gene1Objects[geneIndex].total) ;
                 geneData0[geneIndex].diffScore = diffScore;
-                geneData1[geneIndex].diffScore = diffScore;
+                gene1Objects[geneIndex].diffScore = diffScore;
             }
+            return [geneData0, gene1Objects]
         }
-        return [geneData0, geneData1]
+        else{
+            return [geneData0, geneData1];
+        }
     }
 
 // populates back to the top
@@ -586,6 +603,12 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    toggleShowClusterSort = () => {
+        this.setState({
+            showClusterSort: !this.state.showClusterSort
+        })
+    };
+
     activateShowColorByType = () => {
         this.setState({
             showColorByType: true,
@@ -640,6 +663,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
+                               toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
                                activateShowColorTotal={this.activateShowColorTotal}
@@ -649,6 +673,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorTotal={this.state.showColorTotal}
                                showDiffLayer={this.state.showDiffLayer}
                                showDetailLayer={this.state.showDetailLayer}
+                               showClusterSort={this.state.showClusterSort}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
@@ -763,6 +788,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorTotal={this.state.showColorTotal}
                                               showDiffLayer={this.state.showDiffLayer}
                                               showDetailLayer={this.state.showDetailLayer}
+                                              showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -784,6 +810,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorTotal={this.state.showColorTotal}
                                               showDiffLayer={this.state.showDiffLayer}
                                               showDetailLayer={this.state.showDetailLayer}
+                                              showClusterSort={this.state.showClusterSort}
                                 />
                             </td>
                         </tr>
