@@ -281,17 +281,15 @@ export default class PathwayScoresViewCache extends PureComponent {
         }
         else if (showClusterSort){
             if (cohortIndex === 0) {
-                returnedValue = clusterSort(prunedColumns);
+                returnedValue = clusterSort(returnedValue);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
             } else {
                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
+                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
             }
         }
 
         internalData = returnedValue.data;
-
-
 
         // this will go last
         // fix for #194
