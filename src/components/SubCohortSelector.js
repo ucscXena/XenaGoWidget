@@ -28,7 +28,6 @@ export class SubCohortSelector extends PureComponent {
         }
         else{
             this.setState({
-                //     selectedSubCohorts:this.props.selectedSubCohorts,
                 originalSelectedSubCohorts:this.props.selectedSubCohorts,
                 allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
             })
@@ -45,17 +44,13 @@ export class SubCohortSelector extends PureComponent {
             newSelected.splice(indexValue,1)
         }
         let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
-        console.log('handling change',this.state.selectedSubCohorts,newSelected);
         this.setState({
             selectedSubCohorts:newSelected,
             allSelected,
         });
-        // this.props.handleSubCohortChange(newSelected);
-
     };
 
     selectAll(){
-        console.log('showing all',this.state.selectedSubCohorts,this.props.subCohortsForSelected)
         this.setState({
             selectedSubCohorts:this.props.subCohortsForSelected,
             allSelected:true,
@@ -78,8 +73,6 @@ export class SubCohortSelector extends PureComponent {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
         let {allSelected,selectedSubCohorts} = this.state ;
-
-        console.log('re-rendering',selectedSubCohorts)
 
         return (
             <Dialog
