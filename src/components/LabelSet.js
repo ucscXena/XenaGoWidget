@@ -5,7 +5,7 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 
-const ENHANCEMENT = 5 ;
+const ENHANCEMENT = 20 ;
 
 export default class LabelSet extends PureComponent {
 
@@ -43,7 +43,11 @@ export default class LabelSet extends PureComponent {
                 hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
-                let diffHeight = Math.round(Math.abs(d.diffScore) * (possibleHeight)* ENHANCEMENT) ;
+                // console.log('diff score',d.diffScore)
+                console.log('diff score',d.diffScore,Math.pow(Math.abs(d.diffScore),2.0)*possibleHeight )
+                let diffHeight = Math.pow(Math.abs(d.diffScore),2.0)*possibleHeight*ENHANCEMENT ;
+                // let diffHeight = Math.round(Math.abs(d.diffScore) * (possibleHeight)* ENHANCEMENT) ;
+                // let diffHeight = Math.round(Math.log(d.diffScore) ) ;
                 diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
