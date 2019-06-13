@@ -13,7 +13,7 @@ import BaseStyle from '../css/base.css';
 import {sumInstances, sumTotals} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {scoreChiSquaredData} from "../functions/ColorFunctions";
+import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
 
@@ -358,7 +358,15 @@ export default class XenaGeneSetApp extends PureComponent {
             });
 
             for (let geneIndex in geneData0) {
-                let diffScore = (geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total) - (gene1Objects[geneIndex].samplesAffected/gene1Objects[geneIndex].total) ;
+                let chiSquareValue = scoreChiSquareTwoByTwo (
+                        geneData0[geneIndex].samplesAffected,
+                        geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
+                        gene1Objects[geneIndex].samplesAffected,
+                        gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected),
+                    diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total ?
+                        chiSquareValue : -chiSquareValue;
+                diffScore = isNaN(diffScore) ? 0 : diffScore;
+
                 geneData0[geneIndex].diffScore = diffScore;
                 gene1Objects[geneIndex].diffScore = diffScore;
             }
