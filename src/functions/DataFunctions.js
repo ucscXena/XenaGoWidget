@@ -56,13 +56,14 @@ export function pruneColumns(data, pathways, min) {
 }
 
 export function createAssociatedDataKey(inputHash){
-    let { geneList, pathways, samples, filter,filterMin, min} = inputHash;
+    let { geneList, pathways, samples, filter,filterMin, min, cohortIndex} = inputHash;
     return  {
         filter,
         filterMin,
         geneList,
         pathways,
         min,
+        cohortIndex,
         sampleCount:samples.length,
     };
 }

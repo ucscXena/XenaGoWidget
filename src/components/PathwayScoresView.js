@@ -127,10 +127,18 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
+    componentDidMount() {
+        // this supp
+        const {
+            data, cohortIndex, shareGlobalGeneData,
+        } = this.props;
+        shareGlobalGeneData(data.pathways, cohortIndex);
+    }
+
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex,
+            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
@@ -236,7 +244,8 @@ export default class PathwayScoresViewCache extends PureComponent {
             filter,
             filterMin,
             min,
-            selectedCohort
+            selectedCohort,
+            cohortIndex,
         };
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
