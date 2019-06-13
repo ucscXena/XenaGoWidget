@@ -268,7 +268,7 @@ export default class XenaGeneSetApp extends PureComponent {
     showPathways = () => {
         this.setState({
             view: PATHWAYS_VIEW
-        })
+        });
     };
 
     showXena = () => {
