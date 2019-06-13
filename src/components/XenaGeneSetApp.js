@@ -374,6 +374,22 @@ export default class XenaGeneSetApp extends PureComponent {
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
         let finalGeneData = this.calculateDiffs(geneData0, geneData1);
+
+        if(geneData0.length>0){
+            let hoverData = {
+                pathway:geneData0[0],
+                cohortIndex,
+            };
+          this.geneHover(hoverData);
+        }
+        if(geneData1.length>0){
+            let hoverData = {
+                pathway:geneData1[0],
+                cohortIndex,
+            }
+            this.geneHover(hoverData);
+            // this.geneHover(geneData1[0]);
+        }
         this.setState({
             geneData: finalGeneData
         });
