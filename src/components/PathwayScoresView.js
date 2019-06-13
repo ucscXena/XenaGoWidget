@@ -207,8 +207,6 @@ const minWidth = 400;
 const minColWidth = 12;
 
 let internalData = undefined;
-let lastAssociation = {};
-
 
 export default class PathwayScoresViewCache extends PureComponent {
 
