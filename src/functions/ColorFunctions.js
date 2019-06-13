@@ -71,6 +71,25 @@ export function scoreChiSquaredData(observed, expected, total) {
     return chiSquaredValue;
 }
 
+// https://en.wikipedia.org/wiki/Chi-squared_test
+export function scoreChiSquareTwoByTwo (observed11, observed12, observed21, observed22) {
+    let rowTotal1 = observed11 + observed12,
+        rowTotal2 = observed21 + observed22,
+        columnTotal1 = observed11 + observed21,
+        columnTotal2 = observed12 + observed22,
+        total = rowTotal1 + rowTotal2,
+        expected11 = columnTotal1 * rowTotal1 / total,
+        expected12 = columnTotal2 * rowTotal1 / total,
+        expected21 = columnTotal1 * rowTotal2 / total,
+        expected22 = columnTotal2 * rowTotal2 / total;
+
+    let chiSquareValue = Math.pow(observed11 - expected11, 2.0) / expected11 +
+        Math.pow(observed12 - expected12, 2.0) / expected12 +
+        Math.pow(observed21 - expected21, 2.0) / expected21 +
+        Math.pow(observed22 - expected22, 2.0) / expected22;
+
+    return chiSquareValue;
+}
 
 /**
  * label is just for density
