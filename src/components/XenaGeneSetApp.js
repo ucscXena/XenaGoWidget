@@ -16,7 +16,8 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
-import {isEqual} from 'underscore';
+import { observable } from "mobx"
+import {UiStore} from "../store/UiStore";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -42,10 +43,16 @@ export const MIN_GENE_WIDTH_PX = 80;// 8 or less
 export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
+export const uiStore = new UiStore();
 /**
  * refactor that from index
  */
 export default class XenaGeneSetApp extends PureComponent {
+
+
+    kittens = observable.object(7);
+    @observable dog = 5;
+
 
 
     constructor(props) {

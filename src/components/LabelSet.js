@@ -4,14 +4,38 @@ import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
+import {observer} from "mobx-react";
+import Test from "../components/Test";
+import {computed} from "mobx";
+import {UiStore} from "../store/UiStore";
 
 const chiSquareMax = 100.0;
 
-export default class LabelSet extends PureComponent {
+// @observer(['kittens'])
+class LabelSet extends React.Component {
+
+    // kittens
+    // cats
+    // dog
+
 
     constructor(props) {
         super(props);
+        console.log('ropos,',this.props)
+        console.log('cats',this.cats)
+        console.log('kittens',this.kittens)
+        console.log('dog',this.dog);
+        // let test = new Test();
+        // this.props.test = new Test();
+        // console.log('cats2',this.props.test.cats)
+        // console.log('cats3',this.test.cats)
     }
+
+
+    // @computed get kittens(){
+    //     this.props.XenaGeneSetApp.kittens
+    // }
+
 
     render() {
         const {
@@ -28,6 +52,16 @@ export default class LabelSet extends PureComponent {
             , data
             , showDiffLayer
         } = this.props;
+
+        let test = new Test();
+
+        const uiStore = UiStore.INSTANCE;
+        console.log('in render cats',uiStore.frogs)
+
+        if(cohortIndex==1){
+            // test.pokeCat();
+            console.log('poke frogs',uiStore.addFrogs())
+        }
 
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
@@ -49,6 +83,10 @@ export default class LabelSet extends PureComponent {
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
+                        {/*{`KITTENS: ${this.kittens}`}*/}
+                        {/*{`CATS: ${this.cats}`}*/}
+                        {/*{`DOG: ${this.dog}`}*/}
+                        {`TEST: ${test.cats}`}
                         { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={diffHeight}
@@ -100,3 +138,4 @@ LabelSet.propTypes = {
     height: PropTypes.any.isRequired,
     showDiffLayer: PropTypes.any,
 };
+export default observer(LabelSet)

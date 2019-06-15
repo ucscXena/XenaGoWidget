@@ -2,12 +2,14 @@ import React from 'react'
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
-import {XENA_VIEW, PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
+import {XENA_VIEW, PATHWAYS_VIEW, uiStore} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
 import BaseStyle from '../css/base.css'
 import * as PropTypes from "underscore";
 import Autocomplete from "react-toolbox/lib/autocomplete";
 import AutocompleteTheme from "../css/autocomplete.css";
+import {UiStore} from "../store/UiStore";
+import {observer} from "mobx-react";
 
 
 const GithubIcon = () => (
@@ -23,13 +25,15 @@ const XenaIcon = () => (
     <img src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 );
 
-export default class NavigationBar extends PureComponent {
+@observer
+export default class NavigationBar extends React.Component{
 
     constructor(props) {
         super(props);
         this.state = {
             geneNameSearch: '',
         }
+
     }
 
     handleSearch = (text) => {
@@ -49,6 +53,10 @@ export default class NavigationBar extends PureComponent {
             showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
             toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
+        let uiStore = UiStore.INSTANCE;
+        console.log('NAVBAR uiStore hounds',uiStore.hounds)
+        console.log('NAVBAR uiStore frogs',uiStore.frogs)
+
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"

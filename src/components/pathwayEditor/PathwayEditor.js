@@ -17,6 +17,7 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
+import {UiStore} from "../../store/UiStore";
 
 export default class PathwayEditor extends PureComponent {
 
@@ -187,6 +188,11 @@ export default class PathwayEditor extends PureComponent {
     };
 
     handleAddNewGeneSet(newGeneSet) {
+
+        let uiStore = UiStore.INSTANCE;
+        console.log('PE hounds',uiStore.frogs)
+        console.log('PE hounds 2',uiStore.addFrogs())
+        console.log('PE hounds 3',uiStore.frogs)
         this.props.addGeneSetHandler(newGeneSet);
         //
         this.setState({
