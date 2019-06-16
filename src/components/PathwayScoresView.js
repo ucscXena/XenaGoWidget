@@ -198,8 +198,6 @@ PathwayScoresView.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
-    showDiffLayer: PropTypes.any,
-    showDetailLayer: PropTypes.any,
 };
 
 

@@ -52,8 +52,8 @@ export default class NavigationBar extends React.Component{
 
     render() {
         let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
-            showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
-            toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
+            showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+            toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
         const uiStore = UiStore.INSTANCE;
         console.log('NAVBAR uiStore hounds',uiStore.hounds)
@@ -167,8 +167,6 @@ NavigationBar.propTypes = {
     toggleShowClusterSort: PropTypes.any,
     showClusterSort: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
-    showDiffLayer: PropTypes.any,
-    showDetailLayer: PropTypes.any,
     showColorByTypeDetail: PropTypes.any,
     showColorByType: PropTypes.any,
     showColorTotal: PropTypes.any,

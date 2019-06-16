@@ -50,11 +50,6 @@ export const uiStore = new UiStore();
 export default class XenaGeneSetApp extends PureComponent {
 
 
-    kittens = observable.object(7);
-    @observable dog = 5;
-
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -67,7 +62,6 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorTotal: false,
             showDetailLayer: true,
             showClusterSort: false,
-            showDiffLayer: true,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -629,18 +623,6 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    toggleShowDiffLayer = () => {
-        this.setState({
-            showDiffLayer: !this.state.showDiffLayer
-        })
-    };
-
-    toggleShowDetailLayer = () => {
-        this.setState({
-            showDetailLayer: !this.state.showDetailLayer
-        })
-    };
-
     toggleShowClusterSort = () => {
         this.setState({
             showClusterSort: !this.state.showClusterSort
@@ -699,8 +681,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
-                               toggleShowDiffLayer={this.toggleShowDiffLayer}
-                               toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
@@ -709,8 +689,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
-                               showDiffLayer={this.state.showDiffLayer}
-                               showDetailLayer={this.state.showDetailLayer}
                                showClusterSort={this.state.showClusterSort}
                 />
 
@@ -824,8 +802,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showDiffLayer={this.state.showDiffLayer}
-                                              showDetailLayer={this.state.showDetailLayer}
                                               showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
@@ -846,8 +822,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showDiffLayer={this.state.showDiffLayer}
-                                              showDetailLayer={this.state.showDetailLayer}
                                               showClusterSort={this.state.showClusterSort}
                                 />
                             </td>

@@ -5,20 +5,11 @@ import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 import {observer} from "mobx-react";
-import Test from "../components/Test";
-import {computed} from "mobx";
 import {UiStore} from "../store/UiStore";
-import {uiStore} from "./XenaGeneSetApp";
 
 const chiSquareMax = 100.0;
 
-// @observer(['kittens'])
 class LabelSet extends React.Component {
-
-    // kittens
-    // cats
-    // dog
-
 
     constructor(props) {
         super(props);
@@ -26,17 +17,7 @@ class LabelSet extends React.Component {
         console.log('cats',this.cats)
         console.log('kittens',this.kittens)
         console.log('dog',this.dog);
-        // let test = new Test();
-        // this.props.test = new Test();
-        // console.log('cats2',this.props.test.cats)
-        // console.log('cats3',this.test.cats)
     }
-
-
-    // @computed get kittens(){
-    //     this.props.XenaGeneSetApp.kittens
-    // }
-
 
     render() {
         const {
@@ -51,20 +32,9 @@ class LabelSet extends React.Component {
             , cohortIndex
             , colorSettings
             , data
-            , showDiffLayer
         } = this.props;
 
-        // let test = new Test();
         const uiStore = UiStore.INSTANCE;
-
-        // const uiStore = UiStore.INSTANCE;
-        // console.log('in render cats',uiStore.frogs)
-
-        console.log('diff layer ',uiStore.showDiffLayer)
-        // if(cohortIndex==1){
-        //     // test.pokeCat();
-        //     console.log('poke frogs',uiStore.addFrogs())
-        // }
 
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
@@ -139,6 +109,5 @@ LabelSet.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
-    showDiffLayer: PropTypes.any,
 };
 export default observer(LabelSet)
