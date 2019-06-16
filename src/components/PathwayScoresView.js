@@ -12,6 +12,8 @@ import {
 import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX, uiStore} from "./XenaGeneSetApp";
 import update from "immutability-helper";
+import {UiStore} from "../store/UiStore";
+import {observer} from "mobx-react";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -138,7 +140,7 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
+            width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
@@ -174,7 +176,6 @@ class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
-                    // showDiffLayer={this.props.showDiffLayer}
                     showDiffLayer={uiStore.showDiffLayer}
                 />
             </div>
@@ -209,7 +210,8 @@ const minColWidth = 12;
 
 let internalData = undefined;
 
-export default class PathwayScoresViewCache extends PureComponent {
+@observer
+export default class PathwayScoresViewCache extends React.Component{
 
 
     downloadData() {
@@ -251,6 +253,9 @@ export default class PathwayScoresViewCache extends PureComponent {
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
+
+
+        const uiStore = UiStore.INSTANCE;
 
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
@@ -323,6 +328,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                 layout={layoutData}
                 hoveredPathways={hoveredPathways}
                 shareGlobalGeneData={shareGlobalGeneData}
+                showDetailLayer={uiStore.showDetailLayer}
                 data={{
                     expression,
                     pathways: returnedValue.pathways,

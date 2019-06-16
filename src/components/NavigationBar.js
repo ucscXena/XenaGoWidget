@@ -100,9 +100,9 @@ export default class NavigationBar extends React.Component{
                                                   caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => uiStore.toggleShowDiffLayer()}
-                                                  caption={`${showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
-                                        <MenuItem onClick={() => toggleShowDetailLayer()}
-                                                  caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
+                                                  caption={`${uiStore.showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
+                                        <MenuItem onClick={() => uiStore.toggleShowDetailLayer()}
+                                                  caption={`${uiStore.showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
                                                   caption={`${showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
