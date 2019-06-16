@@ -48,12 +48,14 @@ export default class NavigationBar extends React.Component{
         window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about');
     };
 
+
+
     render() {
         let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
             showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
             toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
-        let uiStore = UiStore.INSTANCE;
+        const uiStore = UiStore.INSTANCE;
         console.log('NAVBAR uiStore hounds',uiStore.hounds)
         console.log('NAVBAR uiStore frogs',uiStore.frogs)
 
@@ -97,7 +99,7 @@ export default class NavigationBar extends React.Component{
                                         <MenuItem onClick={() => activateShowColorTotal()}
                                                   caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
-                                        <MenuItem onClick={() => toggleShowDiffLayer()}
+                                        <MenuItem onClick={() => uiStore.toggleShowDiffLayer()}
                                                   caption={`${showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
                                         <MenuItem onClick={() => toggleShowDetailLayer()}
                                                   caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>

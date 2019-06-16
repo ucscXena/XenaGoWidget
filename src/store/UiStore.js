@@ -74,7 +74,9 @@ export class UiStore{
 
     @action
     toggleShowDiffLayer = () => {
+        console.log('A toggling showing diff layer ',this.showDiffLayer)
         this.showDiffLayer = !this.showDiffLayer;
+        console.log('B toggling showing diff layer ',this.showDiffLayer)
     };
 
     @action

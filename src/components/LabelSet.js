@@ -8,6 +8,7 @@ import {observer} from "mobx-react";
 import Test from "../components/Test";
 import {computed} from "mobx";
 import {UiStore} from "../store/UiStore";
+import {uiStore} from "./XenaGeneSetApp";
 
 const chiSquareMax = 100.0;
 
@@ -53,15 +54,17 @@ class LabelSet extends React.Component {
             , showDiffLayer
         } = this.props;
 
-        let test = new Test();
-
+        // let test = new Test();
         const uiStore = UiStore.INSTANCE;
-        console.log('in render cats',uiStore.frogs)
 
-        if(cohortIndex==1){
-            // test.pokeCat();
-            console.log('poke frogs',uiStore.addFrogs())
-        }
+        // const uiStore = UiStore.INSTANCE;
+        // console.log('in render cats',uiStore.frogs)
+
+        console.log('diff layer ',uiStore.showDiffLayer)
+        // if(cohortIndex==1){
+        //     // test.pokeCat();
+        //     console.log('poke frogs',uiStore.addFrogs())
+        // }
 
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
@@ -86,8 +89,8 @@ class LabelSet extends React.Component {
                         {/*{`KITTENS: ${this.kittens}`}*/}
                         {/*{`CATS: ${this.cats}`}*/}
                         {/*{`DOG: ${this.dog}`}*/}
-                        {`TEST: ${test.cats}`}
-                        { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
+                        {/*{`TEST: ${test.cats}`}*/}
+                        { uiStore.showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={diffHeight}
                             labelOffset={actualOffset}

@@ -189,10 +189,10 @@ export default class PathwayEditor extends PureComponent {
 
     handleAddNewGeneSet(newGeneSet) {
 
-        let uiStore = UiStore.INSTANCE;
-        console.log('PE hounds',uiStore.frogs)
-        console.log('PE hounds 2',uiStore.addFrogs())
-        console.log('PE hounds 3',uiStore.frogs)
+        // let uiStore = UiStore.INSTANCE;
+        // console.log('PE hounds',uiStore.frogs)
+        // console.log('PE hounds 2',uiStore.addFrogs())
+        // console.log('PE hounds 3',uiStore.frogs)
         this.props.addGeneSetHandler(newGeneSet);
         //
         this.setState({
