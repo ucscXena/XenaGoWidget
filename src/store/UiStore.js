@@ -6,10 +6,8 @@ export class UiStore{
     static INSTANCE ;
 
     constructor() {
-
         UiStore.INSTANCE = this;
     }
-
 
 
     @observable showColorEditor= false;
@@ -74,9 +72,7 @@ export class UiStore{
 
     @action
     toggleShowDiffLayer = () => {
-        console.log('A toggling showing diff layer ',this.showDiffLayer)
         this.showDiffLayer = !this.showDiffLayer;
-        console.log('B toggling showing diff layer ',this.showDiffLayer)
     };
 
     @action
@@ -88,7 +84,6 @@ export class UiStore{
     toggleShowCollapsed = () => {
         this.showCollapsed = !this.showCollapsed;
     };
-
 
 
     @observable hounds = false ;
