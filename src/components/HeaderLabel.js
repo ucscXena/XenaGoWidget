@@ -10,30 +10,34 @@ import {
     scoreData,
 } from '../functions/ColorFunctions'
 import * as d3 from "d3";
+import {observer} from "mobx-react";
+import {SelectionStore} from "../store/SelectionStore";
 
 let interpolate ;
 const highColor = '#1A535C';
 const midColor = '#A4DDE6';
 const lowColor = '#FFFFFF';
 
-export class HeaderLabel extends PureComponent {
+@observer
+export class HeaderLabel extends React.Component{
 
 
     constructor(props) {
         super(props);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return !underscore.isEqual(nextProps, this.props);
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     return !underscore.isEqual(nextProps, this.props);
+    // }
 
     /**
      * Score is from 0 to 1
      * @param score
+     * @param hovered
      * @returns {*}
      */
-    style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
+    style(score,hovered) {
+        let {selected,  labelOffset, left, width, labelHeight, highlighted} = this.props;
 
         let colorString = interpolate(score);
 
@@ -97,13 +101,15 @@ export class HeaderLabel extends PureComponent {
     }
 
     render() {
+        const selectionStore = SelectionStore.INSTANCE;
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
+        const hovered = selectionStore.hoveredGene === labelString;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
-                style={this.style(colorDensity)}
+                style={this.style(colorDensity,hovered)}
                 className={className}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}

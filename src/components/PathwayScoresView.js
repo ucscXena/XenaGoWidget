@@ -14,6 +14,7 @@ import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX, uiStore}
 import update from "immutability-helper";
 import {UiStore} from "../store/UiStore";
 import {observer} from "mobx-react";
+import {SelectionStore} from "../store/SelectionStore";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -122,7 +123,12 @@ class PathwayScoresView extends PureComponent {
     onHover = (event) => {
         let {onHover} = this.props;
         let pointData = getPointData(event, this.props);
+        const selectionStore = SelectionStore.INSTANCE;
         if (pointData) {
+            console.log('point data ',pointData);
+            const gene = pointData.pathway.gene[0]
+            console.log('hovered gene data ',pointData.pathway.gene[0]);
+            selectionStore.setHoveredGene(gene)
             onHover(pointData);
         } else {
             onHover(null);

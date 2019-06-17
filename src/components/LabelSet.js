@@ -56,10 +56,6 @@ class LabelSet extends React.Component {
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
-                        {/*{`KITTENS: ${this.kittens}`}*/}
-                        {/*{`CATS: ${this.cats}`}*/}
-                        {/*{`DOG: ${this.dog}`}*/}
-                        {/*{`TEST: ${test.cats}`}*/}
                         { uiStore.showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={diffHeight}

@@ -18,6 +18,7 @@ import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
 import { observable } from "mobx"
 import {UiStore} from "../store/UiStore";
+import {SelectionStore} from "../store/SelectionStore";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -44,6 +45,7 @@ export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
 export const uiStore = new UiStore();
+export const selectionStore = new SelectionStore();
 /**
  * refactor that from index
  */
