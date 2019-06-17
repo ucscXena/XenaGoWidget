@@ -104,6 +104,7 @@ export class HeaderLabel extends React.Component{
         const selectionStore = SelectionStore.INSTANCE;
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         const hovered = selectionStore.hoveredGene === labelString;
+        // console.log('hovered store changed', hovered,selectionStore.hoveredGene,labelString)
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
@@ -131,7 +132,7 @@ HeaderLabel.propTypes = {
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
     selected: PropTypes.any.isRequired,
-    hovered: PropTypes.any.isRequired,
+    // hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,

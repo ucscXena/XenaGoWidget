@@ -35,7 +35,7 @@ export default class LabelWrapper extends PureComponent {
             , onMouseOut
             , associateData
             , cohortIndex
-            , hoveredPathways
+            // , hoveredPathways
             , highlightedGene
             , offset
             , data: {pathways}
@@ -51,7 +51,7 @@ export default class LabelWrapper extends PureComponent {
                     associateData={associateData}
                     pathways={pathways}
                     layout={layout}
-                    hoveredPathways={hoveredPathways}
+                    // hoveredPathways={hoveredPathways}
                     selectedPathways={[]}
                     highlightedGene={highlightedGene}
                     labelHeight={geneLabelHeight}

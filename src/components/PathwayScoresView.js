@@ -125,9 +125,9 @@ class PathwayScoresView extends PureComponent {
         let pointData = getPointData(event, this.props);
         const selectionStore = SelectionStore.INSTANCE;
         if (pointData) {
-            console.log('point data ',pointData);
+            // console.log('point data ',pointData);
             const gene = pointData.pathway.gene[0]
-            console.log('hovered gene data ',pointData.pathway.gene[0]);
+            // console.log('hovered gene data ',pointData.pathway.gene[0]);
             selectionStore.setHoveredGene(gene)
             onHover(pointData);
         } else {
@@ -172,7 +172,7 @@ class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layout}
                     selectedPathways={selectedPathways}
-                    hoveredPathways={hoveredPathways}
+                    // hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}

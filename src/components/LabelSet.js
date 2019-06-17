@@ -24,7 +24,6 @@ class LabelSet extends React.Component {
             associateData
             , pathways
             , layout
-            , hoveredPathways
             , selectedPathways
             , highlightedGene
             , labelHeight
@@ -34,6 +33,7 @@ class LabelSet extends React.Component {
             , data
         } = this.props;
 
+        // console.log('hovered pathways',hoveredPathways)
         const uiStore = UiStore.INSTANCE;
 
         if (associateData.length > 0 && pathways.length === layout.length) {
@@ -41,13 +41,14 @@ class LabelSet extends React.Component {
             // const possibleHeight = height - GENE_LABEL_HEIGHT ;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
+            console.log('re-rendering the map!')
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
                 let hovered, selected;
                 let labelKey = d.gene[0];
                 let labelString = labelKey; // can this go away?
-                hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                // hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
                 let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
@@ -80,7 +81,7 @@ class LabelSet extends React.Component {
                             width={el.size}
                             item={d}
                             selected={selected}
-                            hovered={hovered}
+                            // hovered={hovered}
                             highlighted={highlighted}
                             labelString={labelString}
                             key={labelKey + '-' + cohortIndex}
@@ -99,7 +100,7 @@ LabelSet.propTypes = {
     pathways: PropTypes.any.isRequired,
     data: PropTypes.any.isRequired,
     layout: PropTypes.any.isRequired,
-    hoveredPathways: PropTypes.any.isRequired,
+    // hoveredPathways: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
