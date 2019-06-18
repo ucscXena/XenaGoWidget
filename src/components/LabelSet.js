@@ -4,13 +4,24 @@ import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
+import {omit,isEqual} from 'underscore'
 
 const chiSquareMax = 100.0;
+const omitArray = [];
 
 export default class LabelSet extends PureComponent {
 
     constructor(props) {
         super(props);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {``
+            return true ;
+            // console.log('redrawing')
+            // this.draw(newProps);
+        }
+        return false ;
     }
 
     render() {
