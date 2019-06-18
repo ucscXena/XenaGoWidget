@@ -38,6 +38,10 @@ export class SelectionStore{
         return SelectionStore.INSTANCE;
     }
 
+    @computed get getHoveredGene(){
+        return this.hoveredGene ;
+    }
+
     isHovered(gene){
         return this.hoveredGene === gene ;
     }
