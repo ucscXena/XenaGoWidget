@@ -1,4 +1,4 @@
-import {observable,action} from "mobx";
+import {observable, action, computed} from "mobx";
 
 
 export class SelectionStore{
@@ -33,6 +33,14 @@ export class SelectionStore{
     setHoveredGene = (gene) =>{
         this.hoveredGene = gene
     };
+
+    static getStore() {
+        return SelectionStore.INSTANCE;
+    }
+
+    isHovered(gene){
+        return this.hoveredGene === gene ;
+    }
 }
 
 export function getStore() {

@@ -33,7 +33,7 @@ let styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        console.log(this.props,newProps)
+        // console.log(this.props,newProps)
         if (this.vg && !underscore.isEqual(omit(newProps,['associateData']), omit(this.props,['associateData']))) {
             console.log('redrawing! ')
             this.draw(newProps);

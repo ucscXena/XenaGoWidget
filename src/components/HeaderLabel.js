@@ -101,9 +101,12 @@ export class HeaderLabel extends React.Component{
     }
 
     render() {
-        const selectionStore = SelectionStore.INSTANCE;
+        // const selectionStore = SelectionStore.INSTANCE;
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-        const hovered = selectionStore.hoveredGene === labelString;
+        // const hovered = SelectionStore.getStore().hoveredGene === labelString;
+        // const hovered = selectionStore.isHovered(labelString);
+        console.log('2 re-calculating hover')
+        const hovered = SelectionStore.getStore().isHovered(labelString);
         // console.log('hovered store changed', hovered,selectionStore.hoveredGene,labelString)
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
