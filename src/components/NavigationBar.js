@@ -85,12 +85,12 @@ export default class NavigationBar extends React.Component{
                                                   onClick={() => toggleShowReciprocalPathway()}
                                                   caption={showReciprocalPathwayLabel}/>
                                         <MenuDivider/>
-                                        <MenuItem onClick={() => activateShowColorByTypeDetail()}
-                                                  caption={`${showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
-                                        <MenuItem onClick={() => activateShowColorByType()}
-                                                  caption={`${showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
-                                        <MenuItem onClick={() => activateShowColorTotal()}
-                                                  caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
+                                        <MenuItem onClick={() => uiStore.activateShowColorByTypeDetail()}
+                                                  caption={`${uiStore.showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => uiStore.activateShowColorByType()}
+                                                  caption={`${uiStore.showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
+                                        <MenuItem onClick={() => uiStore.activateShowColorTotal()}
+                                                  caption={`${uiStore.showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => uiStore.toggleShowDiffLayer()}
                                                   caption={`${uiStore.showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>

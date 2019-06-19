@@ -50,18 +50,24 @@ export class UiStore{
     };
 
     @action
-    toggleShowColorByType = () => {
-        this.showColorByType = !this.showColorByType;
+    activateShowColorByType = () => {
+        this.showColorByType = true;
+        this.showColorByTypeDetail = false ;
+        this.showColorTotal = false ;
     };
 
     @action
-    toggleShowColorByTypeDetail = () => {
-        this.showColorByTypeDetail = !this.showColorByTypeDetail;
+    activateShowColorByTypeDetail = () => {
+        this.showColorByType = false ;
+        this.showColorByTypeDetail = true ;
+        this.showColorTotal = false ;
     };
 
     @action
-    toggleShowColorTotal = () => {
-        this.showColorTotal = !this.showColorTotal;
+    activateShowColorTotal = () => {
+        this.showColorByType = false ;
+        this.showColorByTypeDetail = false ;
+        this.showColorTotal = true ;
     };
 
     @action

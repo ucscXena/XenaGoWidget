@@ -20,7 +20,7 @@ let genomeBackgroundCopyNumberViewKey = 'copy number';
 let genomeBackgroundMutationViewKey = 'mutation';
 let Rx = require('ucsc-xena-client/dist/rx');
 import {AppStorageHandler} from "../service/AppStorageHandler";
-import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
+import {LABEL_A, LABEL_B, MAX_GENE_WIDTH, MIN_FILTER, uiStore} from "./XenaGeneSetApp";
 import defaultDatasetForGeneset from "../data/defaultDatasetForGeneset";
 import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../functions/DrawFunctions";
 import {DetailedLegend} from "./DetailedLegend";
@@ -384,9 +384,9 @@ export default class XenaGoViewer extends PureComponent {
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
         let viewType = COLOR_TOTAL;
-        if (this.props.showColorByType) {
+        if (uiStore.showColorByType) {
             viewType = COLOR_BY_TYPE;
-        } else if (this.props.showColorByTypeDetail) {
+        } else if (uiStore.showColorByTypeDetail) {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
 
