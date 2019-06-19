@@ -465,7 +465,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    colorSettings={this.props.colorSettings}
                                                    collapsed={this.props.collapsed}
                                                    viewType={viewType}
-                                                   showClusterSort={this.props.showClusterSort}
                                 />
                             </td>
                             }
