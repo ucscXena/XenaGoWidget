@@ -10,7 +10,7 @@ import {
     synchronizedSort
 } from '../functions/SortFunctions';
 import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
+import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX, uiStore} from "./XenaGeneSetApp";
 import update from "immutability-helper";
 
 
@@ -140,12 +140,12 @@ class PathwayScoresView extends PureComponent {
         const {
             width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
-            viewType, showDetailLayer
+            viewType
         } = this.props;
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
-                {showDetailLayer &&
+                {uiStore.showDetailLayer &&
                 <CanvasDrawing
                     width={width}
                     height={height}

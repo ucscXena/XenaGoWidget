@@ -155,8 +155,6 @@ NavigationBar.propTypes = {
     geneOptions: PropTypes.any,
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
-    toggleShowDiffLayer: PropTypes.any,
-    toggleShowDetailLayer: PropTypes.any,
     toggleShowClusterSort: PropTypes.any,
     showClusterSort: PropTypes.any,
     showReciprocalPathway: PropTypes.any,

@@ -61,7 +61,6 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorByType: false,
             showColorByTypeDetail: true,
             showColorTotal: false,
-            showDetailLayer: true,
             showClusterSort: false,
             pathwaySets: [
                 {
