@@ -229,7 +229,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
@@ -272,7 +272,7 @@ export default class PathwayScoresViewCache extends PureComponent {
         /// TODO: maybe have it ONLY calcualte the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
-        if(!showClusterSort && returnedValue.pathways[0].diffScore){
+        if(!uiStore.showClusterSort && returnedValue.pathways[0].diffScore){
             returnedValue = diffSort(returnedValue,cohortIndex!==0);
             // NOTE: we could also use this method, but we hope they have the same result
          //    if (cohortIndex === 0) {
@@ -285,7 +285,7 @@ export default class PathwayScoresViewCache extends PureComponent {
          //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
          //    }
         }
-        else if (showClusterSort){
+        else if (uiStore.showClusterSort){
             if (cohortIndex === 0) {
                 returnedValue = clusterSort(returnedValue);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);

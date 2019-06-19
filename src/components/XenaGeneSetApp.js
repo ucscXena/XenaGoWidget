@@ -61,7 +61,6 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorByType: false,
             showColorByTypeDetail: true,
             showColorTotal: false,
-            showClusterSort: false,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -623,12 +622,6 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    toggleShowClusterSort = () => {
-        this.setState({
-            showClusterSort: !this.state.showClusterSort
-        })
-    };
-
     activateShowColorByType = () => {
         this.setState({
             showColorByType: true,
@@ -681,7 +674,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
-                               toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
                                activateShowColorTotal={this.activateShowColorTotal}
@@ -689,7 +681,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
-                               showClusterSort={this.state.showClusterSort}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
@@ -802,7 +793,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
@@ -822,7 +812,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showClusterSort={this.state.showClusterSort}
                                 />
                             </td>
                         </tr>

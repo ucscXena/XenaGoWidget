@@ -47,7 +47,7 @@ export default class NavigationBar extends React.Component{
     };
 
     render() {
-        let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
+        let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,
             showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
             toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
@@ -97,10 +97,10 @@ export default class NavigationBar extends React.Component{
                                         <MenuItem onClick={() => uiStore.toggleShowDetailLayer()}
                                                   caption={`${uiStore.showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
-                                        <MenuItem onClick={() => toggleShowClusterSort()}
-                                                  caption={`${showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
-                                        <MenuItem onClick={() => toggleShowClusterSort()}
-                                                  caption={`${!showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
+                                        <MenuItem onClick={() => uiStore.toggleShowClusterSort()}
+                                                  caption={`${uiStore.showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
+                                        <MenuItem onClick={() => uiStore.toggleShowClusterSort()}
+                                                  caption={`${!uiStore.showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
                                         <MenuDivider/>
                                         <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
                                                   icon='cloud_download'
@@ -155,8 +155,6 @@ NavigationBar.propTypes = {
     geneOptions: PropTypes.any,
     downloadRawHandler: PropTypes.any,
     toggleShowReciprocalPathway: PropTypes.any,
-    toggleShowClusterSort: PropTypes.any,
-    showClusterSort: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
     showColorByTypeDetail: PropTypes.any,
     showColorByType: PropTypes.any,
