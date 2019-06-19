@@ -34,10 +34,8 @@ const styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        // console.log('UNFILRTERD',newProps,this.props)
-        // console.log('FILTERED',underscore.isEqual(omit(newProps,omitArray),newProps,this.props, omit(this.props,omitArray)),omit(newProps,omitArray), omit(this.props,omitArray))
-        if (this.vg && !isEqual(omit(newProps,omitArray), omit(this.props,omitArray))) {
-            // console.log('redrawing')
+        // if (this.vg && !isEqual(omit(newProps,['associateData','data']), omit(this.props,['associateData','data']))) {
+        if (this.vg && !isEqual(omit(newProps,['associateData']), omit(this.props,['associateData']))) {
             this.draw(newProps);
         }
     }

@@ -2,12 +2,13 @@ import React from 'react'
 import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
 import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
-import {XENA_VIEW, PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
-import PureComponent from "../../src/components/PureComponent";
+import {XENA_VIEW, PATHWAYS_VIEW, uiStore } from "../../src/components/XenaGeneSetApp";
 import BaseStyle from '../css/base.css'
 import * as PropTypes from "underscore";
 import Autocomplete from "react-toolbox/lib/autocomplete";
 import AutocompleteTheme from "../css/autocomplete.css";
+import {UiStore} from "../store/UiStore";
+import {observer} from "mobx-react";
 
 
 const GithubIcon = () => (
@@ -23,7 +24,8 @@ const XenaIcon = () => (
     <img src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 );
 
-export default class NavigationBar extends PureComponent {
+@observer
+export default class NavigationBar extends React.Component{
 
     constructor(props) {
         super(props);
@@ -46,9 +48,10 @@ export default class NavigationBar extends PureComponent {
 
     render() {
         let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
-            showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
-            toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
+            showColorTotal, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+            toggleShowReciprocalPathway, downloadRawHandler, showReciprocalPathway} = this.props;
         let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
+
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -89,10 +92,10 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem onClick={() => activateShowColorTotal()}
                                                   caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
-                                        <MenuItem onClick={() => toggleShowDiffLayer()}
-                                                  caption={`${showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
-                                        <MenuItem onClick={() => toggleShowDetailLayer()}
-                                                  caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
+                                        <MenuItem onClick={() => uiStore.toggleShowDiffLayer()}
+                                                  caption={`${uiStore.showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
+                                        <MenuItem onClick={() => uiStore.toggleShowDetailLayer()}
+                                                  caption={`${uiStore.showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
                                                   caption={`${showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
@@ -157,8 +160,6 @@ NavigationBar.propTypes = {
     toggleShowClusterSort: PropTypes.any,
     showClusterSort: PropTypes.any,
     showReciprocalPathway: PropTypes.any,
-    showDiffLayer: PropTypes.any,
-    showDetailLayer: PropTypes.any,
     showColorByTypeDetail: PropTypes.any,
     showColorByType: PropTypes.any,
     showColorTotal: PropTypes.any,

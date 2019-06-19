@@ -138,7 +138,7 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
+            width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
@@ -174,7 +174,6 @@ class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
-                    showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
         );
@@ -196,8 +195,6 @@ PathwayScoresView.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
-    showDiffLayer: PropTypes.any,
-    showDetailLayer: PropTypes.any,
 };
 
 

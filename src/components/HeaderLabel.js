@@ -1,8 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Dropdown} from "react-toolbox";
-import underscore from 'underscore'
+import {isEqual} from 'underscore'
 import {
     getSelectColor,
     getWhiteColor,
@@ -24,7 +23,7 @@ export class HeaderLabel extends PureComponent {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return !underscore.isEqual(nextProps, this.props);
+        return !isEqual(nextProps, this.props);
     }
 
     /**

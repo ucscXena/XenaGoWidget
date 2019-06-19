@@ -16,7 +16,7 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
-import {isEqual} from 'underscore';
+import {UiStore} from "../store/UiStore";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -42,6 +42,9 @@ export const MIN_GENE_WIDTH_PX = 80;// 8 or less
 export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
+export const uiStore = new UiStore();
+
+
 /**
  * refactor that from index
  */
@@ -60,7 +63,6 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorTotal: false,
             showDetailLayer: true,
             showClusterSort: false,
-            showDiffLayer: true,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -273,7 +275,7 @@ export default class XenaGeneSetApp extends PureComponent {
     showPathways = () => {
         this.setState({
             view: PATHWAYS_VIEW
-        })
+        });
     };
 
     showXena = () => {
@@ -622,18 +624,6 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    toggleShowDiffLayer = () => {
-        this.setState({
-            showDiffLayer: !this.state.showDiffLayer
-        })
-    };
-
-    toggleShowDetailLayer = () => {
-        this.setState({
-            showDetailLayer: !this.state.showDetailLayer
-        })
-    };
-
     toggleShowClusterSort = () => {
         this.setState({
             showClusterSort: !this.state.showClusterSort
@@ -692,8 +682,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
-                               toggleShowDiffLayer={this.toggleShowDiffLayer}
-                               toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
@@ -702,8 +690,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
-                               showDiffLayer={this.state.showDiffLayer}
-                               showDetailLayer={this.state.showDetailLayer}
                                showClusterSort={this.state.showClusterSort}
                 />
 
@@ -817,8 +803,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showDiffLayer={this.state.showDiffLayer}
-                                              showDetailLayer={this.state.showDetailLayer}
                                               showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
@@ -839,8 +823,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
-                                              showDiffLayer={this.state.showDiffLayer}
-                                              showDetailLayer={this.state.showDetailLayer}
                                               showClusterSort={this.state.showClusterSort}
                                 />
                             </td>

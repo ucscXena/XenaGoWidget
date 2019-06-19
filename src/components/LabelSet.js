@@ -1,28 +1,28 @@
-import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
 import React from 'react'
 import {HeaderLabel} from "../components/HeaderLabel";
 import {DiffLabel} from "../components/DiffLabel";
 import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
-import {omit,isEqual} from 'underscore'
+import {uiStore } from "../../src/components/XenaGeneSetApp";
+
+import {observer} from "mobx-react";
 
 const chiSquareMax = 100.0;
 const omitArray = [];
 
-export default class LabelSet extends PureComponent {
+@observer
+export default class LabelSet extends React.Component {
 
     constructor(props) {
         super(props);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {``
-            return true ;
-            // console.log('redrawing')
-            // this.draw(newProps);
-        }
-        return false ;
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {``
+    //         return true ;
+    //     }
+    //     return false ;
+    // }
 
     render() {
         const {
@@ -37,7 +37,6 @@ export default class LabelSet extends PureComponent {
             , cohortIndex
             , colorSettings
             , data
-            , showDiffLayer
         } = this.props;
 
         if (associateData.length > 0 && pathways.length === layout.length) {
@@ -60,7 +59,7 @@ export default class LabelSet extends PureComponent {
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`}>
-                        { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
+                        { uiStore.showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
                         <DiffLabel
                             labelHeight={diffHeight}
                             labelOffset={actualOffset}
@@ -109,5 +108,4 @@ LabelSet.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
-    showDiffLayer: PropTypes.any,
 };
