@@ -7,10 +7,7 @@ import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 import {omit,isEqual} from 'underscore'
 
 const chiSquareMax = 100.0;
-const omitArray = ['hoveredPathways'];
-
-let elementsArray = [];
-let oldHoveredPathways = [];
+const omitArray = [];
 
 export default class LabelSet extends PureComponent {
 
@@ -19,8 +16,10 @@ export default class LabelSet extends PureComponent {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (!isEqual(nextProps, this.props)) {
+        if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {``
             return true ;
+            // console.log('redrawing')
+            // this.draw(newProps);
         }
         return false ;
     }
@@ -46,67 +45,55 @@ export default class LabelSet extends PureComponent {
             // const possibleHeight = height - GENE_LABEL_HEIGHT ;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
-            // if (!isEqual(nextProps, this.props)) {
-            //     return true ;
-            // }
-            if (isEqual(hoveredPathways,oldHoveredPathways)){
-                // get that element out and fix it
-                oldHoveredPathways = hoveredPathways;
-            }
-            else{
-                elementsArray = layout.map((el, i) => {
-                    let d = pathways[i];
-                    let geneLength = d.gene.length;
-                    let hovered, selected;
-                    let labelKey = d.gene[0];
-                    let labelString = labelKey; // can this go away?
-                    hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
-                    selected = selectedPathways.indexOf(labelString) >= 0;
-                    let highlighted = highlightedGene === labelKey;
-                    let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
-                    //diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;
-                    let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-                    let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
-                    return ({
-                            gene:labelKey,component:
-                                <div key={`${labelKey}-${cohortIndex}-outer`}>
-                                    {showDiffLayer && ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0) &&
-                                    <DiffLabel
-                                        labelHeight={diffHeight}
-                                        labelOffset={actualOffset}
-                                        numSamples={numSamples}
-                                        geneLength={geneLength}
-                                        left={el.start}
-                                        width={el.size}
-                                        item={d}
-                                        labelString={labelString}
-                                        key={labelKey + '-' + cohortIndex + 'diff'}
-                                        cohortIndex={cohortIndex}
-                                        colorSettings={colorSettings}
-                                    />
-                                    }
-                                    <HeaderLabel
-                                        labelHeight={labelHeight}
-                                        labelOffset={offset}
-                                        numSamples={numSamples}
-                                        geneLength={geneLength}
-                                        left={el.start}
-                                        width={el.size}
-                                        item={d}
-                                        selected={selected}
-                                        hovered={hovered}
-                                        highlighted={highlighted}
-                                        labelString={labelString}
-                                        key={labelKey + '-' + cohortIndex}
-                                        colorSettings={colorSettings}
-                                    />
-                                </div>
+            const layoutArray = layout.map((el, i) => {
+                let d = pathways[i];
+                let geneLength = d.gene.length;
+                let hovered, selected;
+                let labelKey = d.gene[0];
+                let labelString = labelKey; // can this go away?
+                hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                selected = selectedPathways.indexOf(labelString) >= 0;
+                let highlighted = highlightedGene === labelKey;
+                let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
+                //diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;
+                let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
+                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
+                return (
+                    <div key={`${labelKey}-${cohortIndex}-outer`}>
+                        { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
+                        <DiffLabel
+                            labelHeight={diffHeight}
+                            labelOffset={actualOffset}
+                            numSamples={numSamples}
+                            geneLength={geneLength}
+                            left={el.start}
+                            width={el.size}
+                            item={d}
+                            labelString={labelString}
+                            key={labelKey + '-' + cohortIndex + 'diff'}
+                            cohortIndex={cohortIndex}
+                            colorSettings={colorSettings}
+                        />
                         }
-                    )
-                });
-            }
-            // console.log('elements array',elementsArray)
-            return elementsArray.map( e => e.component );
+                        <HeaderLabel
+                            labelHeight={labelHeight}
+                            labelOffset={offset}
+                            numSamples={numSamples}
+                            geneLength={geneLength}
+                            left={el.start}
+                            width={el.size}
+                            item={d}
+                            selected={selected}
+                            hovered={hovered}
+                            highlighted={highlighted}
+                            labelString={labelString}
+                            key={labelKey + '-' + cohortIndex}
+                            colorSettings={colorSettings}
+                        />
+                    </div>
+                )
+            });
+            return layoutArray;
         } else {
             return <div></div>;
         }

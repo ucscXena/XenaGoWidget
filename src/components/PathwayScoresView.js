@@ -138,10 +138,17 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
+            width, height, layout, data, associateData, offset, cohortIndex,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
+
+        // console.log('cohortIndex',cohortIndex)
+        // console.log('viewType',viewType)
+        // console.log('selectedPathways',selectedPathways)
+        // console.log('data',cohortIndex,data,associateData)
+        // console.log('height',height)
+        // console.log('layout',layout)
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>

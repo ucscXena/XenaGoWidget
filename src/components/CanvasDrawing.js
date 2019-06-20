@@ -37,7 +37,8 @@ export default class CanvasDrawing extends Component {
         // console.log('UNFILRTERD',newProps,this.props)
         // console.log('FILTERED',underscore.isEqual(omit(newProps,omitArray),newProps,this.props, omit(this.props,omitArray)),omit(newProps,omitArray), omit(this.props,omitArray))
         if (this.vg && !isEqual(omit(newProps,omitArray), omit(this.props,omitArray))) {
-            // console.log('redrawing')
+            // console.log('REDRAWING data',isEqual(this.props.data,newProps.data))
+            // console.log('REDRAWING assoccisated data',isEqual(this.props.associateData,newProps.data.associateData))
             this.draw(newProps);
         }
     }
