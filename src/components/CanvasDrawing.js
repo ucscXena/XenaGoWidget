@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {omit,isEqual} from 'underscore'
 
-const omitArray = ['associateData','data'];
+const omitArray = ['associateData'];
 const styles = {
     canvas: {
         cursor: 'crosshair',
