@@ -5,9 +5,13 @@ import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
-import {clusterSort, synchronizedSort} from '../functions/SortFunctions';
-import {findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {
+    clusterSort, diffSort, scoreColumns,
+    synchronizedSort
+} from '../functions/SortFunctions';
+import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {FILTER_PERCENTAGE, MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
+import update from "immutability-helper";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -19,7 +23,7 @@ const style = {
         opacity: 1,
         // border: 'solid black 0.5px',
         boxShadow: '0 0 2px 2px #ccc '
-},
+    },
     fadeIn: {
         opacity: 1,
         transition: 'opacity 0.5s ease-out'
@@ -73,24 +77,27 @@ let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
 let pathwayIndexFromX = (x, layout) => {
     let pathwayIndex = layout.findIndex(({start, size}) => start <= x && x < start + size);
     let layoutInstance = layout[pathwayIndex];
-    let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
-    return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+    if (layoutInstance) {
+        let layoutMiddle = Math.round(layoutInstance.start + (layoutInstance.size / 2.0));
+        return {pathwayIndex: pathwayIndex, selectCnv: x < layoutMiddle};
+    } else {
+        return {pathwayIndex: pathwayIndex, selectCnv: false};
+    }
 };
 
 function getPointData(event, props) {
     let {associateData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
     let {x, y} = getMousePos(event);
-    let {pathwayIndex,selectCnv} = pathwayIndexFromX(x, layout);
+    let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associateData);
     return {
         pathway: pathways[pathwayIndex],
         tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
-        expression:expression,
-        selectCnv:selectCnv
+        expression: expression,
+        selectCnv: selectCnv
     };
 }
-
 
 class PathwayScoresView extends PureComponent {
 
@@ -105,14 +112,6 @@ class PathwayScoresView extends PureComponent {
         }
     };
 
-    componentWillMount() {
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    }
-
-    componentDidUpdate() {
-        this.props.shareGlobalGeneData(this.props.data.pathways, this.props.cohortIndex);
-    }
-
     onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
@@ -123,22 +122,30 @@ class PathwayScoresView extends PureComponent {
         let pointData = getPointData(event, this.props);
         if (pointData) {
             onHover(pointData);
-        }
-        else {
+        } else {
             onHover(null);
         }
     };
 
+    componentDidMount() {
+        // this supp
+        const {
+            data, cohortIndex, shareGlobalGeneData,
+        } = this.props;
+        shareGlobalGeneData(data.pathways, cohortIndex);
+    }
+
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex,
+            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
             selectedPathways, hoveredPathways, colorSettings, highlightedGene,
-            viewType
+            viewType, showDetailLayer
         } = this.props;
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
+                {showDetailLayer &&
                 <CanvasDrawing
                     width={width}
                     height={height}
@@ -150,6 +157,7 @@ class PathwayScoresView extends PureComponent {
                     data={data} // updated data forces refresh
                     viewType={viewType}
                 />
+                }
                 <LabelWrapper
                     width={width}
                     height={height}
@@ -166,6 +174,7 @@ class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
+                    showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
         );
@@ -187,6 +196,8 @@ PathwayScoresView.propTypes = {
     shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
+    showDiffLayer: PropTypes.any,
+    showDetailLayer: PropTypes.any,
 };
 
 
@@ -221,8 +232,9 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
+        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -230,60 +242,78 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways,
             samples,
             filter,
+            filterMin,
             min,
-            selectedCohort
+            selectedCohort,
+            cohortIndex,
         };
         if (expression === undefined || expression.length === 0) {
             return <div>Loading...</div>
         }
 
-        let associatedData = findAssociatedData(hashAssociation);
-
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways,
-            filterMin
-        };
-        let prunedColumns = findPruneData(hashForPrune);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = samples;
-        let returnedValue;
 
-
-        if (cohortIndex === 0) {
-            returnedValue = clusterSort(prunedColumns);
-            PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-        }
-        else {
-            PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            returnedValue = synchronizedSort(prunedColumns, PathwayScoresView.synchronizedGeneList);
-        }
-        returnedValue.index = cohortIndex;
-
-        // fix for #194
-        let genesInGeneSet = returnedValue.data.length;
-        let width;
-        if (genesInGeneSet < 8) {
-            width = genesInGeneSet * MIN_GENE_WIDTH_PX;
-        }
-        else if (genesInGeneSet > 85 && collapsed) {
-            width = MAX_GENE_LAYOUT_WIDTH_PX;
-        }
-        else {
-            width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
-        }
-
-        let layoutData = layout(width, returnedValue.data);
+       let calculatedPathways = scoreColumns(prunedColumns);
+       let returnedValue = update(prunedColumns, {
+           pathways:{$set:calculatedPathways},
+           index:{$set:cohortIndex},
+       });
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
+        }
+
+
+        // send it to calculate the diffScores
+        /// TODO: maybe have it ONLY calcualte the diff scores?
+        this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
+
+        if(!showClusterSort && returnedValue.pathways[0].diffScore){
+            returnedValue = diffSort(returnedValue,cohortIndex!==0);
+            // NOTE: we could also use this method, but we hope they have the same result
+         //    if (cohortIndex === 0) {
+         //        returnedValue = diffSort(returnedValue);
+         //        PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+         //    }
+         // // Not sure if this is still necessary
+         //    else {
+         //        PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+         //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
+         //    }
+        }
+        else if (showClusterSort){
+            if (cohortIndex === 0) {
+                returnedValue = clusterSort(returnedValue);
+                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+            } else {
+                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
+            }
         }
 
         internalData = returnedValue.data;
+
+        // this will go last
+        // fix for #194
+        let genesInGeneSet = returnedValue.data.length;
+        let width;
+        if (genesInGeneSet < 8) {
+            width = genesInGeneSet * MIN_GENE_WIDTH_PX;
+        } else if (genesInGeneSet > 85 && collapsed) {
+            width = MAX_GENE_LAYOUT_WIDTH_PX;
+        } else {
+            width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
+        }
+
+        let layoutData = layout(width, returnedValue.data);
+
 
         return (
             <PathwayScoresView

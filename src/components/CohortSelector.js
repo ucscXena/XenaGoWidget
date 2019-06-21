@@ -2,7 +2,14 @@ import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
-import subCohorts from '../data/Subtype_Selected';
+import {Button} from 'react-toolbox/lib/button';
+import FaFilter from 'react-icons/lib/fa/filter';
+import {SubCohortSelector} from "./SubCohortSelector";
+import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
+import {isEqual} from 'underscore';
+import {Tooltip} from "react-toolbox/lib";
+const TooltipButton = Tooltip(Button);
+
 
 
 export class CohortSelector extends PureComponent {
@@ -11,29 +18,98 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohort: props.selectedSubCohort,
+            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : getSubCohortsOnlyForCohort(props.selectedCohort),
+            showSubCohortSelector: false,
+            subCohortLabel: 'All Subtypes',
         };
     }
 
     onChange = (event) => {
-        this.setState({selectedCohort: event.target.value});
-        let {onChange} = this.props;
-        if (onChange) {
-            onChange(event.target.value);
+        // populate selected sub cohorts for the cohorts
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
+        this.setState( {
+                selectedCohort: event.target.value,
+                selectedSubCohorts:subCohortsForSelected,
         }
+            );
+        this.props.onChange(event.target.value);
     };
 
-    onChangeSubCohort = (event) => {
-        this.setState({selectedSubCohort: event.target.value});
-        this.props.onChangeSubCohort(event.target.value);
+    handleSubCohortToggle = () => {
+        this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
+    };
+
+
+    generateSubCohortDetails(){
+        let selectedSubCohorts = this.state.selectedSubCohorts;
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        if(!subCohortsForSelected) return '';
+        return Object.values(selectedSubCohorts).map( s => {
+            let splits = s.split(".");
+            if(splits.length>0) {
+                return splits[1];
+            } else {
+                return s;
+            }
+        }).join(", ");
+    };
+
+    generateSubCohortLabels(){
+        let selectedSubCohorts = this.state.selectedSubCohorts;
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        if(!subCohortsForSelected) return '';
+        const availableSubtypes = Object.keys(subCohortsForSelected).length;
+        const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+        if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
+            return `All ${availableSubtypes} Subtypes`;
+        }
+        return `(${selectedSubTypes}/${availableSubtypes}) Subtypes`;
+    };
+
+    onChangeSubCohort = (newSelected) => {
+        const changes = !isEqual(this.state.selectedSubCohorts,newSelected);
+        console.log(this.state.selectedSubCohorts,newSelected,changes);
+
+        this.setState({showSubCohortSelector:false});
+        if(!changes){
+            return ;
+        }
+
+        this.setState(
+        {
+                selectedSubCohorts: newSelected,
+            }
+        );
+
+
+        let selectionObject = {
+            selected:this.state.selectedCohort,
+            selectedSubCohorts:newSelected,
+        };
+        this.props.onChangeSubCohort(selectionObject)
+    };
+
+    selectCohortSelection = () => {
+        this.setState({showSubCohortSelector: true});
     };
 
     render() {
 
-        let subCohortsForSelected = subCohorts[this.state.selectedCohort];
         let {cohorts,cohortLabel} = this.props ;
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        let subCohortLabel = this.generateSubCohortLabels();
+        let subCohortDetails = this.generateSubCohortDetails();
+
         return (
             <div>
+                <SubCohortSelector active={this.state.showSubCohortSelector}
+                                   handleToggle={this.handleSubCohortToggle}
+                                   handleSubCohortChange={this.onChangeSubCohort}
+                                   selectedCohort={this.state.selectedCohort}
+                                   selectedSubCohorts={this.state.selectedSubCohorts}
+                                   subCohortsForSelected={subCohortsForSelected}
+                                   cohortLabel={subCohortLabel}
+                />
                 <div style={{
                     marginTop: 10,
                     marginLeft: 10,
@@ -57,24 +133,11 @@ export class CohortSelector extends PureComponent {
                         })
                     }
                 </select>
-                {subCohortsForSelected &&
-                <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                        onChange={this.onChangeSubCohort}
-                        value={this.state.selectedSubCohort}
-                        className={BaseStyle.softflow}
-                >
-                    <option>All</option>
-                    {
-                        Object.entries(subCohortsForSelected).map(c => {
-                                return (
-                                    <option value={c[0]} key={c[0]}>
-                                        {c[0]}
-                                    </option>
-                                )
-                            }
-                        )
-                    }
-                </select>
+                {subCohortsForSelected.length>0 &&
+                   <TooltipButton tooltip={subCohortDetails} style={{marginLeft:20}} raised onClick={this.selectCohortSelection} label={subCohortLabel}>
+                       <FaFilter/>
+                   </TooltipButton>
+
                 }
             </div>
         );
@@ -86,7 +149,7 @@ CohortSelector.propTypes = {
     subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
-    selectedSubCohort: PropTypes.string,
+    selectedSubCohorts: PropTypes.any,
     onChange: PropTypes.any.isRequired,
     onChangeSubCohort: PropTypes.any.isRequired,
 };

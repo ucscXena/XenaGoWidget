@@ -1,25 +1,22 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import {sum} from 'underscore';
-import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
-import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 import DefaultPathWays from "../data/tgac";
 import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
-import {addIndepProb, findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {addIndepProb, createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
 import {sumInstances, sumTotals} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {izip, cycle} from 'itertools';
-import {scoreChiSquaredData} from "../functions/ColorFunctions";
+import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
-import {DetailedLegend} from "./DetailedLegend";
+import update from "immutability-helper";
+import {isEqual} from 'underscore';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -61,6 +58,9 @@ export default class XenaGeneSetApp extends PureComponent {
             showColorByType: false,
             showColorByTypeDetail: true,
             showColorTotal: false,
+            showDetailLayer: true,
+            showClusterSort: false,
+            showDiffLayer: true,
             pathwaySets: [
                 {
                     name: 'Default Pathway',
@@ -135,8 +135,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     let ref = this.refs['xena-go-app-' + index];
                     ref.setPathwayState(selection.selectedPathways, selection);
                 }
-            }
-            else {
+            } else {
                 refLoaded.clickPathway(selection);
             }
         }
@@ -190,15 +189,15 @@ export default class XenaGeneSetApp extends PureComponent {
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
         this.setState({
-            pathwaySets: allSets,
             selectedPathway: selectedPathwaySet,
+            pathwaySets: allSets,
         });
     };
 
     addGene = (selectedPathway, selectedGene) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
 
         // get geneset to alter
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
 
         // get pathway to filter
@@ -212,7 +211,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // add to the existing index
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+
+        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
@@ -224,10 +224,10 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     removeGene = (selectedPathway, selectedGene) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-
         // get geneset to alter
+        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
 
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -240,7 +240,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // add to the existing index
 
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathway(selectedPathwaySet.pathway);
@@ -254,7 +254,7 @@ export default class XenaGeneSetApp extends PureComponent {
     removePathway = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
-        allSets = allSets.filter(f => (!f || f.selected === false));
+        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // removes selected pathway
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
@@ -328,8 +328,7 @@ export default class XenaGeneSetApp extends PureComponent {
             if (index !== myIndex) {
                 if (selectedPathways) {
                     this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
-                }
-                else {
+                } else {
                     this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
                 }
             }
@@ -342,25 +341,78 @@ export default class XenaGeneSetApp extends PureComponent {
         });
 
         this.state.apps.forEach((app, index) => {
+            if(pathwayHover){
+                pathwayHover.samplesAffected = index === 0 ? pathwayHover.firstObserved : pathwayHover.secondObserved;
+            }
             this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
         });
     };
 
+    /**
+     * this nicely forces synchronization as well
+     * @param geneData0
+     * @param geneData1
+     * @returns {*[]}
+     */
+    calculateDiffs(geneData0, geneData1) {
+        if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
+            const gene0List = geneData0.map( g => g.gene[0]);
+            const gene1Objects = geneData1.sort( (a,b) => {
+                const aGene = a.gene[0];
+                const bGene = b.gene[0];
+                return gene0List.indexOf(aGene)-gene0List.indexOf(bGene);
+            });
+
+            for (let geneIndex in geneData0) {
+                let chiSquareValue = scoreChiSquareTwoByTwo (
+                        geneData0[geneIndex].samplesAffected,
+                        geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
+                        gene1Objects[geneIndex].samplesAffected,
+                        gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected),
+                    diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total ?
+                        chiSquareValue : -chiSquareValue;
+                diffScore = isNaN(diffScore) ? 0 : diffScore;
+
+                geneData0[geneIndex].diffScore = diffScore;
+                gene1Objects[geneIndex].diffScore = diffScore;
+            }
+            return [geneData0, gene1Objects]
+        }
+        else{
+            return [geneData0, geneData1];
+        }
+    }
+
 // populates back to the top
     shareGlobalGeneData = (geneData, cohortIndex) => {
+        const isChange = (cohortIndex === 0 && geneData.length!==this.state.geneData[0].length) || (cohortIndex === 1 && geneData.length!==this.state.geneData[1].length);
+
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
+        let finalGeneData = this.calculateDiffs(geneData0, geneData1);
 
+        if(isChange){
+            if(geneData0.length>0){
+                this.geneHover({
+                    pathway:geneData0[0],
+                    cohortIndex
+                });
+            }
+            if(geneData1.length>0){
+                this.geneHover({
+                    pathway:geneData1[0],
+                    cohortIndex
+                });
+            }
+        }
         this.setState({
-            geneData: [
-                geneData0, geneData1
-            ]
+            geneData: finalGeneData
         });
     };
 
     globalPathwaySelect = (pathwaySelection) => {
-        if(pathwaySelection.gene.length===0){
-            return ;
+        if (pathwaySelection.gene.length === 0) {
+            return;
         }
         let selectedPathways = [pathwaySelection.golabel];
         let pathwayClickData = {
@@ -376,8 +428,7 @@ export default class XenaGeneSetApp extends PureComponent {
         this.state.apps.forEach((app, index) => {
             if (this.state.selectedPathways) {
                 this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwayClickData);
-            }
-            else {
+            } else {
                 this.refs['xena-go-app-' + index].clickPathway(pathwayClickData);
             }
         });
@@ -390,11 +441,17 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
-        let hashAssociation = JSON.parse(JSON.stringify(pathwayData));
+        let hashAssociation = update(pathwayData, {
+            filter: {$set: filter},
+            min: {$set: min},
+            selectedCohort: {$set: this.getSelectedCohort(pathwayData)},
+        }
+        );
         hashAssociation.filter = filter;
         hashAssociation.min = min;
         hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
-        let associatedData = findAssociatedData(hashAssociation);
+        let associatedDataKey = createAssociatedDataKey(hashAssociation);
+        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
 
         let hashForPrune = {
@@ -402,7 +459,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathways: hashAssociation.pathways,
             filterMin
         };
-        let prunedColumns = findPruneData(hashForPrune);
+        let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }
@@ -468,14 +525,6 @@ export default class XenaGeneSetApp extends PureComponent {
                     sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
                 }
                 let total_prob = addIndepProb(sample_probs);
-                // if(sampleIndex<10){
-                // //     // console.log('cn',copyNumberBackgroundExpected,copyNumberBackgroundTotal,'mutation',mutationBackgroundExpected,mutationBackgroundTotal);
-                //     if(pathway.golabel==='TP53 (Pancan Atlas)'){
-                //         console.log('sample probs',sample_probs)
-                //         console.log('total prob',total_prob)
-                //     }
-                // }
-                // pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + sample_probs[0];
                 pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
             }
         }
@@ -499,8 +548,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 p.firstNumSamples = maxSamplesAffected;
                 p.firstExpected = expected[p.golabel];
                 p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
-            }
-            else {
+            } else {
                 p.secondObserved = observations[index];
                 p.secondTotal = totals[index];
                 p.secondNumSamples = maxSamplesAffected;
@@ -546,8 +594,7 @@ export default class XenaGeneSetApp extends PureComponent {
     acceptGeneHandler = (geneName) => {
         if (this.state.view === XENA_VIEW) {
             this.geneHighlight(geneName);
-        }
-        else if (this.state.view === PATHWAYS_VIEW) {
+        } else if (this.state.view === PATHWAYS_VIEW) {
             this.pathwayEditorGeneHandler(geneName)
         }
     };
@@ -572,6 +619,24 @@ export default class XenaGeneSetApp extends PureComponent {
     toggleShowReciprocalPathway = () => {
         this.setState({
             showReciprocalPathway: !this.state.showReciprocalPathway
+        })
+    };
+
+    toggleShowDiffLayer = () => {
+        this.setState({
+            showDiffLayer: !this.state.showDiffLayer
+        })
+    };
+
+    toggleShowDetailLayer = () => {
+        this.setState({
+            showDetailLayer: !this.state.showDetailLayer
+        })
+    };
+
+    toggleShowClusterSort = () => {
+        this.setState({
+            showClusterSort: !this.state.showClusterSort
         })
     };
 
@@ -627,6 +692,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
                                toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
+                               toggleShowDiffLayer={this.toggleShowDiffLayer}
+                               toggleShowDetailLayer={this.toggleShowDetailLayer}
+                               toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
                                activateShowColorTotal={this.activateShowColorTotal}
@@ -634,6 +702,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
+                               showDiffLayer={this.state.showDiffLayer}
+                               showDetailLayer={this.state.showDetailLayer}
+                               showClusterSort={this.state.showClusterSort}
                 />
 
                 {this.state.view === XENA_VIEW && this.state.apps &&
@@ -746,12 +817,15 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
+                                              showDiffLayer={this.state.showDiffLayer}
+                                              showDetailLayer={this.state.showDetailLayer}
+                                              showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer appData={this.state.apps[1]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-1'
                                               renderHeight={VIEWER_HEIGHT}
-                                              renderOffset={VIEWER_HEIGHT-3}
+                                              renderOffset={VIEWER_HEIGHT - 3}
                                               pathways={pathways}
                                               highlightedGene={this.state.highlightedGene}
                                               geneDataStats={this.state.geneData[1]}
@@ -765,6 +839,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showColorByType={this.state.showColorByType}
                                               showColorByTypeDetail={this.state.showColorByTypeDetail}
                                               showColorTotal={this.state.showColorTotal}
+                                              showDiffLayer={this.state.showDiffLayer}
+                                              showDetailLayer={this.state.showDetailLayer}
+                                              showClusterSort={this.state.showClusterSort}
                                 />
                             </td>
                         </tr>
