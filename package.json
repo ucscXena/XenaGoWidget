@@ -1,6 +1,6 @@
 {
   "name": "ucsc-xena-geneset",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Xena Gene Set Viewer",
   "main": "lib/index.js",
   "module": "es/index.js",

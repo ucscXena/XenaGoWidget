@@ -95,7 +95,7 @@ export default class NavigationBar extends PureComponent {
                                                   caption={`${showDetailLayer? "\u2713" : 'Show'} Detail Layer`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
-                                                  caption={`${showClusterSort? "\u2713" : 'Show'} Cluster Sort`}/>
+                                                  caption={`${showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
                                                   caption={`${!showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
                                         <MenuDivider/>
