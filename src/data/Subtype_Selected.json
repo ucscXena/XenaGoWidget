@@ -8220,7 +8220,7 @@
     ]
   },
   "TCGA Lung Adenocarcinoma (LUAD)": {
-    "Oncogene negative (ON)": [
+    "LUAD.Oncogene negative (ON)": [
       "TCGA-05-4382-01",
       "TCGA-35-4122-01",
       "TCGA-35-5375-01",
@@ -8292,7 +8292,7 @@
       "TCGA-MP-A5C7-01",
       "TCGA-NJ-A4YQ-01"
     ],
-    "Oncogene positive (OP)": [
+    "LUAD.Oncogene positive (OP)": [
       "TCGA-05-4244-01",
       "TCGA-05-4249-01",
       "TCGA-05-4250-01",
