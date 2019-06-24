@@ -73,13 +73,14 @@ export class SubCohortSelector extends PureComponent {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
         let {allSelected,selectedSubCohorts} = this.state ;
+        console.log('sub cohorts',selectedSubCohorts)
 
         return (
             <Dialog
                 active={active}
                 onEscKeyDown={handleToggle}
                 onOverlayClick={handleToggle}
-                title='Edit SubCohorts'
+                title='Edit Sub-Cohorts'
             >
                 <table width="100%">
                     <tbody>
@@ -96,6 +97,7 @@ export class SubCohortSelector extends PureComponent {
                                            <Checkbox label={cs} key={cs}
                                                      checked={selectedSubCohorts.indexOf(cs)>=0}
                                                      onChange={ (value) => this.handleChange(value,cs)}
+                                                     disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0}
                                                      />
                                        )
                                     })
