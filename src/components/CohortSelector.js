@@ -68,8 +68,6 @@ export class CohortSelector extends PureComponent {
 
     onChangeSubCohort = (newSelected) => {
         const changes = !isEqual(this.state.selectedSubCohorts,newSelected);
-        console.log(this.state.selectedSubCohorts,newSelected,changes);
-
         this.setState({showSubCohortSelector:false});
         if(!changes){
             return ;
