@@ -120,26 +120,19 @@ export class GeneSetSelector extends PureComponent {
 
 
     render() {
-        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left,showReciprocalPathway} = this.props;
+        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
         if (selectedPathways.length === 0) {
             return (
                 <div></div>
             )
         }
-        let hoveredLabel = hoveredPathways ? hoveredPathways.golabel : '';
-        let genesToHover = hoveredPathways ? hoveredPathways.gene : '';
         let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getGeneSetColorMask();
         interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
-        // interpolate = d3.scaleLinear().domain([-this.props.domain,0,this.props.domain]).range([this.props.lowColor,'white',this.props.highColor]).interpolate(d3.interpolateRgb.gamma(this.props.gamma));
 
         return pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
             let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
-            if(showReciprocalPathway){
-                hovered = hovered ||  intersection(genesToHover, p.gene).length > 0;
-                hovered = hovered || p.gene.indexOf(hoveredLabel) >= 0;
-            }
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 

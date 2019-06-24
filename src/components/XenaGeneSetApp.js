@@ -54,7 +54,6 @@ export default class XenaGeneSetApp extends PureComponent {
             view: XENA_VIEW,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
-            showReciprocalPathway: false,
             showColorByType: false,
             showColorByTypeDetail: true,
             showColorTotal: false,
@@ -616,12 +615,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    toggleShowReciprocalPathway = () => {
-        this.setState({
-            showReciprocalPathway: !this.state.showReciprocalPathway
-        })
-    };
-
     toggleShowDiffLayer = () => {
         this.setState({
             showDiffLayer: !this.state.showDiffLayer
@@ -691,14 +684,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
                                downloadRawHandler={this.callDownload}
-                               toggleShowReciprocalPathway={this.toggleShowReciprocalPathway}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
                                activateShowColorByType={this.activateShowColorByType}
                                activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
                                activateShowColorTotal={this.activateShowColorTotal}
-                               showReciprocalPathway={this.state.showReciprocalPathway}
                                showColorByType={this.state.showColorByType}
                                showColorByTypeDetail={this.state.showColorByTypeDetail}
                                showColorTotal={this.state.showColorTotal}
@@ -776,7 +767,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              topOffset={14}
                                                              width={VERTICAL_SELECTOR_WIDTH}
                                                              geneStateColors={this.state.geneStateColors}
-                                                             showReciprocalPathway={this.state.showReciprocalPathway}
                                             />
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
