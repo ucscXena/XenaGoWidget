@@ -73,7 +73,6 @@ export class SubCohortSelector extends PureComponent {
 
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
         let {allSelected,selectedSubCohorts} = this.state ;
-        console.log('sub cohorts',selectedSubCohorts)
 
         return (
             <Dialog
@@ -92,7 +91,7 @@ export class SubCohortSelector extends PureComponent {
                     <tr>
                         <td>
                                 {
-                                    subCohortsForSelected.map( cs =>{
+                                    subCohortsForSelected.sort().map( cs =>{
                                        return (
                                            <Checkbox label={cs} key={cs}
                                                      checked={selectedSubCohorts.indexOf(cs)>=0}
