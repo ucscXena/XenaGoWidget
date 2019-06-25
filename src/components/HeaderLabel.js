@@ -1,10 +1,8 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Dropdown} from "react-toolbox";
 import underscore from 'underscore'
 import {
-    getSelectColor,
     getWhiteColor,
     getHighlightedColor,
     scoreData,
@@ -21,6 +19,9 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.state = {
+            hovered: false
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -32,26 +33,10 @@ export class HeaderLabel extends PureComponent {
      * @param score
      * @returns {*}
      */
-    style(score,hovered) {
-        // let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
-        let {selected, labelOffset, left, width, labelHeight, highlighted} = this.props;
-
+    style(score) {
+        let {labelOffset, left, width, labelHeight, highlighted} = this.props;
         let colorString = interpolate(score);
-
-        if (selected) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: getSelectColor(),
-                strokeWidth: 1,
-                cursor: 'pointer'
-            }
-        }
-
-        else if (hovered) {
+        if (this.state.hovered) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -97,6 +82,18 @@ export class HeaderLabel extends PureComponent {
         return colorDensity < 0.7 ? 'black' : getWhiteColor();
     }
 
+    handleHover = () => {
+        this.setState({
+            hovered:true
+        })
+    };
+
+    removeHover = () => {
+        this.setState({
+            hovered:false
+        })
+    };
+
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
@@ -106,6 +103,8 @@ export class HeaderLabel extends PureComponent {
             <svg
                 style={this.style(colorDensity,false)}
                 className={className}
+                onMouseEnter={this.handleHover}
+                onMouseLeave={this.removeHover}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
@@ -125,7 +124,7 @@ HeaderLabel.propTypes = {
     labelString: PropTypes.string.isRequired,
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
-    selected: PropTypes.any.isRequired,
+    // selected: PropTypes.any.isRequired,
     // hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,

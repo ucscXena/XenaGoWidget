@@ -52,7 +52,7 @@ export default class LabelWrapper extends PureComponent {
                     pathways={pathways}
                     layout={layout}
                     // hoveredPathways={hoveredPathways}
-                    selectedPathways={[]}
+                    // selectedPathways={[]}
                     highlightedGene={highlightedGene}
                     labelHeight={geneLabelHeight}
                     height={height}

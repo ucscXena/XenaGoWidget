@@ -38,7 +38,7 @@ export default class LabelSet extends PureComponent {
             , pathways
             , layout
             // , hoveredPathways
-            , selectedPathways
+            // , selectedPathways
             , highlightedGene
             , labelHeight
             , height
@@ -60,7 +60,7 @@ export default class LabelSet extends PureComponent {
                 let labelKey = d.gene[0];
                 let labelString = labelKey; // can this go away?
                 // const hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
-                const selected = selectedPathways.indexOf(labelString) >= 0;
+                // const selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
                 let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
                 //diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;
@@ -91,7 +91,7 @@ export default class LabelSet extends PureComponent {
                             left={el.start}
                             width={el.size}
                             item={d}
-                            selected={selected}
+                            // selected={selected}
                             // hovered={hovered}
                             highlighted={highlighted}
                             labelString={labelString}
@@ -112,7 +112,7 @@ LabelSet.propTypes = {
     data: PropTypes.any.isRequired,
     layout: PropTypes.any.isRequired,
     // hoveredPathways: PropTypes.any.isRequired,
-    selectedPathways: PropTypes.any.isRequired,
+    // selectedPathways: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
