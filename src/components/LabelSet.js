@@ -7,7 +7,7 @@ import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
 import {omit,isEqual} from 'underscore'
 
 const chiSquareMax = 100.0;
-const omitArray = [];
+const omitArray = ['hoveredPathways','pathways','data'];
 
 export default class LabelSet extends PureComponent {
 
@@ -16,11 +16,19 @@ export default class LabelSet extends PureComponent {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {``
+        // console.log('diff',omit(nextProps,omitArray),omit(this.props,omitArray))
+        // console.log('is isEqual assData',isEqual(nextProps.associateData,this.props.associateData))
+        // console.log('is isEqual data',isEqual(nextProps.data,this.props.data))
+        // console.log('is isEqual layout',isEqual(nextProps.layout,this.props.layout))
+        // console.log('is isEqual pathways',isEqual(nextProps.pathways,this.props.pathways))
+        if (!isEqual(omit(nextProps,omitArray), omit(this.props,omitArray))) {
+            // console.log('should update')
+            // console.log('is not isEqual pathways',isEqual(nextProps.pathways,this.props.pathways),nextProps.pathways,this.props.pathways)
+
             return true ;
-            // console.log('redrawing')
             // this.draw(newProps);
         }
+        // console.log('not UPdate')
         return false ;
     }
 
@@ -29,7 +37,7 @@ export default class LabelSet extends PureComponent {
             associateData
             , pathways
             , layout
-            , hoveredPathways
+            // , hoveredPathways
             , selectedPathways
             , highlightedGene
             , labelHeight
@@ -39,6 +47,7 @@ export default class LabelSet extends PureComponent {
             , data
             , showDiffLayer
         } = this.props;
+        console.log('retdragging')
 
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
@@ -50,7 +59,7 @@ export default class LabelSet extends PureComponent {
                 let geneLength = d.gene.length;
                 let labelKey = d.gene[0];
                 let labelString = labelKey; // can this go away?
-                const hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                // const hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
                 const selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
                 let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
@@ -83,7 +92,7 @@ export default class LabelSet extends PureComponent {
                             width={el.size}
                             item={d}
                             selected={selected}
-                            hovered={hovered}
+                            // hovered={hovered}
                             highlighted={highlighted}
                             labelString={labelString}
                             key={labelKey + '-' + cohortIndex}
@@ -102,7 +111,7 @@ LabelSet.propTypes = {
     pathways: PropTypes.any.isRequired,
     data: PropTypes.any.isRequired,
     layout: PropTypes.any.isRequired,
-    hoveredPathways: PropTypes.any.isRequired,
+    // hoveredPathways: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     labelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,

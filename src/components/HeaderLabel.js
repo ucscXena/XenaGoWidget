@@ -32,8 +32,9 @@ export class HeaderLabel extends PureComponent {
      * @param score
      * @returns {*}
      */
-    style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
+    style(score,hovered) {
+        // let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
+        let {selected, labelOffset, left, width, labelHeight, highlighted} = this.props;
 
         let colorString = interpolate(score);
 
@@ -103,7 +104,7 @@ export class HeaderLabel extends PureComponent {
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
-                style={this.style(colorDensity)}
+                style={this.style(colorDensity,false)}
                 className={className}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
@@ -125,7 +126,7 @@ HeaderLabel.propTypes = {
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
     selected: PropTypes.any.isRequired,
-    hovered: PropTypes.any.isRequired,
+    // hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,

@@ -164,7 +164,7 @@ class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layout}
                     selectedPathways={selectedPathways}
-                    hoveredPathways={hoveredPathways}
+                    // hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
@@ -232,7 +232,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
@@ -320,7 +320,7 @@ export default class PathwayScoresViewCache extends PureComponent {
                 {...this.props}
                 width={width}
                 layout={layoutData}
-                hoveredPathways={hoveredPathways}
+                // hoveredPathways={hoveredPathways}
                 shareGlobalGeneData={shareGlobalGeneData}
                 data={{
                     expression,
