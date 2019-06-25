@@ -48,11 +48,10 @@ export default class LabelSet extends PureComponent {
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
-                let hovered, selected;
                 let labelKey = d.gene[0];
                 let labelString = labelKey; // can this go away?
-                hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
-                selected = selectedPathways.indexOf(labelString) >= 0;
+                const hovered = hoveredPathways.indexOf(d.gene[0]) >= 0;
+                const selected = selectedPathways.indexOf(labelString) >= 0;
                 let highlighted = highlightedGene === labelKey;
                 let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
                 //diffHeight = diffHeight > possibleHeight ? possibleHeight : diffHeight;

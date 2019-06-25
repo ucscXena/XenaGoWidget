@@ -97,16 +97,9 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             return <div>Loading...</div>
         }
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        console.log('VGSSSV assocated data key',associatedDataKey)
         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
-        let hashForPrune = {
-            associatedData,
-            pathways,
-            filterMin
-        };
         let prunedColumns = findPruneData(associatedData,associatedDataKey);
-        // let prunedColumns = findPruneData(hashForPrune);
         prunedColumns.samples = samples;
         let returnedValue = clusterSampleSort(prunedColumns);
 
@@ -121,8 +114,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
                     labelHeight={labelHeight}
                     height={totalHeight}
                     associatedData={returnedValue.data}
-                    onHover={this.onHover}
                     onClick={this.onClick}
+                    onHover={this.onHover}
                     onMouseOut={this.onMouseOut}
                     data={{
                         expression,

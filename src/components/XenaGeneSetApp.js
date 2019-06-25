@@ -16,7 +16,6 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
-import {isEqual} from 'underscore';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -439,7 +438,7 @@ export default class XenaGeneSetApp extends PureComponent {
         }
     }
 
-    calculateAssociatedData(pathwayData, filter, min, cohortIndex) {
+    calculateAssociatedData(pathwayData, filter, min) {
         let hashAssociation = update(pathwayData, {
             filter: {$set: filter},
             min: {$set: min},
@@ -451,26 +450,19 @@ export default class XenaGeneSetApp extends PureComponent {
         hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * hashAssociation.samples.length);
-
-        let hashForPrune = {
-            associatedData,
-            pathways: hashAssociation.pathways,
-            filterMin
-        };
         let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = pathwayData.samples;
         return associatedData;
     }
 
-    calculateObserved(pathwayData, filter, min, cohortIndex) {
-        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
+    calculateObserved(pathwayData, filter, min) {
+        return this.calculateAssociatedData(pathwayData, filter, min).map(pathway => {
             return sumInstances(pathway);
         });
     }
 
-    calculatePathwayScore(pathwayData, filter, min, cohortIndex) {
-        return this.calculateAssociatedData(pathwayData, filter, min, cohortIndex).map(pathway => {
+    calculatePathwayScore(pathwayData, filter, min) {
+        return this.calculateAssociatedData(pathwayData, filter, min).map(pathway => {
             return sumTotals(pathway);
         });
     }
@@ -535,8 +527,8 @@ export default class XenaGeneSetApp extends PureComponent {
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER, cohortIndex);
-        let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER, cohortIndex);
+        let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER);
+        let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER);
         let expected = this.calculateGeneSetExpected(pathwayData, filter);
 
         let maxSamplesAffected = pathwayData.samples.length;
