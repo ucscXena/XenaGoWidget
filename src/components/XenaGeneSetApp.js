@@ -133,8 +133,10 @@ export default class XenaGeneSetApp extends PureComponent {
                     let ref = this.refs['xena-go-app-' + index];
                     ref.setPathwayState(selection.selectedPathways, selection);
                 }
-            } else {
-                refLoaded.clickPathway(selection);
+            }
+            else {
+                let {pathway: {golabel}} = selection;
+                this.setPathwayState([golabel], selection);
             }
         }
     }
