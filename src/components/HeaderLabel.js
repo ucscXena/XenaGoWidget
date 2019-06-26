@@ -56,8 +56,7 @@ export class HeaderLabel extends PureComponent {
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
+                width: width, backgroundColor: colorString,
                 strokeWidth: 1,
                 cursor: 'pointer',
             }
@@ -75,8 +74,6 @@ export class HeaderLabel extends PureComponent {
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
-                // style={this.style(colorDensity,this.state.hovered)}
-                // className={className}
                 style={this.style(colorDensity)}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}

@@ -84,32 +84,32 @@ export default class LabelSet extends PureComponent {
                             colorSettings={colorSettings}
                         />
                         }
-                        {/*{ cohortIndex === 0  &&*/}
-                        {/*<div style={{*/}
-                        {/*    position: 'absolute',*/}
-                        {/*    height: height*2,*/}
-                        {/*    top: 0,*/}
-                        {/*    left: el.start,*/}
-                        {/*    width:el.size,*/}
-                        {/*    opacity:0.1,*/}
-                        {/*    zIndex: -20000,*/}
-                        {/*    // pointerEvents: 'none',*/}
-                        {/*}}*/}
-                        {/*/>*/}
-                        {/*    }*/}
-                        {/*{ cohortIndex === 1  &&*/}
-                        {/*<div style={{*/}
-                        {/*    position: 'absolute',*/}
-                        {/*    height: height*2,*/}
-                        {/*    top: -height,*/}
-                        {/*    left: el.start,*/}
-                        {/*    width:el.size,*/}
-                        {/*    opacity:0.1,*/}
-                        {/*    zIndex: -20000,*/}
-                        {/*    // pointerEvents: 'none',*/}
-                        {/*}}*/}
-                        {/*/>*/}
-                        {/*}*/}
+                        { cohortIndex === 0  &&
+                        <div style={{
+                            position: 'absolute',
+                            height: height,
+                            top: 0,
+                            left: el.start,
+                            width:el.size,
+                            opacity:0.1,
+                            zIndex: -20000,
+                            // pointerEvents: 'none',
+                        }}
+                        />
+                        }
+                        { cohortIndex === 1  &&
+                        <div style={{
+                            position: 'absolute',
+                            height: height,
+                            top: 0,
+                            left: el.start,
+                            width:el.size,
+                            opacity:0.1,
+                            zIndex: -20000,
+                            // pointerEvents: 'none',
+                        }}
+                        />
+                        }
                         <HeaderLabel
                             labelHeight={labelHeight}
                             labelOffset={offset}
