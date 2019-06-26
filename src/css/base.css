@@ -137,3 +137,28 @@ body {
   /*font-color:white ;*/
     background-color: white;
 }
+
+.labelHover{
+
+}
+
+.labelHighlight{
+
+}
+
+.labelDefault{
+    position: absolute;
+    cursor: pointer;
+}
+
+.labelDefault :hover{
+    background-color: #efefef;
+    stroke-width: 1;
+    color: black;
+    border-radius: 15px;
+    box-shadow: 0 0 2px 2px green inset;
+}
+
+.highlighted{
+
+}

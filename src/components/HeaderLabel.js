@@ -36,21 +36,7 @@ export class HeaderLabel extends PureComponent {
     style(score) {
         let {labelOffset, left, width, labelHeight, highlighted} = this.props;
         let colorString = interpolate(score);
-        if (this.state.hovered) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
-                strokeWidth: 1,
-                borderRadius: '15px',
-                boxShadow: '0 0 2px 2px green inset',
-                cursor: 'pointer'
-            }
-        }
-        else if (highlighted) {
+        if (highlighted) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -63,7 +49,6 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-
         else {
             return {
                 position: 'absolute',
@@ -82,18 +67,6 @@ export class HeaderLabel extends PureComponent {
         return colorDensity < 0.7 ? 'black' : getWhiteColor();
     }
 
-    handleHover = () => {
-        this.setState({
-            hovered:true
-        })
-    };
-
-    removeHover = () => {
-        this.setState({
-            hovered:false
-        })
-    };
-
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
@@ -101,10 +74,8 @@ export class HeaderLabel extends PureComponent {
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
-                style={this.style(colorDensity,false)}
+                style={this.style(colorDensity,this.state.hovered)}
                 className={className}
-                onMouseEnter={this.handleHover}
-                onMouseLeave={this.removeHover}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
