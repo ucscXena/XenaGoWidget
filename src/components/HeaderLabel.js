@@ -8,6 +8,7 @@ import {
     scoreData,
 } from '../functions/ColorFunctions'
 import * as d3 from "d3";
+import BaseStyle from '../css/base.css';
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -69,19 +70,22 @@ export class HeaderLabel extends PureComponent {
 
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
+        // let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
-                style={this.style(colorDensity,this.state.hovered)}
-                className={className}
+                // style={this.style(colorDensity,this.state.hovered)}
+                // className={className}
+                style={this.style(colorDensity)}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
                 >
                     {width < 10 ? '' : labelString}
                 </text>
+                {/*<rect x={0} y={0} width={100} height={200} stroke={'black'} fill={'none'}/>*/}
+                {/*<div className={BaseStyle.hoverMadness}>aasdfasf</div>*/}
             </svg>
         );
     }

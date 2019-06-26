@@ -151,19 +151,45 @@ body {
     cursor: pointer;
 }
 
+.labelDefaultTop{
+    background-color: #efefef;
+    stroke-width: 1;
+    color: black;
+    /*stroke: #ff7f0e;*/
+    /*border-radius: 15px;*/
+    /*box-shadow: 0 0 2px 2px blue inset;*/
+    /*box-shadow: 0 0 2px 2px green inset;*/
+    /*transform:scaleY(2);*/
+}
+
 .labelDefaultTop :hover{
     background-color: #efefef;
     stroke-width: 1;
     color: black;
     border-radius: 15px;
-    box-shadow: 0 0 2px 2px green inset;
+    box-shadow: 0 0 2px 2px blue inset;
+    /*box-shadow: 0 0 2px 2px green inset;*/
+    /*transform:scaleY(2);*/
 }
+
 .labelDefaultBottom :hover{
     background-color: #efefef;
     stroke-width: 1;
     color: black;
     border-radius: 15px;
     box-shadow: 0 0 2px 2px green inset;
+}
+
+.hoverMadness{
+    position: fixed;
+    top: 0;
+    height: 800px;
+    left: 200px;
+    width: 200px;
+    stroke: black;
+    stroke-width: 2px;
+    background-color: #ff7f0e;
+    color: pink;
 }
 
 .highlighted{
