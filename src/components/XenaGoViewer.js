@@ -338,12 +338,7 @@ export default class XenaGoViewer extends PureComponent {
              datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null),
         ).subscribe((sampleArray) => {
             let finalSamples = intersection(sampleArray[0],sampleArray[1],sampleArray[2],samples)
-             console.log('0',sampleArray[0].length)
-             console.log('1',sampleArray[1].length)
-             console.log('2',sampleArray[2].length)
             samples = intersection(finalSamples,samples);
-             console.log('final samples',finalSamples.length,samples.length)
-            console.log('loaded sub cohrts with',cohort)
             Rx.Observable.zip(
                 sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
                 datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),

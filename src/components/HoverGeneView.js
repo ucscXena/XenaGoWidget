@@ -30,6 +30,7 @@ export default class HoverGeneView extends PureComponent {
     }
 
     getScore(data, cohortIndex) {
+        console.log('data',data.pathway)
         return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
     }
 

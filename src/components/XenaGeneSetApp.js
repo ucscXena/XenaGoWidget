@@ -490,12 +490,16 @@ export default class XenaGeneSetApp extends PureComponent {
     /**
      * Converts per-sample pathway data to
      * @param pathwayData
+     * @param filter
      */
     calculateGeneSetExpected(pathwayData, filter) {
 
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
         let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
+
+        // TODO: add gene expression to pathwayData
+        // console.log('pathway data',pathwayData)
         // let's assume they are the same order for now since they were fetched with the same sample data
         filter = filter.indexOf('All') === 0 ? '' : filter;
 
@@ -524,7 +528,14 @@ export default class XenaGeneSetApp extends PureComponent {
                 if (!filter || filter === 'Mutation') {
                     sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
                 }
-                let total_prob = addIndepProb(sample_probs);
+                if (!filter || filter === 'Gene Expression') {
+                    // TODO: add viper scores
+                    // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                    // sample_probs.push(0);
+                }
+                // TODO: we should not filter out numbers
+                let total_prob = addIndepProb(sample_probs.filter(Number));
+                // console.log('total prob',total_prob,sample_probs)
                 pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
             }
         }
