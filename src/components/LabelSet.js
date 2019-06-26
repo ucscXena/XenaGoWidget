@@ -84,6 +84,30 @@ export default class LabelSet extends PureComponent {
                             colorSettings={colorSettings}
                         />
                         }
+                        {/*{ cohortIndex === 0  &&*/}
+                        {/*<rect x={el.start} width={el.size} style={{*/}
+                        {/*    position: 'absolute',*/}
+                        {/*    // height: height*2,*/}
+                        {/*     top: 0,*/}
+                        {/*     left: el.start,*/}
+                        {/*     width:el.size,*/}
+                        {/*    opacity:0.1,*/}
+                        {/*    zIndex: 2000,*/}
+                        {/*}}*/}
+                        {/*/>*/}
+                        {/*    }*/}
+                        {/*{ cohortIndex === 1  &&*/}
+                        {/*<div style={{*/}
+                        {/*    position: 'absolute',*/}
+                        {/*    height: height*2,*/}
+                        {/*    top: -height,*/}
+                        {/*    left: el.start,*/}
+                        {/*    width:el.size,*/}
+                        {/*    opacity:0.1,*/}
+                        {/*    zIndex: -20000,*/}
+                        {/*}}*/}
+                        {/*/>*/}
+                        {/*}*/}
                         <HeaderLabel
                             labelHeight={labelHeight}
                             labelOffset={offset}

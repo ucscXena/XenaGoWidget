@@ -120,6 +120,7 @@ class PathwayScoresView extends PureComponent {
     onHover = (event) => {
         let {onHover} = this.props;
         let pointData = getPointData(event, this.props);
+        // console.log('hovering wwith point',pointData)
         if (pointData) {
             onHover(pointData);
         } else {
