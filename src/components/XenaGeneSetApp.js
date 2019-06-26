@@ -135,8 +135,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 }
             }
             else {
-                let {pathway: {golabel}} = selection;
-                ref.setPathwayState([golabel], selection);
+                // let {pathway: {golabel}} = selection;
+                // ref.setPathwayState([golabel], selection);
+                console.log('ref loaded',refLoaded)
+                refLoaded.clickPathway(selection);
             }
         }
     }
@@ -336,7 +338,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
-        console.log('global hovering',pathwayHover)
+        // console.log('global hovering',pathwayHover)
         this.setState({
             hoveredPathways: pathwayHover
         });
@@ -413,7 +415,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwaySelect = (pathwaySelection) => {
 
-        console.log('selecting global pathway',pathwaySelection)
         if (pathwaySelection.gene.length === 0) {
             return;
         }

@@ -148,7 +148,7 @@ body {
     stroke-width: 1;
     color: black;
     border-radius: 15px;
-    box-shadow: 0 0 2px 2px blue inset;
+    box-shadow: 0 0 2px 2px green inset;
 }
 
 .labelDefaultBottom :hover{

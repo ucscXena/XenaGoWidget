@@ -109,10 +109,10 @@ export default class XenaGoViewer extends PureComponent {
         }
     }
 
-    // clickPathway = (pathwayClickData) => {
-    //     let {pathway: {golabel}} = pathwayClickData;
-    //     this.setPathwayState([golabel], pathwayClickData);
-    // };
+    clickPathway = (pathwayClickData) => {
+        let {pathway: {golabel}} = pathwayClickData;
+        this.setPathwayState([golabel], pathwayClickData);
+    };
 
 
     setGeneHover = (geneHover) => {
