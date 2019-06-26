@@ -157,7 +157,6 @@ class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layout}
                     selectedPathways={selectedPathways}
-                    // hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
@@ -311,7 +310,6 @@ export default class PathwayScoresViewCache extends PureComponent {
                 {...this.props}
                 width={width}
                 layout={layoutData}
-                // hoveredPathways={hoveredPathways}
                 shareGlobalGeneData={shareGlobalGeneData}
                 data={{
                     expression,

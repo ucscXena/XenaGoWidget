@@ -81,8 +81,6 @@ export class HeaderLabel extends PureComponent {
                 >
                     {width < 10 ? '' : labelString}
                 </text>
-                {/*<rect x={0} y={0} width={100} height={200} stroke={'black'} fill={'none'}/>*/}
-                {/*<div className={BaseStyle.hoverMadness}>aasdfasf</div>*/}
             </svg>
         );
     }
@@ -96,8 +94,6 @@ HeaderLabel.propTypes = {
     labelString: PropTypes.string.isRequired,
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
-    // selected: PropTypes.any.isRequired,
-    // hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,

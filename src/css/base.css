@@ -138,14 +138,6 @@ body {
     background-color: white;
 }
 
-.labelHover{
-
-}
-
-.labelHighlight{
-
-}
-
 .labelDefault{
     position: absolute;
     cursor: pointer;
@@ -167,18 +159,3 @@ body {
     box-shadow: 0 0 2px 2px green inset;
 }
 
-.hoverMadness{
-    position: fixed;
-    top: 0;
-    height: 800px;
-    left: 200px;
-    width: 200px;
-    stroke: black;
-    stroke-width: 2px;
-    background-color: #ff7f0e;
-    color: pink;
-}
-
-.highlighted{
-
-}

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {omit,isEqual} from 'underscore'
 
 const omitArray = ['associateData','draw','data'];
-// const omitArray = ['associateData','draw'];
 const styles = {
     canvas: {
         cursor: 'crosshair',

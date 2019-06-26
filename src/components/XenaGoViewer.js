@@ -138,8 +138,6 @@ export default class XenaGoViewer extends PureComponent {
     setPathwayHover = (pathwayHover) => {
         let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
 
-        console.log('setting the pathway hover',pathwayHover,newHover)
-
         if (pathwayHover) {
             // get the pathway
             let expression = {};
