@@ -151,7 +151,14 @@ body {
     cursor: pointer;
 }
 
-.labelDefault :hover{
+.labelDefaultTop :hover{
+    background-color: #efefef;
+    stroke-width: 1;
+    color: black;
+    border-radius: 15px;
+    box-shadow: 0 0 2px 2px green inset;
+}
+.labelDefaultBottom :hover{
     background-color: #efefef;
     stroke-width: 1;
     color: black;
