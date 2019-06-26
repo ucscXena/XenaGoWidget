@@ -48,7 +48,7 @@ export default class LabelSet extends PureComponent {
             , data
             , showDiffLayer
         } = this.props;
-        console.log('retdragging')
+        console.log('retdragging',this.props.cohortIndex)
 
         if (associateData.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;

@@ -84,6 +84,7 @@ export default class XenaGoViewer extends PureComponent {
     setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
+         // console.log('setting pathway state',newSelection,pathwayClickData)
 
         let geneList = this.getGenesForNamedPathways(newSelection, this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
@@ -108,11 +109,6 @@ export default class XenaGoViewer extends PureComponent {
         }
     }
 
-    clickPathway = (pathwayClickData) => {
-        let {pathway: {golabel}} = pathwayClickData;
-        this.setPathwayState([golabel], pathwayClickData);
-    };
-
     setGeneHover = (geneHover) => {
         let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
         let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
@@ -135,6 +131,8 @@ export default class XenaGoViewer extends PureComponent {
 
     setPathwayHover = (pathwayHover) => {
         let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
+
+        console.log('setting the pathway hover',pathwayHover,newHover)
 
         if (pathwayHover) {
             // get the pathway
@@ -456,7 +454,6 @@ export default class XenaGoViewer extends PureComponent {
                                                    selectedPathways={this.state.selectedPathways}
                                                    hoveredPathways={this.state.hoveredPathways}
                                                    highlightedGene={this.props.highlightedGene}
-                                                   onClick={this.clickPathway}
                                                    onHover={this.hoverGene}
                                                    cohortIndex={this.state.key}
                                                    key={this.state.key}

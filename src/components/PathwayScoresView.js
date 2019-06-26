@@ -105,13 +105,6 @@ class PathwayScoresView extends PureComponent {
         super(props);
     }
 
-    onClick = (event) => {
-        let {onClick, associateData} = this.props;
-        if (associateData.length && onClick) {
-            onClick(getPointData(event, this.props))
-        }
-    };
-
     onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
@@ -169,7 +162,6 @@ class PathwayScoresView extends PureComponent {
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
-                    onClick={this.onClick}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
@@ -189,7 +181,6 @@ PathwayScoresView.propTypes = {
     selected: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     hoveredPathways: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,

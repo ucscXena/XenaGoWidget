@@ -30,7 +30,6 @@ export default class LabelWrapper extends PureComponent {
             , width
             , height
             , layout
-            , onClick
             , onMouseMove
             , onMouseOut
             , associateData
@@ -45,7 +44,6 @@ export default class LabelWrapper extends PureComponent {
             <div style={{...styles.overlay, width, height, top: 77 + offset}}
                  onMouseMove={onMouseMove}
                  onMouseOut={onMouseOut}
-                 onClick={onClick}
             >
                 <LabelSet
                     associateData={associateData}
@@ -70,7 +68,6 @@ LabelWrapper.propTypes = {
     width: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
     offset: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
     onMouseMove: PropTypes.any.isRequired,
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,
