@@ -47,8 +47,7 @@ export default class NavigationBar extends PureComponent {
     render() {
         let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
             showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
-            toggleShowReciprocalPathway, toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler, showReciprocalPathway} = this.props;
-        let showReciprocalPathwayLabel = (showReciprocalPathway ? 'Hide' : 'Show') + ' Reciprocal Gene Set';
+            toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler } = this.props;
         return (
             <div>
                 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -77,10 +76,6 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
                                                   caption='Show GeneSet Viewer'/>
                                         }
-                                        <MenuDivider/>
-                                        <MenuItem value='showReciprocalPathways'
-                                                  onClick={() => toggleShowReciprocalPathway()}
-                                                  caption={showReciprocalPathwayLabel}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => activateShowColorByTypeDetail()}
                                                   caption={`${showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
@@ -151,12 +146,10 @@ NavigationBar.propTypes = {
     showXena: PropTypes.any,
     geneOptions: PropTypes.any,
     downloadRawHandler: PropTypes.any,
-    toggleShowReciprocalPathway: PropTypes.any,
     toggleShowDiffLayer: PropTypes.any,
     toggleShowDetailLayer: PropTypes.any,
     toggleShowClusterSort: PropTypes.any,
     showClusterSort: PropTypes.any,
-    showReciprocalPathway: PropTypes.any,
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
     showColorByTypeDetail: PropTypes.any,

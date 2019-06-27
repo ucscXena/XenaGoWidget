@@ -30,12 +30,10 @@ export default class LabelWrapper extends PureComponent {
             , width
             , height
             , layout
-            , onClick
             , onMouseMove
             , onMouseOut
             , associateData
             , cohortIndex
-            , hoveredPathways
             , highlightedGene
             , offset
             , data: {pathways}
@@ -45,14 +43,11 @@ export default class LabelWrapper extends PureComponent {
             <div style={{...styles.overlay, width, height, top: 77 + offset}}
                  onMouseMove={onMouseMove}
                  onMouseOut={onMouseOut}
-                 onClick={onClick}
             >
                 <LabelSet
                     associateData={associateData}
                     pathways={pathways}
                     layout={layout}
-                    hoveredPathways={hoveredPathways}
-                    selectedPathways={[]}
                     highlightedGene={highlightedGene}
                     labelHeight={geneLabelHeight}
                     height={height}
@@ -70,7 +65,6 @@ LabelWrapper.propTypes = {
     width: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
     offset: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
     onMouseMove: PropTypes.any.isRequired,
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,

@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {omit,isEqual} from 'underscore'
 
-const omitArray = ['associateData'];
+const omitArray = ['associateData','draw','data'];
 const styles = {
     canvas: {
         cursor: 'crosshair',
@@ -34,10 +34,7 @@ const styles = {
 
 export default class CanvasDrawing extends Component {
     componentWillReceiveProps(newProps) {
-        // console.log('UNFILRTERD',newProps,this.props)
-        // console.log('FILTERED',underscore.isEqual(omit(newProps,omitArray),newProps,this.props, omit(this.props,omitArray)),omit(newProps,omitArray), omit(this.props,omitArray))
-        if (this.vg && !isEqual(omit(newProps,omitArray), omit(this.props,omitArray))) {
-            // console.log('redrawing')
+            if (this.vg && (!isEqual(omit(newProps,omitArray), omit(this.props,omitArray)) || !isEqual(newProps.data.sortedSamples,this.props.data.sortedSamples)) ) {
             this.draw(newProps);
         }
     }

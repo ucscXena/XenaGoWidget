@@ -1,15 +1,14 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Dropdown} from "react-toolbox";
 import underscore from 'underscore'
 import {
-    getSelectColor,
     getWhiteColor,
     getHighlightedColor,
     scoreData,
 } from '../functions/ColorFunctions'
 import * as d3 from "d3";
+import BaseStyle from '../css/base.css';
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -21,6 +20,9 @@ export class HeaderLabel extends PureComponent {
 
     constructor(props) {
         super(props);
+        this.state = {
+            hovered: false
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -33,38 +35,9 @@ export class HeaderLabel extends PureComponent {
      * @returns {*}
      */
     style(score) {
-        let {selected, hovered, labelOffset, left, width, labelHeight, highlighted} = this.props;
-
+        let {labelOffset, left, width, labelHeight, highlighted} = this.props;
         let colorString = interpolate(score);
-
-        if (selected) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: getSelectColor(),
-                strokeWidth: 1,
-                cursor: 'pointer'
-            }
-        }
-
-        else if (hovered) {
-            return {
-                position: 'absolute',
-                top: labelOffset,
-                left: left,
-                height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
-                strokeWidth: 1,
-                borderRadius: '15px',
-                boxShadow: '0 0 2px 2px green inset',
-                cursor: 'pointer'
-            }
-        }
-        else if (highlighted) {
+        if (highlighted) {
             return {
                 position: 'absolute',
                 top: labelOffset,
@@ -77,15 +50,13 @@ export class HeaderLabel extends PureComponent {
                 cursor: 'pointer'
             }
         }
-
         else {
             return {
                 position: 'absolute',
                 top: labelOffset,
                 left: left,
                 height: labelHeight,
-                width: width,
-                backgroundColor: colorString,
+                width: width, backgroundColor: colorString,
                 strokeWidth: 1,
                 cursor: 'pointer',
             }
@@ -98,13 +69,12 @@ export class HeaderLabel extends PureComponent {
 
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-        let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
+        // let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (
             <svg
                 style={this.style(colorDensity)}
-                className={className}
             >
                 <text x={-labelHeight + 4} y={10} fontFamily='Arial' fontSize={10} fill={this.fontColor(colorDensity)}
                       transform='rotate(-90)'
@@ -124,8 +94,6 @@ HeaderLabel.propTypes = {
     labelString: PropTypes.string.isRequired,
     numSamples: PropTypes.number.isRequired,
     item: PropTypes.any.isRequired,
-    selected: PropTypes.any.isRequired,
-    hovered: PropTypes.any.isRequired,
     geneLength: PropTypes.any.isRequired,
     highlighted: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,

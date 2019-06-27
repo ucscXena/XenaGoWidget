@@ -105,13 +105,6 @@ class PathwayScoresView extends PureComponent {
         super(props);
     }
 
-    onClick = (event) => {
-        let {onClick, associateData} = this.props;
-        if (associateData.length && onClick) {
-            onClick(getPointData(event, this.props))
-        }
-    };
-
     onMouseOut = () => {
         let {onHover} = this.props;
         onHover(null);
@@ -138,8 +131,8 @@ class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            width, height, layout, data, associateData, offset, cohortIndex, shareGlobalGeneData,
-            selectedPathways, hoveredPathways, colorSettings, highlightedGene,
+            width, height, layout, data, associateData, offset, cohortIndex,
+            selectedPathways, colorSettings, highlightedGene,
             viewType, showDetailLayer
         } = this.props;
 
@@ -164,12 +157,10 @@ class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layout}
                     selectedPathways={selectedPathways}
-                    hoveredPathways={hoveredPathways}
                     highlightedGene={highlightedGene}
                     associateData={associateData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
-                    onClick={this.onClick}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
@@ -189,7 +180,6 @@ PathwayScoresView.propTypes = {
     selected: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     hoveredPathways: PropTypes.any.isRequired,
-    onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
@@ -232,7 +222,7 @@ export default class PathwayScoresViewCache extends PureComponent {
 
 
     render() {
-        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways, hoveredPathways, min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
         let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
@@ -320,7 +310,6 @@ export default class PathwayScoresViewCache extends PureComponent {
                 {...this.props}
                 width={width}
                 layout={layoutData}
-                hoveredPathways={hoveredPathways}
                 shareGlobalGeneData={shareGlobalGeneData}
                 data={{
                     expression,
