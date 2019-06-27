@@ -105,7 +105,8 @@ export class AppStorageHandler extends PureComponent {
                 return returnValue;
             }
         }
-        return 'TCGA Ovarian Cancer (OV)'
+
+        return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
     }
 
     static storeFilterState(selected, cohortIndex) {
