@@ -159,3 +159,7 @@ body {
     box-shadow: 0 0 2px 2px green inset;
 }
 
+div[data-react-toolbox=dialog] > section{
+    width: 1000px;
+    overflow: auto;
+}

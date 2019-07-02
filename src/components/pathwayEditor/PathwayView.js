@@ -28,10 +28,10 @@ export default class PathwayView extends PureComponent {
             return this.props.selectedPathwaySet.pathway.map(p => {
                 return (
                     <Row key={p.golabel + p.goid}>
-                        <Col md={8}>
+                        <Col md={9}>
                             <Button raised={p.highlight} onClick={ () => this.selectPathway(p)} primary>{p.golabel} ({p.gene.length}) <b>{p.goid ? p.goid : ''}</b></Button>
                         </Col>
-                        <Col md={2}>
+                        <Col md={1}>
                             <Button onClick={ () => this.removePathway(p)}><FaTrash/></Button>
                         </Col>
                     </Row>

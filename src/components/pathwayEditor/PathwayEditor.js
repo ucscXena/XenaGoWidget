@@ -150,7 +150,7 @@ export default class PathwayEditor extends PureComponent {
                                      selectedPathwaySet={selectedPathwayState}
                         />
                     </Col>
-                    <Col md={3}>
+                    <Col md={2}>
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}

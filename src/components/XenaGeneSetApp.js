@@ -16,6 +16,7 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
+import {Dialog} from "react-toolbox";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -480,6 +481,13 @@ export default class XenaGeneSetApp extends PureComponent {
         return prob;
     }
 
+    togglePathwayEditor(){
+        this.setState({
+            view: this.state.view===XENA_VIEW ? PATHWAYS_VIEW : XENA_VIEW
+        });
+    };
+
+
     /**
      * Converts per-sample pathway data to
      * @param pathwayData
@@ -692,7 +700,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                showClusterSort={this.state.showClusterSort}
                 />
 
-                {this.state.view === XENA_VIEW && this.state.apps &&
+                {this.state.apps &&
                 <div>
                     <ColorEditor active={this.state.showColorEditor}
                                  handleToggle={this.handleColorToggle}
@@ -831,19 +839,24 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         </tbody>
                     </table>
+                    <Dialog
+                        active={this.state.view === PATHWAYS_VIEW }
+                        onEscKeyDown={this.showXena}
+                        onOverlayClick={this.showXena}
+                        title='Edit Colors'
+                    >
+                        <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                                       selectedPathway={this.state.selectedPathway}
+                                       removeGeneHandler={this.removeGene}
+                                       removePathwayHandler={this.removePathway}
+                                       addGeneHandler={this.addGene}
+                                       addGeneSetHandler={this.addGeneSet}
+                                       uploadHandler={this.handleUpload}
+                                       resetHandler={this.handleReset}
+                                       closeHandler={this.showXena}
+                        />
+                    </Dialog>
                 </div>
-                }
-                {this.state.view === PATHWAYS_VIEW &&
-                <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
-                               selectedPathway={this.state.selectedPathway}
-                               removeGeneHandler={this.removeGene}
-                               removePathwayHandler={this.removePathway}
-                               addGeneHandler={this.addGene}
-                               addGeneSetHandler={this.addGeneSet}
-                               uploadHandler={this.handleUpload}
-                               resetHandler={this.handleReset}
-                               closeHandler={this.showXena}
-                />
                 }
             </div>);
     }
