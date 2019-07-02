@@ -12,7 +12,7 @@ function initializeReactGA() {
     ReactGA.pageview('/');
 }
 
-class Demo extends PureComponent {
+class XenaGeneSetPage extends PureComponent {
 
 
     render() {
@@ -39,13 +39,10 @@ class Demo extends PureComponent {
                         }
                     ]}
                 />
-                {/*    <title>Xena Gene Set Viewer</title>*/}
-                {/*    <meta name="description" content="Xena Gene Set Viewer" />*/}
-                {/*</Helmet>*/}
                 <XenaGeneSetApp/>
             </div>)
     }
 
 }
 
-render(<Demo/>, document.querySelector('#demo'));
+render(<XenaGeneSetPage/>, document.querySelector('#demo'));
