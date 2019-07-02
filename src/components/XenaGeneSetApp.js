@@ -30,6 +30,7 @@ const HDiv = styled.div`
     visibility: visible;
     float: left;
     position: absolute;
+    top: 400px;
     background-color:rgba(100,100,100,0.5);
     z-index: 10000;
     pointer-events: none;
@@ -38,6 +39,7 @@ const HDiv = styled.div`
 const VDiv = styled.div`
     float: left;
     position: absolute;
+    left: 400px;
     background-color:rgba(100,100,100,0.5);
     z-index: 10000;
     pointer-events: none;
@@ -834,11 +836,11 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tbody>
                                 </table>
                             </td>
-                            <td valign="top">
-                                <div className="map_wrapper" onMouseMove={ (e) => {
+                            <td valign="top" className="map_wrapper"
+                                onMouseMove={ (e) => {
                                     // console.log('eh',e);
-                                    this.refs['hdiv'].top = e.pageY;
-                                    this.refs['vdiv'].left = e.pageX;
+                                    this.refs['hdiv'].style.top = e.pageY;
+                                    this.refs['vdiv'].style.left = e.pageX;
                                     // cH.css('top', e.pageY);
                                     // cV.css('left', e.pageX);
                                     // ref.hdiv.top = 50;
@@ -890,7 +892,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                               showDetailLayer={this.state.showDetailLayer}
                                               showClusterSort={this.state.showClusterSort}
                                 />
-                                </div>
                             </td>
                         </tr>
                         </tbody>
