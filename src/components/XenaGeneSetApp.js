@@ -31,7 +31,7 @@ const HDiv = styled.div`
     float: left;
     position: absolute;
     background-color:rgba(100,100,100,0.5);
-    z-index: 10;
+    z-index: 10000;
     pointer-events: none;
 `;
 
@@ -39,7 +39,7 @@ const VDiv = styled.div`
     float: left;
     position: absolute;
     background-color:rgba(100,100,100,0.5);
-    z-index: 10;
+    z-index: 10000;
     pointer-events: none;
     height:100%;
     width:2px;
@@ -835,13 +835,17 @@ export default class XenaGeneSetApp extends PureComponent {
                                 </table>
                             </td>
                             <td valign="top">
-                                <div className="map_wrapper">
-                                    <HDiv onMouseMove={ (e) => {
-                                        console.log('eh',e);
-                                    }}
-                                    >
-                                    </HDiv>
-                                <VDiv></VDiv>
+                                <div className="map_wrapper" onMouseMove={ (e) => {
+                                    // console.log('eh',e);
+                                    this.refs['hdiv'].top = e.pageY;
+                                    this.refs['vdiv'].left = e.pageX;
+                                    // cH.css('top', e.pageY);
+                                    // cV.css('left', e.pageX);
+                                    // ref.hdiv.top = 50;
+                                    // ref.vdiv.left = 100;
+                                }}>
+                                    <HDiv ref='hdiv'/>
+                                <VDiv ref='vdiv'/>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
