@@ -84,8 +84,8 @@ export default class PathwayEditor extends PureComponent {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20}}>
-                <Row>
-                    <Col md={6}>
+                <Row style={{marginBottom:20}}>
+                    <Col md={12}>
                         <Button onClick={() => this.downloadView()}>
                             Current GeneSet <FaCloudDownload/>
                         </Button>
