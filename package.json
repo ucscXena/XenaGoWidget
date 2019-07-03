@@ -30,9 +30,7 @@
     "react-helmet": "^5.2.0",
     "react-icons": "^2.2.7",
     "react-material-responsive-grid": "^1.2.1",
-    "react-overlays": "^1.2.0",
     "react-toolbox": "2.0.0-beta.12",
-    "styled-components": "^4.3.2",
     "tiny-lru": "^6.0.1",
     "ucsc-xena-client": "2.73.1",
     "underscore": "^1.8.3"

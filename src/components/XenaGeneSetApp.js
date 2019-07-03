@@ -20,37 +20,8 @@ import {Dialog} from "react-toolbox";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
-import styled from 'styled-components';
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-// import CrossHair from "./CrossHair";
-
-
-const HDiv = styled.div`
-    width: 100%;
-    height:2px;
-    margin-top: -8px;
-    visibility: visible;
-    float: left;
-    position: absolute;
-    top: 400px;
-    background-color:rgba(100,100,100,0.5);
-    z-index: 10000;
-    pointer-events: none;
-`;
-
-const VDiv = styled.div`
-    float: left;
-    position: absolute;
-    left: 400px;
-    background-color:rgba(100,100,100,0.5);
-    z-index: 10000;
-    pointer-events: none;
-    height:100%;
-    width:2px;
-    margin-left: -8px;
-    visibility: visible;
-`;
 
 export const XENA_VIEW = 'xena';
 export const PATHWAYS_VIEW = 'pathways';
@@ -842,42 +813,18 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tbody>
                                 </table>
                             </td>
-                            {/*<td valign="top">*/}
                             <td valign="top" className="map_wrapper"
                                 onMouseMove={ (ev) => {
-                                    // console.log('outer eh',e);
-                                    // this.refs['hdiv'].style.top = e.pageY;
-                                    // this.refs['vdiv'].style.left = e.pageX;
                                     const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
                                     const y = ev.clientY + 8;
-                                    // console.log(x)
-                                    // if (!this.props.frozen) {
                                     this.setState({mousing: true, x, y});
-                                    // cH.css('top', e.pageY);
-                                    // cV.css('left', e.pageX);
-                                    // ref.hdiv.top = 50;
-                                    // ref.vdiv.left = 100;
                                 }}
                                 onMouseOut = {() => {
                                     this.setState({mousing: false});
                                 }}
                             >
-
-                                {/*<HDiv ref='hdiv' mousing={this.state.mousing} y={this.state.y}/>*/}
-                                {/*<VDiv ref='vdiv' mousing={this.state.mousing} x={this.state.x}/>*/}
                                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                                 <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT*2}/>
-
-                                {/*<div style={{position: 'relative'}}>*/}
-                                {/*    <CrossHair height={1000} frozen={false}>*/}
-                                {/*    /!*A*!/*/}
-                                {/*    /!*<CrossHair height={zoom.height} frozen={!interactive || this.props.frozen}>*!/*/}
-                                {/*    /!*{widgets.column({ref: 'plot', id, column, data, index, zoom, samples, onClick, fieldFormat, sampleFormat, tooltip})}*!/*/}
-                                {/*    /!*{getStatusView(status, this.onReload)}*!/*/}
-                                {/*    </CrossHair>*/}
-                                {/*</div>*/}
-                                {/*<OverviewWidget ref='overview'/>*/}
-
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
