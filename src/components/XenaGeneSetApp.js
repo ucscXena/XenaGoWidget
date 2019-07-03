@@ -813,7 +813,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tbody>
                                 </table>
                             </td>
-                            <td valign="top" className="map_wrapper"
+                            <td className="map_wrapper"
                                 onMouseMove={ (ev) => {
                                     const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
                                     const y = ev.clientY + 8;

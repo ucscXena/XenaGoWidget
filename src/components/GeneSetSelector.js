@@ -130,7 +130,7 @@ export class GeneSetSelector extends PureComponent {
         let colorMask = getGeneSetColorMask();
         interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
 
-        return pathways.map((p) => {
+        let returnPathways = pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
             let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
             let selected = selectedLabels.indexOf(p.golabel) >= 0;
@@ -158,8 +158,11 @@ export class GeneSetSelector extends PureComponent {
                         {width < 10 ? '' : labelString}
                     </text>
                 </svg>
-            );
-        });
+            )
+        })
+        console.log('return pathways',returnPathways)
+        // return returnPathways[0];
+        return returnPathways;
     }
 
 }
