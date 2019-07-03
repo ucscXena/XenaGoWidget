@@ -20,7 +20,8 @@ import {Dialog} from "react-toolbox";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
-
+import CrossHairH from "./CrossHairH";
+import CrossHairV from "./CrossHairV";
 
 export const XENA_VIEW = 'xena';
 export const PATHWAYS_VIEW = 'pathways';
@@ -78,6 +79,9 @@ export default class XenaGeneSetApp extends PureComponent {
             limit: 25,
             highlightedGene: undefined,
             collapsed: true,
+            mousing: false,
+            x:-1,
+            y:-1,
             geneStateColors: {
                 highDomain: 100,
                 midDomain: 0,
@@ -669,6 +673,8 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+
+
     render() {
         let pathways = this.getActiveApp().pathway;
         const BORDER_OFFSET = 2;
@@ -707,6 +713,23 @@ export default class XenaGeneSetApp extends PureComponent {
                                  handleColorChange={this.handleColorChange}
                                  colorSettings={this.state.geneStateColors}
                     />
+                    <Dialog
+                        active={this.state.view === PATHWAYS_VIEW }
+                        onEscKeyDown={this.showXena}
+                        onOverlayClick={this.showXena}
+                        title='Edit Colors'
+                    >
+                        <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                                       selectedPathway={this.state.selectedPathway}
+                                       removeGeneHandler={this.removeGene}
+                                       removePathwayHandler={this.removePathway}
+                                       addGeneHandler={this.addGene}
+                                       addGeneSetHandler={this.addGeneSet}
+                                       uploadHandler={this.handleUpload}
+                                       resetHandler={this.handleReset}
+                                       closeHandler={this.showXena}
+                        />
+                    </Dialog>
                     <table>
                         <tbody>
                         <tr>
@@ -790,7 +813,18 @@ export default class XenaGeneSetApp extends PureComponent {
                                     </tbody>
                                 </table>
                             </td>
-                            <td valign="top">
+                            <td valign="top" className="map_wrapper"
+                                onMouseMove={ (ev) => {
+                                    const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
+                                    const y = ev.clientY + 8;
+                                    this.setState({mousing: true, x, y});
+                                }}
+                                onMouseOut = {() => {
+                                    this.setState({mousing: false});
+                                }}
+                            >
+                                <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
+                                <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT*2}/>
                                 <XenaGoViewer appData={this.state.apps[0]}
                                               pathwaySelect={this.pathwaySelect}
                                               ref='xena-go-app-0'
@@ -839,23 +873,6 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         </tbody>
                     </table>
-                    <Dialog
-                        active={this.state.view === PATHWAYS_VIEW }
-                        onEscKeyDown={this.showXena}
-                        onOverlayClick={this.showXena}
-                        title='Edit Colors'
-                    >
-                        <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
-                                       selectedPathway={this.state.selectedPathway}
-                                       removeGeneHandler={this.removeGene}
-                                       removePathwayHandler={this.removePathway}
-                                       addGeneHandler={this.addGene}
-                                       addGeneSetHandler={this.addGeneSet}
-                                       uploadHandler={this.handleUpload}
-                                       resetHandler={this.handleReset}
-                                       closeHandler={this.showXena}
-                        />
-                    </Dialog>
                 </div>
                 }
             </div>);

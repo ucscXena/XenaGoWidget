@@ -163,3 +163,40 @@ div[data-react-toolbox=dialog] > section{
     width: 1000px;
     overflow: auto;
 }
+.map_wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    overflow: hidden;
+    cursor: default;
+}
+
+.crosshairH {
+    width: 100%;
+    height:2px;
+    margin-top: -8px;
+    visibility: visible;
+    float: left;
+    position: absolute;
+    top: 400px;
+    background-color:rgba(100,100,100,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    cursor: none;
+}
+
+.crosshairV{
+    float: left;
+    position: absolute;
+    left: 400px;
+    background-color:rgba(100,100,100,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    height:100%;
+    width:2px;
+    margin-left: -8px;
+    visibility: visible;
+    cursor: none;
+
+}
