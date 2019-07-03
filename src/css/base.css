@@ -172,24 +172,6 @@ div[data-react-toolbox=dialog] > section{
     cursor: default;
 }
 
-.hair {
-    float: left;
-    position: absolute;
-    background-color:rgba(100,100,100,0.5);
-    z-index: 10;
-    pointer-events: none;
-}
-
-/*.crosshairH {*/
-/*    width: 100%;*/
-/*    height:10px;*/
-/*    top: 400px;*/
-/*    color: red;*/
-/*    margin-top: -8px;*/
-/*    visibility: visible;*/
-/*    z-index: 1000;*/
-/*}*/
-
 .crosshairH {
     width: 100%;
     height:2px;
@@ -203,16 +185,6 @@ div[data-react-toolbox=dialog] > section{
     pointer-events: none;
     cursor: none;
 }
-
-/*.crosshairV {*/
-/*    height:100%;*/
-/*    width:10px;*/
-/*    color: blue;*/
-/*    left: 400px;*/
-/*    margin-left: -8px;*/
-/*    visibility: visible;*/
-/*    z-index: 1000;*/
-/*}*/
 
 .crosshairV{
     float: left;
