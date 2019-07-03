@@ -180,21 +180,51 @@ div[data-react-toolbox=dialog] > section{
     pointer-events: none;
 }
 
+/*.crosshairH {*/
+/*    width: 100%;*/
+/*    height:10px;*/
+/*    top: 400px;*/
+/*    color: red;*/
+/*    margin-top: -8px;*/
+/*    visibility: visible;*/
+/*    z-index: 1000;*/
+/*}*/
+
 .crosshairH {
     width: 100%;
-    height:10px;
-    top: 400px;
-    color: red;
+    height:2px;
     margin-top: -8px;
     visibility: visible;
-    z-index: 1000;
+    float: left;
+    position: absolute;
+    top: 400px;
+    background-color:rgba(100,100,100,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    cursor: none;
 }
-.crosshairV {
-    height:100%;
-    width:10px;
-    color: blue;
+
+/*.crosshairV {*/
+/*    height:100%;*/
+/*    width:10px;*/
+/*    color: blue;*/
+/*    left: 400px;*/
+/*    margin-left: -8px;*/
+/*    visibility: visible;*/
+/*    z-index: 1000;*/
+/*}*/
+
+.crosshairV{
+    float: left;
+    position: absolute;
     left: 400px;
+    background-color:rgba(100,100,100,0.5);
+    z-index: 10000;
+    pointer-events: none;
+    height:100%;
+    width:2px;
     margin-left: -8px;
     visibility: visible;
-    z-index: 1000;
+    cursor: none;
+
 }
