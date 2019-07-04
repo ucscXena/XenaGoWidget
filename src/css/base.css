@@ -140,7 +140,7 @@ body {
 
 .labelDefault{
     position: absolute;
-    cursor: pointer;
+    cursor: none;
 }
 
 .labelDefaultTop :hover{
@@ -169,7 +169,7 @@ div[data-react-toolbox=dialog] > section{
     width: 100%;
     border: 1px solid black;
     overflow: hidden;
-    cursor: default;
+    cursor: none;
 }
 
 .crosshairH {
