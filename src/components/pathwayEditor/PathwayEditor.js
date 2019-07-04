@@ -83,7 +83,7 @@ export default class PathwayEditor extends PureComponent {
     render() {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
-            <Grid style={{marginTop: 20}}>
+            <Grid style={{marginTop: 20,width:900}}>
                 <Row style={{marginBottom:20}}>
                     <Col md={12}>
                         <Button onClick={() => this.downloadView()}>
@@ -111,20 +111,20 @@ export default class PathwayEditor extends PureComponent {
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={5}>
+                    <Col md={6}>
                         <Input type='text' label='New Gene Set' name='newGeneSet' value={this.state.newGeneSet}
                                onChange={(newGeneSet) => this.setState({newGeneSet: newGeneSet})}
                                maxLength={16}/>
-                    </Col>
-                    <Col md={2}>
                         {this.state.newGeneSet &&
                         <Button style={{marginTop: 20}} onClick={() => this.handleAddNewGeneSet(this.state.newGeneSet)}
                                 raised
                                 primary><FaPlusCircle/></Button>
                         }
                     </Col>
+                    <Col md={1}>
+                    </Col>
                     {this.state.selectedPathway &&
-                    <Col md={2}>
+                    <Col md={3}>
                         <Autocomplete label='New Gene' source={this.state.geneOptions} value={this.state.newGene}
                                       onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
                                       onChange={(newGene) => {
@@ -132,13 +132,11 @@ export default class PathwayEditor extends PureComponent {
                                       }}
                                       disabled={this.state.newGene.length > 0}
                         />
-                    </Col>
-                    }
-                    {this.state.selectedPathway &&
-                    <Col md={1}>
                         {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
+                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}>
+                            <FaPlusCircle/>
+                        </Button>
                         }
                     </Col>
                     }
@@ -150,7 +148,7 @@ export default class PathwayEditor extends PureComponent {
                                      selectedPathwaySet={selectedPathwayState}
                         />
                     </Col>
-                    <Col md={2}>
+                    <Col md={3}>
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}
