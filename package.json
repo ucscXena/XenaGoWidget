@@ -4,6 +4,10 @@
   "description": "Xena Gene Set Viewer",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "repository": {
+    "url": "https://github.com/ucscXena/XenaGoWidget/issues",
+    "email": "nathandunn@lbl.gov"
+  },
   "files": [
     "css",
     "es",
@@ -47,7 +51,6 @@
   "author": "",
   "homepage": "",
   "license": "MIT",
-  "repository": "",
   "keywords": [
     "react-component"
   ]
