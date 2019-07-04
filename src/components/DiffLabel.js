@@ -47,7 +47,7 @@ export class DiffLabel extends PureComponent {
             backgroundColor: colorString,
             strokeWidth: 1,
             opacity: 0.5,
-            cursor: 'pointer',
+            cursor: 'crosshair',
         }
     }
 
