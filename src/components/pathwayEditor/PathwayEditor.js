@@ -83,7 +83,7 @@ export default class PathwayEditor extends PureComponent {
     render() {
         let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         return (
-            <Grid style={{marginTop: 20}}>
+            <Grid style={{marginTop: 20,width:900}}>
                 <Row style={{marginBottom:20}}>
                     <Col md={12}>
                         <Button onClick={() => this.downloadView()}>
@@ -132,13 +132,11 @@ export default class PathwayEditor extends PureComponent {
                                       }}
                                       disabled={this.state.newGene.length > 0}
                         />
-                    </Col>
-                    }
-                    {this.state.selectedPathway &&
-                    <Col md={1}>
                         {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}><FaPlusCircle/></Button>
+                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}>
+                            <FaPlusCircle/>
+                        </Button>
                         }
                     </Col>
                     }
@@ -150,7 +148,7 @@ export default class PathwayEditor extends PureComponent {
                                      selectedPathwaySet={selectedPathwayState}
                         />
                     </Col>
-                    <Col md={2}>
+                    <Col md={3}>
                         {this.state.selectedPathway &&
                         <h3>
                             {this.state.selectedPathway.golabel}
