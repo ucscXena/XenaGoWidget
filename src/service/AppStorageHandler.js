@@ -6,7 +6,7 @@ import PureComponent from '../components/PureComponent';
 const LOCAL_APP_STORAGE = "xena-app-storage";
 const LOCAL_STATE_STORAGE = "xena-selection-storage";
 const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
-import DefaultPathWays from "../data/tgac";
+import DefaultPathWays from "../data/genesets/tgac";
 
 const DefaultApp = {
     renderOffset: 5,
