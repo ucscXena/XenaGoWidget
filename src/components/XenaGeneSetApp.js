@@ -191,6 +191,57 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    handleCombinedCohortData(input) {
+        // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+        let {
+            samples,
+            geneList,
+            mutationsA,
+            copyNumberA,
+            genomeBackgroundMutationA,
+            genomeBackgroundCopyNumberA,
+            cohortA,
+            mutationsB,
+            copyNumberB,
+            genomeBackgroundMutationB,
+            genomeBackgroundCopyNumberB,
+            cohortB
+        } = input;
+
+        // TODO: calculate Diff!
+        // TODO: update Xena Go Viewers
+        
+
+        // let pathwayData = {
+        //     copyNumber,
+        //     geneList,
+        //     expression: mutations,
+        //     pathways: this.props.pathways,
+        //     cohort: cohort.name,
+        //     samples,
+        //     genomeBackgroundMutation,
+        //     genomeBackgroundCopyNumber,
+        // };
+        // this.setState({
+        //     pathwayData: pathwayData,
+        //     processing: false,
+        // });
+        // this.props.populateGlobal(pathwayData, this.props.cohortIndex);
+        // if (this.state.selectedPathways.length > 0) {
+        //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        // } else {
+        //     this.setState({
+        //         geneData: {
+        //             copyNumber: [],
+        //             expression: [],
+        //             pathways: [],
+        //             samples: [],
+        //         },
+        //     });
+        // }
+
+    }
+
     addGeneSet = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
         let selectedPathwaySet = allSets.find(f => f.selected === true);
@@ -691,13 +742,24 @@ export default class XenaGeneSetApp extends PureComponent {
             selected: selectedCohortA,
             selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
         };
-        AppStorageHandler.storeCohortState(selectedObjectA, this.state.key);
-        this.setState({
-            selectedCohort: selectedCohortA,
-            selectedCohortData: cohortA,
-            processing: true,
-        });
-        let geneList = this.getGenesForPathways(this.props.pathways);
+        let selectedObjectB = {
+            selected: selectedCohortB,
+            selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
+        };
+        AppStorageHandler.storeCohortState(selectedObjectA, 0);
+        AppStorageHandler.storeCohortState(selectedObjectB, 1);
+        // this.setState({
+        //     selectedCohort: selectedCohortA,
+        //     selectedCohortData: cohortA,
+        //     processing: true,
+        // });
+        let pathways = this.getActiveApp().pathway;
+        let geneList = this.getGenesForPathways(pathways);
+
+        // this selects cohorts, not sub-cohorts
+        // TODO: get working
+        // TODO: extend to get subcohorts
+
         Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
             datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
             intersection)
@@ -707,26 +769,47 @@ export default class XenaGeneSetApp extends PureComponent {
                     datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samples, geneList),
                     datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samples, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
                     datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samples, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                    (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                        mutations,
+
+
+                    (
+                        mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+                        mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
+                     ) => ({
                         samples,
-                        copyNumber,
-                        genomeBackgroundMutation,
-                        genomeBackgroundCopyNumber
+                        mutationsA,
+                        copyNumberA,
+                        genomeBackgroundMutationA,
+                        genomeBackgroundCopyNumberA,
+                        mutationsB,
+                        copyNumberB,
+                        genomeBackgroundMutationB,
+                        genomeBackgroundCopyNumberB,
+
                     }))
             })
-            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                this.handleCohortData({
-                    mutations,
+            .subscribe(({
+                            samples,
+                            mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+                            mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
+            }) => {
+
+                this.handleCombinedCohortData({
                     samples,
-                    copyNumber,
-                    genomeBackgroundMutation,
-                    genomeBackgroundCopyNumber,
                     geneList,
-                    cohort: cohortA
+
+                    mutationsA,
+                    copyNumberA,
+                    genomeBackgroundMutationA,
+                    genomeBackgroundCopyNumberA,
+                    cohortA,
+                    mutationsB,
+                    copyNumberB,
+                    genomeBackgroundMutationB,
+                    genomeBackgroundCopyNumberB,
+                    cohortB,
                 });
             });
-    }
+    };
 
 
     render() {
