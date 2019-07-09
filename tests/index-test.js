@@ -6,11 +6,6 @@ import XenaGeneSetApp from "../src/components/XenaGeneSetApp";
 import {addIndepProb, createEmptyArray, DEFAULT_DATA_VALUE} from "../src/functions/DataFunctions";
 import { sumDataByType} from "../src/functions/DrawFunctions";
 import {times} from "underscore";
-import {
-    getSamplesFromSubCohort,
-    getSamplesFromSubCohortList,
-     getSubCohortsOnlyForCohort
-} from "../src/functions/CohortFunctions";
 
 describe('Main App', () => {
   let node;
@@ -28,31 +23,6 @@ describe('Main App', () => {
       expect(node.innerHTML).toContain('Xena Gene Set Viewer')
     })
   })
-});
-
-describe('Test statistical function', () => {
-    let node;
-
-    beforeEach(() => {
-        node = document.createElement('div')
-    });
-
-    afterEach(() => {
-        unmountComponentAtNode(node)
-    });
-
-    it('Calculates single function properly', () => {
-            expect([addIndepProb([3])]).toContain(3)
-    });
-    it('Calculates multiple function properly 1', () => {
-        expect([addIndepProb([3,3])]).toContain(-3)
-    });
-    it('Calculates multiple function properly 2', () => {
-        expect([addIndepProb([0.2,0.6])]).toContain(0.68)
-    });
-    it('Calculates multiple function properly 3', () => {
-        expect([addIndepProb([0.8,0.05])]).toContain(0.81)
-    });
 });
 
 
@@ -103,36 +73,3 @@ describe('Test array fill', () => {
     });
 });
 
-describe('Test Sub Cohorts', () => {
-
-    let node;
-
-    beforeEach(() => {
-        node = document.createElement('div')
-    });
-
-    afterEach(() => {
-        unmountComponentAtNode(node)
-    });
-
-
-    it('Get sub all cohort samples cohort', () => {
-        let samples = getSamplesFromSubCohort('TCGA Ovarian Cancer (OV)','OVCA.Immunoreactive');
-        expect(107).toEqual(samples.length);
-    });
-
-    it('Get Sub cohorts for cohort', () => {
-        let subCohorts = getSubCohortsOnlyForCohort('TCGA Ovarian Cancer (OV)');
-        expect(["OVCA.Differentiated", "OVCA.Immunoreactive", "OVCA.Mesenchymal", "OVCA.Proliferative"]).toEqual(subCohorts);
-
-    });
-
-    // https://github.com/mjackson/expect
-    it('Get sub all cohort samples cohort', () => {
-        let samples = getSamplesFromSubCohortList('TCGA Ovarian Cancer (OV)',['OVCA.Immunoreactive','OVCA.Differentiated']);
-        expect(samples.length).toEqual(107+135);
-    });
-
-
-
-});
