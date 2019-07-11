@@ -10,7 +10,7 @@ import {
   getMutationScore, pruneColumns
 } from "../../src/functions/DataFunctions";
 import {times} from "underscore";
-import DefaultPathways from '../../src/data/defaultDatasetForGeneset';
+import DefaultPathways from '../../src/data/genesets/tgac';
 
 
 
@@ -75,12 +75,11 @@ describe('Data Functions', () => {
   });
 
   it('Gene Pathway Look', () => {
-    console.log('default pathways',DefaultPathways)
     let genePathwayLookup = getGenePathwayLookup(DefaultPathways)
-    expect('').toEqual(genePathwayLookup('BRCA1'))
-    expect('').toEqual(genePathwayLookup('TP53'))
-    expect('').toEqual(genePathwayLookup('ATPK1'))
-    expect('').toEqual(genePathwayLookup('CDC1'))
+    expect([9,23,24]).toEqual(genePathwayLookup('BRCA1'))
+    expect([19,23,27,28,30,39]).toEqual(genePathwayLookup('TP53'))
+    expect([]).toEqual(genePathwayLookup('ATPK1'))
+    expect([]).toEqual(genePathwayLookup('CDC1'))
   });
 
   it('Prune columns', () => {
