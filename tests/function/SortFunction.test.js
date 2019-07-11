@@ -10,7 +10,7 @@ import {
   transpose
 } from "../../src/functions/SortFunctions";
 
-describe('Main App', () => {
+describe('Sort Functions', () => {
   let node;
 
   beforeEach(() => {

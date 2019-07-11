@@ -1,9 +1,10 @@
 import expect from 'expect'
 import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
+
 import XenaGeneSetApp from "../../src/components/XenaGeneSetApp";
 
-describe('Fetch functions', () => {
+describe('Render XenaGeneSet App', () => {
   let node;
 
   beforeEach(() => {
@@ -14,10 +15,11 @@ describe('Fetch functions', () => {
     unmountComponentAtNode(node)
   });
 
-  // it('Displays main menu', () => {
-  //   render(<XenaGeneSetApp/>, node, () => {
-  //     expect(node.innerHTML).toContain('Xena Gene Set Viewer')
-  //   })
-  // })
+  it('Displays main menu', () => {
+    render(<XenaGeneSetApp/>, node, () => {
+      expect(node.innerHTML).toContain('Xena Gene Set Viewer')
+    })
+  })
 });
+
 
