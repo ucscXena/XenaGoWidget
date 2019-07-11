@@ -13,6 +13,9 @@ import {times} from "underscore";
 
 
 
+const AMP_THRESHOLD = 2 ;
+const DEL_THRESHOLD = -2 ;
+
 describe('Data Functions', () => {
   let node;
 
@@ -25,18 +28,39 @@ describe('Data Functions', () => {
   });
 
   it('Copy Number Value', () => {
-    let copyNumberValue, ampThreshold, deletionThreshold;
-    expect(getCopyNumberValue(copyNumberValue,ampThreshold,deletionThreshold)).toEqual('Xena Gene Set Viewer')
+    expect(0).toEqual(getCopyNumberValue('NOTANUMBER',AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(undefined,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(-3,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(-2,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(-1,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(0,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(1,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(2,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(3,AMP_THRESHOLD,DEL_THRESHOLD));
   });
 
   it('Copy Number High', () => {
-    let copyNumberValue, ampThreshold, deletionThreshold;
-    expect(getCopyNumberHigh(copyNumberValue,ampThreshold,deletionThreshold)).toEqual('Xena Gene Set Viewer')
+    expect(0).toEqual(getCopyNumberHigh('NOTANUMBER',AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(undefined,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-3,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-2,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-1,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(0,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(1,AMP_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(2,AMP_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(3,AMP_THRESHOLD));
   });
 
   it('Copy Number Low', () => {
-    let copyNumberValue, ampThreshold, deletionThreshold;
-    expect(getCopyNumberLow(copyNumberValue,ampThreshold,deletionThreshold)).toEqual('Xena Gene Set Viewer')
+    expect(0).toEqual(getCopyNumberLow('NOTANUMBER',DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(undefined,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberLow(-3,DEL_THRESHOLD));
+    expect(1).toEqual(getCopyNumberLow(-2,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(-1,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(0,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(1,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(2,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(3,DEL_THRESHOLD));
   });
 
   it('Mutation Score', () => {
