@@ -112,6 +112,7 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = createEmptyArray(pathways.length,samples.length)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
+    console.log('input pathways data',pathways)
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
 

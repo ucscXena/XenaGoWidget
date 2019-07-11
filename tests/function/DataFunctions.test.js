@@ -3,18 +3,20 @@ import React from 'react'
 import { unmountComponentAtNode} from 'react-dom'
 import {
   addIndepProb,
-  associateData, createEmptyArray,
+  associateData, createEmptyArray, findAssociatedData, findPruneData,
   getCopyNumberHigh,
   getCopyNumberLow,
   getCopyNumberValue, getGenePathwayLookup,
   getMutationScore, pruneColumns
 } from "../../src/functions/DataFunctions";
 import {times} from "underscore";
+import DefaultPathways from '../../src/data/defaultDatasetForGeneset';
 
 
 
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
+const MUTATION_MIN = 2 ;
 
 describe('Data Functions', () => {
   let node;
@@ -64,13 +66,21 @@ describe('Data Functions', () => {
   });
 
   it('Mutation Score', () => {
-    let effect, min;
-    expect(getMutationScore(effect,min)).toEqual('Xena Gene Set Viewer')
+    expect(1).toEqual(getMutationScore('Frame_Shift_Ins',MUTATION_MIN))
+    expect(1).toEqual(getMutationScore('SpliceDonorDeletion',MUTATION_MIN))
+    expect(1).toEqual(getMutationScore('InFrameInsertion',MUTATION_MIN))
+    expect(0).toEqual(getMutationScore('synonymous_variant',MUTATION_MIN))
+    expect(0).toEqual(getMutationScore('downstream_gene_variant',MUTATION_MIN))
+    expect(0).toEqual(getMutationScore('Copy Number',MUTATION_MIN))
   });
 
   it('Gene Pathway Look', () => {
-    let pathways;
-    expect(getGenePathwayLookup(pathways)).toEqual('Xena Gene Set Viewer')
+    console.log('default pathways',DefaultPathways)
+    let genePathwayLookup = getGenePathwayLookup(DefaultPathways)
+    expect('').toEqual(genePathwayLookup('BRCA1'))
+    expect('').toEqual(genePathwayLookup('TP53'))
+    expect('').toEqual(genePathwayLookup('ATPK1'))
+    expect('').toEqual(genePathwayLookup('CDC1'))
   });
 
   it('Prune columns', () => {
@@ -81,6 +91,16 @@ describe('Data Functions', () => {
   it('Associated Data', () => {
     let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
     expect(associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)).toEqual('Xena Gene Set Viewer')
+  });
+
+  it('Find pruned columns', () => {
+    let data,pathways,min;
+    expect(findPruneData(data,pathways,min)).toEqual('Xena Gene Set Viewer')
+  });
+
+  it('Find Associated Data', () => {
+    let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
+    expect(findAssociatedData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)).toEqual('Xena Gene Set Viewer')
   });
 
   describe('Test statistical function', () => {
