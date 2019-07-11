@@ -22,7 +22,9 @@ describe('Sort Functions', () => {
   });
 
   it('Transpose', () => {
-    expect([transpose([0.8,0.05])]).toEqual([[0.8],[0.05]])
+    let input = [[{"total":1,"mutation":0,"cnv":1,"mutation4":0,"mutation3":0,"mutation2":0,"cnvHigh":1,"cnvLow":0},{"total":0,"mutation":0,"cnv":0,"mutation4":0,"mutation3":0,"mutation2":0,"cnvHigh":0,"cnvLow":0}]];
+    let output = [[{"total":1,"mutation":0,"cnv":1,"mutation4":0,"mutation3":0,"mutation2":0,"cnvHigh":1,"cnvLow":0}],[{"total":0,"mutation":0,"cnv":0,"mutation4":0,"mutation3":0,"mutation2":0,"cnvHigh":0,"cnvLow":0}]];
+    expect(output).toEqual(transpose(input))
   })
 
   it('Score columns', () => {

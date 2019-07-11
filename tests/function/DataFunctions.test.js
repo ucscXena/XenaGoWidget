@@ -3,7 +3,7 @@ import React from 'react'
 import { unmountComponentAtNode} from 'react-dom'
 import {
   addIndepProb,
-  associateData, createEmptyArray, findAssociatedData, findPruneData,
+  associateData, createEmptyArray, DEFAULT_DATA_VALUE, findAssociatedData, findPruneData,
   getCopyNumberHigh,
   getCopyNumberLow,
   getCopyNumberValue, getGenePathwayLookup,
