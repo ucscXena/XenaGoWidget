@@ -82,14 +82,23 @@ describe('Data Functions', () => {
     expect([]).toEqual(genePathwayLookup('CDC1'))
   });
 
-  it('Prune columns', () => {
-    let data,pathways,min;
-    expect(pruneColumns(data,pathways,min)).toEqual('Xena Gene Set Viewer')
-  });
-
   it('Associated Data', () => {
     let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
-    expect(associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)).toEqual('Xena Gene Set Viewer')
+    let data = {};
+    expect(data).toEqual(associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort))
+  });
+
+
+  it('Prune columns', () => {
+    let data,pathways,min;
+    let testData = {};
+    expect().toEqual(pruneColumns(data,pathways,min))
+  });
+
+  it('Find Associated Data', () => {
+    let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
+    let testData = {};
+    expect(findAssociatedData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)).toEqual('Xena Gene Set Viewer')
   });
 
   it('Find pruned columns', () => {
@@ -97,10 +106,6 @@ describe('Data Functions', () => {
     expect(findPruneData(data,pathways,min)).toEqual('Xena Gene Set Viewer')
   });
 
-  it('Find Associated Data', () => {
-    let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
-    expect(findAssociatedData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort)).toEqual('Xena Gene Set Viewer')
-  });
 
   describe('Test statistical function', () => {
     let node;
