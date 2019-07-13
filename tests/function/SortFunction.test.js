@@ -10,6 +10,9 @@ import {
   transpose
 } from "../../src/functions/SortFunctions";
 
+import ScoredDataInput1 from '../data/ScoreColumnDataInput1';
+import ScoredOutputData1 from '../data/ScoreColumnDataOutput1';
+
 describe('Sort Functions', () => {
   let node;
 
@@ -28,7 +31,7 @@ describe('Sort Functions', () => {
   })
 
   it('Score columns', () => {
-    expect(scoreColumns([0.8,0.05])).toEqual([[0.8],[0.05]])
+    expect(ScoredOutputData1).toEqual(scoreColumns(ScoredDataInput1))
   })
 
   it('Sort by type', () => {
