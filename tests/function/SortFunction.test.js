@@ -44,16 +44,13 @@ describe('Sort Functions', () => {
   });
 
   it('Cluster sort', () => {
-    expect(clusterSort([0.8,0.05])).toEqual([[0.8],[0.05]])
+    expect(ClusterSortOutputData1).toEqual(clusterSort(ClusterSortInput1))
   });
 
   it('Diff sort', () => {
     expect(diffSort([0.8,0.05])).toEqual([[0.8],[0.05]])
   });
 
-  it('Cluster sample sort', () => {
-    expect(ClusterSortOutputData1).toEqual(clusterSort(ClusterSortInput1))
-  })
   it('Synchrozine sort', () => {
     expect(synchronizedSort([0.8,0.05])).toEqual([[0.8],[0.05]])
   })
