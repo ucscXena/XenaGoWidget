@@ -16,6 +16,10 @@ import ScoredOutputData1 from '../data/ScoreColumnDataOutput1';
 import ClusterSortInput1 from '../data/ClusterSortInput1';
 import ClusterSortOutputData1 from '../data/ClusterSortOutput1';
 
+
+import DiffSortInput1 from '../data/DiffSortInput1';
+import DiffSortOutputData1 from '../data/DiffSortOutput1';
+
 describe('Sort Functions', () => {
   let node;
 
@@ -48,7 +52,7 @@ describe('Sort Functions', () => {
   });
 
   it('Diff sort', () => {
-    expect(diffSort([0.8,0.05])).toEqual([[0.8],[0.05]])
+    expect(DiffSortOutputData1).toEqual(diffSort(DiffSortInput1))
   });
 
   it('Synchrozine sort', () => {
