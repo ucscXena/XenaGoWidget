@@ -20,6 +20,9 @@ import ClusterSortOutputData1 from '../data/ClusterSortOutput1';
 import DiffSortInput1 from '../data/DiffSortInput1';
 import DiffSortOutputData1 from '../data/DiffSortOutput1';
 
+import SyncSortInput1 from '../data/SyncSortInput1';
+import SyncSortOutputData1 from '../data/SyncSortOutput1';
+
 describe('Sort Functions', () => {
   let node;
 
@@ -56,7 +59,8 @@ describe('Sort Functions', () => {
   });
 
   it('Synchrozine sort', () => {
-    expect(synchronizedSort([0.8,0.05])).toEqual([[0.8],[0.05]])
+    const geneList = ["RRM2B","NUDT1","DUT"];
+    expect(SyncSortOutputData1).toEqual(synchronizedSort(SyncSortInput1,geneList,undefined))
   })
 });
 
