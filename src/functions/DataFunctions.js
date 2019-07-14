@@ -3,6 +3,8 @@ import {sum, times, memoize, range} from 'ucsc-xena-client/dist/underscore_ext';
 import {izip, permutations} from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5'
 
+const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
+const DEFAULT_DELETION_THRESHOLD = -2 ;
 
 let associateCache = lru(500);
 let pruneDataCache = lru(500);
@@ -69,11 +71,11 @@ export function createAssociatedDataKey(inputHash){
 }
 
 export function findAssociatedData(inputHash,associatedDataKey) {
-    let {expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort} = inputHash;
+    let {expression, copyNumber, geneList, pathways, samples, filter, min} = inputHash;
     const key = JSON.stringify(associatedDataKey);
     let data = associateCache.get(key);
     if (ignoreCache || !data) {
-        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort);
+        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
         associateCache.set(key,data);
     }
 
@@ -108,7 +110,8 @@ export function createEmptyArray(pathwayLength,sampleLength){
  * @param selectedCohort
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort) {
+export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min) {
+
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = createEmptyArray(pathways.length,samples.length)
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
@@ -162,20 +165,19 @@ export function associateData(expression, copyNumber, geneList, pathways, sample
                 // process all samples
                 for (let sampleEntryIndex in sampleEntries) {
                     let returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex]
-                        , selectedCohort ? selectedCohort.amplificationThreshold : 2
-                        , selectedCohort ? selectedCohort.deletionThreshold : -2);
+                        ,DEFAULT_AMPLIFICATION_THRESHOLD
+                        ,DEFAULT_DELETION_THRESHOLD);
                     if (returnValue > 0) {
                         returnArray[index][sampleEntryIndex].total += returnValue;
                         returnArray[index][sampleEntryIndex].cnv += returnValue;
-                        returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.amplificationThreshold : 2);
-                        returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex],selectedCohort ? selectedCohort.deletionThreshold : -2);
+                        returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+                        returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
                     }
                 }
             }
         }
 
     }
-
 
     return returnArray;
 

@@ -13,6 +13,12 @@ import {times} from "underscore";
 import DefaultPathways from '../../src/data/genesets/tgac';
 
 
+import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
+import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
+import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
+import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
+import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
+import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
 
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
@@ -83,9 +89,7 @@ describe('Data Functions', () => {
   });
 
   it('Associated Data', () => {
-    let  expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort;
-    let data = {};
-    expect(data).toEqual(associateData(expression, copyNumber, geneList, pathways, samples, filter, min, selectedCohort))
+    expect(AssociatedDataOutput1).toEqual(associateData(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN, undefined))
   });
 
 
