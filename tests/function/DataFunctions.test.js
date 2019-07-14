@@ -23,6 +23,10 @@ import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1'
 import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey'
 import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1'
 
+import FindPruneData1 from '../data/FindPruneData1'
+import FindPruneDataKey1 from '../data/FindPruneDataKey1'
+import FindPruneDataOutput1 from '../data/FindPruneDataOutput1'
+
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
 const MUTATION_MIN = 2 ;
@@ -99,17 +103,18 @@ describe('Data Functions', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1))
   });
 
-  it('Prune columns', () => {
-    let data,pathways,min;
-    let testData = {};
-    expect().toEqual(pruneColumns(data,pathways,min))
-  });
-
 
   it('Find pruned columns', () => {
-    let data,pathways,min;
-    expect(findPruneData(data,pathways,min)).toEqual('Xena Gene Set Viewer')
+    let prunedDataOutput = findPruneData(FindPruneData1,FindPruneDataKey1);
+    // console.log('real output');
+    // console.log(JSON.stringify(prunedDataOutput));
+    expect(FindPruneDataOutput1).toEqual(findPruneData(FindPruneData1,FindPruneDataKey1))
   });
+
+  it('Prune columns', () => {
+    expect(FindPruneDataOutput1).toEqual(pruneColumns(FindPruneData1,FindPruneDataKey1))
+  });
+
 
 
   describe('Test statistical function', () => {
