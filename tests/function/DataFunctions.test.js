@@ -23,7 +23,7 @@ import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1'
 import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey'
 import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1'
 
-import FindPruneData1 from '../data/FindPruneData1'
+import FindPruneData1 from '../data/FindPruneAssociatedData1'
 import FindPruneDataKey1 from '../data/FindPruneDataKey1'
 import FindPruneDataOutput1 from '../data/FindPruneDataOutput1'
 
@@ -109,9 +109,7 @@ describe('Data Functions', () => {
 
 
   it('Find pruned columns', () => {
-    let prunedDataOutput = findPruneData(FindPruneData1,FindPruneDataKey1);
-    // console.log('real output');
-    // console.log(JSON.stringify(prunedDataOutput));
+    // let prunedDataOutput = findPruneData(FindPruneData1,FindPruneDataKey1);
     expect(FindPruneDataOutput1).toEqual(findPruneData(FindPruneData1,FindPruneDataKey1))
   });
 

@@ -20,15 +20,10 @@ import {Dialog} from "react-toolbox";
 let Rx = require('ucsc-xena-client/dist/rx');
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples, sparseDataMatchPartialField, refGene, datasetFetch, sparseData} = xenaQuery;
+let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-import {getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 
-function intersection(a, b) {
-    let sa = new Set(a);
-    return b.filter(x => sa.has(x));
-}
 
 
 export const XENA_VIEW = 'xena';

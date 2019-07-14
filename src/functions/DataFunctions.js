@@ -44,14 +44,12 @@ export let getGenePathwayLookup = pathways => {
     return memoize(gene => idxs.filter(i => sets[i].has(gene)));
 };
 
-export function pruneColumns(data, pathways, min) {
+export function pruneColumns(data, pathways) {
 
-    if(min===undefined) return {"data":[],"pathways":[]};
     // TODO: we need to map the sum off each column
     let columnScores = data.map( d => sum(d.total));
-
-    let prunedPathways = pathways.filter((el, i) => columnScores[i] >= min);
-    let prunedAssociations = data.filter((el, i) => columnScores[i] >= min);
+    let prunedPathways = pathways.filter((el, i) => columnScores[i] >= 0);
+    let prunedAssociations = data.filter((el, i) => columnScores[i] >= 0);
 
     return {
         'data': prunedAssociations,
@@ -60,10 +58,9 @@ export function pruneColumns(data, pathways, min) {
 }
 
 export function createAssociatedDataKey(inputHash){
-    let { geneList, pathways, samples, filter,filterMin, min, cohortIndex} = inputHash;
+    let { geneList, pathways, samples, filter, min, cohortIndex} = inputHash;
     return  {
         filter,
-        filterMin,
         geneList,
         pathways,
         min,
@@ -86,22 +83,12 @@ export function findAssociatedData(inputHash,associatedDataKey) {
 }
 
 export function findPruneData(associatedData,dataKey) {
-
-    // console.log('input')
-    // console.log()
-    // console.log(JSON.stringify(associatedData))
-    // console.log(JSON.stringify(dataKey))
-
     let key = JSON.stringify(dataKey);
     let data = pruneDataCache.get(key);
     if (ignoreCache || !data) {
-        data = pruneColumns(associatedData, dataKey.pathways, dataKey.filterMin);
+        data = pruneColumns(associatedData, dataKey.pathways);
         pruneDataCache.set(key,data);
     }
-
-    // console.log('output')
-    // console.log(JSON.stringify(data))
-
     return data;
 }
 

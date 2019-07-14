@@ -1,5 +1,5 @@
 {
-  "filter": "All",
+  "filter": "Copy Number",
   "geneList": [
     "DLL1",
     "DTX1",
@@ -1330,17 +1330,7 @@
         "PSEN1",
         "PSEN2",
         "PSENEN"
-      ],
-      "secondObserved": 8,
-      "secondTotal": 11,
-      "secondNumSamples": 88,
-      "secondExpected": 9.732766196615781,
-      "secondChiSquared": -0.34685369916130465,
-      "firstObserved": 36,
-      "firstTotal": 43,
-      "firstNumSamples": 87,
-      "firstExpected": 28.543175231229398,
-      "firstChiSquared": 2.8992764112498897
+      ]
     },
     {
       "goid": "GO:0035329",
@@ -1356,17 +1346,7 @@
         "YAP1",
         "MST1",
         "WWTR1"
-      ],
-      "secondObserved": 13,
-      "secondTotal": 14,
-      "secondNumSamples": 88,
-      "secondExpected": 11.745441138225717,
-      "secondChiSquared": 0.1546427668281896,
-      "firstObserved": 40,
-      "firstTotal": 62,
-      "firstNumSamples": 87,
-      "firstExpected": 33.3670400795306,
-      "firstChiSquared": 2.138870793230555
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1383,17 +1363,7 @@
         "NEIL1",
         "NEIL2",
         "NEIL3"
-      ],
-      "secondObserved": 10,
-      "secondTotal": 12,
-      "secondNumSamples": 88,
-      "secondExpected": 12.700867986055517,
-      "secondChiSquared": -0.6712217401500948,
-      "firstObserved": 36,
-      "firstTotal": 49,
-      "firstNumSamples": 87,
-      "firstExpected": 35.54405928389029,
-      "firstChiSquared": 0.009888569259229475
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1405,17 +1375,7 @@
         "XRCC1",
         "PNKP",
         "APLF"
-      ],
-      "secondObserved": 10,
-      "secondTotal": 10,
-      "secondNumSamples": 88,
-      "secondExpected": 7.571210097861775,
-      "secondChiSquared": 0.8524830192989863,
-      "firstObserved": 15,
-      "firstTotal": 16,
-      "firstNumSamples": 87,
-      "firstExpected": 22.984481562416917,
-      "firstChiSquared": -3.7695778603908896
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1424,17 +1384,7 @@
         "PARP1",
         "PARP2",
         "PARP3"
-      ],
-      "secondObserved": 4,
-      "secondTotal": 4,
-      "secondNumSamples": 88,
-      "secondExpected": 4.009888942409826,
-      "secondChiSquared": -0.000025551821648780128,
-      "firstObserved": 10,
-      "firstTotal": 10,
-      "firstNumSamples": 87,
-      "firstExpected": 12.899283063050525,
-      "firstChiSquared": -0.7650899666572024
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1443,17 +1393,7 @@
         "MGMT",
         "ALKBH2",
         "ALKBH3"
-      ],
-      "secondObserved": 4,
-      "secondTotal": 4,
-      "secondNumSamples": 88,
-      "secondExpected": 4.009888942409826,
-      "secondChiSquared": -0.000025551821648780128,
-      "firstObserved": 11,
-      "firstTotal": 11,
-      "firstNumSamples": 87,
-      "firstExpected": 12.899283063050525,
-      "firstChiSquared": -0.32833007094860533
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1461,17 +1401,7 @@
       "gene": [
         "TDP1",
         "TDP2"
-      ],
-      "secondObserved": 2,
-      "secondTotal": 2,
-      "secondNumSamples": 88,
-      "secondExpected": 2.7271793013698926,
-      "secondChiSquared": -0.2000973642930361,
-      "firstObserved": 10,
-      "firstTotal": 10,
-      "firstNumSamples": 87,
-      "firstExpected": 8.961196873974593,
-      "firstChiSquared": 0.13424840346401978
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1487,17 +1417,7 @@
         "MLH3",
         "PMS1",
         "PMS2L3"
-      ],
-      "secondObserved": 16,
-      "secondTotal": 24,
-      "secondNumSamples": 88,
-      "secondExpected": 11.745441138225717,
-      "secondChiSquared": 1.7785111792188784,
-      "firstObserved": 24,
-      "firstTotal": 29,
-      "firstNumSamples": 87,
-      "firstExpected": 33.3670400795306,
-      "firstChiSquared": -4.265545323579527
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1534,17 +1454,7 @@
         "UVSSA",
         "XAB2",
         "MMS19"
-      ],
-      "secondObserved": 30,
-      "secondTotal": 53,
-      "secondNumSamples": 88,
-      "secondExpected": 26.82847740406465,
-      "secondChiSquared": 0.5393528471839019,
-      "firstObserved": 42,
-      "firstTotal": 89,
-      "firstNumSamples": 87,
-      "firstExpected": 60.41251323369365,
-      "firstChiSquared": -18.36289735389264
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1571,17 +1481,7 @@
         "GIYD1",
         "GIYD2",
         "GEN1"
-      ],
-      "secondObserved": 23,
-      "secondTotal": 32,
-      "secondNumSamples": 88,
-      "secondExpected": 20.753803043343577,
-      "secondChiSquared": 0.3181360774146709,
-      "firstObserved": 51,
-      "firstTotal": 106,
-      "firstNumSamples": 87,
-      "firstExpected": 51.276673788651905,
-      "firstChiSquared": -0.0036356624264728436
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1604,17 +1504,7 @@
         "BTBD12",
         "FAAP20",
         "FAAP24"
-      ],
-      "secondObserved": 14,
-      "secondTotal": 15,
-      "secondNumSamples": 88,
-      "secondExpected": 17.823377367733585,
-      "secondChiSquared": -1.0284768880261095,
-      "firstObserved": 29,
-      "firstTotal": 40,
-      "firstNumSamples": 87,
-      "firstExpected": 46.065210300685045,
-      "firstChiSquared": -13.43621424207956
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1627,17 +1517,7 @@
         "XRCC4",
         "DCLRE1C",
         "NHEJ1"
-      ],
-      "secondObserved": 8,
-      "secondTotal": 8,
-      "secondNumSamples": 88,
-      "secondExpected": 8.67165418019192,
-      "secondChiSquared": -0.05770902909031802,
-      "firstObserved": 20,
-      "firstTotal": 21,
-      "firstNumSamples": 87,
-      "firstExpected": 25.864867600465644,
-      "firstChiSquared": -1.8924942148939987
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1646,17 +1526,7 @@
         "NUDT1",
         "DUT",
         "RRM2B"
-      ],
-      "secondObserved": 3,
-      "secondTotal": 3,
-      "secondNumSamples": 88,
-      "secondExpected": 4.009888942409826,
-      "secondChiSquared": -0.2664829368885062,
-      "firstObserved": 19,
-      "firstTotal": 19,
-      "firstNumSamples": 87,
-      "firstExpected": 12.899283063050525,
-      "firstChiSquared": 3.3876069838737077
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1677,17 +1547,7 @@
         "POLL",
         "POLM",
         "POLN"
-      ],
-      "secondObserved": 25,
-      "secondTotal": 31,
-      "secondNumSamples": 88,
-      "secondExpected": 16.222444162789674,
-      "secondChiSquared": 5.822706776079186,
-      "firstObserved": 34,
-      "firstTotal": 49,
-      "firstNumSamples": 87,
-      "firstExpected": 42.977325132992576,
-      "firstChiSquared": -3.7059311977701386
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1701,17 +1561,7 @@
         "APTX",
         "SPO11",
         "ENDOV"
-      ],
-      "secondObserved": 15,
-      "secondTotal": 17,
-      "secondNumSamples": 88,
-      "secondExpected": 9.732766196615781,
-      "secondChiSquared": 3.205026238502056,
-      "firstObserved": 33,
-      "firstTotal": 46,
-      "firstNumSamples": 87,
-      "firstExpected": 28.543175231229398,
-      "firstChiSquared": 1.035697350226728
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1728,17 +1578,7 @@
         "RNF4",
         "UBE2V2",
         "UBE2N"
-      ],
-      "secondObserved": 9,
-      "secondTotal": 11,
-      "secondNumSamples": 88,
-      "secondExpected": 12.700867986055517,
-      "secondChiSquared": -1.2602783839692793,
-      "firstObserved": 41,
-      "firstTotal": 65,
-      "firstNumSamples": 87,
-      "firstExpected": 35.54405928389029,
-      "firstChiSquared": 1.4159763214980385
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1747,17 +1587,7 @@
         "H2AFX",
         "CHAF1A",
         "SETMAR"
-      ],
-      "secondObserved": 6,
-      "secondTotal": 6,
-      "secondNumSamples": 88,
-      "secondExpected": 4.009888942409826,
-      "secondChiSquared": 1.0348485549814614,
-      "firstObserved": 6,
-      "firstTotal": 6,
-      "firstNumSamples": 87,
-      "firstExpected": 12.899283063050525,
-      "firstChiSquared": -4.33250623798989
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1768,17 +1598,7 @@
         "RECQL4",
         "ATM",
         "TTDN1"
-      ],
-      "secondObserved": 7,
-      "secondTotal": 8,
-      "secondNumSamples": 88,
-      "secondExpected": 6.429123601527791,
-      "secondChiSquared": 0.05468647690499519,
-      "firstObserved": 43,
-      "firstTotal": 52,
-      "firstNumSamples": 87,
-      "firstExpected": 19.880460938924855,
-      "firstChiSquared": 34.84995167275552
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1793,17 +1613,7 @@
         "HELQ",
         "RDM1",
         "OBFC2B"
-      ],
-      "secondObserved": 6,
-      "secondTotal": 7,
-      "secondNumSamples": 88,
-      "secondExpected": 10.756695063447495,
-      "secondChiSquared": -2.396368431922148,
-      "firstObserved": 24,
-      "firstTotal": 29,
-      "firstNumSamples": 87,
-      "firstExpected": 31.03833570726354,
-      "firstChiSquared": -2.481247917978133
+      ]
     },
     {
       "goid": "GO:0006281",
@@ -1824,17 +1634,7 @@
         "TOPBP1",
         "CLK2",
         "PER1"
-      ],
-      "secondObserved": 35,
-      "secondTotal": 51,
-      "secondNumSamples": 88,
-      "secondExpected": 16.222444162789674,
-      "secondChiSquared": 26.64746145052869,
-      "firstObserved": 82,
-      "firstTotal": 135,
-      "firstNumSamples": 87,
-      "firstExpected": 42.977325132992576,
-      "firstChiSquared": 70.02248421304225
+      ]
     },
     {
       "goid": "GO:0000077",
@@ -1891,17 +1691,7 @@
         "MDM2",
         "DTL",
         "ATF2"
-      ],
-      "secondObserved": 35,
-      "secondTotal": 70,
-      "secondNumSamples": 88,
-      "secondExpected": 35.49731244090504,
-      "secondChiSquared": -0.011677888156105619,
-      "firstObserved": 63,
-      "firstTotal": 189,
-      "firstNumSamples": 87,
-      "firstExpected": 70.08560674003573,
-      "firstChiSquared": -3.6845807687583245
+      ]
     },
     {
       "goid": "GO:0048017",
@@ -1928,17 +1718,7 @@
         "PRKCZ",
         "PTEN",
         "TCL1A"
-      ],
-      "secondObserved": 23,
-      "secondTotal": 32,
-      "secondNumSamples": 88,
-      "secondExpected": 20.753803043343577,
-      "secondChiSquared": 0.3181360774146709,
-      "firstObserved": 53,
-      "firstTotal": 120,
-      "firstNumSamples": 87,
-      "firstExpected": 51.276673788651905,
-      "firstChiSquared": 0.14105305757843484
+      ]
     },
     {
       "goid": "GO:0016055",
@@ -2000,17 +1780,7 @@
         "WNT7A",
         "WNT7B",
         "WNT8A"
-      ],
-      "secondObserved": 35,
-      "secondTotal": 78,
-      "secondNumSamples": 88,
-      "secondExpected": 37.18639676526844,
-      "secondChiSquared": -0.2226263333399697,
-      "firstObserved": 73,
-      "firstTotal": 250,
-      "firstNumSamples": 87,
-      "firstExpected": 71.57572477369865,
-      "firstChiSquared": 0.1598588089063121
+      ]
     },
     {
       "goid": "GO:0097193",
@@ -2167,17 +1937,7 @@
         "PPIF",
         "ACKR3",
         "S100A8"
-      ],
-      "secondObserved": 55,
-      "secondTotal": 284,
-      "secondNumSamples": 88,
-      "secondExpected": 54.826257260036904,
-      "secondChiSquared": 0.0014605382408584239,
-      "firstObserved": 85,
-      "firstTotal": 699,
-      "firstNumSamples": 87,
-      "firstExpected": 81.57891080808068,
-      "firstChiSquared": 2.3024149214804925
+      ]
     },
     {
       "goid": "GO:0097191",
@@ -2303,17 +2063,7 @@
         "RNF34",
         "CFLAR",
         "IGF1"
-      ],
-      "secondObserved": 58,
-      "secondTotal": 177,
-      "secondNumSamples": 88,
-      "secondExpected": 50.858271386858526,
-      "secondChiSquared": 2.3761051229579846,
-      "firstObserved": 80,
-      "firstTotal": 557,
-      "firstNumSamples": 87,
-      "firstExpected": 80.03945949986839,
-      "firstChiSquared": -0.00024315057087558482
+      ]
     },
     {
       "goid": "GO:0022402",
@@ -2421,17 +2171,7 @@
         "PTTG3",
         "PTTG2",
         "PTTG1"
-      ],
-      "secondObserved": 49,
-      "secondTotal": 141,
-      "secondNumSamples": 88,
-      "secondExpected": 47.999362592121614,
-      "secondChiSquared": 0.0458916591380288,
-      "firstObserved": 80,
-      "firstTotal": 374,
-      "firstNumSamples": 87,
-      "firstExpected": 78.71565360544473,
-      "firstChiSquared": 0.2200717204703718
+      ]
     },
     {
       "goid": "GO:0016570",
@@ -2686,17 +2426,7 @@
         "PRMT8",
         "POLE4",
         "ASH1L"
-      ],
-      "secondObserved": 63,
-      "secondTotal": 406,
-      "secondNumSamples": 88,
-      "secondExpected": 63.18775952986637,
-      "secondChiSquared": -0.001978735348849263,
-      "firstObserved": 84,
-      "firstTotal": 1074,
-      "firstNumSamples": 87,
-      "firstExpected": 83.93487253707815,
-      "firstChiSquared": 0.001434354825047181
+      ]
     },
     {
       "goid": "GO:0006979",
@@ -2797,17 +2527,7 @@
         "RBM11",
         "PPIF",
         "PRR5L"
-      ],
-      "secondObserved": 54,
-      "secondTotal": 181,
-      "secondNumSamples": 88,
-      "secondExpected": 46.73546217278494,
-      "secondChiSquared": 2.4081033623790953,
-      "firstObserved": 84,
-      "firstTotal": 510,
-      "firstNumSamples": 87,
-      "firstExpected": 78.06546135902424,
-      "firstChiSquared": 4.393009216434367
+      ]
     },
     {
       "goid": "GO:0007265",
@@ -2991,17 +2711,7 @@
         "TSC2",
         "VAV1",
         "YAP1"
-      ],
-      "secondObserved": 62,
-      "secondTotal": 345,
-      "secondNumSamples": 88,
-      "secondExpected": 57.616284387062,
-      "secondChiSquared": 0.9660092530171857,
-      "firstObserved": 86,
-      "firstTotal": 1022,
-      "firstNumSamples": 87,
-      "firstExpected": 82.48374908671818,
-      "firstChiSquared": 2.8875699506580923
+      ]
     },
     {
       "goid": "GO:0007179",
@@ -3098,17 +2808,7 @@
         "URS0000065D58_9606",
         "TGFB1",
         "FOS"
-      ],
-      "secondObserved": 51,
-      "secondTotal": 159,
-      "secondNumSamples": 88,
-      "secondExpected": 45.96711894998985,
-      "secondChiSquared": 1.1536645853420235,
-      "firstObserved": 75,
-      "firstTotal": 367,
-      "firstNumSamples": 87,
-      "firstExpected": 77.6492475987373,
-      "firstChiSquared": -0.8409700746718274
+      ]
     },
     {
       "goid": "GO:0072331",
@@ -3200,17 +2900,7 @@
         "URS000039ED8D_9606",
         "RFFL",
         "DYRK2"
-      ],
-      "secondObserved": 46,
-      "secondTotal": 147,
-      "secondNumSamples": 88,
-      "secondExpected": 44.95394872344143,
-      "secondChiSquared": 0.04976081161326162,
-      "firstObserved": 85,
-      "firstTotal": 481,
-      "firstNumSamples": 87,
-      "firstExpected": 77.07507186791022,
-      "firstChiSquared": 7.1428019505942775
+      ]
     },
     {
       "goid": "",
@@ -3231,17 +2921,7 @@
         "RB1",
         "E2F1",
         "E2F3"
-      ],
-      "secondObserved": 27,
-      "secondTotal": 48,
-      "secondNumSamples": 88,
-      "secondExpected": 16.222444162789674,
-      "secondChiSquared": 8.77845892880448,
-      "firstObserved": 58,
-      "firstTotal": 115,
-      "firstNumSamples": 87,
-      "firstExpected": 42.977325132992576,
-      "firstChiSquared": 10.37762514842806
+      ]
     },
     {
       "goid": "",
@@ -3285,17 +2965,7 @@
         "AJUBA",
         "LIMD1",
         "WTIP"
-      ],
-      "secondObserved": 41,
-      "secondTotal": 86,
-      "secondNumSamples": 88,
-      "secondExpected": 30.28411664527231,
-      "secondChiSquared": 5.781338123033261,
-      "firstObserved": 74,
-      "firstTotal": 233,
-      "firstNumSamples": 87,
-      "firstExpected": 64.70327352676763,
-      "firstChiSquared": 5.21209112255047
+      ]
     },
     {
       "goid": "",
@@ -3314,17 +2984,7 @@
         "MYC",
         "MYCL",
         "MYCN"
-      ],
-      "secondObserved": 15,
-      "secondTotal": 17,
-      "secondNumSamples": 88,
-      "secondExpected": 14.518597937196725,
-      "secondChiSquared": 0.019115974967631635,
-      "firstObserved": 58,
-      "firstTotal": 97,
-      "firstNumSamples": 87,
-      "firstExpected": 39.49408649944615,
-      "firstChiSquared": 15.88036798106624
+      ]
     },
     {
       "goid": "",
@@ -3401,17 +3061,7 @@
         "DTX3L",
         "DTX4",
         "EGFL7"
-      ],
-      "secondObserved": 49,
-      "secondTotal": 139,
-      "secondNumSamples": 88,
-      "secondExpected": 41.4924653862957,
-      "secondChiSquared": 2.5703058236092313,
-      "firstObserved": 81,
-      "firstTotal": 415,
-      "firstNumSamples": 87,
-      "firstExpected": 74.87883120594314,
-      "firstChiSquared": 3.591570599695122
+      ]
     },
     {
       "goid": "",
@@ -3420,17 +3070,7 @@
         "NFE2L2",
         "KEAP1",
         "CUL3"
-      ],
-      "secondObserved": 6,
-      "secondTotal": 6,
-      "secondNumSamples": 88,
-      "secondExpected": 4.009888942409826,
-      "secondChiSquared": 1.0348485549814614,
-      "firstObserved": 12,
-      "firstTotal": 13,
-      "firstNumSamples": 87,
-      "firstExpected": 12.899283063050525,
-      "firstChiSquared": -0.07360784408983827
+      ]
     },
     {
       "goid": "",
@@ -3465,17 +3105,7 @@
         "STK11",
         "TSC1",
         "TSC2"
-      ],
-      "secondObserved": 32,
-      "secondTotal": 54,
-      "secondNumSamples": 88,
-      "secondExpected": 25.73351940741803,
-      "secondChiSquared": 2.1566345816711383,
-      "firstObserved": 69,
-      "firstTotal": 198,
-      "firstNumSamples": 87,
-      "firstExpected": 58.92156838968832,
-      "firstChiSquared": 5.341435824512428
+      ]
     },
     {
       "goid": "",
@@ -3488,17 +3118,7 @@
         "SMAD2",
         "SMAD3",
         "SMAD4"
-      ],
-      "secondObserved": 12,
-      "secondTotal": 12,
-      "secondNumSamples": 88,
-      "secondExpected": 8.67165418019192,
-      "secondChiSquared": 1.417128431262119,
-      "firstObserved": 17,
-      "firstTotal": 20,
-      "firstNumSamples": 87,
-      "firstExpected": 25.864867600465644,
-      "firstChiSquared": -4.323770590543835
+      ]
     },
     {
       "goid": "",
@@ -3589,17 +3209,7 @@
         "PEA15",
         "JAK2",
         "IRS2"
-      ],
-      "secondObserved": 44,
-      "secondTotal": 166,
-      "secondNumSamples": 88,
-      "secondExpected": 44.74375793946859,
-      "secondChiSquared": -0.025151544426404177,
-      "firstObserved": 78,
-      "firstTotal": 451,
-      "firstNumSamples": 87,
-      "firstExpected": 76.95223818192416,
-      "firstChiSquared": 0.12352469814290204
+      ]
     },
     {
       "goid": "",
@@ -3611,17 +3221,7 @@
         "ATM",
         "CHEK2",
         "RPS6KA3"
-      ],
-      "secondObserved": 30,
-      "secondTotal": 39,
-      "secondNumSamples": 88,
-      "secondExpected": 7.571210097861775,
-      "secondChiSquared": 72.69717345130557,
-      "firstObserved": 79,
-      "firstTotal": 100,
-      "firstNumSamples": 87,
-      "firstExpected": 22.984481562416917,
-      "firstChiSquared": 185.53078964288372
+      ]
     },
     {
       "goid": "",
@@ -3695,17 +3295,7 @@
         "TCF7",
         "TCF7L2",
         "CHD4"
-      ],
-      "secondObserved": 53,
-      "secondTotal": 123,
-      "secondNumSamples": 88,
-      "secondExpected": 40.70925055388135,
-      "secondChiSquared": 6.9051020152238145,
-      "firstObserved": 74,
-      "firstTotal": 262,
-      "firstNumSamples": 87,
-      "firstExpected": 74.32775667216265,
-      "firstChiSquared": -0.009922424582308218
+      ]
     }
   ],
   "min": 2,
