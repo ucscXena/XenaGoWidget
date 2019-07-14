@@ -81,7 +81,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 
         // need to get an associatedData
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -89,7 +88,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             pathways,
             samples,
             filter,
-            filterMin,
             min:MIN_FILTER,
             selectedCohort
         };
