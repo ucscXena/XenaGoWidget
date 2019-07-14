@@ -207,15 +207,15 @@ export default class XenaGoViewer extends PureComponent {
         } else {
             return;
         }
-        let data = defaultDatasetForGeneset;
-        let cohortData = Object.keys(data)
+        // let data = defaultDatasetForGeneset;
+        let cohortData = Object.keys(defaultDatasetForGeneset)
             .filter(cohort => {
-                return (data[cohort].viewInPathway) && data[cohort][mutationKey]
+                return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
             })
             .map(cohort => {
-                let mutation = data[cohort][mutationKey];
-                let copyNumberView = data[cohort][copyNumberViewKey];
-                let genomeBackground = data[cohort][genomeBackgroundViewKey];
+                let mutation = defaultDatasetForGeneset[cohort][mutationKey];
+                let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
+                let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
                 return {
                     name: cohort,
                     mutationDataSetId: mutation.dataset,

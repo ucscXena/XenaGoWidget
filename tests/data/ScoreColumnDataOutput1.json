@@ -1,0 +1,29 @@
+[
+  {
+    "goid": "GO:0006281",
+    "golabel": "Modulation of nucleotide pools",
+    "gene": [
+      "NUDT1"
+    ],
+    "samplesAffected": 1,
+    "index": 0
+  },
+  {
+    "goid": "GO:0006281",
+    "golabel": "Modulation of nucleotide pools",
+    "gene": [
+      "DUT"
+    ],
+    "samplesAffected": 1,
+    "index": 1
+  },
+  {
+    "goid": "GO:0006281",
+    "golabel": "Modulation of nucleotide pools",
+    "gene": [
+      "RRM2B"
+    ],
+    "samplesAffected": 17,
+    "index": 2
+  }
+]

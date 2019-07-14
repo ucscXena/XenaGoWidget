@@ -224,7 +224,6 @@ export default class PathwayScoresViewCache extends PureComponent {
     render() {
         let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
 
-        let filterMin = Math.trunc(FILTER_PERCENTAGE * samples.length);
         let hashAssociation = {
             expression,
             copyNumber,
@@ -232,7 +231,6 @@ export default class PathwayScoresViewCache extends PureComponent {
             pathways,
             samples,
             filter,
-            filterMin,
             min,
             selectedCohort,
             cohortIndex,

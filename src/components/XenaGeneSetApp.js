@@ -17,11 +17,14 @@ import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFun
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
 import {Dialog} from "react-toolbox";
+let Rx = require('ucsc-xena-client/dist/rx');
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
+
+
 
 export const XENA_VIEW = 'xena';
 export const PATHWAYS_VIEW = 'pathways';
@@ -142,7 +145,6 @@ export default class XenaGeneSetApp extends PureComponent {
             else {
                 // let {pathway: {golabel}} = selection;
                 // ref.setPathwayState([golabel], selection);
-                console.log('ref loaded',refLoaded)
                 refLoaded.clickPathway(selection);
             }
         }
@@ -182,6 +184,57 @@ export default class XenaGeneSetApp extends PureComponent {
             ],
         })
     };
+
+    handleCombinedCohortData(input) {
+        // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+        let {
+            samples,
+            geneList,
+            mutationsA,
+            copyNumberA,
+            genomeBackgroundMutationA,
+            genomeBackgroundCopyNumberA,
+            cohortA,
+            mutationsB,
+            copyNumberB,
+            genomeBackgroundMutationB,
+            genomeBackgroundCopyNumberB,
+            cohortB
+        } = input;
+
+        // TODO: calculate Diff!
+        // TODO: update Xena Go Viewers
+
+
+        // let pathwayData = {
+        //     copyNumber,
+        //     geneList,
+        //     expression: mutations,
+        //     pathways: this.props.pathways,
+        //     cohort: cohort.name,
+        //     samples,
+        //     genomeBackgroundMutation,
+        //     genomeBackgroundCopyNumber,
+        // };
+        // this.setState({
+        //     pathwayData: pathwayData,
+        //     processing: false,
+        // });
+        // this.props.populateGlobal(pathwayData, this.props.cohortIndex);
+        // if (this.state.selectedPathways.length > 0) {
+        //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        // } else {
+        //     this.setState({
+        //         geneData: {
+        //             copyNumber: [],
+        //             expression: [],
+        //             pathways: [],
+        //             samples: [],
+        //         },
+        //     });
+        // }
+
+    }
 
     addGeneSet = (selectedPathway) => {
         let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
