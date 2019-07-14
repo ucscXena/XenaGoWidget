@@ -72,6 +72,7 @@ export function createAssociatedDataKey(inputHash){
 
 export function findAssociatedData(inputHash,associatedDataKey) {
     let {expression, copyNumber, geneList, pathways, samples, filter, min} = inputHash;
+
     const key = JSON.stringify(associatedDataKey);
     let data = associateCache.get(key);
     if (ignoreCache || !data) {
@@ -84,12 +85,20 @@ export function findAssociatedData(inputHash,associatedDataKey) {
 
 export function findPruneData(associatedData,dataKey) {
 
+    // console.log('input')
+    // console.log(JSON.stringify(associatedData))
+    // console.log(JSON.stringify(dataKey))
+
     let key = JSON.stringify(dataKey);
     let data = pruneDataCache.get(key);
     if (ignoreCache || !data) {
         data = pruneColumns(associatedData, dataKey.pathways, dataKey.filterMin);
         pruneDataCache.set(key,data);
     }
+
+    // console.log('output')
+    // console.log(JSON.stringify(data))
+
     return data;
 }
 
