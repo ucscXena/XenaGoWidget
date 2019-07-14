@@ -45,6 +45,8 @@ export let getGenePathwayLookup = pathways => {
 };
 
 export function pruneColumns(data, pathways, min) {
+
+    if(min===undefined) return {"data":[],"pathways":[]};
     // TODO: we need to map the sum off each column
     let columnScores = data.map( d => sum(d.total));
 
@@ -86,6 +88,7 @@ export function findAssociatedData(inputHash,associatedDataKey) {
 export function findPruneData(associatedData,dataKey) {
 
     // console.log('input')
+    // console.log()
     // console.log(JSON.stringify(associatedData))
     // console.log(JSON.stringify(dataKey))
 

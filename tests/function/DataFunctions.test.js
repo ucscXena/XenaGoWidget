@@ -27,6 +27,10 @@ import FindPruneData1 from '../data/FindPruneData1'
 import FindPruneDataKey1 from '../data/FindPruneDataKey1'
 import FindPruneDataOutput1 from '../data/FindPruneDataOutput1'
 
+import PruneColumnData1 from '../data/PruneColumnData1'
+import PruneColumnPathwaysData1 from '../data/PrunePathwaysData1'
+import PruneColumnOutput1 from '../data/PruneColumnOutput1'
+
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
 const MUTATION_MIN = 2 ;
@@ -112,7 +116,7 @@ describe('Data Functions', () => {
   });
 
   it('Prune columns', () => {
-    expect(FindPruneDataOutput1).toEqual(pruneColumns(FindPruneData1,FindPruneDataKey1))
+    expect(PruneColumnOutput1).toEqual(pruneColumns(PruneColumnData1,PruneColumnPathwaysData1,0))
   });
 
 
