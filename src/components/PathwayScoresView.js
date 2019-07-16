@@ -5,11 +5,8 @@ import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
 import {partition, sumInstances, sumTotals} from '../functions/util';
 import LabelWrapper from "./LabelWrapper";
-import {
-    clusterSort, diffSort, scoreColumns,
-    synchronizedSort
-} from '../functions/SortFunctions';
-import {createAssociatedDataKey,  findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {clusterSort, diffSort, scoreColumns, synchronizedSort} from '../functions/SortFunctions';
+import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 import update from "immutability-helper";
 
@@ -85,7 +82,7 @@ let pathwayIndexFromX = (x, layout) => {
     }
 };
 
-function getPointData(event, layout,associatedData,sortedSamples,pathways,props) {
+function getPointData(event, layout, associatedData, sortedSamples, pathways, props) {
     let {height, cohortIndex} = props;
     let {x, y} = getMousePos(event);
     let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
@@ -109,7 +106,7 @@ let internalData = undefined;
 let layoutData = undefined;
 let associatedData = undefined;
 let sortedSamples = undefined;
-let returnedPathways = undefined ;
+let returnedPathways = undefined;
 
 
 export default class PathwayScoresView extends PureComponent {
@@ -144,12 +141,12 @@ export default class PathwayScoresView extends PureComponent {
 
     onHover = (event) => {
         let {onHover} = this.props;
-        let pointData = getPointData(event, layoutData, associatedData,sortedSamples,returnedPathways, this.props);
+        let pointData = getPointData(event, layoutData, associatedData, sortedSamples, returnedPathways, this.props);
         if (pointData) {
             onHover(pointData);
         } else {
             onHover(null);
-       }
+        }
     };
 
     componentDidMount() {
@@ -163,14 +160,14 @@ export default class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            height,  data, offset, cohortIndex,
+            height, data, offset, cohortIndex,
             selectedPathways, colorSettings, highlightedGene, filter, min,
             viewType, showDetailLayer, geneList, showClusterSort, collapsed,
-            selectedCohort,
+            selectedCohort, showDiffLayer
         } = this.props;
 
         // let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
-        const {expression, copyNumber,pathways,samples} = data ;
+        const {expression, copyNumber, pathways, samples} = data;
 
         let hashAssociation = {
             expression,
@@ -188,14 +185,14 @@ export default class PathwayScoresView extends PureComponent {
         }
 
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-        let prunedColumns = findPruneData(associatedData,associatedDataKey);
+        associatedData = findAssociatedData(hashAssociation, associatedDataKey);
+        let prunedColumns = findPruneData(associatedData, associatedDataKey);
         prunedColumns.samples = samples;
 
         let calculatedPathways = scoreColumns(prunedColumns);
         let returnedValue = update(prunedColumns, {
-            pathways:{$set:calculatedPathways},
-            index:{$set:cohortIndex},
+            pathways: {$set: calculatedPathways},
+            index: {$set: cohortIndex},
         });
 
         // set affected versus total
@@ -211,10 +208,9 @@ export default class PathwayScoresView extends PureComponent {
         /// TODO: maybe have it ONLY calculate the diff scores?
         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
-        if(!showClusterSort && returnedValue.pathways[0].diffScore){
-            returnedValue = diffSort(returnedValue,cohortIndex!==0);
-        }
-        else if (showClusterSort){
+        if (!showClusterSort && returnedValue.pathways[0].diffScore) {
+            returnedValue = diffSort(returnedValue, cohortIndex !== 0);
+        } else if (showClusterSort) {
             if (cohortIndex === 0) {
                 returnedValue = clusterSort(returnedValue);
                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
@@ -238,11 +234,11 @@ export default class PathwayScoresView extends PureComponent {
             calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * returnedValue.pathways.length);
         }
 
-        layoutData  = layout(calculatedWidth, returnedValue.data);
+        layoutData = layout(calculatedWidth, returnedValue.data);
         sortedSamples = returnedValue.sortedSamples ? returnedValue.sortedSamples : returnedValue.samples;
         returnedPathways = returnedValue.pathways;
 
-        console.log('data pathways',data,returnedPathways)
+        // console.log('returned pathways',returnedPathways)
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
@@ -274,7 +270,7 @@ export default class PathwayScoresView extends PureComponent {
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
-                    showDiffLayer={this.props.showDiffLayer}
+                    showDiffLayer={showDiffLayer}
                 />
             </div>
         );

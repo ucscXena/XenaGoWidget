@@ -49,6 +49,7 @@ export default class LabelSet extends PureComponent {
                 let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
                 let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
                 let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
+                console.log('show diff layer',showDiffLayer,d.diffScore,cohortIndex);
                 return (
                     <div key={`${labelKey}-${cohortIndex}-outer`} className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom}>
                         { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
