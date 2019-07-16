@@ -3,7 +3,7 @@ import React from 'react'
 import { unmountComponentAtNode} from 'react-dom'
 import {
   addIndepProb,
-  associateData, createEmptyArray, DEFAULT_DATA_VALUE, findAssociatedData, findPruneData,
+  doDataAssociations, createEmptyArray, DEFAULT_DATA_VALUE, findAssociatedData, findPruneData,
   getCopyNumberHigh,
   getCopyNumberLow,
   getCopyNumberValue, getGenePathwayLookup,
@@ -100,7 +100,7 @@ describe('Data Functions', () => {
   });
 
   it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(associateData(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN))
+    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN))
   });
 
   it('Find Associated Data', () => {

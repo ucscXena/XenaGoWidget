@@ -32,7 +32,7 @@ export default class LabelWrapper extends PureComponent {
             , layout
             , onMouseMove
             , onMouseOut
-            , associateData
+            , associatedData
             , cohortIndex
             , highlightedGene
             , offset
@@ -45,7 +45,7 @@ export default class LabelWrapper extends PureComponent {
                  onMouseOut={onMouseOut}
             >
                 <LabelSet
-                    associateData={associateData}
+                    associatedData={associatedData}
                     pathways={pathways}
                     layout={layout}
                     highlightedGene={highlightedGene}
@@ -69,5 +69,6 @@ LabelWrapper.propTypes = {
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
+    associatedData: PropTypes.any.isRequired,
     showDiffLayer: PropTypes.any,
 };

@@ -295,24 +295,24 @@ export default {
 
 
     drawGeneView(vg, props) {
-        let {width, height, layout, cohortIndex, associateData, viewType} = props;
+        let {width, height, layout, cohortIndex, associatedData, viewType} = props;
 
         clearScreen(vg, width, height);
 
-        if (associateData.length === 0) {
+        if (associatedData.length === 0) {
             return;
         }
 
 
         if (viewType && viewType === COLOR_BY_TYPE_DETAIL) {
-            drawGeneWithManyColorTypes(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+            drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
         }
         else
         if (viewType && viewType === COLOR_BY_TYPE) {
-            drawGeneWithColorType(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, cohortIndex);
+            drawGeneWithColorType(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
         }
         else {
-            drawGeneDataTotal(vg, width, height, layout, associateData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
+            drawGeneDataTotal(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
         }
 
     },

@@ -75,7 +75,7 @@ export function findAssociatedData(inputHash,associatedDataKey) {
     const key = JSON.stringify(associatedDataKey);
     let data = associateCache.get(key);
     if (ignoreCache || !data) {
-        data = associateData(expression, copyNumber, geneList, pathways, samples, filter, min);
+        data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter, min);
         associateCache.set(key,data);
     }
 
@@ -109,7 +109,7 @@ export function createEmptyArray(pathwayLength,sampleLength){
  * @param selectedCohort
  * @returns {any[]}
  */
-export function associateData(expression, copyNumber, geneList, pathways, samples, filter, min) {
+export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter, min) {
 
     filter = filter.indexOf('All') === 0 ? '' : filter;
     let returnArray = createEmptyArray(pathways.length,samples.length)

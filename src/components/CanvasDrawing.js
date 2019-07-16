@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 import {omit,isEqual} from 'underscore'
 
-const omitArray = ['associateData','draw','data'];
+const omitArray = ['associatedData','draw','data'];
 const styles = {
     canvas: {
         cursor: 'crosshair',
@@ -85,6 +85,7 @@ CanvasDrawing.propTypes = {
     width: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
+    associatedData: PropTypes.any.isRequired, // gets passed in the other functions
     onHover: PropTypes.any,
     onMouseOut: PropTypes.any,
     onClick: PropTypes.any,
