@@ -85,11 +85,11 @@ let pathwayIndexFromX = (x, layout) => {
     }
 };
 
-function getPointData(event, props) {
-    let {associatedData, height, layout, cohortIndex, data: {pathways, samples, sortedSamples}} = props;
+function getPointData(event, layout,associatedData,sortedSamples,pathways,props) {
+    let {height, cohortIndex} = props;
     let {x, y} = getMousePos(event);
     let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
-    let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, samples.length, cohortIndex);
+    let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, sortedSamples.length, cohortIndex);
     let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData);
     return {
         pathway: pathways[pathwayIndex],
@@ -101,10 +101,15 @@ function getPointData(event, props) {
 
 let layout = (width, {length = 0} = {}) => partition(width, length);
 
-const minWidth = 400;
-const minColWidth = 12;
+const MIN_WIDTH = 400;
+const MIN_COL_WIDTH = 12;
 
+// TODO: move to state I think
 let internalData = undefined;
+let layoutData = undefined;
+let associatedData = undefined;
+let sortedSamples = undefined;
+let returnedPathways = undefined ;
 
 
 export default class PathwayScoresView extends PureComponent {
@@ -139,12 +144,12 @@ export default class PathwayScoresView extends PureComponent {
 
     onHover = (event) => {
         let {onHover} = this.props;
-        let pointData = getPointData(event, this.props);
+        let pointData = getPointData(event, layoutData, associatedData,sortedSamples,returnedPathways, this.props);
         if (pointData) {
             onHover(pointData);
         } else {
             onHover(null);
-        }
+       }
     };
 
     componentDidMount() {
@@ -183,7 +188,7 @@ export default class PathwayScoresView extends PureComponent {
         }
 
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+        associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let prunedColumns = findPruneData(associatedData,associatedDataKey);
         prunedColumns.samples = samples;
 
@@ -230,11 +235,13 @@ export default class PathwayScoresView extends PureComponent {
         } else if (genesInGeneSet > 85 && collapsed) {
             calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
         } else {
-            calculatedWidth = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
+            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * returnedValue.pathways.length);
         }
 
-        let layoutData  = layout(calculatedWidth, returnedValue.data);
-
+        layoutData  = layout(calculatedWidth, returnedValue.data);
+        console.log('returned values',returnedValue)
+        sortedSamples = returnedValue.sortedSamples;
+        returnedPathways = returnedValue.pathways;
 
         return (
             <div ref='wrapper' style={style.xenaGoView}>
