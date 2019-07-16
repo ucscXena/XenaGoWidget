@@ -265,16 +265,6 @@ export default class PathwayScoresViewCache extends PureComponent {
 
         if(!showClusterSort && returnedValue.pathways[0].diffScore){
             returnedValue = diffSort(returnedValue,cohortIndex!==0);
-            // NOTE: we could also use this method, but we hope they have the same result
-         //    if (cohortIndex === 0) {
-         //        returnedValue = diffSort(returnedValue);
-         //        PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-         //    }
-         // // Not sure if this is still necessary
-         //    else {
-         //        PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-         //        returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList,false);
-         //    }
         }
         else if (showClusterSort){
             if (cohortIndex === 0) {
