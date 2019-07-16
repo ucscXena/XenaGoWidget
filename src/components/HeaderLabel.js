@@ -70,6 +70,7 @@ export class HeaderLabel extends PureComponent {
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
         // let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
+        // console.log('drawing header label with color',item,numSamples,geneLength,colorSettings)
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (

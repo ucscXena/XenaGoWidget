@@ -36,7 +36,8 @@ export default class LabelWrapper extends PureComponent {
             , cohortIndex
             , highlightedGene
             , offset
-            , data: {pathways}
+            , pathways
+            , data
         } = this.props;
 
         return (
@@ -54,7 +55,7 @@ export default class LabelWrapper extends PureComponent {
                     colorMask={getGeneColorMask()}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
-                    data={this.props.data}
+                    data={data}
                     showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
@@ -70,5 +71,7 @@ LabelWrapper.propTypes = {
     geneLabelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     associatedData: PropTypes.any.isRequired,
+    data: PropTypes.any.isRequired,
+    pathways: PropTypes.any.isRequired,
     showDiffLayer: PropTypes.any,
 };

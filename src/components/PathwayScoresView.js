@@ -242,6 +242,8 @@ export default class PathwayScoresView extends PureComponent {
         sortedSamples = returnedValue.sortedSamples ? returnedValue.sortedSamples : returnedValue.samples;
         returnedPathways = returnedValue.pathways;
 
+        console.log('data pathways',data,returnedPathways)
+
         return (
             <div ref='wrapper' style={style.xenaGoView}>
                 {showDetailLayer &&
@@ -267,6 +269,7 @@ export default class PathwayScoresView extends PureComponent {
                     associatedData={associatedData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
+                    pathways={returnedPathways}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
