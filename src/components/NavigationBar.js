@@ -1,6 +1,6 @@
 import React from 'react'
-import {Avatar, Chip, Button, AppBar, Link, Navigation, BrowseButton} from "react-toolbox";
-import {Checkbox, Switch, IconMenu, MenuItem, MenuDivider} from "react-toolbox";
+import { Button, AppBar,  Navigation } from "react-toolbox";
+import {IconMenu, MenuItem, MenuDivider} from "react-toolbox";
 
 import {XENA_VIEW, PATHWAYS_VIEW} from "../../src/components/XenaGeneSetApp";
 import PureComponent from "../../src/components/PureComponent";
