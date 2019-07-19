@@ -51,6 +51,14 @@ export const MIN_GENE_WIDTH_PX = 80;// 8 or less
 export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
+const LOAD_STATE = {
+    UNLOADED: 'unloaded',
+    LOADING: 'loading',
+    LOADED: 'loaded',
+};
+
+let currentLoadState = LOAD_STATE.UNLOADED ;
+
 /**
  * refactor that from index
  */
@@ -63,6 +71,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // let pathways = this.getActiveApp().pathway;
         const  pathway = AppStorageHandler.getPathway();
         const apps = AppStorageHandler.getAppData(pathway);
+        console.log('apps data',JSON.stringify(apps))
         const cohortData = fetchCohortData();
 
         this.state = {
@@ -71,7 +80,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedCohortB:undefined,
             view: XENA_VIEW,
             cohortData,
-            loading:'loading',
+            loading:LOAD_STATE.UNLOADED,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
             showColorByType: false,
@@ -164,7 +173,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleCombinedCohortData = (input) => {
-        // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+        // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort,selectedObjectA,selectedObjectB} = input;
         let {
             samples,
             geneList,
@@ -216,8 +225,9 @@ export default class XenaGeneSetApp extends PureComponent {
         //     });
         // }
 
+        currentLoadState = LOAD_STATE.LOADED;
         this.setState({
-            loading: 'loaded',
+            loading: LOAD_STATE.LOADED,
             selectedCohortA:selectedObjectA,
             selectedCohortB:selectedObjectB,
             // oldSelectedSubCohortsA:cohortA.selectedSubCohorts,
@@ -757,15 +767,32 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     componentDidMount() {
-        this.loadSelectedState();
+        // this.loadSelectedState();
     }
+
 
     doRefetch(){
 
+        console.log('calc refretch',JSON.stringify(currentLoadState))
+        switch (currentLoadState) {
+            case LOAD_STATE.LOADING:
+                return false ;
+            case LOAD_STATE.UNLOADED:
+                return true ;
+
+                // TODO: this should be calculated below depending on the state of gene data and if the selected cohort changed
+            case LOAD_STATE.LOADED:
+                return false ;
+
+        }
+
         // console.log('gene data',this.state.geneData)
         // console.log('pathway data',this.state.pathwayData)
+        console.log('A')
         if(isEqual(this.state.geneData,[{},{}])) return true ;
+        console.log('B')
         if(isEqual(this.state.pathwayData,[{},{}])) return true ;
+        console.log('C')
 
 
         const selectedCohortA = this.state.apps[0].selectedCohort;
@@ -784,7 +811,7 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
 
         // console.log('active app',this.getActiveApp())
-        console.log('these propos',JSON.stringify(this.props))
+        console.log('render',JSON.stringify(this.props));
 
 
         let activeApp = this.getActiveApp();
@@ -794,7 +821,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // TODO: returned should do rendering
         if(this.doRefetch()){
-            console.log('fetching');
+            currentLoadState = LOAD_STATE.LOADING;
+            console.log('FETCHING');
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         }
         else{
@@ -943,7 +971,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 </table>
                             </td>
 
-                            {this.state.loading==='loaded' &&
+                            {this.state.loading===LOAD_STATE.LOADED &&
                                 <td valign="top" className="map_wrapper"
                                 onMouseMove={(ev) => {
                                 // const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
@@ -957,49 +985,51 @@ export default class XenaGeneSetApp extends PureComponent {
                                 >
                                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                                 <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT * 2}/>
-                                <XenaGoViewer appData={this.state.apps[0]}
-                                pathwaySelect={this.pathwaySelect}
-                                ref='xena-go-app-0'
-                                renderHeight={VIEWER_HEIGHT}
-                                renderOffset={0}
-                                pathways={pathways}
-                                highlightedGene={this.state.highlightedGene}
-                                geneDataStats={this.state.geneData[0]}
-                                geneHover={this.geneHover}
-                                populateGlobal={this.populateGlobal}
-                                shareGlobalGeneData={this.shareGlobalGeneData}
-                                cohortIndex={0}
-                                colorSettings={this.state.geneStateColors}
-                                setCollapsed={this.setCollapsed}
-                                collapsed={this.state.collapsed}
-                                showColorByType={this.state.showColorByType}
-                                showColorByTypeDetail={this.state.showColorByTypeDetail}
-                                showColorTotal={this.state.showColorTotal}
-                                showDiffLayer={this.state.showDiffLayer}
-                                showDetailLayer={this.state.showDetailLayer}
-                                showClusterSort={this.state.showClusterSort}
+                                <XenaGoViewer
+                                    appData={this.state.apps[0]}
+                                    pathwaySelect={this.pathwaySelect}
+                                    ref='xena-go-app-0'
+                                    renderHeight={VIEWER_HEIGHT}
+                                    renderOffset={0}
+                                    pathways={pathways}
+                                    highlightedGene={this.state.highlightedGene}
+                                    geneDataStats={this.state.geneData[0]}
+                                    geneHover={this.geneHover}
+                                    populateGlobal={this.populateGlobal}
+                                    shareGlobalGeneData={this.shareGlobalGeneData}
+                                    cohortIndex={0}
+                                    colorSettings={this.state.geneStateColors}
+                                    setCollapsed={this.setCollapsed}
+                                    collapsed={this.state.collapsed}
+                                    showColorByType={this.state.showColorByType}
+                                    showColorByTypeDetail={this.state.showColorByTypeDetail}
+                                    showColorTotal={this.state.showColorTotal}
+                                    showDiffLayer={this.state.showDiffLayer}
+                                    showDetailLayer={this.state.showDetailLayer}
+                                    showClusterSort={this.state.showClusterSort}
                                 />
-                                <XenaGoViewer appData={this.state.apps[1]}
-                                pathwaySelect={this.pathwaySelect}
-                                ref='xena-go-app-1'
-                                renderHeight={VIEWER_HEIGHT}
-                                renderOffset={VIEWER_HEIGHT - 3}
-                                pathways={pathways}
-                                highlightedGene={this.state.highlightedGene}
-                                geneDataStats={this.state.geneData[1]}
-                                geneHover={this.geneHover}
-                                populateGlobal={this.populateGlobal}
-                                shareGlobalGeneData={this.shareGlobalGeneData}
-                                cohortIndex={1}
-                                colorSettings={this.state.geneStateColors}
-                                setCollapsed={this.setCollapsed}
-                                collapsed={this.state.collapsed}
-                                showColorByType={this.state.showColorByType}
-                                showColorByTypeDetail={this.state.showColorByTypeDetail}
-                                showColorTotal={this.state.showColorTotal}
-                                showDiffLayer={this.state.showDiffLayer}
-                                showDetailLayer={this.state.showDetailLayer}
-                                showClusterSort={this.state.showClusterSort}
+                                <XenaGoViewer
+                                    appData={this.state.apps[1]}
+                                    pathwaySelect={this.pathwaySelect}
+                                    ref='xena-go-app-1'
+                                    renderHeight={VIEWER_HEIGHT}
+                                    renderOffset={VIEWER_HEIGHT - 3}
+                                    pathways={pathways}
+                                    highlightedGene={this.state.highlightedGene}
+                                    geneDataStats={this.state.geneData[1]}
+                                    geneHover={this.geneHover}
+                                    populateGlobal={this.populateGlobal}
+                                    shareGlobalGeneData={this.shareGlobalGeneData}
+                                    cohortIndex={1}
+                                    colorSettings={this.state.geneStateColors}
+                                    setCollapsed={this.setCollapsed}
+                                    collapsed={this.state.collapsed}
+                                    showColorByType={this.state.showColorByType}
+                                    showColorByTypeDetail={this.state.showColorByTypeDetail}
+                                    showColorTotal={this.state.showColorTotal}
+                                    showDiffLayer={this.state.showDiffLayer}
+                                    showDetailLayer={this.state.showDetailLayer}
+                                    showClusterSort={this.state.showClusterSort}
                                 />
                                 </td>
                             }
