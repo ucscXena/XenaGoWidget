@@ -2,10 +2,13 @@ import expect from 'expect'
 import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
 import {
+  fetchCohortData, getGenesForNamedPathways, getGenesForPathways,
   getSamplesFromSubCohort,
   getSamplesFromSubCohortList,
   getSubCohortsOnlyForCohort
 } from "../../src/functions/CohortFunctions";
+import DefaultCohortData from '../data/DefaultCohortData'
+import SamplePathway1 from '../data/SamplePathway1'
 
 describe('Test Sub Cohorts', () => {
 
@@ -38,6 +41,21 @@ describe('Test Sub Cohorts', () => {
   });
 
 
+  it('Get Cohort Data',() => {
+    expect(DefaultCohortData).toEqual(fetchCohortData());
+  });
+
+  // it('Get Genes for Pathways',() => {
+  //   const inputPathways = {};
+  //   const geneList = {};
+  //   expect(geneList).toEqual(getGenesForPathways(pathways));
+  // });
+
+  it('Get Names Genes For Pathway', () => {
+      const selectedPathways = ["Sensitivity to DNA damaging agents"];
+      const geneList = ["BLM","WRN","RECQL4","ATM","TTDN1"];
+      expect(geneList).toEqual(getGenesForNamedPathways(selectedPathways,SamplePathway1));
+  });
 
 });
 

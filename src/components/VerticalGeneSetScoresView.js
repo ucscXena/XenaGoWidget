@@ -8,6 +8,7 @@ import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../fun
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
 import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+import {getGenesForPathways} from "../functions/CohortFunctions";
 
 const HEADER_HEIGHT = 15;
 
@@ -71,7 +72,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         });
 
         const totalHeight = layout.length * labelHeight;
-        let geneList = this.getGenesForPathways(pathways);
+        let geneList = getGenesForPathways(pathways);
+        console.log('VGSS',JSON.stringify(pathways),JSON.stringify(geneList))
 
 
         // TODO: fix sort somehow

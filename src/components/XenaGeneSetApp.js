@@ -17,12 +17,15 @@ import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFun
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
 import {Dialog} from "react-toolbox";
+import {fetchCombinedCohorts} from "../functions/FetchFunctions";
+
 let Rx = require('ucsc-xena-client/dist/rx');
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
+import {fetchCohortData} from "../functions/CohortFunctions";
 
 
 
@@ -54,8 +57,16 @@ export default class XenaGeneSetApp extends PureComponent {
 
     constructor(props) {
         super(props);
+
+        // let pathways = this.getActiveApp().pathway;
+        const  pathway = AppStorageHandler.getPathway();
+        const apps = AppStorageHandler.getAppData(pathway);
+        const cohortData = fetchCohortData();
+
         this.state = {
+            apps,
             view: XENA_VIEW,
+            cohortData,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
             showColorByType: false,
@@ -67,7 +78,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: AppStorageHandler.getPathway(),
+                    pathway: pathway,
                     selected: true
                 }
             ],
@@ -98,6 +109,9 @@ export default class XenaGeneSetApp extends PureComponent {
                 shadingValue: 10,
             }
         };
+        // this.setState({
+        //     apps: apps
+        // });
     }
 
     queryGenes = (geneQuery) => {
@@ -116,47 +130,6 @@ export default class XenaGeneSetApp extends PureComponent {
             }
         )
     };
-
-    loadSelectedState() {
-        let pathways = this.getActiveApp().pathway;
-        let apps = AppStorageHandler.getAppData(pathways);
-        this.setState({
-            apps: apps
-        });
-    }
-
-    /**
-     * Forces the state of the system once everything is loaded based on the existing pathway selection.
-     */
-    forceState() {
-        let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
-        if (refLoaded) {
-            let selection = AppStorageHandler.getPathwaySelection();
-            let newSelect = [selection.pathway];
-            this.setState({
-                selectedPathways: newSelect
-            });
-            if (selection.selectedPathways) {
-                for (let index = 0; index < this.state.apps.length; index++) {
-                    let ref = this.refs['xena-go-app-' + index];
-                    ref.setPathwayState(selection.selectedPathways, selection);
-                }
-            }
-            else {
-                // let {pathway: {golabel}} = selection;
-                // ref.setPathwayState([golabel], selection);
-                refLoaded.clickPathway(selection);
-            }
-        }
-    }
-
-    componentDidUpdate() {
-        this.forceState();
-    }
-
-    componentDidMount() {
-        this.loadSelectedState();
-    }
 
 
     handleUpload = (file) => {
@@ -185,7 +158,7 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    handleCombinedCohortData(input) {
+    handleCombinedCohortData = (input) => {
         // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
         let {
             samples,
@@ -201,6 +174,8 @@ export default class XenaGeneSetApp extends PureComponent {
             genomeBackgroundCopyNumberB,
             cohortB
         } = input;
+
+        console.log('handling combined data')
 
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
@@ -728,11 +703,72 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
 
-    render() {
+    loadSelectedState() {
         let pathways = this.getActiveApp().pathway;
+        let apps = AppStorageHandler.getAppData(pathways);
+        this.setState({
+            apps: apps
+        });
+    }
+
+    /**
+     * Forces the state of the system once everything is loaded based on the existing pathway selection.
+     */
+    forceState() {
+        let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
+        if (refLoaded) {
+            let selection = AppStorageHandler.getPathwaySelection();
+            let newSelect = [selection.pathway];
+            this.setState({
+                selectedPathways: newSelect
+            });
+            if (selection.selectedPathways) {
+                for (let index = 0; index < this.state.apps.length; index++) {
+                    let ref = this.refs['xena-go-app-' + index];
+                    ref.setPathwayState(selection.selectedPathways, selection);
+                }
+            }
+            else {
+                // let {pathway: {golabel}} = selection;
+                // ref.setPathwayState([golabel], selection);
+                refLoaded.clickPathway(selection);
+            }
+        }
+    }
+
+    // TODO: these should be un-nessary
+    componentDidUpdate() {
+        this.forceState();
+    }
+
+    componentDidMount() {
+        this.loadSelectedState();
+    }
+
+    render() {
+
+        // console.log('active app',this.getActiveApp())
+        console.log('these propos',JSON.stringify(this.props))
+
+
+        let activeApp = this.getActiveApp();
+        let pathways = activeApp.pathway;
+        // console.log('active app',JSON.stringify(activeApp),activeApp)
+        console.log('found pathways',activeApp,this.state.apps)
         const BORDER_OFFSET = 2;
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
+
+        // TODO: returned should do rendering
+        fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData)
+
+        // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists
+        // fetchCombinedSubCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData)
+        // TODO: remove componentDidMount and componentDidUpdate
+
+
+        // 2. based on cohortData, fetch cohorts with subCohorts
+
 
         return (
             <div>

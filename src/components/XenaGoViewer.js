@@ -26,6 +26,8 @@ import {COLOR_BY_TYPE, COLOR_BY_TYPE_DETAIL, COLOR_TOTAL, VIEW_TYPE} from "../fu
 import {DetailedLegend} from "./DetailedLegend";
 import {TwoColorLegend} from "./TwoColorLegend";
 import {
+    getGenesForNamedPathways,
+    getGenesForPathways,
     getSamplesFromSubCohort, getSamplesFromSubCohortList,
     getSubCohortsOnlyForCohort
 } from "../functions/CohortFunctions";
@@ -86,7 +88,8 @@ export default class XenaGoViewer extends PureComponent {
         let {pathway: {goid, golabel}} = pathwayClickData;
          // console.log('setting pathway state',newSelection,pathwayClickData)
 
-        let geneList = this.getGenesForNamedPathways(newSelection, this.props.pathways);
+        let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
+        // console.log('setting pathway state',JSON.stringify(newSelection),JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
 
@@ -256,7 +259,8 @@ export default class XenaGoViewer extends PureComponent {
             selectedCohortData: cohort,
             processing: true,
         });
-        let geneList = this.getGenesForPathways(this.props.pathways);
+        let geneList = getGenesForPathways(this.props.pathways);
+        console.log('A',JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
             intersection)
@@ -327,7 +331,8 @@ export default class XenaGoViewer extends PureComponent {
                 selectedSubCohorts: selectedObject.selectedSubCohorts
             }
         );
-        let geneList = this.getGenesForPathways(this.props.pathways);
+        let geneList = getGenesForPathways(this.props.pathways);
+        console.log('test criteria 2',JSON.stringify(this.props.pathways,geneList))
          Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
         ).subscribe((sampleArray) => {
@@ -359,14 +364,14 @@ export default class XenaGoViewer extends PureComponent {
         });
     };
 
-    getGenesForNamedPathways(selectedPathways, pathways) {
-        let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
-        return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
-    };
+    // getGenesForNamedPathways(selectedPathways, pathways) {
+    //     let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
+    //     return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
+    // };
 
-    getGenesForPathways(pathways) {
-        return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-    };
+    // getGenesForPathways(pathways) {
+    //     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
+    // };
 
     callDownload = () => {
         this.refs['pathwayscoreview'].downloadData();
@@ -380,7 +385,8 @@ export default class XenaGoViewer extends PureComponent {
         filteredMutationVector['Copy Number'] = 1;
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
-        let geneList = this.getGenesForPathways(this.props.pathways);
+        let geneList = getGenesForPathways(this.props.pathways);
+        console.log('test criteria',JSON.stringify(this.props.pathways,geneList))
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
