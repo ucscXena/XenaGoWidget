@@ -74,7 +74,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
             combinationHandler({
                 samples,
                 geneList,
-
                 mutationsA,
                 copyNumberA,
                 genomeBackgroundMutationA,
@@ -85,6 +84,8 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
                 genomeBackgroundMutationB,
                 genomeBackgroundCopyNumberB,
                 cohortB,
+                selectedObjectA,
+                selectedObjectB,
             });
         });
 };

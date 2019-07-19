@@ -86,10 +86,8 @@ export default class XenaGoViewer extends PureComponent {
     setPathwayState(newSelection, pathwayClickData) {
         let {expression, samples, copyNumber} = this.state.pathwayData;
         let {pathway: {goid, golabel}} = pathwayClickData;
-         // console.log('setting pathway state',newSelection,pathwayClickData)
 
         let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
-        // console.log('setting pathway state',JSON.stringify(newSelection),JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
 
@@ -260,7 +258,6 @@ export default class XenaGoViewer extends PureComponent {
             processing: true,
         });
         let geneList = getGenesForPathways(this.props.pathways);
-        console.log('A',JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
             intersection)
@@ -332,7 +329,6 @@ export default class XenaGoViewer extends PureComponent {
             }
         );
         let geneList = getGenesForPathways(this.props.pathways);
-        console.log('test criteria 2',JSON.stringify(this.props.pathways,geneList))
          Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
         ).subscribe((sampleArray) => {
@@ -386,7 +382,6 @@ export default class XenaGoViewer extends PureComponent {
 
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = getGenesForPathways(this.props.pathways);
-        console.log('test criteria',JSON.stringify(this.props.pathways,geneList))
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 

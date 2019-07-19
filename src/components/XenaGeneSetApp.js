@@ -38,6 +38,7 @@ const VERTICAL_SELECTOR_WIDTH = 220;
 const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
 const ARROW_WIDTH = 20;
+const BORDER_OFFSET = 2;
 
 export const FILTER_PERCENTAGE = 0;
 export const MIN_FILTER = 2;
@@ -66,6 +67,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         this.state = {
             apps,
+            selectedCohortA:undefined,
+            selectedCohortB:undefined,
             view: XENA_VIEW,
             cohortData,
             loading:'loading',
@@ -170,14 +173,16 @@ export default class XenaGeneSetApp extends PureComponent {
             genomeBackgroundMutationA,
             genomeBackgroundCopyNumberA,
             cohortA,
+            selectedObjectA,
             mutationsB,
             copyNumberB,
             genomeBackgroundMutationB,
             genomeBackgroundCopyNumberB,
-            cohortB
+            cohortB,
+            selectedObjectB,
         } = input;
 
-        console.log('handling combined data')
+        console.log('handling combined data',JSON.stringify(selectedObjectA),JSON.stringify(selectedObjectB));
 
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
@@ -212,7 +217,11 @@ export default class XenaGeneSetApp extends PureComponent {
         // }
 
         this.setState({
-            loading: 'loaded'
+            loading: 'loaded',
+            selectedCohortA:selectedObjectA,
+            selectedCohortB:selectedObjectB,
+            // oldSelectedSubCohortsA:cohortA.selectedSubCohorts,
+            // oldSelectedSubCohortsB:cohortB.selectedSubCohorts,
         });
 
     };
@@ -753,14 +762,22 @@ export default class XenaGeneSetApp extends PureComponent {
 
     doRefetch(){
 
-        let selectedCohortA = this.state.apps[0].selectedCohort;
-        let selectedCohortB = this.state.apps[1].selectedCohort;
-        let selectedSubCohortsA = this.state.apps[0].selectedSubCohorts;
-        let selectedSubCohortsB = this.state.apps[1].selectedSubCohorts;
+        // console.log('gene data',this.state.geneData)
+        // console.log('pathway data',this.state.pathwayData)
+        if(isEqual(this.state.geneData,[{},{}])) return true ;
+        if(isEqual(this.state.pathwayData,[{},{}])) return true ;
+
+
+        const selectedCohortA = this.state.apps[0].selectedCohort;
+        console.log('cohort AAAA',JSON.stringify(this.state.selectedCohortA),JSON.stringify(selectedCohortA))
+        const selectedCohortB = this.state.apps[1].selectedCohort;
+        const selectedSubCohortsA = this.state.apps[0].selectedSubCohorts;
+        const selectedSubCohortsB = this.state.apps[1].selectedSubCohorts;
 
         if(!isEqual(selectedCohortA, selectedCohortB)) return true ;
         if(!isEqual(selectedSubCohortsA, selectedSubCohortsB)) return true ;
-        
+
+        console.log('returning false',selectedCohortA,selectedCohortB,selectedSubCohortsA,selectedSubCohortsB)
         return false;
     }
 
@@ -772,9 +789,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathway;
-        // console.log('active app',JSON.stringify(activeApp),activeApp)
-        console.log('found pathways',activeApp,this.state.apps)
-        const BORDER_OFFSET = 2;
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
