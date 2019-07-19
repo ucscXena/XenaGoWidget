@@ -773,7 +773,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     doRefetch(){
 
-        console.log('calc refretch',JSON.stringify(currentLoadState))
+        // console.log('calc refretch',JSON.stringify(currentLoadState))
         switch (currentLoadState) {
             case LOAD_STATE.LOADING:
                 return false ;
@@ -811,7 +811,7 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
 
         // console.log('active app',this.getActiveApp())
-        console.log('render',JSON.stringify(this.props));
+        // console.log('render',JSON.stringify(this.props));
 
 
         let activeApp = this.getActiveApp();
@@ -825,9 +825,9 @@ export default class XenaGeneSetApp extends PureComponent {
             console.log('FETCHING');
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         }
-        else{
-            console.log('not fetching')
-        }
+        // else{
+        //     console.log('not fetching')
+        // }
 
 
         // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists

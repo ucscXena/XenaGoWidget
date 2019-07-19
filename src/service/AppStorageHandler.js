@@ -7,8 +7,9 @@ const LOCAL_APP_STORAGE = "xena-app-storage";
 const LOCAL_STATE_STORAGE = "xena-selection-storage";
 const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
 import DefaultPathWays from "../data/genesets/tgac";
+import update from "immutability-helper";
 
-const DefaultApp = {
+const DefaultAppA = {
     renderOffset: 5,
     selectedPathways: [],
     pathwayData: {
@@ -50,6 +51,12 @@ const DefaultApp = {
         score: null
     }
 };
+
+const DefaultAppB = update(DefaultAppA,{
+   selectedCohort:{$set:'TCGA Prostate Cancer (PRAD)'} ,
+    pathwayData:{cohort:{$set:'TCGA Prostate Cancer (PRAD)'}} ,
+});
+
 
 /**
  * This is just for handling memory.
@@ -171,10 +178,11 @@ export class AppStorageHandler extends PureComponent {
         }
         else {
             // DefaultApp.renderHeight = renderHeight ;
-            DefaultApp.pathwayData.pathways = pathways ;
-            let app1 = Object.assign({}, DefaultApp);
+            DefaultAppA.pathwayData.pathways = pathways ;
+            DefaultAppB.pathwayData.pathways = pathways ;
+            let app1 = Object.assign({}, DefaultAppA);
             app1.key = 0 ;
-            let app2 = Object.assign({}, DefaultApp);
+            let app2 = Object.assign({}, DefaultAppB);
             app2.key = 1 ;
             return [app1,app2];
         }
