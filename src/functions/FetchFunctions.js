@@ -38,22 +38,26 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
     // this selects cohorts, not sub-cohorts
     // TODO: get working
     // TODO: extend to get subcohorts
+    const samplesB = [];
+
     Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
         datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
         intersection)
-        .flatMap((samples) => {
+        .flatMap((samplesA) => {
             return Rx.Observable.zip(
-                sparseData(cohortA.host, cohortA.mutationDataSetId, samples, geneList),
-                datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samples, geneList),
-                datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samples, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samples, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
-
-
+                sparseData(cohortA.host, cohortA.mutationDataSetId, samplesA, geneList),
+                datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samplesA, geneList),
+                datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samplesA, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
+                datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samplesA, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
+                sparseData(cohortB.host, cohortB.mutationDataSetId, samplesB, geneList),
+                datasetFetch(cohortB.host, cohortB.copyNumberDataSetId, samplesB, geneList),
+                datasetFetch(cohortB.genomeBackgroundMutation.host, cohortB.genomeBackgroundMutation.dataset, samplesB, [cohortB.genomeBackgroundMutation.feature_event_K, cohortB.genomeBackgroundMutation.feature_total_pop_N]),
+                datasetFetch(cohortB.genomeBackgroundCopyNumber.host, cohortB.genomeBackgroundCopyNumber.dataset, samplesB, [cohortB.genomeBackgroundCopyNumber.feature_event_K, cohortB.genomeBackgroundCopyNumber.feature_total_pop_N]),
                 (
                     mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
                     mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
                 ) => ({
-                    samples,
+                    samples: samplesA,
                     mutationsA,
                     copyNumberA,
                     genomeBackgroundMutationA,
@@ -62,7 +66,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
                     copyNumberB,
                     genomeBackgroundMutationB,
                     genomeBackgroundCopyNumberB,
-
                 }))
         })
         .subscribe(({
@@ -70,6 +73,9 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
                         mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
                         mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
                     }) => {
+
+            console.log('returm  cn A',JSON.stringify(copyNumberA));
+            console.log('returm  cn B',JSON.stringify(copyNumberB));
 
             combinationHandler({
                 samples,

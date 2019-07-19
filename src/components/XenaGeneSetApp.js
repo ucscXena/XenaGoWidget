@@ -71,7 +71,6 @@ export default class XenaGeneSetApp extends PureComponent {
         // let pathways = this.getActiveApp().pathway;
         const  pathway = AppStorageHandler.getPathway();
         const apps = AppStorageHandler.getAppData(pathway);
-        console.log('apps data',JSON.stringify(apps))
         const cohortData = fetchCohortData();
 
         this.state = {
@@ -192,6 +191,7 @@ export default class XenaGeneSetApp extends PureComponent {
         } = input;
 
         console.log('handling combined data',JSON.stringify(selectedObjectA),JSON.stringify(selectedObjectB));
+        console.log('output',input)
 
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
