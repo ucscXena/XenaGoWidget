@@ -174,7 +174,9 @@ export default class XenaGeneSetApp extends PureComponent {
     handleCombinedCohortData = (input) => {
         // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort,selectedObjectA,selectedObjectB} = input;
         let {
+            pathways,
             geneList,
+
             samplesA,
             mutationsA,
             copyNumberA,
@@ -198,42 +200,44 @@ export default class XenaGeneSetApp extends PureComponent {
         // TODO: update Xena Go Viewers
 
 
-        // let pathwayData = {
-        //     copyNumber,
-        //     geneList,
-        //     expression: mutations,
-        //     pathways: this.props.pathways,
-        //     cohort: cohort.name,
-        //     samples,
-        //     genomeBackgroundMutation,
-        //     genomeBackgroundCopyNumber,
-        // };
-        // this.setState({
-        //     pathwayData: pathwayData,
-        //     processing: false,
-        // });
-        // this.props.populateGlobal(pathwayData, this.props.cohortIndex);
-        // if (this.state.selectedPathways.length > 0) {
-        //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
-        // } else {
-        //     this.setState({
-        //         geneData: {
-        //             copyNumber: [],
-        //             expression: [],
-        //             pathways: [],
-        //             samples: [],
-        //         },
-        //     });
-        // }
+        let pathwayDataA = {
+            copyNumber: copyNumberA,
+            expression: mutationsA,
+            samples: samplesA,
+            genomeBackgroundMutation: genomeBackgroundMutationA,
+            genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
+            cohort: cohortA.name,
+            selectedObject: selectedObjectA
+        };
+
+        let pathwayDataB = {
+            copyNumber: copyNumberB,
+            expression: mutationsB,
+            samples: samplesB,
+            genomeBackgroundMutation: genomeBackgroundMutationB,
+            genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
+            cohort: cohortB.name,
+            selectedObject: selectedObjectB
+        };
+
+        console.log('pathway data b',JSON.stringify(pathwayDataB))
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
+            geneList,
+            pathways,
+            pathwayDataA,
+            pathwayDataB,
+            selectedObjectA,
+            selectedObjectB,
             loading: LOAD_STATE.LOADED,
-            selectedCohortA:selectedObjectA,
-            selectedCohortB:selectedObjectB,
-            // oldSelectedSubCohortsA:cohortA.selectedSubCohorts,
-            // oldSelectedSubCohortsB:cohortB.selectedSubCohorts,
+            processing: false,
         });
+
+        // if (this.state.selectedPathways.length > 0) {
+        //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        // }
+
 
     };
 
@@ -379,6 +383,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
         let myIndex = pathwaySelection.key;
         pathwaySelection.propagate = false;
+
         //  TODO: implement empty correlation, for some reason this is necessary for proper select behavior
         if (selectedPathways.length === 0) {
             this.setState({
@@ -549,6 +554,7 @@ export default class XenaGeneSetApp extends PureComponent {
     /**
      * Converts per-sample pathway data to
      * @param pathwayData
+     * @param filter
      */
     calculateGeneSetExpected(pathwayData, filter) {
 
@@ -810,11 +816,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     render() {
-
-        // console.log('active app',this.getActiveApp())
-        // console.log('render',JSON.stringify(this.props));
-
-
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathway;
 
@@ -826,14 +827,11 @@ export default class XenaGeneSetApp extends PureComponent {
             console.log('FETCHING');
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         }
-        // else{
-        //     console.log('not fetching')
-        // }
 
 
         // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists
         // fetchCombinedSubCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData)
-        // TODO: remove componentDidMount and componentDidUpdate
+        // TODO: remove componentDidUpdate
 
 
         // 2. based on cohortData, fetch cohorts with subCohorts
@@ -987,20 +985,30 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                                 <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT * 2}/>
                                 <XenaGoViewer
-                                    appData={this.state.apps[0]}
-                                    pathwaySelect={this.pathwaySelect}
+                                    // reference
+                                    cohortIndex={0}
                                     ref='xena-go-app-0'
-                                    renderHeight={VIEWER_HEIGHT}
+
+                                    // view
                                     renderOffset={0}
+                                    renderHeight={VIEWER_HEIGHT}
+                                    // data
+                                    appData={this.state.apps[0]}
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
                                     geneDataStats={this.state.geneData[0]}
+
+
+                                   // functions
+                                    pathwaySelect={this.pathwaySelect}
                                     geneHover={this.geneHover}
                                     populateGlobal={this.populateGlobal}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
-                                    cohortIndex={0}
-                                    colorSettings={this.state.geneStateColors}
                                     setCollapsed={this.setCollapsed}
+
+u
+                                    // state
+                                    colorSettings={this.state.geneStateColors}
                                     collapsed={this.state.collapsed}
                                     showColorByType={this.state.showColorByType}
                                     showColorByTypeDetail={this.state.showColorByTypeDetail}
@@ -1010,20 +1018,29 @@ export default class XenaGeneSetApp extends PureComponent {
                                     showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer
-                                    appData={this.state.apps[1]}
-                                    pathwaySelect={this.pathwaySelect}
+                                    // reference
+                                    cohortIndex={1}
                                     ref='xena-go-app-1'
+
+                                    // view
                                     renderHeight={VIEWER_HEIGHT}
                                     renderOffset={VIEWER_HEIGHT - 3}
-                                    pathways={pathways}
+
+                                    // data
+                                    appData={this.state.apps[1]}
                                     highlightedGene={this.state.highlightedGene}
                                     geneDataStats={this.state.geneData[1]}
+                                    pathways={pathways}
+
+                                    // functions
+                                    pathwaySelect={this.pathwaySelect}
                                     geneHover={this.geneHover}
                                     populateGlobal={this.populateGlobal}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
-                                    cohortIndex={1}
-                                    colorSettings={this.state.geneStateColors}
                                     setCollapsed={this.setCollapsed}
+
+                                    // state
+                                    colorSettings={this.state.geneStateColors}
                                     collapsed={this.state.collapsed}
                                     showColorByType={this.state.showColorByType}
                                     showColorByTypeDetail={this.state.showColorByTypeDetail}
