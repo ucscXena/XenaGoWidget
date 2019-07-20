@@ -193,9 +193,6 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObjectB,
         } = input;
 
-        // console.log('handling combined data',JSON.stringify(selectedObjectA),JSON.stringify(selectedObjectB));
-        console.log('output',JSON.stringify(input))
-
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
 
@@ -220,10 +217,12 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObject: selectedObjectB
         };
 
-        console.log('pathway data b',JSON.stringify(pathwayDataB))
+        let selection = AppStorageHandler.getPathwaySelection();
+        let newSelect = [selection.pathway];
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
+            selectedPathways: newSelect,
             geneList,
             pathways,
             pathwayDataA,
@@ -233,6 +232,21 @@ export default class XenaGeneSetApp extends PureComponent {
             loading: LOAD_STATE.LOADED,
             processing: false,
         });
+
+        // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
+        if (selection.selectedPathways) {
+            let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
+            if(refLoaded){
+                console.log('ref loaded')
+                for (let index = 0; index < this.state.apps.length; index++) {
+                    let ref = this.refs['xena-go-app-' + index];
+                    ref.setPathwayState(selection.selectedPathways, selection);
+                }
+            }
+            else{
+                console.log('ref NOT loaded')
+            }
+        }
 
         // if (this.state.selectedPathways.length > 0) {
         //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
@@ -402,7 +416,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwayHover = (pathwayHover) => {
-        // console.log('global hovering',pathwayHover)
         this.setState({
             hoveredPathways: pathwayHover
         });
@@ -734,53 +747,8 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-
-    loadSelectedState() {
-        let pathways = this.getActiveApp().pathway;
-        let apps = AppStorageHandler.getAppData(pathways);
-        this.setState({
-            apps: apps
-        });
-    }
-
-    /**
-     * Forces the state of the system once everything is loaded based on the existing pathway selection.
-     */
-    forceState() {
-        let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
-        if (refLoaded) {
-            let selection = AppStorageHandler.getPathwaySelection();
-            let newSelect = [selection.pathway];
-            this.setState({
-                selectedPathways: newSelect
-            });
-            if (selection.selectedPathways) {
-                for (let index = 0; index < this.state.apps.length; index++) {
-                    let ref = this.refs['xena-go-app-' + index];
-                    ref.setPathwayState(selection.selectedPathways, selection);
-                }
-            }
-            else {
-                // let {pathway: {golabel}} = selection;
-                // ref.setPathwayState([golabel], selection);
-                refLoaded.clickPathway(selection);
-            }
-        }
-    }
-
-    // TODO: these should be un-nessary
-    componentDidUpdate() {
-        this.forceState();
-    }
-
-    componentDidMount() {
-        // this.loadSelectedState();
-    }
-
-
     doRefetch(){
 
-        // console.log('calc refretch',JSON.stringify(currentLoadState))
         switch (currentLoadState) {
             case LOAD_STATE.LOADING:
                 return false ;
@@ -793,17 +761,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
         }
 
-        // console.log('gene data',this.state.geneData)
-        // console.log('pathway data',this.state.pathwayData)
-        console.log('A')
         if(isEqual(this.state.geneData,[{},{}])) return true ;
-        console.log('B')
         if(isEqual(this.state.pathwayData,[{},{}])) return true ;
-        console.log('C')
-
 
         const selectedCohortA = this.state.apps[0].selectedCohort;
-        console.log('cohort AAAA',JSON.stringify(this.state.selectedCohortA),JSON.stringify(selectedCohortA))
         const selectedCohortB = this.state.apps[1].selectedCohort;
         const selectedSubCohortsA = this.state.apps[0].selectedSubCohorts;
         const selectedSubCohortsB = this.state.apps[1].selectedSubCohorts;
@@ -811,7 +772,6 @@ export default class XenaGeneSetApp extends PureComponent {
         if(!isEqual(selectedCohortA, selectedCohortB)) return true ;
         if(!isEqual(selectedSubCohortsA, selectedSubCohortsB)) return true ;
 
-        console.log('returning false',selectedCohortA,selectedCohortB,selectedSubCohortsA,selectedSubCohortsB)
         return false;
     }
 
