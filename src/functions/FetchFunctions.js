@@ -38,12 +38,16 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
     // this selects cohorts, not sub-cohorts
     // TODO: get working
     // TODO: extend to get subcohorts
-    const samplesB = [];
-
-    Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
-        datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
-        intersection)
-        .flatMap((samplesA) => {
+    Rx.Observable.zip(
+        Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
+            datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
+            intersection),
+        Rx.Observable.zip(datasetSamples(cohortB.host, cohortB.mutationDataSetId, null),
+            datasetSamples(cohortB.host, cohortB.copyNumberDataSetId, null),
+            intersection)
+    ).flatMap((samples) => {
+        const samplesA = samples[0];
+        const samplesB = samples[1];
             return Rx.Observable.zip(
                 sparseData(cohortA.host, cohortA.mutationDataSetId, samplesA, geneList),
                 datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samplesA, geneList),
@@ -57,11 +61,12 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
                     mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
                     mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
                 ) => ({
-                    samples: samplesA,
+                    samplesA,
                     mutationsA,
                     copyNumberA,
                     genomeBackgroundMutationA,
                     genomeBackgroundCopyNumberA,
+                    samplesB,
                     mutationsB,
                     copyNumberB,
                     genomeBackgroundMutationB,
@@ -69,22 +74,24 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
                 }))
         })
         .subscribe(({
-                        samples,
-                        mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-                        mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
+                        samplesA, mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+                        samplesB, mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
                     }) => {
 
-            console.log('returm  cn A',JSON.stringify(copyNumberA));
-            console.log('returm  cn B',JSON.stringify(copyNumberB));
+            // console.log('returm  genomeBackgroundMutationA',JSON.stringify(genomeBackgroundMutationA));
+            // console.log('returm  genomeBackgroundMutationB',JSON.stringify(genomeBackgroundMutationB));
+            // console.log('returm  genomeBackgroundCopyNumberA',JSON.stringify(genomeBackgroundCopyNumberA));
+            // console.log('returm  genomeBackgroundCopyNumberB',JSON.stringify(genomeBackgroundCopyNumberB));
 
             combinationHandler({
-                samples,
+                samplesA,
                 geneList,
                 mutationsA,
                 copyNumberA,
                 genomeBackgroundMutationA,
                 genomeBackgroundCopyNumberA,
                 cohortA,
+                samplesB,
                 mutationsB,
                 copyNumberB,
                 genomeBackgroundMutationB,

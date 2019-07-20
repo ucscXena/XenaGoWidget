@@ -174,14 +174,15 @@ export default class XenaGeneSetApp extends PureComponent {
     handleCombinedCohortData = (input) => {
         // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort,selectedObjectA,selectedObjectB} = input;
         let {
-            samples,
             geneList,
+            samplesA,
             mutationsA,
             copyNumberA,
             genomeBackgroundMutationA,
             genomeBackgroundCopyNumberA,
             cohortA,
             selectedObjectA,
+            samplesB,
             mutationsB,
             copyNumberB,
             genomeBackgroundMutationB,
@@ -190,8 +191,8 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObjectB,
         } = input;
 
-        console.log('handling combined data',JSON.stringify(selectedObjectA),JSON.stringify(selectedObjectB));
-        console.log('output',input)
+        // console.log('handling combined data',JSON.stringify(selectedObjectA),JSON.stringify(selectedObjectB));
+        console.log('output',JSON.stringify(input))
 
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
