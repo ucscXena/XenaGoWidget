@@ -958,6 +958,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                     highlightedGene={this.state.highlightedGene}
                                     geneDataStats={this.state.geneData[0]}
 
+                                    // new pathway data
+                                    pathwayData={this.state.pathwayDataA}
+
 
                                    // functions
                                     pathwaySelect={this.pathwaySelect}
@@ -991,6 +994,9 @@ u
                                     highlightedGene={this.state.highlightedGene}
                                     geneDataStats={this.state.geneData[1]}
                                     pathways={pathways}
+
+                                    // new pathway data
+                                    pathwayData={this.state.pathwayDataA}
 
                                     // functions
                                     pathwaySelect={this.pathwaySelect}
