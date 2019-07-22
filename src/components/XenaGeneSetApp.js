@@ -198,31 +198,38 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let pathwayDataA = {
+            geneList,
+            pathways,
+            cohort: cohortA.name,
+
             copyNumber: copyNumberA,
             expression: mutationsA,
             samples: samplesA,
             genomeBackgroundMutation: genomeBackgroundMutationA,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
-            cohort: cohortA.name,
             selectedObject: selectedObjectA
         };
 
         let pathwayDataB = {
+            geneList,
+            pathways,
+            cohort: cohortB.name,
+
             copyNumber: copyNumberB,
             expression: mutationsB,
             samples: samplesB,
             genomeBackgroundMutation: genomeBackgroundMutationB,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
-            cohort: cohortB.name,
             selectedObject: selectedObjectB
         };
 
         let selection = AppStorageHandler.getPathwaySelection();
-        let newSelect = [selection.pathway];
+        // let newSelect = [selection.pathway];
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
-            selectedPathways: newSelect,
+            // selectedPathways: newSelect, // not
+            pathwaySelection: selection,
             geneList,
             pathways,
             pathwayDataA,
@@ -233,20 +240,23 @@ export default class XenaGeneSetApp extends PureComponent {
             processing: false,
         });
 
+        console.log('selection',JSON.stringify(selection))
+
         // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
-        if (selection.selectedPathways) {
-            let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
-            if(refLoaded){
-                console.log('ref loaded')
-                for (let index = 0; index < this.state.apps.length; index++) {
-                    let ref = this.refs['xena-go-app-' + index];
-                    ref.setPathwayState(selection.selectedPathways, selection);
-                }
-            }
-            else{
-                console.log('ref NOT loaded')
-            }
-        }
+        // console.log('ref loaded',selection)
+        // if (selection.pathway) {
+        //     let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
+        //     if(refLoaded){
+        //         // console.log('XGSA handledCombined',JSON.stringify(selection.selectedPathways),JSON.stringify(selection))
+        //         for (let index = 0; index < this.state.apps.length; index++) {
+        //             let ref = this.refs['xena-go-app-' + index];
+        //             ref.setPathwayState(selection.selectedPathways, selection);
+        //         }
+        //     }
+        //     else{
+        //         console.log('ref NOT loaded')
+        //     }
+        // }
 
         // if (this.state.selectedPathways.length > 0) {
         //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
@@ -954,12 +964,15 @@ export default class XenaGeneSetApp extends PureComponent {
                                     renderHeight={VIEWER_HEIGHT}
                                     // data
                                     appData={this.state.apps[0]}
+                                    geneDataStats={this.state.geneData[0]}
+
+                                    // maybe state?
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
-                                    geneDataStats={this.state.geneData[0]}
 
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
+                                    pathwaySelection={this.state.pathwaySelection}
 
 
                                    // functions
@@ -969,7 +982,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
 
-u
                                     // state
                                     colorSettings={this.state.geneStateColors}
                                     collapsed={this.state.collapsed}
@@ -991,12 +1003,15 @@ u
 
                                     // data
                                     appData={this.state.apps[1]}
-                                    highlightedGene={this.state.highlightedGene}
                                     geneDataStats={this.state.geneData[1]}
+
+                                    // maybe state?
                                     pathways={pathways}
+                                    highlightedGene={this.state.highlightedGene}
 
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
+                                    pathwaySelection={this.state.pathwaySelection}
 
                                     // functions
                                     pathwaySelect={this.pathwaySelect}

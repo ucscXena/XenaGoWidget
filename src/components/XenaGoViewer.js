@@ -69,6 +69,22 @@ export default class XenaGoViewer extends PureComponent {
         this.state.highlightedGene = this.props.highlightedGene;
         this.state.subCohortData = [];
 
+        this.state.pathwayData = this.props.pathwayData;
+        let {goid, golabel} = this.props.pathwaySelection;
+        let geneList = getGenesForNamedPathways([this.props.pathwaySelection.pathway.golabel], this.props.pathways);
+        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+        //
+        this.state.geneData = {
+            expression : this.props.pathwayData.expression,
+            samples: this.props.pathwayData.samples,
+            copyNumber: this.props.pathwayData.copyNumber,
+
+            pathways: pathways,
+            pathwaySelection: this.props.pathwaySelection,
+        };
+        this.state.selectedPathways = [this.props.pathwaySelection.pathway.golabel];
+
+
         let cohortIndex = this.state.key;
         let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
@@ -102,12 +118,12 @@ export default class XenaGoViewer extends PureComponent {
                 selectedPathway: pathwayClickData.pathway
             },
         });
-        pathwayClickData.key = this.props.appData.key;
-        pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
-        if (pathwayClickData.propagate) {
-            // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
-            this.props.pathwaySelect(pathwayClickData, newSelection);
-        }
+        // pathwayClickData.key = this.props.appData.key;
+        // pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
+        // if (pathwayClickData.propagate) {
+        //     // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
+        //     this.props.pathwaySelect(pathwayClickData, newSelection);
+        // }
     }
 
     clickPathway = (pathwayClickData) => {
@@ -198,47 +214,51 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     loadCohortData() {
-        if (this.state.pathwayData.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+        console.log('loading cohor tdata')
+        if (this.state.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
             let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
             if (selectedCohort2.selectedSubCohorts) {
+                console.log('SUB')
                 this.selectSubCohort(selectedCohort2);
             } else {
+                console.log('plain')
                 this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
             }
         } else {
             return;
         }
-        // let data = defaultDatasetForGeneset;
-        let cohortData = Object.keys(defaultDatasetForGeneset)
-            .filter(cohort => {
-                return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
-            })
-            .map(cohort => {
-                let mutation = defaultDatasetForGeneset[cohort][mutationKey];
-                let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
-                let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
-                return {
-                    name: cohort,
-                    mutationDataSetId: mutation.dataset,
-                    copyNumberDataSetId: copyNumberView.dataset,
-                    genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
-                    genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
-                    amplificationThreshold: copyNumberView.amplificationThreshold,
-                    deletionThreshold: copyNumberView.deletionThreshold,
-                    host: mutation.host
-                }
-            })
-            .sort(lowerCaseCompareName);
+        // // let data = defaultDatasetForGeneset;
+        // let cohortData = Object.keys(defaultDatasetForGeneset)
+        //     .filter(cohort => {
+        //         return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
+        //     })
+        //     .map(cohort => {
+        //         let mutation = defaultDatasetForGeneset[cohort][mutationKey];
+        //         let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
+        //         let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
+        //         return {
+        //             name: cohort,
+        //             mutationDataSetId: mutation.dataset,
+        //             copyNumberDataSetId: copyNumberView.dataset,
+        //             genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
+        //             genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
+        //             amplificationThreshold: copyNumberView.amplificationThreshold,
+        //             deletionThreshold: copyNumberView.deletionThreshold,
+        //             host: mutation.host
+        //         }
+        //     })
+        //     .sort(lowerCaseCompareName);
         this.setState({
             loadState: 'loaded',
-            cohortData
+            // cohortData
         });
 
     }
 
     componentDidUpdate() {
         // TODO: this should come out of something else, as its not particularly performant to do it here
-        this.loadCohortData()
+        // console.log('component updated?')
+        // this.loadCohortData()
     }
 
 
@@ -508,6 +528,7 @@ export default class XenaGoViewer extends PureComponent {
         });
         this.props.populateGlobal(pathwayData, this.props.cohortIndex);
         if (this.state.selectedPathways.length > 0) {
+            console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathways),JSON.stringify(this.state.pathwayClickData))
             this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
         } else {
             this.setState({
@@ -541,4 +562,6 @@ XenaGoViewer.propTypes = {
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
     showClusterSort: PropTypes.any,
+    pathwayData: PropTypes.any.isRequired,
+    pathwaySelection: PropTypes.any.isRequired,
 };
