@@ -468,7 +468,6 @@ export default class XenaGoViewer extends PureComponent {
                                                offset={renderOffset}
                                                ref='pathwayscoreview'
                                                data={this.state.geneData}
-                                               selected={this.state.geneData.pathwaySelection}
                                                filter={this.state.tissueExpressionFilter}
                                                filterPercentage={this.state.filterPercentage}
                                                geneList={geneList}

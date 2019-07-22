@@ -6,8 +6,7 @@ import DrawFunctions from '../functions/DrawFunctions';
 import CanvasDrawing from "./CanvasDrawing";
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
-import {pluck, flatten} from 'underscore';
-import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+import {MIN_FILTER} from "./XenaGeneSetApp";
 import {getGenesForPathways} from "../functions/CohortFunctions";
 
 const HEADER_HEIGHT = 15;
@@ -25,7 +24,7 @@ function getMousePos(evt) {
 }
 
 function getPointData(event, props) {
-    let {labelHeight, data: {pathways}} = props;
+    let {labelHeight, pathways} = props;
     let {x, y} = getMousePos(event);
     let pathwayIndex = pathwayIndexFromY(y, labelHeight);
     return pathways[pathwayIndex];
@@ -55,19 +54,19 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-        let {data, cohortIndex, filter, labelHeight, width, selectedCohort} = this.props;
-        const {expression, pathways, samples, copyNumber} = data;
-        if (!data || !data.pathways) {
-            return <div>Loading Cohort {cohortIndex === 0 ? LABEL_A : LABEL_B}</div>
+        let {data, cohortIndex, filter, labelHeight, width, selectedCohort, cohortLabel,pathways} = this.props;
+        const {expression, samples, copyNumber} = data;
+        // console.log('input data',JSON.stringify(data))
+        if (!data) {
+            return <div>Loading Cohort {cohortLabel}</div>
         }
         // need a size and vertical start for each
-        let layout = data.pathways.map((p, index) => {
+        let layout = pathways.map((p, index) => {
             return {start: index * labelHeight, size: labelHeight}
         });
 
         const totalHeight = layout.length * labelHeight;
         let geneList = getGenesForPathways(pathways);
-        console.log('VGSS',JSON.stringify(pathways),JSON.stringify(geneList))
 
 
         // TODO: fix sort somehow
@@ -132,4 +131,5 @@ VerticalGeneSetScoresView.propTypes = {
     onClick: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     onMouseOut: PropTypes.any.isRequired,
+    cohortLabel: PropTypes.any.isRequired,
 };

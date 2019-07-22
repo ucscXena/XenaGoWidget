@@ -281,7 +281,6 @@ PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
-    selected: PropTypes.any.isRequired,
     selectedPathways: PropTypes.any.isRequired,
     hoveredPathways: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,

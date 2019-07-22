@@ -244,7 +244,7 @@ export default class XenaGeneSetApp extends PureComponent {
             processing: false,
         });
 
-        console.log('selection',JSON.stringify(selection))
+        // console.log('selection',JSON.stringify(selection))
 
         // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
         // console.log('ref loaded',selection)
@@ -571,12 +571,6 @@ export default class XenaGeneSetApp extends PureComponent {
         return prob;
     }
 
-    togglePathwayEditor(){
-        this.setState({
-            view: this.state.view===XENA_VIEW ? PATHWAYS_VIEW : XENA_VIEW
-        });
-    };
-
 
     /**
      * Converts per-sample pathway data to
@@ -811,7 +805,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // 2. based on cohortData, fetch cohorts with subCohorts
 
 
-        console.log('pathway data -- pathways',JSON.stringify(pathways))
+        // console.log('pathway data -- pathways',JSON.stringify(pathways))
 
         return (
             <div>
@@ -902,10 +896,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalGeneSetScoresView
                                                 data={this.state.pathwayDataA}
                                                 cohortIndex={0}
+                                                cohortLabel={LABEL_A}
+                                                pathways={pathways}
                                                 filter={this.state.apps[0].tissueExpressionFilter}
                                                 width={VERTICAL_GENESET_DETAIL_WIDTH}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayDataA)}
                                                 onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
@@ -931,8 +927,10 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <VerticalGeneSetScoresView
                                                 data={this.state.pathwayDataB}
                                                 cohortIndex={1}
+                                                cohortLabel={LABEL_B}
                                                 filter={this.state.apps[1].tissueExpressionFilter}
                                                 width={200}
+                                                pathways={pathways}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
                                                 selectedCohort={this.getSelectedCohort(this.state.pathwayDataB)}
                                                 onClick={this.globalPathwaySelect}
