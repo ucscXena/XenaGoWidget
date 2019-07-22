@@ -84,8 +84,10 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
             // console.log('returm  genomeBackgroundCopyNumberB',JSON.stringify(genomeBackgroundCopyNumberB));
 
             combinationHandler({
-                samplesA,
                 geneList,
+                cohortData,
+
+                samplesA,
                 mutationsA,
                 copyNumberA,
                 genomeBackgroundMutationA,

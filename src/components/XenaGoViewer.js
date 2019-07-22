@@ -213,47 +213,47 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    loadCohortData() {
-        console.log('loading cohor tdata')
-        if (this.state.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-            let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-            if (selectedCohort2.selectedSubCohorts) {
-                console.log('SUB')
-                this.selectSubCohort(selectedCohort2);
-            } else {
-                console.log('plain')
-                this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
-            }
-        } else {
-            return;
-        }
-        // // let data = defaultDatasetForGeneset;
-        // let cohortData = Object.keys(defaultDatasetForGeneset)
-        //     .filter(cohort => {
-        //         return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
-        //     })
-        //     .map(cohort => {
-        //         let mutation = defaultDatasetForGeneset[cohort][mutationKey];
-        //         let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
-        //         let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
-        //         return {
-        //             name: cohort,
-        //             mutationDataSetId: mutation.dataset,
-        //             copyNumberDataSetId: copyNumberView.dataset,
-        //             genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
-        //             genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
-        //             amplificationThreshold: copyNumberView.amplificationThreshold,
-        //             deletionThreshold: copyNumberView.deletionThreshold,
-        //             host: mutation.host
-        //         }
-        //     })
-        //     .sort(lowerCaseCompareName);
-        this.setState({
-            loadState: 'loaded',
-            // cohortData
-        });
-
-    }
+    // loadCohortData() {
+    //     console.log('loading cohor tdata')
+    //     if (this.state.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
+    //         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
+    //         if (selectedCohort2.selectedSubCohorts) {
+    //             console.log('SUB')
+    //             this.selectSubCohort(selectedCohort2);
+    //         } else {
+    //             console.log('plain')
+    //             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
+    //         }
+    //     } else {
+    //         return;
+    //     }
+    //     // // let data = defaultDatasetForGeneset;
+    //     // let cohortData = Object.keys(defaultDatasetForGeneset)
+    //     //     .filter(cohort => {
+    //     //         return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
+    //     //     })
+    //     //     .map(cohort => {
+    //     //         let mutation = defaultDatasetForGeneset[cohort][mutationKey];
+    //     //         let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
+    //     //         let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
+    //     //         return {
+    //     //             name: cohort,
+    //     //             mutationDataSetId: mutation.dataset,
+    //     //             copyNumberDataSetId: copyNumberView.dataset,
+    //     //             genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
+    //     //             genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
+    //     //             amplificationThreshold: copyNumberView.amplificationThreshold,
+    //     //             deletionThreshold: copyNumberView.deletionThreshold,
+    //     //             host: mutation.host
+    //     //         }
+    //     //     })
+    //     //     .sort(lowerCaseCompareName);
+    //     this.setState({
+    //         loadState: 'loaded',
+    //         // cohortData
+    //     });
+    //
+    // }
 
     componentDidUpdate() {
         // TODO: this should come out of something else, as its not particularly performant to do it here
@@ -412,90 +412,88 @@ export default class XenaGoViewer extends PureComponent {
             viewType = COLOR_BY_TYPE_DETAIL;
         }
 
-        if (this.state.loadState === 'loaded') {
-            if (this.state.selectedPathways.length > 0) {
-                return (
-                    <table>
-                        <tbody>
-                        <tr>
-                            {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td valign="top"
-                                style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
-                                <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
-                                    <CohortSelector cohorts={this.state.cohortData}
-                                                    subCohorts={this.state.subCohortData}
-                                                    selectedCohort={this.state.selectedCohort}
-                                                    selectedSubCohorts={this.state.selectedSubCohorts}
-                                                    onChange={this.selectCohort}
-                                                    onChangeSubCohort={this.selectSubCohort}
-                                                    cohortLabel={this.getCohortLabel(cohortIndex)}
-                                    />
-                                    <FilterSelector filters={filteredMutationVector}
-                                                    selected={this.state.tissueExpressionFilter}
-                                                    pathwayData={this.state.geneData}
-                                                    geneList={geneList}
-                                                    amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
-                                                    deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
-                                                    onChange={this.filterGeneType}
-                                    />
-                                    <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
-                                    <Dialog active={this.state.processing} title='Loading'>
-                                        {this.state.selectedCohort}
-                                    </Dialog>
-                                </Card>
-                                {this.state.geneData.pathways.length > MAX_GENE_WIDTH &&
-                                <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
-                                    {this.props.collapsed &&
-                                    <Button icon='chevron_right' flat primary
-                                            onClick={() => this.props.setCollapsed(false)}>Expand</Button>
-                                    }
-                                    {!this.props.collapsed &&
-                                    <Button icon='chevron_left'
-                                            onClick={() => this.props.setCollapsed(true)}>Collapse</Button>
-                                    }
-                                </Card>
-                                }
-                                {viewType === COLOR_BY_TYPE_DETAIL &&
-                                <DetailedLegend/>
-                                }
-                                {viewType === COLOR_BY_TYPE &&
-                                <TwoColorLegend/>
-                                }
-                            </td>
-                            }
-                            {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
-                            <td style={{padding: 0}}>
-                                <PathwayScoresView height={renderHeight}
-                                                   offset={renderOffset}
-                                                   ref='pathwayscoreview'
-                                                   data={this.state.geneData}
-                                                   selected={this.state.geneData.selectedPathway}
-                                                   filter={this.state.tissueExpressionFilter}
-                                                   filterPercentage={this.state.filterPercentage}
-                                                   geneList={geneList}
-                                                   loading={cohortLoading}
-                                                   min={MIN_FILTER}
-                                                   selectedCohort={this.state.selectedCohortData}
-                                                   selectedPathways={this.state.selectedPathways}
-                                                   hoveredPathways={this.state.hoveredPathways}
-                                                   highlightedGene={this.props.highlightedGene}
-                                                   onHover={this.hoverGene}
-                                                   cohortIndex={this.state.key}
-                                                   shareGlobalGeneData={this.props.shareGlobalGeneData}
-                                                   colorSettings={this.props.colorSettings}
-                                                   collapsed={this.props.collapsed}
-                                                   viewType={viewType}
-                                                   showDiffLayer={this.props.showDiffLayer}
-                                                   showDetailLayer={this.props.showDetailLayer}
-                                                   showClusterSort={this.props.showClusterSort}
+        if (this.state.selectedPathways.length > 0) {
+            return (
+                <table>
+                    <tbody>
+                    <tr>
+                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <td valign="top"
+                            style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
+                            <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
+                                <CohortSelector cohorts={this.props.cohortData}
+                                                subCohorts={this.state.subCohortData}
+                                                selectedCohort={this.state.selectedCohort}
+                                                selectedSubCohorts={this.state.selectedSubCohorts}
+                                                onChange={this.selectCohort}
+                                                onChangeSubCohort={this.selectSubCohort}
+                                                cohortLabel={this.getCohortLabel(cohortIndex)}
                                 />
-                            </td>
+                                <FilterSelector filters={filteredMutationVector}
+                                                selected={this.state.tissueExpressionFilter}
+                                                pathwayData={this.state.geneData}
+                                                geneList={geneList}
+                                                amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
+                                                deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
+                                                onChange={this.filterGeneType}
+                                />
+                                <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
+                                {/*<Dialog active={this.state.processing} title='Loading'>*/}
+                                {/*    {this.state.selectedCohort}*/}
+                                {/*</Dialog>*/}
+                            </Card>
+                            {this.state.geneData.pathways.length > MAX_GENE_WIDTH &&
+                            <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
+                                {this.props.collapsed &&
+                                <Button icon='chevron_right' flat primary
+                                        onClick={() => this.props.setCollapsed(false)}>Expand</Button>
+                                }
+                                {!this.props.collapsed &&
+                                <Button icon='chevron_left'
+                                        onClick={() => this.props.setCollapsed(true)}>Collapse</Button>
+                                }
+                            </Card>
                             }
-                        </tr>
-                        </tbody>
-                    </table>
-                )
-            }
+                            {viewType === COLOR_BY_TYPE_DETAIL &&
+                            <DetailedLegend/>
+                            }
+                            {viewType === COLOR_BY_TYPE &&
+                            <TwoColorLegend/>
+                            }
+                        </td>
+                        }
+                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        <td style={{padding: 0}}>
+                            <PathwayScoresView height={renderHeight}
+                                               offset={renderOffset}
+                                               ref='pathwayscoreview'
+                                               data={this.state.geneData}
+                                               selected={this.state.geneData.pathwaySelection}
+                                               filter={this.state.tissueExpressionFilter}
+                                               filterPercentage={this.state.filterPercentage}
+                                               geneList={geneList}
+                                               loading={cohortLoading}
+                                               min={MIN_FILTER}
+                                               selectedCohort={this.state.selectedCohortData}
+                                               selectedPathways={this.state.selectedPathways}
+                                               hoveredPathways={this.state.hoveredPathways}
+                                               highlightedGene={this.props.highlightedGene}
+                                               onHover={this.hoverGene}
+                                               cohortIndex={this.state.key}
+                                               shareGlobalGeneData={this.props.shareGlobalGeneData}
+                                               colorSettings={this.props.colorSettings}
+                                               collapsed={this.props.collapsed}
+                                               viewType={viewType}
+                                               showDiffLayer={this.props.showDiffLayer}
+                                               showDetailLayer={this.props.showDetailLayer}
+                                               showClusterSort={this.props.showClusterSort}
+                            />
+                        </td>
+                        }
+                    </tr>
+                    </tbody>
+                </table>
+            )
         }
 
         return (
@@ -562,6 +560,9 @@ XenaGoViewer.propTypes = {
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
     showClusterSort: PropTypes.any,
+
+
+    cohortData: PropTypes.any.isRequired,
     pathwayData: PropTypes.any.isRequired,
     pathwaySelection: PropTypes.any.isRequired,
 };

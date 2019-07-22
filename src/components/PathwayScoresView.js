@@ -206,7 +206,7 @@ export default class PathwayScoresView extends PureComponent {
 
         // send it to calculate the diffScores
         /// TODO: maybe have it ONLY calculate the diff scores?
-        this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
+        // this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
 
         if (!showClusterSort && returnedValue.pathways[0].diffScore) {
             returnedValue = diffSort(returnedValue, cohortIndex !== 0);

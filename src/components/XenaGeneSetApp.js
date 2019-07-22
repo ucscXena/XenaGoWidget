@@ -176,6 +176,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let {
             pathways,
             geneList,
+            cohortData,
 
             samplesA,
             mutationsA,
@@ -200,6 +201,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathwayDataA = {
             geneList,
             pathways,
+            cohortData,
             cohort: cohortA.name,
 
             copyNumber: copyNumberA,
@@ -213,6 +215,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let pathwayDataB = {
             geneList,
             pathways,
+            cohortData,
             cohort: cohortB.name,
 
             copyNumber: copyNumberB,
@@ -231,6 +234,7 @@ export default class XenaGeneSetApp extends PureComponent {
             // selectedPathways: newSelect, // not
             pathwaySelection: selection,
             geneList,
+            cohortData,
             pathways,
             pathwayDataA,
             pathwayDataB,
@@ -393,14 +397,14 @@ export default class XenaGeneSetApp extends PureComponent {
                 hoveredPathways: geneHover ? geneHover.pathway : {}
             }
         );
-        if (geneHover) {
-            let myIndex = geneHover.cohortIndex;
-            this.state.apps.forEach((app, index) => {
-                if (index !== myIndex) {
-                    this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
-                }
-            });
-        }
+        // if (geneHover) {
+        //     let myIndex = geneHover.cohortIndex;
+        //     this.state.apps.forEach((app, index) => {
+        //         if (index !== myIndex) {
+        //             this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
+        //         }
+        //     });
+        // }
     };
 
     pathwaySelect = (pathwaySelection, selectedPathways) => {
@@ -973,6 +977,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
                                     pathwaySelection={this.state.pathwaySelection}
+                                    cohortData={this.state.cohortData}
 
 
                                    // functions
@@ -1012,6 +1017,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
                                     pathwaySelection={this.state.pathwaySelection}
+                                    cohortData={this.state.cohortData}
 
                                     // functions
                                     pathwaySelect={this.pathwaySelect}
