@@ -108,7 +108,7 @@ export class GeneSetSelector extends PureComponent {
         onHover(null);
     };
 
-    onHover = (geneSet, event) => {
+    onHover = (geneSet) => {
         let {onHover} = this.props;
         if (onHover) {
             onHover(geneSet);

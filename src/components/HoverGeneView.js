@@ -35,6 +35,7 @@ export default class HoverGeneView extends PureComponent {
 
     render() {
         let {data, title, cohortIndex} = this.props;
+        // console.log('data',JSON.stringify(data))
         if (data.tissue) {
             return (
                 <div>
