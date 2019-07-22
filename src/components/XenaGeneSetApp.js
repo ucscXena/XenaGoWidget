@@ -811,6 +811,8 @@ export default class XenaGeneSetApp extends PureComponent {
         // 2. based on cohortData, fetch cohorts with subCohorts
 
 
+        console.log('pathway data -- pathways',JSON.stringify(pathways))
+
         return (
             <div>
 
@@ -898,7 +900,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayData[0]}
+                                                data={this.state.pathwayDataA}
                                                 cohortIndex={0}
                                                 filter={this.state.apps[0].tissueExpressionFilter}
                                                 width={VERTICAL_GENESET_DETAIL_WIDTH}
@@ -913,7 +915,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                                             <GeneSetSelector pathways={pathways}
                                                              hoveredPathways={this.state.hoveredPathways}
-                                                             selectedPathways={this.state.selectedPathways}
+                                                             selectedPathways={[this.state.pathwaySelection]}
                                                              highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
                                                              onHover={this.globalPathwayHover}
@@ -927,12 +929,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayData[1]}
+                                                data={this.state.pathwayDataB}
                                                 cohortIndex={1}
                                                 filter={this.state.apps[1].tissueExpressionFilter}
                                                 width={200}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[1])}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayDataB)}
                                                 onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}

@@ -7,7 +7,7 @@ import CanvasDrawing from "./CanvasDrawing";
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {pluck, flatten} from 'underscore';
-import {FILTER_PERCENTAGE, LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
+import {LABEL_A, LABEL_B, MIN_FILTER} from "./XenaGeneSetApp";
 import {getGenesForPathways} from "../functions/CohortFunctions";
 
 const HEADER_HEIGHT = 15;
@@ -39,12 +39,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     constructor(props) {
         super(props);
     }
-
-    // TODO: restructure
-    getGenesForPathways(pathways) {
-        return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-    };
-
 
     onMouseOut = (event) => {
         this.props.onHover(null);
