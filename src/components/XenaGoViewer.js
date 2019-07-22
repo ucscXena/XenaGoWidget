@@ -427,7 +427,7 @@ export default class XenaGoViewer extends PureComponent {
                                                 selectedSubCohorts={this.state.selectedSubCohorts}
                                                 onChange={this.selectCohort}
                                                 onChangeSubCohort={this.selectSubCohort}
-                                                cohortLabel={this.getCohortLabel(cohortIndex)}
+                                                cohortLabel={this.props.cohortLabel}
                                 />
                                 <FilterSelector filters={filteredMutationVector}
                                                 selected={this.state.tissueExpressionFilter}
@@ -503,10 +503,6 @@ export default class XenaGoViewer extends PureComponent {
         );
     }
 
-    getCohortLabel(cohortIndex) {
-        return cohortIndex === 0 ? LABEL_A : LABEL_B;
-    }
-
     handleCohortData(input) {
         let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
 
@@ -562,6 +558,7 @@ XenaGoViewer.propTypes = {
     showClusterSort: PropTypes.any,
 
 
+    cohortLabel: PropTypes.any.isRequired,
     cohortData: PropTypes.any.isRequired,
     pathwayData: PropTypes.any.isRequired,
     pathwaySelection: PropTypes.any.isRequired,

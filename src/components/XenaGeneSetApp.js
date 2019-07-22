@@ -962,6 +962,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // reference
                                     cohortIndex={0}
                                     ref='xena-go-app-0'
+                                    cohortLabel={LABEL_A}
 
                                     // view
                                     renderOffset={0}
@@ -1001,6 +1002,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // reference
                                     cohortIndex={1}
                                     ref='xena-go-app-1'
+                                    cohortLabel={LABEL_B}
 
                                     // view
                                     renderHeight={VIEWER_HEIGHT}
