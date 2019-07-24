@@ -1,5 +1,5 @@
 import React from "react";
-import {sumTotals, sumInstances} from '../functions/util';
+import {sumTotals, sumInstances} from './MathFunctions';
 import update from "immutability-helper";
 
 export function transpose(a) {

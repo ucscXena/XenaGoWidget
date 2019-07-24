@@ -1,4 +1,4 @@
-import {reduceByKey, map2, /*partition, */partitionN} from './util';
+import {reduceByKey, map2, /*partition, */partitionN} from './MathFunctions';
 import {range} from 'underscore';
 import React from "react";
 import {getCNVColorMask, getGeneColorMask, getGeneSetColorMask, getMutationColorMask} from '../functions/ColorFunctions'

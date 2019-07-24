@@ -31,9 +31,9 @@ export function map2(c0, c1, fn) {
 // the reducing function fn.
 // We use a Map for ordered, numeric keys.
 export function reduceByKey(arr, keyFn = x => x, fn) {
-    var ret = new Map();
+    let ret = new Map();
     arr.forEach(e => {
-        var k = keyFn(e);
+        let k = keyFn(e);
         ret.set(k, fn(e, k, ret.get(k)));
     });
     return ret;
@@ -41,7 +41,7 @@ export function reduceByKey(arr, keyFn = x => x, fn) {
 
 // partition n things m ways
 export function partition(n, m) {
-    var starts = times(m, i => Math.round(i * n / m))
+    let starts = times(m, i => Math.round(i * n / m));
     return starts.map((s, i) => ({
 		start: s,
 		size: (i === m - 1 ? n : starts[i + 1]) - s

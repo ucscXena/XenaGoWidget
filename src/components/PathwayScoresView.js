@@ -3,7 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
-import {partition, sumInstances, sumTotals} from '../functions/util';
+import {partition, sumInstances, sumTotals} from '../functions/MathFunctions';
 import LabelWrapper from "./LabelWrapper";
 import {clusterSort, diffSort, scoreColumns, synchronizedSort} from '../functions/SortFunctions';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';

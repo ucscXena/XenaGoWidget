@@ -7,8 +7,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    addIndepProb,
-    calculateExpectedProb, calculateGeneSetExpected,
+    calculateGeneSetExpected,
     createAssociatedDataKey,
     findAssociatedData,
     findPruneData
@@ -16,7 +15,7 @@ import {
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
-import {sumInstances, sumTotals} from '../functions/util';
+import {sumInstances, sumTotals} from '../functions/MathFunctions';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/DataFunctions";
@@ -202,12 +201,12 @@ export default class XenaGeneSetApp extends PureComponent {
         // TODO: calculate Diff!
         // TODO: update Xena Go Viewers
 
-
         let pathwayDataA = {
             geneList,
             pathways,
             cohortData,
-            cohort: cohortA.name,
+            cohort: cohortA,
+            filter: AppStorageHandler.getFilterState(0),
 
             copyNumber: copyNumberA,
             expression: mutationsA,
@@ -218,12 +217,12 @@ export default class XenaGeneSetApp extends PureComponent {
         };
 
 
-
         let pathwayDataB = {
             geneList,
             pathways,
             cohortData,
-            cohort: cohortB.name,
+            cohort: cohortB,
+            filter: AppStorageHandler.getFilterState(1),
 
             copyNumber: copyNumberB,
             expression: mutationsB,
@@ -232,6 +231,8 @@ export default class XenaGeneSetApp extends PureComponent {
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
             selectedObject: selectedObjectB
         };
+
+        // console.log('cohrots pre',JSON.stringify(cohortA),JSON.stringify(cohortB))
 
         pathways = this.calculateAllPathways(pathwayDataA,pathwayDataB);
         pathwayDataA.pathways = pathways ;
@@ -550,12 +551,12 @@ export default class XenaGeneSetApp extends PureComponent {
         let hashAssociation = update(pathwayData, {
             filter: {$set: filter},
             min: {$set: min},
-            selectedCohort: {$set: this.getSelectedCohort(pathwayData)},
+            selectedCohort: {$set: pathwayData.cohort},
         }
         );
         hashAssociation.filter = filter;
         hashAssociation.min = min;
-        hashAssociation.selectedCohort = this.getSelectedCohort(pathwayData);
+        hashAssociation.selectedCohort = pathwayData.cohort;
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
         let prunedColumns = findPruneData(associatedData,associatedDataKey);
@@ -577,74 +578,20 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     /**
-     * Converts per-sample pathway data to
-     * @param pathwayData
-     * @param filter
-     */
-    calculateGeneSetExpected(pathwayData, filter) {
-
-        console.log('input',JSON.stringify(pathwayData),JSON.stringify(filter))
-
-
-        // a list for each sample  [0] = expected_N, vs [1] total_pop_N
-        let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
-        let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
-        // let's assume they are the same order for now since they were fetched with the same sample data
-        filter = filter.indexOf('All') === 0 ? '' : filter;
-
-        // // initiate to 0
-        let pathwayExpected = {};
-        // init data
-        for (let pathway of pathwayData.pathways) {
-            pathwayExpected[pathway.golabel] = 0;
-        }
-        for (let sampleIndex in pathwayData.samples) {
-
-            // TODO: if filter is all or copy number, or SNV . . etc.
-            let copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
-            let copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
-            let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
-            let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
-
-
-            // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
-            for (let pathway of pathwayData.pathways) {
-                let sample_probs = [];
-
-                if (!filter || filter === 'Copy Number') {
-                    sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
-                }
-                if (!filter || filter === 'Mutation') {
-                    sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
-                }
-                let total_prob = addIndepProb(sample_probs);
-                pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
-            }
-        }
-
-        console.log(JSON.stringify(pathwayExpected))
-        // TODO we have an expected for the sample
-        return pathwayExpected;
-    }
-
-    /**
      * Note:
      * @param pathwayDataA
      * @param pathwayDataB
      */
     calculateAllPathways(pathwayDataA,pathwayDataB){
 
-        const filterA = AppStorageHandler.getFilterState(0);
-        const observationsA = this.calculateObserved(pathwayDataA, filterA, MIN_FILTER);
-        const totalsA = this.calculatePathwayScore(pathwayDataA, filterA, MIN_FILTER);
-        const expectedA = calculateGeneSetExpected(pathwayDataA, filterA);
+        const observationsA = this.calculateObserved(pathwayDataA, pathwayDataA.filter, MIN_FILTER,pathwayDataA.cohort );
+        const totalsA = this.calculatePathwayScore(pathwayDataA, pathwayDataA.filter, MIN_FILTER);
+        const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
         const maxSamplesAffectedA = pathwayDataA.samples.length;
 
-
-        const filterB = AppStorageHandler.getFilterState(1);
-        const observationsB = this.calculateObserved(pathwayDataB, filterB, MIN_FILTER);
-        const totalsB = this.calculatePathwayScore(pathwayDataB, filterB, MIN_FILTER);
-        const expectedB = calculateGeneSetExpected(pathwayDataB, filterB);
+        const observationsB = this.calculateObserved(pathwayDataB, pathwayDataB.filter, MIN_FILTER,pathwayDataB.cohort );
+        const totalsB = this.calculatePathwayScore(pathwayDataB, pathwayDataB.filter, MIN_FILTER);
+        const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
         const maxSamplesAffectedB = pathwayDataB.samples.length;
 
         return pathwayDataA.pathways.map((p, index) => {
