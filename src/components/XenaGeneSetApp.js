@@ -40,7 +40,6 @@ const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
 const ARROW_WIDTH = 20;
 const BORDER_OFFSET = 2;
 
-export const FILTER_PERCENTAGE = 0;
 export const MIN_FILTER = 2;
 
 
@@ -69,8 +68,8 @@ export default class XenaGeneSetApp extends PureComponent {
         super(props);
 
         // let pathways = this.getActiveApp().pathway;
-        const  pathway = AppStorageHandler.getPathway();
-        const apps = AppStorageHandler.getAppData(pathway);
+        const pathways = AppStorageHandler.getPathways();
+        const apps = AppStorageHandler.getAppData(pathways);
         const cohortData = fetchCohortData();
 
         this.state = {
@@ -91,7 +90,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: pathway,
+                    pathways,
                     selected: true
                 }
             ],
@@ -146,12 +145,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     handleUpload = (file) => {
-        AppStorageHandler.storePathway(file);
+        AppStorageHandler.storePathways(file);
         this.setState({
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: file,
+                    pathways: file,
                     selected: true
                 }
             ],
@@ -159,12 +158,12 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleReset = () => {
-        AppStorageHandler.storePathway(DefaultPathWays);
+        AppStorageHandler.storePathways(DefaultPathWays);
         this.setState({
             pathwaySets: [
                 {
                     name: 'Default Pathway',
-                    pathway: DefaultPathWays,
+                    pathways: DefaultPathWays,
                     selected: true
                 }
             ],
@@ -212,6 +211,8 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObject: selectedObjectA
         };
 
+
+
         let pathwayDataB = {
             geneList,
             pathways,
@@ -225,6 +226,14 @@ export default class XenaGeneSetApp extends PureComponent {
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
             selectedObject: selectedObjectB
         };
+
+        pathways = this.calculateAllPathways(pathwayDataA,pathwayDataB);
+        pathwayDataA.pathways = pathways ;
+        pathwayDataB.pathways = pathways ;
+
+        AppStorageHandler.storePathways(pathways);
+
+
 
         let selection = AppStorageHandler.getPathwaySelection();
 
@@ -280,7 +289,7 @@ export default class XenaGeneSetApp extends PureComponent {
         };
         selectedPathwaySet.pathway.unshift(newGeneSetObject);
 
-        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
             selectedPathway: selectedPathwaySet,
             pathwaySets: allSets,
@@ -308,7 +317,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
-        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -336,7 +345,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         allSets.push(selectedPathwaySet);
 
-        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
         });
@@ -352,7 +361,7 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
         allSets.push(selectedPathwaySet);
 
-        AppStorageHandler.storePathway(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
             pathwaySets: allSets,
             selectedPathway: undefined,
@@ -532,6 +541,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min) {
+        console.log('DOING CALCULATION',JSON.stringify(pathwayData))
         let hashAssociation = update(pathwayData, {
             filter: {$set: filter},
             min: {$set: min},
@@ -619,6 +629,42 @@ export default class XenaGeneSetApp extends PureComponent {
         return pathwayExpected;
     }
 
+    /**
+     * Note:
+     * @param pathwayDataA
+     * @param pathwayDataB
+     */
+    calculateAllPathways(pathwayDataA,pathwayDataB){
+
+        const filterA = AppStorageHandler.getFilterState(0);
+        const observationsA = this.calculateObserved(pathwayDataA, filterA, MIN_FILTER);
+        const totalsA = this.calculatePathwayScore(pathwayDataA, filterA, MIN_FILTER);
+        const expectedA = this.calculateGeneSetExpected(pathwayDataA, filterA);
+        const maxSamplesAffectedA = pathwayDataA.samples.length;
+
+
+        const filterB = AppStorageHandler.getFilterState(1);
+        const observationsB = this.calculateObserved(pathwayDataB, filterB, MIN_FILTER);
+        const totalsB = this.calculatePathwayScore(pathwayDataB, filterB, MIN_FILTER);
+        const expectedB = this.calculateGeneSetExpected(pathwayDataB, filterB);
+        const maxSamplesAffectedB = pathwayDataB.samples.length;
+
+        return pathwayDataA.pathways.map((p, index) => {
+            p.firstObserved = observationsA[index];
+            p.firstTotal = totalsA[index];
+            p.firstNumSamples = maxSamplesAffectedA;
+            p.firstExpected = expectedA[p.golabel];
+            p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+            p.secondObserved = observationsB[index];
+            p.secondTotal = totalsB[index];
+            p.secondNumSamples = maxSamplesAffectedB;
+            p.secondExpected = expectedB[p.golabel];
+            p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
+            return p;
+        });
+
+    }
+
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
@@ -644,20 +690,21 @@ export default class XenaGeneSetApp extends PureComponent {
             return p;
         });
 
-        let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
-        let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
+        // let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
+        // let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
 
-        this.setState(
-            {
-                pathwayData: [globalPathwayData0, globalPathwayData1],
-                selectedPathways: pathways,
-            }
-        );
-        if (appliedFilter) {
-            let newApps = JSON.parse(JSON.stringify(this.state.apps));
-            newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
-            this.setState({apps: newApps});
-        }
+        // this.setState(
+        //     {
+        //         // pathwayData: [globalPathwayData0, globalPathwayData1],
+        //         selectedPathways: pathways,
+        //     }
+        // );
+        // if (appliedFilter) {
+        //     console.log('appyling applied filter',JSON.stringify(appliedFilter))
+        //     let newApps = JSON.parse(JSON.stringify(this.state.apps));
+        //     newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
+        //     this.setState({apps: newApps});
+        // }
 
     };
 
@@ -785,7 +832,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     render() {
         let activeApp = this.getActiveApp();
-        let pathways = activeApp.pathway;
+        let pathways = activeApp.pathways;
+        console.log('input pathways',JSON.stringify(pathways))
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
@@ -806,6 +854,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         // console.log('pathway data -- pathways',JSON.stringify(pathways))
+        // console.log('STATE in',JSON.stringify(this.state))
 
         return (
             <div>

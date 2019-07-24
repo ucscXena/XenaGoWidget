@@ -109,6 +109,7 @@ export class GeneSetSelector extends PureComponent {
     };
 
     onHover = (geneSet) => {
+        // console.log('gene set to hover on',JSON.stringify(geneSet))
         let {onHover} = this.props;
         if (onHover) {
             onHover(geneSet);

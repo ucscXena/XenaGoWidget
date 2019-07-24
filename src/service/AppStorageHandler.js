@@ -63,13 +63,13 @@ const DefaultAppB = update(DefaultAppA,{
  */
 export class AppStorageHandler extends PureComponent {
 
-    static storePathway(pathway) {
+    static storePathways(pathway) {
         if (pathway) {
             localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathway));
         }
     }
 
-    static getPathway() {
+    static getPathways() {
         let storedPathway = JSON.parse(localStorage.getItem(LOCAL_PATHWAY_STORAGE));
         return storedPathway ? storedPathway : DefaultPathWays;
     }

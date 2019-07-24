@@ -86,6 +86,7 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
             combinationHandler({
                 geneList,
                 cohortData,
+                pathways,
 
                 samplesA,
                 mutationsA,
