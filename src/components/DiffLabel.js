@@ -1,15 +1,9 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Dropdown} from "react-toolbox";
 import underscore from 'underscore'
-import {
-    getSelectColor,
-    getWhiteColor,
-    getHighlightedColor,
-    scoreData,
-} from '../functions/ColorFunctions'
 import * as d3 from "d3";
+import {scoreData} from "../functions/DataFunctions";
 
 let interpolate;
 const highColor = '#1A535C';

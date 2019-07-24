@@ -6,14 +6,20 @@ import PathwayEditor from "./pathwayEditor/PathwayEditor";
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
-import {addIndepProb, createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
+import {
+    addIndepProb,
+    calculateExpectedProb, calculateGeneSetExpected,
+    createAssociatedDataKey,
+    findAssociatedData,
+    findPruneData
+} from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
 import {sumInstances, sumTotals} from '../functions/util';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/ColorFunctions";
+import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/DataFunctions";
 import {ColorEditor} from "./ColorEditor";
 import update from "immutability-helper";
 import {Dialog} from "react-toolbox";
@@ -541,7 +547,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     calculateAssociatedData(pathwayData, filter, min) {
-        console.log('DOING CALCULATION',JSON.stringify(pathwayData))
         let hashAssociation = update(pathwayData, {
             filter: {$set: filter},
             min: {$set: min},
@@ -571,23 +576,15 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
 
-    calculateExpectedProb(pathway, expected, total) {
-        let prob = 1.0;
-        let genesInPathway = pathway.gene.length;
-        for (let i = 0; i < genesInPathway; i++) {
-            prob = prob * (total - expected - i) / (total - i);
-        }
-        prob = 1 - prob;
-        return prob;
-    }
-
-
     /**
      * Converts per-sample pathway data to
      * @param pathwayData
      * @param filter
      */
     calculateGeneSetExpected(pathwayData, filter) {
+
+        console.log('input',JSON.stringify(pathwayData),JSON.stringify(filter))
+
 
         // a list for each sample  [0] = expected_N, vs [1] total_pop_N
         let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
@@ -615,16 +612,17 @@ export default class XenaGeneSetApp extends PureComponent {
                 let sample_probs = [];
 
                 if (!filter || filter === 'Copy Number') {
-                    sample_probs.push(this.calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+                    sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
                 }
                 if (!filter || filter === 'Mutation') {
-                    sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+                    sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
                 }
                 let total_prob = addIndepProb(sample_probs);
                 pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
             }
         }
 
+        console.log(JSON.stringify(pathwayExpected))
         // TODO we have an expected for the sample
         return pathwayExpected;
     }
@@ -639,14 +637,14 @@ export default class XenaGeneSetApp extends PureComponent {
         const filterA = AppStorageHandler.getFilterState(0);
         const observationsA = this.calculateObserved(pathwayDataA, filterA, MIN_FILTER);
         const totalsA = this.calculatePathwayScore(pathwayDataA, filterA, MIN_FILTER);
-        const expectedA = this.calculateGeneSetExpected(pathwayDataA, filterA);
+        const expectedA = calculateGeneSetExpected(pathwayDataA, filterA);
         const maxSamplesAffectedA = pathwayDataA.samples.length;
 
 
         const filterB = AppStorageHandler.getFilterState(1);
         const observationsB = this.calculateObserved(pathwayDataB, filterB, MIN_FILTER);
         const totalsB = this.calculatePathwayScore(pathwayDataB, filterB, MIN_FILTER);
-        const expectedB = this.calculateGeneSetExpected(pathwayDataB, filterB);
+        const expectedB = calculateGeneSetExpected(pathwayDataB, filterB);
         const maxSamplesAffectedB = pathwayDataB.samples.length;
 
         return pathwayDataA.pathways.map((p, index) => {
@@ -670,7 +668,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER);
         let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER);
-        let expected = this.calculateGeneSetExpected(pathwayData, filter);
+        let expected = calculateGeneSetExpected(pathwayData, filter);
 
         let maxSamplesAffected = pathwayData.samples.length;
         let pathways = this.getActiveApp().pathway.map((p, index) => {
@@ -833,7 +831,6 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
-        console.log('input pathways',JSON.stringify(pathways))
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 

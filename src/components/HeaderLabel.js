@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import underscore from 'underscore'
 import {
     getWhiteColor,
-    getHighlightedColor,
-    scoreData,
+    getHighlightedColor
 } from '../functions/ColorFunctions'
 import * as d3 from "d3";
 import BaseStyle from '../css/base.css';
+import {scoreData} from "../functions/DataFunctions";
 
 let interpolate ;
 const highColor = '#1A535C';

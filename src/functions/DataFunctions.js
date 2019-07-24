@@ -97,6 +97,115 @@ export function createEmptyArray(pathwayLength,sampleLength){
 }
 
 /**
+ * Converts per-sample pathway data to
+ * @param pathwayData
+ * @param filter
+ */
+export function calculateGeneSetExpected(pathwayData, filter) {
+
+    // a list for each sample  [0] = expected_N, vs [1] total_pop_N
+    let genomeBackgroundCopyNumber = pathwayData.genomeBackgroundCopyNumber;
+    let genomeBackgroundMutation = pathwayData.genomeBackgroundMutation;
+    // let's assume they are the same order for now since they were fetched with the same sample data
+    filter = filter.indexOf('All') === 0 ? '' : filter;
+
+    // // initiate to 0
+    let pathwayExpected = {};
+    // init data
+    for (let pathway of pathwayData.pathways) {
+        pathwayExpected[pathway.golabel] = 0;
+    }
+    for (let sampleIndex in pathwayData.samples) {
+
+        // TODO: if filter is all or copy number, or SNV . . etc.
+        let copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
+        let copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
+        let mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
+        let mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
+
+
+        // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
+        for (let pathway of pathwayData.pathways) {
+            let sample_probs = [];
+
+            if (!filter || filter === 'Copy Number') {
+                sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+            }
+            if (!filter || filter === 'Mutation') {
+                sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+            }
+            let total_prob = addIndepProb(sample_probs);
+            pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
+        }
+    }
+
+    // TODO we have an expected for the sample
+    return pathwayExpected;
+}
+
+export function calculateExpectedProb(pathway, expected, total) {
+    let prob = 1.0;
+    let genesInPathway = pathway.gene.length;
+    for (let i = 0; i < genesInPathway; i++) {
+        prob = prob * (total - expected - i) / (total - i);
+    }
+    prob = 1 - prob;
+    return prob;
+}
+
+/**
+ *
+ * https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/chiSquare.py#L62
+ * @returns {*}
+ * @param observed
+ * @param expected
+ * @param total
+ *
+ */
+export function scoreChiSquaredData(observed, expected, total) {
+    let expected2 = total - expected;
+    let observed2 = total - observed;
+    let chiSquaredValue = Math.pow(expected - observed,2.0)  / expected + Math.pow(expected2 - observed2,2.0) / expected2;
+    chiSquaredValue = chiSquaredValue * ((expected > observed) ? -1 : 1);
+    return chiSquaredValue;
+}
+
+// https://en.wikipedia.org/wiki/Chi-squared_test
+export function scoreChiSquareTwoByTwo (observed11, observed12, observed21, observed22) {
+    let rowTotal1 = observed11 + observed12,
+        rowTotal2 = observed21 + observed22,
+        columnTotal1 = observed11 + observed21,
+        columnTotal2 = observed12 + observed22,
+        total = rowTotal1 + rowTotal2,
+        expected11 = columnTotal1 * rowTotal1 / total,
+        expected12 = columnTotal2 * rowTotal1 / total,
+        expected21 = columnTotal1 * rowTotal2 / total,
+        expected22 = columnTotal2 * rowTotal2 / total;
+
+    return Math.pow(observed11 - expected11, 2.0) / expected11 +
+        Math.pow(observed12 - expected12, 2.0) / expected12 +
+        Math.pow(observed21 - expected21, 2.0) / expected21 +
+        Math.pow(observed22 - expected22, 2.0) / expected22;
+}
+
+/**
+ * label is just for density
+ * @param score
+ * @param numSamples
+ * @param geneCount
+ * @returns {*}
+ */
+export function scoreData(score, numSamples, geneCount) {
+    if (score === 0) {
+        return 0;
+    }
+    // let inputScore = score / (numSamples * geneCount);
+    // return adjustScore(inputScore);
+    return score / (numSamples * geneCount);
+}
+
+
+/**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
  * @param expression
