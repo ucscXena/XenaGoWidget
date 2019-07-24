@@ -227,7 +227,7 @@ export default class XenaGeneSetApp extends PureComponent {
         };
 
         let selection = AppStorageHandler.getPathwaySelection();
-        // let newSelect = [selection.pathway];
+
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
@@ -1017,7 +1017,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     highlightedGene={this.state.highlightedGene}
 
                                     // new pathway data
-                                    pathwayData={this.state.pathwayDataA}
+                                    pathwayData={this.state.pathwayDataB}
                                     pathwaySelection={this.state.pathwaySelection}
                                     cohortData={this.state.cohortData}
 
