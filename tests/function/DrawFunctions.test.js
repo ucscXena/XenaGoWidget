@@ -1,7 +1,6 @@
 import expect from 'expect'
 import React from 'react'
-import {render, unmountComponentAtNode} from 'react-dom'
-import XenaGeneSetApp from "../../src/components/XenaGeneSetApp";
+import {unmountComponentAtNode} from 'react-dom'
 import {sumDataByType} from "../../src/functions/DrawFunctions";
 
 describe('Draw Functions', () => {
@@ -15,11 +14,6 @@ describe('Draw Functions', () => {
     unmountComponentAtNode(node)
   });
 
-  // it('Displays main menu', () => {
-  //   render(<XenaGeneSetApp/>, node, () => {
-  //     expect(node.innerHTML).toContain('Xena Gene Set Viewer')
-  //   })
-  // })
 
   it('Test simple reduce of JSON',() => {
     let inputArray = [ {total:8,mutation:0,cnv:4},{total:2,mutation:0,cnv:2},{total:5,mutation:0,cnv:2},{total:7,mutation:0,cnv:3}];
