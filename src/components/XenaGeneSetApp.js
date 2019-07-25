@@ -83,15 +83,13 @@ export default class XenaGeneSetApp extends PureComponent {
             showDetailLayer: true,
             showClusterSort: false,
             showDiffLayer: true,
-            pathwaySets: [
-                {
-                    name: 'Default Pathway',
-                    pathways,
-                    selected: true
-                }
-            ],
+            pathwaySet: {
+                name: 'Default Pathway',
+                pathways,
+                selected: true
+            },
             hoveredPathways: [],
-            selectedPathways: [],
+            selectedPathway: undefined,
             geneData: [{}, {}],
             pathwayData: [{}, {}],
             showPathwayDetails: false,
@@ -143,26 +141,22 @@ export default class XenaGeneSetApp extends PureComponent {
     handleUpload = (file) => {
         AppStorageHandler.storePathways(file);
         this.setState({
-            pathwaySets: [
-                {
-                    name: 'Default Pathway',
-                    pathways: file,
-                    selected: true
-                }
-            ],
+            pathwaySet: {
+                name: 'Default Pathway',
+                pathways: file,
+                selected: true
+            }
         })
     };
 
     handleReset = () => {
         AppStorageHandler.storePathways(DefaultPathWays);
         this.setState({
-            pathwaySets: [
-                {
-                    name: 'Default Pathway',
-                    pathways: DefaultPathWays,
-                    selected: true
-                }
-            ],
+            pathwaySet: {
+                name: 'Default Pathway',
+                pathways: DefaultPathWays,
+                selected: true
+            }
         })
     };
 
@@ -243,7 +237,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
-            // selectedPathway: newSelect, // not
             pathwaySelection: selection,
             geneList,
             cohortData,
@@ -255,8 +248,6 @@ export default class XenaGeneSetApp extends PureComponent {
             loading: LOAD_STATE.LOADED,
             processing: false,
         });
-
-        // console.log('selection',JSON.stringify(selection))
 
         // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
         // console.log('ref loaded',selection)
@@ -281,29 +272,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    addGeneSet = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
-
-        let newGeneSetObject = {
-            goid: '',
-            golabel: selectedPathway,
-            gene: []
-        };
-        selectedPathwaySet.pathway.unshift(newGeneSetObject);
-
-        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
-        this.setState({
-            selectedPathway: selectedPathwaySet,
-            pathwaySets: allSets,
-        });
-    };
 
     addGene = (selectedPathway, selectedGene) => {
 
         // get geneset to alter
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        // let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
 
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathway.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -318,11 +293,11 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
 
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
-        allSets.push(selectedPathwaySet);
+        // allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
-            pathwaySets: allSets,
+            pathwaySet: selectedPathwaySet,
         });
 
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
@@ -330,8 +305,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
     removeGene = (selectedPathway, selectedGene) => {
         // get geneset to alter
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        // let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
         // let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
 
         // get pathway to filter
@@ -346,33 +322,34 @@ export default class XenaGeneSetApp extends PureComponent {
 
         selectedPathwaySet.pathway.splice(pathwayIndex, 0, newSelectedPathway);
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
-        allSets.push(selectedPathwaySet);
+        // allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
-            pathwaySets: allSets,
+            pathwaySet: selectedPathwaySet,
         });
 
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removePathway = (selectedPathway) => {
-        let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        let selectedPathwaySet = allSets.find(f => f.selected === true);
+        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
+        // let selectedPathwaySet = allSets.find(f => f.selected === true);
+        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // removes selected pathway
         selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
-        allSets.push(selectedPathwaySet);
+        // allSets.push(selectedPathwaySet);
 
         AppStorageHandler.storePathways(selectedPathwaySet.pathway);
         this.setState({
-            pathwaySets: allSets,
+            pathwaySet: selectedPathwaySet,
             selectedPathway: undefined,
         });
     };
 
     getActiveApp() {
-        return this.state.pathwaySets.find(ps => ps.selected);
+        return this.state.pathwaySet;
     }
 
     showPathways = () => {
@@ -606,6 +583,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         // 2. based on cohortData, fetch cohorts with subCohorts
+        console.log('pawthway set',JSON.stringify(this.state.pathwaySet))
+        console.log('selected pawthway set',JSON.stringify(this.state.selectedPathway))
+
 
 
         // console.log('pathway data -- pathways',JSON.stringify(pathways))
@@ -641,14 +621,14 @@ export default class XenaGeneSetApp extends PureComponent {
                         active={this.state.view === PATHWAYS_VIEW }
                         onEscKeyDown={this.showXena}
                         onOverlayClick={this.showXena}
-                        title='Edit Colors'
+                        title='Edit Pathways'
                     >
-                        <PathwayEditor ref='pathway-editor' pathwaySets={this.state.pathwaySets}
+                        <PathwayEditor ref='pathway-editor'
+                                       pathwaySet={this.state.pathwaySet}
                                        selectedPathway={this.state.selectedPathway}
                                        removeGeneHandler={this.removeGene}
                                        removePathwayHandler={this.removePathway}
                                        addGeneHandler={this.addGene}
-                                       addGeneSetHandler={this.addGeneSet}
                                        uploadHandler={this.handleUpload}
                                        resetHandler={this.handleReset}
                                        closeHandler={this.showXena}

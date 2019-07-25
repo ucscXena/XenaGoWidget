@@ -66,9 +66,9 @@ export default class PathwayEditor extends PureComponent {
 
     findPathwayStateIfEmpty() {
         if (this.state.selectedPathwayState) return;
-        let pathwaySet = this.props.pathwaySets.find(f => f.selected === true);
+        // let pathwaySet = this.props.pathwaySet.find(f => f.selected === true);
         this.setState({
-            selectedPathwayState: pathwaySet,
+            selectedPathwayState: this.props.pathwaySet,
         });
     }
 
@@ -81,7 +81,8 @@ export default class PathwayEditor extends PureComponent {
     }
 
     render() {
-        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
+        // let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
+        // let selectedPathwayState = this.props.pathwaySet.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20,width:900}}>
                 <Row style={{marginBottom:20}}>
@@ -145,7 +146,7 @@ export default class PathwayEditor extends PureComponent {
                     <Col md={7}>
                         <PathwayView removePathwayHandler={this.removePathway}
                                      clickPathwayHandler={this.selectedPathway}
-                                     selectedPathwaySet={selectedPathwayState}
+                                     selectedPathwaySet={this.props.pathwaySet}
                         />
                     </Col>
                     <Col md={3}>
@@ -158,7 +159,9 @@ export default class PathwayEditor extends PureComponent {
                             }
                         </h3>
                         }
-                        <GeneView selectedPathway={this.state.selectedPathway} removeGeneHandler={this.removeGene}/>
+                        <GeneView selectedPathway={this.state.selectedPathway}
+                                  removeGeneHandler={this.removeGene}
+                        />
                     </Col>
                 </Row>
             </Grid>
@@ -220,8 +223,8 @@ export default class PathwayEditor extends PureComponent {
     }
 
     downloadView() {
-        let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
-        let exportObj = selectedPathwayState.pathway;
+        // let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
+        let exportObj = this.props.pathwaySet.pathway;
         let now = new Date();
         let dateString = now.toLocaleDateString() + '-' + now.toLocaleTimeString();
         let exportName = 'xenaGoView-' + dateString;
@@ -237,6 +240,7 @@ export default class PathwayEditor extends PureComponent {
 }
 
 PathwayEditor.propTypes = {
+    pathwaySet: PropTypes.any,
     addGeneSetHandler: PropTypes.any,
     addGeneHandler: PropTypes.any,
     removePathwayHandler: PropTypes.any,
