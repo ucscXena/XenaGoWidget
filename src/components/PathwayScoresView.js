@@ -252,7 +252,6 @@ export default class PathwayScoresView extends PureComponent {
                     associatedData={associatedData}
                     cohortIndex={cohortIndex}
                     data={data} // updated data forces refresh
-                    viewType={viewType}
                 />
                 }
                 <LabelWrapper
@@ -294,99 +293,3 @@ PathwayScoresView.propTypes = {
 };
 
 
-// export class PathwayScoresViewCache extends PureComponent {
-//
-//
-//
-//
-//     render() {
-//         let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
-//
-//         let hashAssociation = {
-//             expression,
-//             copyNumber,
-//             geneList,
-//             pathways,
-//             samples,
-//             filter,
-//             min,
-//             selectedCohort,
-//             cohortIndex,
-//         };
-//         if (expression === undefined || expression.length === 0) {
-//             return <div>Loading...</div>
-//         }
-//
-//         let associatedDataKey = createAssociatedDataKey(hashAssociation);
-//         let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-//         let prunedColumns = findPruneData(associatedData,associatedDataKey);
-//         prunedColumns.samples = samples;
-//
-//        let calculatedPathways = scoreColumns(prunedColumns);
-//        let returnedValue = update(prunedColumns, {
-//            pathways:{$set:calculatedPathways},
-//            index:{$set:cohortIndex},
-//        });
-//
-//         // set affected versus total
-//         let samplesLength = returnedValue.data[0].length;
-//         for (let d in returnedValue.data) {
-//             returnedValue.pathways[d].total = samplesLength;
-//             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-//             returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-//         }
-//
-//
-//         // send it to calculate the diffScores
-//         /// TODO: maybe have it ONLY calcualte the diff scores?
-//         this.props.shareGlobalGeneData(returnedValue.pathways, cohortIndex);
-//
-//         if(!showClusterSort && returnedValue.pathways[0].diffScore){
-//             returnedValue = diffSort(returnedValue,cohortIndex!==0);
-//         }
-//         else if (showClusterSort){
-//             if (cohortIndex === 0) {
-//                 returnedValue = clusterSort(returnedValue);
-//                 PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-//             } else {
-//                 PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-//                 returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
-//             }
-//         }
-//
-//         internalData = returnedValue.data;
-//
-//         // this will go last
-//         // fix for #194
-//         let genesInGeneSet = returnedValue.data.length;
-//         let width;
-//         if (genesInGeneSet < 8) {
-//             width = genesInGeneSet * MIN_GENE_WIDTH_PX;
-//         } else if (genesInGeneSet > 85 && collapsed) {
-//             width = MAX_GENE_LAYOUT_WIDTH_PX;
-//         } else {
-//             width = Math.max(minWidth, minColWidth * returnedValue.pathways.length);
-//         }
-//
-//         let layoutData = layout(width, returnedValue.data);
-//
-//
-//         return (
-//             <PathwayScoresView
-//                 {...this.props}
-//                 width={width}
-//                 layout={layoutData}
-//                 shareGlobalGeneData={shareGlobalGeneData}
-//                 data={{
-//                     expression,
-//                     pathways: returnedValue.pathways,
-//                     samples,
-//                     selectedPathways,
-//                     sortedSamples: returnedValue.sortedSamples
-//                 }}
-//                 doDataAssociations={returnedValue.data}/>
-//         );
-//     }
-//
-//
-// }

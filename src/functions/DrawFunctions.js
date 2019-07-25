@@ -168,60 +168,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
     });
 }
 
-function drawGeneWithColorType(ctx, width, totalHeight, layout, data, labelHeight, cohortIndex) {
-    let height = totalHeight - labelHeight;
-    let tissueCount = data[0].length;
-    let regions = findRegions(height, tissueCount);
-    let img = ctx.createImageData(width, totalHeight);
-
-    let cnvColorMask = getCNVColorMask();
-    let mutationColorMask = getMutationColorMask();
-
-    let offsetHeight = cohortIndex === 0 ? 0 : labelHeight - 11;
-
-    // for each row / geneSet
-    layout.forEach(function (el, i) {
-        // TODO: may be faster to transform the whole data cohort at once
-        let rowData = data[i];
-        if (cohortIndex === 0) {
-            rowData = data[i].reverse();
-        }
-
-
-        // let reverseMap = new Map(Array.from(regions).reverse());
-        // XXX watch for poor iterator performance in this for...of.
-        for (let rs of regions.keys()) {
-            let r = regions.get(rs);
-            let d = rowData.slice(r.start, r.end + 1);
-
-            let mutationColor = regionColor(d, 'mutation');
-            let cnvColor = regionColor(d, 'cnv');
-            // let totalColor = regionColor(d, 'total');
-
-
-            for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-                let pxRow = y * width,
-                    buffStart = (pxRow + el.start) * 4,
-                    buffEnd = (pxRow + el.start + el.size) * 4,
-                    buffMid = (buffEnd - buffStart) / 2 + buffStart;
-                for (let l = buffStart; l < buffMid; l += 4) {
-                    img.data[l] = cnvColorMask[0];
-                    img.data[l + 1] = cnvColorMask[1];
-                    img.data[l + 2] = cnvColorMask[2];
-                    img.data[l + 3] = cnvColor;
-                }
-                for (let l = buffMid; l < buffEnd; l += 4) {
-                    img.data[l] = mutationColorMask[0];
-                    img.data[l + 1] = mutationColorMask[1];
-                    img.data[l + 2] = mutationColorMask[2];
-                    img.data[l + 3] = mutationColor;
-                }
-            }
-        }
-
-        ctx.putImageData(img, 0, 0);
-    });
-}
 
 /**
  * TODO: handle for other type
@@ -303,17 +249,7 @@ export default {
             return;
         }
 
-
-        if (viewType && viewType === COLOR_BY_TYPE_DETAIL) {
-            drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
-        }
-        else
-        if (viewType && viewType === COLOR_BY_TYPE) {
-            drawGeneWithColorType(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
-        }
-        else {
-            drawGeneDataTotal(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, getGeneColorMask(), cohortIndex);
-        }
+        drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
 
     },
 

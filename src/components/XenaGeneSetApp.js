@@ -82,9 +82,6 @@ export default class XenaGeneSetApp extends PureComponent {
             loading:LOAD_STATE.UNLOADED,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
-            showColorByType: false,
-            showColorByTypeDetail: true,
-            showColorTotal: false,
             showDetailLayer: true,
             showClusterSort: false,
             showDiffLayer: true,
@@ -647,30 +644,6 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    activateShowColorByType = () => {
-        this.setState({
-            showColorByType: true,
-            showColorByTypeDetail: false,
-            showColorTotal: false,
-        })
-    };
-
-    activateShowColorByTypeDetail = () => {
-        this.setState({
-            showColorByType: false,
-            showColorByTypeDetail: true,
-            showColorTotal: false,
-        })
-    };
-
-    activateShowColorTotal = () => {
-        this.setState({
-            showColorByType: false,
-            showColorByTypeDetail: false,
-            showColorTotal: true,
-        })
-    };
-
     callDownload = (cohortIndex) => {
         this.refs['xena-go-app-' + cohortIndex].callDownload();
     };
@@ -749,12 +722,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
-                               activateShowColorByType={this.activateShowColorByType}
-                               activateShowColorByTypeDetail={this.activateShowColorByTypeDetail}
-                               activateShowColorTotal={this.activateShowColorTotal}
-                               showColorByType={this.state.showColorByType}
-                               showColorByTypeDetail={this.state.showColorByTypeDetail}
-                               showColorTotal={this.state.showColorTotal}
                                showDiffLayer={this.state.showDiffLayer}
                                showDetailLayer={this.state.showDetailLayer}
                                showClusterSort={this.state.showClusterSort}
@@ -919,9 +886,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // state
                                     colorSettings={this.state.geneStateColors}
                                     collapsed={this.state.collapsed}
-                                    showColorByType={this.state.showColorByType}
-                                    showColorByTypeDetail={this.state.showColorByTypeDetail}
-                                    showColorTotal={this.state.showColorTotal}
                                     showDiffLayer={this.state.showDiffLayer}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showClusterSort={this.state.showClusterSort}
@@ -959,9 +923,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // state
                                     colorSettings={this.state.geneStateColors}
                                     collapsed={this.state.collapsed}
-                                    showColorByType={this.state.showColorByType}
-                                    showColorByTypeDetail={this.state.showColorByTypeDetail}
-                                    showColorTotal={this.state.showColorTotal}
                                     showDiffLayer={this.state.showDiffLayer}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showClusterSort={this.state.showClusterSort}

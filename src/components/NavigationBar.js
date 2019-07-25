@@ -45,8 +45,8 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-        let {editGeneSetColors, showPathways, showXena, view, showColorByType,showColorByTypeDetail,showClusterSort,toggleShowClusterSort,
-            showColorTotal, showDetailLayer, showDiffLayer, activateShowColorByTypeDetail, activateShowColorTotal, activateShowColorByType,
+        let {editGeneSetColors, showPathways, showXena, view, showClusterSort,toggleShowClusterSort,
+             showDetailLayer, showDiffLayer,
             toggleShowDiffLayer,toggleShowDetailLayer, downloadRawHandler } = this.props;
         return (
             <div>
@@ -76,13 +76,6 @@ export default class NavigationBar extends PureComponent {
                                         <MenuItem value='favorite' onClick={() => showXena()} icon='pageview'
                                                   caption='Show GeneSet Viewer'/>
                                         }
-                                        <MenuDivider/>
-                                        <MenuItem onClick={() => activateShowColorByTypeDetail()}
-                                                  caption={`${showColorByTypeDetail ? "\u2713" : 'Show'}  Detailed Type of Gene Set Effect`}/>
-                                        <MenuItem onClick={() => activateShowColorByType()}
-                                                  caption={`${showColorByType ? "\u2713" : 'Show'} Type of Gene Set Effect`}/>
-                                        <MenuItem onClick={() => activateShowColorTotal()}
-                                                  caption={`${showColorTotal ? "\u2713" : 'Show'} Total Gene Set Effect`}/>
                                         <MenuDivider/>
                                         <MenuItem onClick={() => toggleShowDiffLayer()}
                                                   caption={`${showDiffLayer? "\u2713" : 'Show'} Diff Layer`}/>
@@ -152,10 +145,4 @@ NavigationBar.propTypes = {
     showClusterSort: PropTypes.any,
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
-    showColorByTypeDetail: PropTypes.any,
-    showColorByType: PropTypes.any,
-    showColorTotal: PropTypes.any,
-    activateShowColorByType: PropTypes.any,
-    activateShowColorByTypeDetail: PropTypes.any,
-    activateShowColorTotal: PropTypes.any,
 };

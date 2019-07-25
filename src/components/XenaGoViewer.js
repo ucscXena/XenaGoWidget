@@ -213,56 +213,6 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
-    // loadCohortData() {
-    //     console.log('loading cohor tdata')
-    //     if (this.state.pathways.length > 0 && (this.state.geneData && this.state.geneData.expression.length === 0)) {
-    //         let selectedCohort2 = AppStorageHandler.getCohortState(this.state.key);
-    //         if (selectedCohort2.selectedSubCohorts) {
-    //             console.log('SUB')
-    //             this.selectSubCohort(selectedCohort2);
-    //         } else {
-    //             console.log('plain')
-    //             this.selectCohort(selectedCohort2.selected ? selectedCohort2.selected : selectedCohort2);
-    //         }
-    //     } else {
-    //         return;
-    //     }
-    //     // // let data = defaultDatasetForGeneset;
-    //     // let cohortData = Object.keys(defaultDatasetForGeneset)
-    //     //     .filter(cohort => {
-    //     //         return (defaultDatasetForGeneset[cohort].viewInPathway) && defaultDatasetForGeneset[cohort][mutationKey]
-    //     //     })
-    //     //     .map(cohort => {
-    //     //         let mutation = defaultDatasetForGeneset[cohort][mutationKey];
-    //     //         let copyNumberView = defaultDatasetForGeneset[cohort][copyNumberViewKey];
-    //     //         let genomeBackground = defaultDatasetForGeneset[cohort][genomeBackgroundViewKey];
-    //     //         return {
-    //     //             name: cohort,
-    //     //             mutationDataSetId: mutation.dataset,
-    //     //             copyNumberDataSetId: copyNumberView.dataset,
-    //     //             genomeBackgroundCopyNumber: genomeBackground[genomeBackgroundCopyNumberViewKey],
-    //     //             genomeBackgroundMutation: genomeBackground[genomeBackgroundMutationViewKey],
-    //     //             amplificationThreshold: copyNumberView.amplificationThreshold,
-    //     //             deletionThreshold: copyNumberView.deletionThreshold,
-    //     //             host: mutation.host
-    //     //         }
-    //     //     })
-    //     //     .sort(lowerCaseCompareName);
-    //     this.setState({
-    //         loadState: 'loaded',
-    //         // cohortData
-    //     });
-    //
-    // }
-
-    componentDidUpdate() {
-        // TODO: this should come out of something else, as its not particularly performant to do it here
-        // console.log('component updated?')
-        // this.loadCohortData()
-    }
-
-
-
     selectCohort = (selected) => {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
@@ -380,15 +330,6 @@ export default class XenaGoViewer extends PureComponent {
         });
     };
 
-    // getGenesForNamedPathways(selectedPathways, pathways) {
-    //     let filteredPathways = pathways.filter(f => selectedPathways.indexOf(f.golabel) >= 0)
-    //     return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
-    // };
-
-    // getGenesForPathways(pathways) {
-    //     return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
-    // };
-
     callDownload = () => {
         this.refs['pathwayscoreview'].downloadData();
     };
@@ -404,13 +345,6 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = getGenesForPathways(this.props.pathways);
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
-
-        let viewType = COLOR_TOTAL;
-        if (this.props.showColorByType) {
-            viewType = COLOR_BY_TYPE;
-        } else if (this.props.showColorByTypeDetail) {
-            viewType = COLOR_BY_TYPE_DETAIL;
-        }
 
         if (this.state.selectedPathways.length > 0) {
             return (
@@ -454,12 +388,7 @@ export default class XenaGoViewer extends PureComponent {
                                 }
                             </Card>
                             }
-                            {viewType === COLOR_BY_TYPE_DETAIL &&
                             <DetailedLegend/>
-                            }
-                            {viewType === COLOR_BY_TYPE &&
-                            <TwoColorLegend/>
-                            }
                         </td>
                         }
                         {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
@@ -482,7 +411,6 @@ export default class XenaGoViewer extends PureComponent {
                                                shareGlobalGeneData={this.props.shareGlobalGeneData}
                                                colorSettings={this.props.colorSettings}
                                                collapsed={this.props.collapsed}
-                                               viewType={viewType}
                                                showDiffLayer={this.props.showDiffLayer}
                                                showDetailLayer={this.props.showDetailLayer}
                                                showClusterSort={this.props.showClusterSort}
@@ -551,7 +479,6 @@ XenaGoViewer.propTypes = {
     highlightedGene: PropTypes.any, // optional
     setCollapsed: PropTypes.any,
     collapsed: PropTypes.any,
-    showColorByType: PropTypes.any,
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
     showClusterSort: PropTypes.any,
