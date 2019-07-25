@@ -4,6 +4,7 @@ import {izip, permutations} from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5'
 import update from "immutability-helper";
 import {sumInstances, sumTotals} from "./MathFunctions";
+import {MIN_FILTER} from "../components/XenaGeneSetApp";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -360,4 +361,41 @@ export function calculatePathwayScore(pathwayData, filter, min) {
     return calculateAssociatedData(pathwayData, filter, min).map(pathway => {
         return sumTotals(pathway);
     });
+}
+/**
+ * Note:
+ * @param pathwayDataA
+ * @param pathwayDataB
+ */
+export function calculateAllPathways(pathwayDataA,pathwayDataB){
+
+    console.log('pathways A',JSON.stringify(pathwayDataA))
+    console.log('pathways B',JSON.stringify(pathwayDataB))
+
+    const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter, MIN_FILTER,pathwayDataA.cohort );
+    const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter, MIN_FILTER);
+    const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
+    const maxSamplesAffectedA = pathwayDataA.samples.length;
+
+    const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter, MIN_FILTER,pathwayDataB.cohort );
+    const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter, MIN_FILTER);
+    const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
+    const maxSamplesAffectedB = pathwayDataB.samples.length;
+
+    let outputData = pathwayDataA.pathways.map((p, index) => {
+        p.firstObserved = observationsA[index];
+        p.firstTotal = totalsA[index];
+        p.firstNumSamples = maxSamplesAffectedA;
+        p.firstExpected = expectedA[p.golabel];
+        p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+        p.secondObserved = observationsB[index];
+        p.secondTotal = totalsB[index];
+        p.secondNumSamples = maxSamplesAffectedB;
+        p.secondExpected = expectedB[p.golabel];
+        p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
+        return p;
+    });
+    console.log('output',JSON.stringify(outputData))
+    return outputData;
+
 }

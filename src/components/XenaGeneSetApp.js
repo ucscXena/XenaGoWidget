@@ -7,21 +7,16 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    calculateAssociatedData,
+    calculateAllPathways,
     calculateGeneSetExpected, calculateObserved, calculatePathwayScore,
-    createAssociatedDataKey,
-    findAssociatedData,
-    findPruneData
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
-import {sumInstances, sumTotals} from '../functions/MathFunctions';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/DataFunctions";
 import {ColorEditor} from "./ColorEditor";
-import update from "immutability-helper";
 import {Dialog} from "react-toolbox";
 import {fetchCombinedCohorts} from "../functions/FetchFunctions";
 
@@ -235,7 +230,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // console.log('cohrots pre',JSON.stringify(cohortA),JSON.stringify(cohortB))
 
-        pathways = this.calculateAllPathways(pathwayDataA,pathwayDataB);
+        pathways = calculateAllPathways(pathwayDataA,pathwayDataB);
         pathwayDataA.pathways = pathways ;
         pathwayDataB.pathways = pathways ;
 
@@ -549,44 +544,12 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
 
-    /**
-     * Note:
-     * @param pathwayDataA
-     * @param pathwayDataB
-     */
-    calculateAllPathways(pathwayDataA,pathwayDataB){
-
-        const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter, MIN_FILTER,pathwayDataA.cohort );
-        const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter, MIN_FILTER);
-        const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
-        const maxSamplesAffectedA = pathwayDataA.samples.length;
-
-        const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter, MIN_FILTER,pathwayDataB.cohort );
-        const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter, MIN_FILTER);
-        const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
-        const maxSamplesAffectedB = pathwayDataB.samples.length;
-
-        return pathwayDataA.pathways.map((p, index) => {
-            p.firstObserved = observationsA[index];
-            p.firstTotal = totalsA[index];
-            p.firstNumSamples = maxSamplesAffectedA;
-            p.firstExpected = expectedA[p.golabel];
-            p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
-            p.secondObserved = observationsB[index];
-            p.secondTotal = totalsB[index];
-            p.secondNumSamples = maxSamplesAffectedB;
-            p.secondExpected = expectedB[p.golabel];
-            p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
-            return p;
-        });
-
-    }
 
     populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
         let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
 
-        let observations = this.calculateObserved(pathwayData, filter, MIN_FILTER);
-        let totals = this.calculatePathwayScore(pathwayData, filter, MIN_FILTER);
+        let observations = calculateObserved(pathwayData, filter, MIN_FILTER);
+        let totals = calculatePathwayScore(pathwayData, filter, MIN_FILTER);
         let expected = calculateGeneSetExpected(pathwayData, filter);
 
         let maxSamplesAffected = pathwayData.samples.length;

@@ -18,7 +18,7 @@ import {
   calculateGeneSetExpected,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, calculateAssociatedData, calculateObserved, calculatePathwayScore
+  scoreChiSquaredData, calculateAssociatedData, calculateObserved, calculatePathwayScore, calculateAllPathways
 } from "../../src/functions/DataFunctions";
 import {times} from "underscore";
 import DefaultPathways from '../../src/data/genesets/tgac';
@@ -32,6 +32,10 @@ import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
 
 import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
 import CalculateAssociateDataOutput1 from '../data/CalculateAssociateDataOutput1';
+
+import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA'
+import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB'
+import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput'
 
 import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1'
 import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey'
@@ -226,6 +230,10 @@ describe('Data Functions', () => {
   it('Calculate PathwayScore', () => {
     const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
     expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,"All",2)).toEqual(pathwayScore);
+  });
+
+  it('Calculate All Pathways', () => {
+    expect(calculateAllPathways(CalculateAllPathwaysA,CalculateAllPathwaysB)).toEqual(CalculateAllPathwaysOutput);
   });
 
 });
