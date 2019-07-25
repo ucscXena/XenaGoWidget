@@ -18,7 +18,12 @@ import {
   calculateGeneSetExpected,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, calculateAssociatedData, calculateObserved, calculatePathwayScore, calculateAllPathways
+  scoreChiSquaredData,
+  calculateAssociatedData,
+  calculateObserved,
+  calculatePathwayScore,
+  calculateAllPathways,
+  calculateDiffs
 } from "../../src/functions/DataFunctions";
 import {times} from "underscore";
 import DefaultPathways from '../../src/data/genesets/tgac';
@@ -234,6 +239,15 @@ describe('Data Functions', () => {
 
   it('Calculate All Pathways', () => {
     expect(calculateAllPathways(CalculateAllPathwaysA,CalculateAllPathwaysB)).toEqual(CalculateAllPathwaysOutput);
+  });
+
+  it('Calculate Diffs', () => {
+    const CalculateDiffsA1 = [{"gene":["AKT1"]},{"gene":["AKT2"]},{"gene":["AKT3"]},{"gene":["BTK"]},{"gene":["GRB10"]},{"gene":["GRB2"]},{"gene":["HSPB1"]},{"gene":["ILK"]},{"gene":["MTCP1"]},{"gene":["PDK2"]},{"gene":["PDPK1"]},{"gene":["PIK3CA"]},{"gene":["PIK3CG"]},{"gene":["PIK3R1"]},{"gene":["PIK3R2"]},{"gene":["PAK1"]},{"gene":["PRKCA"]},{"gene":["PRKCB"]},{"gene":["PRKCZ"]},{"gene":["PTEN"]},{"gene":["TCL1A"]}];
+    const CalculateDiffsOutput1 = [[{"gene":["AKT1"]},{"gene":["AKT2"]},{"gene":["AKT3"]},{"gene":["BTK"]},{"gene":["GRB10"]},{"gene":["GRB2"]},{"gene":["HSPB1"]},{"gene":["ILK"]},{"gene":["MTCP1"]},{"gene":["PDK2"]},{"gene":["PDPK1"]},{"gene":["PIK3CA"]},{"gene":["PIK3CG"]},{"gene":["PIK3R1"]},{"gene":["PIK3R2"]},{"gene":["PAK1"]},{"gene":["PRKCA"]},{"gene":["PRKCB"]},{"gene":["PRKCZ"]},{"gene":["PTEN"]},{"gene":["TCL1A"]}],{}];
+    const CalculateDiffsB2 = [{"gene":["AKT1"]},{"gene":["AKT2"]},{"gene":["AKT3"]},{"gene":["BTK"]},{"gene":["GRB10"]},{"gene":["GRB2"]},{"gene":["HSPB1"]},{"gene":["ILK"]},{"gene":["MTCP1"]},{"gene":["PDK2"]},{"gene":["PDPK1"]},{"gene":["PIK3CA"]},{"gene":["PIK3CG"]},{"gene":["PIK3R1"]},{"gene":["PIK3R2"]},{"gene":["PAK1"]},{"gene":["PRKCA"]},{"gene":["PRKCB"]},{"gene":["PRKCZ"]},{"gene":["PTEN"]},{"gene":["TCL1A"]}];
+    const CalculateDiffsOutput2 =[{},[{"gene":["AKT1"]},{"gene":["AKT2"]},{"gene":["AKT3"]},{"gene":["BTK"]},{"gene":["GRB10"]},{"gene":["GRB2"]},{"gene":["HSPB1"]},{"gene":["ILK"]},{"gene":["MTCP1"]},{"gene":["PDK2"]},{"gene":["PDPK1"]},{"gene":["PIK3CA"]},{"gene":["PIK3CG"]},{"gene":["PIK3R1"]},{"gene":["PIK3R2"]},{"gene":["PAK1"]},{"gene":["PRKCA"]},{"gene":["PRKCB"]},{"gene":["PRKCZ"]},{"gene":["PTEN"]},{"gene":["TCL1A"]}]] ;
+    expect(calculateDiffs(CalculateDiffsA1,{})).toEqual(CalculateDiffsOutput1);
+    expect(calculateDiffs({},CalculateDiffsB2)).toEqual(CalculateDiffsOutput2);
   });
 
 });

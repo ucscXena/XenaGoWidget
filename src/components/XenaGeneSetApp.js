@@ -7,15 +7,13 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    calculateAllPathways,
-    calculateGeneSetExpected, calculateObserved, calculatePathwayScore,
+    calculateAllPathways, calculateDiffs,
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from "./LabelTop";
 import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {scoreChiSquaredData, scoreChiSquareTwoByTwo} from "../functions/DataFunctions";
 import {ColorEditor} from "./ColorEditor";
 import {Dialog} from "react-toolbox";
 import {fetchCombinedCohorts} from "../functions/FetchFunctions";
@@ -225,9 +223,14 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObject: selectedObjectB
         };
 
-        // console.log('cohrots pre',JSON.stringify(cohortA),JSON.stringify(cohortB))
-
+        // console.log('input data',pathwayDataA,pathwayDataB,JSON.stringify(pathways))
         pathways = calculateAllPathways(pathwayDataA,pathwayDataB);
+        // console.log('output data',JSON.stringify(pathways),pathways)
+        // pathways = calculateDiffs(pathways,pathways);
+        // console.log('output diffs ',JSON.stringify(pathways),pathways)
+
+
+
         pathwayDataA.pathways = pathways ;
         pathwayDataB.pathways = pathways ;
 
@@ -240,7 +243,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
-            // selectedPathways: newSelect, // not
+            // selectedPathway: newSelect, // not
             pathwaySelection: selection,
             geneList,
             cohortData,
@@ -260,10 +263,10 @@ export default class XenaGeneSetApp extends PureComponent {
         // if (selection.pathway) {
         //     let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
         //     if(refLoaded){
-        //         // console.log('XGSA handledCombined',JSON.stringify(selection.selectedPathways),JSON.stringify(selection))
+        //         // console.log('XGSA handledCombined',JSON.stringify(selection.selectedPathway),JSON.stringify(selection))
         //         for (let index = 0; index < this.state.apps.length; index++) {
         //             let ref = this.refs['xena-go-app-' + index];
-        //             ref.setPathwayState(selection.selectedPathways, selection);
+        //             ref.setPathwayState(selection.selectedPathway, selection);
         //         }
         //     }
         //     else{
@@ -271,8 +274,8 @@ export default class XenaGeneSetApp extends PureComponent {
         //     }
         // }
 
-        // if (this.state.selectedPathways.length > 0) {
-        //     this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        // if (this.state.selectedPathway.length > 0) {
+        //     this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
         // }
 
 
@@ -416,27 +419,6 @@ export default class XenaGeneSetApp extends PureComponent {
         // }
     };
 
-    pathwaySelect = (pathwaySelection, selectedPathways) => {
-        AppStorageHandler.storePathwaySelection(pathwaySelection, selectedPathways);
-        let myIndex = pathwaySelection.key;
-        pathwaySelection.propagate = false;
-
-        //  TODO: implement empty correlation, for some reason this is necessary for proper select behavior
-        if (selectedPathways.length === 0) {
-            this.setState({
-                selectedPathways: selectedPathways
-            });
-        }
-        this.state.apps.forEach((app, index) => {
-            if (index !== myIndex) {
-                if (selectedPathways) {
-                    this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwaySelection);
-                } else {
-                    this.refs['xena-go-app-' + index].clickPathway(pathwaySelection);
-                }
-            }
-        });
-    };
 
     globalPathwayHover = (pathwayHover) => {
         this.setState({
@@ -451,48 +433,13 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
-    /**
-     * this nicely forces synchronization as well
-     * @param geneData0
-     * @param geneData1
-     * @returns {*[]}
-     */
-    calculateDiffs(geneData0, geneData1) {
-        if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
-            const gene0List = geneData0.map( g => g.gene[0]);
-            const gene1Objects = geneData1.sort( (a,b) => {
-                const aGene = a.gene[0];
-                const bGene = b.gene[0];
-                return gene0List.indexOf(aGene)-gene0List.indexOf(bGene);
-            });
-
-            for (let geneIndex in geneData0) {
-                let chiSquareValue = scoreChiSquareTwoByTwo (
-                        geneData0[geneIndex].samplesAffected,
-                        geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
-                        gene1Objects[geneIndex].samplesAffected,
-                        gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected),
-                    diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total ?
-                        chiSquareValue : -chiSquareValue;
-                diffScore = isNaN(diffScore) ? 0 : diffScore;
-
-                geneData0[geneIndex].diffScore = diffScore;
-                gene1Objects[geneIndex].diffScore = diffScore;
-            }
-            return [geneData0, gene1Objects]
-        }
-        else{
-            return [geneData0, geneData1];
-        }
-    }
-
 // populates back to the top
     shareGlobalGeneData = (geneData, cohortIndex) => {
         const isChange = (cohortIndex === 0 && geneData.length!==this.state.geneData[0].length) || (cohortIndex === 1 && geneData.length!==this.state.geneData[1].length);
 
         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
-        let finalGeneData = this.calculateDiffs(geneData0, geneData1);
+        let finalGeneData = calculateDiffs(geneData0, geneData1);
 
         if(isChange){
             if(geneData0.length>0){
@@ -525,7 +472,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let newSelect = [pathwaySelection];
         this.setState({
-            selectedPathways: newSelect
+            selectedPathway: newSelect
         });
 
         pathwaySelection.propagate = false;
@@ -762,7 +709,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                                             <GeneSetSelector pathways={pathways}
                                                              hoveredPathways={this.state.hoveredPathways}
-                                                             selectedPathways={[this.state.pathwaySelection]}
+                                                             selectedPathway={this.state.pathwaySelection}
                                                              highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
                                                              onHover={this.globalPathwayHover}
@@ -833,9 +780,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
                                    // functions
-                                    pathwaySelect={this.pathwaySelect}
                                     geneHover={this.geneHover}
-                                    populateGlobal={this.populateGlobal}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
 
@@ -870,9 +815,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     cohortData={this.state.cohortData}
 
                                     // functions
-                                    pathwaySelect={this.pathwaySelect}
                                     geneHover={this.geneHover}
-                                    populateGlobal={this.populateGlobal}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
 

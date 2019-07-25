@@ -121,20 +121,19 @@ export class GeneSetSelector extends PureComponent {
 
 
     render() {
-        let {geneStateColors,pathways, selectedPathways, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
-        if (selectedPathways.length === 0) {
+        let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
+        if (selectedPathway===undefined) {
             return (
                 <div></div>
             )
         }
-        let selectedLabels = selectedPathways.map(p => p && p.golabel);
         let colorMask = getGeneSetColorMask();
         interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
 
         return pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
             let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
-            let selected = selectedLabels.indexOf(p.golabel) >= 0;
+            let selected = selectedPathway.golabel === p.golabel;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
             return (
@@ -168,7 +167,7 @@ export class GeneSetSelector extends PureComponent {
 GeneSetSelector.propTypes = {
     pathways: PropTypes.any.isRequired,
     width: PropTypes.any.isRequired,
-    selectedPathways: PropTypes.any.isRequired,
+    selectedPathway: PropTypes.any,
     hoveredPathways: PropTypes.any,
     labelHeight: PropTypes.any.isRequired,
     topOffset: PropTypes.any.isRequired,

@@ -66,7 +66,7 @@ export default class XenaGoViewer extends PureComponent {
             pathways: pathways,
             pathwaySelection: this.props.pathwaySelection,
         };
-        this.state.selectedPathways = [this.props.pathwaySelection.pathway.golabel];
+        this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
 
 
         let cohortIndex = this.state.key;
@@ -93,7 +93,7 @@ export default class XenaGoViewer extends PureComponent {
 
         this.setState({
             pathwayClickData,
-            selectedPathways: newSelection,
+            selectedPathway: newSelection,
             geneData: {
                 expression,
                 samples,
@@ -329,7 +329,7 @@ export default class XenaGoViewer extends PureComponent {
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
-        if (this.state.selectedPathways.length > 0) {
+        if (this.state.selectedPathway.length > 0) {
             return (
                 <table>
                     <tbody>
@@ -383,7 +383,7 @@ export default class XenaGoViewer extends PureComponent {
                                                loading={cohortLoading}
                                                min={MIN_FILTER}
                                                selectedCohort={this.state.selectedCohortData}
-                                               selectedPathways={this.state.selectedPathways}
+                                               selectedPathways={this.state.selectedPathway}
                                                hoveredPathways={this.state.hoveredPathways}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
@@ -427,9 +427,9 @@ export default class XenaGoViewer extends PureComponent {
             pathwayData: pathwayData,
             processing: false,
         });
-        if (this.state.selectedPathways.length > 0) {
-            console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathways),JSON.stringify(this.state.pathwayClickData))
-            this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
+        if (this.state.selectedPathway.length > 0) {
+            console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathway),JSON.stringify(this.state.pathwayClickData))
+            this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
         } else {
             this.setState({
                 geneData: {
@@ -448,10 +448,8 @@ XenaGoViewer.propTypes = {
     appData: PropTypes.any.isRequired,
     renderHeight: PropTypes.any.isRequired,
     renderOffset: PropTypes.any.isRequired,
-    pathwaySelect: PropTypes.any.isRequired,
     pathways: PropTypes.any.isRequired,
     geneHover: PropTypes.any.isRequired,
-    // populateGlobal: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,

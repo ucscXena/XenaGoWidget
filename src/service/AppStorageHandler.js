@@ -96,10 +96,10 @@ export class AppStorageHandler extends PureComponent {
         }
     }
 
-    static storePathwaySelection(pathway, selectedPathways) {
+    static storePathwaySelection(pathway, selectedPathway) {
         let appState = AppStorageHandler.getAppState();
         appState.selection = pathway;
-        appState.selection.selectedPathways = selectedPathways;
+        appState.selection.selectedPathway = selectedPathway;
         AppStorageHandler.storeAppState(appState);
     }
 

@@ -166,7 +166,7 @@ export default class PathwayScoresView extends PureComponent {
             selectedCohort, showDiffLayer
         } = this.props;
 
-        // let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathways,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
+        // let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathway,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
         const {expression, copyNumber, pathways, samples} = data;
 
         let hashAssociation = {
