@@ -541,50 +541,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
 
-
-    populateGlobal = (pathwayData, cohortIndex, appliedFilter) => {
-        let filter = appliedFilter ? appliedFilter : this.state.apps[cohortIndex].tissueExpressionFilter;
-
-        let observations = calculateObserved(pathwayData, filter, MIN_FILTER);
-        let totals = calculatePathwayScore(pathwayData, filter, MIN_FILTER);
-        let expected = calculateGeneSetExpected(pathwayData, filter);
-
-        let maxSamplesAffected = pathwayData.samples.length;
-        let pathways = this.getActiveApp().pathway.map((p, index) => {
-            if (cohortIndex === 0) {
-                p.firstObserved = observations[index];
-                p.firstTotal = totals[index];
-                p.firstNumSamples = maxSamplesAffected;
-                p.firstExpected = expected[p.golabel];
-                p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
-            } else {
-                p.secondObserved = observations[index];
-                p.secondTotal = totals[index];
-                p.secondNumSamples = maxSamplesAffected;
-                p.secondExpected = expected[p.golabel];
-                p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
-            }
-            return p;
-        });
-
-        // let globalPathwayData0 = cohortIndex === 0 ? pathwayData : this.state.pathwayData[0];
-        // let globalPathwayData1 = cohortIndex === 1 ? pathwayData : this.state.pathwayData[1];
-
-        // this.setState(
-        //     {
-        //         // pathwayData: [globalPathwayData0, globalPathwayData1],
-        //         selectedPathways: pathways,
-        //     }
-        // );
-        // if (appliedFilter) {
-        //     console.log('appyling applied filter',JSON.stringify(appliedFilter))
-        //     let newApps = JSON.parse(JSON.stringify(this.state.apps));
-        //     newApps[cohortIndex].tissueExpressionFilter = appliedFilter;
-        //     this.setState({apps: newApps});
-        // }
-
-    };
-
     hideGeneSetDetail = () => {
         this.setState({
             showPathwayDetails: false

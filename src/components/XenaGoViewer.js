@@ -193,7 +193,6 @@ export default class XenaGoViewer extends PureComponent {
 
     filterGeneType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
-        this.props.populateGlobal(this.state.pathwayData, this.state.key, filter);
         AppStorageHandler.storeFilterState(filter, this.state.key)
     };
 
@@ -428,7 +427,6 @@ export default class XenaGoViewer extends PureComponent {
             pathwayData: pathwayData,
             processing: false,
         });
-        this.props.populateGlobal(pathwayData, this.props.cohortIndex);
         if (this.state.selectedPathways.length > 0) {
             console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathways),JSON.stringify(this.state.pathwayClickData))
             this.setPathwayState(this.state.selectedPathways, this.state.pathwayClickData)
@@ -453,7 +451,7 @@ XenaGoViewer.propTypes = {
     pathwaySelect: PropTypes.any.isRequired,
     pathways: PropTypes.any.isRequired,
     geneHover: PropTypes.any.isRequired,
-    populateGlobal: PropTypes.any.isRequired,
+    // populateGlobal: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
     shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
