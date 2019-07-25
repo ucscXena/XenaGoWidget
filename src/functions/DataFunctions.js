@@ -2,6 +2,8 @@ import mutationScores from '../data/mutationVector';
 import {sum, times, memoize, range} from 'ucsc-xena-client/dist/underscore_ext';
 import {izip, permutations} from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5'
+import update from "immutability-helper";
+import {sumInstances, sumTotals} from "./MathFunctions";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -329,4 +331,33 @@ export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
         }
     }
     return total_prob;
+}
+
+export function calculateAssociatedData(pathwayData, filter, min) {
+    let hashAssociation = update(pathwayData, {
+            filter: {$set: filter},
+            min: {$set: min},
+            selectedCohort: {$set: pathwayData.cohort},
+        }
+    );
+    hashAssociation.filter = filter;
+    hashAssociation.min = min;
+    hashAssociation.selectedCohort = pathwayData.cohort;
+    let associatedDataKey = createAssociatedDataKey(hashAssociation);
+    let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+    let prunedColumns = findPruneData(associatedData,associatedDataKey);
+    prunedColumns.samples = pathwayData.samples;
+    return associatedData;
+}
+
+export function calculateObserved(pathwayData, filter, min) {
+    return calculateAssociatedData(pathwayData, filter, min).map(pathway => {
+        return sumInstances(pathway);
+    });
+}
+
+export function calculatePathwayScore(pathwayData, filter, min) {
+    return calculateAssociatedData(pathwayData, filter, min).map(pathway => {
+        return sumTotals(pathway);
+    });
 }
