@@ -369,9 +369,6 @@ export function calculatePathwayScore(pathwayData, filter, min) {
  */
 export function calculateAllPathways(pathwayDataA,pathwayDataB){
 
-    console.log('pathways A',JSON.stringify(pathwayDataA))
-    console.log('pathways B',JSON.stringify(pathwayDataB))
-
     const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter, MIN_FILTER,pathwayDataA.cohort );
     const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter, MIN_FILTER);
     const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
@@ -382,7 +379,7 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
     const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
     const maxSamplesAffectedB = pathwayDataB.samples.length;
 
-    let outputData = pathwayDataA.pathways.map((p, index) => {
+    return pathwayDataA.pathways.map((p, index) => {
         p.firstObserved = observationsA[index];
         p.firstTotal = totalsA[index];
         p.firstNumSamples = maxSamplesAffectedA;
@@ -395,7 +392,4 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
         p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
         return p;
     });
-    console.log('output',JSON.stringify(outputData))
-    return outputData;
-
 }
