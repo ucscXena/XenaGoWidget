@@ -64,3 +64,9 @@ export function sumTotals(arr) {
     return total;
 }
 
+
+export function intersection(a, b) {
+    let sa = new Set(a);
+    return b.filter(x => sa.has(x));
+}
+
