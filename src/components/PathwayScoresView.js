@@ -184,8 +184,6 @@ export default class PathwayScoresView extends PureComponent {
             return <div>Loading...</div>
         }
 
-        console.log('selected pathway',selectedPathways)
-
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         associatedData = findAssociatedData(hashAssociation, associatedDataKey);
         let prunedColumns = findPruneData(associatedData, associatedDataKey);
@@ -200,8 +198,6 @@ export default class PathwayScoresView extends PureComponent {
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
 
-        console.log('returned values data',JSON.stringify(returnedValue.data));
-        console.log('returned values pathways',JSON.stringify(returnedValue.pathways));
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
