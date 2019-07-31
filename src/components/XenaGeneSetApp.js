@@ -161,7 +161,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleCombinedCohortData = (input) => {
-        // let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort,selectedObjectA,selectedObjectB} = input;
         let {
             pathways,
             geneList,
@@ -294,11 +293,7 @@ export default class XenaGeneSetApp extends PureComponent {
     addGene = (selectedPathway, selectedGene) => {
 
         // get geneset to alter
-        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        // let selectedPathwaySet = allSets.find(f => f.selected === true);
         let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-
-        console.log('selected pathway',JSON.stringify(selectedPathway),selectedPathway.golabel)
 
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -312,24 +307,17 @@ export default class XenaGeneSetApp extends PureComponent {
         // add to the existing index
         selectedPathwaySet.pathways.splice(pathwayIndex, 0, newSelectedPathway);
 
-        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
-        // allSets.push(selectedPathwaySet);
-
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
         });
 
+        // TODO: this could be done via a global variable, but specific to the PathwayEditor
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removeGene = (selectedPathway, selectedGene) => {
-        // get geneset to alter
-        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        // let selectedPathwaySet = allSets.find(f => f.selected === true);
         let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-        // let selectedPathwaySet = this.state.pathwaySets.find(f => f.selected === true);
-
         // get pathway to filter
         let pathwayIndex = selectedPathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
         let newSelectedPathway = selectedPathwaySet.pathways.find(p => selectedPathway.golabel === p.golabel);
@@ -339,28 +327,20 @@ export default class XenaGeneSetApp extends PureComponent {
         newSelectedPathway.gene = newSelectedPathway.gene.filter(g => g !== selectedGene);
 
         // add to the existing index
-
         selectedPathwaySet.pathways.splice(pathwayIndex, 0, newSelectedPathway);
-        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
-        // allSets.push(selectedPathwaySet);
-
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
         });
 
+        // TODO: this could be done via a global variable, but specific to the PathwayEditor
         this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
-    removePathway = (selectedPathway) => {
-        // let allSets = JSON.parse(JSON.stringify(this.state.pathwaySets));
-        // let selectedPathwaySet = allSets.find(f => f.selected === true);
+    removeGeneSet = (selectedPathway) => {
         let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-        // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // removes selected pathway
         selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel)
-        // allSets.push(selectedPathwaySet);
-
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
@@ -646,7 +626,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <PathwayEditor ref='pathway-editor'
                                        pathwaySet={this.state.pathwaySet}
                                        removeGeneHandler={this.removeGene}
-                                       removePathwayHandler={this.removePathway}
+                                       removeGeneSetHandler={this.removeGeneSet}
                                        addGeneSetHandler={this.addGeneSet}
                                        addGeneHandler={this.addGene}
                                        uploadHandler={this.handleUpload}

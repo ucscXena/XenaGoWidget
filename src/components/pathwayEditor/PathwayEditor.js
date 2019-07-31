@@ -172,7 +172,7 @@ export default class PathwayEditor extends PureComponent {
     };
 
     removePathway = (selectedPathway) => {
-        this.props.removePathwayHandler(selectedPathway);
+        this.props.removeGeneSetHandler(selectedPathway);
 
         this.setState({
             selectedPathway: undefined,
@@ -222,7 +222,6 @@ export default class PathwayEditor extends PureComponent {
     }
 
     downloadView() {
-        // let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
         let exportObj = this.props.pathwaySet.pathways;
         let now = new Date();
         let dateString = now.toLocaleDateString() + '-' + now.toLocaleTimeString();
@@ -242,7 +241,7 @@ PathwayEditor.propTypes = {
     pathwaySet: PropTypes.any,
     addGeneSetHandler: PropTypes.any,
     addGeneHandler: PropTypes.any,
-    removePathwayHandler: PropTypes.any,
+    removeGeneSetHandler: PropTypes.any,
     removeGeneHandler: PropTypes.any,
     uploadHandler: PropTypes.any,
     resetHandler: PropTypes.any,
