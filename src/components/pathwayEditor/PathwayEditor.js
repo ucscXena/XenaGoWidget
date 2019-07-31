@@ -87,7 +87,7 @@ export default class PathwayEditor extends PureComponent {
                 <Row style={{marginBottom:20}}>
                     <Col md={12}>
                         <Button onClick={() => this.downloadView()}>
-                            Current GeneSet <FaCloudDownload/>
+                            Get GeneSet <FaCloudDownload/>
                         </Button>
                         <BrowseButton label="Load GeneSet (json)&nbsp;"
                                       onChange={this.handleChange}
@@ -223,7 +223,7 @@ export default class PathwayEditor extends PureComponent {
 
     downloadView() {
         // let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
-        let exportObj = this.props.pathwaySet.pathway;
+        let exportObj = this.props.pathwaySet.pathways;
         let now = new Date();
         let dateString = now.toLocaleDateString() + '-' + now.toLocaleTimeString();
         let exportName = 'xenaGoView-' + dateString;
