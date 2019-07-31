@@ -134,7 +134,7 @@ export default class PathwayEditor extends PureComponent {
                         />
                         {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewGene(this.props.pathwaySet, this.state.newGene)}>
+                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}>
                             <FaPlusCircle/>
                         </Button>
                         }
@@ -194,9 +194,9 @@ export default class PathwayEditor extends PureComponent {
         })
     }
 
-    handleAddNewGene(newGeneSet, newGene) {
+    handleAddNewGene(selectedGeneSet, newGene) {
         newGene.map(g => {
-            this.props.addGeneHandler(newGeneSet, g);
+            this.props.addGeneHandler(selectedGeneSet, g);
         });
 
         this.setState({
