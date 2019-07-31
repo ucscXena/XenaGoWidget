@@ -320,7 +320,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySet: selectedPathwaySet,
         });
 
-        // this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
+        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removeGene = (selectedPathway, selectedGene) => {
