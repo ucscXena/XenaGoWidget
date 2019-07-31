@@ -272,6 +272,24 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
+    addGeneSet = (selectedPathway) => {
+        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
+        let newGeneSetObject = {
+            goid: '',
+            golabel: selectedPathway,
+            gene: []
+        };
+        console.log('gene set to add',JSON.stringify(selectedPathway))
+        console.log('input pathway set',JSON.stringify(selectedPathwaySet))
+        selectedPathwaySet.pathways.unshift(newGeneSetObject);
+        console.log('output pathway set',JSON.stringify(selectedPathwaySet))
+
+        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
+
+        this.setState({
+            pathwaySet: selectedPathwaySet
+        });
+    };
 
     addGene = (selectedPathway, selectedGene) => {
 
@@ -627,6 +645,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                        pathwaySet={this.state.pathwaySet}
                                        removeGeneHandler={this.removeGene}
                                        removePathwayHandler={this.removePathway}
+                                       addGeneSetHandler={this.addGeneSet}
                                        addGeneHandler={this.addGene}
                                        uploadHandler={this.handleUpload}
                                        resetHandler={this.handleReset}
