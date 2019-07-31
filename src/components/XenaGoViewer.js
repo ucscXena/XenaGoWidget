@@ -382,7 +382,7 @@ export default class XenaGoViewer extends PureComponent {
                                                geneList={geneList}
                                                loading={cohortLoading}
                                                min={MIN_FILTER}
-                                               selectedCohort={this.state.selectedCohortData}
+                                               selectedCohort={this.state.selectedCohort}
                                                selectedPathways={this.state.selectedPathway}
                                                hoveredPathways={this.state.hoveredPathways}
                                                highlightedGene={this.props.highlightedGene}

@@ -121,7 +121,8 @@ export default class PathwayScoresView extends PureComponent {
             return;
         }
         let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
-        let filename = selectedCohort.name.replace(/ /g, '_') + '_' + selectedPathways[0] + '_' + cohortIndex + '.json';
+
+        let filename = selectedCohort.replace(/ /g, '_') + '_' + selectedPathways[0] + '_' + cohortIndex + '.json';
         // let filename = "export.json";
         let contentType = "application/json;charset=utf-8;";
         // a hacky way to do this
@@ -162,11 +163,10 @@ export default class PathwayScoresView extends PureComponent {
         const {
             height, data, offset, cohortIndex,
             selectedPathways, colorSettings, highlightedGene, filter, min,
-            viewType, showDetailLayer, geneList, showClusterSort, collapsed,
+             showDetailLayer, geneList, showClusterSort, collapsed,
             selectedCohort, showDiffLayer
         } = this.props;
 
-        // let {showClusterSort, cohortIndex, shareGlobalGeneData, selectedCohort, selectedPathway,  min, filter, collapsed, geneList, data: {expression, pathways, samples, copyNumber}} = this.props;
         const {expression, copyNumber, pathways, samples} = data;
 
         let hashAssociation = {
@@ -184,6 +184,8 @@ export default class PathwayScoresView extends PureComponent {
             return <div>Loading...</div>
         }
 
+        console.log('selected pathway',selectedPathways)
+
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         associatedData = findAssociatedData(hashAssociation, associatedDataKey);
         let prunedColumns = findPruneData(associatedData, associatedDataKey);
@@ -197,6 +199,9 @@ export default class PathwayScoresView extends PureComponent {
 
         // set affected versus total
         let samplesLength = returnedValue.data[0].length;
+
+        console.log('returned values data',JSON.stringify(returnedValue.data));
+        console.log('returned values pathways',JSON.stringify(returnedValue.pathways));
         for (let d in returnedValue.data) {
             returnedValue.pathways[d].total = samplesLength;
             returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
