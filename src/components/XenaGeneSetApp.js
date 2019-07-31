@@ -26,6 +26,7 @@ import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
 import {fetchCohortData} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
+import update from "immutability-helper";
 
 
 
@@ -559,6 +560,25 @@ export default class XenaGeneSetApp extends PureComponent {
         return false;
     }
 
+    changeCohort = (selectedCohort,cohortIndex) => {
+        console.log('changing cohort with ',selectedCohort,cohortIndex)
+        // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
+        // let newApp = update()
+        // this.setState({
+        //
+        // });
+    };
+
+    changeSubCohort = (selectedCohort,selectedSubCohorts,cohortIndex) => {
+        console.log('changing sub cohort with ',selectedCohort,selectedSubCohorts,cohortIndex)
+
+    };
+
+    changeFilter = (filter,cohortIndex) => {
+        console.log('changing filter with ',filter,cohortIndex)
+
+    };
+
     render() {
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
@@ -568,7 +588,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // TODO: returned should do rendering
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
-            console.log('FETCHING');
+            console.log('FETCHING',this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort);
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         }
 
@@ -753,6 +773,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHover={this.geneHover}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
+                                    changeCohort={this.changeCohort}
+                                    changeSubCohort={this.changeSubCohort}
+                                    changeFilter={this.changeFilter}
 
                                     // state
                                     colorSettings={this.state.geneStateColors}
@@ -788,6 +811,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHover={this.geneHover}
                                     shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
+                                    changeCohort={this.changeCohort}
+                                    changeSubCohort={this.changeSubCohort}
+                                    changeFilter={this.changeFilter}
 
                                     // state
                                     colorSettings={this.state.geneStateColors}

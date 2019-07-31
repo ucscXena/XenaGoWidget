@@ -194,9 +194,12 @@ export default class XenaGoViewer extends PureComponent {
     filterGeneType = (filter) => {
         this.setState({tissueExpressionFilter: filter});
         AppStorageHandler.storeFilterState(filter, this.state.key)
+        this.props.changeFilter(filter,this.props.cohortIndex);
     };
 
     selectCohort = (selected) => {
+
+        console.log('selecting a cohort for ',selected,this.props.cohortIndex)
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         let cohort = this.state.cohortData.find(c => c.name === selected);
 
@@ -210,40 +213,44 @@ export default class XenaGoViewer extends PureComponent {
             selectedCohortData: cohort,
             processing: true,
         });
-        let geneList = getGenesForPathways(this.props.pathways);
-        Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection)
-            .flatMap((samples) => {
-                return Rx.Observable.zip(
-                    sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
-                    datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                    datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
-                    datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                    (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                        mutations,
-                        samples,
-                        copyNumber,
-                        genomeBackgroundMutation,
-                        genomeBackgroundCopyNumber
-                    }))
-            })
-            .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                this.handleCohortData({
-                    mutations,
-                    samples,
-                    copyNumber,
-                    genomeBackgroundMutation,
-                    genomeBackgroundCopyNumber,
-                    geneList,
-                    cohort
-                });
-            });
+
+        this.props.changeCohort(selected,this.props.cohortIndex);
+
+        // let geneList = getGenesForPathways(this.props.pathways);
+        // Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+        //     datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+        //     intersection)
+        //     .flatMap((samples) => {
+        //         return Rx.Observable.zip(
+        //             sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+        //             datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
+        //             datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+        //             datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+        //             (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+        //                 mutations,
+        //                 samples,
+        //                 copyNumber,
+        //                 genomeBackgroundMutation,
+        //                 genomeBackgroundCopyNumber
+        //             }))
+        //     })
+        //     .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+        //         this.handleCohortData({
+        //             mutations,
+        //             samples,
+        //             copyNumber,
+        //             genomeBackgroundMutation,
+        //             genomeBackgroundCopyNumber,
+        //             geneList,
+        //             cohort
+        //         });
+        //     });
     };
 
     selectSubCohort = (subCohortSelected) => {
         if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
 
+        this.props.changeSubCohort(subCohortSelected,subCohortSelected,this.props.cohortIndex);
         // let subCohortSamplesArray, subCohort, samples;
         let samples, selectedObject;
         let selectedCohort = this.state.selectedCohort;
@@ -281,36 +288,37 @@ export default class XenaGoViewer extends PureComponent {
                 selectedSubCohorts: selectedObject.selectedSubCohorts
             }
         );
-        let geneList = getGenesForPathways(this.props.pathways);
-         Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-        ).subscribe((sampleArray) => {
-            let finalSamples = intersection(sampleArray[0],sampleArray[1],samples)
-            samples = intersection(finalSamples,samples);
-            Rx.Observable.zip(
-                sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
-                datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
-                datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                    mutations,
-                    samples,
-                    copyNumber,
-                    genomeBackgroundMutation,
-                    genomeBackgroundCopyNumber
-                }))
-                .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-                    this.handleCohortData({
-                        mutations,
-                        samples,
-                        copyNumber,
-                        genomeBackgroundMutation,
-                        genomeBackgroundCopyNumber,
-                        geneList,
-                        cohort
-                    });
-                });
-        });
+
+        // let geneList = getGenesForPathways(this.props.pathways);
+        //  Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+        //     datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+        // ).subscribe((sampleArray) => {
+        //     let finalSamples = intersection(sampleArray[0],sampleArray[1],samples)
+        //     samples = intersection(finalSamples,samples);
+        //     Rx.Observable.zip(
+        //         sparseData(cohort.host, cohort.mutationDataSetId, samples, geneList),
+        //         datasetFetch(cohort.host, cohort.copyNumberDataSetId, samples, geneList),
+        //         datasetFetch(cohort.genomeBackgroundMutation.host, cohort.genomeBackgroundMutation.dataset, samples, [cohort.genomeBackgroundMutation.feature_event_K, cohort.genomeBackgroundMutation.feature_total_pop_N]),
+        //         datasetFetch(cohort.genomeBackgroundCopyNumber.host, cohort.genomeBackgroundCopyNumber.dataset, samples, [cohort.genomeBackgroundCopyNumber.feature_event_K, cohort.genomeBackgroundCopyNumber.feature_total_pop_N]),
+        //         (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
+        //             mutations,
+        //             samples,
+        //             copyNumber,
+        //             genomeBackgroundMutation,
+        //             genomeBackgroundCopyNumber
+        //         }))
+        //         .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
+        //             this.handleCohortData({
+        //                 mutations,
+        //                 samples,
+        //                 copyNumber,
+        //                 genomeBackgroundMutation,
+        //                 genomeBackgroundCopyNumber,
+        //                 geneList,
+        //                 cohort
+        //             });
+        //         });
+        // });
     };
 
     callDownload = () => {
