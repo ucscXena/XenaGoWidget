@@ -300,7 +300,7 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySet: selectedPathwaySet,
         });
 
-        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
+        // this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removeGene = (selectedPathway, selectedGene) => {
@@ -589,7 +589,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         // console.log('pathway data -- pathways',JSON.stringify(pathways))
-        // console.log('STATE in',JSON.stringify(this.state))
+        console.log('PW STATE in',JSON.stringify(this.state.pathwaySet))
 
         return (
             <div>
@@ -625,7 +625,6 @@ export default class XenaGeneSetApp extends PureComponent {
                     >
                         <PathwayEditor ref='pathway-editor'
                                        pathwaySet={this.state.pathwaySet}
-                                       selectedPathway={this.state.selectedPathway}
                                        removeGeneHandler={this.removeGene}
                                        removePathwayHandler={this.removePathway}
                                        addGeneHandler={this.addGene}

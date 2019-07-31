@@ -23,9 +23,9 @@ export default class PathwayView extends PureComponent {
 
     render() {
         if (this.props.selectedPathwaySet
-            && this.props.selectedPathwaySet.pathway
-            && this.props.selectedPathwaySet.pathway.length > 0) {
-            return this.props.selectedPathwaySet.pathway.map(p => {
+            && this.props.selectedPathwaySet.pathways
+            && this.props.selectedPathwaySet.pathways.length > 0) {
+            return this.props.selectedPathwaySet.pathways.map(p => {
                 return (
                     <Row key={p.golabel + p.goid}>
                         <Col md={9}>

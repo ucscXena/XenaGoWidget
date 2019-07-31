@@ -23,7 +23,6 @@ export default class PathwayEditor extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            selectedPathway: this.props.selectedPathway,
             newGene: [],
             newGeneSet: '',
             newView: '',
@@ -52,8 +51,8 @@ export default class PathwayEditor extends PureComponent {
     highlightGenes = (genes) => {
         // we can reset the state then
         // TODO: provide a "higlight view as state to pathway view"
-        if (genes && this.state.selectedPathwayState) {
-            let newSelectedPathwayState = JSON.parse(JSON.stringify(this.state.selectedPathwayState))
+        if (genes && this.props.pathwaySet) {
+            let newSelectedPathwayState = JSON.parse(JSON.stringify(this.props.pathwaySet));
             newSelectedPathwayState.pathway = newSelectedPathwayState.pathway.map(p => {
                 p.highlight = p.gene.indexOf(genes) >= 0;
                 return p;
@@ -135,7 +134,7 @@ export default class PathwayEditor extends PureComponent {
                         />
                         {this.state.newGene && this.state.newGene.length === 1 &&
                         <Button style={{marginTop: 20}} raised primary
-                                onClick={() => this.handleAddNewGene(this.state.selectedPathway, this.state.newGene)}>
+                                onClick={() => this.handleAddNewGene(this.props.pathwaySet, this.state.newGene)}>
                             <FaPlusCircle/>
                         </Button>
                         }
