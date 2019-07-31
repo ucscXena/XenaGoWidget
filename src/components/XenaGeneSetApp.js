@@ -342,7 +342,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // allSets.push(selectedPathwaySet);
 
-        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
         });
@@ -356,10 +356,10 @@ export default class XenaGeneSetApp extends PureComponent {
         let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
         // let allSets = this.state.pathwaySets.filter(f => (!f || f.selected === false));
         // removes selected pathway
-        selectedPathwaySet.pathway = selectedPathwaySet.pathway.filter(p => selectedPathway.golabel !== p.golabel)
+        selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel)
         // allSets.push(selectedPathwaySet);
 
-        AppStorageHandler.storePathways(selectedPathwaySet.pathway);
+        AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
             selectedPathway: undefined,
