@@ -278,11 +278,7 @@ export default class XenaGeneSetApp extends PureComponent {
             golabel: selectedPathway,
             gene: []
         };
-        console.log('gene set to add',JSON.stringify(selectedPathway))
-        console.log('input pathway set',JSON.stringify(selectedPathwaySet))
         selectedPathwaySet.pathways.unshift(newGeneSetObject);
-        console.log('output pathway set',JSON.stringify(selectedPathwaySet))
-
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
 
         this.setState({
@@ -583,13 +579,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         // 2. based on cohortData, fetch cohorts with subCohorts
-        console.log('pawthway set',JSON.stringify(this.state.pathwaySet))
-        console.log('selected pawthway set',JSON.stringify(this.state.selectedPathway))
 
-
-
-        // console.log('pathway data -- pathways',JSON.stringify(pathways))
-        console.log('PW STATE in',JSON.stringify(this.state.pathwaySet))
 
         return (
             <div>
