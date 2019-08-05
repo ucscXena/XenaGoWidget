@@ -247,6 +247,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObjectB,
             loading: LOAD_STATE.LOADED,
             processing: false,
+            fetch: false,
         });
 
         // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
@@ -534,6 +535,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
     doRefetch(){
 
+        if(this.state.fetch ){
+            return true ;
+        }
+
         switch (currentLoadState) {
             case LOAD_STATE.LOADING:
                 return false ;
@@ -562,11 +567,20 @@ export default class XenaGeneSetApp extends PureComponent {
 
     changeCohort = (selectedCohort,cohortIndex) => {
         console.log('changing cohort with ',selectedCohort,cohortIndex)
+        // I think we just set the state
+
         // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
-        // let newApp = update()
-        // this.setState({
-        //
-        // });
+        // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
+
+        let newAppState = update(this.state,{
+            apps: {
+                [cohortIndex]: {
+                    selectedCohort:  { $set: selectedCohort}
+                }
+            },
+            fetch: {$set: true}
+        });
+        this.setState( newAppState );
     };
 
     changeSubCohort = (selectedCohort,selectedSubCohorts,cohortIndex) => {
@@ -580,6 +594,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     render() {
+        console.log('re-rendering ')
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
 
@@ -590,6 +605,9 @@ export default class XenaGeneSetApp extends PureComponent {
             currentLoadState = LOAD_STATE.LOADING;
             console.log('FETCHING',this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort);
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
+        }
+        else{
+            console.log('not refetching ')
         }
 
 

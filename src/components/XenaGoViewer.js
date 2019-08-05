@@ -18,6 +18,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import {MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
+    getCohortDetails,
     getGenesForNamedPathways,
     getGenesForPathways,
     getSamplesFromSubCohort, getSamplesFromSubCohortList,
@@ -199,9 +200,12 @@ export default class XenaGoViewer extends PureComponent {
 
     selectCohort = (selected) => {
 
-        console.log('selecting a cohort for ',selected,this.props.cohortIndex)
-        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-        let cohort = this.state.cohortData.find(c => c.name === selected);
+        console.log('selecting a cohort for ',selected,this.props.cohortIndex,this.props.cohortData)
+        // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
+        // let cohort = this.state.cohortData.find(c => c.name === selected);
+
+        let cohortDetails = getCohortDetails(selected,this.props.cohortData);
+        // console.log('cohort details',cohortDetails)
 
         let selectedObject = {
             selected: selected,
@@ -210,11 +214,13 @@ export default class XenaGoViewer extends PureComponent {
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
         this.setState({
             selectedCohort: selected,
-            selectedCohortData: cohort,
+            selectedCohortData: cohortDetails,
             processing: true,
         });
 
+        // console.log('B')
         this.props.changeCohort(selected,this.props.cohortIndex);
+        // console.log('C')
 
         // let geneList = getGenesForPathways(this.props.pathways);
         // Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),

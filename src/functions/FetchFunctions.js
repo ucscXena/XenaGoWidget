@@ -12,6 +12,8 @@ function intersection(a, b) {
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,pathways,combinationHandler){
 
+    console.log('selected  ohort A',selectedCohortA,selectedCohortB)
+
     // 1. TODO fetch cohort data
     // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
     let cohortA = cohortData.find(c => c.name === selectedCohortA);
