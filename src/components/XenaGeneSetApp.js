@@ -18,7 +18,7 @@ import {ColorEditor} from "./ColorEditor";
 import {Dialog} from "react-toolbox";
 import {fetchCombinedCohorts} from "../functions/FetchFunctions";
 
-let Rx = require('ucsc-xena-client/dist/rx');
+// let Rx = require('ucsc-xena-client/dist/rx');
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -217,9 +217,12 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObject: selectedObjectB
         };
 
-        // console.log('input data',pathwayDataA,pathwayDataB,JSON.stringify(pathways))
         pathways = calculateAllPathways(pathwayDataA,pathwayDataB);
+        // console.log('input data',JSON.stringify(pathwayDataA),JSON.stringify(pathwayDataB),JSON.stringify(pathways))
         // console.log('output data',JSON.stringify(pathways),pathways)
+
+        // console.log('gene data',JSON.stringify(this.state.geneData))
+        // console.log('app data',JSON.stringify(this.state.apps))
         // pathways = calculateDiffs(pathways,pathways);
         // console.log('output diffs ',JSON.stringify(pathways),pathways)
 
@@ -233,6 +236,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let selection = AppStorageHandler.getPathwaySelection();
+
+
+        console.log('election',JSON.stringify(selection))
 
 
         currentLoadState = LOAD_STATE.LOADED;
@@ -436,6 +442,8 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     globalPathwaySelect = (pathwaySelection) => {
+
+
 
         if (pathwaySelection.gene.length === 0) {
             return;

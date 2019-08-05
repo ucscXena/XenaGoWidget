@@ -124,7 +124,7 @@ export class GeneSetSelector extends PureComponent {
         let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
         if (selectedPathway===undefined) {
             return (
-                <div></div>
+                <div/>
             )
         }
         let colorMask = getGeneSetColorMask();
