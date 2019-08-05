@@ -150,13 +150,13 @@ export default class PathwayScoresView extends PureComponent {
         }
     };
 
-    componentDidMount() {
-        // this supp
-        const {
-            data, cohortIndex, shareGlobalGeneData,
-        } = this.props;
-        shareGlobalGeneData(data.pathways, cohortIndex);
-    }
+    // componentDidMount() {
+    //     // this supp
+    //     const {
+    //         data, cohortIndex, shareGlobalGeneData,
+    //     } = this.props;
+    //     shareGlobalGeneData(data.pathways, cohortIndex);
+    // }
 
 
     render() {
@@ -286,7 +286,7 @@ PathwayScoresView.propTypes = {
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    shareGlobalGeneData: PropTypes.any.isRequired,
+    // shareGlobalGeneData: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any,
     colorSettings: PropTypes.any,
     showDiffLayer: PropTypes.any,

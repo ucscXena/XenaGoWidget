@@ -8,12 +8,12 @@ import HoverGeneView from "./HoverGeneView";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
-let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
+// let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+// let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick} from 'underscore';
 import {Card,Dialog,Button} from "react-toolbox";
 
-let Rx = require('ucsc-xena-client/dist/rx');
+// let Rx = require('ucsc-xena-client/dist/rx');
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
@@ -21,10 +21,10 @@ import {
     getCohortDetails,
     getGenesForNamedPathways,
     getGenesForPathways,
-    getSamplesFromSubCohort, getSamplesFromSubCohortList,
+    // getSamplesFromSubCohort, getSamplesFromSubCohortList,
     getSubCohortsOnlyForCohort
 } from "../functions/CohortFunctions";
-import {intersection} from "../functions/MathFunctions";
+// import {intersection} from "../functions/MathFunctions";
 
 
 const style = {
@@ -258,12 +258,13 @@ export default class XenaGoViewer extends PureComponent {
 
         this.props.changeSubCohort(subCohortSelected,subCohortSelected,this.props.cohortIndex);
         // let subCohortSamplesArray, subCohort, samples;
-        let samples, selectedObject;
+        // let samples, selectedObject;
+        let selectedObject;
         let selectedCohort = this.state.selectedCohort;
 
         if (typeof subCohortSelected === 'object') {
             if (typeof subCohortSelected.selectedSubCohorts === 'object') {
-                    samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
+                    // samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
                     selectedObject = {
                         selected: this.state.selectedCohort,
                         selectedSubCohorts: subCohortSelected.selectedSubCohorts,
@@ -278,17 +279,17 @@ export default class XenaGoViewer extends PureComponent {
                 this.selectCohort(this.state.selectedCohort);
                 return;
             }
-            let selectedSubCohortSamples = getSamplesFromSubCohort(this.state.selectedCohort,subCohortSelected);
-            samples = Object.entries(selectedSubCohortSamples).map(c => {
-                return c[1]
-            });
+            // let selectedSubCohortSamples = getSamplesFromSubCohort(this.state.selectedCohort,subCohortSelected);
+            // samples = Object.entries(selectedSubCohortSamples).map(c => {
+            //     return c[1]
+            // });
             selectedObject = {
                 selected: selectedCohort,
                 selectedSubCohorts: subCohortSelected,
             };
         }
         AppStorageHandler.storeCohortState(selectedObject, this.state.key);
-        let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
+        // let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
         this.setState({
                 processing: true,
                 selectedSubCohorts: selectedObject.selectedSubCohorts
@@ -402,7 +403,7 @@ export default class XenaGoViewer extends PureComponent {
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
                                                cohortIndex={this.state.key}
-                                               shareGlobalGeneData={this.props.shareGlobalGeneData}
+                                               // shareGlobalGeneData={this.props.shareGlobalGeneData}
                                                colorSettings={this.props.colorSettings}
                                                collapsed={this.props.collapsed}
                                                showDiffLayer={this.props.showDiffLayer}
@@ -465,7 +466,7 @@ XenaGoViewer.propTypes = {
     pathways: PropTypes.any.isRequired,
     geneHover: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    shareGlobalGeneData: PropTypes.any.isRequired,
+    // shareGlobalGeneData: PropTypes.any.isRequired,
     geneDataStats: PropTypes.any.isRequired,
     highlightedGene: PropTypes.any, // optional
     setCollapsed: PropTypes.any,

@@ -40,6 +40,9 @@ export default class LabelSet extends PureComponent {
             const numSamples = data.samples.length;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
+
+            console.log('label set pathways',JSON.stringify(pathways));
+
             return layout.map((el, i) => {
                 let d = pathways[i];
                 let geneLength = d.gene.length;
@@ -106,7 +109,7 @@ export default class LabelSet extends PureComponent {
                 )
             });
         } else {
-            return <div></div>;
+            return <div/>;
         }
     }
 }

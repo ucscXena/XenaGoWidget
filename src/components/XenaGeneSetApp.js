@@ -594,7 +594,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     render() {
-        console.log('re-rendering ')
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
 
@@ -606,9 +605,9 @@ export default class XenaGeneSetApp extends PureComponent {
             console.log('FETCHING',this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort);
             fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         }
-        else{
-            console.log('not refetching ')
-        }
+        // else{
+        //     console.log('not refetching ')
+        // }
 
 
         // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists
@@ -789,7 +788,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                    // functions
                                     geneHover={this.geneHover}
-                                    shareGlobalGeneData={this.shareGlobalGeneData}
+                                    // shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
                                     changeCohort={this.changeCohort}
                                     changeSubCohort={this.changeSubCohort}
@@ -827,7 +826,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // functions
                                     geneHover={this.geneHover}
-                                    shareGlobalGeneData={this.shareGlobalGeneData}
+                                    // shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
                                     changeCohort={this.changeCohort}
                                     changeSubCohort={this.changeSubCohort}
