@@ -89,7 +89,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 pathways,
                 selected: true
             },
-            hoveredPathways: [],
+            hoveredPathway: undefined,
             geneData: [{}, {}],
             pathwayData: [{}, {}],
             showPathwayDetails: false,
@@ -367,7 +367,7 @@ export default class XenaGeneSetApp extends PureComponent {
     geneHover = (geneHover) => {
         // this.setState(
         //     {
-        //         hoveredPathways: geneHover ? geneHover.pathway : {}
+        //         hoveredPathway: geneHover ? geneHover.pathway : {}
         //     }
         // );
         // console.log('gene hover',JSON.stringify(geneHover))
@@ -382,17 +382,49 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-    globalPathwayHover = (pathwayHover) => {
-        // this.setState({
-        //     hoveredPathways: pathwayHover
-        // });
+    globalPathwayHover = (hoveredPathway) => {
 
-        this.state.apps.forEach((app, index) => {
-            if(pathwayHover){
-                pathwayHover.samplesAffected = index === 0 ? pathwayHover.firstObserved : pathwayHover.secondObserved;
+        const geneHoverData = hoveredPathway ? [
+            {
+                tissue: 'Header',
+                pathway: hoveredPathway,
+                expression: {
+                    affected: hoveredPathway.firstObserved,
+                    samplesAffected: hoveredPathway.firstObserved,
+                    allGeneAffected: hoveredPathway.firstTotal,
+                    total: hoveredPathway.firstNumSamples,
+                }
+            },
+            {
+
+                tissue: 'Header',
+                pathway: hoveredPathway,
+                expression: {
+                    affected: hoveredPathway.secondObserved,
+                    samplesAffected: hoveredPathway.secondObserved,
+                    allGeneAffected: hoveredPathway.secondTotal,
+                    total: hoveredPathway.secondNumSamples,
+                }
             }
-            this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
+        ] : this.state.geneHoverData;
+
+        // if(hoveredPathway){
+        //     console.log('setting new hovered pathway',JSON.stringify(geneHoverData))
+        // }
+
+
+        this.setState({
+            hoveredPathway,
+            geneHoverData
         });
+        console.log('pathway hover',JSON.stringify(hoveredPathway))
+
+        // this.state.apps.forEach((app, index) => {
+        //     if(pathwayHover){
+        //         pathwayHover.samplesAffected = index === 0 ? pathwayHover.firstObserved : pathwayHover.secondObserved;
+        //     }
+        //     this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
+        // });
     };
 
 // populates back to the top
@@ -706,7 +738,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                         </td>
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                                             <GeneSetSelector pathways={pathways}
-                                                             hoveredPathways={this.state.hoveredPathways}
+                                                             hoveredPathway={this.state.hoveredPathway}
                                                              selectedPathway={this.state.pathwaySelection}
                                                              highlightedGene={this.state.highlightedGene}
                                                              onClick={this.globalPathwaySelect}
@@ -763,9 +795,11 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // view
                                     renderOffset={0}
                                     renderHeight={VIEWER_HEIGHT}
+
                                     // data
                                     appData={this.state.apps[0]}
                                     geneDataStats={this.state.geneData[0]}
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
 
                                     // maybe state?
                                     pathways={pathways}
@@ -805,6 +839,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // data
                                     appData={this.state.apps[1]}
                                     geneDataStats={this.state.geneData[1]}
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
 
                                     // maybe state?
                                     pathways={pathways}

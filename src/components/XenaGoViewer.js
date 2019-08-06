@@ -50,7 +50,7 @@ export default class XenaGoViewer extends PureComponent {
         this.state = this.props.appData;
         this.state.processing = true;
         this.state.loadState = 'Loading';
-        this.state.hoveredPathways = [];
+        this.state.hoveredPathway = undefined ;
         this.state.highlightedGene = this.props.highlightedGene;
         this.state.subCohortData = [];
 
@@ -132,7 +132,7 @@ export default class XenaGoViewer extends PureComponent {
         };
         this.setState(
             {
-                hoveredPathways: newHover,
+                hoveredPathway: newHover,
                 geneHoverData: hoverData,
             }
         );
@@ -162,7 +162,7 @@ export default class XenaGoViewer extends PureComponent {
             };
             this.setState(
                 {
-                    hoveredPathways: newHover,
+                    hoveredPathway: newHover,
                     geneHoverData: hoverData,
                 }
             );
@@ -188,7 +188,7 @@ export default class XenaGoViewer extends PureComponent {
         this.setState(
             {
                 geneHoverData: geneHoverProps,
-                hoveredPathways: genesHovered
+                hoveredPathway: genesHovered
             }
         );
     };
@@ -372,7 +372,9 @@ export default class XenaGoViewer extends PureComponent {
                                                 deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
                                                 onChange={this.filterGeneType}
                                 />
-                                <HoverGeneView data={this.state.geneHoverData} cohortIndex={cohortIndex}/>
+                                <HoverGeneView data={this.props.geneHoverData}
+                                               cohortIndex={cohortIndex}
+                                />
                             </Card>
                             {this.state.geneData.pathways.length > MAX_GENE_WIDTH &&
                             <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
@@ -402,7 +404,6 @@ export default class XenaGoViewer extends PureComponent {
                                                min={MIN_FILTER}
                                                selectedCohort={this.state.selectedCohort}
                                                selectedPathways={this.state.selectedPathway}
-                                               hoveredPathways={this.state.hoveredPathways}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
                                                cohortIndex={this.state.key}
@@ -483,4 +484,6 @@ XenaGoViewer.propTypes = {
     cohortData: PropTypes.any.isRequired,
     pathwayData: PropTypes.any.isRequired,
     pathwaySelection: PropTypes.any.isRequired,
+
+    geneHoverData: PropTypes.any.isRequired,
 };

@@ -8,7 +8,7 @@ import {omit,isEqual} from 'underscore'
 import BaseStyle from '../css/base.css';
 
 const chiSquareMax = 100.0;
-const omitArray = ['hoveredPathways','pathways','data'];
+const omitArray = ['hoveredPathway','pathways','data'];
 
 export default class LabelSet extends PureComponent {
 

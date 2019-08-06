@@ -120,7 +120,7 @@ export class GeneSetSelector extends PureComponent {
 
 
     render() {
-        let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathways, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
+        let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, labelOffset, left} = this.props;
         if (selectedPathway===undefined) {
             return (
                 <div/>
@@ -132,7 +132,7 @@ export class GeneSetSelector extends PureComponent {
 
         return pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
-            let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
+            let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false ;
             let selected = selectedPathway.pathway.golabel === p.golabel;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
@@ -168,7 +168,7 @@ GeneSetSelector.propTypes = {
     pathways: PropTypes.any.isRequired,
     width: PropTypes.any.isRequired,
     selectedPathway: PropTypes.any,
-    hoveredPathways: PropTypes.any,
+    hoveredPathway: PropTypes.any,
     labelHeight: PropTypes.any.isRequired,
     topOffset: PropTypes.any.isRequired,
     onClick: PropTypes.any.isRequired,

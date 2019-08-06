@@ -12,26 +12,24 @@ export default class HoverGeneView extends PureComponent {
      * @param data
      * @returns {string}
      */
-    getRatio(data) {
+    getRatio = data => {
         let returnString = data.expression.samplesAffected + '/' + data.expression.total;
         returnString += '  (';
         returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
         returnString += '%)';
         return returnString;
-    }
+    };
 
-    getAffectedPathway(data) {
+    getAffectedPathway = data => {
         let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length);
         returnString += '  (';
         returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0);
         returnString += '%)';
         return returnString;
 
-    }
+    };
 
-    getScore(data, cohortIndex) {
-        return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
-    }
+    getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
     render() {
         let {data, title, cohortIndex} = this.props;
