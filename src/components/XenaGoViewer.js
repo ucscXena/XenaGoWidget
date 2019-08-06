@@ -91,11 +91,11 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
-        // console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData),JSON.stringify(pathways))
+        console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
 
         this.setState({
-            pathwayClickData,
-            selectedPathway: newSelection,
+            // pathwayClickData,
+            // selectedPathway: newSelection,
             geneData: {
                 expression,
                 samples,
