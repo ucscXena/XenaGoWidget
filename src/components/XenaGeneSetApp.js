@@ -432,7 +432,6 @@ export default class XenaGeneSetApp extends PureComponent {
             pathway: pathwaySelection
         };
 
-        console.log('apthway selection',JSON.stringify(pathwaySelection))
         let pathwaySelectionWrapper = {
             pathway:pathwaySelection,
             tissue: 'Header'
@@ -440,7 +439,7 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({
             pathwaySelection: pathwaySelectionWrapper
         });
-        // AppStorageHandler.storePathwaySelection(pathwaySelection);
+        AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {

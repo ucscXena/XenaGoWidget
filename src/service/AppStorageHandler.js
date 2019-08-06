@@ -11,7 +11,6 @@ import update from "immutability-helper";
 
 const DefaultAppA = {
     renderOffset: 5,
-    selectedPathways: [],
     pathwayData: {
         cohort: 'TCGA Ovarian Cancer (OV)',
         copyNumber: [],
@@ -96,10 +95,9 @@ export class AppStorageHandler extends PureComponent {
         }
     }
 
-    static storePathwaySelection(pathway, selectedPathway) {
+    static storePathwaySelection(pathway) {
         let appState = AppStorageHandler.getAppState();
         appState.selection = pathway;
-        appState.selection.selectedPathway = selectedPathway;
         AppStorageHandler.storeAppState(appState);
     }
 
