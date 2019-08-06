@@ -90,7 +90,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 selected: true
             },
             hoveredPathways: [],
-            selectedPathway: undefined,
             geneData: [{}, {}],
             pathwayData: [{}, {}],
             showPathwayDetails: false,
@@ -257,26 +256,6 @@ export default class XenaGeneSetApp extends PureComponent {
             processing: false,
             fetch: false,
         });
-
-        // TODO: replace with setting the proper state that gets inherited by XenaGoViewer
-        // console.log('ref loaded',selection)
-        // if (selection.pathway) {
-        //     let refLoaded = this.refs['xena-go-app-0'] && this.refs['xena-go-app-1'];
-        //     if(refLoaded){
-        //         // console.log('XGSA handledCombined',JSON.stringify(selection.selectedPathway),JSON.stringify(selection))
-        //         for (let index = 0; index < this.state.apps.length; index++) {
-        //             let ref = this.refs['xena-go-app-' + index];
-        //             ref.setPathwayState(selection.selectedPathway, selection);
-        //         }
-        //     }
-        //     else{
-        //         console.log('ref NOT loaded')
-        //     }
-        // }
-
-        // if (this.state.selectedPathway.length > 0) {
-        //     this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
-        // }
 
 
     };
@@ -453,12 +432,15 @@ export default class XenaGeneSetApp extends PureComponent {
             pathway: pathwaySelection
         };
 
-        let newSelect = [pathwaySelection];
         console.log('apthway selection',JSON.stringify(pathwaySelection))
+        let pathwaySelectionWrapper = {
+            pathway:pathwaySelection,
+            tissue: 'Header'
+        };
         this.setState({
-            selectedPathway: newSelect,
-            pathwaySelection
+            pathwaySelection: pathwaySelectionWrapper
         });
+        // AppStorageHandler.storePathwaySelection(pathwaySelection);
 
         pathwaySelection.propagate = false;
         this.state.apps.forEach((app, index) => {

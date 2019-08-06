@@ -133,7 +133,7 @@ export class GeneSetSelector extends PureComponent {
         return pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
             let hovered = hoveredPathways ? p.golabel === hoveredPathways.golabel : false ;
-            let selected = selectedPathway.golabel === p.golabel;
+            let selected = selectedPathway.pathway.golabel === p.golabel;
             let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
             return (
