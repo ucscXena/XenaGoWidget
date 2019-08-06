@@ -329,10 +329,10 @@ export default class XenaGoViewer extends PureComponent {
         //         });
         // });
     };
-
-    callDownload = () => {
-        this.refs['pathwayscoreview'].downloadData();
-    };
+    //
+    // callDownload = () => {
+    //     this.refs['pathwayscoreview'].downloadData();
+    // };
 
 
     render() {

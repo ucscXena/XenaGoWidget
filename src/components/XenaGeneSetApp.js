@@ -508,12 +508,13 @@ export default class XenaGeneSetApp extends PureComponent {
 //         });
 //     };
 
-    downloadData() {
+    downloadData = (cohortIndex) => {
+        console.log('trying to download with ',cohortIndex)
         if (!internalData) {
             alert('No Data Available');
             return;
         }
-        let {cohortIndex, selectedCohort, selectedPathway} = this.props;
+        let {selectedCohort, selectedPathway} = this.props;
 
         let filename = selectedCohort.replace(/ /g, '_') + '_' + selectedPathway[0] + '_' + cohortIndex + '.json';
         // let filename = "export.json";
@@ -619,9 +620,9 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    callDownload = (cohortIndex) => {
-        this.refs['xena-go-app-' + cohortIndex].callDownload();
-    };
+    // callDownload = (cohortIndex) => {
+    //     this.refs['xena-go-app-' + cohortIndex].callDownload();
+    // };
 
     setCollapsed = (collapsed) => {
         this.setState({
@@ -727,7 +728,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
-                               downloadRawHandler={this.callDownload}
+                               downloadRawHandler={this.downloadData}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
