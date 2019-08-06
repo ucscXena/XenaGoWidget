@@ -25,11 +25,10 @@ export class GeneSetSelector extends PureComponent {
      * @param left
      * @param width
      * @param labelHeight
-     * @param colorMask
      * @param highlighted
      * @returns {*}
      */
-    labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted) {
+    static labelStyle(score, selected, hovered, labelOffset, left, width, labelHeight, highlighted) {
 
         if (selected) {
             return {
@@ -127,8 +126,9 @@ export class GeneSetSelector extends PureComponent {
                 <div/>
             )
         }
-        let colorMask = getGeneSetColorMask();
         interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
+
+        console.log('GSS selected pathway',JSON.stringify(selectedPathway))
 
         return pathways.map((p) => {
             let labelString = '(' + p.gene.length + ') ' + p.golabel;
@@ -138,7 +138,7 @@ export class GeneSetSelector extends PureComponent {
 
             return (
                 <svg
-                    style={this.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, colorMask, highlighted)}
+                    style={GeneSetSelector.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered, labelOffset, left, width, labelHeight, highlighted)}
                     onMouseDown={this.onClick.bind(this, p)}
                     onMouseOut={this.onMouseOut.bind(this, p)}
                     onMouseOver={this.onHover.bind(this, p)}

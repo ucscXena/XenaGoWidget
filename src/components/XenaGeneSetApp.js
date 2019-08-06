@@ -237,8 +237,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let selection = AppStorageHandler.getPathwaySelection();
 
+        console.log('input selection',JSON.stringify(selection))
 
-        console.log('election',JSON.stringify(selection))
+        // console.log('election',JSON.stringify(selection))
+        // console.log('input',JSON.stringify(input))
 
 
         currentLoadState = LOAD_STATE.LOADED;
@@ -443,8 +445,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwaySelect = (pathwaySelection) => {
 
-
-
         if (pathwaySelection.gene.length === 0) {
             return;
         }
@@ -454,8 +454,10 @@ export default class XenaGeneSetApp extends PureComponent {
         };
 
         let newSelect = [pathwaySelection];
+        console.log('apthway selection',JSON.stringify(pathwaySelection))
         this.setState({
-            selectedPathway: newSelect
+            selectedPathway: newSelect,
+            pathwaySelection
         });
 
         pathwaySelection.propagate = false;
