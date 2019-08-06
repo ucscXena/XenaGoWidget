@@ -91,7 +91,7 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
-        // console.log('just setting pathway state',newSelection,pathwayClickData,newSelection)
+        // console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData),JSON.stringify(pathways))
 
         this.setState({
             pathwayClickData,
@@ -344,7 +344,8 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = getGenesForPathways(this.props.pathways);
 
-        // console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways))
+        // console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways),JSON.stringify(this.props.pathways),JSON.stringify(geneList))
+        // console.log('raw input gene data pathways',this.state.geneData.pathways,this.props.pathways,geneList)
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
@@ -399,12 +400,10 @@ export default class XenaGoViewer extends PureComponent {
                                                ref='pathwayscoreview'
                                                data={this.state.geneData}
                                                filter={this.state.tissueExpressionFilter}
-                                               filterPercentage={this.state.filterPercentage}
                                                geneList={geneList}
                                                loading={cohortLoading}
                                                min={MIN_FILTER}
                                                selectedCohort={this.state.selectedCohort}
-                                               selectedPathways={this.state.selectedPathway}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
                                                cohortIndex={this.state.key}

@@ -115,25 +115,6 @@ export default class PathwayScoresView extends PureComponent {
         super(props);
     }
 
-    downloadData() {
-        if (!internalData) {
-            alert('No Data Available');
-            return;
-        }
-        let {cohortIndex, selectedCohort, selectedPathways,} = this.props;
-
-        let filename = selectedCohort.replace(/ /g, '_') + '_' + selectedPathways[0] + '_' + cohortIndex + '.json';
-        // let filename = "export.json";
-        let contentType = "application/json;charset=utf-8;";
-        // a hacky way to do this
-        let a = document.createElement('a');
-        a.download = filename;
-        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(internalData));
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
 
     onMouseOut = () => {
         let {onHover} = this.props;
@@ -162,7 +143,7 @@ export default class PathwayScoresView extends PureComponent {
     render() {
         const {
             height, data, offset, cohortIndex,
-            selectedPathways, colorSettings, highlightedGene, filter, min,
+            colorSettings, highlightedGene, filter, min,
              showDetailLayer, geneList, showClusterSort, collapsed,
             selectedCohort, showDiffLayer
         } = this.props;
@@ -249,7 +230,6 @@ export default class PathwayScoresView extends PureComponent {
                     height={height}
                     layout={layoutData}
                     draw={DrawFunctions.drawGeneView}
-                    selectedPathways={selectedPathways}
                     associatedData={associatedData}
                     cohortIndex={cohortIndex}
                     data={data} // updated data forces refresh
@@ -260,7 +240,6 @@ export default class PathwayScoresView extends PureComponent {
                     height={height}
                     offset={offset}
                     layout={layoutData}
-                    selectedPathways={selectedPathways}
                     highlightedGene={highlightedGene}
                     associatedData={associatedData}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
@@ -281,7 +260,6 @@ PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
     data: PropTypes.object.isRequired,
-    selectedPathways: PropTypes.any.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
