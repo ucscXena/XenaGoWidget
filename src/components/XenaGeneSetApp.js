@@ -24,7 +24,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-import {fetchCohortData} from "../functions/CohortFunctions";
+import {fetchCohortData, getGenesForNamedPathways} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
 import update from "immutability-helper";
 
@@ -160,6 +160,38 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
+    generateGeneData(pathwaySelection, pathwayData) {
+        let {expression, samples, copyNumber} = pathwayData;
+        let {pathway: {goid, golabel}} = pathwaySelection;
+
+        let geneList = getGenesForNamedPathways(golabel, this.state.pathways);
+        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+
+        // console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
+        pathwaySelection.tissue = 'Header';
+
+        // this.setState({
+            // pathwayClickData,
+            // selectedPathway: newSelection,
+        const geneData = {
+            expression,
+            samples,
+            copyNumber,
+
+            pathways,
+
+            // selectedPathway: pathwaySelection.pathway,
+            pathwaySelection : pathwaySelection,
+        };
+
+        // console.log('output gene data',JSON.stringify(geneData))
+        console.log('raw output gene data',geneData)
+        return geneData;
+        // });
+        // pathwayClickData.key = this.props.appData.key;
+
+    }
+
     handleCombinedCohortData = (input) => {
         let {
             pathways,
@@ -239,6 +271,10 @@ export default class XenaGeneSetApp extends PureComponent {
         // console.log('input selection',JSON.stringify(selection))
         // console.log('election',JSON.stringify(selection))
         // console.log('input',JSON.stringify(input))
+        // const geneData = [
+        //     this.generateGeneData(selection,pathwayDataA),
+        //     this.generateGeneData(selection,pathwayDataB),
+        // ];
 
 
         currentLoadState = LOAD_STATE.LOADED;
@@ -248,6 +284,7 @@ export default class XenaGeneSetApp extends PureComponent {
             cohortData,
             pathways,
             pathwayDataA,
+            // geneData,
             pathwayDataB,
             selectedObjectA,
             selectedObjectB,
@@ -548,10 +585,20 @@ export default class XenaGeneSetApp extends PureComponent {
         });
         AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
-        pathwaySelection.propagate = false;
-        this.state.apps.forEach((app, index) => {
-            this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwayClickData);
-        });
+        const geneData = [
+            this.generateGeneData(pathwayClickData,this.state.pathwayDataA),
+            this.generateGeneData(pathwayClickData,this.state.pathwayDataB),
+        ];
+
+        this.setState({geneData});
+
+        // console.log('pathway selection',JSON.stringify(pathwaySelection));
+        //
+        //
+        // pathwaySelection.propagate = false;
+        // this.state.apps.forEach((app, index) => {
+        //     this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwayClickData);
+        // });
     };
 
     getSelectedCohort(pathwayData) {
@@ -951,4 +998,5 @@ export default class XenaGeneSetApp extends PureComponent {
                 }
             </div>);
     }
+
 }

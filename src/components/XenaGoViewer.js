@@ -67,6 +67,10 @@ export default class XenaGoViewer extends PureComponent {
             pathways: pathways,
             pathwaySelection: this.props.pathwaySelection,
         };
+        // console.log('inity output gene data',JSON.stringify(this.state.geneData))
+        console.log('inity raw output gene data',this.state.geneData)
+        // console.log('inity output gene data',JSON.stringify(this.state.geneData))
+        console.log('inity raw props gene data',this.props.geneDataStats)
         this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
 
 
@@ -346,6 +350,7 @@ export default class XenaGoViewer extends PureComponent {
 
         // console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways),JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         // console.log('raw input gene data pathways',this.state.geneData.pathways,this.props.pathways,geneList)
+        // console.log('gene data stats',this.props.geneDataStats)
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
@@ -393,12 +398,15 @@ export default class XenaGoViewer extends PureComponent {
                             <DetailedLegend/>
                         </td>
                         }
-                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
+                        {this.props.geneDataStats && this.props.geneDataStats.expression && this.props.geneDataStats.expression.rows.length > 0 &&
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
                                                ref='pathwayscoreview'
-                                               data={this.state.geneData}
+                                               // data={this.props.geneData}
+                                               // data={this.state.geneData}
+                                               // data={this.state.geneData}
+                                               data={this.props.geneDataStats}
                                                filter={this.state.tissueExpressionFilter}
                                                geneList={geneList}
                                                loading={cohortLoading}
@@ -429,38 +437,38 @@ export default class XenaGoViewer extends PureComponent {
         );
     }
 
-    handleCohortData(input) {
-        let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
-
-        let pathwayData = {
-            copyNumber,
-            geneList,
-            expression: mutations,
-            pathways: this.props.pathways,
-            cohort: cohort.name,
-            samples,
-            genomeBackgroundMutation,
-            genomeBackgroundCopyNumber,
-        };
-        this.setState({
-            pathwayData: pathwayData,
-            processing: false,
-        });
-        if (this.state.selectedPathway.length > 0) {
-            // console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathway),JSON.stringify(this.state.pathwayClickData))
-            this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
-        } else {
-            this.setState({
-                geneData: {
-                    copyNumber: [],
-                    expression: [],
-                    pathways: [],
-                    samples: [],
-                },
-            });
-        }
-
-    }
+    // handleCohortData(input) {
+    //     let {mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber, geneList, cohort} = input;
+    //
+    //     let pathwayData = {
+    //         copyNumber,
+    //         geneList,
+    //         expression: mutations,
+    //         pathways: this.props.pathways,
+    //         cohort: cohort.name,
+    //         samples,
+    //         genomeBackgroundMutation,
+    //         genomeBackgroundCopyNumber,
+    //     };
+    //     this.setState({
+    //         pathwayData: pathwayData,
+    //         processing: false,
+    //     });
+    //     if (this.state.selectedPathway.length > 0) {
+    //         // console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathway),JSON.stringify(this.state.pathwayClickData))
+    //         this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
+    //     } else {
+    //         this.setState({
+    //             geneData: {
+    //                 copyNumber: [],
+    //                 expression: [],
+    //                 pathways: [],
+    //                 samples: [],
+    //             },
+    //         });
+    //     }
+    //
+    // }
 }
 
 XenaGoViewer.propTypes = {
