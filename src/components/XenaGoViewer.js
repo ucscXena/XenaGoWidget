@@ -91,8 +91,7 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
 
-        console.log('just setting pathway state',newSelection,pathwayClickData,newSelection)
-
+        // console.log('just setting pathway state',newSelection,pathwayClickData,newSelection)
 
         this.setState({
             pathwayClickData,
@@ -113,10 +112,10 @@ export default class XenaGoViewer extends PureComponent {
         // }
     }
 
-    clickPathway = (pathwayClickData) => {
-        let {pathway: {golabel}} = pathwayClickData;
-        this.setPathwayState([golabel], pathwayClickData);
-    };
+    // clickPathway = (pathwayClickData) => {
+    //     let {pathway: {golabel}} = pathwayClickData;
+    //     this.setPathwayState([golabel], pathwayClickData);
+    // };
 
 
     setGeneHover = (geneHover) => {
@@ -202,7 +201,7 @@ export default class XenaGoViewer extends PureComponent {
 
     selectCohort = (selected) => {
 
-        console.log('selecting a cohort for ',selected,this.props.cohortIndex,this.props.cohortData)
+        // console.log('selecting a cohort for ',selected,this.props.cohortIndex,this.props.cohortData)
         // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         // let cohort = this.state.cohortData.find(c => c.name === selected);
 
@@ -344,7 +343,7 @@ export default class XenaGoViewer extends PureComponent {
         let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = getGenesForPathways(this.props.pathways);
 
-        console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways))
+        // console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways))
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
@@ -447,7 +446,7 @@ export default class XenaGoViewer extends PureComponent {
             processing: false,
         });
         if (this.state.selectedPathway.length > 0) {
-            console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathway),JSON.stringify(this.state.pathwayClickData))
+            // console.log('XGV handleCohorTData',JSON.stringify(this.state.selectedPathway),JSON.stringify(this.state.pathwayClickData))
             this.setPathwayState(this.state.selectedPathway, this.state.pathwayClickData)
         } else {
             this.setState({

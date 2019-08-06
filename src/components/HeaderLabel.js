@@ -7,12 +7,10 @@ import {
     getHighlightedColor
 } from '../functions/ColorFunctions'
 import * as d3 from "d3";
-import BaseStyle from '../css/base.css';
 import {scoreData} from "../functions/DataFunctions";
 
 let interpolate ;
 const highColor = '#1A535C';
-const midColor = '#A4DDE6';
 const lowColor = '#FFFFFF';
 
 export class HeaderLabel extends PureComponent {
@@ -63,14 +61,12 @@ export class HeaderLabel extends PureComponent {
         }
     }
 
-    fontColor(colorDensity) {
+    fontColor = (colorDensity) => {
         return colorDensity < 0.7 ? 'black' : getWhiteColor();
-    }
+    };
 
     render() {
         let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-        // let className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
-        // console.log('drawing header label with color',item,numSamples,geneLength,colorSettings)
         let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
         return (

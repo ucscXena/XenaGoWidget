@@ -236,8 +236,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let selection = AppStorageHandler.getPathwaySelection();
 
-        console.log('input selection',JSON.stringify(selection))
-
+        // console.log('input selection',JSON.stringify(selection))
         // console.log('election',JSON.stringify(selection))
         // console.log('input',JSON.stringify(input))
 
@@ -366,26 +365,27 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
-        this.setState(
-            {
-                hoveredPathways: geneHover ? geneHover.pathway : {}
-            }
-        );
-        // if (geneHover) {
-        //     let myIndex = geneHover.cohortIndex;
-        //     this.state.apps.forEach((app, index) => {
-        //         if (index !== myIndex) {
-        //             this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
-        //         }
-        //     });
-        // }
+        // this.setState(
+        //     {
+        //         hoveredPathways: geneHover ? geneHover.pathway : {}
+        //     }
+        // );
+        // console.log('gene hover',JSON.stringify(geneHover))
+        if (geneHover) {
+            let myIndex = geneHover.cohortIndex;
+            this.state.apps.forEach((app, index) => {
+                if (index !== myIndex) {
+                    this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
+                }
+            });
+        }
     };
 
 
     globalPathwayHover = (pathwayHover) => {
-        this.setState({
-            hoveredPathways: pathwayHover
-        });
+        // this.setState({
+        //     hoveredPathways: pathwayHover
+        // });
 
         this.state.apps.forEach((app, index) => {
             if(pathwayHover){
@@ -396,31 +396,31 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 // populates back to the top
-    shareGlobalGeneData = (geneData, cohortIndex) => {
-        const isChange = (cohortIndex === 0 && geneData.length!==this.state.geneData[0].length) || (cohortIndex === 1 && geneData.length!==this.state.geneData[1].length);
-
-        let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
-        let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
-        let finalGeneData = calculateDiffs(geneData0, geneData1);
-
-        if(isChange){
-            if(geneData0.length>0){
-                this.geneHover({
-                    pathway:geneData0[0],
-                    cohortIndex
-                });
-            }
-            if(geneData1.length>0){
-                this.geneHover({
-                    pathway:geneData1[0],
-                    cohortIndex
-                });
-            }
-        }
-        this.setState({
-            geneData: finalGeneData
-        });
-    };
+//     shareGlobalGeneData = (geneData, cohortIndex) => {
+//         const isChange = (cohortIndex === 0 && geneData.length!==this.state.geneData[0].length) || (cohortIndex === 1 && geneData.length!==this.state.geneData[1].length);
+//
+//         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
+//         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
+//         let finalGeneData = calculateDiffs(geneData0, geneData1);
+//
+//         if(isChange){
+//             if(geneData0.length>0){
+//                 this.geneHover({
+//                     pathway:geneData0[0],
+//                     cohortIndex
+//                 });
+//             }
+//             if(geneData1.length>0){
+//                 this.geneHover({
+//                     pathway:geneData1[0],
+//                     cohortIndex
+//                 });
+//             }
+//         }
+//         this.setState({
+//             geneData: finalGeneData
+//         });
+//     };
 
     globalPathwaySelect = (pathwaySelection) => {
 
