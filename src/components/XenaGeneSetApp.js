@@ -365,20 +365,74 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
+
+
+
         // this.setState(
         //     {
         //         hoveredPathway: geneHover ? geneHover.pathway : {}
         //     }
         // );
         // console.log('gene hover',JSON.stringify(geneHover))
-        if (geneHover) {
-            let myIndex = geneHover.cohortIndex;
-            this.state.apps.forEach((app, index) => {
-                if (index !== myIndex) {
-                    this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
-                }
+
+
+        if(geneHover){
+            // TODO: this needs to be taken from the more global data
+            let genericHoverData = {
+                tissue: geneHover.tissue,
+                pathway: geneHover.pathway,
+                expression : geneHover.pathway,
+            };
+
+            const geneHoverData0 = geneHover.cohortIndex === 0 ? geneHover : genericHoverData;
+            const geneHoverData1 = geneHover.cohortIndex === 1 ? geneHover : genericHoverData;
+
+            const geneHoverData = [ geneHoverData0,geneHoverData1 ];
+            this.setState({
+                geneHoverData
             });
         }
+        else{
+
+        }
+
+        // if (geneHover) {
+        //     let myIndex = geneHover.cohortIndex;
+        //     this.state.apps.forEach((app, index) => {
+        //         if (index !== myIndex) {
+        //             this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
+        //         }
+        //     });
+        // }
+        // const geneHoverData = geneHover ? [
+        //     {
+        //         tissue: 'Header',
+        //         pathway: geneHover,
+        //         expression: {
+        //             affected: geneHover.firstObserved,
+        //             samplesAffected: geneHover.firstObserved,
+        //             allGeneAffected: geneHover.firstTotal,
+        //             total: geneHover.firstNumSamples,
+        //         }
+        //     },
+        //     {
+        //
+        //         tissue: 'Header',
+        //         pathway: geneHover,
+        //         expression: {
+        //             affected: geneHover.secondObserved,
+        //             samplesAffected: geneHover.secondObserved,
+        //             allGeneAffected: geneHover.secondTotal,
+        //             total: geneHover.secondNumSamples,
+        //         }
+        //     }
+        // ] : this.state.geneHoverData;
+        //
+        // // if(hoveredPathway){
+        // //     console.log('setting new hovered pathway',JSON.stringify(geneHoverData))
+        // // }
+        //
+        //
     };
 
 
@@ -417,7 +471,7 @@ export default class XenaGeneSetApp extends PureComponent {
             hoveredPathway,
             geneHoverData
         });
-        console.log('pathway hover',JSON.stringify(hoveredPathway))
+        // console.log('pathway hover',JSON.stringify(hoveredPathway))
 
         // this.state.apps.forEach((app, index) => {
         //     if(pathwayHover){
@@ -589,7 +643,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     changeCohort = (selectedCohort,cohortIndex) => {
-        console.log('changing cohort with ',selectedCohort,cohortIndex)
+        // console.log('changing cohort with ',selectedCohort,cohortIndex)
         // I think we just set the state
 
         // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
@@ -636,6 +690,8 @@ export default class XenaGeneSetApp extends PureComponent {
         // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists
         // fetchCombinedSubCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData)
         // TODO: remove componentDidUpdate
+
+        // console.log('GENE DAta Stats',JSON.stringify(this.state.geneData));
 
 
         // 2. based on cohortData, fetch cohorts with subCohorts

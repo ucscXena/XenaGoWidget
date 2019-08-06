@@ -170,6 +170,7 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     hoverGene = (geneHoverProps) => {
+        // console.log('GENE hover props',JSON.stringify(geneHoverProps))
         if (geneHoverProps) {
             geneHoverProps.cohortIndex = this.props.cohortIndex;
             geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected
@@ -177,20 +178,20 @@ export default class XenaGoViewer extends PureComponent {
         this.props.geneHover(geneHoverProps);
 
 
-        let genesHovered;
-        if (geneHoverProps == null) {
-            geneHoverProps = {};
-            genesHovered = [];
-        } else {
-            genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
-        }
-
-        this.setState(
-            {
-                geneHoverData: geneHoverProps,
-                hoveredPathway: genesHovered
-            }
-        );
+        // let genesHovered;
+        // if (geneHoverProps == null) {
+        //     geneHoverProps = {};
+        //     genesHovered = [];
+        // } else {
+        //     genesHovered = geneHoverProps.pathway ? geneHoverProps.pathway.gene : [];
+        // }
+        //
+        // this.setState(
+        //     {
+        //         geneHoverData: geneHoverProps,
+        //         hoveredPathway: genesHovered
+        //     }
+        // );
     };
 
     filterGeneType = (filter) => {
