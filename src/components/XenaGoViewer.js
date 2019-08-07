@@ -8,12 +8,9 @@ import HoverGeneView from "./HoverGeneView";
 import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
-// let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-// let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 import {pick} from 'underscore';
 import {Card,Dialog,Button} from "react-toolbox";
 
-// let Rx = require('ucsc-xena-client/dist/rx');
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
@@ -21,7 +18,6 @@ import {
     getGenesForNamedPathways,
     getGenesForPathways,
 } from "../functions/CohortFunctions";
-// import {intersection} from "../functions/MathFunctions";
 
 
 const style = {
@@ -49,7 +45,6 @@ export default class XenaGoViewer extends PureComponent {
         this.state.loadState = 'Loading';
         this.state.hoveredPathway = undefined ;
         this.state.highlightedGene = this.props.highlightedGene;
-        this.state.subCohortData = [];
 
         this.state.pathwayData = this.props.pathwayData;
         let {goid, golabel} = this.props.pathwaySelection;
@@ -64,20 +59,9 @@ export default class XenaGoViewer extends PureComponent {
             pathways: pathways,
             pathwaySelection: this.props.pathwaySelection,
         };
-        // console.log('inity output gene data',JSON.stringify(this.state.geneData))
-        // console.log('inity raw output gene data',this.state.geneData)
-        // console.log('inity output gene data',JSON.stringify(this.state.geneData))
-        // console.log('inity raw props gene data',this.props.geneDataStats)
-        // this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
-
 
         let cohortIndex = this.state.key;
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-        // let filterString = AppStorageHandler.getFilterState(cohortIndex);
-        // if (filterString) {
-        //     this.state.tissueExpressionFilter = filterString;
-        // }
-
         if (cohort && cohort.selected) {
             this.state.selectedCohort = cohort.selected;
             this.state.selectedSubCohorts = cohort.selectedSubCohorts;
@@ -362,9 +346,7 @@ export default class XenaGoViewer extends PureComponent {
                         <td valign="top"
                             style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                             <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
-                                <CohortSelector cohorts={this.props.cohortData}
-                                                subCohorts={this.state.subCohortData}
-                                                selectedCohort={this.state.selectedCohort}
+                                <CohortSelector selectedCohort={this.state.selectedCohort}
                                                 selectedSubCohorts={this.state.selectedSubCohorts}
                                                 onChange={this.selectCohort}
                                                 onChangeSubCohort={this.selectSubCohort}
@@ -483,7 +465,6 @@ XenaGoViewer.propTypes = {
 
 
     cohortLabel: PropTypes.any.isRequired,
-    cohortData: PropTypes.any.isRequired,
     pathwayData: PropTypes.any.isRequired,
     pathwaySelection: PropTypes.any.isRequired,
 

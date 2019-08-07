@@ -8,6 +8,7 @@ import {SubCohortSelector} from "./SubCohortSelector";
 import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
 import {isEqual} from 'underscore';
 import {Tooltip} from "react-toolbox/lib";
+import {COHORT_DATA} from "./XenaGeneSetApp";
 const TooltipButton = Tooltip(Button);
 
 
@@ -93,7 +94,6 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-        let {cohorts,cohortLabel} = this.props ;
         let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
         let subCohortLabel = this.generateSubCohortLabels();
         let subCohortDetails = this.generateSubCohortDetails();
@@ -115,14 +115,14 @@ export class CohortSelector extends PureComponent {
                     fontSize: "large",
                     color: "gray",
                     fontWeight: "bold"
-                }}>Select Cohort {cohortLabel}</div>
+                }}>Select Cohort {this.props.cohortLabel}</div>
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
                         value={this.state.selectedCohort}
                         className={BaseStyle.softflow}
                 >
                     {
-                        cohorts.map(c => {
+                        COHORT_DATA.map(c => {
                             return (
                                 <option value={c.name} key={c.name}>
                                     {c.name}
@@ -143,8 +143,6 @@ export class CohortSelector extends PureComponent {
 }
 
 CohortSelector.propTypes = {
-    cohorts: PropTypes.array.isRequired,
-    subCohorts: PropTypes.array.isRequired,
     cohortLabel: PropTypes.string.isRequired,
     selectedCohort: PropTypes.string.isRequired,
     selectedSubCohorts: PropTypes.any,

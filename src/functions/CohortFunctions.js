@@ -8,6 +8,7 @@ const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
 const GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY = 'copy number';
 const GENOME_BACKGROUND_MUTATION_VIEW_KEY = 'mutation';
 import {pluck, flatten} from 'underscore';
+import {COHORT_DATA} from "../components/XenaGeneSetApp";
 
 function lowerCaseCompareName(a, b) {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -69,4 +70,8 @@ export function fetchCohortData(){
         })
         .sort(lowerCaseCompareName);
 
+}
+
+export function getSelectedCohort(pathwayData){
+    COHORT_DATA.find(c => c.name === pathwayData.cohort);
 }

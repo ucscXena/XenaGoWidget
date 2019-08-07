@@ -1,5 +1,6 @@
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {getGenesForPathways, getSubCohortsOnlyForCohort} from "./CohortFunctions";
+import {COHORT_DATA} from "../components/XenaGeneSetApp";
 let Rx = require('ucsc-xena-client/dist/rx');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, sparseDataMatchPartialField, refGene, datasetFetch, sparseData} = xenaQuery;
@@ -10,14 +11,14 @@ function intersection(a, b) {
 }
 
 // TODO: move into a service as an async method
-export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,pathways,combinationHandler){
+export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,combinationHandler){
 
     console.log('selected  ohort A',selectedCohortA,selectedCohortB)
 
     // 1. TODO fetch cohort data
     // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = cohortData.find(c => c.name === selectedCohortA);
-    let cohortB = cohortData.find(c => c.name === selectedCohortB);
+    let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA);
+    let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB);
 
     let selectedObjectA = {
         selected: selectedCohortA,
@@ -87,7 +88,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,cohortData,
 
             combinationHandler({
                 geneList,
-                cohortData,
                 pathways,
 
                 samplesA,

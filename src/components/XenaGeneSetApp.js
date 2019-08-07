@@ -57,6 +57,7 @@ const LOAD_STATE = {
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
+export const COHORT_DATA = fetchCohortData();
 
 /**
  * refactor that from index
@@ -70,14 +71,12 @@ export default class XenaGeneSetApp extends PureComponent {
         // let pathways = this.getActiveApp().pathway;
         const pathways = AppStorageHandler.getPathways();
         const apps = AppStorageHandler.getAppData(pathways);
-        const cohortData = fetchCohortData();
 
         this.state = {
             apps,
             selectedCohortA:undefined,
             selectedCohortB:undefined,
             view: XENA_VIEW,
-            cohortData,
             loading:LOAD_STATE.UNLOADED,
             // view: PATHWAYS_VIEW,
             showColorEditor: false,
@@ -606,12 +605,6 @@ export default class XenaGeneSetApp extends PureComponent {
         // });
     };
 
-    getSelectedCohort(pathwayData) {
-        if (this.state.cohortData) {
-            return this.state.cohortData.find(c => c.name === pathwayData.cohort);
-        }
-    }
-
 
     hideGeneSetDetail = () => {
         this.setState({
@@ -776,7 +769,7 @@ export default class XenaGeneSetApp extends PureComponent {
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
             console.log('FETCHING',this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort);
-            fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
+            fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,pathways,this.handleCombinedCohortData);
         }
         // else{
         //     console.log('not refetching ')
@@ -789,6 +782,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // console.log('GENE DAta Stats',JSON.stringify(this.state.geneData));
 
+        // console.log('cohort data',this.state.cohortData)
 
         // 2. based on cohortData, fetch cohorts with subCohorts
 
@@ -963,7 +957,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
                                     pathwaySelection={this.state.pathwaySelection}
-                                    cohortData={this.state.cohortData}
 
 
                                    // functions
@@ -1005,7 +998,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataB}
                                     pathwaySelection={this.state.pathwaySelection}
-                                    cohortData={this.state.cohortData}
 
                                     // functions
                                     geneHover={this.geneHover}
