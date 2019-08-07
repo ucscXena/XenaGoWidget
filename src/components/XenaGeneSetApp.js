@@ -250,6 +250,8 @@ export default class XenaGeneSetApp extends PureComponent {
         const geneData = [ geneDataA,geneDataB ];
         console.log('output gene data',JSON.stringify(geneData))
         console.log('output raw gene data',geneData)
+        console.log('output Scored gene data',JSON.stringify(scoredGeneDataA))
+        console.log('output Scored raw gene data',scoredGeneDataA)
 
 
 
@@ -571,11 +573,23 @@ export default class XenaGeneSetApp extends PureComponent {
         // console.log('input state A',JSON.stringify(this.state.pathwayDataA),this.state.pathwayDataA)
 
         const geneSetPathways = AppStorageHandler.getPathways();
-        const geneData = [
-            generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways),
-            generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways),
-        ];
+        // const geneData = [
+        //
+        //     generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways),
+        // ];
         // console.log('selected output raw gene data',JSON.stringify(geneData),geneData)
+        let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways);
+        let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways);
+
+        let scoredGeneDataA = scoreGeneData(geneDataA);
+        let scoredGeneDataB = scoreGeneData(geneDataB);
+
+
+        const geneData = [ geneDataA,geneDataB ];
+        console.log('selected pathway with gene data',JSON.stringify(geneData))
+        console.log('select pathway the other raw gene data',geneData)
+        console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
+        console.log('scored select pathway the other raw gene data',scoredGeneDataA)
 
         this.setState({geneData});
 

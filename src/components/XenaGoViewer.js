@@ -88,33 +88,33 @@ export default class XenaGoViewer extends PureComponent {
     }
 
 
-    setPathwayState(newSelection, pathwayClickData) {
-        let {expression, samples, copyNumber} = this.state.pathwayData;
-        let {pathway: {goid, golabel}} = pathwayClickData;
-
-        let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
-        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
-
-        console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
-
-        this.setState({
-            // pathwayClickData,
-            // selectedPathway: newSelection,
-            geneData: {
-                expression,
-                samples,
-                pathways,
-                copyNumber,
-                selectedPathway: pathwayClickData.pathway
-            },
-        });
-        // pathwayClickData.key = this.props.appData.key;
-        // pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
-        // if (pathwayClickData.propagate) {
-        //     // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
-        //     this.props.pathwaySelect(pathwayClickData, newSelection);
-        // }
-    }
+    // setPathwayState(newSelection, pathwayClickData) {
+    //     let {expression, samples, copyNumber} = this.state.pathwayData;
+    //     let {pathway: {goid, golabel}} = pathwayClickData;
+    //
+    //     let geneList = getGenesForNamedPathways(newSelection, this.props.pathways);
+    //     let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+    //
+    //     console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
+    //
+    //     this.setState({
+    //         // pathwayClickData,
+    //         // selectedPathway: newSelection,
+    //         geneData: {
+    //             expression,
+    //             samples,
+    //             pathways,
+    //             copyNumber,
+    //             selectedPathway: pathwayClickData.pathway
+    //         },
+    //     });
+    //     // pathwayClickData.key = this.props.appData.key;
+    //     // pathwayClickData.propagate = pathwayClickData.propagate == null ? true : pathwayClickData.propagate;
+    //     // if (pathwayClickData.propagate) {
+    //     //     // NOTE: you have to run the synchronization handler to synchronize the genes before the pathway selection
+    //     //     this.props.pathwaySelect(pathwayClickData, newSelection);
+    //     // }
+    // }
 
     // clickPathway = (pathwayClickData) => {
     //     let {pathway: {golabel}} = pathwayClickData;
@@ -122,56 +122,56 @@ export default class XenaGoViewer extends PureComponent {
     // };
 
 
-    setGeneHover = (geneHover) => {
-        let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
-        let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
-
-        let expression = this.props.geneDataStats && Array.isArray(this.props.geneDataStats) ? this.props.geneDataStats.find(g => g.gene[0] === newHover[0]) : {};
-
-        let hoverData = {
-            cohortIndex: this.state.key,
-            tissue: "Header",
-            expression: expression,
-            pathway: genePathwayHover,
-        };
-        this.setState(
-            {
-                hoveredPathway: newHover,
-                geneHoverData: hoverData,
-            }
-        );
-    };
-
-    setPathwayHover = (pathwayHover) => {
-        let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
-
-        if (pathwayHover) {
-            // get the pathway
-            let expression = {};
-            if (this.props.cohortIndex === 0) {
-                expression.affected = pathwayHover.firstObserved;
-                expression.samplesAffected = pathwayHover.firstObserved;
-                expression.allGeneAffected = pathwayHover.firstTotal;
-                expression.total = pathwayHover.firstNumSamples;
-            } else {
-                expression.affected = pathwayHover.secondObserved;
-                expression.samplesAffected = pathwayHover.secondObserved;
-                expression.allGeneAffected = pathwayHover.secondTotal;
-                expression.total = pathwayHover.secondNumSamples;
-            }
-            let hoverData = {
-                tissue: "Header",
-                expression: expression,
-                pathway: pathwayHover,
-            };
-            this.setState(
-                {
-                    hoveredPathway: newHover,
-                    geneHoverData: hoverData,
-                }
-            );
-        }
-    };
+    // setGeneHover = (geneHover) => {
+    //     let newHover = (geneHover && geneHover.gene) ? geneHover.gene : [];
+    //     let genePathwayHover = this.state.geneData.pathways.find(f => f.gene[0] === newHover[0]);
+    //
+    //     let expression = this.props.geneDataStats && Array.isArray(this.props.geneDataStats) ? this.props.geneDataStats.find(g => g.gene[0] === newHover[0]) : {};
+    //
+    //     let hoverData = {
+    //         cohortIndex: this.state.key,
+    //         tissue: "Header",
+    //         expression: expression,
+    //         pathway: genePathwayHover,
+    //     };
+    //     this.setState(
+    //         {
+    //             hoveredPathway: newHover,
+    //             geneHoverData: hoverData,
+    //         }
+    //     );
+    // };
+    //
+    // setPathwayHover = (pathwayHover) => {
+    //     let newHover = (pathwayHover && pathwayHover.gene) ? pathwayHover.gene : [];
+    //
+    //     if (pathwayHover) {
+    //         // get the pathway
+    //         let expression = {};
+    //         if (this.props.cohortIndex === 0) {
+    //             expression.affected = pathwayHover.firstObserved;
+    //             expression.samplesAffected = pathwayHover.firstObserved;
+    //             expression.allGeneAffected = pathwayHover.firstTotal;
+    //             expression.total = pathwayHover.firstNumSamples;
+    //         } else {
+    //             expression.affected = pathwayHover.secondObserved;
+    //             expression.samplesAffected = pathwayHover.secondObserved;
+    //             expression.allGeneAffected = pathwayHover.secondTotal;
+    //             expression.total = pathwayHover.secondNumSamples;
+    //         }
+    //         let hoverData = {
+    //             tissue: "Header",
+    //             expression: expression,
+    //             pathway: pathwayHover,
+    //         };
+    //         this.setState(
+    //             {
+    //                 hoveredPathway: newHover,
+    //                 geneHoverData: hoverData,
+    //             }
+    //         );
+    //     }
+    // };
 
     hoverGene = (geneHoverProps) => {
         // console.log('GENE hover props',JSON.stringify(geneHoverProps))
