@@ -80,11 +80,11 @@ export default class XenaGeneSetApp extends PureComponent {
         const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB)
 
         const cohortDataA = {
-            cohort: selectedCohortA,
+            name: selectedCohortA,
             subCohorts: selectedSubCohortsA
         };
         const cohortDataB = {
-            cohort: selectedCohortB,
+            name: selectedCohortB,
             subCohorts: selectedSubCohortsB
         }
 
@@ -93,8 +93,8 @@ export default class XenaGeneSetApp extends PureComponent {
         this.state = {
             // TODO: this should use the full cohort Data, not just the top-level
             selectedCohort:[
-                cohortDataA.cohort,
-                cohortDataB.cohort,
+                cohortDataA,
+                cohortDataB,
             ],
             view: XENA_VIEW,
             loading:LOAD_STATE.UNLOADED,
@@ -766,8 +766,8 @@ export default class XenaGeneSetApp extends PureComponent {
         let newAppState = update(this.state,{
             apps: {
                 [cohortIndex]: {
-                    selectedCohort:  { $set: selectedCohort.selected},
-                    selectedSubCohorts:  { $set: selectedCohort.selectedSubCohorts}
+                    name:  { $set: selectedCohort.name},
+                    subCohorts:  { $set: selectedCohort.subCohorts}
                 }
             },
             fetch: {$set: true}
@@ -800,7 +800,7 @@ export default class XenaGeneSetApp extends PureComponent {
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
 
-            console.log('FETCHING',this.state.selectedCohortA,this.state.selectedCohortB);
+            // console.log('FETCHING',this.state.selectedCohortA,this.state.selectedCohortB);
             console.log('FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }

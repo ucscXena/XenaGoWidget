@@ -1,4 +1,3 @@
-import {AppStorageHandler} from "../service/AppStorageHandler";
 import {getGenesForPathways, getSubCohortsOnlyForCohort} from "./CohortFunctions";
 import {COHORT_DATA} from "../components/XenaGeneSetApp";
 let Rx = require('ucsc-xena-client/dist/rx');
@@ -16,19 +15,19 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
 
     // 1. TODO fetch cohort data
     // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA);
-    let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB);
+    let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA.name);
+    let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB.name);
 
     console.log('selected  ohort A',selectedCohortA,cohortA)
     console.log('selected  ohort B',selectedCohortB,cohortB)
 
     let selectedObjectA = {
-        selected: selectedCohortA,
-        selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
+        name: selectedCohortA,
+        subCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
     };
     let selectedObjectB = {
-        selected: selectedCohortB,
-        selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
+        name: selectedCohortB,
+        subCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
     };
     // AppStorageHandler.storeCohortState(selectedObjectA, 0);
     // AppStorageHandler.storeCohortState(selectedObjectB, 1);

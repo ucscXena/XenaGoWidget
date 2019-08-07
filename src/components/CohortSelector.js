@@ -43,7 +43,8 @@ export class CohortSelector extends PureComponent {
 
     generateSubCohortDetails(){
         let selectedSubCohorts = this.state.selectedSubCohorts;
-        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        console.log('selected sub cohorts',JSON.stringify(selectedSubCohorts))
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
         if(!subCohortsForSelected) return '';
         return Object.values(selectedSubCohorts).map( s => {
             let splits = s.split(".");
@@ -82,8 +83,8 @@ export class CohortSelector extends PureComponent {
 
 
         let selectionObject = {
-            selected:this.state.selectedCohort,
-            selectedSubCohorts:newSelected,
+            name:this.state.selectedCohort,
+            subCohorts:newSelected,
         };
         this.props.onChangeSubCohort(selectionObject)
     };
@@ -94,9 +95,11 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
         let subCohortLabel = this.generateSubCohortLabels();
         let subCohortDetails = this.generateSubCohortDetails();
+
+        console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort)
 
         return (
             <div>
@@ -118,7 +121,7 @@ export class CohortSelector extends PureComponent {
                 }}>Select Cohort {this.props.cohortLabel}</div>
                 <select style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                         onChange={this.onChange}
-                        value={this.state.selectedCohort}
+                        value={this.state.selectedCohort.name}
                         className={BaseStyle.softflow}
                 >
                     {
@@ -144,7 +147,7 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
     cohortLabel: PropTypes.string.isRequired,
-    selectedCohort: PropTypes.string.isRequired,
+    selectedCohort: PropTypes.any.isRequired,
     selectedSubCohorts: PropTypes.any,
     onChange: PropTypes.any.isRequired,
     onChangeSubCohort: PropTypes.any.isRequired,

@@ -14,7 +14,6 @@ import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
     getCohortDetails,
-    getGenesForNamedPathways,
     getGenesForPathways,
 } from "../functions/CohortFunctions";
 
@@ -351,7 +350,7 @@ export default class XenaGoViewer extends PureComponent {
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
-        // console.log('XGV selected cohort',selectedCohort,selectedCohortData)
+        console.log('XGV selected cohort',selectedCohort,selectedCohortData)
 
         if (this.state.pathwayData) {
             return (
