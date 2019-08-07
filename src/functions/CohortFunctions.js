@@ -43,9 +43,9 @@ export function getSamplesFromSubCohort(cohort,subCohort){
     return  uniq(subCohorts[cohort][subCohort]);
 }
 
-export function getCohortDetails(selected,cohortData){
-    if (Object.keys(cohortData).length === 0 && cohortData.constructor === Object) return null ;
-    return cohortData.find(c => c.name === selected);
+export function getCohortDetails(selected){
+    if (Object.keys(COHORT_DATA).length === 0 && COHORT_DATA.constructor === Object) return null ;
+    return COHORT_DATA.find(c => c.name === selected);
 }
 
 export function fetchCohortData(){

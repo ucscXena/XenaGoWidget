@@ -5,16 +5,15 @@ import {CohortSelector} from "./CohortSelector";
 import PathwayScoresView from "./PathwayScoresView";
 import '../css/base.css';
 import HoverGeneView from "./HoverGeneView";
-import mutationVector from "../data/mutationVector";
 import {FilterSelector} from "./FilterSelector";
 
-import {pick} from 'underscore';
 import {Card,Dialog,Button} from "react-toolbox";
 
 import {AppStorageHandler} from "../service/AppStorageHandler";
 import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
+    getCohortDetails,
     getGenesForNamedPathways,
     getGenesForPathways,
 } from "../functions/CohortFunctions";
@@ -324,19 +323,18 @@ export default class XenaGoViewer extends PureComponent {
 
     render() {
 
-        // TODO: move this to a cohort function and move this into the FilterSelector
-        let filteredMutationVector = pick(mutationVector,
-            v => v >= this.state.minFilter);
-        filteredMutationVector['Copy Number'] = 1;
 
-        let cohortLoading = this.state.selectedCohort !== this.state.pathwayData.cohort;
         let geneList = getGenesForPathways(this.props.pathways);
 
         // console.log('input gene data pathways',JSON.stringify(this.state.geneData.pathways),JSON.stringify(this.props.pathways),JSON.stringify(geneList))
         // console.log('raw input gene data pathways',this.state.geneData.pathways,this.props.pathways,geneList)
         // console.log('gene data stats',this.props.geneDataStats)
+        // console.log('apps data state',this.state)
+        // console.log('apps data propos',this.props.appData)
 
-        let {renderHeight, renderOffset, cohortIndex} = this.props;
+        let {renderHeight, renderOffset, cohortIndex,appData,cohortLabel,filter} = this.props;
+
+        const selectedCohortData = getCohortDetails(appData.selectedCohort)
 
         if (this.state.pathwayData) {
             return (
@@ -347,18 +345,17 @@ export default class XenaGoViewer extends PureComponent {
                         <td valign="top"
                             style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                             <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
-                                <CohortSelector selectedCohort={this.state.selectedCohort}
-                                                selectedSubCohorts={this.state.selectedSubCohorts}
+                                <CohortSelector selectedCohort={appData.selectedCohort}
+                                                selectedSubCohorts={appData.selectedSubCohorts}
                                                 onChange={this.selectCohort}
                                                 onChangeSubCohort={this.selectSubCohort}
-                                                cohortLabel={this.props.cohortLabel}
+                                                cohortLabel={cohortLabel}
                                 />
-                                <FilterSelector filters={filteredMutationVector}
-                                                selected={this.props.filter}
-                                                pathwayData={this.state.geneData}
+                                <FilterSelector selected={filter}
+                                                pathwayData={this.props.geneDataStats}
                                                 geneList={geneList}
-                                                amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
-                                                deletionThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.deletionThreshold : -2}
+                                                amplificationThreshold={selectedCohortData.amplificationThreshold}
+                                                deletionThreshold={selectedCohortData.deletionThreshold}
                                                 onChange={this.filterGeneType}
                                 />
                                 <HoverGeneView data={this.props.geneHoverData}
@@ -388,7 +385,6 @@ export default class XenaGoViewer extends PureComponent {
                                                data={this.props.geneDataStats}
                                                filter={this.props.filter}
                                                geneList={geneList}
-                                               loading={cohortLoading}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
                                                cohortIndex={this.state.key}

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten,sum} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from "react-toolbox";
 import {getCopyNumberValue} from "../functions/DataFunctions";
+import mutationVector from "../data/mutationVector";
+import {MIN_FILTER} from "./XenaGeneSetApp";
 
 function lowerCaseCompare(a, b) {
     return a.toLowerCase().localeCompare(b.toLowerCase());
@@ -56,12 +58,18 @@ export class FilterSelector extends PureComponent {
         this.props.onChange(targetValue);
     };
 
+    getFilters(){
+        let filteredMutationVector = pick(mutationVector, v => v >= MIN_FILTER);
+        filteredMutationVector['Copy Number'] = 1;
+        return filteredMutationVector;
+    }
+
     render() {
-        const {filters, pathwayData, selected, geneList, amplificationThreshold, deletionThreshold} = this.props;
+        const {pathwayData, selected, geneList, amplificationThreshold, deletionThreshold} = this.props;
         if(pathwayData.expression.length === 0){
             return <div>Loading...</div>;
         }
-        let counts = compileData(Object.keys(filters), pathwayData, geneList, amplificationThreshold, deletionThreshold);
+        let counts = compileData(Object.keys(this.getFilters()), pathwayData, geneList, amplificationThreshold, deletionThreshold);
         // CNV counts
         let labels = Object.keys(counts).sort(lowerCaseCompare);
         let total = sum(Object.values(counts));
@@ -82,7 +90,6 @@ export class FilterSelector extends PureComponent {
 }
 
 FilterSelector.propTypes = {
-    filters: PropTypes.object.isRequired,
     pathwayData: PropTypes.any.isRequired,
     geneList: PropTypes.any.isRequired,
     onChange: PropTypes.any.isRequired,
