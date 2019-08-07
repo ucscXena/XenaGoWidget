@@ -13,12 +13,14 @@ function intersection(a, b) {
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,combinationHandler){
 
-    console.log('selected  ohort A',selectedCohortA,selectedCohortB)
 
     // 1. TODO fetch cohort data
     // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
     let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA);
     let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB);
+
+    console.log('selected  ohort A',selectedCohortA,cohortA)
+    console.log('selected  ohort B',selectedCohortB,cohortB)
 
     let selectedObjectA = {
         selected: selectedCohortA,
@@ -28,8 +30,8 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
         selected: selectedCohortB,
         selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
     };
-    AppStorageHandler.storeCohortState(selectedObjectA, 0);
-    AppStorageHandler.storeCohortState(selectedObjectB, 1);
+    // AppStorageHandler.storeCohortState(selectedObjectA, 0);
+    // AppStorageHandler.storeCohortState(selectedObjectB, 1);
     // this.setState({
     //     selectedCohort: selectedCohortA,
     //     selectedCohortData: cohortA,

@@ -57,7 +57,7 @@ export default class XenaGoViewer extends PureComponent {
             key: props.cohortIndex,
             selectedCohort : cohort.selected,
             selectedSubCohorts : cohort.selectedSubCohorts,
-        }
+        };
         // console.log('app data',this.props.appData)
         // console.log('state',this.state)
         // this.state.processing = true;
@@ -67,18 +67,18 @@ export default class XenaGoViewer extends PureComponent {
 
         // this.state.pathwayData = this.props.pathwayData;
         // this.state.selectedCohortData = undefined;
-        let {goid, golabel} = this.props.pathwaySelection;
-        let geneList = getGenesForNamedPathways([this.props.pathwaySelection.pathway.golabel], this.props.pathways);
-        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+        // let {goid, golabel} = this.props.pathwaySelection;
+        // let geneList = getGenesForNamedPathways([this.props.pathwaySelection.pathway.golabel], this.props.pathways);
+        // let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
         //
-        this.state.geneData = {
-            expression : this.props.pathwayData.expression,
-            samples: this.props.pathwayData.samples,
-            copyNumber: this.props.pathwayData.copyNumber,
-
-            pathways: pathways,
-            pathwaySelection: this.props.pathwaySelection,
-        };
+        // this.state.geneData = {
+        //     expression : this.props.pathwayData.expression,
+        //     samples: this.props.pathwayData.samples,
+        //     copyNumber: this.props.pathwayData.copyNumber,
+        //
+        //     pathways: pathways,
+        //     pathwaySelection: this.props.pathwaySelection,
+        // };
 
         // let cohortIndex = this.state.key;
     }
@@ -347,21 +347,21 @@ export default class XenaGoViewer extends PureComponent {
         // console.log('apps data state',this.state)
         // console.log('apps data propos',this.props.appData)
 
-        let {renderHeight, renderOffset, cohortIndex,appData,cohortLabel,filter} = this.props;
+        let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter} = this.props;
 
-        const selectedCohortData = getCohortDetails(appData.selectedCohort)
+        const selectedCohortData = getCohortDetails(selectedCohort)
 
         if (this.state.pathwayData) {
             return (
                 <table>
                     <tbody>
+                    {this.props.geneDataStats && this.props.geneDataStats.expression.rows && this.props.geneDataStats.expression.rows.length > 0 &&
                     <tr>
-                        {this.state.geneData && this.state.geneData.expression.rows && this.state.geneData.expression.rows.length > 0 &&
                         <td valign="top"
                             style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                             <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
-                                <CohortSelector selectedCohort={appData.selectedCohort}
-                                                selectedSubCohorts={appData.selectedSubCohorts}
+                                <CohortSelector selectedCohort={selectedCohort}
+                                                selectedSubCohorts={selectedCohort.selectedSubCohorts}
                                                 onChange={this.selectCohort}
                                                 onChangeSubCohort={this.selectSubCohort}
                                                 cohortLabel={cohortLabel}
@@ -377,7 +377,7 @@ export default class XenaGoViewer extends PureComponent {
                                                cohortIndex={cohortIndex}
                                 />
                             </Card>
-                            {this.state.geneData.pathways.length > MAX_GENE_WIDTH &&
+                            {this.props.geneDataStats.pathways.length > MAX_GENE_WIDTH &&
                             <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
                                 {this.props.collapsed &&
                                 <Button icon='chevron_right' flat primary
@@ -391,8 +391,6 @@ export default class XenaGoViewer extends PureComponent {
                             }
                             <DetailedLegend/>
                         </td>
-                        }
-                        {this.props.geneDataStats && this.props.geneDataStats.expression && this.props.geneDataStats.expression.rows.length > 0 &&
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
@@ -410,8 +408,8 @@ export default class XenaGoViewer extends PureComponent {
                                                showClusterSort={this.props.showClusterSort}
                             />
                         </td>
-                        }
                     </tr>
+                        }
                     </tbody>
                 </table>
             )
@@ -459,7 +457,8 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
-    appData: PropTypes.any.isRequired,
+    // appData: PropTypes.any.isRequired,
+    selectedCohort: PropTypes.any.isRequired,
     renderHeight: PropTypes.any.isRequired,
     renderOffset: PropTypes.any.isRequired,
     pathways: PropTypes.any.isRequired,
