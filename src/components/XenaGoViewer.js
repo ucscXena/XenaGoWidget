@@ -349,7 +349,9 @@ export default class XenaGoViewer extends PureComponent {
 
         let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter} = this.props;
 
-        const selectedCohortData = getCohortDetails(selectedCohort)
+        const selectedCohortData = getCohortDetails(selectedCohort);
+
+        // console.log('XGV selected cohort',selectedCohort,selectedCohortData)
 
         if (this.state.pathwayData) {
             return (

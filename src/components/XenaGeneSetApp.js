@@ -72,22 +72,32 @@ export default class XenaGeneSetApp extends PureComponent {
         const pathways = AppStorageHandler.getPathways();
         // const apps = AppStorageHandler.getAppData(pathways);
 
+        // TODO: this should get subcohorts here, really
         const selectedCohortA = AppStorageHandler.getCohortState(0);
         const selectedCohortB = AppStorageHandler.getCohortState(1);
 
-        // console.log('selected cohorts',apps,selectedCohortA,selectedCohortB)
+        const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA)
+        const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB)
+
+        const cohortDataA = {
+            cohort: selectedCohortA,
+            subCohorts: selectedSubCohortsA
+        };
+        const cohortDataB = {
+            cohort: selectedCohortB,
+            subCohorts: selectedSubCohortsB
+        }
+
+        console.log('selected cohorts',selectedCohortA,selectedCohortB,cohortDataA,cohortDataB)
 
         this.state = {
-            // apps,
-            selectedCohortA,
-            selectedCohortB,
+            // TODO: this should use the full cohort Data, not just the top-level
             selectedCohort:[
-                AppStorageHandler.getCohortState(0),
-                AppStorageHandler.getCohortState(1),
+                cohortDataA.cohort,
+                cohortDataB.cohort,
             ],
             view: XENA_VIEW,
             loading:LOAD_STATE.UNLOADED,
-            // view: PATHWAYS_VIEW,
             showColorEditor: false,
             showDetailLayer: true,
             showClusterSort: false,
@@ -127,9 +137,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 shadingValue: 10,
             }
         };
-        // this.setState({
-        //     apps: apps
-        // });
     }
 
     queryGenes = (geneQuery) => {
@@ -277,10 +284,6 @@ export default class XenaGeneSetApp extends PureComponent {
             pathways,
             geneData,
             pathwayData: [pathwayDataA,pathwayDataB],
-            // pathwayDataA,
-            // pathwayDataB,
-            selectedObjectA,
-            selectedObjectB,
             loading: LOAD_STATE.LOADED,
             processing: false,
             fetch: false,
@@ -708,14 +711,6 @@ export default class XenaGeneSetApp extends PureComponent {
         if(isEqual(this.state.geneData,[{},{}])) return true ;
         if(isEqual(this.state.pathwayData,[{},{}])) return true ;
 
-        // const selectedCohortA = this.state.apps[0].selectedCohort;
-        // const selectedCohortB = this.state.apps[1].selectedCohort;
-        // const selectedSubCohortsA = this.state.apps[0].selectedSubCohorts;
-        // const selectedSubCohortsB = this.state.apps[1].selectedSubCohorts;
-
-        // this.state.selectedCohortA
-
-
         if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
         // if(!isEqual(this.state.selectedSubCohortsA, this.state.selectedSubCohortsB)) return true ;
 
@@ -730,8 +725,8 @@ export default class XenaGeneSetApp extends PureComponent {
         // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
 
        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
-       let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
-        console.log('SELECTED cohort A',this.state.selectedCohortA,selectedCohort,cohortIndex,subCohortsA)
+       // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
+        // console.log('SELECTED cohort A',this.state.selectedCohortA,selectedCohort,cohortIndex,subCohortsA)
 
         const newCohortState = [
             cohortIndex === 0 ?  selectedCohort : this.state.selectedCohort[0]   ,
@@ -1022,7 +1017,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // data
                                     // appData={this.state.apps[1]}
-                                    selectedCohort={this.state.selectedCohortB}
+                                    selectedCohort={this.state.selectedCohort[1]}
                                     geneDataStats={this.state.geneData[1]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
 
