@@ -81,6 +81,10 @@ export default class XenaGeneSetApp extends PureComponent {
             // apps,
             selectedCohortA,
             selectedCohortB,
+            selectedCohort:[
+                AppStorageHandler.getCohortState(0),
+                AppStorageHandler.getCohortState(1),
+            ],
             view: XENA_VIEW,
             loading:LOAD_STATE.UNLOADED,
             // view: PATHWAYS_VIEW,
@@ -709,7 +713,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // this.state.selectedCohortA
 
 
-        if(!isEqual(this.state.selectedCohortA, this.state.selectedCohortB)) return true ;
+        if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
         // if(!isEqual(this.state.selectedSubCohortsA, this.state.selectedSubCohortsB)) return true ;
 
         return false;
@@ -725,17 +729,35 @@ export default class XenaGeneSetApp extends PureComponent {
        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
        let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
         console.log('SELECTED cohort A',this.state.selectedCohortA,selectedCohort,cohortIndex,subCohortsA)
-        let newAppState = update(this.state,{
 
-            // apps: {
-            //     [cohortIndex]: {
-            //         selectedCohort:  { $set: selectedCohort},
-            //         selectedSubCohorts:  { $set: subCohorts}
-            //     }
-            // },
+        const newCohortState = [
+            cohortIndex === 0 ?  selectedCohort : this.state.selectedCohort[0]   ,
+            cohortIndex === 1 ?  selectedCohort : this.state.selectedCohort[1]   ,
+        ];
+        console.log('NEW COHORT STATE A',newCohortState)
+
+        // let newAppState = update(this.state,{
+        //
+        //     // apps: {
+        //     //     [cohortIndex]: {
+        //     //         selectedCohort:  { $set: selectedCohort},
+        //     //         selectedSubCohorts:  { $set: subCohorts}
+        //     //     }
+        //     // },
+        //     fetch: {$set: true}
+        // });
+        // this.setState( {selectedCohort: newCohortState});
+        let newAppState = update(this.state,{
+            selectedCohort: {
+                [cohortIndex]: {
+                    selectedCohort:  { $set: selectedCohort},
+                }
+            },
             fetch: {$set: true}
         });
-        this.setState( newAppState );
+        console.log('newAppState',newAppState)
+        console.log('newCohrot state',newCohortState)
+        this.setState( {selectedCohort: newCohortState});
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
@@ -775,11 +797,14 @@ export default class XenaGeneSetApp extends PureComponent {
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
         // TODO: returned should do rendering
+        console.log('A FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
+
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
 
             console.log('FETCHING',this.state.selectedCohortA,this.state.selectedCohortB);
-            fetchCombinedCohorts(this.state.selectedCohortA,this.state.selectedCohortB,pathways,this.handleCombinedCohortData);
+            console.log('FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
+            fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
         // else{
         //     console.log('not refetching ')
@@ -952,7 +977,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // data
                                     // appData={this.state.apps[0]}
-                                    selectedCohort={this.state.selectedCohortA}
+                                    selectedCohort={this.state.selectedCohort[0]}
                                     geneDataStats={this.state.geneData[0]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
 
