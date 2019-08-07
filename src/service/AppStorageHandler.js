@@ -104,9 +104,13 @@ export class AppStorageHandler extends PureComponent {
 
     static getCohortState(cohortIndex) {
         let appState = AppStorageHandler.getAppState();
+        console.log('app state',JSON.stringify(appState))
+        console.log('app state',appState)
         if (appState && appState.cohortState && appState.cohortState[cohortIndex]) {
             let returnValue = appState.cohortState[cohortIndex];
+            console.log('GET app returnValue state',returnValue)
             if (returnValue && returnValue.selected) {
+                console.log('GET app state',returnValue)
                 return returnValue;
             }
         }
@@ -151,8 +155,10 @@ export class AppStorageHandler extends PureComponent {
     }
 
     static storeCohortState(selected, cohortIndex) {
+        console.log('storing cohort state',selected,cohortIndex)
         if (!selected) return;
         let appState = AppStorageHandler.getAppState();
+        console.log('RETR storing cohort state',appState)
         if (!appState.cohortState) {
             appState.cohortState = [];
         }

@@ -71,11 +71,15 @@ export default class XenaGeneSetApp extends PureComponent {
         // let pathways = this.getActiveApp().pathway;
         const pathways = AppStorageHandler.getPathways();
         const apps = AppStorageHandler.getAppData(pathways);
+        const selectedCohortA = AppStorageHandler.getCohortState(0);
+        const selectedCohortB = AppStorageHandler.getCohortState(1);
+
+        console.log('selected cohorts',apps,selectedCohortA,selectedCohortB)
 
         this.state = {
             apps,
-            selectedCohortA:undefined,
-            selectedCohortB:undefined,
+            selectedCohortA,
+            selectedCohortB,
             view: XENA_VIEW,
             loading:LOAD_STATE.UNLOADED,
             // view: PATHWAYS_VIEW,

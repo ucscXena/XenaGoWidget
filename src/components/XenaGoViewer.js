@@ -39,14 +39,34 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = this.props.appData;
-        this.state.processing = true;
-        this.state.loadState = 'Loading';
-        this.state.hoveredPathway = undefined ;
-        this.state.highlightedGene = this.props.highlightedGene;
+        // this.state = this.props.appData;
 
-        this.state.pathwayData = this.props.pathwayData;
-        this.state.selectedCohortData = undefined;
+        let cohort = AppStorageHandler.getCohortState(props.cohortIndex);
+        // if (cohort && cohort.selected) {
+        //     this.state.selectedCohort = cohort.selected;
+        //     this.state.selectedSubCohorts = cohort.selectedSubCohorts;
+        // }
+
+        this.state = {
+            processing : true,
+            loadState : 'Loading',
+            hoveredPathway : undefined ,
+            selectedCohortData : undefined,
+            highlightedGene : props.highlightedGene,
+            pathwayData : props.pathwayData,
+            key: props.cohortIndex,
+            selectedCohort : cohort.selected,
+            selectedSubCohorts : cohort.selectedSubCohorts,
+        }
+        // console.log('app data',this.props.appData)
+        // console.log('state',this.state)
+        // this.state.processing = true;
+        // this.state.loadState = 'Loading';
+        // this.state.hoveredPathway = undefined ;
+        // this.state.highlightedGene = this.props.highlightedGene;
+
+        // this.state.pathwayData = this.props.pathwayData;
+        // this.state.selectedCohortData = undefined;
         let {goid, golabel} = this.props.pathwaySelection;
         let geneList = getGenesForNamedPathways([this.props.pathwaySelection.pathway.golabel], this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
@@ -60,12 +80,7 @@ export default class XenaGoViewer extends PureComponent {
             pathwaySelection: this.props.pathwaySelection,
         };
 
-        let cohortIndex = this.state.key;
-        let cohort = AppStorageHandler.getCohortState(cohortIndex);
-        if (cohort && cohort.selected) {
-            this.state.selectedCohort = cohort.selected;
-            this.state.selectedSubCohorts = cohort.selectedSubCohorts;
-        }
+        // let cohortIndex = this.state.key;
     }
 
 
