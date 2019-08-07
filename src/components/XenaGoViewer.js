@@ -381,7 +381,6 @@ export default class XenaGoViewer extends PureComponent {
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
-                                               ref='pathwayscoreview'
                                                data={this.props.geneDataStats}
                                                filter={this.props.filter}
                                                geneList={geneList}

@@ -223,7 +223,7 @@ export default class PathwayScoresView extends PureComponent {
         // console.log('returned pathways',returnedPathways)
 
         return (
-            <div ref='wrapper' style={style.xenaGoView}>
+            <div style={style.xenaGoView}>
                 {showDetailLayer &&
                 <CanvasDrawing
                     width={calculatedWidth}

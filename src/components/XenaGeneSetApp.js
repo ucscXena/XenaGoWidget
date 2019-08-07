@@ -934,7 +934,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <XenaGoViewer
                                     // reference
                                     cohortIndex={0}
-                                    ref='xena-go-app-0'
                                     cohortLabel={LABEL_A}
 
                                     // view
@@ -976,7 +975,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <XenaGoViewer
                                     // reference
                                     cohortIndex={1}
-                                    ref='xena-go-app-1'
                                     cohortLabel={LABEL_B}
 
                                     // view
