@@ -275,9 +275,10 @@ export default class XenaGeneSetApp extends PureComponent {
             pathwaySelection: selection,
             geneList,
             pathways,
-            pathwayDataA,
             geneData,
-            pathwayDataB,
+            pathwayData: [pathwayDataA,pathwayDataB],
+            // pathwayDataA,
+            // pathwayDataB,
             selectedObjectA,
             selectedObjectB,
             loading: LOAD_STATE.LOADED,
@@ -589,8 +590,10 @@ export default class XenaGeneSetApp extends PureComponent {
         //     generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways),
         // ];
         // console.log('selected output raw gene data',JSON.stringify(geneData),geneData)
-        let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways);
-        let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways);
+        // let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways);
+        // let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways);
+        let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayData[0],geneSetPathways);
+        let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayData[1],geneSetPathways);
 
         let scoredGeneDataA = scoreGeneData(geneDataA);
         let scoredGeneDataB = scoreGeneData(geneDataB);
@@ -797,7 +800,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
         // TODO: returned should do rendering
-        console.log('A FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
+        // console.log('A FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
 
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
@@ -902,14 +905,14 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayDataA}
+                                                data={this.state.pathwayData[0]}
                                                 cohortIndex={0}
                                                 cohortLabel={LABEL_A}
                                                 pathways={pathways}
                                                 filter={this.state.filter[0]}
                                                 width={VERTICAL_GENESET_DETAIL_WIDTH}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.getSelectedCohort(this.state.pathwayDataA)}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[0])}
                                                 onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
@@ -933,14 +936,14 @@ export default class XenaGeneSetApp extends PureComponent {
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayDataB}
+                                                data={this.state.pathwayData[1]}
                                                 cohortIndex={1}
                                                 cohortLabel={LABEL_B}
                                                 filter={this.state.filter[1]}
                                                 width={200}
                                                 pathways={pathways}
                                                 labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.getSelectedCohort(this.state.pathwayDataB)}
+                                                selectedCohort={this.getSelectedCohort(this.state.pathwayData[1])}
                                                 onClick={this.globalPathwaySelect}
                                                 onHover={this.globalPathwayHover}
                                                 onMouseOut={this.globalPathwayHover}
@@ -989,7 +992,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     filter={this.state.filter[0]}
 
                                     // new pathway data
-                                    pathwayData={this.state.pathwayDataA}
+                                    pathwayData={this.state.pathwayData[0]}
                                     pathwaySelection={this.state.pathwaySelection}
 
 
@@ -1030,7 +1033,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     filter={this.state.filter[1]}
 
                                     // new pathway data
-                                    pathwayData={this.state.pathwayDataB}
+                                    pathwayData={this.state.pathwayData[1]}
                                     pathwaySelection={this.state.pathwaySelection}
 
                                     // functions
