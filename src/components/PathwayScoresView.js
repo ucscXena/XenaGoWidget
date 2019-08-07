@@ -143,9 +143,9 @@ export default class PathwayScoresView extends PureComponent {
     render() {
         const {
             height, data, offset, cohortIndex,
-            colorSettings, highlightedGene, filter, min,
+            colorSettings, highlightedGene, filter,
              showDetailLayer, geneList, showClusterSort, collapsed,
-            selectedCohort, showDiffLayer
+            showDiffLayer
         } = this.props;
 
         const {expression, copyNumber, pathways, samples} = data;
@@ -157,8 +157,6 @@ export default class PathwayScoresView extends PureComponent {
             pathways,
             samples,
             filter,
-            min,
-            selectedCohort,
             cohortIndex,
         };
         if (expression === undefined || expression.length === 0) {

@@ -24,7 +24,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-import {fetchCohortData, getGenesForNamedPathways} from "../functions/CohortFunctions";
+import {fetchCohortData, getGenesForNamedPathways, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
 import update from "immutability-helper";
 
@@ -716,16 +716,19 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     changeCohort = (selectedCohort,cohortIndex) => {
-        // console.log('changing cohort with ',selectedCohort,cohortIndex)
+        console.log('changing cohort with ',selectedCohort,cohortIndex)
         // I think we just set the state
 
         // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
         // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
 
+       AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
+       let subCohorts = getSubCohortsOnlyForCohort(selectedCohort) ;
         let newAppState = update(this.state,{
             apps: {
                 [cohortIndex]: {
-                    selectedCohort:  { $set: selectedCohort}
+                    selectedCohort:  { $set: selectedCohort},
+                    selectedSubCohorts:  { $set: subCohorts}
                 }
             },
             fetch: {$set: true}
@@ -733,9 +736,21 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState( newAppState );
     };
 
-    changeSubCohort = (selectedCohort,selectedSubCohorts,cohortIndex) => {
-        console.log('changing sub cohort with ',selectedCohort,selectedSubCohorts,cohortIndex)
+    changeSubCohort = (selectedCohort,cohortIndex) => {
+        // console.log('changing sub cohort with ',selectedCohort,cohortIndex)
+        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
 
+        // let subCohorts = getSubCohortsOnlyForCohort(selectedCohort) ;
+        let newAppState = update(this.state,{
+            apps: {
+                [cohortIndex]: {
+                    selectedCohort:  { $set: selectedCohort.selected},
+                    selectedSubCohorts:  { $set: selectedCohort.selectedSubCohorts}
+                }
+            },
+            fetch: {$set: true}
+        });
+        this.setState( newAppState );
     };
 
     changeFilter = (filter,cohortIndex) => {

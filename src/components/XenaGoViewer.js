@@ -15,14 +15,11 @@ import {Card,Dialog,Button} from "react-toolbox";
 
 // let Rx = require('ucsc-xena-client/dist/rx');
 import {AppStorageHandler} from "../service/AppStorageHandler";
-import {MAX_GENE_WIDTH, MIN_FILTER} from "./XenaGeneSetApp";
+import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
-    getCohortDetails,
     getGenesForNamedPathways,
     getGenesForPathways,
-    // getSamplesFromSubCohort, getSamplesFromSubCohortList,
-    getSubCohortsOnlyForCohort
 } from "../functions/CohortFunctions";
 // import {intersection} from "../functions/MathFunctions";
 
@@ -209,19 +206,19 @@ export default class XenaGoViewer extends PureComponent {
         // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
         // let cohort = this.state.cohortData.find(c => c.name === selected);
 
-        let cohortDetails = getCohortDetails(selected,this.props.cohortData);
-        // console.log('cohort details',cohortDetails)
-
-        let selectedObject = {
-            selected: selected,
-            selectedSubCohorts: getSubCohortsOnlyForCohort(selected),
-        };
-        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
-        this.setState({
-            selectedCohort: selected,
-            selectedCohortData: cohortDetails,
-            processing: true,
-        });
+        // let cohortDetails = getCohortDetails(selected,this.props.cohortData);
+        // // console.log('cohort details',cohortDetails)
+        //
+        // let selectedObject = {
+        //     selected: selected,
+        //     selectedSubCohorts: getSubCohortsOnlyForCohort(selected),
+        // };
+        // AppStorageHandler.storeCohortState(selectedObject, this.state.key);
+        // this.setState({
+        //     selectedCohort: selected,
+        //     selectedCohortData: cohortDetails,
+        //     processing: true,
+        // });
 
         // console.log('B')
         this.props.changeCohort(selected,this.props.cohortIndex);
@@ -259,47 +256,49 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     selectSubCohort = (subCohortSelected) => {
-        if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-
-        this.props.changeSubCohort(subCohortSelected,subCohortSelected,this.props.cohortIndex);
-        // let subCohortSamplesArray, subCohort, samples;
-        // let samples, selectedObject;
-        let selectedObject;
-        let selectedCohort = this.state.selectedCohort;
-
-        if (typeof subCohortSelected === 'object') {
-            if (typeof subCohortSelected.selectedSubCohorts === 'object') {
-                    // samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
-                    selectedObject = {
-                        selected: this.state.selectedCohort,
-                        selectedSubCohorts: subCohortSelected.selectedSubCohorts,
-                    };
-            }
-            else{
-                console.error("Unsure how to handle input", JSON.stringify(subCohortSelected))
-            }
-        } else {
-            // get samples for cohort array
-            if (subCohortSelected === 'All Subtypes') {
-                this.selectCohort(this.state.selectedCohort);
-                return;
-            }
-            // let selectedSubCohortSamples = getSamplesFromSubCohort(this.state.selectedCohort,subCohortSelected);
-            // samples = Object.entries(selectedSubCohortSamples).map(c => {
-            //     return c[1]
-            // });
-            selectedObject = {
-                selected: selectedCohort,
-                selectedSubCohorts: subCohortSelected,
-            };
-        }
-        AppStorageHandler.storeCohortState(selectedObject, this.state.key);
-        // let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
-        this.setState({
-                processing: true,
-                selectedSubCohorts: selectedObject.selectedSubCohorts
-            }
-        );
+        console.log('selected a sub cohort',JSON.stringify(subCohortSelected))
+        // this.props.changeSubCohort(subCohortSelected.selected,subCohortSelected.selectedSubCohorts,this.props.cohortIndex);
+        this.props.changeSubCohort(subCohortSelected,this.props.cohortIndex);
+        // if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
+        //
+        // // let subCohortSamplesArray, subCohort, samples;
+        // // let samples, selectedObject;
+        // let selectedObject;
+        // let selectedCohort = this.state.selectedCohort;
+        //
+        // if (typeof subCohortSelected === 'object') {
+        //     if (typeof subCohortSelected.selectedSubCohorts === 'object') {
+        //             // samples = getSamplesFromSubCohortList(this.state.selectedCohort,subCohortSelected.selectedSubCohorts);
+        //             selectedObject = {
+        //                 selected: this.state.selectedCohort,
+        //                 selectedSubCohorts: subCohortSelected.selectedSubCohorts,
+        //             };
+        //     }
+        //     else{
+        //         console.error("Unsure how to handle input", JSON.stringify(subCohortSelected))
+        //     }
+        // } else {
+        //     // get samples for cohort array
+        //     if (subCohortSelected === 'All Subtypes') {
+        //         this.selectCohort(this.state.selectedCohort);
+        //         return;
+        //     }
+        //     // let selectedSubCohortSamples = getSamplesFromSubCohort(this.state.selectedCohort,subCohortSelected);
+        //     // samples = Object.entries(selectedSubCohortSamples).map(c => {
+        //     //     return c[1]
+        //     // });
+        //     selectedObject = {
+        //         selected: selectedCohort,
+        //         selectedSubCohorts: subCohortSelected,
+        //     };
+        // }
+        // AppStorageHandler.storeCohortState(selectedObject, this.state.key);
+        // // let cohort = this.state.cohortData.find(c => c.name === this.state.selectedCohort);
+        // this.setState({
+        //         processing: true,
+        //         selectedSubCohorts: selectedObject.selectedSubCohorts
+        //     }
+        // );
 
         // let geneList = getGenesForPathways(this.props.pathways);
         //  Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
@@ -407,8 +406,6 @@ export default class XenaGoViewer extends PureComponent {
                                                filter={this.props.filter}
                                                geneList={geneList}
                                                loading={cohortLoading}
-                                               min={MIN_FILTER}
-                                               selectedCohort={this.state.selectedCohort}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
                                                cohortIndex={this.state.key}
