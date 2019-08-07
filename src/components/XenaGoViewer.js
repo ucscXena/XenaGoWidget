@@ -47,6 +47,7 @@ export default class XenaGoViewer extends PureComponent {
         this.state.highlightedGene = this.props.highlightedGene;
 
         this.state.pathwayData = this.props.pathwayData;
+        this.state.selectedCohortData = undefined;
         let {goid, golabel} = this.props.pathwaySelection;
         let geneList = getGenesForNamedPathways([this.props.pathwaySelection.pathway.golabel], this.props.pathways);
         let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));

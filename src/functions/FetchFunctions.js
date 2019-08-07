@@ -3,7 +3,7 @@ import {getGenesForPathways, getSubCohortsOnlyForCohort} from "./CohortFunctions
 import {COHORT_DATA} from "../components/XenaGeneSetApp";
 let Rx = require('ucsc-xena-client/dist/rx');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples, sparseDataMatchPartialField, refGene, datasetFetch, sparseData} = xenaQuery;
+let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 
 function intersection(a, b) {
     let sa = new Set(a);
@@ -89,7 +89,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
             combinationHandler({
                 geneList,
                 pathways,
-
                 samplesA,
                 mutationsA,
                 copyNumberA,
