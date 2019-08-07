@@ -71,7 +71,7 @@ export default class XenaGoViewer extends PureComponent {
         // console.log('inity raw output gene data',this.state.geneData)
         // console.log('inity output gene data',JSON.stringify(this.state.geneData))
         // console.log('inity raw props gene data',this.props.geneDataStats)
-        this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
+        // this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
 
 
         let cohortIndex = this.state.key;
@@ -354,7 +354,7 @@ export default class XenaGoViewer extends PureComponent {
 
         let {renderHeight, renderOffset, cohortIndex} = this.props;
 
-        if (this.state.selectedPathway.length > 0) {
+        if (this.state.pathwayData) {
             return (
                 <table>
                     <tbody>

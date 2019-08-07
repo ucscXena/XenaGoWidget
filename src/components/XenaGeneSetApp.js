@@ -255,7 +255,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
         // console.log('gene data',JSON.stringify(this.state.geneData))
         // console.log('app data',JSON.stringify(this.state.apps))
-        // pathways = calculateDiffs(pathways,pathways);
         // console.log('output diffs ',JSON.stringify(pathways),pathways)
 
 
@@ -277,8 +276,10 @@ export default class XenaGeneSetApp extends PureComponent {
             this.generateGeneData(selection,pathwayDataA),
             this.generateGeneData(selection,pathwayDataB),
         ];
-        // console.log('output gene data',JSON.stringify(geneData))
-        // console.log('output raw gene data',geneData)
+        console.log('output gene data',JSON.stringify(geneData))
+        console.log('output raw gene data',geneData)
+
+        // pathways = calculateDiffs(pathways,pathways);
 
 
         currentLoadState = LOAD_STATE.LOADED;

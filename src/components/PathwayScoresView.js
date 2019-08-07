@@ -165,6 +165,8 @@ export default class PathwayScoresView extends PureComponent {
             return <div>Loading...</div>
         }
 
+        // console.log('hash association',hashAssociation)
+
         let associatedDataKey = createAssociatedDataKey(hashAssociation);
         associatedData = findAssociatedData(hashAssociation, associatedDataKey);
         let prunedColumns = findPruneData(associatedData, associatedDataKey);
