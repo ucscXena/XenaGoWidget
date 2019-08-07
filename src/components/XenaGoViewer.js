@@ -68,9 +68,9 @@ export default class XenaGoViewer extends PureComponent {
             pathwaySelection: this.props.pathwaySelection,
         };
         // console.log('inity output gene data',JSON.stringify(this.state.geneData))
-        console.log('inity raw output gene data',this.state.geneData)
+        // console.log('inity raw output gene data',this.state.geneData)
         // console.log('inity output gene data',JSON.stringify(this.state.geneData))
-        console.log('inity raw props gene data',this.props.geneDataStats)
+        // console.log('inity raw props gene data',this.props.geneDataStats)
         this.state.selectedPathway = [this.props.pathwaySelection.pathway.golabel];
 
 
