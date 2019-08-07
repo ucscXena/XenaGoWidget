@@ -7,7 +7,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    calculateAllPathways, calculateDiffs,
+    calculateAllPathways, calculateDiffs, generateGeneData, scoreData, scoreGeneData,
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
@@ -160,38 +160,6 @@ export default class XenaGeneSetApp extends PureComponent {
         })
     };
 
-    generateGeneData(pathwaySelection, pathwayData) {
-        let {expression, samples, copyNumber} = pathwayData;
-        let {pathway: {goid, golabel}} = pathwaySelection;
-
-        // let geneList = getGenesForNamedPathways(golabel, this.state.pathways);
-        let geneList = getGenesForNamedPathways(golabel, this.getActiveApp().pathways);
-        let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
-
-        // console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
-        pathwaySelection.tissue = 'Header';
-
-        // this.setState({
-            // pathwayClickData,
-            // selectedPathway: newSelection,
-        const geneData = {
-            expression,
-            samples,
-            copyNumber,
-
-            pathways,
-
-            // selectedPathway: pathwaySelection.pathway,
-            pathwaySelection : pathwaySelection,
-        };
-
-        // console.log('output gene data',JSON.stringify(geneData))
-        // console.log('raw output gene data',geneData)
-        return geneData;
-        // });
-        // pathwayClickData.key = this.props.appData.key;
-
-    }
 
     handleCombinedCohortData = (input) => {
         let {
@@ -272,12 +240,18 @@ export default class XenaGeneSetApp extends PureComponent {
         // // console.log('election',JSON.stringify(selection))
         // console.log('inpu raw t',selection)
         // console.log('pathway data A',JSON.stringify(pathwayDataA),pathwayDataA)
-        const geneData = [
-            this.generateGeneData(selection,pathwayDataA),
-            this.generateGeneData(selection,pathwayDataB),
-        ];
+        let geneDataA = generateGeneData(selection,pathwayDataA,pathways);
+        let geneDataB = generateGeneData(selection,pathwayDataB,pathways);
+
+        let scoredGeneDataA = scoreGeneData(geneDataA);
+        let scoredGeneDataB = scoreGeneData(geneDataB);
+
+
+        const geneData = [ geneDataA,geneDataB ];
         console.log('output gene data',JSON.stringify(geneData))
         console.log('output raw gene data',geneData)
+
+
 
         // pathways = calculateDiffs(pathways,pathways);
 
@@ -596,9 +570,10 @@ export default class XenaGeneSetApp extends PureComponent {
         // console.log('input selection click',JSON.stringify(pathwayClickData),pathwayClickData)
         // console.log('input state A',JSON.stringify(this.state.pathwayDataA),this.state.pathwayDataA)
 
+        const geneSetPathways = AppStorageHandler.getPathways();
         const geneData = [
-            this.generateGeneData(pathwayClickData,this.state.pathwayDataA),
-            this.generateGeneData(pathwayClickData,this.state.pathwayDataB),
+            generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways),
+            generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways),
         ];
         // console.log('selected output raw gene data',JSON.stringify(geneData),geneData)
 

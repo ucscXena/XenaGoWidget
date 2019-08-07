@@ -5,6 +5,7 @@ import lru from 'tiny-lru/lib/tiny-lru.es5'
 import update from "immutability-helper";
 import {sumInstances, sumTotals} from "./MathFunctions";
 import {MIN_FILTER} from "../components/XenaGeneSetApp";
+import {getGenesForNamedPathways, getGenesForPathways} from "./CohortFunctions";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -430,3 +431,54 @@ export function calculateDiffs(geneData0, geneData1) {
     }
 }
 
+export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways) {
+    let {expression, samples, copyNumber} = pathwayData;
+    let {pathway: {goid, golabel}} = pathwaySelection;
+
+    // let geneList = getGenesForNamedPathways(golabel, this.state.pathways);
+    let geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+    let pathways = geneList.map(gene => ({goid, golabel, gene: [gene]}));
+
+    // console.log('just setting pathway state',JSON.stringify(newSelection),JSON.stringify(pathwayClickData))
+    pathwaySelection.tissue = 'Header';
+
+    // this.setState({
+    // pathwayClickData,
+    // selectedPathway: newSelection,
+    const geneData = {
+        expression,
+        samples,
+        copyNumber,
+
+        pathways,
+
+        // selectedPathway: pathwaySelection.pathway,
+        pathwaySelection : pathwaySelection,
+    };
+
+    // console.log('output gene data',JSON.stringify(geneData))
+    // console.log('raw output gene data',geneData)
+    return geneData;
+    // });
+    // pathwayClickData.key = this.props.appData.key;
+
+}
+
+export function scoreGeneData(inputGeneData){
+    // const {expression, copyNumber, pathways, samples,cohortIndex} = inputGeneData;
+    // let geneList = getGenesForPathways(pathways);
+    //
+    // let hashAssociation = {
+    //     expression,
+    //     copyNumber,
+    //     geneList,
+    //     pathways,
+    //     samples,
+    //     filter,
+    //     min,
+    //     selectedCohort,
+    //     cohortIndex,
+    // };
+    // console.log('hash ',JSON.stringify(hashAssociation))
+
+}
