@@ -468,7 +468,7 @@ export function scoreGeneData(inputGeneData){
     const {expression, copyNumber, pathways, samples,cohortIndex} = inputGeneData;
     let geneList = getGenesForPathways(pathways);
 
-    console.log('scored gene list',geneList)
+    // console.log('scored gene list',geneList)
 
     // // TODO: pass in selected filter and selected cohort
     // let hashAssociation = {

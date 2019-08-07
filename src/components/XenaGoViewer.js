@@ -75,11 +75,11 @@ export default class XenaGoViewer extends PureComponent {
 
 
         let cohortIndex = this.state.key;
-        let filterString = AppStorageHandler.getFilterState(cohortIndex);
         let cohort = AppStorageHandler.getCohortState(cohortIndex);
-        if (filterString) {
-            this.state.tissueExpressionFilter = filterString;
-        }
+        // let filterString = AppStorageHandler.getFilterState(cohortIndex);
+        // if (filterString) {
+        //     this.state.tissueExpressionFilter = filterString;
+        // }
 
         if (cohort && cohort.selected) {
             this.state.selectedCohort = cohort.selected;
@@ -199,8 +199,7 @@ export default class XenaGoViewer extends PureComponent {
     };
 
     filterGeneType = (filter) => {
-        this.setState({tissueExpressionFilter: filter});
-        AppStorageHandler.storeFilterState(filter, this.state.key)
+        // this.setState({tissueExpressionFilter: filter});
         this.props.changeFilter(filter,this.props.cohortIndex);
     };
 
@@ -341,6 +340,7 @@ export default class XenaGoViewer extends PureComponent {
 
     render() {
 
+        // TODO: move this to a cohort function and move this into the FilterSelector
         let filteredMutationVector = pick(mutationVector,
             v => v >= this.state.minFilter);
         filteredMutationVector['Copy Number'] = 1;
@@ -372,7 +372,7 @@ export default class XenaGoViewer extends PureComponent {
                                                 cohortLabel={this.props.cohortLabel}
                                 />
                                 <FilterSelector filters={filteredMutationVector}
-                                                selected={this.state.tissueExpressionFilter}
+                                                selected={this.props.filter}
                                                 pathwayData={this.state.geneData}
                                                 geneList={geneList}
                                                 amplificationThreshold={this.state.selectedCohortData ? this.state.selectedCohortData.amplificationThreshold : 2}
@@ -403,11 +403,8 @@ export default class XenaGoViewer extends PureComponent {
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
                                                ref='pathwayscoreview'
-                                               // data={this.props.geneData}
-                                               // data={this.state.geneData}
-                                               // data={this.state.geneData}
                                                data={this.props.geneDataStats}
-                                               filter={this.state.tissueExpressionFilter}
+                                               filter={this.props.filter}
                                                geneList={geneList}
                                                loading={cohortLoading}
                                                min={MIN_FILTER}

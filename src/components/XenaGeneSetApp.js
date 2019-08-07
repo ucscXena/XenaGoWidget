@@ -89,6 +89,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 pathways,
                 selected: true
             },
+            filter:[
+                AppStorageHandler.getFilterState(0)  ,
+                AppStorageHandler.getFilterState(1)  ,
+            ],
             hoveredPathway: undefined,
             geneData: [{}, {}],
             pathwayData: [{}, {}],
@@ -248,10 +252,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         const geneData = [ geneDataA,geneDataB ];
-        console.log('output gene data',JSON.stringify(geneData))
-        console.log('output raw gene data',geneData)
-        console.log('output Scored gene data',JSON.stringify(scoredGeneDataA))
-        console.log('output Scored raw gene data',scoredGeneDataA)
+        // console.log('output gene data',JSON.stringify(geneData))
+        // console.log('output raw gene data',geneData)
+        // console.log('output Scored gene data',JSON.stringify(scoredGeneDataA))
+        // console.log('output Scored raw gene data',scoredGeneDataA)
 
 
 
@@ -586,10 +590,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         const geneData = [ geneDataA,geneDataB ];
-        console.log('selected pathway with gene data',JSON.stringify(geneData))
-        console.log('select pathway the other raw gene data',geneData)
-        console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
-        console.log('scored select pathway the other raw gene data',scoredGeneDataA)
+        // console.log('selected pathway with gene data',JSON.stringify(geneData))
+        // console.log('select pathway the other raw gene data',geneData)
+        // console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
+        // console.log('scored select pathway the other raw gene data',scoredGeneDataA)
 
         this.setState({geneData});
 
@@ -735,8 +739,16 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     changeFilter = (filter,cohortIndex) => {
-        console.log('changing filter with ',filter,cohortIndex)
+        // console.log('changing filter with ',filter,cohortIndex,this.state.filter)
+        AppStorageHandler.storeFilterState(filter, cohortIndex);
+        let filterState = [
+           cohortIndex===0 ? filter : this.state.filter[0]  ,
+            cohortIndex===1 ? filter : this.state.filter[1]  ,
+        ];
 
+        // TODO: recalculate gene data
+
+        this.setState({filter:filterState })
     };
 
     render() {
@@ -929,6 +941,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // maybe state?
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
+                                    // filter={AppStorageHandler.getFilterState(0)}
+                                    // filter={AppStorageHandler.getFilterState(0)}
+                                    filter={this.state.filter[0]}
 
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataA}
@@ -969,6 +984,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // maybe state?
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
+                                    // filter={AppStorageHandler.getFilterState(1)}
+                                    filter={this.state.filter[1]}
 
                                     // new pathway data
                                     pathwayData={this.state.pathwayDataB}
