@@ -398,7 +398,14 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
 }
 
 export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter){
-
+    let geneDataA = generateGeneData(selection,pathwayDataA,pathways,filter[0]);
+    let geneDataB = generateGeneData(selection,pathwayDataB,pathways,filter[1]);
+    let scoredGeneDataA = scoreGeneData(geneDataA);
+    let scoredGeneDataB = scoreGeneData(geneDataB);
+    let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+    geneDataA.pathways = scoredGeneData[0];
+    geneDataB.pathways = scoredGeneData[1];
+    return [ geneDataA,geneDataB ];
 }
 
 /**

@@ -7,7 +7,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    calculateAllPathways, calculateDiffs, generateGeneData, scoreData, scoreGeneData,
+    calculateAllPathways, calculateDiffs, generateGeneData, generateScoredData, scoreData, scoreGeneData,
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
@@ -258,17 +258,8 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathways(pathways);
 
 
-
         let selection = AppStorageHandler.getPathwaySelection();
-
-        let geneDataA = generateGeneData(selection,pathwayDataA,pathways,this.state.filter[0]);
-        let geneDataB = generateGeneData(selection,pathwayDataB,pathways,this.state.filter[1]);
-        let scoredGeneDataA = scoreGeneData(geneDataA);
-        let scoredGeneDataB = scoreGeneData(geneDataB);
-        let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
-        geneDataA.pathways = scoredGeneData[0];
-        geneDataB.pathways = scoredGeneData[1];
-        let  geneData = [ geneDataA,geneDataB ];
+        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter);
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
@@ -578,16 +569,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
         const geneSetPathways = AppStorageHandler.getPathways();
-        let geneDataA = generateGeneData(pathwayClickData,pathwayData[0],geneSetPathways,filter[0]);
-        let geneDataB = generateGeneData(pathwayClickData,pathwayData[1],geneSetPathways,filter[1]);
-
-        let scoredGeneDataA = scoreGeneData(geneDataA);
-        let scoredGeneDataB = scoreGeneData(geneDataB);
-        let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
-        geneDataA.pathways = scoredGeneData[0];
-        geneDataB.pathways = scoredGeneData[1];
-        let  geneData = [ geneDataA,geneDataB ];
-        // internalData = returnedValue.data;
+        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filter);
 
         this.setState({geneData});
     };
