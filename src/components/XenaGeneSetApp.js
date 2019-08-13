@@ -591,58 +591,19 @@ export default class XenaGeneSetApp extends PureComponent {
         });
         AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
-
-        // console.log('input selection',JSON.stringify(pathwaySelection),pathwaySelection)
-        // console.log('input selection click',JSON.stringify(pathwayClickData),pathwayClickData)
-        // console.log('input state A',JSON.stringify(this.state.pathwayDataA),this.state.pathwayDataA)
-
         const geneSetPathways = AppStorageHandler.getPathways();
-        // const geneData = [
-        //
-        //     generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways),
-        // ];
-        // console.log('selected output raw gene data',JSON.stringify(geneData),geneData)
-        // let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways);
-        // let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways);
-        // let filters = this.state.filter;
-        // console.log('filters',filters)
         let geneDataA = generateGeneData(pathwayClickData,pathwayData[0],geneSetPathways,filter[0]);
         let geneDataB = generateGeneData(pathwayClickData,pathwayData[1],geneSetPathways,filter[1]);
 
         let scoredGeneDataA = scoreGeneData(geneDataA);
         let scoredGeneDataB = scoreGeneData(geneDataB);
-
-
+        let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+        geneDataA.pathways = scoredGeneData[0];
+        geneDataB.pathways = scoredGeneData[1];
         let  geneData = [ geneDataA,geneDataB ];
-        let scoredGeneData = [ scoredGeneDataA,scoredGeneDataB ];
-        // // console.log('selected pathway with gene data',JSON.stringify(geneData))
-        // console.log('select pathway the other raw gene data',geneData)
-        console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
-        console.log('scored select pathway the other raw gene data',scoredGeneDataA)
-
-
-        // TODO: do di
-        // if (!showClusterSort && scoredGeneData.pathways[0].diffScore) {
-        //     scoredGeneData = diffSort(scoredGeneData, cohortIndex !== 0);
-        // } else if (showClusterSort) {
-        //     scoredGeneData[0] = clusterSort(scoredGeneData[0]);
-        //     let synchronizedGeneList = scoredGeneData[0].pathways.map(g => g.gene[0]);
-        //     // PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-        //     scoredGeneData[1] = synchronizedSort(scoredGeneData, synchronizedGeneList);
-        // }
-
         // internalData = returnedValue.data;
 
         this.setState({geneData});
-        // this.setState({geneData:scoredGeneData});
-
-        // console.log('pathway selection',JSON.stringify(pathwaySelection));
-        //
-        //
-        // pathwaySelection.propagate = false;
-        // this.state.apps.forEach((app, index) => {
-        //     this.refs['xena-go-app-' + index].setPathwayState(selectedPathways, pathwayClickData);
-        // });
     };
 
 

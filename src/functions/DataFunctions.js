@@ -469,7 +469,7 @@ export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways,f
 }
 
 export function scoreGeneData(inputGeneData){
-    const {expression, copyNumber, pathways, samples,cohortIndex,geneList,filter} = inputGeneData;
+    const {samples,cohortIndex} = inputGeneData;
     // let geneList = getGenesForPathways(pathways);
 
     console.log('scored gene list',inputGeneData)
@@ -478,23 +478,23 @@ export function scoreGeneData(inputGeneData){
     let prunedColumns = findPruneData(associatedData, associatedDataKey);
     prunedColumns.samples = samples;
     //
-    // let calculatedPathways = scoreColumns(prunedColumns);
-    // let returnedValue = update(prunedColumns, {
-    //     pathways: {$set: calculatedPathways},
-    //     index: {$set: cohortIndex},
-    // });
-    //
-    // // set affected versus total
-    // let samplesLength = returnedValue.data[0].length;
-    //
-    // for (let d in returnedValue.data) {
-    //     returnedValue.pathways[d].total = samplesLength;
-    //     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-    //     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-    // }
+    let calculatedPathways = scoreColumns(prunedColumns);
+    let returnedValue = update(prunedColumns, {
+        pathways: {$set: calculatedPathways},
+        index: {$set: cohortIndex},
+    });
 
-    // return returnedValue;
-    return inputGeneData;
+    // set affected versus total
+    let samplesLength = returnedValue.data[0].length;
+
+    for (let d in returnedValue.data) {
+        returnedValue.pathways[d].total = samplesLength;
+        returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+        returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
+    }
+
+    return returnedValue;
+    // return inputGeneData;
 
     // // TODO: pass in selected filter and selected cohort
     // let hashAssociation = {
