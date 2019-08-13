@@ -265,7 +265,6 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
     if (!filter || filter === 'Copy Number') {
 
         // get list of genes in identified pathways
-        console.log('gene list',geneList)
         for (let gene of geneList) {
             // if we have not processed that gene before, then process
             let geneIndex = geneList.indexOf(gene);
@@ -480,9 +479,6 @@ export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways,f
 
 export function scoreGeneData(inputGeneData){
     const {samples,cohortIndex} = inputGeneData;
-    // let geneList = getGenesForPathways(pathways);
-
-    console.log('scored gene list',inputGeneData)
     let associatedDataKey = createAssociatedDataKey(inputGeneData);
     let associatedData = findAssociatedData(inputGeneData, associatedDataKey);
     let prunedColumns = findPruneData(associatedData, associatedDataKey);
