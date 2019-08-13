@@ -397,6 +397,9 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
     });
 }
 
+export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter){
+
+}
 
 /**
  * this nicely forces synchronization as well

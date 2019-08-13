@@ -261,28 +261,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let selection = AppStorageHandler.getPathwaySelection();
 
-        // console.log('input selection',JSON.stringify(selection))
-        // // console.log('election',JSON.stringify(selection))
-        // console.log('inpu raw t',selection)
-        // console.log('pathway data A',JSON.stringify(pathwayDataA),pathwayDataA)
         let geneDataA = generateGeneData(selection,pathwayDataA,pathways,this.state.filter[0]);
         let geneDataB = generateGeneData(selection,pathwayDataB,pathways,this.state.filter[1]);
-        // console.log('gene data a',JSON.stringify(geneDataA),geneDataA)
-
         let scoredGeneDataA = scoreGeneData(geneDataA);
         let scoredGeneDataB = scoreGeneData(geneDataB);
-
-
-        const geneData = [ geneDataA,geneDataB ];
-        // console.log('output gene data',JSON.stringify(geneData))
-        // console.log('output raw gene data',geneData)
-        // console.log('output Scored gene data',JSON.stringify(scoredGeneDataA))
-        // console.log('output Scored raw gene data',scoredGeneDataA)
-
-
-
-        // pathways = calculateDiffs(pathways,pathways);
-
+        let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+        geneDataA.pathways = scoredGeneData[0];
+        geneDataB.pathways = scoredGeneData[1];
+        let  geneData = [ geneDataA,geneDataB ];
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
