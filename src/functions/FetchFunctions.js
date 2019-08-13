@@ -18,8 +18,8 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
     let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA.name);
     let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB.name);
 
-    console.log('selected  ohort A',selectedCohortA,cohortA)
-    console.log('selected  ohort B',selectedCohortB,cohortB)
+    // console.log('selected  ohort A',selectedCohortA,cohortA)
+    // console.log('selected  ohort B',selectedCohortB,cohortB)
 
     let selectedObjectA = {
         name: selectedCohortA,

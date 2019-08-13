@@ -73,22 +73,27 @@ export default class XenaGeneSetApp extends PureComponent {
         // const apps = AppStorageHandler.getAppData(pathways);
 
         // TODO: this should get subcohorts here, really
-        const selectedCohortA = AppStorageHandler.getCohortState(0);
-        const selectedCohortB = AppStorageHandler.getCohortState(1);
+        let selectedCohortA = AppStorageHandler.getCohortState(0);
+        selectedCohortA =  selectedCohortA.selected ? selectedCohortA.selected : selectedCohortA;
 
-        const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA)
-        const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB)
+        let selectedCohortB = AppStorageHandler.getCohortState(1);
+        selectedCohortB =  selectedCohortB.selected ? selectedCohortB.selected : selectedCohortB;
+
+
+        const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA);
+        const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB);
+
 
         const cohortDataA = {
             name: selectedCohortA,
-            subCohorts: selectedSubCohortsA
+            subCohorts: selectedSubCohortsA,
         };
         const cohortDataB = {
             name: selectedCohortB,
-            subCohorts: selectedSubCohortsB
-        }
+            subCohorts: selectedSubCohortsB,
+        };
 
-        console.log('selected cohorts',selectedCohortA,selectedCohortB,cohortDataA,cohortDataB)
+        // console.log('selected cohorts',selectedCohortA,selectedCohortB,cohortDataA,cohortDataB)
 
         this.state = {
             // TODO: this should use the full cohort Data, not just the top-level
@@ -759,7 +764,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
-        // console.log('changing sub cohort with ',selectedCohort,cohortIndex)
+        console.log('changing sub cohort with ',selectedCohort,cohortIndex)
         AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
 
         // let subCohorts = getSubCohortsOnlyForCohort(selectedCohort) ;
@@ -801,7 +806,7 @@ export default class XenaGeneSetApp extends PureComponent {
             currentLoadState = LOAD_STATE.LOADING;
 
             // console.log('FETCHING',this.state.selectedCohortA,this.state.selectedCohortB);
-            console.log('FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
+            // console.log('FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
         // else{
