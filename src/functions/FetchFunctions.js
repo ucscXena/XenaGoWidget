@@ -38,6 +38,8 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
     // });
     // let pathways = this.getActiveApp().pathway;
     let geneList = getGenesForPathways(pathways);
+    //
+    // console.log('input gene list',JSON.stringify(geneList),geneList)
 
     // this selects cohorts, not sub-cohorts
     // TODO: get working

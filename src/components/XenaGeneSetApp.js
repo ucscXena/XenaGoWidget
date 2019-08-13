@@ -27,6 +27,7 @@ import CrossHairV from "./CrossHairV";
 import {fetchCohortData, getGenesForNamedPathways, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
 import update from "immutability-helper";
+import {clusterSort, diffSort, synchronizedSort} from "../functions/SortFunctions";
 
 
 
@@ -264,8 +265,9 @@ export default class XenaGeneSetApp extends PureComponent {
         // // console.log('election',JSON.stringify(selection))
         // console.log('inpu raw t',selection)
         // console.log('pathway data A',JSON.stringify(pathwayDataA),pathwayDataA)
-        let geneDataA = generateGeneData(selection,pathwayDataA,pathways);
-        let geneDataB = generateGeneData(selection,pathwayDataB,pathways);
+        let geneDataA = generateGeneData(selection,pathwayDataA,pathways,this.state.filter[0]);
+        let geneDataB = generateGeneData(selection,pathwayDataB,pathways,this.state.filter[1]);
+        // console.log('gene data a',JSON.stringify(geneDataA),geneDataA)
 
         let scoredGeneDataA = scoreGeneData(geneDataA);
         let scoredGeneDataB = scoreGeneData(geneDataB);
@@ -569,6 +571,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwaySelect = (pathwaySelection) => {
 
+        console.log('pathway selection',JSON.stringify(pathwaySelection),pathwaySelection)
+        let {showClusterSort,pathwayData,filter} = this.state;
 
         if (pathwaySelection.gene.length === 0) {
             return;
@@ -600,20 +604,37 @@ export default class XenaGeneSetApp extends PureComponent {
         // console.log('selected output raw gene data',JSON.stringify(geneData),geneData)
         // let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayDataA,geneSetPathways);
         // let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayDataB,geneSetPathways);
-        let geneDataA = generateGeneData(pathwayClickData,this.state.pathwayData[0],geneSetPathways);
-        let geneDataB = generateGeneData(pathwayClickData,this.state.pathwayData[1],geneSetPathways);
+        // let filters = this.state.filter;
+        // console.log('filters',filters)
+        let geneDataA = generateGeneData(pathwayClickData,pathwayData[0],geneSetPathways,filter[0]);
+        let geneDataB = generateGeneData(pathwayClickData,pathwayData[1],geneSetPathways,filter[1]);
 
         let scoredGeneDataA = scoreGeneData(geneDataA);
         let scoredGeneDataB = scoreGeneData(geneDataB);
 
 
-        const geneData = [ geneDataA,geneDataB ];
-        // console.log('selected pathway with gene data',JSON.stringify(geneData))
+        let  geneData = [ geneDataA,geneDataB ];
+        let scoredGeneData = [ scoredGeneDataA,scoredGeneDataB ];
+        // // console.log('selected pathway with gene data',JSON.stringify(geneData))
         // console.log('select pathway the other raw gene data',geneData)
-        // console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
-        // console.log('scored select pathway the other raw gene data',scoredGeneDataA)
+        console.log('scored selected pathway with gene data',JSON.stringify(scoredGeneDataA))
+        console.log('scored select pathway the other raw gene data',scoredGeneDataA)
+
+
+        // TODO: do di
+        // if (!showClusterSort && scoredGeneData.pathways[0].diffScore) {
+        //     scoredGeneData = diffSort(scoredGeneData, cohortIndex !== 0);
+        // } else if (showClusterSort) {
+        //     scoredGeneData[0] = clusterSort(scoredGeneData[0]);
+        //     let synchronizedGeneList = scoredGeneData[0].pathways.map(g => g.gene[0]);
+        //     // PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+        //     scoredGeneData[1] = synchronizedSort(scoredGeneData, synchronizedGeneList);
+        // }
+
+        // internalData = returnedValue.data;
 
         this.setState({geneData});
+        // this.setState({geneData:scoredGeneData});
 
         // console.log('pathway selection',JSON.stringify(pathwaySelection));
         //

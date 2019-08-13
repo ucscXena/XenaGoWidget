@@ -6,6 +6,7 @@ import update from "immutability-helper";
 import {sumInstances, sumTotals} from "./MathFunctions";
 import {MIN_FILTER} from "../components/XenaGeneSetApp";
 import {getGenesForNamedPathways, getGenesForPathways} from "./CohortFunctions";
+import {scoreColumns} from "./SortFunctions";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -264,6 +265,7 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
     if (!filter || filter === 'Copy Number') {
 
         // get list of genes in identified pathways
+        console.log('gene list',geneList)
         for (let gene of geneList) {
             // if we have not processed that gene before, then process
             let geneIndex = geneList.indexOf(gene);
@@ -431,7 +433,7 @@ export function calculateDiffs(geneData0, geneData1) {
     }
 }
 
-export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways) {
+export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways,filter) {
     let {expression, samples, copyNumber} = pathwayData;
     let {pathway: {goid, golabel}} = pathwaySelection;
 
@@ -449,6 +451,8 @@ export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways) 
         expression,
         samples,
         copyNumber,
+        filter,
+        geneList,
 
         pathways,
 
@@ -465,10 +469,32 @@ export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways) 
 }
 
 export function scoreGeneData(inputGeneData){
-    const {expression, copyNumber, pathways, samples,cohortIndex} = inputGeneData;
-    let geneList = getGenesForPathways(pathways);
+    const {expression, copyNumber, pathways, samples,cohortIndex,geneList,filter} = inputGeneData;
+    // let geneList = getGenesForPathways(pathways);
 
-    // console.log('scored gene list',geneList)
+    console.log('scored gene list',inputGeneData)
+    let associatedDataKey = createAssociatedDataKey(inputGeneData);
+    let associatedData = findAssociatedData(inputGeneData, associatedDataKey);
+    let prunedColumns = findPruneData(associatedData, associatedDataKey);
+    prunedColumns.samples = samples;
+    //
+    // let calculatedPathways = scoreColumns(prunedColumns);
+    // let returnedValue = update(prunedColumns, {
+    //     pathways: {$set: calculatedPathways},
+    //     index: {$set: cohortIndex},
+    // });
+    //
+    // // set affected versus total
+    // let samplesLength = returnedValue.data[0].length;
+    //
+    // for (let d in returnedValue.data) {
+    //     returnedValue.pathways[d].total = samplesLength;
+    //     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
+    //     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
+    // }
+
+    // return returnedValue;
+    return inputGeneData;
 
     // // TODO: pass in selected filter and selected cohort
     // let hashAssociation = {
