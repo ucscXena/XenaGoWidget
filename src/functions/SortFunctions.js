@@ -83,6 +83,7 @@ export function clusterSort(prunedColumns) {
  */
 function sortPathwaysDiffs(prunedColumns,reverse) {
     reverse = reverse || false ;
+    console.log('pruned columns',prunedColumns)
     let pathways = prunedColumns.pathways.sort((a, b) => {
         return (b.diffScore - a.diffScore) * ( reverse ? -1 : 1);
     });

@@ -6,7 +6,7 @@ import update from "immutability-helper";
 import {sumInstances, sumTotals} from "./MathFunctions";
 import {MIN_FILTER} from "../components/XenaGeneSetApp";
 import {getGenesForNamedPathways, getGenesForPathways} from "./CohortFunctions";
-import {diffSort, scoreColumns} from "./SortFunctions";
+import {clusterSort, diffSort, scoreColumns} from "./SortFunctions";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -396,19 +396,38 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
     });
 }
 
-export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter){
+export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter,showClusterSort){
     console.log('genere scored data from ',selection,pathwayDataA)
     let geneDataA = generateGeneData(selection,pathwayDataA,pathways,filter[0]);
     let geneDataB = generateGeneData(selection,pathwayDataB,pathways,filter[1]);
     let scoredGeneDataA = scoreGeneData(geneDataA);
     let scoredGeneDataB = scoreGeneData(geneDataB);
     console.log('scored gene eata a',scoredGeneDataA)
-    let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+    let scoredGenePathways  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+    console.log('scored gene data OUTPUT ',scoredGenePathways)
     // scoredGeneData[0] = diffSort(scoredGeneData[0])
     // scoredGeneData[1] = diffSort(scoredGeneData[1])
-    geneDataA.pathways = scoredGeneData[0];
-    geneDataB.pathways = scoredGeneData[1];
-    console.log('input gene data',geneDataA)
+    geneDataA.pathways = scoredGenePathways[0];
+    geneDataB.pathways = scoredGenePathways[1];
+    geneDataA.data = scoredGeneDataA.data;
+    geneDataB.data = scoredGeneDataB.data;
+    let sortedGeneDataA = showClusterSort ? clusterSort(geneDataA) : diffSort(geneDataA);
+    let sortedGeneDataB = showClusterSort ? clusterSort(geneDataB) : diffSort(geneDataB);
+    // let sortedGeneDataA = diffSort(geneDataA);
+    // let sortedGeneDataB = diffSort(geneDataB);
+    console.log('DO A',sortedGeneDataA,geneDataA,JSON.stringify('A'))
+    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+    geneDataA.samples = sortedGeneDataA.samples;
+    geneDataA.pathways = sortedGeneDataA.pathways;
+    geneDataA.data = sortedGeneDataA.data;
+
+    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+    geneDataB.samples = sortedGeneDataB.samples;
+    geneDataB.pathways = sortedGeneDataB.pathways;
+    geneDataB.data = sortedGeneDataB.data;
+    // console.log('sort diff',geneDataA,diffSort(geneDataA));
+    // diffSort(geneDataB)
+    // console.log('input gene data',geneDataA)
     // console.log('output gene data',geneDataA)
     return [ geneDataA,geneDataB ];
 }
@@ -449,6 +468,7 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData,geneSetPathways,filter) {
+    console.log('input GGD ',pathwaySelection,pathwayData,geneSetPathways)
     let {expression, samples, copyNumber} = pathwayData;
     let {pathway: {goid, golabel}} = pathwaySelection;
 

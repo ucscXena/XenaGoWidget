@@ -251,7 +251,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let selection = AppStorageHandler.getPathwaySelection();
-        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter);
+        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter,this.state.showClusterSort);
 
         if (this.state.showClusterSort) {
             // if (cohortIndex === 0) {
@@ -575,7 +575,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
         const geneSetPathways = AppStorageHandler.getPathways();
-        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filter);
+        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filter,showClusterSort);
 
         this.setState({geneData});
     };
