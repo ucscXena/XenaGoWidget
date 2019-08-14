@@ -70,10 +70,7 @@ export default class XenaGeneSetApp extends PureComponent {
     constructor(props) {
         super(props);
 
-        // let pathways = this.getActiveApp().pathway;
         const pathways = AppStorageHandler.getPathways();
-        // const apps = AppStorageHandler.getAppData(pathways);
-
         // TODO: this should get subcohorts here, really
         let selectedCohortA = AppStorageHandler.getCohortState(0);
         selectedCohortA =  selectedCohortA.selected ? selectedCohortA.selected : selectedCohortA;
@@ -95,8 +92,6 @@ export default class XenaGeneSetApp extends PureComponent {
             subCohorts: selectedSubCohortsB,
         };
 
-        // console.log('selected cohorts',selectedCohortA,selectedCohortB,cohortDataA,cohortDataB)
-
         this.state = {
             // TODO: this should use the full cohort Data, not just the top-level
             selectedCohort:[
@@ -104,6 +99,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 cohortDataB,
             ],
             view: XENA_VIEW,
+            fetch: false,
             loading:LOAD_STATE.UNLOADED,
             showColorEditor: false,
             showDetailLayer: true,
@@ -374,17 +370,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     geneHover = (geneHover) => {
-
-
-
-        // this.setState(
-        //     {
-        //         hoveredPathway: geneHover ? geneHover.pathway : {}
-        //     }
-        // );
-        // console.log('gene hover',JSON.stringify(geneHover))
-
-
         if(geneHover){
             // TODO: this needs to be taken from the more global data
             let genericHoverData = {
@@ -401,47 +386,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 geneHoverData
             });
         }
-        else{
-
-        }
-
-        // if (geneHover) {
-        //     let myIndex = geneHover.cohortIndex;
-        //     this.state.apps.forEach((app, index) => {
-        //         if (index !== myIndex) {
-        //             this.refs['xena-go-app-' + index].setGeneHover(geneHover.pathway);
-        //         }
-        //     });
-        // }
-        // const geneHoverData = geneHover ? [
-        //     {
-        //         tissue: 'Header',
-        //         pathway: geneHover,
-        //         expression: {
-        //             affected: geneHover.firstObserved,
-        //             samplesAffected: geneHover.firstObserved,
-        //             allGeneAffected: geneHover.firstTotal,
-        //             total: geneHover.firstNumSamples,
-        //         }
-        //     },
-        //     {
-        //
-        //         tissue: 'Header',
-        //         pathway: geneHover,
-        //         expression: {
-        //             affected: geneHover.secondObserved,
-        //             samplesAffected: geneHover.secondObserved,
-        //             allGeneAffected: geneHover.secondTotal,
-        //             total: geneHover.secondNumSamples,
-        //         }
-        //     }
-        // ] : this.state.geneHoverData;
-        //
-        // // if(hoveredPathway){
-        // //     console.log('setting new hovered pathway',JSON.stringify(geneHoverData))
-        // // }
-        //
-        //
     };
 
 
@@ -471,51 +415,11 @@ export default class XenaGeneSetApp extends PureComponent {
             }
         ] : this.state.geneHoverData;
 
-        // if(hoveredPathway){
-        //     console.log('setting new hovered pathway',JSON.stringify(geneHoverData))
-        // }
-
-
         this.setState({
             hoveredPathway,
             geneHoverData
         });
-        // console.log('pathway hover',JSON.stringify(hoveredPathway))
-
-        // this.state.apps.forEach((app, index) => {
-        //     if(pathwayHover){
-        //         pathwayHover.samplesAffected = index === 0 ? pathwayHover.firstObserved : pathwayHover.secondObserved;
-        //     }
-        //     this.refs['xena-go-app-' + index].setPathwayHover(pathwayHover);
-        // });
     };
-
-// populates back to the top
-//     shareGlobalGeneData = (geneData, cohortIndex) => {
-//         const isChange = (cohortIndex === 0 && geneData.length!==this.state.geneData[0].length) || (cohortIndex === 1 && geneData.length!==this.state.geneData[1].length);
-//
-//         let geneData0 = cohortIndex === 0 ? geneData : this.state.geneData[0];
-//         let geneData1 = cohortIndex === 1 ? geneData : this.state.geneData[1];
-//         let finalGeneData = calculateDiffs(geneData0, geneData1);
-//
-//         if(isChange){
-//             if(geneData0.length>0){
-//                 this.geneHover({
-//                     pathway:geneData0[0],
-//                     cohortIndex
-//                 });
-//             }
-//             if(geneData1.length>0){
-//                 this.geneHover({
-//                     pathway:geneData1[0],
-//                     cohortIndex
-//                 });
-//             }
-//         }
-//         this.setState({
-//             geneData: finalGeneData
-//         });
-//     };
 
     downloadData = (cohortIndex) => {
         console.log('trying to download with ',cohortIndex)
@@ -715,17 +619,21 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState( newAppState );
     };
 
-    changeFilter = (filter,cohortIndex) => {
-        // console.log('changing filter with ',filter,cohortIndex,this.state.filter)
-        AppStorageHandler.storeFilterState(filter, cohortIndex);
+    changeFilter = (newFilter,cohortIndex) => {
+        AppStorageHandler.storeFilterState(newFilter, cohortIndex);
+        let {pathwayData,pathwaySelection,filter} = this.state;
         let filterState = [
-           cohortIndex===0 ? filter : this.state.filter[0]  ,
-            cohortIndex===1 ? filter : this.state.filter[1]  ,
+           cohortIndex===0 ? newFilter : filter[0]  ,
+           cohortIndex===1 ? newFilter: filter[1]  ,
         ];
 
-        // TODO: recalculate gene data
+        let pathwayClickData = {
+            pathway: pathwaySelection.pathway
+        };
 
-        this.setState({filter:filterState })
+        const geneSetPathways = AppStorageHandler.getPathways();
+        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filterState,showClusterSort);
+        this.setState({ filter:filterState ,geneData});
     };
 
     render() {
@@ -738,8 +646,6 @@ export default class XenaGeneSetApp extends PureComponent {
             currentLoadState = LOAD_STATE.LOADING;
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
-
-
 
         return (
             <div>
@@ -895,7 +801,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     renderHeight={VIEWER_HEIGHT}
 
                                     // data
-                                    // appData={this.state.apps[0]}
                                     selectedCohort={this.state.selectedCohort[0]}
                                     geneDataStats={this.state.geneData[0]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
@@ -903,8 +808,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // maybe state?
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
-                                    // filter={AppStorageHandler.getFilterState(0)}
-                                    // filter={AppStorageHandler.getFilterState(0)}
                                     filter={this.state.filter[0]}
 
                                     // new pathway data
@@ -914,7 +817,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                    // functions
                                     geneHover={this.geneHover}
-                                    // shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
                                     changeCohort={this.changeCohort}
                                     changeSubCohort={this.changeSubCohort}
@@ -936,7 +838,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     renderOffset={VIEWER_HEIGHT - 3}
 
                                     // data
-                                    // appData={this.state.apps[1]}
                                     selectedCohort={this.state.selectedCohort[1]}
                                     geneDataStats={this.state.geneData[1]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
@@ -944,7 +845,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // maybe state?
                                     pathways={pathways}
                                     highlightedGene={this.state.highlightedGene}
-                                    // filter={AppStorageHandler.getFilterState(1)}
                                     filter={this.state.filter[1]}
 
                                     // new pathway data
@@ -953,7 +853,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // functions
                                     geneHover={this.geneHover}
-                                    // shareGlobalGeneData={this.shareGlobalGeneData}
                                     setCollapsed={this.setCollapsed}
                                     changeCohort={this.changeCohort}
                                     changeSubCohort={this.changeSubCohort}
