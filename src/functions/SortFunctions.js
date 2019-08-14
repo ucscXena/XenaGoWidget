@@ -97,6 +97,7 @@ function sortPathwaysDiffs(prunedColumns,reverse) {
  * @param prunedColumns
  */
 export function diffSort(prunedColumns) {
+    // console.log('diffsort input',JSON.stringify(prunedColumns),prunedColumns)
     let sortedColumns = sortPathwaysDiffs(prunedColumns);
     sortedColumns.data.push(prunedColumns.samples);
     let renderedData = transpose(sortedColumns.data);
@@ -107,6 +108,8 @@ export function diffSort(prunedColumns) {
     returnColumns.samples = sortedColumns.samples;
     returnColumns.pathways = sortedColumns.pathways;
     returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+    // console.log('diffsort output',JSON.stringify(prunedColumns),prunedColumns)
 
     return returnColumns;
 }

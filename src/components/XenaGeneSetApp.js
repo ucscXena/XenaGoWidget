@@ -253,6 +253,20 @@ export default class XenaGeneSetApp extends PureComponent {
         let selection = AppStorageHandler.getPathwaySelection();
         let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter);
 
+        if (this.state.showClusterSort) {
+            // if (cohortIndex === 0) {
+            //     returnedValue = clusterSort(returnedValue);
+            //     PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
+            // } else {
+            //     PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
+            //     returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
+            // }
+        }
+        else{
+            // geneData[0] = diffSort(geneData[0]);
+            // geneData[1] = diffSort(geneData[1]);
+        }
+
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
             pathwaySelection: selection,

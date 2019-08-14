@@ -6,7 +6,7 @@ import update from "immutability-helper";
 import {sumInstances, sumTotals} from "./MathFunctions";
 import {MIN_FILTER} from "../components/XenaGeneSetApp";
 import {getGenesForNamedPathways, getGenesForPathways} from "./CohortFunctions";
-import {scoreColumns} from "./SortFunctions";
+import {diffSort, scoreColumns} from "./SortFunctions";
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2 ;
 const DEFAULT_DELETION_THRESHOLD = -2 ;
@@ -397,13 +397,19 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
 }
 
 export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter){
+    console.log('genere scored data from ',selection,pathwayDataA)
     let geneDataA = generateGeneData(selection,pathwayDataA,pathways,filter[0]);
     let geneDataB = generateGeneData(selection,pathwayDataB,pathways,filter[1]);
     let scoredGeneDataA = scoreGeneData(geneDataA);
     let scoredGeneDataB = scoreGeneData(geneDataB);
+    console.log('scored gene eata a',scoredGeneDataA)
     let scoredGeneData  = calculateDiffs(scoredGeneDataA.pathways,scoredGeneDataB.pathways);
+    // scoredGeneData[0] = diffSort(scoredGeneData[0])
+    // scoredGeneData[1] = diffSort(scoredGeneData[1])
     geneDataA.pathways = scoredGeneData[0];
     geneDataB.pathways = scoredGeneData[1];
+    console.log('input gene data',geneDataA)
+    // console.log('output gene data',geneDataA)
     return [ geneDataA,geneDataB ];
 }
 
