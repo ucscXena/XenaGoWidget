@@ -75,12 +75,12 @@ export function createAssociatedDataKey(inputHash){
 }
 
 export function findAssociatedData(inputHash,associatedDataKey) {
-    let {expression, copyNumber, geneList, pathways, samples, filter, min} = inputHash;
+    let {expression, copyNumber, geneList, pathways, samples, filter} = inputHash;
 
     const key = JSON.stringify(associatedDataKey);
     let data = associateCache.get(key);
     if (ignoreCache || !data) {
-        data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter, min);
+        data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter);
         associateCache.set(key,data);
     }
 
@@ -223,10 +223,10 @@ export function scoreData(score, numSamples, geneCount) {
  * @param selectedCohort
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter, min) {
+export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
 
     filter = filter.indexOf('All') === 0 ? '' : filter;
-    let returnArray = createEmptyArray(pathways.length,samples.length)
+    let returnArray = createEmptyArray(pathways.length,samples.length);
     let sampleIndex = new Map(samples.map((v, i) => [v, i]));
     let genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -235,7 +235,7 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
     if (!filter || filter === 'Mutation') {
         for (let row of expression.rows) {
 
-            let effectValue = getMutationScore(row.effect, min);
+            let effectValue = getMutationScore(row.effect, MIN_FILTER);
             let effectScore = mutationScores[row.effect];
             let pathwayIndices = genePathwayLookup(row.gene);
 
@@ -255,8 +255,6 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
                         break;
                     default:
                 }
-
-                //
             }
         }
     }
