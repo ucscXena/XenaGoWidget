@@ -219,8 +219,6 @@ export function scoreData(score, numSamples, geneCount) {
  * @param pathways
  * @param samples
  * @param filter
- * @param min
- * @param selectedCohort
  * @returns {any[]}
  */
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
