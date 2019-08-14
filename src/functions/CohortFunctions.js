@@ -72,6 +72,3 @@ export function fetchCohortData(){
 
 }
 
-export function getSelectedCohort(pathwayData){
-    COHORT_DATA.find(c => c.name === pathwayData.cohort);
-}
