@@ -74,7 +74,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         // TODO: fix filter somehow?
         filter = filter ? filter : 'All';
 
-
         // need to get an associatedData
         let hashAssociation = {
             expression,
@@ -83,7 +82,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             pathways,
             samples,
             filter,
-            min:MIN_FILTER,
             selectedCohort
         };
         if (expression === undefined || expression.length === 0) {

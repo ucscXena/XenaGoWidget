@@ -332,15 +332,13 @@ export function addIndepProb(prob_list) {  //  p = PA + PB - PAB, etc
     return total_prob;
 }
 
-export function calculateAssociatedData(pathwayData, filter, min) {
+export function calculateAssociatedData(pathwayData, filter) {
     let hashAssociation = update(pathwayData, {
             filter: {$set: filter},
-            min: {$set: min},
             selectedCohort: {$set: pathwayData.cohort},
         }
     );
     hashAssociation.filter = filter;
-    hashAssociation.min = min;
     hashAssociation.selectedCohort = pathwayData.cohort;
     let associatedDataKey = createAssociatedDataKey(hashAssociation);
     let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
@@ -349,14 +347,14 @@ export function calculateAssociatedData(pathwayData, filter, min) {
     return associatedData;
 }
 
-export function calculateObserved(pathwayData, filter, min) {
-    return calculateAssociatedData(pathwayData, filter, min).map(pathway => {
+export function calculateObserved(pathwayData, filter) {
+    return calculateAssociatedData(pathwayData, filter).map(pathway => {
         return sumInstances(pathway);
     });
 }
 
-export function calculatePathwayScore(pathwayData, filter, min) {
-    return calculateAssociatedData(pathwayData, filter, min).map(pathway => {
+export function calculatePathwayScore(pathwayData, filter) {
+    return calculateAssociatedData(pathwayData, filter).map(pathway => {
         return sumTotals(pathway);
     });
 }
@@ -367,13 +365,13 @@ export function calculatePathwayScore(pathwayData, filter, min) {
  */
 export function calculateAllPathways(pathwayDataA,pathwayDataB){
 
-    const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter, MIN_FILTER,pathwayDataA.cohort );
-    const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter, MIN_FILTER);
+    const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
+    const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
     const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
     const maxSamplesAffectedA = pathwayDataA.samples.length;
 
-    const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter, MIN_FILTER,pathwayDataB.cohort );
-    const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter, MIN_FILTER);
+    const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
+    const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
     const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
     const maxSamplesAffectedB = pathwayDataB.samples.length;
 
