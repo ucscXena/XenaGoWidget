@@ -631,14 +631,18 @@ export default class XenaGeneSetApp extends PureComponent {
             pathway: pathwaySelection.pathway
         };
 
-        const geneSetPathways = AppStorageHandler.getPathways();
-        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filterState,showClusterSort);
-        this.setState({ filter:filterState ,geneData});
+        // const geneSetPathways = AppStorageHandler.getPathways();
+        let pathways = calculateAllPathways(pathwayData[0],pathwayData[1]);
+        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],pathways,filterState,showClusterSort);
+        // console.log(JSON.stringify('pathways'),pathways,this.state.pathways)
+        this.setState({ filter:filterState ,geneData,pathways});
     };
 
     render() {
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
+
+        // console.log(JSON.stringify('loaded pathways'),pathways,this.state.pathways)
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
@@ -742,7 +746,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                             }
                                         </td>
                                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                                            <GeneSetSelector pathways={pathways}
+                                            {this.state.pathways &&
+                                            <GeneSetSelector pathways={this.state.pathways}
                                                              hoveredPathway={this.state.hoveredPathway}
                                                              selectedPathway={this.state.pathwaySelection}
                                                              highlightedGene={this.state.highlightedGene}
@@ -754,6 +759,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                                              width={VERTICAL_SELECTOR_WIDTH}
                                                              geneStateColors={this.state.geneStateColors}
                                             />
+                                            }
                                         </td>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                                             {this.state.showPathwayDetails &&
