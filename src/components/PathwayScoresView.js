@@ -82,8 +82,7 @@ let pathwayIndexFromX = (x, layout) => {
     }
 };
 
-function getPointData(event, layout, associatedData, sortedSamples, pathways, props) {
-    let {height, cohortIndex} = props;
+function getPointData(event, layout, associatedData, sortedSamples, pathways, height, cohortIndex) {
     let {x, y} = getMousePos(event);
     let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
     let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, sortedSamples.length, cohortIndex);
@@ -102,9 +101,7 @@ const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
 // TODO: move to state I think
-let internalData = undefined;
 let layoutData = undefined;
-let associatedData = undefined;
 let sortedSamples = undefined;
 let returnedPathways = undefined;
 
@@ -122,8 +119,8 @@ export default class PathwayScoresView extends PureComponent {
     };
 
     onHover = (event) => {
-        let {onHover} = this.props;
-        let pointData = getPointData(event, layoutData, associatedData, sortedSamples, returnedPathways, this.props);
+        let {onHover,data,height,cohortIndex} = this.props;
+        let pointData = getPointData(event, layoutData, data.data, sortedSamples, returnedPathways, height, cohortIndex);
         if (pointData) {
             onHover(pointData);
         } else {
@@ -131,92 +128,32 @@ export default class PathwayScoresView extends PureComponent {
         }
     };
 
-    // componentDidMount() {
-    //     // this supp
-    //     const {
-    //         data, cohortIndex, shareGlobalGeneData,
-    //     } = this.props;
-    //     shareGlobalGeneData(data.pathways, cohortIndex);
-    // }
-
-
     render() {
         const {
             height, data, offset, cohortIndex,
-            colorSettings, highlightedGene, filter,
-             showDetailLayer, geneList, showClusterSort, collapsed,
+            colorSettings, highlightedGene,
+             showDetailLayer, collapsed,
             showDiffLayer
         } = this.props;
 
-        const {expression, copyNumber, pathways, samples} = data;
-
-        let hashAssociation = {
-            expression,
-            copyNumber,
-            geneList,
-            pathways,
-            samples,
-            filter,
-            cohortIndex,
-        };
-        if (expression === undefined || expression.length === 0) {
-            return <div>Loading...</div>
-        }
-
-        // console.log('hash association',hashAssociation)
-
-        let associatedDataKey = createAssociatedDataKey(hashAssociation);
-        associatedData = findAssociatedData(hashAssociation, associatedDataKey);
-        let prunedColumns = findPruneData(associatedData, associatedDataKey);
-        prunedColumns.samples = samples;
-
-        let calculatedPathways = scoreColumns(prunedColumns);
-        let returnedValue = update(prunedColumns, {
-            pathways: {$set: calculatedPathways},
-            index: {$set: cohortIndex},
-        });
-
-        // set affected versus total
-        let samplesLength = returnedValue.data[0].length;
-
-        for (let d in returnedValue.data) {
-            returnedValue.pathways[d].total = samplesLength;
-            returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
-            returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
-        }
-
-
-        if (!showClusterSort && returnedValue.pathways[0].diffScore) {
-            returnedValue = diffSort(returnedValue, cohortIndex !== 0);
-        } else if (showClusterSort) {
-            if (cohortIndex === 0) {
-                returnedValue = clusterSort(returnedValue);
-                PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-            } else {
-                PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-                returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
-            }
-        }
-
-        internalData = returnedValue.data;
+        // internalData = returnedValue.data;
 
         // this will go last
         // fix for #194
-        let genesInGeneSet = returnedValue.data.length;
+        let genesInGeneSet = data.data.length;
         let calculatedWidth;
         if (genesInGeneSet < 8) {
             calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX;
         } else if (genesInGeneSet > 85 && collapsed) {
             calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
         } else {
-            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * returnedValue.pathways.length);
+            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * data.pathways.length);
         }
 
-        layoutData = layout(calculatedWidth, returnedValue.data);
-        sortedSamples = returnedValue.sortedSamples ? returnedValue.sortedSamples : returnedValue.samples;
-        returnedPathways = returnedValue.pathways;
+        layoutData = layout(calculatedWidth, data.data);
+        sortedSamples = data.sortedSamples ? data.sortedSamples : data.samples;
+        returnedPathways = data.pathways;
 
-        // console.log('returned pathways',returnedPathways)
 
         return (
             <div style={style.xenaGoView}>
@@ -226,7 +163,7 @@ export default class PathwayScoresView extends PureComponent {
                     height={height}
                     layout={layoutData}
                     draw={DrawFunctions.drawGeneView}
-                    associatedData={associatedData}
+                    associatedData={data.data}
                     cohortIndex={cohortIndex}
                     data={data} // updated data forces refresh
                 />
@@ -237,7 +174,7 @@ export default class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layoutData}
                     highlightedGene={highlightedGene}
-                    associatedData={associatedData}
+                    associatedData={data.data}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     data={data}
                     pathways={returnedPathways}

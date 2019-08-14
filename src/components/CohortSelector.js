@@ -43,7 +43,7 @@ export class CohortSelector extends PureComponent {
 
     generateSubCohortDetails(){
         let selectedSubCohorts = this.state.selectedSubCohorts;
-        console.log('selected sub cohorts',JSON.stringify(selectedSubCohorts))
+        // console.log('selected sub cohorts',JSON.stringify(selectedSubCohorts))
         let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
         if(!subCohortsForSelected) return '';
         return Object.values(selectedSubCohorts).map( s => {
@@ -99,7 +99,7 @@ export class CohortSelector extends PureComponent {
         let subCohortLabel = this.generateSubCohortLabels();
         let subCohortDetails = this.generateSubCohortDetails();
 
-        console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort)
+        // console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort)
 
         return (
             <div>

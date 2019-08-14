@@ -554,13 +554,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwaySelect = (pathwaySelection) => {
 
-        console.log('pathway selection',JSON.stringify(pathwaySelection),pathwaySelection)
         let {showClusterSort,pathwayData,filter} = this.state;
 
         if (pathwaySelection.gene.length === 0) {
             return;
         }
-        // let selectedPathways = [pathwaySelection.golabel];
         let pathwayClickData = {
             pathway: pathwaySelection
         };
