@@ -251,13 +251,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let selection = AppStorageHandler.getPathwaySelection();
-        // console.log('selection',JSON.stringify(selection))
-        // console.log('A',JSON.stringify(pathwayDataA))
-        // console.log('B',JSON.stringify(pathwayDataB))
-        // console.log('pathways',JSON.stringify(pathways))
-        // console.log('state filter',JSON.stringify(this.state.filter))
+        console.log('selection',JSON.stringify(selection))
+        console.log('A',JSON.stringify(pathwayDataA))
+        console.log('B',JSON.stringify(pathwayDataB))
+        console.log('pathways',JSON.stringify(pathways))
+        console.log('state filter',JSON.stringify(this.state.filter))
         let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter);
-        // console.log('output Gene data ',JSON.stringify(geneData))
+        console.log('output Gene data ',JSON.stringify(geneData))
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({

@@ -483,7 +483,6 @@ export function scoreGeneData(inputGeneData){
     let associatedData = findAssociatedData(inputGeneData, associatedDataKey);
     let prunedColumns = findPruneData(associatedData, associatedDataKey);
     prunedColumns.samples = samples;
-    //
     let calculatedPathways = scoreColumns(prunedColumns);
     let returnedValue = update(prunedColumns, {
         pathways: {$set: calculatedPathways},
