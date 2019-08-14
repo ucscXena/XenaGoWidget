@@ -2,6 +2,11 @@ import React from "react";
 import {sumTotals, sumInstances} from './MathFunctions';
 import update from "immutability-helper";
 
+export const SortType = {
+    DIFF:'diff',
+    CLUSTER:'cluster',
+}
+
 export function transpose(a) {
     // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
     // or in more modern dialect

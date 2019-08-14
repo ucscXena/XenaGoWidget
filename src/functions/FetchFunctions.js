@@ -83,12 +83,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
                         samplesA, mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
                         samplesB, mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
                     }) => {
-
-            // console.log('returm  genomeBackgroundMutationA',JSON.stringify(genomeBackgroundMutationA));
-            // console.log('returm  genomeBackgroundMutationB',JSON.stringify(genomeBackgroundMutationB));
-            // console.log('returm  genomeBackgroundCopyNumberA',JSON.stringify(genomeBackgroundCopyNumberA));
-            // console.log('returm  genomeBackgroundCopyNumberB',JSON.stringify(genomeBackgroundCopyNumberB));
-
             combinationHandler({
                 geneList,
                 pathways,

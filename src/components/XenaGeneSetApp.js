@@ -24,10 +24,10 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-import {fetchCohortData, getGenesForNamedPathways, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
+import {fetchCohortData, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
 import update from "immutability-helper";
-import {clusterSort, diffSort, synchronizedSort} from "../functions/SortFunctions";
+import {SortType} from "../functions/SortFunctions";
 
 
 
@@ -58,6 +58,7 @@ const LOAD_STATE = {
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
+let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
 export const COHORT_DATA = fetchCohortData();
 
 /**
@@ -106,7 +107,6 @@ export default class XenaGeneSetApp extends PureComponent {
             loading:LOAD_STATE.UNLOADED,
             showColorEditor: false,
             showDetailLayer: true,
-            showClusterSort: false,
             showDiffLayer: true,
             pathwaySet: {
                 name: 'Default Pathway',
@@ -251,21 +251,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let selection = AppStorageHandler.getPathwaySelection();
-        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter,this.state.showClusterSort);
-
-        if (this.state.showClusterSort) {
-            // if (cohortIndex === 0) {
-            //     returnedValue = clusterSort(returnedValue);
-            //     PathwayScoresView.synchronizedGeneList = returnedValue.pathways.map(g => g.gene[0]);
-            // } else {
-            //     PathwayScoresView.synchronizedGeneList = PathwayScoresView.synchronizedGeneList ? PathwayScoresView.synchronizedGeneList : [];
-            //     returnedValue = synchronizedSort(returnedValue, PathwayScoresView.synchronizedGeneList);
-            // }
-        }
-        else{
-            // geneData[0] = diffSort(geneData[0]);
-            // geneData[1] = diffSort(geneData[1]);
-        }
+        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter,showClusterSort);
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
@@ -554,7 +540,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     globalPathwaySelect = (pathwaySelection) => {
 
-        let {showClusterSort,pathwayData,filter} = this.state;
+        let {pathwayData,filter} = this.state;
 
         if (pathwaySelection.gene.length === 0) {
             return;
@@ -633,21 +619,16 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     toggleShowClusterSort = () => {
-        this.setState({
-            showClusterSort: !this.state.showClusterSort
-        })
+        showClusterSort = !showClusterSort;
+        AppStorageHandler.storeSortState(showClusterSort ? SortType.CLUSTER : SortType.DIFF)
+        this.globalPathwaySelect(this.state.pathwaySelection.pathway)
     };
-
-    // callDownload = (cohortIndex) => {
-    //     this.refs['xena-go-app-' + cohortIndex].callDownload();
-    // };
 
     setCollapsed = (collapsed) => {
         this.setState({
             collapsed: collapsed
         })
     };
-
 
     doRefetch(){
 
@@ -691,7 +672,7 @@ export default class XenaGeneSetApp extends PureComponent {
             cohortIndex === 0 ?  selectedCohort : this.state.selectedCohort[0]   ,
             cohortIndex === 1 ?  selectedCohort : this.state.selectedCohort[1]   ,
         ];
-        console.log('NEW COHORT STATE A',newCohortState)
+        console.log('NEW COHORT STATE A',newCohortState);
 
         // let newAppState = update(this.state,{
         //
@@ -753,30 +734,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
-        // TODO: returned should do rendering
-        // console.log('A FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
-
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
-
-            // console.log('FETCHING',this.state.selectedCohortA,this.state.selectedCohortB);
-            // console.log('FETCHING new ',this.state.selectedCohort[0],this.state.selectedCohort[1]);
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
-        // else{
-        //     console.log('not refetching ')
-        // }
 
-
-        // TODO: assess subCohortSelected from selectedCohorts.selectedSubCohorts . . . if it exists
-        // fetchCombinedSubCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData)
-        // TODO: remove componentDidUpdate
-
-        // console.log('GENE DAta Stats',JSON.stringify(this.state.geneData));
-
-        // console.log('cohort data',this.state.cohortData)
-
-        // 2. based on cohortData, fetch cohorts with subCohorts
 
 
         return (
@@ -795,7 +757,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                toggleShowClusterSort={this.toggleShowClusterSort}
                                showDiffLayer={this.state.showDiffLayer}
                                showDetailLayer={this.state.showDetailLayer}
-                               showClusterSort={this.state.showClusterSort}
+                               showClusterSort={showClusterSort}
                 />
 
                 <div>
@@ -963,7 +925,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     collapsed={this.state.collapsed}
                                     showDiffLayer={this.state.showDiffLayer}
                                     showDetailLayer={this.state.showDetailLayer}
-                                    showClusterSort={this.state.showClusterSort}
                                 />
                                 <XenaGoViewer
                                     // reference
@@ -1003,7 +964,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                     collapsed={this.state.collapsed}
                                     showDiffLayer={this.state.showDiffLayer}
                                     showDetailLayer={this.state.showDetailLayer}
-                                    showClusterSort={this.state.showClusterSort}
                                 />
                                 </td>
                             }

@@ -8,6 +8,7 @@ const LOCAL_STATE_STORAGE = "xena-selection-storage";
 const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
 import DefaultPathWays from "../data/genesets/tgac";
 import update from "immutability-helper";
+import {SortType} from "../functions/SortFunctions";
 
 const DefaultAppA = {
     renderOffset: 5,
@@ -142,15 +143,20 @@ export class AppStorageHandler extends PureComponent {
         return 'All'
     }
 
-    static storeSortState(selected, cohortIndex) {
-        if (!selected) return;
+    static getSortState() {
         let appState = AppStorageHandler.getAppState();
+        // diff or cluster
         if (!appState.sortState) {
-            appState.sortState = [];
+            appState.sortState = SortType.DIFF ;
+            AppStorageHandler.storeAppState(appState);
         }
         // TODO: remove this hack
-        let selectedValue = selected.selected ? selected.selected : selected;
-        appState.sortState[cohortIndex] = {selected: selectedValue};
+        return appState.sortState;
+    }
+
+    static storeSortState(sortState) {
+        let appState = AppStorageHandler.getAppState();
+        appState.sortState = sortState;
         AppStorageHandler.storeAppState(appState);
     }
 
