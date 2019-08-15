@@ -368,11 +368,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
     geneHover = (geneHover) => {
         if(geneHover){
+
             // TODO: this needs to be taken from the more global data
             let genericHoverData = {
                 tissue: geneHover.tissue,
                 pathway: geneHover.pathway,
-                expression : geneHover.pathway,
+                // expression : geneHover.pathway,// not sure why it was this way?
+                expression : geneHover.expression,
             };
 
             const geneHoverData0 = geneHover.cohortIndex === 0 ? geneHover : genericHoverData;
