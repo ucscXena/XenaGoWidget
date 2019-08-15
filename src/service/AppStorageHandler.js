@@ -108,12 +108,7 @@ export class AppStorageHandler extends PureComponent {
         // console.log('app state',JSON.stringify(appState))
         // console.log('app state',appState)
         if (appState && appState.cohortState && appState.cohortState[cohortIndex]) {
-            let returnValue = appState.cohortState[cohortIndex];
-            // console.log('GET app returnValue state',returnValue)
-            if (returnValue && returnValue.selected) {
-                // console.log('GET app state',returnValue)
-                return returnValue;
-            }
+            return appState.cohortState[cohortIndex];
         }
 
         return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
@@ -168,8 +163,6 @@ export class AppStorageHandler extends PureComponent {
         if (!appState.cohortState) {
             appState.cohortState = [];
         }
-        // TODO: remove this hack
-        // let selectedValue = selected.selected ? selected.selected : selected;
         appState.cohortState[cohortIndex] = selected;
         AppStorageHandler.storeAppState(appState);
     }

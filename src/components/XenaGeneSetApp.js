@@ -67,23 +67,14 @@ export const COHORT_DATA = fetchCohortData();
 export default class XenaGeneSetApp extends PureComponent {
 
 
-    notLoading() {
-        this.setState({
-            currentLoadState: LOAD_STATE.LOADED
-        });
-    }
-
     constructor(props) {
         super(props);
 
         const pathways = AppStorageHandler.getPathways();
         // TODO: this should get subcohorts here, really
         let selectedCohortA = AppStorageHandler.getCohortState(0);
-        selectedCohortA =  selectedCohortA.selected ? selectedCohortA.selected : selectedCohortA;
 
         let selectedCohortB = AppStorageHandler.getCohortState(1);
-        selectedCohortB =  selectedCohortB.selected ? selectedCohortB.selected : selectedCohortB;
-
 
         const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA);
         const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB);
