@@ -19,7 +19,7 @@ export class CohortSelector extends PureComponent {
         super(props);
         this.state = {
             selectedCohort: props.selectedCohort,
-            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : getSubCohortsOnlyForCohort(props.selectedCohort),
+            selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : getSubCohortsOnlyForCohort(props.selectedCohort.name),
             showSubCohortSelector: false,
             subCohortLabel: 'All Subtypes',
         };
@@ -29,7 +29,7 @@ export class CohortSelector extends PureComponent {
         // populate selected sub cohorts for the cohorts
         let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
         this.setState( {
-                selectedCohort: event.target.value,
+                selectedCohort: { name: event.target.value, subCohorts : subCohortsForSelected},
                 selectedSubCohorts:subCohortsForSelected,
         }
             );
@@ -58,7 +58,7 @@ export class CohortSelector extends PureComponent {
 
     generateSubCohortLabels(){
         let selectedSubCohorts = this.state.selectedSubCohorts;
-        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort);
+        let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
         if(!subCohortsForSelected) return '';
         const availableSubtypes = Object.keys(subCohortsForSelected).length;
         const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
@@ -99,7 +99,7 @@ export class CohortSelector extends PureComponent {
         let subCohortLabel = this.generateSubCohortLabels();
         let subCohortDetails = this.generateSubCohortDetails();
 
-        // console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort)
+        // console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort,this.state.selectedSubCohorts);
 
         return (
             <div>
