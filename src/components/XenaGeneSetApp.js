@@ -67,6 +67,12 @@ export const COHORT_DATA = fetchCohortData();
 export default class XenaGeneSetApp extends PureComponent {
 
 
+    notLoading() {
+        this.setState({
+            currentLoadState: LOAD_STATE.LOADED
+        });
+    }
+
     constructor(props) {
         super(props);
 
@@ -257,6 +263,7 @@ export default class XenaGeneSetApp extends PureComponent {
             geneData,
             pathwayData: [pathwayDataA,pathwayDataB],
             loading: LOAD_STATE.LOADED,
+            currentLoadState: LOAD_STATE.LOADED,
             processing: false,
             fetch: false,
         });
@@ -543,14 +550,14 @@ export default class XenaGeneSetApp extends PureComponent {
     changeCohort = (selectedCohort,cohortIndex) => {
        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
        // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
-        const cohortDetails = getCohortDetails({name: selectedCohort})
+        const cohortDetails = getCohortDetails({name: selectedCohort});
 
         const newCohortState = [
             cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
             cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
         ];
 
-        this.setState( {selectedCohort: newCohortState,fetch: true});
+        this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
@@ -604,7 +611,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
-            // console.log(JSON.stringify('refetching '),JSON.stringify(this.state.selectedCohort))
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
         // else{
@@ -630,6 +636,17 @@ export default class XenaGeneSetApp extends PureComponent {
                 />
 
                 <div>
+                    <Dialog
+                        active={this.state.currentLoadState === LOAD_STATE.LOADING}
+                        title="Loading"
+                        style={{width:400}}
+                    >
+                        <p>
+                            {this.state.selectedCohort[0].name} ...
+                            <br/>
+                            {this.state.selectedCohort[1].name} ...
+                        </p>
+                    </Dialog>
                     <ColorEditor active={this.state.showColorEditor}
                                  handleToggle={this.handleColorToggle}
                                  handleColorChange={this.handleColorChange}
@@ -837,5 +854,4 @@ export default class XenaGeneSetApp extends PureComponent {
                 </div>
             </div>);
     }
-
 }
