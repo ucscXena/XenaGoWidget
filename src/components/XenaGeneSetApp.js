@@ -73,7 +73,6 @@ export default class XenaGeneSetApp extends PureComponent {
         const pathways = AppStorageHandler.getPathways();
         // TODO: this should get subcohorts here, really
         let selectedCohortA = AppStorageHandler.getCohortState(0);
-
         let selectedCohortB = AppStorageHandler.getCohortState(1);
 
         const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA);
