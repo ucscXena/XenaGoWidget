@@ -15,7 +15,7 @@ let associateCache = lru(500);
 let pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-let ignoreCache = false;
+let ignoreCache = true;
 
 export const DEFAULT_DATA_VALUE = {total:0,mutation:0,cnv:0,mutation4:0,mutation3:0,mutation2:0,cnvHigh:0,cnvLow:0};
 
@@ -285,8 +285,22 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
                 }
             }
         }
-
     }
+
+    // // let totalValue = returnArray.reduce((s, f) => s + f.total, 0);
+    // let totalValue = 0 ;
+    // // console.log('length ',returnArray.length)
+    // for( let col of returnArray){
+    //     for(let row of col){
+    //         // console.log(row)
+    //         // totalValue = totalValue + row.reduce((s, f) => s + f.total, 0);
+    //         totalValue = totalValue + row.total;
+    //     }
+    // }
+    //
+    //
+    // // console.log('sum of array',totalValue,JSON.stringify('a'),returnArray)
+    // console.log('sum of array',JSON.stringify(totalValue))
 
     return returnArray;
 
@@ -358,12 +372,16 @@ export function calculatePathwayScore(pathwayData, filter) {
         return sumTotals(pathway);
     });
 }
+
+
 /**
  * Note:
- * @param pathwayDataA
- * @param pathwayDataB
+ * @param pathwayData
  */
-export function calculateAllPathways(pathwayDataA,pathwayDataB){
+export function calculateAllPathways(pathwayData){
+    const pathwayDataA = pathwayData[0];
+    const pathwayDataB = pathwayData[1];
+
 
     const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
     const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
@@ -375,7 +393,8 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
     const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
     const maxSamplesAffectedB = pathwayDataB.samples.length;
 
-    return pathwayDataA.pathways.map((p, index) => {
+    const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
+    return setPathways.map((p, index) => {
         p.firstObserved = observationsA[index];
         p.firstTotal = totalsA[index];
         p.firstNumSamples = maxSamplesAffectedA;
@@ -390,7 +409,10 @@ export function calculateAllPathways(pathwayDataA,pathwayDataB){
     });
 }
 
-export function generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,filter,showClusterSort){
+export function generateScoredData(selection,pathwayData,pathways,filter,showClusterSort){
+    // let [pathwayDataA,pathwayDataB] = pathwayData;
+    let pathwayDataA = pathwayData[0];
+    let pathwayDataB = pathwayData[1];
     let geneDataA = generateGeneData(selection,pathwayDataA,pathways,filter[0]);
     let geneDataB = generateGeneData(selection,pathwayDataB,pathways,filter[1]);
     let scoredGeneDataA = scoreGeneData(geneDataA);

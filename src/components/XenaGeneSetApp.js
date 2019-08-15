@@ -238,7 +238,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedObject: selectedObjectB
         };
 
-        pathways = calculateAllPathways(pathwayDataA,pathwayDataB);
+        pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
 
         pathwayDataA.pathways = pathways ;
         pathwayDataB.pathways = pathways ;
@@ -247,7 +247,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
         let selection = AppStorageHandler.getPathwaySelection();
-        let geneData = generateScoredData(selection,pathwayDataA,pathwayDataB,pathways,this.state.filter,showClusterSort);
+        let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
 
         currentLoadState = LOAD_STATE.LOADED;
         this.setState({
@@ -463,7 +463,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
         const geneSetPathways = AppStorageHandler.getPathways();
-        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],geneSetPathways,filter,showClusterSort);
+        let geneData = generateScoredData(pathwayClickData,pathwayData,geneSetPathways,filter,showClusterSort);
 
         this.setState({geneData});
     };
@@ -621,21 +621,27 @@ export default class XenaGeneSetApp extends PureComponent {
 
     changeFilter = (newFilter,cohortIndex) => {
         AppStorageHandler.storeFilterState(newFilter, cohortIndex);
-        let {pathwayData,pathwaySelection,filter} = this.state;
+        let {pathwayData,pathwaySelection,filter,pathways} = this.state;
         let filterState = [
            cohortIndex===0 ? newFilter : filter[0]  ,
-           cohortIndex===1 ? newFilter: filter[1]  ,
+           cohortIndex===1 ? newFilter : filter[1]  ,
         ];
+
+        let newPathwayData = update(pathwayData,{
+            [cohortIndex]: {
+                filter: { $set: newFilter},
+            }
+        });
 
         let pathwayClickData = {
             pathway: pathwaySelection.pathway
         };
 
+        // console.log(JSON.stringify('calculating filter with '),newPathwayData)
         // const geneSetPathways = AppStorageHandler.getPathways();
-        let pathways = calculateAllPathways(pathwayData[0],pathwayData[1]);
-        let geneData = generateScoredData(pathwayClickData,pathwayData[0],pathwayData[1],pathways,filterState,showClusterSort);
-        // console.log(JSON.stringify('pathways'),pathways,this.state.pathways)
-        this.setState({ filter:filterState ,geneData,pathways});
+        let newPathways = calculateAllPathways(newPathwayData);
+        let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
+        this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData});
     };
 
     render() {
