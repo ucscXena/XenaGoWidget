@@ -99,7 +99,7 @@ export class CohortSelector extends PureComponent {
         let subCohortLabel = this.generateSubCohortLabels();
         let subCohortDetails = this.generateSubCohortDetails();
 
-        // console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort,this.state.selectedSubCohorts);
+        console.log('generated stuff',subCohortsForSelected,subCohortLabel,subCohortDetails,this.state.selectedCohort,this.state.selectedSubCohorts);
 
         return (
             <div>
