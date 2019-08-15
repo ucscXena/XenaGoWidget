@@ -553,20 +553,20 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
-        console.log('changing sub cohort with ',selectedCohort,cohortIndex)
-        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
+        console.log('changing sub cohort with ',selectedCohort,JSON.stringify(cohortIndex))
 
+        // AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
         // let subCohorts = getSubCohortsOnlyForCohort(selectedCohort) ;
-        let newAppState = update(this.state,{
-            apps: {
-                [cohortIndex]: {
-                    name:  { $set: selectedCohort.name},
-                    subCohorts:  { $set: selectedCohort.subCohorts}
-                }
-            },
-            fetch: {$set: true}
-        });
-        this.setState( newAppState );
+        // let newAppState = update(this.state,{
+        //     apps: {
+        //         [cohortIndex]: {
+        //             name:  { $set: selectedCohort.name},
+        //             subCohorts:  { $set: selectedCohort.subCohorts}
+        //         }
+        //     },
+        //     fetch: {$set: true}
+        // });
+        // this.setState( newAppState );
     };
 
     changeFilter = (newFilter,cohortIndex) => {

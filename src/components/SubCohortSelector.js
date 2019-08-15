@@ -74,7 +74,6 @@ export class SubCohortSelector extends PureComponent {
         let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
         let {allSelected,selectedSubCohorts} = this.state ;
 
-        console.log('sc for selected',subCohortsForSelected,JSON.stringify(selectedSubCohorts))
         return (
             <Dialog
                 active={active}
