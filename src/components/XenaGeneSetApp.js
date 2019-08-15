@@ -421,27 +421,6 @@ export default class XenaGeneSetApp extends PureComponent {
         });
     };
 
-    downloadData = (cohortIndex) => {
-        console.log('trying to download with ',cohortIndex)
-        if (!internalData) {
-            alert('No Data Available');
-            return;
-        }
-        let {selectedCohort, selectedPathway} = this.props;
-
-        let filename = selectedCohort.replace(/ /g, '_') + '_' + selectedPathway[0] + '_' + cohortIndex + '.json';
-        // let filename = "export.json";
-        let contentType = "application/json;charset=utf-8;";
-        // a hacky way to do this
-        let a = document.createElement('a');
-        a.download = filename;
-        a.href = 'data:' + contentType + ',' + encodeURIComponent(JSON.stringify(internalData));
-        a.target = '_blank';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
-
     globalPathwaySelect = (pathwaySelection) => {
 
         let {pathwayData,filter} = this.state;
@@ -642,7 +621,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
                                acceptGeneHandler={this.acceptGeneHandler}
-                               downloadRawHandler={this.downloadData}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}

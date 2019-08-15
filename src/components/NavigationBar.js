@@ -86,14 +86,6 @@ export default class NavigationBar extends PureComponent {
                                                   caption={`${showClusterSort? "\u2713" : 'Show'} Sort by Top Cohort`}/>
                                         <MenuItem onClick={() => toggleShowClusterSort()}
                                                   caption={`${!showClusterSort? "\u2713" : 'Show'} Diff Sort`}/>
-                                        <MenuDivider/>
-                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(0)}
-                                                  icon='cloud_download'
-                                                  caption='Cohort 1 Data'/>
-                                        <MenuItem value='cohortDownload1' onClick={() => downloadRawHandler(1)}
-                                                  icon='cloud_download'
-                                                  caption='Cohort 2 Data'/>
-
                                     </IconMenu>
                                 </td>
                                 <td width="30%">
