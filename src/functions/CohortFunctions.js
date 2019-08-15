@@ -44,7 +44,6 @@ export function getSamplesFromSubCohort(cohort,subCohort){
 }
 
 export function getCohortDetails(selected){
-    if (Object.keys(COHORT_DATA).length === 0 && COHORT_DATA.constructor === Object) return null ;
     return COHORT_DATA.find(c => c.name === selected.name);
 }
 

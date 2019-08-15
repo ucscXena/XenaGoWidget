@@ -24,7 +24,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from "./CrossHairH";
 import CrossHairV from "./CrossHairV";
-import {fetchCohortData, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
+import {fetchCohortData, getCohortDetails, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 import {isEqual} from "underscore";
 import update from "immutability-helper";
 import {SortType} from "../functions/SortFunctions";
@@ -536,7 +536,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     doRefetch(){
 
-        if(this.state.fetch ){
+        if(this.state.fetch && currentLoadState!==LOAD_STATE.LOADING){
             return true ;
         }
 
@@ -562,44 +562,16 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     changeCohort = (selectedCohort,cohortIndex) => {
-        console.log('changing cohort with ',selectedCohort,cohortIndex)
-        // I think we just set the state
-
-        // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
-        // fetchCombinedCohorts(this.state.apps[0].selectedCohort,this.state.apps[1].selectedCohort,this.state.cohortData,pathways,this.handleCombinedCohortData);
-
        AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
        // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
-        // console.log('SELECTED cohort A',this.state.selectedCohortA,selectedCohort,cohortIndex,subCohortsA)
+        const cohortDetails = getCohortDetails({name: selectedCohort})
 
         const newCohortState = [
-            cohortIndex === 0 ?  selectedCohort : this.state.selectedCohort[0]   ,
-            cohortIndex === 1 ?  selectedCohort : this.state.selectedCohort[1]   ,
+            cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
+            cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
         ];
-        console.log('NEW COHORT STATE A',newCohortState);
 
-        // let newAppState = update(this.state,{
-        //
-        //     // apps: {
-        //     //     [cohortIndex]: {
-        //     //         selectedCohort:  { $set: selectedCohort},
-        //     //         selectedSubCohorts:  { $set: subCohorts}
-        //     //     }
-        //     // },
-        //     fetch: {$set: true}
-        // });
-        // this.setState( {selectedCohort: newCohortState});
-        let newAppState = update(this.state,{
-            selectedCohort: {
-                [cohortIndex]: {
-                    selectedCohort:  { $set: selectedCohort},
-                }
-            },
-            fetch: {$set: true}
-        });
-        console.log('newAppState',newAppState)
-        console.log('newCohrot state',newCohortState)
-        this.setState( {selectedCohort: newCohortState});
+        this.setState( {selectedCohort: newCohortState,fetch: true});
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
@@ -621,7 +593,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     changeFilter = (newFilter,cohortIndex) => {
         AppStorageHandler.storeFilterState(newFilter, cohortIndex);
-        let {pathwayData,pathwaySelection,filter,pathways} = this.state;
+        let {pathwayData,pathwaySelection,filter} = this.state;
         let filterState = [
            cohortIndex===0 ? newFilter : filter[0]  ,
            cohortIndex===1 ? newFilter : filter[1]  ,
@@ -648,14 +620,17 @@ export default class XenaGeneSetApp extends PureComponent {
         let activeApp = this.getActiveApp();
         let pathways = activeApp.pathways;
 
-        // console.log(JSON.stringify('loaded pathways'),pathways,this.state.pathways)
 
         let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
+            // console.log(JSON.stringify('refetching '),JSON.stringify(this.state.selectedCohort))
             fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
         }
+        // else{
+        //     console.log('not refetching',JSON.stringify(this.state.selectedCohort),JSON.stringify(this.state.fetch))
+        // }
 
         return (
             <div>
