@@ -752,19 +752,24 @@ export default class XenaGeneSetApp extends PureComponent {
                             {this.state.loading===LOAD_STATE.LOADED &&
                                 <td valign="top" className="map_wrapper"
                                 onMouseMove={(ev) => {
-                                // const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
-                                const x = ev.clientX + 8;
-                                const y = ev.clientY + 8;
-                                if(x>=530){
-                                    this.setState({mousing: true, x, y});
-                                }
-                                else{
-                                    this.setState({mousing: false, x, y});
-                                }
-                            }}
+                                    let topClient = ev.currentTarget.getBoundingClientRect().top;
+                                    let scrollDownBuffer = 0 ;
+                                    if(topClient < 0 ){
+                                        scrollDownBuffer = -topClient + 74;
+                                    }
+
+                                    const x = ev.clientX + 8;
+                                    const y = ev.clientY + 8 + scrollDownBuffer ;
+                                    if(x>=530){
+                                        this.setState({mousing: true, x, y});
+                                    }
+                                    else{
+                                        this.setState({mousing: false, x, y});
+                                    }
+                                }}
                                 onMouseOut = {() => {
-                                this.setState({mousing: false});
-                            }}
+                                    this.setState({mousing: false});
+                                }}
                                 >
                                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                                 <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT * 2}/>
