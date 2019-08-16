@@ -9,7 +9,6 @@ import {FilterSelector} from "./FilterSelector";
 
 import {Card,Dialog,Button} from "react-toolbox";
 
-import {AppStorageHandler} from "../service/AppStorageHandler";
 import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
@@ -39,9 +38,6 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-
-        let cohort = AppStorageHandler.getCohortState(props.cohortIndex);
-
         this.state = {
             processing : true,
             loadState : 'Loading',
@@ -50,8 +46,6 @@ export default class XenaGoViewer extends PureComponent {
             highlightedGene : props.highlightedGene,
             pathwayData : props.pathwayData,
             key: props.cohortIndex,
-            selectedCohort : cohort.selected,
-            selectedSubCohorts : cohort.selectedSubCohorts,
         };
     }
 

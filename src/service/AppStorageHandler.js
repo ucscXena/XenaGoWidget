@@ -109,6 +109,7 @@ export class AppStorageHandler extends PureComponent {
             return appState.cohortState[cohortIndex];
         }
 
+        // TODO: is this correct, or should return a json with {name:xxx} ?
         return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
     }
 

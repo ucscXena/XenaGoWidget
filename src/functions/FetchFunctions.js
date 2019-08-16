@@ -18,9 +18,6 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
     let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA.name);
     let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB.name);
 
-    console.log('selected  ohort A',selectedCohortA,cohortA)
-    console.log('selected  ohort B',selectedCohortB,cohortB)
-
     let selectedObjectA = {
         name: selectedCohortA,
         subCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
@@ -29,17 +26,7 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
         name: selectedCohortB,
         subCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
     };
-    // AppStorageHandler.storeCohortState(selectedObjectA, 0);
-    // AppStorageHandler.storeCohortState(selectedObjectB, 1);
-    // this.setState({
-    //     selectedCohort: selectedCohortA,
-    //     selectedCohortData: cohortA,
-    //     processing: true,
-    // });
-    // let pathways = this.getActiveApp().pathway;
     let geneList = getGenesForPathways(pathways);
-    //
-    // console.log('input gene list',JSON.stringify(geneList),geneList)
 
     // this selects cohorts, not sub-cohorts
     // TODO: get working

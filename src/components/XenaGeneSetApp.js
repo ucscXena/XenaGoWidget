@@ -7,7 +7,7 @@ import {AppStorageHandler} from "../service/AppStorageHandler";
 import NavigationBar from "./NavigationBar";
 import {GeneSetSelector} from "./GeneSetSelector";
 import {
-    calculateAllPathways, calculateDiffs, generateGeneData, generateScoredData, scoreData, scoreGeneData,
+    calculateAllPathways, generateScoredData,
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
@@ -17,8 +17,6 @@ import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
 import {ColorEditor} from "./ColorEditor";
 import {Dialog} from "react-toolbox";
 import {fetchCombinedCohorts} from "../functions/FetchFunctions";
-
-// let Rx = require('ucsc-xena-client/dist/rx');
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
