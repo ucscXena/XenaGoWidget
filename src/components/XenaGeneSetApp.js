@@ -175,14 +175,13 @@ export default class XenaGeneSetApp extends PureComponent {
             genomeBackgroundMutationA,
             genomeBackgroundCopyNumberA,
             cohortA,
-            selectedObjectA,
             samplesB,
             mutationsB,
             copyNumberB,
             genomeBackgroundMutationB,
             genomeBackgroundCopyNumberB,
             cohortB,
-            selectedObjectB,
+            selectedCohorts,
         } = input;
 
         // TODO: calculate Diff!
@@ -200,7 +199,7 @@ export default class XenaGeneSetApp extends PureComponent {
             samples: samplesA,
             genomeBackgroundMutation: genomeBackgroundMutationA,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
-            selectedObject: selectedObjectA
+            selectedObject: selectedCohorts[0]
         };
 
 
@@ -216,7 +215,7 @@ export default class XenaGeneSetApp extends PureComponent {
             samples: samplesB,
             genomeBackgroundMutation: genomeBackgroundMutationB,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
-            selectedObject: selectedObjectB
+            selectedObject: selectedCohorts[1]
         };
 
         pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
@@ -584,7 +583,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         if(this.doRefetch()){
             currentLoadState = LOAD_STATE.LOADING;
-            fetchCombinedCohorts(this.state.selectedCohort[0],this.state.selectedCohort[1],pathways,this.handleCombinedCohortData);
+            fetchCombinedCohorts(this.state.selectedCohort,pathways,this.handleCombinedCohortData);
         }
         // else{
         //     console.log('not refetching',JSON.stringify(this.state.selectedCohort),JSON.stringify(this.state.fetch))

@@ -10,22 +10,14 @@ function intersection(a, b) {
 }
 
 // TODO: move into a service as an async method
-export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,combinationHandler){
-
+export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler){
 
     // 1. TODO fetch cohort data
     // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = COHORT_DATA.find(c => c.name === selectedCohortA.name);
-    let cohortB = COHORT_DATA.find(c => c.name === selectedCohortB.name);
+    let cohortA = COHORT_DATA.find(c => c.name === selectedCohorts[0].name);
+    let cohortB = COHORT_DATA.find(c => c.name === selectedCohorts[1].name);
 
-    let selectedObjectA = {
-        name: selectedCohortA,
-        subCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
-    };
-    let selectedObjectB = {
-        name: selectedCohortB,
-        subCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
-    };
+    // console.log('fetching with ',JSON.stringify(selectedCohorts),selectedCohorts)
     let geneList = getGenesForPathways(pathways);
 
     // this selects cohorts, not sub-cohorts
@@ -85,8 +77,7 @@ export function fetchCombinedCohorts(selectedCohortA,selectedCohortB,pathways,co
                 genomeBackgroundMutationB,
                 genomeBackgroundCopyNumberB,
                 cohortB,
-                selectedObjectA,
-                selectedObjectB,
+                selectedCohorts,
             });
         });
 };
