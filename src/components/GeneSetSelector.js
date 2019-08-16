@@ -1,10 +1,8 @@
 import React from 'react'
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {intersection} from 'underscore';
 import {
     getHighlightedColor,
-    getGeneSetColorMask
 } from "../functions/ColorFunctions";
 import * as d3 from "d3";
 

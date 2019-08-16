@@ -174,13 +174,11 @@ export default class XenaGeneSetApp extends PureComponent {
             copyNumberA,
             genomeBackgroundMutationA,
             genomeBackgroundCopyNumberA,
-            cohortA,
             samplesB,
             mutationsB,
             copyNumberB,
             genomeBackgroundMutationB,
             genomeBackgroundCopyNumberB,
-            cohortB,
             selectedCohorts,
         } = input;
 
@@ -191,7 +189,7 @@ export default class XenaGeneSetApp extends PureComponent {
             geneList,
             pathways,
             cohortData,
-            cohort: cohortA,
+            cohort: selectedCohorts[0],
             filter: this.state.filter[0],
 
             copyNumber: copyNumberA,
@@ -199,7 +197,6 @@ export default class XenaGeneSetApp extends PureComponent {
             samples: samplesA,
             genomeBackgroundMutation: genomeBackgroundMutationA,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
-            selectedObject: selectedCohorts[0]
         };
 
 
@@ -207,7 +204,7 @@ export default class XenaGeneSetApp extends PureComponent {
             geneList,
             pathways,
             cohortData,
-            cohort: cohortB,
+            cohort: selectedCohorts[1],
             filter: this.state.filter[1],
 
             copyNumber: copyNumberB,
@@ -215,7 +212,6 @@ export default class XenaGeneSetApp extends PureComponent {
             samples: samplesB,
             genomeBackgroundMutation: genomeBackgroundMutationB,
             genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
-            selectedObject: selectedCohorts[1]
         };
 
         pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);

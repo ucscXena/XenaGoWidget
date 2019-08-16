@@ -9,13 +9,15 @@ function intersection(a, b) {
     return b.filter(x => sa.has(x));
 }
 
+function getSamplesForCohort(cohort){
+    console.log('got samples for cohort',JSON.stringify(cohort),cohort)
+    return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+        datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+        intersection)
+}
+
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler){
-
-    // 1. TODO fetch cohort data
-    // if (Object.keys(cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = COHORT_DATA.find(c => c.name === selectedCohorts[0].name);
-    let cohortB = COHORT_DATA.find(c => c.name === selectedCohorts[1].name);
 
     // console.log('fetching with ',JSON.stringify(selectedCohorts),selectedCohorts)
     let geneList = getGenesForPathways(pathways);
@@ -24,24 +26,20 @@ export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler
     // TODO: get working
     // TODO: extend to get subcohorts
     Rx.Observable.zip(
-        Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
-            datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
-            intersection),
-        Rx.Observable.zip(datasetSamples(cohortB.host, cohortB.mutationDataSetId, null),
-            datasetSamples(cohortB.host, cohortB.copyNumberDataSetId, null),
-            intersection)
+        getSamplesForCohort(selectedCohorts[0]),
+        getSamplesForCohort(selectedCohorts[1]),
     ).flatMap((samples) => {
         const samplesA = samples[0];
         const samplesB = samples[1];
             return Rx.Observable.zip(
-                sparseData(cohortA.host, cohortA.mutationDataSetId, samplesA, geneList),
-                datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samplesA, geneList),
-                datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samplesA, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samplesA, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                sparseData(cohortB.host, cohortB.mutationDataSetId, samplesB, geneList),
-                datasetFetch(cohortB.host, cohortB.copyNumberDataSetId, samplesB, geneList),
-                datasetFetch(cohortB.genomeBackgroundMutation.host, cohortB.genomeBackgroundMutation.dataset, samplesB, [cohortB.genomeBackgroundMutation.feature_event_K, cohortB.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohortB.genomeBackgroundCopyNumber.host, cohortB.genomeBackgroundCopyNumber.dataset, samplesB, [cohortB.genomeBackgroundCopyNumber.feature_event_K, cohortB.genomeBackgroundCopyNumber.feature_total_pop_N]),
+                sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
+                datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
+                datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samplesA, [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
+                datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samplesA, [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
+                sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
+                datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
+                datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
+                datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
                 (
                     mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
                     mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
@@ -70,13 +68,11 @@ export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler
                 copyNumberA,
                 genomeBackgroundMutationA,
                 genomeBackgroundCopyNumberA,
-                cohortA,
                 samplesB,
                 mutationsB,
                 copyNumberB,
                 genomeBackgroundMutationB,
                 genomeBackgroundCopyNumberB,
-                cohortB,
                 selectedCohorts,
             });
         });

@@ -10,6 +10,7 @@ import DefaultPathWays from "../data/genesets/tgac";
 import update from "immutability-helper";
 import {SortType} from "../functions/SortFunctions";
 import {getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
+import {COHORT_DATA} from "../components/XenaGeneSetApp";
 
 const DefaultAppA = {
     renderOffset: 5,
@@ -104,9 +105,7 @@ export class AppStorageHandler extends PureComponent {
     }
 
     static generateCohortState(name){
-        let returnValue = {
-            name: name,
-        };
+        let returnValue = COHORT_DATA.find(c => c.name === name);
 
         let subCohorts = getSubCohortsOnlyForCohort(name);
         if(subCohorts){
