@@ -1,28 +1,14 @@
 import {getGenesForPathways, getSamplesFromSelectedSubCohorts} from "./CohortFunctions";
+import {intersection, intersectLists} from "./MathFunctions";
 let Rx = require('ucsc-xena-client/dist/rx');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
 
-function intersection(a, b) {
-    let sa = new Set(a);
-    return b.filter(x => sa.has(x));
-}
-
-function getSamplesForCohort(cohort){
-    console.log('processing ',JSON.stringify(cohort),cohort)
-    if(cohort.selectedSubCohorts && cohort.selectedSubCohorts.length>0){
-        console.log('smaller sub cohorts',cohort.selectedSubCohorts,JSON.stringify(getSamplesFromSelectedSubCohorts(cohort).length))
-
+export function getSamplesForCohort(cohort){
+    // scrunches the two
         return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
             datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            getSamplesFromSelectedSubCohorts(cohort),
-            intersection)
-    }
-    else{
-        return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-            intersection)
-    }
+            intersection);
 }
 
 // TODO: move into a service as an async method
@@ -38,9 +24,10 @@ export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler
         getSamplesForCohort(selectedCohorts[0]),
         getSamplesForCohort(selectedCohorts[1]),
     ).flatMap((samples) => {
-        const samplesA = samples[0];
-        const samplesB = samples[1];
-        console.log('samples ',JSON.stringify(samplesA.length),JSON.stringify(samplesB.length))
+
+        const samplesA = selectedCohorts[0].selectedSubCohorts.length>0 ? intersection(samples[0],getSamplesFromSelectedSubCohorts(selectedCohorts[0])) : samples[0] ; // mutation
+        const samplesB = selectedCohorts[1].selectedSubCohorts.length>0 ? intersection(samples[1],getSamplesFromSelectedSubCohorts(selectedCohorts[1])) : samples[1] ; // mutation
+
             return Rx.Observable.zip(
                 sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
                 datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
