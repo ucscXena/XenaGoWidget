@@ -755,7 +755,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                 // const x = ev.clientX - ev.currentTarget.getBoundingClientRect().left + 295;
                                 const x = ev.clientX + 8;
                                 const y = ev.clientY + 8;
-                                this.setState({mousing: true, x, y});
+                                if(x>=530){
+                                    this.setState({mousing: true, x, y});
+                                }
+                                else{
+                                    this.setState({mousing: false, x, y});
+                                }
                             }}
                                 onMouseOut = {() => {
                                 this.setState({mousing: false});
