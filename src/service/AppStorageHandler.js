@@ -9,6 +9,7 @@ const LOCAL_PATHWAY_STORAGE = "default-xena-pathways";
 import DefaultPathWays from "../data/genesets/tgac";
 import update from "immutability-helper";
 import {SortType} from "../functions/SortFunctions";
+import {getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 
 const DefaultAppA = {
     renderOffset: 5,
@@ -102,6 +103,18 @@ export class AppStorageHandler extends PureComponent {
         AppStorageHandler.storeAppState(appState);
     }
 
+    static generateCohortState(name){
+        let returnValue = {
+            name: name,
+        };
+
+        let subCohorts = getSubCohortsOnlyForCohort(name);
+        if(subCohorts){
+            returnValue.subCohorts = subCohorts;
+            returnValue.selectedSubCohorts = subCohorts;
+        }
+        return returnValue;
+    }
 
     static getCohortState(cohortIndex) {
         let appState = AppStorageHandler.getAppState();
@@ -110,7 +123,8 @@ export class AppStorageHandler extends PureComponent {
         }
 
         // TODO: is this correct, or should return a json with {name:xxx} ?
-        return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
+        // return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
+        return cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)')
     }
 
     static storeFilterState(selected, cohortIndex) {

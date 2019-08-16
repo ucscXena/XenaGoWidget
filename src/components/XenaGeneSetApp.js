@@ -70,23 +70,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         const pathways = AppStorageHandler.getPathways();
         // TODO: this should get subcohorts here, really
-        let selectedCohortA = AppStorageHandler.getCohortState(0);
-        let selectedCohortB = AppStorageHandler.getCohortState(1);
-
-        const selectedSubCohortsA = getSubCohortsOnlyForCohort(selectedCohortA);
-        const selectedSubCohortsB = getSubCohortsOnlyForCohort(selectedCohortB);
-
-
-        const cohortDataA = {
-            name: selectedCohortA,
-            subCohorts: selectedSubCohortsA,
-            selectedSubCohorts: selectedSubCohortsA,
-        };
-        const cohortDataB = {
-            name: selectedCohortB,
-            subCohorts: selectedSubCohortsB,
-            selectedSubCohorts: selectedSubCohortsB,
-        };
+        let cohortDataA = AppStorageHandler.getCohortState(0);
+        let cohortDataB = AppStorageHandler.getCohortState(1);
 
         this.state = {
             // TODO: this should use the full cohort Data, not just the top-level
@@ -540,14 +525,19 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     changeCohort = (selectedCohort,cohortIndex) => {
-       AppStorageHandler.storeCohortState(selectedCohort, cohortIndex);
        // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
-        const cohortDetails = getCohortDetails({name: selectedCohort});
+        let cohortDetails = getCohortDetails({name: selectedCohort});
+        const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
+        if(subCohorts){
+            cohortDetails.subCohorts= subCohorts;
+            cohortDetails.selectedSubCohorts = subCohorts;
+        }
 
         const newCohortState = [
             cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
             cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
         ];
+        AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
 
         this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
@@ -556,7 +546,7 @@ export default class XenaGeneSetApp extends PureComponent {
         let updateCohortState = update(this.state.selectedCohort,{
             [cohortIndex]: { $set: selectedCohort }
         });
-        // AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
+        AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
         this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
