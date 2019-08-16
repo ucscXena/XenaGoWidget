@@ -105,8 +105,6 @@ export class AppStorageHandler extends PureComponent {
 
     static getCohortState(cohortIndex) {
         let appState = AppStorageHandler.getAppState();
-        // console.log('app state',JSON.stringify(appState))
-        // console.log('app state',appState)
         if (appState && appState.cohortState && appState.cohortState[cohortIndex]) {
             return appState.cohortState[cohortIndex];
         }
@@ -121,8 +119,7 @@ export class AppStorageHandler extends PureComponent {
             appState.filterState = [];
         }
         // TODO: remove this hack
-        let selectedValue = selected.selected ? selected.selected : selected;
-        appState.filterState[cohortIndex] = {selected: selectedValue};
+        appState.filterState[cohortIndex] = selected;
         AppStorageHandler.storeAppState(appState);
     }
 
@@ -130,10 +127,7 @@ export class AppStorageHandler extends PureComponent {
     static getFilterState(cohortIndex) {
         let appState = AppStorageHandler.getAppState();
         if (appState && appState.filterState && appState.filterState[cohortIndex]) {
-            let returnValue = appState.filterState[cohortIndex];
-            if (returnValue && returnValue.selected) {
-                return returnValue.selected;
-            }
+            return appState.filterState[cohortIndex];
         }
         return 'All'
     }
