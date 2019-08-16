@@ -1,5 +1,4 @@
-import {getGenesForPathways, getSubCohortsOnlyForCohort} from "./CohortFunctions";
-import {COHORT_DATA} from "../components/XenaGeneSetApp";
+import {getGenesForPathways} from "./CohortFunctions";
 let Rx = require('ucsc-xena-client/dist/rx');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
