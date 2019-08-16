@@ -5,6 +5,7 @@ import Dialog from "react-toolbox/lib/dialog";
 import Checkbox from "react-toolbox/lib/checkbox";
 import {isEqual} from 'underscore';
 import {Button} from "react-toolbox/lib/button";
+import {getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 
 
 export class SubCohortSelector extends PureComponent {

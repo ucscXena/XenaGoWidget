@@ -79,7 +79,7 @@ export default class XenaGoViewer extends PureComponent {
     render() {
         let geneList = getGenesForPathways(this.props.pathways);
 
-        let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter} = this.props;
+        let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter, geneDataStats} = this.props;
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
@@ -87,19 +87,19 @@ export default class XenaGoViewer extends PureComponent {
             return (
                 <table>
                     <tbody>
-                    {this.props.geneDataStats && this.props.geneDataStats.expression.rows && this.props.geneDataStats.expression.rows.length > 0 &&
+                    {geneDataStats && geneDataStats.expression.rows && geneDataStats.expression.rows.length > 0 &&
                     <tr>
                         <td valign="top"
                             style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}>
                             <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                                 <CohortSelector selectedCohort={selectedCohort}
-                                                selectedSubCohorts={selectedCohort.selectedSubCohorts}
+                                                // selectedSubCohorts={selectedCohort.selectedSubCohorts}
                                                 onChange={this.selectCohort}
                                                 onChangeSubCohort={this.selectSubCohort}
                                                 cohortLabel={cohortLabel}
                                 />
                                 <FilterSelector selected={filter}
-                                                pathwayData={this.props.geneDataStats}
+                                                pathwayData={geneDataStats}
                                                 geneList={geneList}
                                                 amplificationThreshold={selectedCohortData.amplificationThreshold}
                                                 deletionThreshold={selectedCohortData.deletionThreshold}
