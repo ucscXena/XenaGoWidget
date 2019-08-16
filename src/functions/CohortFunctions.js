@@ -33,6 +33,15 @@ export function getGenesForNamedPathways(selectedPathways, pathways) {
     return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
 }
 
+export function getSamplesFromSelectedSubCohorts(selectedCohort){
+    if(selectedCohort.selectedSubCohorts){
+        return uniq(selectedCohort.selectedSubCohorts.flatMap( sc => {
+            return getSamplesFromSubCohort(selectedCohort.name,sc)
+        }));
+    }
+    return null ;
+}
+
 export function getSamplesFromSubCohortList(cohort, subCohortArray){
     return uniq(subCohortArray.flatMap( sc => {
         return getSamplesFromSubCohort(cohort,sc)

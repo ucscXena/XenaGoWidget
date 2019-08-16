@@ -2,7 +2,7 @@ import expect from 'expect'
 import React from 'react'
 import {render, unmountComponentAtNode} from 'react-dom'
 import {
-  fetchCohortData, getGenesForNamedPathways, getGenesForPathways,
+  fetchCohortData, getGenesForNamedPathways, getGenesForPathways, getSamplesFromSelectedSubCohorts,
   getSamplesFromSubCohort,
   getSamplesFromSubCohortList,
   getSubCohortsOnlyForCohort
@@ -40,6 +40,15 @@ describe('Test Sub Cohorts', () => {
     expect(samples.length).toEqual(107+135);
   });
 
+  it('Get sub all cohort samples sub cohorts', () => {
+    const input = {
+      name: 'TCGA Ovarian Cancer (OV)',
+      selectedSubCohorts: ['OVCA.Immunoreactive','OVCA.Differentiated'],
+      subCohorts: ['OVCA.Immunoreactive','OVCA.Differentiated'],
+    };
+    let samples = getSamplesFromSelectedSubCohorts(input);
+    expect(samples.length).toEqual(107+135);
+  });
 
   it('Get Cohort Data',() => {
     expect(DefaultCohortData).toEqual(fetchCohortData());

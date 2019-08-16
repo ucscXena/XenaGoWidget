@@ -1,4 +1,4 @@
-import {getGenesForPathways} from "./CohortFunctions";
+import {getGenesForPathways, getSamplesFromSelectedSubCohorts} from "./CohortFunctions";
 let Rx = require('ucsc-xena-client/dist/rx');
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {datasetSamples, datasetFetch, sparseData} = xenaQuery;
@@ -9,10 +9,20 @@ function intersection(a, b) {
 }
 
 function getSamplesForCohort(cohort){
-    console.log('got samples for cohort',JSON.stringify(cohort),cohort)
-    return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-        datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-        intersection)
+    console.log('processing ',JSON.stringify(cohort),cohort)
+    if(cohort.selectedSubCohorts && cohort.selectedSubCohorts.length>0){
+        console.log('smaller sub cohorts',cohort.selectedSubCohorts,JSON.stringify(getSamplesFromSelectedSubCohorts(cohort).length))
+
+        return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+            getSamplesFromSelectedSubCohorts(cohort),
+            intersection)
+    }
+    else{
+        return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+            datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+            intersection)
+    }
 }
 
 // TODO: move into a service as an async method
@@ -30,6 +40,7 @@ export function fetchCombinedCohorts(selectedCohorts,pathways,combinationHandler
     ).flatMap((samples) => {
         const samplesA = samples[0];
         const samplesB = samples[1];
+        console.log('samples ',JSON.stringify(samplesA.length),JSON.stringify(samplesB.length))
             return Rx.Observable.zip(
                 sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
                 datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),

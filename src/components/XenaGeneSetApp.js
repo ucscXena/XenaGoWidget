@@ -539,7 +539,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
         let updateCohortState = update(this.state.selectedCohort,{
-            [cohortIndex]: { $set: selectedCohort }
+            [cohortIndex]: {
+                selectedSubCohorts: { $set: selectedCohort.selectedSubCohorts }
+            }
         });
         AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
         this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
