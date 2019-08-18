@@ -79,11 +79,14 @@ export default class XenaGoViewer extends PureComponent {
     render() {
         let geneList = getGenesForPathways(this.props.pathways);
 
-        let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter, geneDataStats} = this.props;
+        let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
+            geneDataStats, geneHoverData, collapsed} = this.props;
+
+        let { key, processing, pathwayData } = this.state ;
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
-        if (this.state.pathwayData) {
+        if (pathwayData) {
             return (
                 <table>
                     <tbody>
@@ -105,17 +108,17 @@ export default class XenaGoViewer extends PureComponent {
                                                 deletionThreshold={selectedCohortData.deletionThreshold}
                                                 onChange={this.filterGeneType}
                                 />
-                                <HoverGeneView data={this.props.geneHoverData}
+                                <HoverGeneView data={geneHoverData}
                                                cohortIndex={cohortIndex}
                                 />
                             </Card>
-                            {this.props.geneDataStats.pathways.length > MAX_GENE_WIDTH &&
+                            {geneDataStats.pathways.length > MAX_GENE_WIDTH &&
                             <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
-                                {this.props.collapsed &&
+                                {collapsed &&
                                 <Button icon='chevron_right' flat primary
                                         onClick={() => this.props.setCollapsed(false)}>Expand</Button>
                                 }
-                                {!this.props.collapsed &&
+                                {!collapsed &&
                                 <Button icon='chevron_left'
                                         onClick={() => this.props.setCollapsed(true)}>Collapse</Button>
                                 }
@@ -126,14 +129,14 @@ export default class XenaGoViewer extends PureComponent {
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
-                                               data={this.props.geneDataStats}
-                                               filter={this.props.filter}
+                                               data={geneDataStats}
+                                               filter={filter}
                                                geneList={geneList}
                                                highlightedGene={this.props.highlightedGene}
                                                onHover={this.hoverGene}
-                                               cohortIndex={this.state.key}
+                                               cohortIndex={key}
                                                colorSettings={this.props.colorSettings}
-                                               collapsed={this.props.collapsed}
+                                               collapsed={collapsed}
                                                showDiffLayer={this.props.showDiffLayer}
                                                showDetailLayer={this.props.showDetailLayer}
                             />
@@ -146,8 +149,8 @@ export default class XenaGoViewer extends PureComponent {
         }
 
         return (
-            <Dialog active={this.state.processing} title='Loading'>
-                {this.state.selectedCohort}
+            <Dialog active={processing} title='Loading'>
+                {selectedCohort}
             </Dialog>
         );
     }

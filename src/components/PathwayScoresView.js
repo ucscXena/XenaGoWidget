@@ -132,7 +132,7 @@ export default class PathwayScoresView extends PureComponent {
         const {
             height, data, offset, cohortIndex,
             colorSettings, highlightedGene,
-             showDetailLayer, collapsed,
+            showDetailLayer, collapsed,
             showDiffLayer
         } = this.props;
 
