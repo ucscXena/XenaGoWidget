@@ -89,14 +89,14 @@ export default class XenaGoViewer extends PureComponent {
         } = this.props;
 
         // let { processing, pathwayData } = this.state ;
-        let genesInGeneSet = data.data.length;
+        let genesInGeneSet = geneDataStats.data.length;
         let calculatedWidth;
         if (genesInGeneSet < 8) {
             calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX;
         } else if (genesInGeneSet > 85 && collapsed) {
             calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
         } else {
-            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * data.pathways.length);
+            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * geneDataStats.pathways.length);
         }
 
         let layoutData = layout(calculatedWidth, geneDataStats.data);

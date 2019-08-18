@@ -120,6 +120,7 @@ export default class PathwayScoresView extends PureComponent {
             colorSettings, highlightedGene,
             showDetailLayer, calculatedWidth,
             showDiffLayer, layoutData, returnedPathways,
+            sortedSamples
 
         } = this.props;
 
@@ -142,7 +143,7 @@ export default class PathwayScoresView extends PureComponent {
                     layout={layoutData}
                     highlightedGene={highlightedGene}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
-                    numSamples={data.samples.length}
+                    numSamples={sortedSamples.length}
                     pathways={returnedPathways}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
