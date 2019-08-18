@@ -38,14 +38,14 @@ export default class XenaGoViewer extends PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            processing : true,
-            loadState : 'Loading',
-            hoveredPathway : undefined ,
-            selectedCohortData : undefined,
-            highlightedGene : props.highlightedGene,
-            pathwayData : props.pathwayData,
-        };
+        // this.state = {
+        //     processing : true,
+        //     loadState : 'Loading',
+        //     hoveredPathway : undefined ,
+        //     selectedCohortData : undefined,
+        //     highlightedGene : props.highlightedGene,
+        //     pathwayData : props.pathwayData,
+        // };
     }
 
 
@@ -81,9 +81,10 @@ export default class XenaGoViewer extends PureComponent {
         let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
             geneDataStats, geneHoverData, setCollapsed , collapsed,
             highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
+            pathwayData,
         } = this.props;
 
-        let { processing, pathwayData } = this.state ;
+        // let { processing, pathwayData } = this.state ;
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
@@ -149,11 +150,11 @@ export default class XenaGoViewer extends PureComponent {
             )
         }
 
-        return (
-            <Dialog active={processing} title='Loading'>
-                {selectedCohort}
-            </Dialog>
-        );
+        // return (
+        //     <Dialog active={processing} title='Loading'>
+        //         {selectedCohort}
+        //     </Dialog>
+        // );
     }
 }
 
