@@ -22,8 +22,7 @@ export default class LabelSet extends PureComponent {
 
     render() {
         const {
-            associatedData
-            , pathways
+            pathways
             , layout
             , highlightedGene
             , labelHeight
@@ -33,7 +32,7 @@ export default class LabelSet extends PureComponent {
             , data
             , showDiffLayer
         } = this.props;
-        if (associatedData.length > 0 && pathways.length === layout.length) {
+        if (data.length > 0 && pathways.length === layout.length) {
             const numSamples = data.samples.length;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
@@ -109,7 +108,6 @@ export default class LabelSet extends PureComponent {
     }
 }
 LabelSet.propTypes = {
-    associatedData: PropTypes.any.isRequired,
     pathways: PropTypes.any.isRequired,
     data: PropTypes.any.isRequired,
     layout: PropTypes.any.isRequired,
@@ -117,5 +115,6 @@ LabelSet.propTypes = {
     cohortIndex: PropTypes.any.isRequired,
     colorSettings: PropTypes.any.isRequired,
     height: PropTypes.any.isRequired,
-    showDiffLayer: PropTypes.any,
+    showDiffLayer: PropTypes.any.isRequired,
+    numSamples: PropTypes.any.isRequired,
 };

@@ -165,7 +165,6 @@ export default class PathwayScoresView extends PureComponent {
                     draw={DrawFunctions.drawGeneView}
                     associatedData={data.data}
                     cohortIndex={cohortIndex}
-                    data={data} // updated data forces refresh
                 />
                 }
                 <LabelWrapper
@@ -174,9 +173,8 @@ export default class PathwayScoresView extends PureComponent {
                     offset={offset}
                     layout={layoutData}
                     highlightedGene={highlightedGene}
-                    associatedData={data.data}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
-                    data={data}
+                    numSamples={data.samples.length}
                     pathways={returnedPathways}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}

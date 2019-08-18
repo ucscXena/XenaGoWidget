@@ -32,12 +32,11 @@ export default class LabelWrapper extends PureComponent {
             , layout
             , onMouseMove
             , onMouseOut
-            , associatedData
             , cohortIndex
             , highlightedGene
             , offset
             , pathways
-            , data
+            , numSamples
         } = this.props;
 
         return (
@@ -46,7 +45,6 @@ export default class LabelWrapper extends PureComponent {
                  onMouseOut={onMouseOut}
             >
                 <LabelSet
-                    associatedData={associatedData}
                     pathways={pathways}
                     layout={layout}
                     highlightedGene={highlightedGene}
@@ -55,7 +53,7 @@ export default class LabelWrapper extends PureComponent {
                     colorMask={getGeneColorMask()}
                     cohortIndex={cohortIndex}
                     colorSettings={colorSettings}
-                    data={data}
+                    numSamples={numSamples}
                     showDiffLayer={this.props.showDiffLayer}
                 />
             </div>
@@ -70,8 +68,7 @@ LabelWrapper.propTypes = {
     onMouseOut: PropTypes.any.isRequired,
     geneLabelHeight: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
-    associatedData: PropTypes.any.isRequired,
-    data: PropTypes.any.isRequired,
+    numSamples: PropTypes.any.isRequired,
     pathways: PropTypes.any.isRequired,
     showDiffLayer: PropTypes.any,
 };

@@ -241,7 +241,7 @@ export default {
 
 
     drawGeneView(vg, props) {
-        let {width, height, layout, cohortIndex, associatedData, viewType} = props;
+        let {width, height, layout, cohortIndex, associatedData} = props;
 
         clearScreen(vg, width, height);
 
