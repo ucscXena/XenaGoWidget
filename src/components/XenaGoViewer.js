@@ -45,7 +45,6 @@ export default class XenaGoViewer extends PureComponent {
             selectedCohortData : undefined,
             highlightedGene : props.highlightedGene,
             pathwayData : props.pathwayData,
-            key: props.cohortIndex,
         };
     }
 
@@ -80,9 +79,11 @@ export default class XenaGoViewer extends PureComponent {
         let geneList = getGenesForPathways(this.props.pathways);
 
         let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
-            geneDataStats, geneHoverData, collapsed} = this.props;
+            geneDataStats, geneHoverData, setCollapsed , collapsed,
+            highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
+        } = this.props;
 
-        let { key, processing, pathwayData } = this.state ;
+        let { processing, pathwayData } = this.state ;
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
@@ -116,11 +117,11 @@ export default class XenaGoViewer extends PureComponent {
                             <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
                                 {collapsed &&
                                 <Button icon='chevron_right' flat primary
-                                        onClick={() => this.props.setCollapsed(false)}>Expand</Button>
+                                        onClick={() => setCollapsed(false)}>Expand</Button>
                                 }
                                 {!collapsed &&
                                 <Button icon='chevron_left'
-                                        onClick={() => this.props.setCollapsed(true)}>Collapse</Button>
+                                        onClick={() => setCollapsed(true)}>Collapse</Button>
                                 }
                             </Card>
                             }
@@ -132,13 +133,13 @@ export default class XenaGoViewer extends PureComponent {
                                                data={geneDataStats}
                                                filter={filter}
                                                geneList={geneList}
-                                               highlightedGene={this.props.highlightedGene}
+                                               highlightedGene={highlightedGene}
                                                onHover={this.hoverGene}
-                                               cohortIndex={key}
-                                               colorSettings={this.props.colorSettings}
+                                               cohortIndex={cohortIndex}
+                                               colorSettings={colorSettings}
                                                collapsed={collapsed}
-                                               showDiffLayer={this.props.showDiffLayer}
-                                               showDetailLayer={this.props.showDetailLayer}
+                                               showDiffLayer={showDiffLayer}
+                                               showDetailLayer={showDetailLayer}
                             />
                         </td>
                     </tr>
