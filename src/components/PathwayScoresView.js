@@ -3,12 +3,8 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import CanvasDrawing from "./CanvasDrawing";
 import DrawFunctions from '../functions/DrawFunctions';
-import {partition, sumInstances, sumTotals} from '../functions/MathFunctions';
+import {sumInstances} from '../functions/MathFunctions';
 import LabelWrapper from "./LabelWrapper";
-import {clusterSort, diffSort, scoreColumns, synchronizedSort} from '../functions/SortFunctions';
-import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {MAX_GENE_LAYOUT_WIDTH_PX, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
-import update from "immutability-helper";
 
 
 export const GENE_LABEL_HEIGHT = 50;
@@ -95,16 +91,6 @@ function getPointData(event, layout, associatedData, sortedSamples, pathways, he
     };
 }
 
-let layout = (width, {length = 0} = {}) => partition(width, length);
-
-const MIN_WIDTH = 400;
-const MIN_COL_WIDTH = 12;
-
-// TODO: move to state I think
-let layoutData = undefined;
-let sortedSamples = undefined;
-let returnedPathways = undefined;
-
 
 export default class PathwayScoresView extends PureComponent {
 
@@ -119,8 +105,8 @@ export default class PathwayScoresView extends PureComponent {
     };
 
     onHover = (event) => {
-        let {onHover,data,height,cohortIndex} = this.props;
-        let pointData = getPointData(event, layoutData, data.data, sortedSamples, returnedPathways, height, cohortIndex);
+        let {onHover,data,height,cohortIndex,layoutData,sortedSamples, returnedPathways} = this.props;
+        let pointData = getPointData(event, layoutData, data, sortedSamples, returnedPathways, height, cohortIndex);
         if (pointData) {
             onHover(pointData);
         } else {
@@ -132,28 +118,10 @@ export default class PathwayScoresView extends PureComponent {
         const {
             height, data, offset, cohortIndex,
             colorSettings, highlightedGene,
-            showDetailLayer, collapsed,
-            showDiffLayer
+            showDetailLayer, calculatedWidth,
+            showDiffLayer, layoutData, returnedPathways,
+
         } = this.props;
-
-        // internalData = returnedValue.data;
-
-        // this will go last
-        // fix for #194
-        let genesInGeneSet = data.data.length;
-        let calculatedWidth;
-        if (genesInGeneSet < 8) {
-            calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX;
-        } else if (genesInGeneSet > 85 && collapsed) {
-            calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
-        } else {
-            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * data.pathways.length);
-        }
-
-        layoutData = layout(calculatedWidth, data.data);
-        sortedSamples = data.sortedSamples ? data.sortedSamples : data.samples;
-        returnedPathways = data.pathways;
-
 
         return (
             <div style={style.xenaGoView}>
@@ -163,7 +131,7 @@ export default class PathwayScoresView extends PureComponent {
                     height={height}
                     layout={layoutData}
                     draw={DrawFunctions.drawGeneView}
-                    associatedData={data.data}
+                    associatedData={data}
                     cohortIndex={cohortIndex}
                 />
                 }
@@ -199,6 +167,11 @@ PathwayScoresView.propTypes = {
     colorSettings: PropTypes.any,
     showDiffLayer: PropTypes.any,
     showDetailLayer: PropTypes.any,
+
+    calculatedWidth: PropTypes.any.isRequired,
+    layoutData: PropTypes.any.isRequired,
+    sortedSamples: PropTypes.any.isRequired,
+    returnedPathways: PropTypes.any.isRequired,
 };
 
 

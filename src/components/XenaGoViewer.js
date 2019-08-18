@@ -7,16 +7,20 @@ import '../css/base.css';
 import HoverGeneView from "./HoverGeneView";
 import {FilterSelector} from "./FilterSelector";
 
-import {Card,Dialog,Button} from "react-toolbox";
+import {Card,Button} from "react-toolbox";
 
-import {MAX_GENE_WIDTH} from "./XenaGeneSetApp";
+import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from "./XenaGeneSetApp";
 import {DetailedLegend} from "./DetailedLegend";
 import {
     getCohortDetails,
     getGenesForPathways,
 } from "../functions/CohortFunctions";
 import {DEFAULT_DATA_VALUE} from "../functions/DataFunctions";
+import {partition} from "../functions/MathFunctions";
+const MIN_WIDTH = 400;
+const MIN_COL_WIDTH = 12;
 
+let layout = (width, {length = 0} = {}) => partition(width, length);
 
 const style = {
     pathway: {
@@ -85,6 +89,20 @@ export default class XenaGoViewer extends PureComponent {
         } = this.props;
 
         // let { processing, pathwayData } = this.state ;
+        let genesInGeneSet = data.data.length;
+        let calculatedWidth;
+        if (genesInGeneSet < 8) {
+            calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX;
+        } else if (genesInGeneSet > 85 && collapsed) {
+            calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
+        } else {
+            calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * data.pathways.length);
+        }
+
+        let layoutData = layout(calculatedWidth, geneDataStats.data);
+        let sortedSamples = geneDataStats.sortedSamples ? geneDataStats.sortedSamples : geneDataStats.samples;
+        let returnedPathways = geneDataStats.pathways;
+
 
         const selectedCohortData = getCohortDetails(selectedCohort);
 
@@ -131,7 +149,7 @@ export default class XenaGoViewer extends PureComponent {
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
-                                               data={geneDataStats}
+                                               data={geneDataStats.data}
                                                filter={filter}
                                                geneList={geneList}
                                                highlightedGene={highlightedGene}
@@ -141,6 +159,12 @@ export default class XenaGoViewer extends PureComponent {
                                                collapsed={collapsed}
                                                showDiffLayer={showDiffLayer}
                                                showDetailLayer={showDetailLayer}
+
+
+                                               calculatedWidth={calculatedWidth}
+                                               layoutData={layoutData}
+                                               sortedSamples={sortedSamples}
+                                               returnedPathways={returnedPathways}
                             />
                         </td>
                     </tr>
