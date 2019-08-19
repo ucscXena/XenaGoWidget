@@ -159,7 +159,7 @@ export default class PathwayScoresView extends PureComponent {
 PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
-    data: PropTypes.object.isRequired,
+    data: PropTypes.array.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,

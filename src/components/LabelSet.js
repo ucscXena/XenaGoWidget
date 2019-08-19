@@ -33,7 +33,6 @@ export default class LabelSet extends PureComponent {
             , showDiffLayer
         } = this.props;
         if (pathways.length === layout.length) {
-            const numSamples = numSamples;
             const possibleHeight = height - GENE_LABEL_HEIGHT ;
             let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
 
