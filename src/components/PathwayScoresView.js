@@ -105,8 +105,8 @@ export default class PathwayScoresView extends PureComponent {
     };
 
     onHover = (event) => {
-        let {onHover,data,height,cohortIndex,layoutData,sortedSamples, returnedPathways} = this.props;
-        let pointData = getPointData(event, layoutData, data, sortedSamples, returnedPathways, height, cohortIndex);
+        let {onHover,height,cohortIndex,layoutData,dataStats: { data,pathways , sortedSamples }} = this.props;
+        let pointData = getPointData(event, layoutData, data, sortedSamples, pathways, height, cohortIndex);
         if (pointData) {
             onHover(pointData);
         } else {
@@ -116,13 +116,13 @@ export default class PathwayScoresView extends PureComponent {
 
     render() {
         const {
-            height, data, offset, cohortIndex,
+            height, offset, cohortIndex,
             colorSettings, highlightedGene,
             showDetailLayer, calculatedWidth,
-            showDiffLayer, layoutData, returnedPathways,
-            sortedSamples
-
+            showDiffLayer, layoutData,
         } = this.props;
+
+        let {data,sortedSamples, pathways} = this.props.dataStats;
 
         return (
             <div style={style.xenaGoView}>
@@ -144,7 +144,7 @@ export default class PathwayScoresView extends PureComponent {
                     highlightedGene={highlightedGene}
                     geneLabelHeight={GENE_LABEL_HEIGHT}
                     numSamples={sortedSamples.length}
-                    pathways={returnedPathways}
+                    pathways={pathways}
                     onMouseMove={this.onHover}
                     onMouseOut={this.onMouseOut}
                     cohortIndex={cohortIndex}
@@ -159,7 +159,7 @@ export default class PathwayScoresView extends PureComponent {
 PathwayScoresView.propTypes = {
     height: PropTypes.number.isRequired,
     offset: PropTypes.number.isRequired,
-    data: PropTypes.array.isRequired,
+    dataStats: PropTypes.object.isRequired,
     onHover: PropTypes.any.isRequired,
     filter: PropTypes.any.isRequired,
     cohortIndex: PropTypes.any.isRequired,
@@ -171,8 +171,6 @@ PathwayScoresView.propTypes = {
 
     calculatedWidth: PropTypes.any.isRequired,
     layoutData: PropTypes.any.isRequired,
-    sortedSamples: PropTypes.any.isRequired,
-    returnedPathways: PropTypes.any.isRequired,
 };
 
 

@@ -100,10 +100,6 @@ export default class XenaGoViewer extends PureComponent {
         }
 
         let layoutData = layout(calculatedWidth, geneDataStats.data);
-        let sortedSamples = geneDataStats.sortedSamples ? geneDataStats.sortedSamples : geneDataStats.samples;
-        let returnedPathways = geneDataStats.pathways;
-
-
         const selectedCohortData = getCohortDetails(selectedCohort);
 
         if (pathwayData) {
@@ -149,7 +145,7 @@ export default class XenaGoViewer extends PureComponent {
                         <td style={{padding: 0}}>
                             <PathwayScoresView height={renderHeight}
                                                offset={renderOffset}
-                                               data={geneDataStats.data}
+                                               dataStats={geneDataStats}
                                                filter={filter}
                                                geneList={geneList}
                                                highlightedGene={highlightedGene}
@@ -159,12 +155,8 @@ export default class XenaGoViewer extends PureComponent {
                                                collapsed={collapsed}
                                                showDiffLayer={showDiffLayer}
                                                showDetailLayer={showDetailLayer}
-
-
                                                calculatedWidth={calculatedWidth}
                                                layoutData={layoutData}
-                                               sortedSamples={sortedSamples}
-                                               returnedPathways={returnedPathways}
                             />
                         </td>
                     </tr>
