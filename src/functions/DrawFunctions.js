@@ -149,17 +149,17 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
                     buffMid = (buffEnd - buffStart) / 2 + buffStart;
                 // buffMid has to be a multiple of 4
                 buffMid += buffMid%4 ;
-                for (let l = buffStart; l < buffMid; l += 4) {
+                for (let l = buffStart, m = buffMid; l < buffMid; l += 4, m+=4 ) {
                     img.data[l] = cnvColorMask[0];
                     img.data[l + 1] = cnvColorMask[1];
                     img.data[l + 2] = cnvColorMask[2];
                     img.data[l + 3] = cnvColor;
-                }
-                for (let l = buffMid; l < buffEnd; l += 4) {
-                    img.data[l] = mutationColorMask[0];
-                    img.data[l + 1] = mutationColorMask[1];
-                    img.data[l + 2] = mutationColorMask[2];
-                    img.data[l + 3] = mutationColor;
+
+                    img.data[m] = mutationColorMask[0];
+                    img.data[m + 1] = mutationColorMask[1];
+                    img.data[m + 2] = mutationColorMask[2];
+                    img.data[m + 3] = mutationColor;
+
                 }
             }
         }
