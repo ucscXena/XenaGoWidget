@@ -57,6 +57,10 @@ export function getCohortDetails(selected){
 }
 
 export function fetchCohortData(){
+  console.log('A');
+  console.log('obj',DefaultDatasetForGeneset)
+  console.log('keys',Object.keys(DefaultDatasetForGeneset))
+  console.log('B');
     return Object.keys(DefaultDatasetForGeneset)
         .filter(cohort => {
             return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
