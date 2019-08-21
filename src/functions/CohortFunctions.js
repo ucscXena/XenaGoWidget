@@ -60,24 +60,24 @@ export function getCohortDetails(selected){
 }
 
 export function fetchCohortData(){
-  console.log('A');
-  console.log('obj',DefaultDatasetForGeneset)
-  console.log('keys',Object.keys(DefaultDatasetForGeneset))
-  console.log('B');
+  // console.log('A');
+  // console.log('obj',DefaultDatasetForGeneset)
+  // console.log('keys',Object.keys(DefaultDatasetForGeneset))
+  // console.log('B');
     return Object.keys(DefaultDatasetForGeneset)
         .filter(cohort => {
-          console.log('cohort',JSON.stringify(cohort))
-          console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
+          // console.log('cohort',JSON.stringify(cohort))
+          // console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
             return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
         })
         .map(cohort => {
-          console.log('mapping cohort',JSON.stringify(cohort))
+          // console.log('mapping cohort',JSON.stringify(cohort))
             let mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-          console.log('mutation',JSON.stringify(mutation))
+          // console.log('mutation',JSON.stringify(mutation))
             let copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
-          console.log('CNV',JSON.stringify(copyNumberView))
+          // console.log('CNV',JSON.stringify(copyNumberView))
             let genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
-          console.log('genome backgorund',JSON.stringify(genomeBackground))
+          // console.log('genome backgorund',JSON.stringify(genomeBackground))
             return {
                 name: cohort,
                 mutationDataSetId: mutation.dataset,
