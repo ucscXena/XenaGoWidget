@@ -11,9 +11,9 @@ import {pluck, flatten} from 'underscore';
 import {COHORT_DATA} from "../components/XenaGeneSetApp";
 
 function lowerCaseCompareName(a, b) {
-  console.log('compare case',a,b)
+  console.log('compare case',JSON.stringify(a),b)
     let value = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-  console.log('compare case found',value)
+  console.log('compare case found',JSON.stringify(value))
   return value ;
 }
 
@@ -66,18 +66,18 @@ export function fetchCohortData(){
   console.log('B');
     return Object.keys(DefaultDatasetForGeneset)
         .filter(cohort => {
-          console.log('cohort',cohort)
-          console.log('cohort entry',DefaultDatasetForGeneset[cohort])
+          console.log('cohort',JSON.stringify(cohort))
+          console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
             return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
         })
         .map(cohort => {
-          console.log('mapping cohort',cohort)
+          console.log('mapping cohort',JSON.stringify(cohort))
             let mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-          console.log('mutation',mutation)
+          console.log('mutation',JSON.stringify(mutation))
             let copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
-          console.log('CNV',copyNumberView)
+          console.log('CNV',JSON.stringify(copyNumberView))
             let genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
-          console.log('genome backgorund',genomeBackground)
+          console.log('genome backgorund',JSON.stringify(genomeBackground))
             return {
                 name: cohort,
                 mutationDataSetId: mutation.dataset,
