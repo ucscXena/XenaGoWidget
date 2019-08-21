@@ -252,7 +252,8 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
 
         this.setState({
-            pathwaySet: selectedPathwaySet
+            pathwaySet: selectedPathwaySet,
+            pathways: selectedPathwaySet.pathways,
         });
     };
 
@@ -276,6 +277,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
+            pathways: selectedPathwaySet.pathways,
         });
 
         // TODO: this could be done via a global variable, but specific to the PathwayEditor
@@ -297,6 +299,7 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
+            pathways: selectedPathwaySet.pathways,
         });
 
         // TODO: this could be done via a global variable, but specific to the PathwayEditor
@@ -310,7 +313,8 @@ export default class XenaGeneSetApp extends PureComponent {
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
             pathwaySet: selectedPathwaySet,
-            selectedPathway: undefined,
+          pathways: selectedPathwaySet.pathways,
+          selectedPathway: undefined,
         });
     };
 
