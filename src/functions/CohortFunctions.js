@@ -11,7 +11,10 @@ import {pluck, flatten} from 'underscore';
 import {COHORT_DATA} from "../components/XenaGeneSetApp";
 
 function lowerCaseCompareName(a, b) {
-    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  console.log('compare case',a,b)
+    let value = a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  console.log('compare case found',value)
+  return value ;
 }
 
 function getSubCohortsForCohort(cohort){
