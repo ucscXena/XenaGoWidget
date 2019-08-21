@@ -63,12 +63,18 @@ export function fetchCohortData(){
   console.log('B');
     return Object.keys(DefaultDatasetForGeneset)
         .filter(cohort => {
+          console.log('cohort',cohort)
+          console.log('cohort entry',DefaultDatasetForGeneset[cohort])
             return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
         })
         .map(cohort => {
+          console.log('mapping cohort',cohort)
             let mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
+          console.log('mutation',mutation)
             let copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
+          console.log('CNV',copyNumberView)
             let genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
+          console.log('genome backgorund',genomeBackground)
             return {
                 name: cohort,
                 mutationDataSetId: mutation.dataset,
