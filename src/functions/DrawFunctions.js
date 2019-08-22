@@ -1,21 +1,14 @@
 import { range } from 'underscore';
-import React from 'react';
 import { reduceByKey, map2, /* partition, */partitionN } from './MathFunctions';
 import {
-  getCNVColorMask, getGeneColorMask, getGeneSetColorMask, getMutationColorMask,
-,
+  getGeneSetColorMask,
   getCNVHighColorMask,
   getCNVLowColorMask,
   getMutation2ColorMask,
   getMutation3ColorMask,
   getMutation4ColorMask,
-} from './ColorFunctions'
+} from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
-
-
-export const COLOR_BY_TYPE = 'COLOR_BY_TYPE';
-export const COLOR_BY_TYPE_DETAIL = 'COLOR_BY_TYPE_DETAIL';
-export const COLOR_TOTAL = 'COLOR_TOTAL';
 
 function clearScreen(vg, width, height) {
   vg.save();
