@@ -38,9 +38,9 @@ export class DiffLabel extends PureComponent {
             left: left,
             height: labelHeight,
             width: width,
-            backgroundColor: colorString,
-            strokeWidth: 1,
-            opacity: 0.5,
+           borderTop: cohortIndex ===0 ? `solid 5px ${colorString}`:'' ,
+          borderBottom: cohortIndex ===1 ? `solid 5px ${colorString}` : '',
+          opacity: 0.5,
             cursor: 'crosshair',
         }
     }
