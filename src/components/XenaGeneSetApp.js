@@ -278,10 +278,8 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({
             pathwaySet: selectedPathwaySet,
             pathways: selectedPathwaySet.pathways,
+            selectedPathway: newSelectedPathway,
         });
-
-        // TODO: this could be done via a global variable, but specific to the PathwayEditor
-        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removeGene = (selectedPathway, selectedGene) => {
@@ -300,10 +298,8 @@ export default class XenaGeneSetApp extends PureComponent {
         this.setState({
             pathwaySet: selectedPathwaySet,
             pathways: selectedPathwaySet.pathways,
+            selectedPathway: newSelectedPathway,
         });
-
-        // TODO: this could be done via a global variable, but specific to the PathwayEditor
-        this.refs['pathway-editor'].selectedPathway(newSelectedPathway);
     };
 
     removeGeneSet = (selectedPathway) => {
@@ -312,7 +308,7 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel)
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
-            pathwaySet: selectedPathwaySet,
+          pathwaySet: selectedPathwaySet,
           pathways: selectedPathwaySet.pathways,
           selectedPathway: undefined,
         });
@@ -445,18 +441,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     searchHandler = (geneQuery) => {
         this.queryGenes(geneQuery);
-    };
-
-    acceptGeneHandler = (geneName) => {
-        if (this.state.view === XENA_VIEW) {
-            this.geneHighlight(geneName);
-        } else if (this.state.view === PATHWAYS_VIEW) {
-            this.pathwayEditorGeneHandler(geneName)
-        }
-    };
-
-    pathwayEditorGeneHandler = (geneName) => {
-        this.refs['pathway-editor'].highlightGenes(geneName)
     };
 
     handleColorToggle = () => {
@@ -600,7 +584,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
-                               acceptGeneHandler={this.acceptGeneHandler}
+                               acceptGeneHandler={this.geneHighlight}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
@@ -634,6 +618,8 @@ export default class XenaGeneSetApp extends PureComponent {
                     >
                         <PathwayEditor ref='pathway-editor'
                                        pathwaySet={this.state.pathwaySet}
+                                       selectedPathway={this.state.selectedPathway}
+                                       // highlightedGene={this.state.highlightedGene}
                                        removeGeneHandler={this.removeGene}
                                        removeGeneSetHandler={this.removeGeneSet}
                                        addGeneSetHandler={this.addGeneSet}
