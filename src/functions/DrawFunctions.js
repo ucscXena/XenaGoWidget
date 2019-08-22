@@ -12,6 +12,7 @@ import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 
 function clearScreen(vg, width, height) {
   vg.save();
+  // eslint-disable-next-line no-param-reassign
   vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
   vg.strokeStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
   vg.fillRect(0, 0, width, height);
@@ -33,6 +34,20 @@ function findRegions(height, count) {
   return regions;
 }
 
+export function sumDataByType(data, type) {
+  let total = 0;
+  // eslint-disable-next-line no-return-assign
+  data.forEach((d) => total += d[type]);
+  return total;
+}
+
+function generateMask(mutation4Score, mutation4ColorMask,
+  mutation3Score, mutation3ColorMask, mutation2ColorMask) {
+  if (mutation4Score) return mutation4ColorMask;
+  if (mutation3Score) return mutation3ColorMask;
+  return mutation2ColorMask;
+}
+
 function regionColor(data, type) {
   // let total = data.reduce(sumDataTotal(0));
   const total = sumDataByType(data, type);
@@ -42,60 +57,8 @@ function regionColor(data, type) {
   return 255 * p / scale;
 }
 
-export function sumDataByType(data, type) {
-  let total = 0;
-  data.forEach((d) => total += d[type]);
-  return total;
-}
-
-
-function drawGeneDataTotal(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
-  const height = totalHeight - labelHeight;
-  const tissueCount = data[0].length;
-  const regions = findRegions(height, tissueCount);
-  const img = ctx.createImageData(width, totalHeight);
-
-  const offsetHeight = cohortIndex === 0 ? 0 : labelHeight - 11;
-
-  // for each row / geneSet
-  layout.forEach((el, i) => {
-    // TODO: may be faster to transform the whole data cohort at once
-    let rowData = data[i];
-    if (cohortIndex === 0) {
-      rowData = data[i].reverse();
-    }
-
-    // let reverseMap = new Map(Array.from(regions).reverse());
-    // XXX watch for poor iterator performance in this for...of.
-    for (const rs of regions.keys()) {
-      const r = regions.get(rs);
-      const d = rowData.slice(r.start, r.end + 1);
-
-      const color = regionColor(d, 'total');
-
-
-      for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-        const pxRow = y * width;
-        let buffStart = (pxRow + el.start) * 4;
-        let buffEnd = (pxRow + el.start + el.size) * 4;
-        // if (buffStart < 500) {
-        // console.log('expression bit', buffStart, buffEnd, el, rs, r, pxRow, y, width)
-        // }
-        for (let l = buffStart; l < buffEnd; l += 4) {
-          img.data[l] = colorMask[0];
-          img.data[l + 1] = colorMask[1];
-          img.data[l + 2] = colorMask[2];
-          img.data[l + 3] = color;
-        }
-      }
-    }
-
-    ctx.putImageData(img, 0, 0);
-  });
-}
-
-
-function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, labelHeight, cohortIndex) {
+function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
+  labelHeight, cohortIndex) {
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -120,6 +83,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
 
     // let reverseMap = new Map(Array.from(regions).reverse());
     // XXX watch for poor iterator performance in this for...of.
+    // eslint-disable-next-line no-restricted-syntax
     for (const rs of regions.keys()) {
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
@@ -129,18 +93,17 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data, label
       const cnvScore = sumDataByType(d, 'cnv');
       const mutation4Score = sumDataByType(d, 'mutation4');
       const mutation3Score = sumDataByType(d, 'mutation3');
-      const mutation2Score = sumDataByType(d, 'mutation2');
+      // const mutation2Score = sumDataByType(d, 'mutation2');
       const mutationScore = sumDataByType(d, 'mutation');
       const cnvColorMask = cnvHighScore > cnvLowScore ? cnvHighColorMask : cnvLowColorMask;
       // take the highest one
-      //    let mutationColorMask = mutation4Score > mutation3Score ? mutation4ColorMask : (mutation3Score > mutation2Score ? mutation3ColorMask : mutation2ColorMask);
-      const mutationColorMask = mutation4Score ? mutation4ColorMask : (mutation3Score ? mutation3ColorMask : mutation2ColorMask);
+      const mutationColorMask = generateMask();
       const cnvColor = cnvScore === 0 ? 0 : 255;
       const mutationColor = mutationScore === 0 ? 0 : 255;
       for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
         const pxRow = y * width;
-        let buffStart = (pxRow + el.start) * 4;
-        let buffEnd = (pxRow + el.start + el.size) * 4;
+        const buffStart = (pxRow + el.start) * 4;
+        const buffEnd = (pxRow + el.start + el.size) * 4;
         let buffMid = (buffEnd - buffStart) / 2 + buffStart;
         // buffMid has to be a multiple of 4
         buffMid += buffMid % 4;
