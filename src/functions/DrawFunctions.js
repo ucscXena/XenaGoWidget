@@ -97,7 +97,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const mutationScore = sumDataByType(d, 'mutation');
       const cnvColorMask = cnvHighScore > cnvLowScore ? cnvHighColorMask : cnvLowColorMask;
       // take the highest one
-      const mutationColorMask = generateMask();
+      const mutationColorMask = generateMask(mutation4Score,mutation4ColorMask,mutation3Score,mutation3ColorMask,mutation2ColorMask);
       const cnvColor = cnvScore === 0 ? 0 : 255;
       const mutationColor = mutationScore === 0 ? 0 : 255;
       for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {

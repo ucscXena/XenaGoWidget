@@ -2,7 +2,6 @@ import { uniq, pluck, flatten } from 'underscore';
 
 import subCohorts from '../data/Subtype_Selected';
 import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
-import { COHORT_DATA } from '../components/XenaGeneSetApp';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
@@ -54,40 +53,39 @@ export function getSamplesFromSubCohort(cohort, subCohort) {
 }
 
 export function getCohortDetails(selected) {
-  return COHORT_DATA.find((c) => c.name === selected.name);
+  return fetchCohortData().find((c) => c.name === selected.name);
 }
 
+let COHORT_DATA = undefined;
+
 export function fetchCohortData() {
-  // console.log('A');
-  // console.log('obj',DefaultDatasetForGeneset)
-  // console.log('keys',Object.keys(DefaultDatasetForGeneset))
-  // console.log('B');
-  const cohortData = Object.keys(DefaultDatasetForGeneset)
-    .filter((cohort) => {
-      console.log('cohort', JSON.stringify(cohort));
-      // console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
-      return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-    })
-    .map((cohort) => {
-      console.log('mapping cohort', JSON.stringify(cohort));
-      const mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-      // console.log('mutation',JSON.stringify(mutation))
-      const copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
-      // console.log('CNV',JSON.stringify(copyNumberView))
-      const genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
-      // console.log('genome backgorund',JSON.stringify(genomeBackground))
-      return {
-        name: cohort,
-        mutationDataSetId: mutation.dataset,
-        copyNumberDataSetId: copyNumberView.dataset,
-        genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
-        genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
-        amplificationThreshold: copyNumberView.amplificationThreshold,
-        deletionThreshold: copyNumberView.deletionThreshold,
-        host: mutation.host,
-      };
-    })
-    .sort(lowerCaseCompareName);
-  console.log('cohort data', cohortData);
-  return cohortData;
+  if(COHORT_DATA===undefined) {
+    COHORT_DATA = Object.keys(DefaultDatasetForGeneset)
+      .filter((cohort) => {
+        console.log('cohort', JSON.stringify(cohort));
+        // console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
+        return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY];
+      })
+      .map((cohort) => {
+        console.log('mapping cohort', JSON.stringify(cohort));
+        const mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
+        // console.log('mutation',JSON.stringify(mutation))
+        const copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
+        // console.log('CNV',JSON.stringify(copyNumberView))
+        const genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
+        // console.log('genome backgorund',JSON.stringify(genomeBackground))
+        return {
+          name: cohort,
+          mutationDataSetId: mutation.dataset,
+          copyNumberDataSetId: copyNumberView.dataset,
+          genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
+          genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
+          amplificationThreshold: copyNumberView.amplificationThreshold,
+          deletionThreshold: copyNumberView.deletionThreshold,
+          host: mutation.host,
+        };
+      })
+      .sort(lowerCaseCompareName);
+  }
+  return COHORT_DATA;
 }

@@ -5,10 +5,9 @@ import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from "./SubCohortSelector";
-import { getSubCohortsOnlyForCohort } from "../functions/CohortFunctions";
+import {fetchCohortData, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
 import {isEqual} from 'underscore';
 import {Tooltip} from "react-toolbox/lib";
-import {COHORT_DATA} from "./XenaGeneSetApp";
 import update from "immutability-helper";
 const TooltipButton = Tooltip(Button);
 
@@ -132,7 +131,7 @@ export class CohortSelector extends PureComponent {
                         className={BaseStyle.softflow}
                 >
                     {
-                        COHORT_DATA.map(c => {
+                        fetchCohortData().map(c => {
                             return (
                                 <option value={c.name} key={c.name}>
                                     {c.name}

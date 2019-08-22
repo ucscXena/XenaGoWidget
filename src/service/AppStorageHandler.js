@@ -3,8 +3,7 @@ import update from 'immutability-helper';
 import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
-import { getSubCohortsOnlyForCohort } from '../functions/CohortFunctions';
-import { COHORT_DATA } from '../components/XenaGeneSetApp';
+import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
 
 
 // synchronizing gene sorts between pathways
@@ -103,7 +102,7 @@ export class AppStorageHandler extends PureComponent {
   }
 
   static generateCohortState(name) {
-    const returnValue = COHORT_DATA.find((c) => c.name === name);
+    const returnValue = fetchCohortData().find((c) => c.name === name);
 
     const subCohorts = getSubCohortsOnlyForCohort(name);
     if (subCohorts) {

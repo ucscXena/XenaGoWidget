@@ -57,7 +57,6 @@ const LOAD_STATE = {
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
 let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
-export const COHORT_DATA = fetchCohortData();
 
 /**
  * refactor that from index
