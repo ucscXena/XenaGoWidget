@@ -26,6 +26,7 @@ import {fetchCohortData, getCohortDetails, getSubCohortsOnlyForCohort} from "../
 import {isEqual} from "underscore";
 import update from "immutability-helper";
 import {SortType} from "../functions/SortFunctions";
+import VerticalLegend from "./VerticalLegend";
 
 
 
@@ -634,6 +635,11 @@ export default class XenaGeneSetApp extends PureComponent {
                             <td>
                                 <table>
                                     <tbody>
+                                    <tr>
+                                      <td colSpan={3}>
+                                        <VerticalLegend/>
+                                      </td>
+                                    </tr>
                                     <tr>
                                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
                                         >

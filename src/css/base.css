@@ -62,7 +62,7 @@ body {
     font-weight: bolder;
 }
 
-.cnvColor{
+.cnvcolor{
     color: firebrick;
     font-weight: bolder;
 }
@@ -75,6 +75,41 @@ body {
 .cnvLowColor{
     color: #0000ff;
     font-weight: bolder;
+}
+
+.overRepresentedColor{
+  background-color: red;
+  color: white;
+  height: 30px;
+  width: 100px;
+  margin: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  border-radius: 10px;
+}
+
+.neutralColor{
+  background-color: white;
+  color: black;
+  height: 30px;
+  width: 100px;
+  margin: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  border: black solid 2px;
+}
+
+.underRepresentedColor{
+  background-color: blue;
+  color: white;
+  height: 30px;
+  width: 100px;
+  margin: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
 }
 
 .pathwayChip {
