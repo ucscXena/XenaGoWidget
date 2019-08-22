@@ -80,20 +80,15 @@ body {
 .overRepresentedColor{
   background-color: red;
   color: white;
-  height: 30px;
-  width: 100px;
   margin: 20px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-bottom: 10px;
   border-radius: 10px;
 }
 
 .neutralColor{
   background-color: white;
   color: black;
-  height: 30px;
-  width: 100px;
   margin: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -104,8 +99,6 @@ body {
 .underRepresentedColor{
   background-color: blue;
   color: white;
-  height: 30px;
-  width: 100px;
   margin: 20px;
   padding-left: 20px;
   padding-right: 20px;
@@ -119,6 +112,15 @@ body {
     padding: 10px;
     margin-top: 3px;
     margin-bottom: 3px;
+}
+
+.verticalLegendBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
 }
 
 .menuButton{
