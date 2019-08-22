@@ -447,18 +447,6 @@ export default class XenaGeneSetApp extends PureComponent {
         this.queryGenes(geneQuery);
     };
 
-    acceptGeneHandler = (geneName) => {
-        if (this.state.view === XENA_VIEW) {
-            this.geneHighlight(geneName);
-        } else if (this.state.view === PATHWAYS_VIEW) {
-            this.pathwayEditorGeneHandler(geneName)
-        }
-    };
-
-    pathwayEditorGeneHandler = (geneName) => {
-        this.refs['pathway-editor'].highlightGenes(geneName)
-    };
-
     handleColorToggle = () => {
         this.setState({showColorEditor: !this.state.showColorEditor});
     };
@@ -600,7 +588,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                view={this.state.view}
                                searchHandler={this.searchHandler}
                                geneOptions={this.state.geneHits}
-                               acceptGeneHandler={this.acceptGeneHandler}
+                               acceptGeneHandler={this.geneHighlight}
                                toggleShowDiffLayer={this.toggleShowDiffLayer}
                                toggleShowDetailLayer={this.toggleShowDetailLayer}
                                toggleShowClusterSort={this.toggleShowClusterSort}
@@ -634,6 +622,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     >
                         <PathwayEditor ref='pathway-editor'
                                        pathwaySet={this.state.pathwaySet}
+                                       // highlightedGene={this.state.highlightedGene}
                                        removeGeneHandler={this.removeGene}
                                        removeGeneSetHandler={this.removeGeneSet}
                                        addGeneSetHandler={this.addGeneSet}

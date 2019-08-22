@@ -48,40 +48,7 @@ export default class PathwayEditor extends PureComponent {
         fr.readAsText(file);
     };
 
-    highlightGenes = (genes) => {
-        // we can reset the state then
-        // TODO: provide a "higlight view as state to pathway view"
-        if (genes && this.props.pathwaySet) {
-            let newSelectedPathwayState = JSON.parse(JSON.stringify(this.props.pathwaySet));
-            newSelectedPathwayState.pathway = newSelectedPathwayState.pathway.map(p => {
-                p.highlight = p.gene.indexOf(genes) >= 0;
-                return p;
-            });
-            this.setState({
-                selectedPathwayState: newSelectedPathwayState
-            });
-        }
-    };
-
-    findPathwayStateIfEmpty() {
-        if (this.state.selectedPathwayState) return;
-        // let pathwaySet = this.props.pathwaySet.find(f => f.selected === true);
-        this.setState({
-            selectedPathwayState: this.props.pathwaySet,
-        });
-    }
-
-    componentDidMount() {
-        this.findPathwayStateIfEmpty();
-    }
-
-    componentDidUpdate() {
-        this.findPathwayStateIfEmpty();
-    }
-
     render() {
-        // let selectedPathwayState = this.props.pathwaySets.find(f => f.selected === true);
-        // let selectedPathwayState = this.props.pathwaySet.find(f => f.selected === true);
         return (
             <Grid style={{marginTop: 20,width:900}}>
                 <Row style={{marginBottom:20}}>
