@@ -48,6 +48,10 @@ export default class PathwayEditor extends PureComponent {
         fr.readAsText(file);
     };
 
+  componentWillReceiveProps(props) {
+    this.setState({ selectedPathway: props.selectedPathway } );
+  }
+
     render() {
         return (
             <Grid style={{marginTop: 20,width:900}}>
