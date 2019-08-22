@@ -308,7 +308,7 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel)
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
         this.setState({
-            pathwaySet: selectedPathwaySet,
+          pathwaySet: selectedPathwaySet,
           pathways: selectedPathwaySet.pathways,
           selectedPathway: undefined,
         });

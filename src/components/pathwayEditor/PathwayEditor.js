@@ -144,10 +144,6 @@ export default class PathwayEditor extends PureComponent {
 
     removePathway = (selectedPathway) => {
         this.props.removeGeneSetHandler(selectedPathway);
-
-        this.setState({
-            selectedPathway: undefined,
-        });
     };
 
     selectedPathway = (selectedPathway) => {
