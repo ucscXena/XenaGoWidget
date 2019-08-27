@@ -23,8 +23,8 @@ function getSubCohortsForCohort(cohort) {
 }
 
 export function getSubCohortsOnlyForCohort(cohort) {
-  const subCohorts = getSubCohortsForCohort(cohort);
-  return subCohorts ? Object.entries(subCohorts).map((c) => c[0]) : [];
+  const subCohortsForCohort = getSubCohortsForCohort(cohort);
+  return subCohortsForCohort ? Object.entries(subCohortsForCohort).map((c) => c[0]) : [];
 }
 
 // TODO: remove . . always returns null?
@@ -56,24 +56,17 @@ export function getCohortDetails(selected) {
   return fetchCohortData().find((c) => c.name === selected.name);
 }
 
-let COHORT_DATA = undefined;
+let COHORT_DATA;
 
 export function fetchCohortData() {
-  if(COHORT_DATA===undefined) {
+  if (COHORT_DATA === undefined) {
     COHORT_DATA = Object.keys(DefaultDatasetForGeneset)
-      .filter((cohort) => {
-        console.log('cohort', JSON.stringify(cohort));
-        // console.log('cohort entry',JSON.stringify(DefaultDatasetForGeneset[cohort]))
-        return (DefaultDatasetForGeneset[cohort].viewInPathway) && DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-      })
+      .filter((cohort) => (DefaultDatasetForGeneset[cohort].viewInPathway)
+            && DefaultDatasetForGeneset[cohort][MUTATION_KEY])
       .map((cohort) => {
-        console.log('mapping cohort', JSON.stringify(cohort));
         const mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-        // console.log('mutation',JSON.stringify(mutation))
         const copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
-        // console.log('CNV',JSON.stringify(copyNumberView))
         const genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
-        // console.log('genome backgorund',JSON.stringify(genomeBackground))
         return {
           name: cohort,
           mutationDataSetId: mutation.dataset,
