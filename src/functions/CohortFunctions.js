@@ -39,7 +39,8 @@ export function getGenesForNamedPathways(selectedPathways, pathways) {
 
 export function getSamplesFromSelectedSubCohorts(selectedCohort) {
   if (selectedCohort.selectedSubCohorts) {
-    return uniq(selectedCohort.selectedSubCohorts.flatMap((sc) => getSamplesFromSubCohort(selectedCohort.name, sc)));
+    return uniq(selectedCohort.selectedSubCohorts
+      .flatMap((sc) => getSamplesFromSubCohort(selectedCohort.name, sc)));
   }
   return null;
 }

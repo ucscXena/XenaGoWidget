@@ -13,4 +13,6 @@ parserOptions:
   sourceType: module
 plugins:
   - react
-rules: {}
+rules: {
+  no-use-before-define: 0,
+}

@@ -258,17 +258,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     addGene = (selectedPathway, selectedGene) => {
 
-        // get pathway to filter
-        let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-        let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-            gene: { $unshift: [selectedGene]}
-        });
-
-        // get geneset to alter
-        // let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-        // selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel);
-        // // add to the existing index
-        // selectedPathwaySet.pathways.splice(pathwayIndex, 0, newSelectedPathway);
+      // get pathway to filter
+      let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
+      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
+          gene: { $unshift: [selectedGene]}
+      });
       let selectedPathwaySet = update(this.state.pathwaySet, {
         pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
       });
