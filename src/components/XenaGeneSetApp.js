@@ -358,7 +358,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-    globalPathwayHover = (hoveredPathway) => {
+    handlePathwayHover = (hoveredPathway) => {
 
       const geneHoverData = hoveredPathway ? [
         {
@@ -390,7 +390,7 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    globalPathwaySelect = (pathwaySelection) => {
+    handlePathwaySelect = (pathwaySelection) => {
 
       let {pathwayData,filter} = this.state;
 
@@ -417,13 +417,13 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-    hideGeneSetDetail = () => {
+    handleHideGeneSetDetail = () => {
       this.setState({
         showPathwayDetails: false
       });
     };
 
-    showGeneSetDetail = () => {
+    handleShowGeneSetDetail = () => {
       this.setState({
         showPathwayDetails: true
       });
@@ -461,7 +461,7 @@ export default class XenaGeneSetApp extends PureComponent {
     toggleShowClusterSort = () => {
       showClusterSort = !showClusterSort;
       AppStorageHandler.storeSortState(showClusterSort ? SortType.CLUSTER : SortType.DIFF);
-      this.globalPathwaySelect(this.state.pathwaySelection.pathway);
+      this.handlePathwaySelect(this.state.pathwaySelection.pathway);
     };
 
     setCollapsed = (collapsed) => {
@@ -636,14 +636,14 @@ export default class XenaGeneSetApp extends PureComponent {
                                             <div style={{paddingLeft: leftPadding}}>
                                               <FaArrowRight
                                                 className={BaseStyle.mouseHover}
-                                                onClick={this.hideGeneSetDetail}
+                                                onClick={this.handleHideGeneSetDetail}
                                               />
                                             </div>
                             }
                             {!this.state.showPathwayDetails &&
                                             <FaArrowLeft
                                               className={BaseStyle.mouseHover}
-                                              onClick={this.showGeneSetDetail}
+                                              onClick={this.handleShowGeneSetDetail}
                                             />
                             }
                           </td>
@@ -654,13 +654,13 @@ export default class XenaGeneSetApp extends PureComponent {
                             {this.state.showPathwayDetails &&
                                             <FaArrowLeft
                                               className={BaseStyle.mouseHover}
-                                              onClick={this.hideGeneSetDetail}
+                                              onClick={this.handleHideGeneSetDetail}
                                             />
                             }
                             {!this.state.showPathwayDetails &&
                                             <FaArrowRight
                                               className={BaseStyle.mouseHover}
-                                              onClick={this.showGeneSetDetail}
+                                              onClick={this.handleShowGeneSetDetail}
                                             />
                             }
                           </td>
@@ -674,9 +674,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                               data={this.state.pathwayData[0]}
                                               filter={this.state.filter[0]}
                                               labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.globalPathwaySelect}
-                                              onHover={this.globalPathwayHover}
-                                              onMouseOut={this.globalPathwayHover}
+                                              onClick={this.handlePathwaySelect}
+                                              onHover={this.handlePathwayHover}
+                                              onMouseOut={this.handlePathwayHover}
                                               pathways={pathways}
                                               selectedCohort={this.state.selectedCohort[0]}
                                               width={VERTICAL_GENESET_DETAIL_WIDTH}
@@ -690,9 +690,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                               highlightedGene={this.state.highlightedGene}
                                               hoveredPathway={this.state.hoveredPathway}
                                               labelHeight={18}
-                                              onClick={this.globalPathwaySelect}
-                                              onHover={this.globalPathwayHover}
-                                              onMouseOut={this.globalPathwayHover}
+                                              onClick={this.handlePathwaySelect}
+                                              onHover={this.handlePathwayHover}
+                                              onMouseOut={this.handlePathwayHover}
                                               pathways={this.state.pathways}
                                               selectedPathway={this.state.pathwaySelection}
                                               topOffset={14}
@@ -708,9 +708,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                               data={this.state.pathwayData[1]}
                                               filter={this.state.filter[1]}
                                               labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.globalPathwaySelect}
-                                              onHover={this.globalPathwayHover}
-                                              onMouseOut={this.globalPathwayHover}
+                                              onClick={this.handlePathwaySelect}
+                                              onHover={this.handlePathwayHover}
+                                              onMouseOut={this.handlePathwayHover}
                                               pathways={pathways}
                                               selectedCohort={this.state.selectedCohort[1]}
                                               width={200}
