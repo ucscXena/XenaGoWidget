@@ -20,8 +20,20 @@ import DiffSortOutputData1 from '../data/DiffSortOutput1';
 
 import SyncSortInput1 from '../data/SyncSortInput1';
 import SyncSortOutputData1 from '../data/SyncSortOutput1';
+import {unmountComponentAtNode} from 'react-dom';
 
 describe('Sort Functions', () => {
+
+  let node;
+
+  beforeEach(() => {
+    node = document.createElement('div');
+  });
+
+  afterEach(() => {
+    unmountComponentAtNode(node);
+  });
+
 
   it('Transpose', () => {
     let input = [[{'total':1,'mutation':0,'cnv':1,'mutation4':0,'mutation3':0,'mutation2':0,'cnvHigh':1,'cnvLow':0},{'total':0,'mutation':0,'cnv':0,'mutation4':0,'mutation3':0,'mutation2':0,'cnvHigh':0,'cnvLow':0}]];

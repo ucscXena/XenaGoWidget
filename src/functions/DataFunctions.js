@@ -55,6 +55,10 @@ export const getGenePathwayLookup = (pathways) => {
   return memoize((gene) => idxs.filter((i) => sets[i].has(gene)));
 };
 
+export const indexSamples = (samples) => {
+  return new Map(samples.map((v, i) => [v, i]));
+};
+
 export function pruneColumns(data, pathways) {
   // TODO: we need to map the sum off each column
   const columnScores = data.map((d) => sum(d.total));
@@ -216,7 +220,14 @@ export function scoreData(score, numSamples, geneCount) {
   return score / (numSamples * geneCount);
 }
 
-function filterMutations(expression,returnArray,sampleIndex,genePathwayLookup){
+export function filterMutations(expression,returnArray,samples,pathways){
+  // console.log('mutation filter');
+  // console.log(JSON.stringify(expression));
+  // console.log(JSON.stringify(returnArray));
+  // console.log(JSON.stringify(samples));
+  // console.log(JSON.stringify(pathways));
+  const genePathwayLookup = getGenePathwayLookup(pathways);
+  const sampleIndex = new Map(samples.map((v, i) => [v, i]));
   for (const row of expression.rows) {
     const effectValue = getMutationScore(row.effect, MIN_FILTER);
     const effectScore = mutationScores[row.effect];
@@ -240,9 +251,11 @@ function filterMutations(expression,returnArray,sampleIndex,genePathwayLookup){
       }
     }
   }
+  // console.log(JSON.stringify(returnArray));
 }
 
-function filterCopyNumbers(geneList,returnArray,copyNumber,genePathwayLookup){
+export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
+  const genePathwayLookup = getGenePathwayLookup(pathways);
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -283,33 +296,15 @@ function filterCopyNumbers(geneList,returnArray,copyNumber,genePathwayLookup){
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
   filter = filter.indexOf('All') === 0 ? '' : filter;
   const returnArray = createEmptyArray(pathways.length, samples.length);
-  const sampleIndex = new Map(samples.map((v, i) => [v, i]));
-  const genePathwayLookup = getGenePathwayLookup(pathways);
-
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (!filter || filter === 'Mutation') {
-    filterMutations(expression,returnArray,sampleIndex,genePathwayLookup);
+    filterMutations(expression,returnArray,samples,pathways);
   }
 
   if (!filter || filter === 'Copy Number') {
-    filterCopyNumbers(geneList,returnArray,copyNumber,genePathwayLookup);
+    filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
-
-  // // let totalValue = returnArray.reduce((s, f) => s + f.total, 0);
-  // let totalValue = 0 ;
-  // // console.log('length ',returnArray.length)
-  // for( let col of returnArray){
-  //     for(let row of col){
-  //         // console.log(row)
-  //         // totalValue = totalValue + row.reduce((s, f) => s + f.total, 0);
-  //         totalValue = totalValue + row.total;
-  //     }
-  // }
-  //
-  //
-  // // console.log('sum of array',totalValue,JSON.stringify('a'),returnArray)
-  // console.log('sum of array',JSON.stringify(totalValue))
 
   return returnArray;
 }

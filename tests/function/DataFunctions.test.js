@@ -22,7 +22,7 @@ import {
   calculateObserved,
   calculatePathwayScore,
   calculateAllPathways,
-  calculateDiffs, generateScoredData
+  calculateDiffs, generateScoredData, filterCopyNumbers, filterMutations
 } from '../../src/functions/DataFunctions';
 import {times} from 'underscore';
 import DefaultPathways from '../../src/data/genesets/tgac';
@@ -59,6 +59,12 @@ import GenerateScoredDataPathwayDataA from '../data/GenerateScoredDataPathwayDat
 import GenerateScoredDataPathwayDataB from '../data/GenerateScoredDataPathwayDataB';
 import GenerateScoredDataPathways from '../data/GenerateScoredDataPathways';
 import GenerateScoredDataOutput from '../data/GenerateScoredDataOutput';
+
+import FilterMutationExpression1 from '../data/FilterMutationExpression1';
+import FilterMutationOutput1 from '../data/FilterMutationOutput1';
+import FilterMutationPathways1 from '../data/FilterMutationPathways1';
+import FilterMutationReturnArray1 from '../data/FilterMutationReturnArray1';
+import FilterMutationSamples1 from '../data/FilterMutationSamples1';
 
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
@@ -131,6 +137,22 @@ describe('Data Functions', () => {
   it('Associated Data', () => {
     expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
   });
+
+  // it('Filter Copy Numbers Lots', () => {
+  //   expect(AssociatedDataOutput1).toEqual(filterCopyNumbers(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
+  // });
+  //
+  // it('Filter Copy Numbers One Gene', () => {
+  //   expect(FilterCopyNumberOutput1).toEqual(filterCopyNumbers(FilterCopyNumberExpression1, FilterInputReturnArray1, FilterSamples1, FilterPathwaysOne1 ));
+  // });
+  //
+  // it('Filter Mutations Lots', () => {
+  //   expect(AssociatedDataOutput1).toEqual(filterMutations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
+  // });
+
+  // it('Filter Mutations One Gene', () => {
+  //   expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
+  // });
 
   it('Find Associated Data', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
@@ -260,6 +282,8 @@ describe('Data Functions', () => {
     expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters,false));
 
   });
+
+
 
 });
 
