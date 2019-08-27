@@ -242,15 +242,14 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     addGeneSet = (selectedPathway) => {
-        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-        let newGeneSetObject = {
-            goid: '',
-            golabel: selectedPathway,
-            gene: []
-        };
-        selectedPathwaySet.pathways.unshift(newGeneSetObject);
+        const selectedPathwaySet = update(this.state.pathwaySet, {
+            pathways: { $unshift: [{
+                goid: '',
+                golabel: selectedPathway,
+                gene: [],
+              }] }
+         });
         AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-
         this.setState({
             pathwaySet: selectedPathwaySet,
             pathways: selectedPathwaySet.pathways,
@@ -258,7 +257,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     addGene = (selectedPathway, selectedGene) => {
-
         // get geneset to alter
         let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
 
