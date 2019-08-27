@@ -216,6 +216,58 @@ export function scoreData(score, numSamples, geneCount) {
   return score / (numSamples * geneCount);
 }
 
+function filterMutations(expression,returnArray,sampleIndex,genePathwayLookup){
+  for (const row of expression.rows) {
+    const effectValue = getMutationScore(row.effect, MIN_FILTER);
+    const effectScore = mutationScores[row.effect];
+    const pathwayIndices = genePathwayLookup(row.gene);
+
+    for (const index of pathwayIndices) {
+      returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
+      returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
+
+      switch (effectScore) {
+      case 4:
+        returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1;
+        break;
+      case 3:
+        returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1;
+        break;
+      case 2:
+        returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1;
+        break;
+      default:
+      }
+    }
+  }
+}
+
+function filterCopyNumbers(geneList,returnArray,copyNumber,genePathwayLookup){
+  for (const gene of geneList) {
+    // if we have not processed that gene before, then process
+    const geneIndex = geneList.indexOf(gene);
+
+    const pathwayIndices = genePathwayLookup(gene);
+    const sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
+    // we retrieve proper indices from the pathway to put back in the right place
+
+    // get pathways this gene is involved in
+    for (const index of pathwayIndices) {
+      // process all samples
+      for (const sampleEntryIndex in sampleEntries) {
+        const returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],
+          DEFAULT_AMPLIFICATION_THRESHOLD,
+          DEFAULT_DELETION_THRESHOLD);
+        if (returnValue > 0) {
+          returnArray[index][sampleEntryIndex].total += returnValue;
+          returnArray[index][sampleEntryIndex].cnv += returnValue;
+          returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+          returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+        }
+      }
+    }
+  }
+}
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
@@ -234,61 +286,14 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
   const sampleIndex = new Map(samples.map((v, i) => [v, i]));
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
-
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (!filter || filter === 'Mutation') {
-    for (const row of expression.rows) {
-      const effectValue = getMutationScore(row.effect, MIN_FILTER);
-      const effectScore = mutationScores[row.effect];
-      const pathwayIndices = genePathwayLookup(row.gene);
-
-      for (const index of pathwayIndices) {
-        returnArray[index][sampleIndex.get(row.sample)].total += effectValue;
-        returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
-
-        switch (effectScore) {
-        case 4:
-          returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1;
-          break;
-        case 3:
-          returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1;
-          break;
-        case 2:
-          returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1;
-          break;
-        default:
-        }
-      }
-    }
+    filterMutations(expression,returnArray,sampleIndex,genePathwayLookup);
   }
 
-
   if (!filter || filter === 'Copy Number') {
+    filterCopyNumbers(geneList,returnArray,copyNumber,genePathwayLookup);
     // get list of genes in identified pathways
-    for (const gene of geneList) {
-      // if we have not processed that gene before, then process
-      const geneIndex = geneList.indexOf(gene);
-
-      const pathwayIndices = genePathwayLookup(gene);
-      const sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
-      // we retrieve proper indices from the pathway to put back in the right place
-
-      // get pathways this gene is involved in
-      for (const index of pathwayIndices) {
-        // process all samples
-        for (const sampleEntryIndex in sampleEntries) {
-          const returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],
-            DEFAULT_AMPLIFICATION_THRESHOLD,
-            DEFAULT_DELETION_THRESHOLD);
-          if (returnValue > 0) {
-            returnArray[index][sampleEntryIndex].total += returnValue;
-            returnArray[index][sampleEntryIndex].cnv += returnValue;
-            returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
-            returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
-          }
-        }
-      }
-    }
   }
 
   // // let totalValue = returnArray.reduce((s, f) => s + f.total, 0);
