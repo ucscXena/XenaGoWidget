@@ -251,6 +251,7 @@ export function filterMutations(expression,returnArray,samples,pathways){
       }
     }
   }
+  return returnArray;
   // console.log(JSON.stringify(returnArray));
 }
 
@@ -280,6 +281,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
+  return returnArray;
 }
 
 /**

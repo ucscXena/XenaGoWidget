@@ -150,9 +150,9 @@ describe('Data Functions', () => {
   //   expect(AssociatedDataOutput1).toEqual(filterMutations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
   // });
 
-  // it('Filter Mutations One Gene', () => {
-  //   expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
-  // });
+  it('Filter Mutations One Gene', () => {
+    expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
+  });
 
   it('Find Associated Data', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));

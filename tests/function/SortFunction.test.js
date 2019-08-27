@@ -20,19 +20,8 @@ import DiffSortOutputData1 from '../data/DiffSortOutput1';
 
 import SyncSortInput1 from '../data/SyncSortInput1';
 import SyncSortOutputData1 from '../data/SyncSortOutput1';
-import {unmountComponentAtNode} from 'react-dom';
 
 describe('Sort Functions', () => {
-
-  let node;
-
-  beforeEach(() => {
-    node = document.createElement('div');
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(node);
-  });
 
 
   it('Transpose', () => {
