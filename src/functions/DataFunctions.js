@@ -251,11 +251,16 @@ export function filterMutations(expression,returnArray,samples,pathways){
       }
     }
   }
-  return returnArray;
   // console.log(JSON.stringify(returnArray));
+  return returnArray;
 }
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
+  // console.log('copy number');
+  // console.log(JSON.stringify(copyNumber));
+  // console.log(JSON.stringify(returnArray));
+  // console.log(JSON.stringify(geneList));
+  // console.log(JSON.stringify(pathways));
   const genePathwayLookup = getGenePathwayLookup(pathways);
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
@@ -281,6 +286,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
+  // console.log(JSON.stringify(returnArray));
   return returnArray;
 }
 

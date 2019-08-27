@@ -1,5 +1,4 @@
 import expect from 'expect';
-import { unmountComponentAtNode} from 'react-dom';
 import {
   addIndepProb,
   doDataAssociations,
@@ -66,20 +65,16 @@ import FilterMutationPathways1 from '../data/FilterMutationPathways1';
 import FilterMutationReturnArray1 from '../data/FilterMutationReturnArray1';
 import FilterMutationSamples1 from '../data/FilterMutationSamples1';
 
+import FilterCopyNumber1 from '../data/FilterCopyNumber1';
+import FilterCopyNumberGeneList1 from '../data/FilterCopyNumberGeneList1';
+import FilterCopyNumberOutput1 from '../data/FilterCopyNumberOutput1';
+import FilterCopyNumberReturnArray1 from '../data/FilterCopyNumberReturnArray1';
+
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
 const MUTATION_MIN = 2 ;
 
 describe('Data Functions', () => {
-  let node;
-
-  beforeEach(() => {
-    node = document.createElement('div');
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(node);
-  });
 
   it('Copy Number Value', () => {
     expect(0).toEqual(getCopyNumberValue('NOTANUMBER',AMP_THRESHOLD,DEL_THRESHOLD));
@@ -142,16 +137,17 @@ describe('Data Functions', () => {
   //   expect(AssociatedDataOutput1).toEqual(filterCopyNumbers(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
   // });
   //
-  // it('Filter Copy Numbers One Gene', () => {
-  //   expect(FilterCopyNumberOutput1).toEqual(filterCopyNumbers(FilterCopyNumberExpression1, FilterInputReturnArray1, FilterSamples1, FilterPathwaysOne1 ));
-  // });
   //
   // it('Filter Mutations Lots', () => {
-  //   expect(AssociatedDataOutput1).toEqual(filterMutations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
+  //   expect(FilterMutationOutputLots).toEqual(filterMutations(FilterMutationExpressionLots, FilterMutationReturnArrayLots, FilterMutationSamplesLots, FilterMutationPathwaysLots));
   // });
 
   it('Filter Mutations One Gene', () => {
     expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
+  });
+
+  it('Filter Copy Numbers One Gene', () => {
+    expect(FilterCopyNumberOutput1).toEqual(filterCopyNumbers(FilterCopyNumber1, FilterCopyNumberReturnArray1, FilterCopyNumberGeneList1 , FilterMutationPathways1));
   });
 
   it('Find Associated Data', () => {
@@ -172,14 +168,6 @@ describe('Data Functions', () => {
 
   describe('Test statistical function', () => {
     let node;
-
-    beforeEach(() => {
-      node = document.createElement('div');
-    });
-
-    afterEach(() => {
-      unmountComponentAtNode(node);
-    });
 
     it('Calculates single function properly', () => {
       expect([addIndepProb([3])]).toContain(3);
