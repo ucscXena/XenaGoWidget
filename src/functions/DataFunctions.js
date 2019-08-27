@@ -1,13 +1,13 @@
 import {
   sum, times, memoize, range,
 } from 'ucsc-xena-client/dist/underscore_ext';
-import { izip, permutations } from 'itertools';
+import { izip } from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5';
 import update from 'immutability-helper';
 import mutationScores from '../data/mutationVector';
 import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
-import { getGenesForNamedPathways, getGenesForPathways } from './CohortFunctions';
+import { getGenesForNamedPathways } from './CohortFunctions';
 import {
   clusterSort, diffSort, scoreColumns, synchronizedSort,
 } from './SortFunctions';
@@ -247,16 +247,16 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
         returnArray[index][sampleIndex.get(row.sample)].mutation += effectValue;
 
         switch (effectScore) {
-          case 4:
-            returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1;
-            break;
-          case 3:
-            returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1;
-            break;
-          case 2:
-            returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1;
-            break;
-          default:
+        case 4:
+          returnArray[index][sampleIndex.get(row.sample)].mutation4 += 1;
+          break;
+        case 3:
+          returnArray[index][sampleIndex.get(row.sample)].mutation3 += 1;
+          break;
+        case 2:
+          returnArray[index][sampleIndex.get(row.sample)].mutation2 += 1;
+          break;
+        default:
         }
       }
     }
@@ -338,6 +338,7 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
     } else {
       sign = -1.0;
     }
+    // eslint-disable-next-line no-unused-vars
     for (const [x, y] of izip(xs, getPermutations(prob_list, i))) {
       total_prob += sign * y.reduce((acc, value) => acc * value);
     }
