@@ -1,32 +1,32 @@
-import React from 'react'
+import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import DefaultPathWays from "../data/genesets/tgac";
-import PathwayEditor from "./pathwayEditor/PathwayEditor";
-import {AppStorageHandler} from "../service/AppStorageHandler";
-import NavigationBar from "./NavigationBar";
-import {GeneSetSelector} from "./GeneSetSelector";
+import DefaultPathWays from '../data/genesets/tgac';
+import PathwayEditor from './pathwayEditor/PathwayEditor';
+import {AppStorageHandler} from '../service/AppStorageHandler';
+import NavigationBar from './NavigationBar';
+import {GeneSetSelector} from './GeneSetSelector';
 import {
-    calculateAllPathways, generateScoredData,
+  calculateAllPathways, generateScoredData,
 } from '../functions/DataFunctions';
 import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import BaseStyle from '../css/base.css';
-import {LabelTop} from "./LabelTop";
-import VerticalGeneSetScoresView from "./VerticalGeneSetScoresView";
-import {ColorEditor} from "./ColorEditor";
-import {Dialog} from "react-toolbox";
-import {fetchCombinedCohorts} from "../functions/FetchFunctions";
+import {LabelTop} from './LabelTop';
+import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
+import {ColorEditor} from './ColorEditor';
+import {Dialog} from 'react-toolbox';
+import {fetchCombinedCohorts} from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
-import CrossHairH from "./CrossHairH";
-import CrossHairV from "./CrossHairV";
-import {fetchCohortData, getCohortDetails, getSubCohortsOnlyForCohort} from "../functions/CohortFunctions";
-import {isEqual} from "underscore";
-import update from "immutability-helper";
-import {SortType} from "../functions/SortFunctions";
-import VerticalLegend from "./VerticalLegend";
+import CrossHairH from './CrossHairH';
+import CrossHairV from './CrossHairV';
+import {getCohortDetails, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {isEqual} from 'underscore';
+import update from 'immutability-helper';
+import {SortType} from '../functions/SortFunctions';
+import VerticalLegend from './VerticalLegend';
 
 
 
@@ -51,9 +51,9 @@ export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
 const LOAD_STATE = {
-    UNLOADED: 'unloaded',
-    LOADING: 'loading',
-    LOADED: 'loaded',
+  UNLOADED: 'unloaded',
+  LOADING: 'loading',
+  LOADED: 'loaded',
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
@@ -65,214 +65,213 @@ let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
 export default class XenaGeneSetApp extends PureComponent {
 
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        const pathways = AppStorageHandler.getPathways();
-        // TODO: this should get subcohorts here, really
-        let cohortDataA = AppStorageHandler.getCohortState(0);
-        let cohortDataB = AppStorageHandler.getCohortState(1);
+    const pathways = AppStorageHandler.getPathways();
+    // TODO: this should get subcohorts here, really
+    let cohortDataA = AppStorageHandler.getCohortState(0);
+    let cohortDataB = AppStorageHandler.getCohortState(1);
 
-        this.state = {
-            // TODO: this should use the full cohort Data, not just the top-level
-            selectedCohort:[
-                cohortDataA,
-                cohortDataB,
-            ],
-            view: XENA_VIEW,
-            fetch: false,
-            loading:LOAD_STATE.UNLOADED,
-            showColorEditor: false,
-            showDetailLayer: true,
-            showDiffLayer: true,
-            pathwaySet: {
-                name: 'Default Pathway',
-                pathways,
-                selected: true
-            },
-            filter:[
-                AppStorageHandler.getFilterState(0)  ,
-                AppStorageHandler.getFilterState(1)  ,
-            ],
-            hoveredPathway: undefined,
-            geneData: [{}, {}],
-            pathwayData: [{}, {}],
-            showPathwayDetails: false,
-            geneHits: [],
-            selectedGene: undefined,
-            reference: refGene['hg38'],
-            limit: 25,
-            highlightedGene: undefined,
-            collapsed: true,
-            mousing: false,
-            x:-1,
-            y:-1,
-            geneStateColors: {
-                highDomain: 100,
-                midDomain: 0,
-                lowDomain: -100,
-                lowColor: '#0000ff',
-                midColor: '#ffffff',
-                highColor: '#ff0000',
-                gamma: 1.0,
-                geneGamma: 1.0,
-                linkDomains: true,
-                shadingValue: 10,
-            }
-        };
-    }
+    this.state = {
+      // TODO: this should use the full cohort Data, not just the top-level
+      selectedCohort:[
+        cohortDataA,
+        cohortDataB,
+      ],
+      view: XENA_VIEW,
+      fetch: false,
+      loading:LOAD_STATE.UNLOADED,
+      showColorEditor: false,
+      showDetailLayer: true,
+      showDiffLayer: true,
+      pathwaySet: {
+        name: 'Default Pathway',
+        pathways,
+        selected: true
+      },
+      filter:[
+        AppStorageHandler.getFilterState(0)  ,
+        AppStorageHandler.getFilterState(1)  ,
+      ],
+      hoveredPathway: undefined,
+      geneData: [{}, {}],
+      pathwayData: [{}, {}],
+      showPathwayDetails: false,
+      geneHits: [],
+      selectedGene: undefined,
+      reference: refGene['hg38'],
+      limit: 25,
+      highlightedGene: undefined,
+      collapsed: true,
+      mousing: false,
+      x:-1,
+      y:-1,
+      geneStateColors: {
+        highDomain: 100,
+        midDomain: 0,
+        lowDomain: -100,
+        lowColor: '#0000ff',
+        midColor: '#ffffff',
+        highColor: '#ff0000',
+        gamma: 1.0,
+        geneGamma: 1.0,
+        linkDomains: true,
+        shadingValue: 10,
+      }
+    };
+  }
 
     queryGenes = (geneQuery) => {
-        let {reference: {host, name}, limit} = this.state;
-        if (geneQuery.trim().length === 0) {
-            this.setState({
-                geneHits: []
-            });
-            return;
-        }
-        let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
-        subscriber.subscribe(matches => {
-                this.setState({
-                    geneHits: matches
-                })
-            }
-        )
+      let {reference: {host, name}, limit} = this.state;
+      if (geneQuery.trim().length === 0) {
+        this.setState({
+          geneHits: []
+        });
+        return;
+      }
+      let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+      subscriber.subscribe(matches => {
+        this.setState({
+          geneHits: matches
+        });
+      }
+      );
     };
 
 
     handleUpload = (file) => {
-        AppStorageHandler.storePathways(file);
-        this.setState({
-            pathwaySet: {
-                name: 'Default Pathway',
-                pathways: file,
-                selected: true
-            }
-        })
+      AppStorageHandler.storePathways(file);
+      this.setState({
+        pathwaySet: {
+          name: 'Default Pathway',
+          pathways: file,
+          selected: true
+        }
+      });
     };
 
     handleReset = () => {
-        AppStorageHandler.storePathways(DefaultPathWays);
-        this.setState({
-            pathwaySet: {
-                name: 'Default Pathway',
-                pathways: DefaultPathWays,
-                selected: true
-            }
-        })
+      AppStorageHandler.storePathways(DefaultPathWays);
+      this.setState({
+        pathwaySet: {
+          name: 'Default Pathway',
+          pathways: DefaultPathWays,
+          selected: true
+        }
+      });
     };
 
 
     handleCombinedCohortData = (input) => {
-        let {
-            pathways,
-            geneList,
-            cohortData,
+      let {
+        pathways,
+        geneList,
+        cohortData,
 
-            samplesA,
-            mutationsA,
-            copyNumberA,
-            genomeBackgroundMutationA,
-            genomeBackgroundCopyNumberA,
-            samplesB,
-            mutationsB,
-            copyNumberB,
-            genomeBackgroundMutationB,
-            genomeBackgroundCopyNumberB,
-            selectedCohorts,
-        } = input;
+        samplesA,
+        mutationsA,
+        copyNumberA,
+        genomeBackgroundMutationA,
+        genomeBackgroundCopyNumberA,
+        samplesB,
+        mutationsB,
+        copyNumberB,
+        genomeBackgroundMutationB,
+        genomeBackgroundCopyNumberB,
+        selectedCohorts,
+      } = input;
 
-        // TODO: calculate Diff!
-        // TODO: update Xena Go Viewers
+      // TODO: calculate Diff!
+      // TODO: update Xena Go Viewers
 
-        let pathwayDataA = {
-            geneList,
-            pathways,
-            cohortData,
-            cohort: selectedCohorts[0],
-            filter: this.state.filter[0],
+      let pathwayDataA = {
+        geneList,
+        pathways,
+        cohortData,
+        cohort: selectedCohorts[0],
+        filter: this.state.filter[0],
 
-            copyNumber: copyNumberA,
-            expression: mutationsA,
-            samples: samplesA,
-            genomeBackgroundMutation: genomeBackgroundMutationA,
-            genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
-        };
-
-
-        let pathwayDataB = {
-            geneList,
-            pathways,
-            cohortData,
-            cohort: selectedCohorts[1],
-            filter: this.state.filter[1],
-
-            copyNumber: copyNumberB,
-            expression: mutationsB,
-            samples: samplesB,
-            genomeBackgroundMutation: genomeBackgroundMutationB,
-            genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
-        };
-
-        pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
-
-        pathwayDataA.pathways = pathways ;
-        pathwayDataB.pathways = pathways ;
-
-        AppStorageHandler.storePathways(pathways);
+        copyNumber: copyNumberA,
+        expression: mutationsA,
+        samples: samplesA,
+        genomeBackgroundMutation: genomeBackgroundMutationA,
+        genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
+      };
 
 
-        let selection = AppStorageHandler.getPathwaySelection();
-        let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
+      let pathwayDataB = {
+        geneList,
+        pathways,
+        cohortData,
+        cohort: selectedCohorts[1],
+        filter: this.state.filter[1],
 
-        currentLoadState = LOAD_STATE.LOADED;
-        this.setState({
-            pathwaySelection: selection,
-            geneList,
-            pathways,
-            geneData,
-            pathwayData: [pathwayDataA,pathwayDataB],
-            loading: LOAD_STATE.LOADED,
-            currentLoadState: LOAD_STATE.LOADED,
-            processing: false,
-            fetch: false,
-        });
+        copyNumber: copyNumberB,
+        expression: mutationsB,
+        samples: samplesB,
+        genomeBackgroundMutation: genomeBackgroundMutationB,
+        genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
+      };
+
+      pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
+
+      pathwayDataA.pathways = pathways ;
+      pathwayDataB.pathways = pathways ;
+
+      AppStorageHandler.storePathways(pathways);
+
+
+      let selection = AppStorageHandler.getPathwaySelection();
+      let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
+
+      currentLoadState = LOAD_STATE.LOADED;
+      this.setState({
+        pathwaySelection: selection,
+        geneList,
+        pathways,
+        geneData,
+        pathwayData: [pathwayDataA,pathwayDataB],
+        loading: LOAD_STATE.LOADED,
+        currentLoadState: LOAD_STATE.LOADED,
+        processing: false,
+        fetch: false,
+      });
 
 
     };
 
     addGeneSet = (selectedPathway) => {
-        const selectedPathwaySet = update(this.state.pathwaySet, {
-            pathways: { $unshift: [{
-                goid: '',
-                golabel: selectedPathway,
-                gene: [],
-              }] }
-         });
-        AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-        this.setState({
-            pathwaySet: selectedPathwaySet,
-            pathways: selectedPathwaySet.pathways,
-        });
+      const selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways: { $unshift: [{
+          goid: '',
+          golabel: selectedPathway,
+          gene: [],
+        }] }
+      });
+      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+        pathways: selectedPathwaySet.pathways,
+      });
     };
 
     addGene = (selectedPathway, selectedGene) => {
-
       // get pathway to filter
       let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
       let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-          gene: { $unshift: [selectedGene]}
+        gene: { $unshift: [selectedGene]}
       });
       let selectedPathwaySet = update(this.state.pathwaySet, {
         pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
       });
 
       AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-        this.setState({
-            pathwaySet: selectedPathwaySet,
-            pathways: selectedPathwaySet.pathways,
-            selectedPathway: newSelectedPathway,
-        });
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+        pathways: selectedPathwaySet.pathways,
+        selectedPathway: newSelectedPathway,
+      });
     };
 
     removeGene = (selectedPathway, selectedGene) => {
@@ -286,9 +285,9 @@ export default class XenaGeneSetApp extends PureComponent {
       });
       AppStorageHandler.storePathways(selectedPathwaySet.pathways);
       this.setState({
-          pathwaySet: selectedPathwaySet,
-          pathways: selectedPathwaySet.pathways,
-          selectedPathway: newSelectedPathway,
+        pathwaySet: selectedPathwaySet,
+        pathways: selectedPathwaySet.pathways,
+        selectedPathway: newSelectedPathway,
       });
     };
 
@@ -298,526 +297,534 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways: { $splice: [[pathwayIndex,1]] }
       });
       AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-        this.setState({
-          pathwaySet: selectedPathwaySet,
-          pathways: selectedPathwaySet.pathways,
-          selectedPathway: undefined,
-        });
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+        pathways: selectedPathwaySet.pathways,
+        selectedPathway: undefined,
+      });
     };
 
     getActiveApp() {
-        return this.state.pathwaySet;
+      return this.state.pathwaySet;
     }
 
-    showPathways = () => {
-        this.setState({
-            view: PATHWAYS_VIEW
-        })
+    handleShowPathwayEditor = () => {
+      this.setState({
+        view: PATHWAYS_VIEW
+      });
     };
 
-    showXena = () => {
-        this.setState({
-            view: XENA_VIEW
-        })
+    handleShowGeneSetViewer = () => {
+      this.setState({
+        view: XENA_VIEW
+      });
     };
 
     editGeneSetColors = () => {
-        // alert('configuring xena')
-        this.handleColorToggle();
-        // this.setState({
-        //     view: XENA_VIEW
-        // })
+      // alert('configuring xena')
+      this.handleColorToggle();
+      // this.setState({
+      //     view: XENA_VIEW
+      // })
     };
 
     geneHighlight = (geneName) => {
-        this.setState(
-            {
-                highlightedGene: geneName
-            }
-        );
+      this.setState(
+        {
+          highlightedGene: geneName
+        }
+      );
     };
 
     geneHover = (geneHover) => {
-        if(geneHover){
+      if(geneHover){
 
-            // TODO: this needs to be taken from the more global data
-            let genericHoverData = {
-                tissue: geneHover.tissue,
-                pathway: geneHover.pathway,
-                // expression : geneHover.pathway,// not sure why it was this way?
-                expression : geneHover.expression,
-            };
+        // TODO: this needs to be taken from the more global data
+        let genericHoverData = {
+          tissue: geneHover.tissue,
+          pathway: geneHover.pathway,
+          // expression : geneHover.pathway,// not sure why it was this way?
+          expression : geneHover.expression,
+        };
 
-            const geneHoverData0 = geneHover.cohortIndex === 0 ? geneHover : genericHoverData;
-            const geneHoverData1 = geneHover.cohortIndex === 1 ? geneHover : genericHoverData;
+        const geneHoverData0 = geneHover.cohortIndex === 0 ? geneHover : genericHoverData;
+        const geneHoverData1 = geneHover.cohortIndex === 1 ? geneHover : genericHoverData;
 
-            const geneHoverData = [ geneHoverData0,geneHoverData1 ];
-            this.setState({
-                geneHoverData
-            });
-        }
+        const geneHoverData = [ geneHoverData0,geneHoverData1 ];
+        this.setState({
+          geneHoverData
+        });
+      }
     };
 
 
     globalPathwayHover = (hoveredPathway) => {
 
-        const geneHoverData = hoveredPathway ? [
-            {
-                tissue: 'Header',
-                pathway: hoveredPathway,
-                expression: {
-                    affected: hoveredPathway.firstObserved,
-                    samplesAffected: hoveredPathway.firstObserved,
-                    allGeneAffected: hoveredPathway.firstTotal,
-                    total: hoveredPathway.firstNumSamples,
-                }
-            },
-            {
+      const geneHoverData = hoveredPathway ? [
+        {
+          tissue: 'Header',
+          pathway: hoveredPathway,
+          expression: {
+            affected: hoveredPathway.firstObserved,
+            samplesAffected: hoveredPathway.firstObserved,
+            allGeneAffected: hoveredPathway.firstTotal,
+            total: hoveredPathway.firstNumSamples,
+          }
+        },
+        {
 
-                tissue: 'Header',
-                pathway: hoveredPathway,
-                expression: {
-                    affected: hoveredPathway.secondObserved,
-                    samplesAffected: hoveredPathway.secondObserved,
-                    allGeneAffected: hoveredPathway.secondTotal,
-                    total: hoveredPathway.secondNumSamples,
-                }
-            }
-        ] : this.state.geneHoverData;
+          tissue: 'Header',
+          pathway: hoveredPathway,
+          expression: {
+            affected: hoveredPathway.secondObserved,
+            samplesAffected: hoveredPathway.secondObserved,
+            allGeneAffected: hoveredPathway.secondTotal,
+            total: hoveredPathway.secondNumSamples,
+          }
+        }
+      ] : this.state.geneHoverData;
 
-        this.setState({
-            hoveredPathway,
-            geneHoverData
-        });
+      this.setState({
+        hoveredPathway,
+        geneHoverData
+      });
     };
 
     globalPathwaySelect = (pathwaySelection) => {
 
-        let {pathwayData,filter} = this.state;
+      let {pathwayData,filter} = this.state;
 
-        if (pathwaySelection.gene.length === 0) {
-            return;
-        }
-        let pathwayClickData = {
-            pathway: pathwaySelection
-        };
+      if (pathwaySelection.gene.length === 0) {
+        return;
+      }
+      let pathwayClickData = {
+        pathway: pathwaySelection
+      };
 
-        let pathwaySelectionWrapper = {
-            pathway:pathwaySelection,
-            tissue: 'Header'
-        };
-        this.setState({
-            pathwaySelection: pathwaySelectionWrapper
-        });
-        AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
+      let pathwaySelectionWrapper = {
+        pathway:pathwaySelection,
+        tissue: 'Header'
+      };
+      this.setState({
+        pathwaySelection: pathwaySelectionWrapper
+      });
+      AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
-        const geneSetPathways = AppStorageHandler.getPathways();
-        let geneData = generateScoredData(pathwayClickData,pathwayData,geneSetPathways,filter,showClusterSort);
+      const geneSetPathways = AppStorageHandler.getPathways();
+      let geneData = generateScoredData(pathwayClickData,pathwayData,geneSetPathways,filter,showClusterSort);
 
-        this.setState({geneData});
+      this.setState({geneData});
     };
 
 
     hideGeneSetDetail = () => {
-        this.setState({
-            showPathwayDetails: false
-        })
+      this.setState({
+        showPathwayDetails: false
+      });
     };
 
     showGeneSetDetail = () => {
-        this.setState({
-            showPathwayDetails: true
-        })
+      this.setState({
+        showPathwayDetails: true
+      });
     };
 
     searchHandler = (geneQuery) => {
-        this.queryGenes(geneQuery);
+      this.queryGenes(geneQuery);
     };
 
     handleColorToggle = () => {
-        this.setState({showColorEditor: !this.state.showColorEditor});
+      this.setState({showColorEditor: !this.state.showColorEditor});
     };
 
     handleColorChange = (name, value) => {
-        let newArray = JSON.parse(JSON.stringify(this.state.geneStateColors));
-        newArray[name] = value;
-        this.setState({
-            geneStateColors: newArray
-        })
+      let newArray = JSON.parse(JSON.stringify(this.state.geneStateColors));
+      newArray[name] = value;
+      this.setState({
+        geneStateColors: newArray
+      });
 
     };
 
     toggleShowDiffLayer = () => {
-        this.setState({
-            showDiffLayer: !this.state.showDiffLayer
-        })
+      this.setState({
+        showDiffLayer: !this.state.showDiffLayer
+      });
     };
 
     toggleShowDetailLayer = () => {
-        this.setState({
-            showDetailLayer: !this.state.showDetailLayer
-        })
+      this.setState({
+        showDetailLayer: !this.state.showDetailLayer
+      });
     };
 
     toggleShowClusterSort = () => {
-        showClusterSort = !showClusterSort;
-        AppStorageHandler.storeSortState(showClusterSort ? SortType.CLUSTER : SortType.DIFF)
-        this.globalPathwaySelect(this.state.pathwaySelection.pathway)
+      showClusterSort = !showClusterSort;
+      AppStorageHandler.storeSortState(showClusterSort ? SortType.CLUSTER : SortType.DIFF);
+      this.globalPathwaySelect(this.state.pathwaySelection.pathway);
     };
 
     setCollapsed = (collapsed) => {
-        this.setState({
-            collapsed: collapsed
-        })
+      this.setState({
+        collapsed: collapsed
+      });
     };
 
     doRefetch(){
 
-        if(this.state.fetch && currentLoadState!==LOAD_STATE.LOADING){
-            return true ;
-        }
+      if(this.state.fetch && currentLoadState!==LOAD_STATE.LOADING){
+        return true ;
+      }
 
-        switch (currentLoadState) {
-            case LOAD_STATE.LOADING:
-                return false ;
-            case LOAD_STATE.UNLOADED:
-                return true ;
+      switch (currentLoadState) {
+      case LOAD_STATE.LOADING:
+        return false ;
+      case LOAD_STATE.UNLOADED:
+        return true ;
 
-                // TODO: this should be calculated below depending on the state of gene data and if the selected cohort changed
-            case LOAD_STATE.LOADED:
-                return false ;
+        // TODO: this should be calculated below depending on the state of gene data and if the selected cohort changed
+      case LOAD_STATE.LOADED:
+        return false ;
 
-        }
+      }
 
-        if(isEqual(this.state.geneData,[{},{}])) return true ;
-        if(isEqual(this.state.pathwayData,[{},{}])) return true ;
+      if(isEqual(this.state.geneData,[{},{}])) return true ;
+      if(isEqual(this.state.pathwayData,[{},{}])) return true ;
 
-        if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
-        // if(!isEqual(this.state.selectedSubCohortsA, this.state.selectedSubCohortsB)) return true ;
+      if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
+      // if(!isEqual(this.state.selectedSubCohortsA, this.state.selectedSubCohortsB)) return true ;
 
-        return false;
+      return false;
     }
 
     changeCohort = (selectedCohort,cohortIndex) => {
-       // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
-        let cohortDetails = getCohortDetails({name: selectedCohort});
-        const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
-        if(subCohorts){
-            cohortDetails.subCohorts= subCohorts;
-            cohortDetails.selectedSubCohorts = subCohorts;
-        }
+      // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
+      let cohortDetails = getCohortDetails({name: selectedCohort});
+      const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
+      if(subCohorts){
+        cohortDetails.subCohorts= subCohorts;
+        cohortDetails.selectedSubCohorts = subCohorts;
+      }
 
-        const newCohortState = [
-            cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
-            cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
-        ];
-        AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
+      const newCohortState = [
+        cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
+        cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
+      ];
+      AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
 
-        this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
+      this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
     changeSubCohort = (selectedCohort,cohortIndex) => {
-        let updateCohortState = update(this.state.selectedCohort,{
-            [cohortIndex]: {
-                selectedSubCohorts: { $set: selectedCohort.selectedSubCohorts }
-            }
-        });
-        AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
-        this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
+      let updateCohortState = update(this.state.selectedCohort,{
+        [cohortIndex]: {
+          selectedSubCohorts: { $set: selectedCohort.selectedSubCohorts }
+        }
+      });
+      AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
+      this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
     changeFilter = (newFilter,cohortIndex) => {
-        AppStorageHandler.storeFilterState(newFilter, cohortIndex);
-        let {pathwayData,pathwaySelection,filter} = this.state;
-        let filterState = [
-           cohortIndex===0 ? newFilter : filter[0]  ,
-           cohortIndex===1 ? newFilter : filter[1]  ,
-        ];
+      AppStorageHandler.storeFilterState(newFilter, cohortIndex);
+      let {pathwayData,pathwaySelection,filter} = this.state;
+      let filterState = [
+        cohortIndex===0 ? newFilter : filter[0]  ,
+        cohortIndex===1 ? newFilter : filter[1]  ,
+      ];
 
-        let newPathwayData = update(pathwayData,{
-            [cohortIndex]: {
-                filter: { $set: newFilter},
-            }
-        });
+      let newPathwayData = update(pathwayData,{
+        [cohortIndex]: {
+          filter: { $set: newFilter},
+        }
+      });
 
-        let pathwayClickData = {
-            pathway: pathwaySelection.pathway
-        };
+      let pathwayClickData = {
+        pathway: pathwaySelection.pathway
+      };
 
-        // console.log(JSON.stringify('calculating filter with '),newPathwayData)
-        // const geneSetPathways = AppStorageHandler.getPathways();
-        let newPathways = calculateAllPathways(newPathwayData);
-        let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-        this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData});
+      // console.log(JSON.stringify('calculating filter with '),newPathwayData)
+      // const geneSetPathways = AppStorageHandler.getPathways();
+      let newPathways = calculateAllPathways(newPathwayData);
+      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
+      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData});
     };
 
     render() {
-        let activeApp = this.getActiveApp();
-        let pathways = activeApp.pathways;
+      let activeApp = this.getActiveApp();
+      let pathways = activeApp.pathways;
 
 
-        let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
+      let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
-        if(this.doRefetch()){
-            currentLoadState = LOAD_STATE.LOADING;
-            fetchCombinedCohorts(this.state.selectedCohort,pathways,this.handleCombinedCohortData);
-        }
-        // else{
-        //     console.log('not refetching',JSON.stringify(this.state.selectedCohort),JSON.stringify(this.state.fetch))
-        // }
+      if(this.doRefetch()){
+        currentLoadState = LOAD_STATE.LOADING;
+        fetchCombinedCohorts(this.state.selectedCohort,pathways,this.handleCombinedCohortData);
+      }
 
-        return (
-            <div>
+      return (
+        <div>
 
-                <NavigationBar showPathways={this.showPathways}
-                               showXena={this.showXena}
-                               editGeneSetColors={this.editGeneSetColors}
-                               view={this.state.view}
-                               searchHandler={this.searchHandler}
-                               geneOptions={this.state.geneHits}
-                               acceptGeneHandler={this.geneHighlight}
-                               toggleShowDiffLayer={this.toggleShowDiffLayer}
-                               toggleShowDetailLayer={this.toggleShowDetailLayer}
-                               toggleShowClusterSort={this.toggleShowClusterSort}
-                               showDiffLayer={this.state.showDiffLayer}
-                               showDetailLayer={this.state.showDetailLayer}
-                               showClusterSort={showClusterSort}
-                />
+          <NavigationBar
+            acceptGeneHandler={this.geneHighlight}
+            editGeneSetColors={this.editGeneSetColors}
+            geneOptions={this.state.geneHits}
+            searchHandler={this.searchHandler}
+            showClusterSort={showClusterSort}
+            showDetailLayer={this.state.showDetailLayer}
+            showDiffLayer={this.state.showDiffLayer}
+            showPathways={this.handleShowPathwayEditor}
+            showXena={this.handleShowGeneSetViewer}
+            toggleShowClusterSort={this.toggleShowClusterSort}
+            toggleShowDetailLayer={this.toggleShowDetailLayer}
+            toggleShowDiffLayer={this.toggleShowDiffLayer}
+            view={this.state.view}
+          />
 
-                <div>
-                    <Dialog
-                        active={this.state.currentLoadState === LOAD_STATE.LOADING}
-                        title="Loading"
-                        style={{width:400}}
-                    >
-                        <p>
-                            {this.state.selectedCohort[0].name} ...
-                            <br/>
-                            {this.state.selectedCohort[1].name} ...
-                        </p>
-                    </Dialog>
-                    <ColorEditor active={this.state.showColorEditor}
-                                 handleToggle={this.handleColorToggle}
-                                 handleColorChange={this.handleColorChange}
-                                 colorSettings={this.state.geneStateColors}
-                    />
-                    <Dialog
-                        active={this.state.view === PATHWAYS_VIEW }
-                        onEscKeyDown={this.showXena}
-                        onOverlayClick={this.showXena}
-                        title='Edit Pathways'
-                    >
-                        <PathwayEditor ref='pathway-editor'
-                                       pathwaySet={this.state.pathwaySet}
-                                       selectedPathway={this.state.selectedPathway}
-                                       // highlightedGene={this.state.highlightedGene}
-                                       removeGeneHandler={this.removeGene}
-                                       removeGeneSetHandler={this.removeGeneSet}
-                                       addGeneSetHandler={this.addGeneSet}
-                                       addGeneHandler={this.addGene}
-                                       uploadHandler={this.handleUpload}
-                                       resetHandler={this.handleReset}
-                                       closeHandler={this.showXena}
-                        />
-                    </Dialog>
+          <div>
+            <Dialog
+              active={this.state.currentLoadState === LOAD_STATE.LOADING}
+              style={{width:400}}
+              title="Loading"
+            >
+              <p>
+                {this.state.selectedCohort[0].name} ...
+                <br/>
+                {this.state.selectedCohort[1].name} ...
+              </p>
+            </Dialog>
+            <ColorEditor
+              active={this.state.showColorEditor}
+              colorSettings={this.state.geneStateColors}
+              onColorChange={this.handleColorChange}
+              onColorToggle={this.handleColorToggle}
+            />
+            <Dialog
+              active={this.state.view === PATHWAYS_VIEW}
+              onEscKeyDown={this.handleShowGeneSetViewer}
+              onOverlayClick={this.handleShowGeneSetViewer}
+              title='Edit Pathways'
+            >
+              <PathwayEditor
+                addGeneHandler={this.addGene}
+                addGeneSetHandler={this.addGeneSet}
+                closeHandler={this.handleShowGeneSetViewer}
+                // highlightedGene={this.state.highlightedGene}
+                pathwaySet={this.state.pathwaySet}
+                ref='pathway-editor'
+                removeGeneHandler={this.removeGene}
+                removeGeneSetHandler={this.removeGeneSet}
+                resetHandler={this.handleReset}
+                selectedPathway={this.state.selectedPathway}
+                uploadHandler={this.handleUpload}
+              />
+            </Dialog>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
                     <table>
-                        <tbody>
+                      <tbody>
                         <tr>
-                            <td>
-                                <table>
-                                    <tbody>
-                                    <tr>
-                                      <td colSpan={3}>
-                                        <VerticalLegend/>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
-                                        >
-                                            {this.state.showPathwayDetails &&
+                          <td colSpan={3}>
+                            <VerticalLegend/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
+                            {this.state.showPathwayDetails &&
                                             <div style={{paddingLeft: leftPadding}}>
-                                                <FaArrowRight onClick={this.hideGeneSetDetail}
-                                                              className={BaseStyle.mouseHover}/>
-                                             </div>
-                                            }
-                                            {!this.state.showPathwayDetails &&
-                                            <FaArrowLeft onClick={this.showGeneSetDetail}
-                                                         className={BaseStyle.mouseHover}/>
-                                            }
-                                        </td>
-                                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                                            <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
-                                        </td>
-                                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                                            {this.state.showPathwayDetails &&
-                                            <FaArrowLeft onClick={this.hideGeneSetDetail}
-                                                         className={BaseStyle.mouseHover}/>
-                                            }
-                                            {!this.state.showPathwayDetails &&
-                                            <FaArrowRight onClick={this.showGeneSetDetail}
-                                                          className={BaseStyle.mouseHover}/>
-                                            }
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                                            {this.state.showPathwayDetails &&
+                                              <FaArrowRight
+                                                className={BaseStyle.mouseHover}
+                                                onClick={this.hideGeneSetDetail}
+                                              />
+                                            </div>
+                            }
+                            {!this.state.showPathwayDetails &&
+                                            <FaArrowLeft
+                                              className={BaseStyle.mouseHover}
+                                              onClick={this.showGeneSetDetail}
+                                            />
+                            }
+                          </td>
+                          <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                            <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
+                          </td>
+                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
+                            {this.state.showPathwayDetails &&
+                                            <FaArrowLeft
+                                              className={BaseStyle.mouseHover}
+                                              onClick={this.hideGeneSetDetail}
+                                            />
+                            }
+                            {!this.state.showPathwayDetails &&
+                                            <FaArrowRight
+                                              className={BaseStyle.mouseHover}
+                                              onClick={this.showGeneSetDetail}
+                                            />
+                            }
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
+                            {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayData[0]}
-                                                cohortIndex={0}
-                                                cohortLabel={LABEL_A}
-                                                pathways={pathways}
-                                                filter={this.state.filter[0]}
-                                                width={VERTICAL_GENESET_DETAIL_WIDTH}
-                                                labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.state.selectedCohort[0]}
-                                                onClick={this.globalPathwaySelect}
-                                                onHover={this.globalPathwayHover}
-                                                onMouseOut={this.globalPathwayHover}
+                                              cohortIndex={0}
+                                              cohortLabel={LABEL_A}
+                                              data={this.state.pathwayData[0]}
+                                              filter={this.state.filter[0]}
+                                              labelHeight={18 + 2 * BORDER_OFFSET}
+                                              onClick={this.globalPathwaySelect}
+                                              onHover={this.globalPathwayHover}
+                                              onMouseOut={this.globalPathwayHover}
+                                              pathways={pathways}
+                                              selectedCohort={this.state.selectedCohort[0]}
+                                              width={VERTICAL_GENESET_DETAIL_WIDTH}
                                             />
-                                            }
-                                        </td>
-                                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                                            {this.state.pathways &&
-                                            <GeneSetSelector pathways={this.state.pathways}
-                                                             hoveredPathway={this.state.hoveredPathway}
-                                                             selectedPathway={this.state.pathwaySelection}
-                                                             highlightedGene={this.state.highlightedGene}
-                                                             onClick={this.globalPathwaySelect}
-                                                             onHover={this.globalPathwayHover}
-                                                             onMouseOut={this.globalPathwayHover}
-                                                             labelHeight={18}
-                                                             topOffset={14}
-                                                             width={VERTICAL_SELECTOR_WIDTH}
-                                                             geneStateColors={this.state.geneStateColors}
+                            }
+                          </td>
+                          <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                            {this.state.pathways &&
+                                            <GeneSetSelector
+                                              geneStateColors={this.state.geneStateColors}
+                                              highlightedGene={this.state.highlightedGene}
+                                              hoveredPathway={this.state.hoveredPathway}
+                                              labelHeight={18}
+                                              onClick={this.globalPathwaySelect}
+                                              onHover={this.globalPathwayHover}
+                                              onMouseOut={this.globalPathwayHover}
+                                              pathways={this.state.pathways}
+                                              selectedPathway={this.state.pathwaySelection}
+                                              topOffset={14}
+                                              width={VERTICAL_SELECTOR_WIDTH}
                                             />
-                                            }
-                                        </td>
-                                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                                            {this.state.showPathwayDetails &&
+                            }
+                          </td>
+                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
+                            {this.state.showPathwayDetails &&
                                             <VerticalGeneSetScoresView
-                                                data={this.state.pathwayData[1]}
-                                                cohortIndex={1}
-                                                cohortLabel={LABEL_B}
-                                                filter={this.state.filter[1]}
-                                                width={200}
-                                                pathways={pathways}
-                                                labelHeight={18 + 2 * BORDER_OFFSET}
-                                                selectedCohort={this.state.selectedCohort[1]}
-                                                onClick={this.globalPathwaySelect}
-                                                onHover={this.globalPathwayHover}
-                                                onMouseOut={this.globalPathwayHover}
+                                              cohortIndex={1}
+                                              cohortLabel={LABEL_B}
+                                              data={this.state.pathwayData[1]}
+                                              filter={this.state.filter[1]}
+                                              labelHeight={18 + 2 * BORDER_OFFSET}
+                                              onClick={this.globalPathwaySelect}
+                                              onHover={this.globalPathwayHover}
+                                              onMouseOut={this.globalPathwayHover}
+                                              pathways={pathways}
+                                              selectedCohort={this.state.selectedCohort[1]}
+                                              width={200}
                                             />
-                                            }
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
 
-                            {this.state.loading===LOAD_STATE.LOADED &&
-                                <td valign="top" className="map_wrapper"
-                                onMouseMove={(ev) => {
+                  {this.state.loading===LOAD_STATE.LOADED &&
+                                <td
+                                  className="map_wrapper" onMouseMove={(ev) => {
                                     let topClient = ev.currentTarget.getBoundingClientRect().top;
                                     let scrollDownBuffer = 0 ;
                                     if(topClient < 0 ){
-                                        scrollDownBuffer = -topClient + 74;
+                                      scrollDownBuffer = -topClient + 74;
                                     }
 
                                     const x = ev.clientX + 8;
                                     const y = ev.clientY + 8 + scrollDownBuffer ;
                                     if(x>=530){
-                                        this.setState({mousing: true, x, y});
+                                      this.setState({mousing: true, x, y});
                                     }
                                     else{
-                                        this.setState({mousing: false, x, y});
+                                      this.setState({mousing: false, x, y});
                                     }
-                                }}
-                                onMouseOut = {() => {
+                                  }}
+                                  onMouseOut={() => {
                                     this.setState({mousing: false});
-                                }}
+                                  }}
+                                  valign="top"
                                 >
-                                <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
-                                <CrossHairV mousing={this.state.mousing} x={this.state.x} height={VIEWER_HEIGHT * 2}/>
-                                <XenaGoViewer
+                                  <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
+                                  <CrossHairV height={VIEWER_HEIGHT * 2} mousing={this.state.mousing} x={this.state.x}/>
+                                  <XenaGoViewer
                                     // reference
-                                    cohortIndex={0}
-                                    cohortLabel={LABEL_A}
-
-                                    // view
-                                    renderOffset={0}
-                                    renderHeight={VIEWER_HEIGHT}
-
-                                    // data
-                                    selectedCohort={this.state.selectedCohort[0]}
-                                    geneDataStats={this.state.geneData[0]}
-                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
-
-                                    // maybe state?
-                                    pathways={pathways}
-                                    highlightedGene={this.state.highlightedGene}
-                                    filter={this.state.filter[0]}
-
-                                    // new pathway data
-                                    pathwayData={this.state.pathwayData[0]}
-                                    pathwaySelection={this.state.pathwaySelection}
-
-
-                                   // functions
-                                    geneHover={this.geneHover}
-                                    setCollapsed={this.setCollapsed}
                                     changeCohort={this.changeCohort}
-                                    changeSubCohort={this.changeSubCohort}
                                     changeFilter={this.changeFilter}
 
-                                    // state
-                                    colorSettings={this.state.geneStateColors}
+                                    // view
+                                    changeSubCohort={this.changeSubCohort}
+                                    cohortIndex={0}
+
+                                    // data
+                                    cohortLabel={LABEL_A}
                                     collapsed={this.state.collapsed}
-                                    showDiffLayer={this.state.showDiffLayer}
+                                    colorSettings={this.state.geneStateColors}
+
+                                    // maybe state?
+                                    filter={this.state.filter[0]}
+                                    geneDataStats={this.state.geneData[0]}
+                                    geneHover={this.geneHover}
+
+                                    // new pathway data
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
+                                    highlightedGene={this.state.highlightedGene}
+
+                                    // functions
+                                    pathwayData={this.state.pathwayData[0]}
+                                    pathwaySelection={this.state.pathwaySelection}
+                                    pathways={pathways}
+                                    renderHeight={VIEWER_HEIGHT}
+                                    renderOffset={0}
+
+                                    // state
+                                    selectedCohort={this.state.selectedCohort[0]}
+                                    setCollapsed={this.setCollapsed}
                                     showDetailLayer={this.state.showDetailLayer}
-                                />
-                                <XenaGoViewer
+                                    showDiffLayer={this.state.showDiffLayer}
+                                  />
+                                  <XenaGoViewer
                                     // reference
-                                    cohortIndex={1}
-                                    cohortLabel={LABEL_B}
+                                    changeCohort={this.changeCohort}
+                                    changeFilter={this.changeFilter}
 
                                     // view
+                                    changeSubCohort={this.changeSubCohort}
+                                    cohortIndex={1}
+
+                                    // data
+                                    cohortLabel={LABEL_B}
+                                    collapsed={this.state.collapsed}
+                                    colorSettings={this.state.geneStateColors}
+
+                                    // maybe state?
+                                    filter={this.state.filter[1]}
+                                    geneDataStats={this.state.geneData[1]}
+                                    geneHover={this.geneHover}
+
+                                    // new pathway data
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
+                                    highlightedGene={this.state.highlightedGene}
+
+                                    // functions
+                                    pathwayData={this.state.pathwayData[1]}
+                                    pathwaySelection={this.state.pathwaySelection}
+                                    pathways={pathways}
                                     renderHeight={VIEWER_HEIGHT}
                                     renderOffset={VIEWER_HEIGHT - 3}
 
-                                    // data
-                                    selectedCohort={this.state.selectedCohort[1]}
-                                    geneDataStats={this.state.geneData[1]}
-                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
-
-                                    // maybe state?
-                                    pathways={pathways}
-                                    highlightedGene={this.state.highlightedGene}
-                                    filter={this.state.filter[1]}
-
-                                    // new pathway data
-                                    pathwayData={this.state.pathwayData[1]}
-                                    pathwaySelection={this.state.pathwaySelection}
-
-                                    // functions
-                                    geneHover={this.geneHover}
-                                    setCollapsed={this.setCollapsed}
-                                    changeCohort={this.changeCohort}
-                                    changeSubCohort={this.changeSubCohort}
-                                    changeFilter={this.changeFilter}
-
                                     // state
-                                    colorSettings={this.state.geneStateColors}
-                                    collapsed={this.state.collapsed}
-                                    showDiffLayer={this.state.showDiffLayer}
+                                    selectedCohort={this.state.selectedCohort[1]}
+                                    setCollapsed={this.setCollapsed}
                                     showDetailLayer={this.state.showDetailLayer}
-                                />
+                                    showDiffLayer={this.state.showDiffLayer}
+                                  />
                                 </td>
-                            }
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>);
+                  }
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>);
     }
 }

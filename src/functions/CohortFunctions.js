@@ -13,6 +13,7 @@ function lowerCaseCompareName(a, b) {
   try {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error('error evaluating name', a, b);
     return null;
   }

@@ -1,4 +1,3 @@
-
 import { Component } from 'react';
 import { isEqual } from 'underscore';
 

@@ -1,118 +1,120 @@
-import PureComponent from "./PureComponent";
 import PropTypes from 'prop-types';
-import React from 'react'
-import {HeaderLabel} from "../components/HeaderLabel";
-import {DiffLabel} from "../components/DiffLabel";
-import {GENE_LABEL_HEIGHT} from "./PathwayScoresView";
-import {omit,isEqual} from 'underscore'
+import React from 'react';
+import { omit, isEqual } from 'underscore';
+import PureComponent from './PureComponent';
+import { HeaderLabel } from './HeaderLabel';
+import { DiffLabel } from './DiffLabel';
+import { GENE_LABEL_HEIGHT } from './PathwayScoresView';
 import BaseStyle from '../css/base.css';
 
 const chiSquareMax = 100.0;
-const omitArray = ['hoveredPathway','pathways','data'];
+const omitArray = ['hoveredPathway', 'pathways', 'data'];
 
 export default class LabelSet extends PureComponent {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props) {
-        super(props);
-    }
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(omit(nextProps, omitArray), omit(this.props, omitArray));
+  }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return !isEqual(omit(nextProps, omitArray), omit(this.props, omitArray));
-    }
+  render() {
+    const {
+      pathways,
+      layout,
+      highlightedGene,
+      labelHeight,
+      height,
+      cohortIndex,
+      colorSettings,
+      numSamples,
+      showDiffLayer,
+    } = this.props;
+    if (pathways.length === layout.length) {
+      const possibleHeight = height - GENE_LABEL_HEIGHT;
+      const offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
 
-    render() {
-        const {
-            pathways
-            , layout
-            , highlightedGene
-            , labelHeight
-            , height
-            , cohortIndex
-            , colorSettings
-            , numSamples
-            , showDiffLayer
-        } = this.props;
-        if (pathways.length === layout.length) {
-            const possibleHeight = height - GENE_LABEL_HEIGHT ;
-            let offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
-
-            return layout.map((el, i) => {
-                let d = pathways[i];
-                let geneLength = d.gene.length;
-                let labelKey = d.gene[0];
-                let highlighted = highlightedGene === labelKey;
-                let diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1)  * possibleHeight;
-                let labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-                let actualOffset = cohortIndex === 1 ? labelOffset :  possibleHeight - diffHeight ;
-                return (
-                    <div key={`${labelKey}-${cohortIndex}-outer`} className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom}>
-                        { showDiffLayer && ((cohortIndex===0 && d.diffScore > 0) || cohortIndex===1 &&  d.diffScore < 0) &&
-                        <DiffLabel
-                            labelHeight={diffHeight}
-                            labelOffset={actualOffset}
-                            numSamples={numSamples}
-                            geneLength={geneLength}
-                            left={el.start}
-                            width={el.size}
-                            item={d}
-                            labelString={labelKey}
-                            key={labelKey + '-' + cohortIndex + 'diff'}
+      return layout.map((el, i) => {
+        const d = pathways[i];
+        const geneLength = d.gene.length;
+        const labelKey = d.gene[0];
+        const highlighted = highlightedGene === labelKey;
+        const diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1) * possibleHeight;
+        const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
+        const actualOffset = cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight;
+        return (
+          <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
+            { showDiffLayer && ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
+                        && (
+                          <DiffLabel
                             cohortIndex={cohortIndex}
                             colorSettings={colorSettings}
-                        />
-                        }
-                        { cohortIndex === 0  &&
-                        <div style={{
-                            position: 'absolute',
-                            height: height,
-                            top: 0,
-                            left: el.start,
-                            width:el.size,
-                            opacity:0.1,
-                            zIndex: -20000,
-                        }}
-                        />
-                        }
-                        { cohortIndex === 1  &&
-                        <div style={{
-                            position: 'absolute',
-                            height: height,
-                            top: 0,
-                            left: el.start,
-                            width:el.size,
-                            opacity:0.1,
-                            zIndex: -20000,
-                        }}
-                        />
-                        }
-                        <HeaderLabel
-                            labelHeight={labelHeight}
-                            labelOffset={offset}
-                            numSamples={numSamples}
                             geneLength={geneLength}
-                            left={el.start}
-                            width={el.size}
                             item={d}
-                            highlighted={highlighted}
+                            key={`${labelKey}-${cohortIndex}diff`}
+                            labelHeight={diffHeight}
+                            labelOffset={actualOffset}
                             labelString={labelKey}
-                            key={labelKey + '-' + cohortIndex}
-                            colorSettings={colorSettings}
-                        />
-                    </div>
-                )
-            });
-        } else {
-            return <div/>;
-        }
+                            left={el.start}
+                            numSamples={numSamples}
+                            width={el.size}
+                          />
+                        )}
+            { cohortIndex === 0
+                        && (
+                          <div style={{
+                            position: 'absolute',
+                            height,
+                            top: 0,
+                            left: el.start,
+                            width: el.size,
+                            opacity: 0.1,
+                            zIndex: -20000,
+                          }}
+                          />
+                        )}
+            { cohortIndex === 1
+                        && (
+                          <div style={{
+                            position: 'absolute',
+                            height,
+                            top: 0,
+                            left: el.start,
+                            width: el.size,
+                            opacity: 0.1,
+                            zIndex: -20000,
+                          }}
+                          />
+                        )}
+            <HeaderLabel
+              colorSettings={colorSettings}
+              geneLength={geneLength}
+              highlighted={highlighted}
+              item={d}
+              key={`${labelKey}-${cohortIndex}`}
+              labelHeight={labelHeight}
+              labelOffset={offset}
+              labelString={labelKey}
+              left={el.start}
+              numSamples={numSamples}
+              width={el.size}
+            />
+          </div>
+        );
+      });
     }
+    return <div />;
+  }
 }
 LabelSet.propTypes = {
-    pathways: PropTypes.any.isRequired,
-    layout: PropTypes.any.isRequired,
-    labelHeight: PropTypes.any.isRequired,
-    cohortIndex: PropTypes.any.isRequired,
-    colorSettings: PropTypes.any.isRequired,
-    height: PropTypes.any.isRequired,
-    showDiffLayer: PropTypes.any.isRequired,
-    numSamples: PropTypes.any.isRequired,
+  cohortIndex: PropTypes.any.isRequired,
+  colorSettings: PropTypes.any.isRequired,
+  height: PropTypes.any.isRequired,
+  highlightedGene: PropTypes.any,
+  labelHeight: PropTypes.any.isRequired,
+  layout: PropTypes.any.isRequired,
+  numSamples: PropTypes.any.isRequired,
+  pathways: PropTypes.any.isRequired,
+  showDiffLayer: PropTypes.any.isRequired,
 };

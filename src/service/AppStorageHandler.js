@@ -1,4 +1,3 @@
-import React from 'react';
 import update from 'immutability-helper';
 import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
@@ -91,7 +90,8 @@ export class AppStorageHandler extends PureComponent {
     if (selection) {
       localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
     } else {
-      console.log('storing empty pathway');
+      // eslint-disable-next-line no-console
+      console.warn('storing empty pathway');
     }
   }
 
