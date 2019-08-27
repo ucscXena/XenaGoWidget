@@ -276,23 +276,20 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     removeGene = (selectedPathway, selectedGene) => {
-        let selectedPathwaySet = JSON.parse(JSON.stringify(this.state.pathwaySet));
-        // get pathway to filter
-        let pathwayIndex = selectedPathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-        let newSelectedPathway = selectedPathwaySet.pathways.find(p => selectedPathway.golabel === p.golabel);
-        selectedPathwaySet.pathways = selectedPathwaySet.pathways.filter(p => selectedPathway.golabel !== p.golabel);
-
-        // remove gene
-        newSelectedPathway.gene = newSelectedPathway.gene.filter(g => g !== selectedGene);
-
-        // add to the existing index
-        selectedPathwaySet.pathways.splice(pathwayIndex, 0, newSelectedPathway);
-        AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-        this.setState({
-            pathwaySet: selectedPathwaySet,
-            pathways: selectedPathwaySet.pathways,
-            selectedPathway: newSelectedPathway,
-        });
+      const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
+      const geneIndex = this.state.pathwaySet.pathways[pathwayIndex].gene.findIndex(g => g !== selectedGene);
+      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
+        gene: { $splice: [[geneIndex,1]]}
+      });
+      let selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
+      });
+      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
+      this.setState({
+          pathwaySet: selectedPathwaySet,
+          pathways: selectedPathwaySet.pathways,
+          selectedPathway: newSelectedPathway,
+      });
     };
 
     removeGeneSet = (selectedPathway) => {
