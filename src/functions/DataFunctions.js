@@ -227,7 +227,7 @@ export function filterMutations(expression,returnArray,samples,pathways){
   // console.log(JSON.stringify(samples));
   // console.log(JSON.stringify(pathways));
   const genePathwayLookup = getGenePathwayLookup(pathways);
-  const sampleIndex = new Map(samples.map((v, i) => [v, i]));
+  const sampleIndex = indexSamples(samples)
   for (const row of expression.rows) {
     const effectValue = getMutationScore(row.effect, MIN_FILTER);
     const effectScore = mutationScores[row.effect];
