@@ -252,7 +252,6 @@ export function filterMutations(expression,returnArray,samples,pathways){
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
-  let totalTotal = 0 ;
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -273,12 +272,10 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
           returnArray[index][sampleEntryIndex].cnv += returnValue;
           returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
           returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
-          totalTotal += returnValue ;
         }
       }
     }
   }
-  console.log('return value',JSON.stringify(totalTotal));
   return returnArray;
 }
 
@@ -415,6 +412,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
+
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
   const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways);
@@ -492,7 +490,7 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
     samples,
     copyNumber,
     filter,
-    geneList,
+    geneList:pathwayData.geneList, // use the geneList form the
     pathways,
     pathwaySelection,
   };

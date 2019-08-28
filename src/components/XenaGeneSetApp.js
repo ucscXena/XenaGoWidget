@@ -549,8 +549,6 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
       let activeApp = this.getActiveApp();
       let pathways = activeApp.pathways;
-
-
       let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
       if(this.doRefetch()){
