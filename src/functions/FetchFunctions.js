@@ -1,5 +1,5 @@
 import { getGenesForPathways, getSamplesFromSelectedSubCohorts } from './CohortFunctions';
-import { intersection, intersectLists } from './MathFunctions';
+import { intersection} from './MathFunctions';
 
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -13,21 +13,28 @@ export function getSamplesForCohort(cohort) {
     intersection);
 }
 
+export function calculateSamples(availableSamples,cohort){
+  if(cohort.selectedSubCohorts.length > 0){
+    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort));
+  }
+  else{
+    return availableSamples;
+  }
+}
+
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways, combinationHandler) {
   // console.log('fetching with ',JSON.stringify(selectedCohorts),selectedCohorts)
   const geneList = getGenesForPathways(pathways);
 
-  // this selects cohorts, not sub-cohorts
-  // TODO: get working
-  // TODO: extend to get subcohorts
   Rx.Observable.zip(
     getSamplesForCohort(selectedCohorts[0]),
     getSamplesForCohort(selectedCohorts[1]),
-  ).flatMap((samples) => {
-    const samplesA = selectedCohorts[0].selectedSubCohorts.length > 0 ? intersection(samples[0], getSamplesFromSelectedSubCohorts(selectedCohorts[0])) : samples[0]; // mutation
-    const samplesB = selectedCohorts[1].selectedSubCohorts.length > 0 ? intersection(samples[1], getSamplesFromSelectedSubCohorts(selectedCohorts[1])) : samples[1]; // mutation
+  ).flatMap((availableSamples) => {
+    const samplesA = calculateSamples(availableSamples[0],selectedCohorts[0]);
+    const samplesB = calculateSamples(availableSamples[1],selectedCohorts[1]);
 
+    // TODO: make this a testable function
     return Rx.Observable.zip(
       sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
       datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
