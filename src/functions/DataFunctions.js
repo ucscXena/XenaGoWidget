@@ -221,13 +221,8 @@ export function scoreData(score, numSamples, geneCount) {
 }
 
 export function filterMutations(expression,returnArray,samples,pathways){
-  // console.log('mutation filter');
-  // console.log(JSON.stringify(expression));
-  // console.log(JSON.stringify(returnArray));
-  // console.log(JSON.stringify(samples));
-  // console.log(JSON.stringify(pathways));
   const genePathwayLookup = getGenePathwayLookup(pathways);
-  const sampleIndex = indexSamples(samples)
+  const sampleIndex = indexSamples(samples);
   for (const row of expression.rows) {
     const effectValue = getMutationScore(row.effect, MIN_FILTER);
     const effectScore = mutationScores[row.effect];
@@ -251,16 +246,10 @@ export function filterMutations(expression,returnArray,samples,pathways){
       }
     }
   }
-  // console.log(JSON.stringify(returnArray));
   return returnArray;
 }
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
-  // console.log('copy number');
-  // console.log(JSON.stringify(copyNumber));
-  // console.log(JSON.stringify(returnArray));
-  // console.log(JSON.stringify(geneList));
-  // console.log(JSON.stringify(pathways));
   const genePathwayLookup = getGenePathwayLookup(pathways);
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
@@ -286,7 +275,6 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
-  // console.log(JSON.stringify(returnArray));
   return returnArray;
 }
 

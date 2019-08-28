@@ -43,11 +43,6 @@ export default class XenaGoViewer extends PureComponent {
     handleGeneHover = (geneHoverProps) => {
       if (geneHoverProps) {
         geneHoverProps.cohortIndex = this.props.cohortIndex;
-
-        // TODO: remove this and see how it performs
-        if(geneHoverProps.expression===undefined){
-          geneHoverProps.expression = DEFAULT_DATA_VALUE;
-        }
         geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected;
       }
       this.props.onGeneHover(geneHoverProps);

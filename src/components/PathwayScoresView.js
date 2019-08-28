@@ -41,14 +41,19 @@ function getMousePos(evt) {
   };
 }
 
-function getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData) {
+function getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, associatedData) {
   let pathwayArray = associatedData[pathwayIndex];
   if (!pathwayArray) {
     return 0;
   }
+  const total = associatedData[cohortIndex].length;
 
-  return (tissueIndex < 0) ? {affected: sumInstances(pathwayArray), total: associatedData[0].length} : // pathway
-    pathwayArray[tissueIndex]; // sample
+  if(tissueIndex < 0 ){
+    return {affected: sumInstances(pathwayArray), total };
+  }
+  else{
+    return cohortIndex === 0 ? pathwayArray[total - tissueIndex -1] : pathwayArray[tissueIndex]; // sample
+  }
 }
 
 let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
@@ -83,7 +88,7 @@ function getPointData(event, layout, associatedData, sortedSamples, pathways, he
   let {x, y} = getMousePos(event);
   let {pathwayIndex, selectCnv} = pathwayIndexFromX(x, layout);
   let tissueIndex = tissueIndexFromY(y, height, GENE_LABEL_HEIGHT, sortedSamples.length, cohortIndex);
-  let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, associatedData);
+  let expression = getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, associatedData);
   return {
     pathway: pathways[pathwayIndex],
     tissue: tissueIndex < 0 ? 'Header' : sortedSamples[tissueIndex],
