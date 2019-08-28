@@ -40,7 +40,7 @@ const style = {
 
 export default class XenaGoViewer extends PureComponent {
 
-    hoverGene = (geneHoverProps) => {
+    handleGeneHover = (geneHoverProps) => {
       if (geneHoverProps) {
         geneHoverProps.cohortIndex = this.props.cohortIndex;
 
@@ -54,15 +54,15 @@ export default class XenaGoViewer extends PureComponent {
 
     };
 
-    filterGeneType = (filter) => {
+    handleChangeFilter = (filter) => {
       this.props.changeFilter(filter,this.props.cohortIndex);
     };
 
-    selectCohort = (selected) => {
+    handleSelectCohort = (selected) => {
       this.props.changeCohort(selected,this.props.cohortIndex);
     };
 
-    selectSubCohort = (subCohortSelected) => {
+    handleSelectSubCohort = (subCohortSelected) => {
       this.props.changeSubCohort(subCohortSelected,this.props.cohortIndex);
     };
 
@@ -103,15 +103,15 @@ export default class XenaGoViewer extends PureComponent {
                           <CohortSelector
                             cohortLabel={cohortLabel}
                             // selectedSubCohorts={selectedCohort.selectedSubCohorts}
-                            onChange={this.selectCohort}
-                            onChangeSubCohort={this.selectSubCohort}
+                            onChange={this.handleSelectCohort}
+                            onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}
                           />
                           <FilterSelector
                             amplificationThreshold={selectedCohortData.amplificationThreshold}
                             deletionThreshold={selectedCohortData.deletionThreshold}
                             geneList={geneList}
-                            onChange={this.filterGeneType}
+                            onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
                             selected={filter}
                           />
@@ -151,7 +151,7 @@ export default class XenaGoViewer extends PureComponent {
                           highlightedGene={highlightedGene}
                           layoutData={layoutData}
                           offset={renderOffset}
-                          onHover={this.hoverGene}
+                          onHover={this.handleGeneHover}
                           showDetailLayer={showDetailLayer}
                           showDiffLayer={showDiffLayer}
                         />
@@ -172,9 +172,14 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
+  changeCohort: PropTypes.any.isRequired,
+  changeFilter: PropTypes.any.isRequired,
+  changeSubCohort: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
+  colorSettings: PropTypes.any,
+  filter: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
   geneHover: PropTypes.any.isRequired,
   geneHoverData: PropTypes.any.isRequired,
