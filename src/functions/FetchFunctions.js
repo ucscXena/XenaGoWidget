@@ -24,7 +24,6 @@ export function calculateSamples(availableSamples,cohort){
 
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways, combinationHandler) {
-  // console.log('fetching with ',JSON.stringify(selectedCohorts),selectedCohorts)
   const geneList = getGenesForPathways(pathways);
 
   Rx.Observable.zip(
