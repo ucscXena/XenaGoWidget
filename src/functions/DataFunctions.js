@@ -292,11 +292,10 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
   filter = filter.indexOf('All') === 0 ? '' : filter;
   let returnArray = createEmptyArray(pathways.length, samples.length);
-  // console.log('expression',JSON.stringify(expression))
-  console.log('CN',JSON.stringify(copyNumber))
-  console.log('gene list ',JSON.stringify(geneList))
-  console.log('pathways',JSON.stringify(pathways))
-  console.log('samples',JSON.stringify(samples))
+  // console.log('CN',JSON.stringify(copyNumber))
+  // console.log('gene list ',JSON.stringify(geneList))
+  // console.log('pathways',JSON.stringify(pathways))
+  // console.log('samples',JSON.stringify(samples))
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (!filter || filter === 'Mutation') {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
@@ -306,7 +305,7 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
-  console.log('output return array',JSON.stringify(returnArray))
+  // console.log('output return array',JSON.stringify(returnArray))
 
   return returnArray;
 }
@@ -410,13 +409,10 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   // let [pathwayDataA,pathwayDataB] = pathwayData;
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
-  console.log('input generating ene data',JSON.stringify(pathwayDataA));
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
-  console.log('generated gene',JSON.stringify(geneDataA));
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
-  console.log('scored data',JSON.stringify(scoredGeneDataA.data[0]));
   const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways);
   geneDataA.pathways = scoredGenePathways[0];
   geneDataB.pathways = scoredGenePathways[1];
@@ -483,11 +479,8 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   const { expression, samples, copyNumber } = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
-  console.log('generate gene data',pathwaySelection,pathwayData,geneSetPathways)
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
-  console.log('gene list',geneList)
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
-  console.log('pathways',pathways)
 
   // TODO: just return this once fixed
   const geneData = {
@@ -524,19 +517,4 @@ export function scoreGeneData(inputGeneData) {
   }
 
   return returnedValue;
-  // return inputGeneData;
-
-  // // TODO: pass in selected filter and selected cohort
-  // let hashAssociation = {
-  //     expression,
-  //     copyNumber,
-  //     geneList,
-  //     pathways,
-  //     samples,
-  //     filter,
-  //     MIN_FILTER,
-  //     selectedCohort,
-  //     cohortIndex,
-  // };
-  // console.log('hash ',JSON.stringify(hashAssociation))
 }
