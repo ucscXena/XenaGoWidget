@@ -477,8 +477,6 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
-  pathwaySelection.tissue = 'Header';
-
   // TODO: just return this once fixed
   const geneData = {
     expression,

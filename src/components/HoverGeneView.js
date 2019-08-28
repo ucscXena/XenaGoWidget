@@ -106,7 +106,8 @@ export default class HoverGeneView extends PureComponent {
                       }
                     </div>
             }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression && data.expression.total > 0 &&
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -116,7 +117,7 @@ export default class HoverGeneView extends PureComponent {
                       </div>
                     </div>
             }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 1 &&
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression.allGeneAffected &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel}
