@@ -336,7 +336,7 @@ export default class XenaGeneSetApp extends PureComponent {
       );
     };
 
-    geneHover = (geneHover) => {
+    handleGeneHover = (geneHover) => {
       if(geneHover){
 
         // TODO: this needs to be taken from the more global data
@@ -464,7 +464,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.handlePathwaySelect(this.state.pathwaySelection.pathway);
     };
 
-    setCollapsed = (collapsed) => {
+    handleSetCollapsed = (collapsed) => {
       this.setState({
         collapsed: collapsed
       });
@@ -497,7 +497,7 @@ export default class XenaGeneSetApp extends PureComponent {
       return false;
     }
 
-    changeCohort = (selectedCohort,cohortIndex) => {
+    handleChangeCohort = (selectedCohort, cohortIndex) => {
       // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
       let cohortDetails = getCohortDetails({name: selectedCohort});
       const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
@@ -515,7 +515,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
-    changeSubCohort = (selectedCohort,cohortIndex) => {
+    handleChangeSubCohort = (selectedCohort, cohortIndex) => {
       let updateCohortState = update(this.state.selectedCohort,{
         [cohortIndex]: {
           selectedSubCohorts: { $set: selectedCohort.selectedSubCohorts }
@@ -525,7 +525,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
-    changeFilter = (newFilter,cohortIndex) => {
+    handleChangeFilter = (newFilter, cohortIndex) => {
       AppStorageHandler.storeFilterState(newFilter, cohortIndex);
       let {pathwayData,pathwaySelection,filter} = this.state;
       let filterState = [
@@ -749,73 +749,73 @@ export default class XenaGeneSetApp extends PureComponent {
                                   <CrossHairV height={VIEWER_HEIGHT * 2} mousing={this.state.mousing} x={this.state.x}/>
                                   <XenaGoViewer
                                     // reference
-                                    changeCohort={this.changeCohort}
-                                    changeFilter={this.changeFilter}
+                                    cohortIndex={0}
+                                    cohortLabel={LABEL_A}
 
                                     // view
-                                    changeSubCohort={this.changeSubCohort}
-                                    cohortIndex={0}
-
-                                    // data
-                                    cohortLabel={LABEL_A}
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}
 
-                                    // maybe state?
+                                    // data
                                     filter={this.state.filter[0]}
                                     geneDataStats={this.state.geneData[0]}
-                                    geneHover={this.geneHover}
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
+
+                                    // maybe state?
+                                    highlightedGene={this.state.highlightedGene}
+                                    onChangeCohort={this.handleChangeCohort}
+                                    onChangeFilter={this.handleChangeFilter}
 
                                     // new pathway data
-                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
-                                    highlightedGene={this.state.highlightedGene}
+                                    onChangeSubCohort={this.handleChangeSubCohort}
+                                    onGeneHover={this.handleGeneHover}
 
                                     // functions
+                                    onSetCollapsed={this.handleSetCollapsed}
                                     pathwayData={this.state.pathwayData[0]}
                                     pathwaySelection={this.state.pathwaySelection}
                                     pathways={pathways}
                                     renderHeight={VIEWER_HEIGHT}
-                                    renderOffset={0}
 
                                     // state
+                                    renderOffset={0}
                                     selectedCohort={this.state.selectedCohort[0]}
-                                    setCollapsed={this.setCollapsed}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showDiffLayer={this.state.showDiffLayer}
                                   />
                                   <XenaGoViewer
                                     // reference
-                                    changeCohort={this.changeCohort}
-                                    changeFilter={this.changeFilter}
+                                    cohortIndex={1}
+                                    cohortLabel={LABEL_B}
 
                                     // view
-                                    changeSubCohort={this.changeSubCohort}
-                                    cohortIndex={1}
-
-                                    // data
-                                    cohortLabel={LABEL_B}
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}
 
-                                    // maybe state?
+                                    // data
                                     filter={this.state.filter[1]}
                                     geneDataStats={this.state.geneData[1]}
-                                    geneHover={this.geneHover}
+                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
+
+                                    // maybe state?
+                                    highlightedGene={this.state.highlightedGene}
+                                    onChangeCohort={this.handleChangeCohort}
+                                    onChangeFilter={this.handleChangeFilter}
 
                                     // new pathway data
-                                    geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
-                                    highlightedGene={this.state.highlightedGene}
+                                    onChangeSubCohort={this.handleChangeSubCohort}
+                                    onGeneHover={this.handleGeneHover}
 
                                     // functions
+                                    onSetCollapsed={this.handleSetCollapsed}
                                     pathwayData={this.state.pathwayData[1]}
                                     pathwaySelection={this.state.pathwaySelection}
                                     pathways={pathways}
                                     renderHeight={VIEWER_HEIGHT}
-                                    renderOffset={VIEWER_HEIGHT - 3}
 
                                     // state
+                                    renderOffset={VIEWER_HEIGHT - 3}
                                     selectedCohort={this.state.selectedCohort[1]}
-                                    setCollapsed={this.setCollapsed}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showDiffLayer={this.state.showDiffLayer}
                                   />

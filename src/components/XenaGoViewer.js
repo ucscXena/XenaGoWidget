@@ -50,27 +50,27 @@ export default class XenaGoViewer extends PureComponent {
         }
         geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected;
       }
-      this.props.geneHover(geneHoverProps);
+      this.props.onGeneHover(geneHoverProps);
 
     };
 
     handleChangeFilter = (filter) => {
-      this.props.changeFilter(filter,this.props.cohortIndex);
+      this.props.onChangeFilter(filter,this.props.cohortIndex);
     };
 
     handleSelectCohort = (selected) => {
-      this.props.changeCohort(selected,this.props.cohortIndex);
+      this.props.onChangeCohort(selected,this.props.cohortIndex);
     };
 
     handleSelectSubCohort = (subCohortSelected) => {
-      this.props.changeSubCohort(subCohortSelected,this.props.cohortIndex);
+      this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
     };
 
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
       let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
-        geneDataStats, geneHoverData, setCollapsed , collapsed,
+        geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData,
       } = this.props;
@@ -124,14 +124,14 @@ export default class XenaGoViewer extends PureComponent {
                             <Card style={{height: 30, width: style.gene.columnWidth, marginTop: 5}}>
                               {collapsed &&
                                 <Button
-                                  flat icon='chevron_right' onClick={() => setCollapsed(false)}
+                                  flat icon='chevron_right' onClick={() => onSetCollapsed(false)}
                                   primary
                                 >Expand</Button>
                               }
                               {!collapsed &&
                                 <Button
                                   icon='chevron_left'
-                                  onClick={() => setCollapsed(true)}
+                                  onClick={() => onSetCollapsed(true)}
                                 >Collapse</Button>
                               }
                             </Card>
@@ -172,16 +172,16 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
-  changeCohort: PropTypes.any.isRequired,
-  changeFilter: PropTypes.any.isRequired,
-  changeSubCohort: PropTypes.any.isRequired,
+  onChangeCohort: PropTypes.any.isRequired,
+  onChangeFilter: PropTypes.any.isRequired,
+  onChangeSubCohort: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
   filter: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
-  geneHover: PropTypes.any.isRequired,
+  onGeneHover: PropTypes.any.isRequired,
   geneHoverData: PropTypes.any.isRequired,
   highlightedGene: PropTypes.any,
   pathwayData: PropTypes.any.isRequired, // optional
@@ -192,7 +192,7 @@ XenaGoViewer.propTypes = {
 
 
   selectedCohort: PropTypes.any.isRequired,
-  setCollapsed: PropTypes.any,
+  onSetCollapsed: PropTypes.any,
   showDetailLayer: PropTypes.any,
 
   showDiffLayer: PropTypes.any,
