@@ -172,27 +172,27 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
-  onChangeCohort: PropTypes.any.isRequired,
-  onChangeFilter: PropTypes.any.isRequired,
-  onChangeSubCohort: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
   filter: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
-  onGeneHover: PropTypes.any.isRequired,
   geneHoverData: PropTypes.any.isRequired,
   highlightedGene: PropTypes.any,
-  pathwayData: PropTypes.any.isRequired, // optional
+  onChangeCohort: PropTypes.any.isRequired,
+  onChangeFilter: PropTypes.any.isRequired,
+  onChangeSubCohort: PropTypes.any.isRequired,
+  onGeneHover: PropTypes.any.isRequired,
+  onSetCollapsed: PropTypes.any, // optional
+  pathwayData: PropTypes.any.isRequired,
   pathwaySelection: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   renderHeight: PropTypes.any.isRequired,
+
+
   renderOffset: PropTypes.any.isRequired,
-
-
   selectedCohort: PropTypes.any.isRequired,
-  onSetCollapsed: PropTypes.any,
   showDetailLayer: PropTypes.any,
 
   showDiffLayer: PropTypes.any,

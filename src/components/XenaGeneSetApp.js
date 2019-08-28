@@ -338,19 +338,19 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handleGeneHover = (geneHover) => {
       if(geneHover){
+        const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0 ;
+        let geneHoverData = [];
+        geneHoverData[geneHover.cohortIndex] = geneHover;
 
-        // TODO: this needs to be taken from the more global data
-        let genericHoverData = {
-          tissue: geneHover.tissue,
-          pathway: geneHover.pathway,
-          // expression : geneHover.pathway,// not sure why it was this way?
-          expression : geneHover.expression,
+        const gene = geneHover.pathway.gene[0] ;
+        const otherPathway = this.state.geneData[otherCohortIndex].pathways.filter( p => p.gene[0] === gene )[0];
+        geneHoverData[otherCohortIndex] = {
+          cohortIndex: otherCohortIndex,
+          tissue: 'Header',
+          pathway : otherPathway,
+          expression: otherPathway, // for dipslaying the hover
         };
 
-        const geneHoverData0 = geneHover.cohortIndex === 0 ? geneHover : genericHoverData;
-        const geneHoverData1 = geneHover.cohortIndex === 1 ? geneHover : genericHoverData;
-
-        const geneHoverData = [ geneHoverData0,geneHoverData1 ];
         this.setState({
           geneHoverData
         });
@@ -400,20 +400,19 @@ export default class XenaGeneSetApp extends PureComponent {
       let pathwayClickData = {
         pathway: pathwaySelection
       };
-
       let pathwaySelectionWrapper = {
         pathway:pathwaySelection,
         tissue: 'Header'
       };
-      this.setState({
-        pathwaySelection: pathwaySelectionWrapper
-      });
       AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
       const geneSetPathways = AppStorageHandler.getPathways();
       let geneData = generateScoredData(pathwayClickData,pathwayData,geneSetPathways,filter,showClusterSort);
 
-      this.setState({geneData});
+      this.setState({
+        geneData,
+        pathwaySelection: pathwaySelectionWrapper
+      });
     };
 
 
