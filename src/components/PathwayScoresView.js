@@ -46,13 +46,12 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, assoc
   if (!pathwayArray) {
     return 0;
   }
-  const total = associatedData[cohortIndex].length;
-
+  const numSamples = associatedData[0].length;
   if(tissueIndex < 0 ){
-    return {affected: sumInstances(pathwayArray), total };
+    return {affected: sumInstances(pathwayArray), total: numSamples };
   }
   else{
-    return cohortIndex === 0 ? pathwayArray[total - tissueIndex -1] : pathwayArray[tissueIndex]; // sample
+    return cohortIndex === 0 ? pathwayArray[numSamples - tissueIndex -1] : pathwayArray[tissueIndex]; // sample
   }
 }
 
