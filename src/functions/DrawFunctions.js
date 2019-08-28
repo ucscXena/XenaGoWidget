@@ -204,9 +204,13 @@ export default {
 
     clearScreen(vg, width, height);
 
+    console.log('tyring to redrawing gene view canvas')
+
     if (associatedData.length === 0) {
       return;
     }
+
+    console.log('redrawing gene view canvas')
 
     drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
   },

@@ -404,7 +404,9 @@ export default class XenaGeneSetApp extends PureComponent {
       AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
       const geneSetPathways = AppStorageHandler.getPathways();
+      console.log(JSON.stringify('scoring input'),pathwaySelection,pathwayData[0],geneSetPathways)
       let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort);
+      console.log(JSON.stringify('selecting gene for pathway'),pathwaySelection,JSON.stringify(geneData),geneData)
 
       this.setState({
         geneData,

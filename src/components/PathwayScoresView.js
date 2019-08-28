@@ -99,11 +99,6 @@ function getPointData(event, layout, associatedData, sortedSamples, pathways, he
 
 export default class PathwayScoresView extends PureComponent {
 
-  constructor(props) {
-    super(props);
-  }
-
-
     handleLabelHoverOut = () => {
       let {onHover} = this.props;
       onHover(null);

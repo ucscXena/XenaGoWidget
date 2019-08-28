@@ -17,10 +17,6 @@ let styles = {
 
 export default class LabelWrapper extends PureComponent {
 
-  constructor(props) {
-    super(props);
-  }
-
 
   render() {
     let {
@@ -37,6 +33,8 @@ export default class LabelWrapper extends PureComponent {
       , pathways
       , numSamples
     } = this.props;
+
+    console.log('re-rendering label wrapper')
 
     return (
       <div

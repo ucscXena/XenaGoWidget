@@ -7,16 +7,13 @@ import { DiffLabel } from './DiffLabel';
 import { GENE_LABEL_HEIGHT } from './PathwayScoresView';
 import BaseStyle from '../css/base.css';
 
-const chiSquareMax = 100.0;
-const omitArray = ['hoveredPathway', 'pathways', 'data'];
+const CHI_SQUARE_MAX = 100.0;
+const OMIT_ARRAY = ['hoveredPathway','data' ];
 
 export default class LabelSet extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
 
   shouldComponentUpdate(nextProps) {
-    return !isEqual(omit(nextProps, omitArray), omit(this.props, omitArray));
+    return !isEqual(omit(nextProps, OMIT_ARRAY), omit(this.props, OMIT_ARRAY));
   }
 
   render() {
@@ -40,7 +37,7 @@ export default class LabelSet extends PureComponent {
         const geneLength = d.gene.length;
         const labelKey = d.gene[0];
         const highlighted = highlightedGene === labelKey;
-        const diffHeight = (Math.abs(d.diffScore) < chiSquareMax ? Math.abs(d.diffScore) / chiSquareMax : 1) * possibleHeight;
+        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight;
         const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
         const actualOffset = cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight;
         return (
