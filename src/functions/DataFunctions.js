@@ -251,6 +251,8 @@ export function filterMutations(expression,returnArray,samples,pathways){
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
+
+  let totalTotal = 0 ;
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -271,10 +273,12 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
           returnArray[index][sampleEntryIndex].cnv += returnValue;
           returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
           returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+          totalTotal += returnValue ;
         }
       }
     }
   }
+  console.log('return value',JSON.stringify(totalTotal));
   return returnArray;
 }
 

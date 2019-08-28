@@ -46,7 +46,7 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-      let {editGeneSetColors, showPathways, showXena, view, showClusterSort,toggleShowClusterSort,
+      let {editGeneSetColors, onShowPathways, onShowXena, view, showClusterSort,toggleShowClusterSort,
         showDetailLayer, showDiffLayer,
         toggleShowDiffLayer,toggleShowDetailLayer } = this.props;
       return (
@@ -78,13 +78,13 @@ export default class NavigationBar extends PureComponent {
                         />
                         {view === XENA_VIEW &&
                                         <MenuItem
-                                          caption='Edit Pathways' icon='border_color' onClick={() => showPathways()}
+                                          caption='Edit Pathways' icon='border_color' onClick={() => onShowPathways()}
                                           value='settings'
                                         />
                         }
                         {view === PATHWAYS_VIEW &&
                                         <MenuItem
-                                          caption='Show GeneSet Viewer' icon='pageview' onClick={() => showXena()}
+                                          caption='Show GeneSet Viewer' icon='pageview' onClick={() => onShowXena()}
                                           value='favorite'
                                         />
                         }
@@ -150,8 +150,8 @@ NavigationBar.propTypes = {
   showClusterSort: PropTypes.any,
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
-  showPathways: PropTypes.any,
-  showXena: PropTypes.any,
+  onShowPathways: PropTypes.any,
+  onShowXena: PropTypes.any,
   toggleShowClusterSort: PropTypes.any,
   toggleShowDetailLayer: PropTypes.any,
   toggleShowDiffLayer: PropTypes.any,

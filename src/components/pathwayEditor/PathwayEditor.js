@@ -37,13 +37,13 @@ export default class PathwayEditor extends PureComponent {
 
   handleChange = e => {
     let file = e.target.files[0];
-    let {uploadHandler} = this.props;
+    let {onUpload} = this.props;
 
     let result = {};
     let fr = new FileReader();
     fr.onload = function (e) {
       result = JSON.parse(e.target.result);
-      uploadHandler(result);
+      onUpload(result);
     };
 
     fr.readAsText(file);
@@ -134,10 +134,10 @@ export default class PathwayEditor extends PureComponent {
               >
                 <FaCloudUpload/>
               </BrowseButton>
-              <Button  onClick={() => this.props.resetHandler()}>
+              <Button  onClick={() => this.props.onReset()}>
               Reset <FaRefresh/>
               </Button>
-              <Button onClick={() => this.props.closeHandler()} primary raised>
+              <Button onClick={() => this.props.onClose()} primary raised>
               Done <FaClose/>
               </Button>
             </Col>
@@ -220,11 +220,11 @@ export default class PathwayEditor extends PureComponent {
 PathwayEditor.propTypes = {
   addGeneHandler: PropTypes.any,
   addGeneSetHandler: PropTypes.any,
-  closeHandler: PropTypes.any,
+  onClose: PropTypes.any,
   pathwaySet: PropTypes.any,
   removeGeneHandler: PropTypes.any,
   removeGeneSetHandler: PropTypes.any,
-  resetHandler: PropTypes.any,
+  onReset: PropTypes.any,
   selectedPathway: PropTypes.any,
-  uploadHandler: PropTypes.any,
+  onUpload: PropTypes.any,
 };

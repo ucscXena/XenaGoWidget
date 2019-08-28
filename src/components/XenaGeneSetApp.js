@@ -404,9 +404,7 @@ export default class XenaGeneSetApp extends PureComponent {
       AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
 
       const geneSetPathways = AppStorageHandler.getPathways();
-      console.log(JSON.stringify('scoring input'),pathwaySelection,pathwayData[0],geneSetPathways)
       let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort);
-      console.log(JSON.stringify('selecting gene for pathway'),pathwaySelection,JSON.stringify(geneData),geneData)
 
       this.setState({
         geneData,
@@ -567,12 +565,12 @@ export default class XenaGeneSetApp extends PureComponent {
             acceptGeneHandler={this.geneHighlight}
             editGeneSetColors={this.editGeneSetColors}
             geneOptions={this.state.geneHits}
+            onShowPathways={this.handleShowPathwayEditor}
+            onShowXena={this.handleShowGeneSetViewer}
             searchHandler={this.searchHandler}
             showClusterSort={showClusterSort}
             showDetailLayer={this.state.showDetailLayer}
             showDiffLayer={this.state.showDiffLayer}
-            showPathways={this.handleShowPathwayEditor}
-            showXena={this.handleShowGeneSetViewer}
             toggleShowClusterSort={this.toggleShowClusterSort}
             toggleShowDetailLayer={this.toggleShowDetailLayer}
             toggleShowDiffLayer={this.toggleShowDiffLayer}
@@ -606,15 +604,15 @@ export default class XenaGeneSetApp extends PureComponent {
               <PathwayEditor
                 addGeneHandler={this.addGene}
                 addGeneSetHandler={this.addGeneSet}
-                closeHandler={this.handleShowGeneSetViewer}
+                onClose={this.handleShowGeneSetViewer}
                 // highlightedGene={this.state.highlightedGene}
+                onReset={this.handleReset}
+                onUpload={this.handleUpload}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'
                 removeGeneHandler={this.removeGene}
                 removeGeneSetHandler={this.removeGeneSet}
-                resetHandler={this.handleReset}
                 selectedPathway={this.state.selectedPathway}
-                uploadHandler={this.handleUpload}
               />
             </Dialog>
             <table>
