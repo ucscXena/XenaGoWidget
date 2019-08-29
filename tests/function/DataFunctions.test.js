@@ -72,7 +72,10 @@ import FilterCopyNumberReturnArray1 from '../data/FilterCopyNumberReturnArray1';
 
 import FilterCopyNumberGeneInput1 from '../data/FilterCopyNumberGeneInput1';
 import FilterCopyNumberGeneGeneList1 from '../data/FilterCopyNumberGeneGeneList1';
-import FilterCopyNumberInputPathways1 from '../data/FilterCopyNumberInputPathways1';
+import FilterMutationGeneExpression1 from '../data/FilterMutationGeneExpression1';
+import FilterMutationGeneOutput1 from '../data/FilterMutationGeneOutput1';
+import FilterMutationGeneReturnArray1 from '../data/FilterMutationGeneReturnArray1';
+import FilterMutationGeneSamples1 from '../data/FilterMutationGeneSamples1';
 import FilterCopyNumberGeneReturnArray1 from '../data/FilterCopyNumberGeneReturnArray1';
 
 // expect(FilterCopyNumberGeneOutput1).toEqual(filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, FilterCopyNumberGeneGeneList1 , FilterCopyNumberGene1));
@@ -168,6 +171,35 @@ describe('Data Functions', () => {
     expect(4).toEqual(finalSum);
   });
 
+  it('Filter Mutations for one Gene', () => {
+    const pathways = [{'goid':'','golabel':'LATS2','gene':['LATS2']}];
+    const outputFile = filterMutations(FilterMutationGeneExpression1, FilterMutationGeneReturnArray1, FilterMutationGeneSamples1, pathways);
+    let finalSum = outputFile[0].reduce( (a,b) => {
+      return a + b.total;
+    },0 );
+    expect(83).toEqual(outputFile[0].length);
+    expect(1).toEqual(outputFile.length);
+    expect(11).toEqual(finalSum);
+    expect(outputFile).toEqual(FilterMutationGeneOutput1);
+  });
+
+  // it('Filter Both for one Gene', () => {
+  //   const pathways = [{'goid':'','golabel':'LATS2','gene':['LATS2']}];
+  //   console.log('A')
+  //   let outputFile = filterMutations(FilterMutationGeneExpression1, JSON.parse(JSON.stringify(FilterMutationGeneReturnArray1)), FilterMutationGeneSamples1, pathways);
+  //   console.log('B')
+  //   outputFile = filterMutations(FilterCopyNumberGeneInput1, outputFile, FilterCopyNumberGeneGeneList1, pathways);
+  //   console.log('C')
+  //
+  //   let finalSum = outputFile[0].reduce( (a,b) => {
+  //     return a + b.total;
+  //   },0 );
+  //   console.log('D')
+  //   expect(83).toEqual(outputFile[0].length);
+  //   expect(1).toEqual(outputFile.length);
+  //   expect(12).toEqual(finalSum);
+  //   expect(outputFile).toEqual(FilterMutationGeneOutput1);
+  // });
 
   it('Find Associated Data', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
