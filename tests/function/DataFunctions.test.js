@@ -1,6 +1,5 @@
 import expect from 'expect';
 import {
-  addIndepProb,
   doDataAssociations,
   createEmptyArray,
   DEFAULT_DATA_VALUE,
@@ -84,14 +83,24 @@ import FilterBothSamples1 from '../data/FilterBothSamples1';
 import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
 import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
-
-// expect(FilterCopyNumberGeneOutput1).toEqual(filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, FilterCopyNumberGeneGeneList1 , FilterCopyNumberGene1));
+import {unmountComponentAtNode} from 'react-dom';
 
 const AMP_THRESHOLD = 2 ;
 const DEL_THRESHOLD = -2 ;
 const MUTATION_MIN = 2 ;
 
 describe('Data Functions', () => {
+
+  let node;
+
+  beforeEach(() => {
+    node = document.createElement('div');
+    localStorage.clear();
+  });
+
+  afterEach(() => {
+    unmountComponentAtNode(node);
+  });
 
   it('Copy Number Value', () => {
     expect(0).toEqual(getCopyNumberValue('NOTANUMBER',AMP_THRESHOLD,DEL_THRESHOLD));
@@ -149,15 +158,6 @@ describe('Data Functions', () => {
   it('Associated Data', () => {
     expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All'));
   });
-
-  // it('Filter Copy Numbers Lots', () => {
-  //   expect(AssociatedDataOutput1).toEqual(filterCopyNumbers(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All', MUTATION_MIN));
-  // });
-  //
-  //
-  // it('Filter Mutations Lots', () => {
-  //   expect(FilterMutationOutputLots).toEqual(filterMutations(FilterMutationExpressionLots, FilterMutationReturnArrayLots, FilterMutationSamplesLots, FilterMutationPathwaysLots));
-  // });
 
   it('Filter Mutations for Gene Set', () => {
     expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
@@ -225,29 +225,10 @@ describe('Data Functions', () => {
   });
 
 
-
-  describe('Test statistical function', () => {
-
-    it('Calculates single function properly', () => {
-      expect([addIndepProb([3])]).toContain(3);
-    });
-    it('Calculates multiple function properly 1', () => {
-      expect([addIndepProb([3,3])]).toContain(-3);
-    });
-    it('Calculates multiple function properly 2', () => {
-      expect([addIndepProb([0.2,0.6])]).toContain(0.68);
-    });
-    it('Calculates multiple function properly 3', () => {
-      expect([addIndepProb([0.8,0.05])]).toContain(0.81);
-    });
-  });
-
-
   it('Create a simple array', () => {
     let returnArray = createEmptyArray(20,5);
     expect(returnArray.length).toEqual(20);
     expect(returnArray[0].length).toEqual(5);
-    // expect(returnArray[5][3]).toEqual({total:0,mutation:0,cnv:0});
     expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0});
     returnArray[5][3] = {total:7,mutation:3,cnv:1};
     expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
@@ -257,8 +238,6 @@ describe('Data Functions', () => {
   });
 
   it('Calculates single function properly', () => {
-    // let returnArray = new Array(20).fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
-    // let returnArray = times(20,fill([]).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
     let returnArray = times(20, () => times(5, () => DEFAULT_DATA_VALUE));
     expect(returnArray.length===20);
     expect(returnArray[0].length===5);
