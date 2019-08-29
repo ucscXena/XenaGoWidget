@@ -23,7 +23,7 @@ const GithubIcon = () => (
 
 // eslint-disable-next-line react/no-multi-comp
 const XenaIcon = () => (
-  <img src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
+  <img alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 );
 
 // eslint-disable-next-line react/no-multi-comp
