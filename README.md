@@ -1,4 +1,4 @@
-# XenaGoWidget
+# Xena Gene Sets
 
 React widget for analyzing expression of tissue samples within a pathway or set of genes.
 
