@@ -1,7 +1,10 @@
 language: node_js
 
+git:
+  depth: false
+
 node_js:
-  - "lts/*"
+  - 8
 
 cache:
   directories:

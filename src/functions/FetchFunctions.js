@@ -1,138 +1,83 @@
-import {AppStorageHandler} from "../service/AppStorageHandler";
-import {getSubCohortsOnlyForCohort} from "./CohortFunctions";
-let Rx = require('ucsc-xena-client/dist/rx');
-let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-let {datasetSamples, sparseDataMatchPartialField, refGene, datasetFetch, sparseData} = xenaQuery;
+import { getGenesForPathways, getSamplesFromSelectedSubCohorts } from './CohortFunctions';
+import { intersection} from './MathFunctions';
 
-function intersection(a, b) {
-    let sa = new Set(a);
-    return b.filter(x => sa.has(x));
+const Rx = require('ucsc-xena-client/dist/rx');
+const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+
+const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
+
+export function getSamplesForCohort(cohort) {
+  // scrunches the two
+  return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+    datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+    intersection);
 }
 
-export function fetchCohorts(selectedCohortA,selectedCohortB,pathways){
-    if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = this.state.cohortData.find(c => c.name === selectedCohortA);
-    let cohortB = this.state.cohortData.find(c => c.name === selectedCohortB);
-
-    // let selectedObjectA = {
-    //     selected: selectedCohortA,
-    //     selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
-    // };
-    // AppStorageHandler.storeCohortState(selectedObjectA, this.state.key);
-    // this.setState({
-    //     selectedCohort: selectedCohortA,
-    //     selectedCohortData: cohortA,
-    //     processing: true,
-    // });
-    let geneList = this.getGenesForPathways(pathways);
-
-
-    Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
-        datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
-        intersection)
-        .flatMap((samples) => {
-            return Rx.Observable.zip(
-                sparseData(cohortA.host, cohortA.mutationDataSetId, samples, geneList),
-                datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samples, geneList),
-                datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samples, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samples, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
-                (mutations, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber) => ({
-                    mutations,
-                    samples,
-                    copyNumber,
-                    genomeBackgroundMutation,
-                    genomeBackgroundCopyNumber
-                }))
-        })
-        .subscribe(({mutations, samples, copyNumber, genomeBackgroundMutation, genomeBackgroundCopyNumber}) => {
-            this.handleCohortData({
-                mutations,
-                samples,
-                copyNumber,
-                genomeBackgroundMutation,
-                genomeBackgroundCopyNumber,
-                geneList,
-                cohort: cohortA
-            });
-        });
-
+export function calculateSamples(availableSamples,cohort){
+  if(cohort.selectedSubCohorts.length > 0){
+    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort));
+  }
+  else{
+    return availableSamples;
+  }
 }
 
 // TODO: move into a service as an async method
-export function fetchCombinedCohorts(selectedCohortA,selectedCohortB){
-    if (Object.keys(this.state.cohortData).length === 0 && this.state.cohortData.constructor === Object) return;
-    let cohortA = this.state.cohortData.find(c => c.name === selectedCohortA);
-    let cohortB = this.state.cohortData.find(c => c.name === selectedCohortB);
+export function fetchCombinedCohorts(selectedCohorts, pathways, combinationHandler) {
+  const geneList = getGenesForPathways(pathways);
 
-    let selectedObjectA = {
-        selected: selectedCohortA,
-        selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortA),
-    };
-    let selectedObjectB = {
-        selected: selectedCohortB,
-        selectedSubCohorts: getSubCohortsOnlyForCohort(selectedCohortB),
-    };
-    AppStorageHandler.storeCohortState(selectedObjectA, 0);
-    AppStorageHandler.storeCohortState(selectedObjectB, 1);
-    // this.setState({
-    //     selectedCohort: selectedCohortA,
-    //     selectedCohortData: cohortA,
-    //     processing: true,
-    // });
-    let pathways = this.getActiveApp().pathway;
-    let geneList = this.getGenesForPathways(pathways);
+  Rx.Observable.zip(
+    getSamplesForCohort(selectedCohorts[0]),
+    getSamplesForCohort(selectedCohorts[1]),
+  ).flatMap((availableSamples) => {
+    const samplesA = calculateSamples(availableSamples[0],selectedCohorts[0]);
+    const samplesB = calculateSamples(availableSamples[1],selectedCohorts[1]);
 
-    // this selects cohorts, not sub-cohorts
-    // TODO: get working
-    // TODO: extend to get subcohorts
-
-    Rx.Observable.zip(datasetSamples(cohortA.host, cohortA.mutationDataSetId, null),
-        datasetSamples(cohortA.host, cohortA.copyNumberDataSetId, null),
-        intersection)
-        .flatMap((samples) => {
-            return Rx.Observable.zip(
-                sparseData(cohortA.host, cohortA.mutationDataSetId, samples, geneList),
-                datasetFetch(cohortA.host, cohortA.copyNumberDataSetId, samples, geneList),
-                datasetFetch(cohortA.genomeBackgroundMutation.host, cohortA.genomeBackgroundMutation.dataset, samples, [cohortA.genomeBackgroundMutation.feature_event_K, cohortA.genomeBackgroundMutation.feature_total_pop_N]),
-                datasetFetch(cohortA.genomeBackgroundCopyNumber.host, cohortA.genomeBackgroundCopyNumber.dataset, samples, [cohortA.genomeBackgroundCopyNumber.feature_event_K, cohortA.genomeBackgroundCopyNumber.feature_total_pop_N]),
-
-
-                (
-                    mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-                    mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
-                ) => ({
-                    samples,
-                    mutationsA,
-                    copyNumberA,
-                    genomeBackgroundMutationA,
-                    genomeBackgroundCopyNumberA,
-                    mutationsB,
-                    copyNumberB,
-                    genomeBackgroundMutationB,
-                    genomeBackgroundCopyNumberB,
-
-                }))
-        })
-        .subscribe(({
-                        samples,
-                        mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-                        mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB
-                    }) => {
-
-            this.handleCombinedCohortData({
-                samples,
-                geneList,
-
-                mutationsA,
-                copyNumberA,
-                genomeBackgroundMutationA,
-                genomeBackgroundCopyNumberA,
-                cohortA,
-                mutationsB,
-                copyNumberB,
-                genomeBackgroundMutationB,
-                genomeBackgroundCopyNumberB,
-                cohortB,
-            });
-        });
-};
+    // TODO: make this a testable function
+    return Rx.Observable.zip(
+      sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
+      datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
+      datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samplesA, [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
+      datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samplesA, [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
+      sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
+      datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
+      datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
+      datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
+      (
+        mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+        mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+      ) => ({
+        samplesA,
+        mutationsA,
+        copyNumberA,
+        genomeBackgroundMutationA,
+        genomeBackgroundCopyNumberA,
+        samplesB,
+        mutationsB,
+        copyNumberB,
+        genomeBackgroundMutationB,
+        genomeBackgroundCopyNumberB,
+      }),
+    );
+  })
+    .subscribe(({
+      samplesA, mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      samplesB, mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+    }) => {
+      combinationHandler({
+        geneList,
+        pathways,
+        samplesA,
+        mutationsA,
+        copyNumberA,
+        genomeBackgroundMutationA,
+        genomeBackgroundCopyNumberA,
+        samplesB,
+        mutationsB,
+        copyNumberB,
+        genomeBackgroundMutationB,
+        genomeBackgroundCopyNumberB,
+        selectedCohorts,
+      });
+    });
+}

@@ -9,6 +9,7 @@ describe('Render XenaGeneSet App', () => {
 
   beforeEach(() => {
     node = document.createElement('div')
+    localStorage.clear();
   });
 
   afterEach(() => {
