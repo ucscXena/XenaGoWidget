@@ -250,10 +250,6 @@ export function filterMutations(expression,returnArray,samples,pathways){
 }
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
-  // console.log('input CN ',JSON.stringify(copyNumber))
-  // console.log('input return array',JSON.stringify(returnArray))
-  // console.log('input gene list',JSON.stringify(geneList))
-  // console.log('input patthways',JSON.stringify(pathways))
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
   for (const gene of geneList) {
@@ -280,7 +276,6 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
-  // console.log('output return array',JSON.stringify(returnArray))
   return returnArray;
 }
 

@@ -78,6 +78,13 @@ import FilterMutationGeneReturnArray1 from '../data/FilterMutationGeneReturnArra
 import FilterMutationGeneSamples1 from '../data/FilterMutationGeneSamples1';
 import FilterCopyNumberGeneReturnArray1 from '../data/FilterCopyNumberGeneReturnArray1';
 
+import FilterBothExpression1 from '../data/FilterBothExpression1';
+import FilterBothReturnArray1 from '../data/FilterBothReturnArray1';
+import FilterBothSamples1 from '../data/FilterBothSamples1';
+import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
+import FilterBothGeneList1 from '../data/FilterBothGeneList1';
+import FilterBothOutput1 from '../data/FilterBothOutput1';
+
 // expect(FilterCopyNumberGeneOutput1).toEqual(filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, FilterCopyNumberGeneGeneList1 , FilterCopyNumberGene1));
 
 const AMP_THRESHOLD = 2 ;
@@ -183,23 +190,25 @@ describe('Data Functions', () => {
     expect(outputFile).toEqual(FilterMutationGeneOutput1);
   });
 
-  // it('Filter Both for one Gene', () => {
-  //   const pathways = [{'goid':'','golabel':'LATS2','gene':['LATS2']}];
-  //   console.log('A')
-  //   let outputFile = filterMutations(FilterMutationGeneExpression1, JSON.parse(JSON.stringify(FilterMutationGeneReturnArray1)), FilterMutationGeneSamples1, pathways);
-  //   console.log('B')
-  //   outputFile = filterMutations(FilterCopyNumberGeneInput1, outputFile, FilterCopyNumberGeneGeneList1, pathways);
-  //   console.log('C')
-  //
-  //   let finalSum = outputFile[0].reduce( (a,b) => {
-  //     return a + b.total;
-  //   },0 );
-  //   console.log('D')
-  //   expect(83).toEqual(outputFile[0].length);
-  //   expect(1).toEqual(outputFile.length);
-  //   expect(12).toEqual(finalSum);
-  //   expect(outputFile).toEqual(FilterMutationGeneOutput1);
-  // });
+  it('Filter Both for one Gene', () => {
+    const pathways = [{'goid':'','golabel':'LATS2','gene':['LATS2']}];
+    let outputFile = filterMutations(FilterBothExpression1, FilterBothReturnArray1, FilterBothSamples1, pathways);
+    let intermediateSum = outputFile[0].reduce( (a,b) => {
+      return a + b.total;
+    },0 );
+    expect(83).toEqual(outputFile[0].length);
+    expect(1).toEqual(outputFile.length);
+    expect(11).toEqual(intermediateSum);
+    outputFile = filterCopyNumbers(FilterBothCopyNumber1, outputFile, FilterBothGeneList1, pathways);
+
+    let finalSum = outputFile[0].reduce( (a,b) => {
+      return a + b.total;
+    },0 );
+    expect(83).toEqual(outputFile[0].length);
+    expect(1).toEqual(outputFile.length);
+    expect(12).toEqual(finalSum);
+    expect(outputFile).toEqual(FilterBothOutput1);
+  });
 
   it('Find Associated Data', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
