@@ -221,6 +221,10 @@ export function scoreData(score, numSamples, geneCount) {
 }
 
 export function filterMutations(expression,returnArray,samples,pathways){
+  // console.log('input mutation',JSON.stringify(expression))
+  // console.log('input return array',JSON.stringify(returnArray))
+  // console.log('input gene list',JSON.stringify(samples))
+  // console.log('input patthways',JSON.stringify(pathways))
   const genePathwayLookup = getGenePathwayLookup(pathways);
   const sampleIndex = indexSamples(samples);
   for (const row of expression.rows) {
@@ -246,6 +250,7 @@ export function filterMutations(expression,returnArray,samples,pathways){
       }
     }
   }
+  // console.log('output return array',JSON.stringify(returnArray))
   return returnArray;
 }
 

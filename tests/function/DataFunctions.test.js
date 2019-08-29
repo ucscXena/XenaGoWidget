@@ -66,11 +66,13 @@ import FilterMutationReturnArray1 from '../data/FilterMutationReturnArray1';
 import FilterMutationSamples1 from '../data/FilterMutationSamples1';
 
 import FilterCopyNumber1 from '../data/FilterCopyNumber1';
-import FilterCopyNumberGeneList1 from '../data/FilterCopyNumberGeneList1';
+import FilterCopyNumberGeneSetGeneList1 from '../data/FilterCopyNumberGeneSetGeneList1';
 import FilterCopyNumberOutput1 from '../data/FilterCopyNumberOutput1';
 import FilterCopyNumberReturnArray1 from '../data/FilterCopyNumberReturnArray1';
 
 import FilterCopyNumberGeneInput1 from '../data/FilterCopyNumberGeneInput1';
+import FilterCopyNumberGeneGeneList1 from '../data/FilterCopyNumberGeneGeneList1';
+import FilterCopyNumberInputPathways1 from '../data/FilterCopyNumberInputPathways1';
 import FilterCopyNumberGeneReturnArray1 from '../data/FilterCopyNumberGeneReturnArray1';
 
 // expect(FilterCopyNumberGeneOutput1).toEqual(filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, FilterCopyNumberGeneGeneList1 , FilterCopyNumberGene1));
@@ -152,23 +154,18 @@ describe('Data Functions', () => {
   });
 
   it('Filter Copy Numbers for Gene Set', () => {
-    expect(FilterCopyNumberOutput1).toEqual(filterCopyNumbers(FilterCopyNumber1, FilterCopyNumberReturnArray1, FilterCopyNumberGeneList1 , FilterMutationPathways1));
+    expect(FilterCopyNumberOutput1).toEqual(filterCopyNumbers(FilterCopyNumber1, FilterCopyNumberReturnArray1, FilterCopyNumberGeneSetGeneList1 , FilterMutationPathways1));
   });
 
   it('Filter Copy Numbers for one Gene', () => {
-    const geneList = ['DUT'];
     const pathways = [{'goid':'','golabel':'DUT','gene':['DUT']}];
-    // const samples = ['TCGA-3H-AB3K-01','TCGA-3H-AB3L-01','TCGA-3H-AB3M-01','TCGA-3H-AB3O-01','TCGA-3H-AB3S-01','TCGA-3H-AB3T-01','TCGA-3H-AB3U-01','TCGA-3H-AB3X-01','TCGA-3U-A98D-01','TCGA-3U-A98E-01','TCGA-3U-A98F-01','TCGA-3U-A98G-01','TCGA-3U-A98H-01','TCGA-3U-A98I-01','TCGA-3U-A98J-01','TCGA-LK-A4NW-01','TCGA-LK-A4NY-01','TCGA-LK-A4NZ-01','TCGA-LK-A4O0-01','TCGA-LK-A4O2-01','TCGA-LK-A4O4-01','TCGA-LK-A4O5-01','TCGA-LK-A4O6-01','TCGA-LK-A4O7-01','TCGA-MQ-A4KX-01','TCGA-MQ-A4LC-01','TCGA-MQ-A4LI-01','TCGA-MQ-A4LJ-01','TCGA-MQ-A4LM-01','TCGA-MQ-A4LP-01','TCGA-MQ-A4LV-01','TCGA-MQ-A6BL-01','TCGA-MQ-A6BQ-01','TCGA-MQ-A6BR-01','TCGA-MQ-A6BS-01','TCGA-NQ-A57I-01','TCGA-NQ-A638-01','TCGA-SC-A6LM-01','TCGA-SC-A6LN-01','TCGA-SC-A6LP-01','TCGA-SC-A6LQ-01','TCGA-SC-A6LR-01','TCGA-SC-AA5Z-01','TCGA-SH-A7BC-01','TCGA-SH-A7BD-01','TCGA-SH-A7BH-01','TCGA-SH-A9CT-01','TCGA-SH-A9CU-01','TCGA-TS-A7OU-01','TCGA-TS-A7OY-01','TCGA-TS-A7OZ-01','TCGA-TS-A7P0-01','TCGA-TS-A7P1-01','TCGA-TS-A7P3-01','TCGA-TS-A7P6-01','TCGA-TS-A7P8-01','TCGA-TS-A7PB-01','TCGA-TS-A8AI-01','TCGA-TS-A8AS-01','TCGA-TS-A8AV-01','TCGA-TS-A8AY-01','TCGA-UD-AABZ-01','TCGA-UD-AAC1-01','TCGA-UD-AAC4-01','TCGA-UD-AAC5-01','TCGA-UD-AAC6-01','TCGA-UD-AAC7-01','TCGA-UT-A88C-01','TCGA-UT-A88D-01','TCGA-UT-A88E-01','TCGA-UT-A88G-01','TCGA-UT-A97Y-01','TCGA-XT-AASU-01','TCGA-YS-A95B-01','TCGA-YS-A95C-01','TCGA-YS-AA4M-01','TCGA-ZN-A9VO-01','TCGA-ZN-A9VP-01','TCGA-ZN-A9VQ-01','TCGA-ZN-A9VS-01','TCGA-ZN-A9VU-01','TCGA-ZN-A9VV-01','TCGA-ZN-A9VW-01'];
-    const outputFile = filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, geneList , pathways);
-    // console.log(JSON.stringify(outputFile))
+    const outputFile = filterCopyNumbers(FilterCopyNumberGeneInput1, FilterCopyNumberGeneReturnArray1, FilterCopyNumberGeneGeneList1, pathways);
     let finalSum = outputFile[0].reduce( (a,b) => {
       return a + b.total;
     },0 );
-    // console.log('sum',finalSum)
     expect(83).toEqual(outputFile[0].length);
     expect(1).toEqual(outputFile.length);
     expect(4).toEqual(finalSum);
-    // console.log('output file',JSON.stringify(outputFile));
   });
 
 
