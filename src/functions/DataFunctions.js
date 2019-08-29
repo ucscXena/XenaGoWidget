@@ -1,5 +1,5 @@
 import {
-  sum, times, memoize, range,
+  sum, times, memoize, range
 } from 'ucsc-xena-client/dist/underscore_ext';
 import { izip } from 'itertools';
 import lru from 'tiny-lru/lib/tiny-lru.es5';
@@ -293,10 +293,6 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
   filter = filter.indexOf('All') === 0 ? '' : filter;
   let returnArray = createEmptyArray(pathways.length, samples.length);
-  // console.log('CN',JSON.stringify(copyNumber))
-  // console.log('gene list ',JSON.stringify(geneList))
-  // console.log('pathways',JSON.stringify(pathways))
-  // console.log('samples',JSON.stringify(samples))
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (!filter || filter === 'Mutation') {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
@@ -306,8 +302,6 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
-  // console.log('output return array',JSON.stringify(returnArray))
-
   return returnArray;
 }
 
@@ -390,6 +384,8 @@ export function calculateAllPathways(pathwayData) {
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
   const maxSamplesAffectedB = pathwayDataB.samples.length;
 
+
+  // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
     p.firstObserved = observationsA[index];
