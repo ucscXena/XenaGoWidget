@@ -1,4 +1,3 @@
-import React from 'react';
 import update from 'immutability-helper';
 import { sumTotals, sumInstances } from './MathFunctions';
 

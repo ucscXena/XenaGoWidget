@@ -15,7 +15,6 @@ import {
   getCohortDetails,
   getGenesForPathways,
 } from '../functions/CohortFunctions';
-import {DEFAULT_DATA_VALUE} from '../functions/DataFunctions';
 import {partition} from '../functions/MathFunctions';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;

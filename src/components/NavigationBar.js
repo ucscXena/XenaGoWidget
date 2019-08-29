@@ -10,6 +10,7 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 import AutocompleteTheme from '../css/autocomplete.css';
 
 
+// eslint-disable-next-line react/no-multi-comp
 const GithubIcon = () => (
   <svg style={{height: 30}} viewBox="0 0 284 277">
     <g fill='white' stroke='black' strokeWidth='4'>
@@ -20,10 +21,12 @@ const GithubIcon = () => (
   </svg>
 );
 
+// eslint-disable-next-line react/no-multi-comp
 const XenaIcon = () => (
   <img src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 );
 
+// eslint-disable-next-line react/no-multi-comp
 export default class NavigationBar extends PureComponent {
 
   constructor(props) {
@@ -146,12 +149,12 @@ NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
   editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
+  onShowPathways: PropTypes.any,
+  onShowXena: PropTypes.any,
   searchHandler: PropTypes.any,
   showClusterSort: PropTypes.any,
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
-  onShowPathways: PropTypes.any,
-  onShowXena: PropTypes.any,
   toggleShowClusterSort: PropTypes.any,
   toggleShowDetailLayer: PropTypes.any,
   toggleShowDiffLayer: PropTypes.any,

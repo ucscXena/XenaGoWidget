@@ -70,14 +70,14 @@ export class SubCohortSelector extends PureComponent {
 
     render() {
 
-      let {active, handleToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+      let {active, onToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
       let {allSelected,selectedSubCohorts} = this.state ;
 
       return (
         <Dialog
           active={active}
-          onEscKeyDown={handleToggle}
-          onOverlayClick={handleToggle}
+          onEscKeyDown={onToggle}
+          onOverlayClick={onToggle}
           title='Edit Sub-Cohorts'
         >
           <table style={{ width:'100%'}}>
@@ -138,8 +138,9 @@ export class SubCohortSelector extends PureComponent {
 
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
+  cohortLabel: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
-  handleToggle: PropTypes.any.isRequired,
+  onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
   subCohortsForSelected: PropTypes.any,

@@ -151,12 +151,8 @@ function findPathwayData(pathwayWidth, count) {
 
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
   const tissueCount = data[0].length;
-
-  // console.log('drawing gene set data',data)
-
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
-
 
   layout.forEach((el, i) => {
     //     // TODO: may be faster to transform the whole data cohort at once
@@ -196,21 +192,15 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
 
 export default {
 
-
   drawGeneView(vg, props) {
     const {
       width, height, layout, cohortIndex, associatedData,
     } = props;
 
     clearScreen(vg, width, height);
-
-    console.log('tyring to redrawing gene view canvas')
-
     if (associatedData.length === 0) {
       return;
     }
-
-    console.log('redrawing gene view canvas')
 
     drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
   },

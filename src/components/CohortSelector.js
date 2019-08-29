@@ -25,7 +25,7 @@ export class CohortSelector extends PureComponent {
     };
   }
 
-    onChange = (event) => {
+    handleChange = (event) => {
       // populate selected sub cohorts for the cohorts
       let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
       this.setState( {
@@ -98,7 +98,7 @@ export class CohortSelector extends PureComponent {
       this.props.onChangeSubCohort(selectionObject);
     };
 
-    selectCohortSelection = () => {
+    handleCohortSelection = () => {
       this.setState({showSubCohortSelector: true});
     };
 
@@ -113,7 +113,7 @@ export class CohortSelector extends PureComponent {
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
             handleSubCohortChange={this.onChangeSubCohort}
-            handleToggle={this.handleSubCohortToggle}
+            onToggle={this.handleSubCohortToggle}
             selectedCohort={this.state.selectedCohort}
             selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
             subCohortsForSelected={subCohortsForSelected}
@@ -129,7 +129,7 @@ export class CohortSelector extends PureComponent {
           >Select Cohort {this.props.cohortLabel}</div>
           <select
             className={BaseStyle.softflow}
-            onChange={this.onChange}
+            onChange={this.handleChange}
             style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
             value={this.state.selectedCohort.name}
           >
@@ -144,7 +144,7 @@ export class CohortSelector extends PureComponent {
             }
           </select>
           {subCohortsForSelected.length>0 &&
-                   <TooltipButton label={subCohortLabel} onClick={this.selectCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
+                   <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>
 

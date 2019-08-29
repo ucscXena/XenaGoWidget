@@ -34,6 +34,11 @@ export default class PathwayEditor extends PureComponent {
     };
   }
 
+  //// TODO: this is not good
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(props) {
+    this.setState({ selectedPathway: props.selectedPathway } );
+  }
 
   handleChange = e => {
     let file = e.target.files[0];
@@ -114,11 +119,6 @@ export default class PathwayEditor extends PureComponent {
       );
     }
 
-    //// TODO: this is not good
-    // eslint-disable-next-line react/no-deprecated
-    componentWillReceiveProps(props) {
-      this.setState({ selectedPathway: props.selectedPathway } );
-    }
 
     render() {
       return (
@@ -221,10 +221,10 @@ PathwayEditor.propTypes = {
   addGeneHandler: PropTypes.any,
   addGeneSetHandler: PropTypes.any,
   onClose: PropTypes.any,
+  onReset: PropTypes.any,
+  onUpload: PropTypes.any,
   pathwaySet: PropTypes.any,
   removeGeneHandler: PropTypes.any,
   removeGeneSetHandler: PropTypes.any,
-  onReset: PropTypes.any,
   selectedPathway: PropTypes.any,
-  onUpload: PropTypes.any,
 };

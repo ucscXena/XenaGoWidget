@@ -34,8 +34,6 @@ export default class LabelWrapper extends PureComponent {
       , numSamples
     } = this.props;
 
-    console.log('re-rendering label wrapper')
-
     return (
       <div
         onMouseMove={onMouseMove}
