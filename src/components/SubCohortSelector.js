@@ -2,7 +2,6 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import Dialog from 'react-toolbox/lib/dialog';
-import Checkbox from 'react-toolbox/lib/checkbox';
 import {isEqual} from 'underscore';
 import {Button} from 'react-toolbox/lib/button';
 import Link from 'react-toolbox/lib/link';
