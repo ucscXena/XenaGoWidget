@@ -1,29 +1,17 @@
 import expect from 'expect';
 import {
   doDataAssociations,
-  createEmptyArray,
-  DEFAULT_DATA_VALUE,
   findAssociatedData,
   findPruneData,
-  getCopyNumberHigh,
-  getCopyNumberLow,
-  getCopyNumberValue,
-  getGenePathwayLookup,
-  getMutationScore,
   pruneColumns,
   calculateExpectedProb,
   calculateGeneSetExpected,
-  scoreChiSquareTwoByTwo,
-  scoreData,
-  scoreChiSquaredData,
   calculateAssociatedData,
   calculateObserved,
   calculatePathwayScore,
   calculateAllPathways,
   calculateDiffs, generateScoredData, filterCopyNumbers, filterMutations
 } from '../../src/functions/DataFunctions';
-import {times} from 'underscore';
-import DefaultPathways from '../../src/data/genesets/tgac';
 
 import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
 import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
@@ -83,21 +71,8 @@ import FilterBothSamples1 from '../data/FilterBothSamples1';
 import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
 import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
-import {unmountComponentAtNode} from 'react-dom';
 
 describe('Data Integration Functions', () => {
-
-  let node;
-
-  beforeEach(() => {
-    node = document.createElement('div');
-    localStorage.clear();
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(node);
-  });
-
 
   it('Associated Data', () => {
     expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, 'All'));
