@@ -19,14 +19,9 @@ export class SubCohortSelector extends PureComponent {
 
   componentDidUpdate(prevProps) {
     if(this.props.selectedCohort!==prevProps.selectedCohort){
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         selectedSubCohorts:this.props.selectedSubCohorts,
-        originalSelectedSubCohorts:this.props.selectedSubCohorts,
-        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
-      });
-    }
-    else{
-      this.setState({
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
         allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
       });
