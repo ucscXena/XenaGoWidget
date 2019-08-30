@@ -7,7 +7,7 @@ import { uniq} from 'underscore';
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
-export function getSamplesForCohort(cohort {
+export function getSamplesForCohort(cohort) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
 
