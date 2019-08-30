@@ -49,7 +49,6 @@ export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
         if(sc===UNASSIGNED_SUBTYPE.key){
-          console.log('availbale samples',availableSamples.length,getAllSubCohortSamples(selectedCohort.name).length)
           const overlapping = intersection(availableSamples,getAllSubCohortSamples(selectedCohort.name))
           return availableSamples.filter( s => !overlapping.includes(s) );
         }
@@ -62,7 +61,6 @@ export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples
 }
 
 export function getSamplesFromSubCohortList(cohort, subCohortArray) {
-  console.log('sub cohort array',subCohortArray)
   return uniq(subCohortArray.flatMap((sc) => getSamplesFromSubCohort(cohort, sc)));
 }
 
