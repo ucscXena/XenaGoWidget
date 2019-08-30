@@ -3,7 +3,7 @@ import { uniq, pluck, flatten } from 'underscore';
 import subCohorts from '../data/Subtype_Selected';
 import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import {intersection} from "./MathFunctions";
+import {intersection} from './MathFunctions';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
@@ -49,7 +49,7 @@ export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
         if(sc===UNASSIGNED_SUBTYPE.key){
-          const overlapping = intersection(availableSamples,getAllSubCohortSamples(selectedCohort.name))
+          const overlapping = intersection(availableSamples,getAllSubCohortSamples(selectedCohort.name));
           return availableSamples.filter( s => !overlapping.includes(s) );
         }
         else{

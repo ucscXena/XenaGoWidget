@@ -1,5 +1,4 @@
 import expect from 'expect';
-import { unmountComponentAtNode} from 'react-dom';
 import {
   fetchCohortData, getGenesForNamedPathways, getGenesForPathways, getSamplesFromSelectedSubCohorts,
   getSamplesFromSubCohort,
