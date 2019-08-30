@@ -96,7 +96,6 @@ export default class XenaGoViewer extends PureComponent {
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortLabel={cohortLabel}
-                            // selectedSubCohorts={selectedCohort.selectedSubCohorts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}
