@@ -11,7 +11,7 @@ import { getGenesForNamedPathways } from './CohortFunctions';
 import {
   clusterSort, diffSort, scoreColumns, synchronizedSort,
 } from './SortFunctions';
-import {FILTER_ENUM} from "../components/FilterSelector";
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 const DEFAULT_DELETION_THRESHOLD = -2;
