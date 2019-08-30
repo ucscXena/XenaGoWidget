@@ -256,9 +256,13 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
+const GENE_EXPRESSION_MIN = 10;
+
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
+  const possible = geneExpression[0].length * geneExpression.length;
+  let scored = 0 ;
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -271,18 +275,20 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     for (const index of pathwayIndices) {
       // process all samples
       for (const sampleEntryIndex in sampleEntries) {
-        const returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],
-          DEFAULT_AMPLIFICATION_THRESHOLD,
-          DEFAULT_DELETION_THRESHOLD);
+        const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
         if (returnValue > 0) {
-          returnArray[index][sampleEntryIndex].total += returnValue;
+          returnArray[index][sampleEntryIndex].total += returnValue ;
+          ++scored ;
           returnArray[index][sampleEntryIndex].cnv += returnValue;
-          returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
-          returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+          returnArray[index][sampleEntryIndex].mutation += returnValue;
+          returnArray[index][sampleEntryIndex].mutation4 += returnValue;
+          // returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+          returnArray[index][sampleEntryIndex].cnvLow += returnValue;
         }
       }
     }
   }
+  console.log('output gene epxression',JSON.stringify(returnArray),scored,possible, (100.0 * scored / possible));
   return returnArray;
 }
 
@@ -341,7 +347,7 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneL
     // get list of genes in identified pathways
   }
 
-  if (!filter || filter === FILTER_ENUM.GENE_EXPRESSION) {
+  if (filter === FILTER_ENUM.GENE_EXPRESSION) {
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
