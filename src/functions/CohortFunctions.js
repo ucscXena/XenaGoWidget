@@ -2,6 +2,8 @@ import { uniq, pluck, flatten } from 'underscore';
 
 import subCohorts from '../data/Subtype_Selected';
 import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
+import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
+import {intersection} from './MathFunctions';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
@@ -25,7 +27,7 @@ function getSubCohortsForCohort(cohort) {
 
 export function getSubCohortsOnlyForCohort(cohort) {
   const subCohortsForCohort = getSubCohortsForCohort(cohort);
-  return subCohortsForCohort ? Object.entries(subCohortsForCohort).map((c) => c[0]) : [];
+  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
 }
 
 // TODO: remove . . always returns null?
@@ -38,10 +40,22 @@ export function getGenesForNamedPathways(selectedPathways, pathways) {
   return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
 }
 
-export function getSamplesFromSelectedSubCohorts(selectedCohort) {
+export function getAllSubCohortSamples(cohort){
+  return getSamplesFromSubCohortList(cohort,getSubCohortsOnlyForCohort(cohort));
+}
+
+export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples) {
   if (selectedCohort.selectedSubCohorts) {
     return uniq(selectedCohort.selectedSubCohorts
-      .flatMap((sc) => getSamplesFromSubCohort(selectedCohort.name, sc)));
+      .flatMap((sc) => {
+        if(sc===UNASSIGNED_SUBTYPE.key){
+          const overlapping = intersection(availableSamples,getAllSubCohortSamples(selectedCohort.name));
+          return availableSamples.filter( s => !overlapping.includes(s) );
+        }
+        else{
+          return getSamplesFromSubCohort(selectedCohort.name, sc);
+        }
+      }));
   }
   return null;
 }

@@ -1,5 +1,4 @@
 import expect from 'expect';
-import { unmountComponentAtNode} from 'react-dom';
 import {
   fetchCohortData, getGenesForNamedPathways, getGenesForPathways, getSamplesFromSelectedSubCohorts,
   getSamplesFromSubCohort,
@@ -8,19 +7,9 @@ import {
 } from '../../src/functions/CohortFunctions';
 import DefaultCohortData from '../data/DefaultCohortData';
 import SamplePathway1 from '../data/SamplePathway1';
+import {UNASSIGNED_SUBTYPE} from '../../src/components/SubCohortSelector';
 
 describe('Test Sub Cohorts', () => {
-
-  let node;
-
-  beforeEach(() => {
-    node = document.createElement('div');
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(node);
-  });
-
 
   it('Get sub all cohort samples cohort', () => {
     let samples = getSamplesFromSubCohort('TCGA Ovarian Cancer (OV)','OVCA.Immunoreactive');
@@ -29,7 +18,7 @@ describe('Test Sub Cohorts', () => {
 
   it('Get Sub cohorts for cohort', () => {
     let subCohorts = getSubCohortsOnlyForCohort('TCGA Ovarian Cancer (OV)');
-    expect(['OVCA.Differentiated', 'OVCA.Immunoreactive', 'OVCA.Mesenchymal', 'OVCA.Proliferative']).toEqual(subCohorts);
+    expect(['OVCA.Differentiated', 'OVCA.Immunoreactive', 'OVCA.Mesenchymal', 'OVCA.Proliferative',UNASSIGNED_SUBTYPE.key]).toEqual(subCohorts);
 
   });
 

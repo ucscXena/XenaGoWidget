@@ -9,6 +9,8 @@ import Col from 'react-bootstrap/lib/Col';
 import Row from 'react-bootstrap/lib/Row';
 import Grid from 'react-bootstrap/lib/Grid';
 
+export const UNASSIGNED_SUBTYPE = { key: 'UNASSIGNED',label:'unassigned'};
+
 export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
@@ -119,6 +121,20 @@ export class SubCohortSelector extends PureComponent {
                       );
                     })
                   }
+                  {/*<Row>*/}
+                  {/*  <Col md={12}>*/}
+                  {/*    <input*/}
+                  {/*      checked={selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
+                  {/*      disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
+                  {/*      name={UNASSIGNED_SUBTYPE.label}*/}
+                  {/*      onChange={this.handleChange}*/}
+                  {/*      style={{display:'inline', marginRight:10}}*/}
+                  {/*      type='checkbox'*/}
+                  {/*    />*/}
+                  {/*    <div  style={{display: 'inline'}}>{UNASSIGNED_SUBTYPE.label}</div>*/}
+                  {/*    <Link href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(UNASSIGNED_SUBTYPE.key); }} style={{display:'inline', marginLeft: 20,fontSize: 'small'}}/>*/}
+                  {/*  </Col>*/}
+                  {/*</Row>*/}
                 </Grid>
               </td>
             </tr>
