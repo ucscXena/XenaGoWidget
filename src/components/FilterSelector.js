@@ -20,8 +20,7 @@ function lowerCaseCompare(a, b) {
 
 
 function compileData(filteredEffects, data, geneList, amplificationThreshold, deletionThreshold) {
-  let {pathways, copyNumber, expression: {rows}} = data;
-  console.log('input data',data)
+  let {pathways, copyNumber, expression: {rows}, geneExpression} = data;
 
   let genes = new Set(flatten(pluck(pathways, 'gene')));
   let hasGene = row => genes.has(row.gene);
@@ -38,7 +37,6 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
   for (let gene of genes) {
     let geneIndex = geneList.indexOf(gene);
     let copyNumberData = copyNumber[geneIndex];
-
     copyNumberData.map((el) => {
       copyNumberTotal += getCopyNumberValue(el, amplificationThreshold, deletionThreshold);
     });
@@ -52,6 +50,8 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
     totalMutations += returnObject[obj];
   }
   filterObject[FILTER_ENUM.MUTATION] = totalMutations;
+
+  console.log('gene expression',JSON.stringify(geneExpression.length),JSON.stringify(geneExpression[0].length),JSON.stringify(genes),geneList.length)
 
   // calculate gene expression hits total
   filterObject[FILTER_ENUM.GENE_EXPRESSION] = 0 ;
