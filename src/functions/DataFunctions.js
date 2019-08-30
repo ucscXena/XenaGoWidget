@@ -11,6 +11,7 @@ import { getGenesForNamedPathways } from './CohortFunctions';
 import {
   clusterSort, diffSort, scoreColumns, synchronizedSort,
 } from './SortFunctions';
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 const DEFAULT_DELETION_THRESHOLD = -2;
@@ -291,14 +292,14 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  * @returns {any[]}
  */
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
-  filter = filter.indexOf('All') === 0 ? '' : filter;
+  filter = filter.indexOf(FILTER_ENUM.ALL) === 0 ? '' : filter;
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-  if (!filter || filter === 'Mutation') {
+  if (!filter || filter === FILTER_ENUM.MUTATION) {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
   }
 
-  if (!filter || filter === 'Copy Number') {
+  if (!filter || filter === FILTER_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }

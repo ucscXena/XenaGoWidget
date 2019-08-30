@@ -4,14 +4,26 @@ import { intersection} from './MathFunctions';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
-export function getSamplesForCohort(cohort) {
+export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
-  return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-    datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-    intersection);
+  // TODO: will have to handle multiple lists at some point
+  switch (filter) {
+  case FILTER_ENUM.ALL:
+    return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+      datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+      intersection);
+  case FILTER_ENUM.COPY_NUMBER:
+    return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
+  case FILTER_ENUM.MUTATION:
+    return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
+  default:
+    // eslint-disable-next-line no-console
+    console.error('filter is not defined',filter);
+  }
 }
 
 export function calculateSamples(availableSamples,cohort){
@@ -24,12 +36,12 @@ export function calculateSamples(availableSamples,cohort){
 }
 
 // TODO: move into a service as an async method
-export function fetchCombinedCohorts(selectedCohorts, pathways, combinationHandler) {
+export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
 
   Rx.Observable.zip(
-    getSamplesForCohort(selectedCohorts[0]),
-    getSamplesForCohort(selectedCohorts[1]),
+    getSamplesForCohort(selectedCohorts[0],filter[0]),
+    getSamplesForCohort(selectedCohorts[1],filter[1]),
   ).flatMap((availableSamples) => {
     const samplesA = calculateSamples(availableSamples[0],selectedCohorts[0]);
     const samplesB = calculateSamples(availableSamples[1],selectedCohorts[1]);

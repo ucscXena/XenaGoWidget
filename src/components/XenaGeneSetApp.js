@@ -543,7 +543,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // const geneSetPathways = AppStorageHandler.getPathways();
       let newPathways = calculateAllPathways(newPathwayData);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData});
+      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
     };
 
     render() {
@@ -553,7 +553,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       if(this.doRefetch()){
         currentLoadState = LOAD_STATE.LOADING;
-        fetchCombinedCohorts(this.state.selectedCohort,pathways,this.handleCombinedCohortData);
+        fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
 
       return (
