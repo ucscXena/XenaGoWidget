@@ -11,8 +11,10 @@ const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
+  console.log('input ',cohort,filter)
   switch (filter) {
   case FILTER_ENUM.ALL:
+    console.log('all?',cohort,filter)
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
       intersection);
@@ -20,6 +22,9 @@ export function getSamplesForCohort(cohort,filter) {
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
   case FILTER_ENUM.MUTATION:
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
+  default:
+    // eslint-disable-next-line no-console
+    console.error('filter is not defined',filter);
   }
 }
 

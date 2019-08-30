@@ -76,6 +76,7 @@ export function getCohortDetails(selected) {
   return fetchCohortData().find((c) => c.name === selected.name);
 }
 
+// TODO: this feels awkward
 let COHORT_DATA;
 
 export function fetchCohortData() {
