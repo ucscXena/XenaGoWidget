@@ -126,7 +126,7 @@ export class CohortSelector extends PureComponent {
             color: 'gray',
             fontWeight: 'bold'
           }}
-          >Select Cohort {this.props.cohortLabel}</div>
+          >Cohort {this.props.cohortLabel}</div>
           <select
             className={BaseStyle.softflow}
             onChange={this.handleChange}
