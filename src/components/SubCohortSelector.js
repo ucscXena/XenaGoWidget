@@ -64,7 +64,6 @@ export class SubCohortSelector extends PureComponent {
       selectedSubCohorts:this.props.subCohortsForSelected,
       allSelected:true,
     });
-    // this.props.handleSubCohortChange(this.props.subCohortsForSelected);
   }
 
   updateSubCategories(){
@@ -141,8 +140,6 @@ export class SubCohortSelector extends PureComponent {
                               raised
                             />
                 }
-                {/*</td>*/}
-                {/*<td>*/}
                 <Button
                   icon='cancel' label='Cancel' onClick={() => this.cancelUpdate()}
                   raised
