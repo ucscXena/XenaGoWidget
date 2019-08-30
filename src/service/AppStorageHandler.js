@@ -53,8 +53,8 @@ const DefaultAppA = {
 };
 
 const DefaultAppB = update(DefaultAppA, {
-  selectedCohort: { $set: 'TCGA Prostate Cancer (PRAD)' },
-  pathwayData: { cohort: { $set: 'TCGA Prostate Cancer (PRAD)' } },
+  selectedCohort: { $set: 'TCGA Lung Adenocarcinoma (LUAD)' },
+  pathwayData: { cohort: { $set: 'TCGA Lung Adenocarcinoma (LUAD)' } },
 });
 
 
@@ -119,8 +119,7 @@ export class AppStorageHandler extends PureComponent {
     }
 
     // TODO: is this correct, or should return a json with {name:xxx} ?
-    // return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
-    return cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)');
+    return cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Lung Adenocarcinoma (LUAD)');
   }
 
   static storeFilterState(selected, cohortIndex) {

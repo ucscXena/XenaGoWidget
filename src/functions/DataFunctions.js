@@ -122,8 +122,7 @@ export function createEmptyArray(pathwayLength, sampleLength) {
  */
 export function calculateGeneSetExpected(pathwayData, filter) {
   // a list for each sample  [0] = expected_N, vs [1] total_pop_N
-  const { genomeBackgroundCopyNumber } = pathwayData;
-  const { genomeBackgroundMutation } = pathwayData;
+  const { genomeBackgroundCopyNumber , genomeBackgroundMutation } = pathwayData;
   // let's assume they are the same order for now since they were fetched with the same sample data
   filter = filter.indexOf(FILTER_ENUM.ALL) === 0 ? '' : filter;
 
