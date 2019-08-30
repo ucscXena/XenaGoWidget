@@ -12,17 +12,6 @@ import {UNASSIGNED_SUBTYPE} from '../../src/components/SubCohortSelector';
 
 describe('Test Sub Cohorts', () => {
 
-  let node;
-
-  beforeEach(() => {
-    node = document.createElement('div');
-  });
-
-  afterEach(() => {
-    unmountComponentAtNode(node);
-  });
-
-
   it('Get sub all cohort samples cohort', () => {
     let samples = getSamplesFromSubCohort('TCGA Ovarian Cancer (OV)','OVCA.Immunoreactive');
     expect(107).toEqual(samples.length);
