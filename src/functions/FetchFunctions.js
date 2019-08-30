@@ -3,6 +3,7 @@ import { intersection} from './MathFunctions';
 
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+import { uniq} from 'underscore';
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
@@ -15,7 +16,7 @@ export function getSamplesForCohort(cohort) {
 
 export function calculateSamples(availableSamples,cohort){
   if(cohort.selectedSubCohorts.length > 0){
-    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort));
+    return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
   }
   else{
     return availableSamples;
