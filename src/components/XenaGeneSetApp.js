@@ -543,7 +543,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // const geneSetPathways = AppStorageHandler.getPathways();
       let newPathways = calculateAllPathways(newPathwayData);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData});
+      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true});
     };
 
     render() {
