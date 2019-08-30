@@ -2,6 +2,7 @@ import { uniq, pluck, flatten } from 'underscore';
 
 import subCohorts from '../data/Subtype_Selected';
 import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
+import {UNASSIGNED_SUBTYPE} from "../components/SubCohortSelector";
 
 const MUTATION_KEY = 'simple somatic mutation';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
@@ -25,7 +26,7 @@ function getSubCohortsForCohort(cohort) {
 
 export function getSubCohortsOnlyForCohort(cohort) {
   const subCohortsForCohort = getSubCohortsForCohort(cohort);
-  return subCohortsForCohort ? Object.entries(subCohortsForCohort).map((c) => c[0]) : [];
+  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
 }
 
 // TODO: remove . . always returns null?

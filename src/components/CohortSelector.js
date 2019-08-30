@@ -19,7 +19,6 @@ export class CohortSelector extends PureComponent {
     super(props);
     this.state = {
       selectedCohort: props.selectedCohort,
-      // selectedSubCohorts: props.selectedSubCohorts ? props.selectedSubCohorts : getSubCohortsOnlyForCohort(props.selectedCohort.name),
       showSubCohortSelector: false,
       subCohortLabel: 'All Subtypes',
     };
