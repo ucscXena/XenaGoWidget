@@ -7,6 +7,12 @@ import {getCopyNumberValue} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
+export const FILTER_ENUM = {
+  ALL:'All',
+  MUTATION:'Mutation',
+  COPY_NUMBER:'Copy Number',
+};
+
 function lowerCaseCompare(a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
