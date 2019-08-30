@@ -19,7 +19,7 @@ export function getSamplesForCohort(cohort,filter) {
   case FILTER_ENUM.COPY_NUMBER:
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
   case FILTER_ENUM.MUTATION:
-    return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
+    return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
   default:
     // eslint-disable-next-line no-console
     console.error('filter is not defined',filter);
