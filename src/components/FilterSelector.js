@@ -3,18 +3,21 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten,sum} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import {filterGeneExpression, getCopyNumberValue, getMutationValue} from '../functions/DataFunctions';
+import {getCopyNumberValue, getGeneExpressionValue} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
 export const FILTER_ENUM = {
-  ALL:'All',
+  CNV_MUTATION:'CN + Mutation',
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
   GENE_EXPRESSION:'Gene Expression',
 };
 
 function lowerCaseCompare(a, b) {
+  // put gene expression at the bottom
+  if(a==='Gene Expression') return 1 ;
+  if(b==='Gene Expression') return 1 ;
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
@@ -51,21 +54,23 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
   }
   filterObject[FILTER_ENUM.MUTATION] = totalMutations;
 
+  filterObject[FILTER_ENUM.CNV_MUTATION] = totalMutations + copyNumberTotal;
+
   // calculate gene expression hits total
-  let mutationTotal = 0;
+  let geneExpressionTotal = 0;
   // TODO: move to a reduce function and use 'index' method
   for (let gene of genes) {
     let geneIndex = geneList.indexOf(gene);
     let geneExpressionData= geneExpression[geneIndex];
     geneExpressionData.map((el) => {
-      mutationTotal += getMutationValue(el, amplificationThreshold, deletionThreshold);
+      geneExpressionTotal += getGeneExpressionValue(el);
     });
   }
 
-  console.log('gene expression',JSON.stringify(geneExpression.length),JSON.stringify(geneExpression[0].length),JSON.stringify(genes),geneList.length)
+  // console.log('gene expression',JSON.stringify(geneExpression.length),JSON.stringify(geneExpression[0].length),JSON.stringify(genes),geneList.length,geneExpressionTotal)
 
   // calculate gene expression hits total
-  filterObject[FILTER_ENUM.GENE_EXPRESSION] = mutationTotal;
+  filterObject[FILTER_ENUM.GENE_EXPRESSION] = geneExpressionTotal;
 
   return filterObject;
 }
@@ -91,10 +96,9 @@ export class FilterSelector extends PureComponent {
       let counts = compileData(Object.keys(this.getFilters()), pathwayData, geneList, amplificationThreshold, deletionThreshold);
       // CNV counts
       let labels = Object.keys(counts).sort(lowerCaseCompare);
-      let total = sum(Object.values(counts));
-
       const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
-      labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
+      // let total = sum(Object.values(counts));
+      // labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
 
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>

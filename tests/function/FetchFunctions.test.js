@@ -16,7 +16,7 @@ describe('Fetch Functions', () => {
       name: 'TCGA Ovarian Cancer (OV)'
     };
     const cohortDetails = getCohortDetails(cohort);
-    getSamplesForCohort(cohortDetails,FILTER_ENUM.ALL).do( (a) => {
+    getSamplesForCohort(cohortDetails,FILTER_ENUM.CNV_MUTATION).do( (a) => {
       expect(a.length).toEqual(136);
     }).subscribe( () => done(),e => done(logError(e)));
   });
