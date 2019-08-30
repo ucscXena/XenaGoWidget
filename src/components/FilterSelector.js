@@ -73,13 +73,10 @@ export class FilterSelector extends PureComponent {
       const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
       labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
 
-      const filterLabel = 'Filter (' + total + ')';
-
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>
           <Dropdown
-            label={filterLabel} onChange={this.handleSetSelected} source={labelValues} style={{marginTop:0}}
-            value={selected}
+            onChange={this.handleSetSelected} source={labelValues} style={{marginTop:0}} value={selected}
           />
         </div>
       );
