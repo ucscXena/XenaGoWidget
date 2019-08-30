@@ -553,7 +553,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       if(this.doRefetch()){
         currentLoadState = LOAD_STATE.LOADING;
-        fetchCombinedCohorts(this.state.selectedCohort,pathways,this.handleCombinedCohortData);
+        fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
 
       return (
