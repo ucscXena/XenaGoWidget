@@ -125,7 +125,7 @@ export function calculateGeneSetExpected(pathwayData, filter) {
   const { genomeBackgroundCopyNumber } = pathwayData;
   const { genomeBackgroundMutation } = pathwayData;
   // let's assume they are the same order for now since they were fetched with the same sample data
-  filter = filter.indexOf('All') === 0 ? '' : filter;
+  filter = filter.indexOf(FILTER_ENUM.ALL) === 0 ? '' : filter;
 
   // // initiate to 0
   const pathwayExpected = {};
@@ -145,13 +145,20 @@ export function calculateGeneSetExpected(pathwayData, filter) {
     for (const pathway of pathwayData.pathways) {
       const sample_probs = [];
 
-      if (!filter || filter === 'Copy Number') {
+      if (!filter || filter === FILTER_ENUM.COPY_NUMBER) {
         sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
       }
-      if (!filter || filter === 'Mutation') {
+      if (!filter || filter === FILTER_ENUM.MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
       }
-      const total_prob = addIndepProb(sample_probs);
+      if (!filter || filter === FILTER_ENUM.GENE_EXPRESSION) {
+        // TODO: add viper scores
+        // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+        // sample_probs.push(0);
+      }
+      // TODO: we should not filter out numbers
+      let total_prob = addIndepProb(sample_probs.filter(Number));
+      // const total_prob = addIndepProb(sample_probs);
       pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
     }
   }

@@ -11,6 +11,7 @@ export const FILTER_ENUM = {
   ALL:'All',
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
+  GENE_EXPRESSION:'Gene Expression',
 };
 
 function lowerCaseCompare(a, b) {
@@ -20,6 +21,7 @@ function lowerCaseCompare(a, b) {
 
 function compileData(filteredEffects, data, geneList, amplificationThreshold, deletionThreshold) {
   let {pathways, copyNumber, expression: {rows}} = data;
+  console.log('input data',data)
 
   let genes = new Set(flatten(pluck(pathways, 'gene')));
   let hasGene = row => genes.has(row.gene);
@@ -28,8 +30,10 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
   let returnObject = mapObject(pick(effects, filteredEffects),
     list => list.length);
 
-  let copyNumberTotal = 0;
+  let filterObject = {};
 
+  // calculate gene expression hits total
+  let copyNumberTotal = 0;
   // TODO: move to a reduce function and use 'index' method
   for (let gene of genes) {
     let geneIndex = geneList.indexOf(gene);
@@ -40,15 +44,17 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
     });
   }
 
-  let filterObject = {};
-  filterObject['Copy Number'] = copyNumberTotal;
+  filterObject[FILTER_ENUM.COPY_NUMBER] = copyNumberTotal;
+
+  // calculate mutations hits total
   let totalMutations = 0;
   for (let obj in returnObject) {
     totalMutations += returnObject[obj];
   }
+  filterObject[FILTER_ENUM.MUTATION] = totalMutations;
 
-  filterObject['Mutation'] = totalMutations;
-
+  // calculate gene expression hits total
+  filterObject[FILTER_ENUM.GENE_EXPRESSION] = 0 ;
 
   return filterObject;
 }
@@ -62,7 +68,7 @@ export class FilterSelector extends PureComponent {
 
     getFilters(){
       let filteredMutationVector = pick(mutationVector, v => v >= MIN_FILTER);
-      filteredMutationVector['Copy Number'] = 1;
+      filteredMutationVector[FILTER_ENUM.COPY_NUMBER] = 1;
       return filteredMutationVector;
     }
 
