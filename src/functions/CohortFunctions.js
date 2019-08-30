@@ -40,8 +40,13 @@ export function getGenesForNamedPathways(selectedPathways, pathways) {
   return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
 }
 
-export function getAllSubCohortSamples(cohort){
+export function getAllSubCohortPossibleSamples(cohort){
   return getSamplesFromSubCohortList(cohort,getSubCohortsOnlyForCohort(cohort));
+}
+
+function getUnassignedSamplesForCohort(selectedCohort, availableSamples) {
+  const overlapping = intersection(availableSamples,getAllSubCohortPossibleSamples(selectedCohort.name));
+  return availableSamples.filter( s => !overlapping.includes(s) );
 }
 
 export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples) {
@@ -49,8 +54,7 @@ export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
         if(sc===UNASSIGNED_SUBTYPE.key){
-          const overlapping = intersection(availableSamples,getAllSubCohortSamples(selectedCohort.name));
-          return availableSamples.filter( s => !overlapping.includes(s) );
+          return getUnassignedSamplesForCohort(selectedCohort,availableSamples);
         }
         else{
           return getSamplesFromSubCohort(selectedCohort.name, sc);
