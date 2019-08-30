@@ -88,13 +88,13 @@ export function createAssociatedDataKey(inputHash) {
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter,
+    expression, copyNumber, geneList, pathways, samples, filter, geneExpression
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter);
+    data = doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
 
@@ -256,6 +256,36 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
+export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
+  const genePathwayLookup = getGenePathwayLookup(pathways);
+
+  for (const gene of geneList) {
+    // if we have not processed that gene before, then process
+    const geneIndex = geneList.indexOf(gene);
+
+    const pathwayIndices = genePathwayLookup(gene);
+    const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
+    // we retrieve proper indices from the pathway to put back in the right place
+
+    // get pathways this gene is involved in
+    for (const index of pathwayIndices) {
+      // process all samples
+      for (const sampleEntryIndex in sampleEntries) {
+        const returnValue = getCopyNumberValue(sampleEntries[sampleEntryIndex],
+          DEFAULT_AMPLIFICATION_THRESHOLD,
+          DEFAULT_DELETION_THRESHOLD);
+        if (returnValue > 0) {
+          returnArray[index][sampleEntryIndex].total += returnValue;
+          returnArray[index][sampleEntryIndex].cnv += returnValue;
+          returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+          returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+        }
+      }
+    }
+  }
+  return returnArray;
+}
+
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -291,13 +321,14 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  *
  * @param expression
  * @param copyNumber
+ * @param geneExpression
  * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
+export function doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter) {
   filter = filter.indexOf(FILTER_ENUM.ALL) === 0 ? '' : filter;
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
@@ -307,6 +338,11 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
 
   if (!filter || filter === FILTER_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
+    // get list of genes in identified pathways
+  }
+
+  if (!filter || filter === FILTER_ENUM.GENE_EXPRESSION) {
+    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
   return returnArray;
@@ -481,23 +517,22 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber } = pathwayData;
+  const { expression, samples, copyNumber, geneExpression } = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
-  // TODO: just return this once fixed
-  const geneData = {
+  return {
     expression,
     samples,
     copyNumber,
+    geneExpression,
     filter,
     geneList:pathwayData.geneList, // use the geneList form the
     pathways,
     pathwaySelection,
   };
-  return geneData;
 }
 
 export function scoreGeneData(inputGeneData) {
