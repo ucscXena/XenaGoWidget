@@ -3,7 +3,7 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten,sum} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import {filterGeneExpression, getCopyNumberValue} from '../functions/DataFunctions';
+import {filterGeneExpression, getCopyNumberValue, getMutationValue} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
@@ -51,12 +51,21 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
   }
   filterObject[FILTER_ENUM.MUTATION] = totalMutations;
 
+  // calculate gene expression hits total
+  let mutationTotal = 0;
+  // TODO: move to a reduce function and use 'index' method
+  for (let gene of genes) {
+    let geneIndex = geneList.indexOf(gene);
+    let geneExpressionData= geneExpression[geneIndex];
+    geneExpressionData.map((el) => {
+      mutationTotal += getMutationValue(el, amplificationThreshold, deletionThreshold);
+    });
+  }
+
   console.log('gene expression',JSON.stringify(geneExpression.length),JSON.stringify(geneExpression[0].length),JSON.stringify(genes),geneList.length)
 
-  // filterGeneExpression(geneExpression)
-
   // calculate gene expression hits total
-  filterObject[FILTER_ENUM.GENE_EXPRESSION] = 0 ;
+  filterObject[FILTER_ENUM.GENE_EXPRESSION] = mutationTotal;
 
   return filterObject;
 }

@@ -15,6 +15,7 @@ import {FILTER_ENUM} from '../components/FilterSelector';
 
 const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 const DEFAULT_DELETION_THRESHOLD = -2;
+const GENE_EXPRESSION_MIN = 10;
 
 const associateCache = lru(500);
 const pruneDataCache = lru(500);
@@ -28,6 +29,10 @@ export const DEFAULT_DATA_VALUE = {
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
+}
+
+export function getMutationValue(inputValue) {
+  return (!isNaN(inputValue) && (inputValue>= GENE_EXPRESSION_MIN)) ? 1 : 0;
 }
 
 export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
@@ -256,7 +261,6 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
-const GENE_EXPRESSION_MIN = 10;
 
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
@@ -275,7 +279,8 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     for (const index of pathwayIndices) {
       // process all samples
       for (const sampleEntryIndex in sampleEntries) {
-        const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
+        // const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
+        const returnValue = getMutationValue(sampleEntries[sampleEntryIndex]);
         if (returnValue > 0) {
           returnArray[index][sampleEntryIndex].total += returnValue ;
           ++scored ;
@@ -289,7 +294,7 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     }
   }
   console.log('output gene epxression',JSON.stringify(returnArray),scored,possible, (100.0 * scored / possible));
-  return returnArray;
+  return {score: scored, returnArray};
 }
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
@@ -348,7 +353,7 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneL
   }
 
   if (filter === FILTER_ENUM.GENE_EXPRESSION) {
-    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways);
+    filterGeneExpression(geneExpression,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
   return returnArray;
