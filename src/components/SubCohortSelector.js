@@ -41,9 +41,11 @@ export class SubCohortSelector extends PureComponent {
     });
   };
 
-  handleChange = (value,field) => {
+  handleChange = (event) => {
+    const field = event.target.name;
+    const newValue = event.target.checked ;
     let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
-    if(value){
+    if(newValue){
       newSelected.push(field);
     }
     else{
@@ -92,7 +94,7 @@ export class SubCohortSelector extends PureComponent {
           <tbody>
             <tr>
               <td>
-                            ({cohortLabel}) Select Sub Cohorts for {selectedCohort.name}
+                  ({cohortLabel}) Select Sub Cohorts for {selectedCohort.name}
               </td>
             </tr>
             <tr>
@@ -107,7 +109,7 @@ export class SubCohortSelector extends PureComponent {
                               checked={selectedSubCohorts.indexOf(cs)>=0}
                               disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
                               name={cs}
-                              onChange={(value) => this.handleChange(value,cs)}
+                              onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
                             />
