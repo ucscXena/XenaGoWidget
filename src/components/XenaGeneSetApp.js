@@ -257,6 +257,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({
         pathwaySet: selectedPathwaySet,
         pathways: selectedPathwaySet.pathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -275,6 +277,8 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySet: selectedPathwaySet,
         pathways: selectedPathwaySet.pathways,
         selectedPathway: newSelectedPathway,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -292,6 +296,8 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySet: selectedPathwaySet,
         pathways: selectedPathwaySet.pathways,
         selectedPathway: newSelectedPathway,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -305,6 +311,8 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySet: selectedPathwaySet,
         pathways: selectedPathwaySet.pathways,
         selectedPathway: undefined,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -543,8 +551,6 @@ export default class XenaGeneSetApp extends PureComponent {
         pathway: pathwaySelection.pathway
       };
 
-      // console.log(JSON.stringify('calculating filter with '),newPathwayData)
-      // const geneSetPathways = AppStorageHandler.getPathways();
       let newPathways = calculateAllPathways(newPathwayData);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
       this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
