@@ -1,7 +1,17 @@
 language: node_js
 
+git:
+  depth: false
+
 node_js:
-  - "lts/*"
+  - 8
+  - 10
+  - 12
+ 
+script:
+  - npm run-script lint
+  - npm run build
+  - npm test
 
 cache:
   directories:

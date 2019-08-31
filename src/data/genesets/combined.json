@@ -1,4 +1,29 @@
-export default [
+[
+	{
+		"goid": "",
+		"golabel": "Insulin/IGF-PI3K pathway branch (FlyBase ortho set)",
+		"gene": ["AKT2", "AKT1", "AKT3", "PIK3CD", "PIK3CB", "PIK3CA", "PDPK1", "PIK3R3", "PIK3R1", "PIK3R2", "MTOR", "IRS1", "IRS4", "IRS2", "SIK2", "SH2B2", "SH2B3", "SH2B1", "RPTOR", "RICTOR", "FOXO1", "FOXO3", "FOXO4", "RHEB", "RHEBL1", "INS", "EIF4EBP1", "EIF4EBP2", "SIK3", "ARNT", "HIF1A", "RPS6KB1", "RPS6KB2", "INSR", "MLST8", "MAPKAP1", "TSC2", "TSC1", "MYC", "ARNT2", "EIF4EBP3", "FOXO6", "IGF1R", "PTPN2", "PTPN1", "NCK2", "NCK1", "PTEN", "PYGM", "PYGL", "PYGB", "IGF1", "IGF2", "EPAS1"]
+	},
+	{
+		"goid": "",
+		"golabel": "Hedgehog (FlyBase ortho set)",
+		"gene": ["KIF7", "HHATL", "CDON", "BOC", "GLI1", "STK36", "GLI2", "GLI3", "DISP2", "IHH", "SUFU", "DHH", "PTCH1", "PTCH2", "SMO", "SHH", "HHAT", "DISP1"]
+	},
+	{
+		"goid": "",
+		"golabel": "EGFR (FlyBase ortho set)",
+		"gene": ["EGF", "TGFA", "HBEGF", "EPGN", "NRG1", "NRG2", "NRG3", "NRG4", "BTC", "EREG", "AREG", "SAMD10", "SAMD12", "GRAPL", "PTPN6", "PTPN11", "GRB2", "MAP2K2", "MAP2K1", "ERBB3", "ERBB2", "EGFR", "ERBB4", "KSR1", "RAF1", "ARAF", "BRAF", "NRAS", "KRAS", "HRAS", "MAPK3", "MAPK1", "SHC3", "SHC4", "SHC2", "SHC1", "SOS2", "SOS1", "VAV2", "CNKSR1", "CNKSR3", "CNKSR2", "GRAP2", "GRAP", "KSR2", "VAV3", "VAV1", "CBLC", "SPRY1", "SPRY3", "SPRY4", "SPRY2", "CBL", "CBLB"]
+	},
+	{
+		"goid": "",
+		"golabel": "BMP-SMAD1/5/8 (FlyBase ortho set)",
+		"gene": ["TLL1", "SMOC1", "BMP1", "TLL2", "SMOC2", "TWSG1", "SKIL", "SMAD6", "SMAD7", "SKI", "SMURF1", "CHRD", "SMURF2", "HIVEP3", "BMP6", "BMP7", "HIVEP1", "BMP5", "ACVRL1", "HIVEP2", "SMAD9", "BMP4", "BMP8A", "BMPR1A", "SMAD5", "BMPR2", "BMP8B", "BMP2", "ACVR2A", "ACVR1", "BMPR1B", "SMAD4", "ACVR2B", "SMAD1"]
+	},
+	{
+		"goid": "",
+		"golabel": "Activin/myostatin-SMAD2/3 (FlyBase ortho set)",
+		"gene": ["INHBE", "INHBC", "GDF11", "MSTN", "INHBA", "INHBB", "ACVR1B", "SMAD2", "ACVR1C", "SMAD4", "ACVR2A", "SMAD3", "ACVR2B", "TGFBR1"]
+ 	},
     {
         "goid": "GO:0007219",
         "golabel": "Notch signaling",
@@ -386,4 +411,4 @@ export default [
             "WNT9B","AMER1","APC","AXIN1","AXIN2","DKK1","DKK2","DKK3","DKK4","GSK3B","RNF43",
             "TCF7","TCF7L2","CHD4"]
     }
-];
+]

@@ -1,38 +1,34 @@
-import React from 'react'
+import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick, groupBy, mapObject, pluck, flatten} from 'underscore';
-import {Dropdown} from "react-toolbox";
-import {LABEL_A, LABEL_B} from "./XenaGeneSetApp";
+import {LABEL_A, LABEL_B} from './XenaGeneSetApp';
 
 
 export class LabelTop extends PureComponent {
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let fontSize = 15 ;
-        let y = 12;
-        let x = 7;
-        let color = 'gray';
-        let bolder = 'bolder';
-        return (
-            <svg style={{height: 15,marginLeft: 10,width:this.props.width}}>
-                <text x={x} y={y} fontFamily='Arial' fontSize={fontSize} fill={color} fontWeight={bolder}
-                >
+  render() {
+    let fontSize = 15 ;
+    let y = 12;
+    let x = 7;
+    let color = 'gray';
+    let bolder = 'bolder';
+    return (
+      <svg style={{height: 15,marginLeft: 10,width:this.props.width}}>
+        <text
+          fill={color} fontFamily='Arial' fontSize={fontSize} fontWeight={bolder} x={x} y={y}
+        >
                     Cohort {LABEL_A}
-                </text>
-                <text x={x+this.props.width/2} y={y} fontFamily='Arial' fontSize={fontSize} fill={color} fontWeight={bolder}
-                >
+        </text>
+        <text
+          fill={color} fontFamily='Arial' fontSize={fontSize} fontWeight={bolder} x={x+this.props.width/2} y={y}
+        >
                     Cohort {LABEL_B}
-                </text>
-            </svg>
-        );
-    }
+        </text>
+      </svg>
+    );
+  }
 }
 
 LabelTop.propTypes = {
-    width: PropTypes.any.isRequired,
+  width: PropTypes.any.isRequired,
 };
