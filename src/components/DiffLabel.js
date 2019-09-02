@@ -37,7 +37,7 @@ export class DiffLabel extends PureComponent {
     };
   }
 
-  calculateDiamond(width,cohortIndex) {
+  calculateDiamond(width,height,cohortIndex) {
     const diamondWidth = 6 * (width /20) ;
     const diamondHeight = 6 * (width / 20);
     const offset = (width - diamondWidth) / 2.0;
@@ -45,14 +45,14 @@ export class DiffLabel extends PureComponent {
       return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`;
     }
     else{
-      return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`;
+      return `${offset} ${height},${offset + diamondWidth / 2} ${height - diamondHeight}, ${offset + diamondWidth} ${height}`;
     }
   }
 
 
   render() {
     const {
-      item, geneLength, numSamples, colorSettings,width, cohortIndex
+      item, geneLength, numSamples, colorSettings,width, cohortIndex, labelHeight
     } = this.props;
     const className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
     const colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
@@ -61,7 +61,7 @@ export class DiffLabel extends PureComponent {
         className={className}
         style={this.style(colorDensity)}
       >
-        <polygon points={this.calculateDiamond(width,cohortIndex)}/>
+        <polygon points={this.calculateDiamond(width,labelHeight,cohortIndex)}/>
       </svg>
     );
   }
