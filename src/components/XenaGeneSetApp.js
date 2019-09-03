@@ -667,55 +667,51 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         <tr>
                           <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                            {this.state.showPathwayDetails &&
-                                            <VerticalGeneSetScoresView
-                                              cohortIndex={0}
-                                              cohortLabel={LABEL_A}
-                                              data={this.state.pathwayData[0]}
-                                              filter={this.state.filter[0]}
-                                              labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={pathways}
-                                              selectedCohort={this.state.selectedCohort[0]}
-                                              width={VERTICAL_GENESET_DETAIL_WIDTH}
-                                            />
-                            }
+                            <VerticalGeneSetScoresView
+                              cohortIndex={0}
+                              cohortLabel={LABEL_A}
+                              data={this.state.pathwayData[0]}
+                              filter={this.state.filter[0]}
+                              labelHeight={18 + 2 * BORDER_OFFSET}
+                              onClick={this.handlePathwaySelect}
+                              onHover={this.handlePathwayHover}
+                              onMouseOut={this.handlePathwayHover}
+                              pathways={pathways}
+                              selectedCohort={this.state.selectedCohort[0]}
+                              width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+                            />
                           </td>
                           <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                             {this.state.pathways &&
-                                            <GeneSetSelector
-                                              geneStateColors={this.state.geneStateColors}
-                                              highlightedGene={this.state.highlightedGene}
-                                              hoveredPathway={this.state.hoveredPathway}
-                                              labelHeight={18}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={this.state.pathways}
-                                              selectedPathway={this.state.pathwaySelection}
-                                              topOffset={14}
-                                              width={VERTICAL_SELECTOR_WIDTH}
-                                            />
+                              <GeneSetSelector
+                                geneStateColors={this.state.geneStateColors}
+                                highlightedGene={this.state.highlightedGene}
+                                hoveredPathway={this.state.hoveredPathway}
+                                labelHeight={18}
+                                onClick={this.handlePathwaySelect}
+                                onHover={this.handlePathwayHover}
+                                onMouseOut={this.handlePathwayHover}
+                                pathways={this.state.pathways}
+                                selectedPathway={this.state.pathwaySelection}
+                                topOffset={14}
+                                width={VERTICAL_SELECTOR_WIDTH}
+                              />
                             }
                           </td>
                           <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                            {this.state.showPathwayDetails &&
-                                            <VerticalGeneSetScoresView
-                                              cohortIndex={1}
-                                              cohortLabel={LABEL_B}
-                                              data={this.state.pathwayData[1]}
-                                              filter={this.state.filter[1]}
-                                              labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={pathways}
-                                              selectedCohort={this.state.selectedCohort[1]}
-                                              width={200}
-                                            />
-                            }
+                            <VerticalGeneSetScoresView
+                              cohortIndex={1}
+                              cohortLabel={LABEL_B}
+                              data={this.state.pathwayData[1]}
+                              filter={this.state.filter[1]}
+                              labelHeight={18 + 2 * BORDER_OFFSET}
+                              onClick={this.handlePathwaySelect}
+                              onHover={this.handlePathwayHover}
+                              onMouseOut={this.handlePathwayHover}
+                              pathways={pathways}
+                              selectedCohort={this.state.selectedCohort[1]}
+                              width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+                            />
                           </td>
                         </tr>
                       </tbody>
