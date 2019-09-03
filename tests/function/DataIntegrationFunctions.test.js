@@ -1,7 +1,7 @@
 import expect from 'expect';
 import {
-  doDataAssociations,
-  findAssociatedData,
+  // doDataAssociations,
+  // findAssociatedData,
   findPruneData,
   pruneColumns,
   calculateExpectedProb,
@@ -9,27 +9,27 @@ import {
   calculateAssociatedData,
   calculateObserved,
   calculatePathwayScore,
-  calculateAllPathways,
+  // calculateAllPathways,
   calculateDiffs, generateScoredData, filterCopyNumbers, filterMutations
 } from '../../src/functions/DataFunctions';
 
-import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
-import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
-import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
-import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
-import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
-import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
+// import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
+// import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
+// import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
+// import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
+// import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
+// import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
 
 import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
 import CalculateAssociateDataOutput1 from '../data/CalculateAssociateDataOutput1';
 
-import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
-import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
-import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
-
-import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
-import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
-import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
+// import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
+// import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
+// import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
+//
+// import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
+// import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
+// import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
 
 import FindPruneData1 from '../data/FindPruneAssociatedData1';
 import FindPruneDataKey1 from '../data/FindPruneDataKey1';
