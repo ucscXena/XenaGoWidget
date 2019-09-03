@@ -447,6 +447,7 @@ export function calculateAllPathways(pathwayData) {
     p.firstNumSamples = maxSamplesAffectedA;
     p.firstExpected = expectedA[p.golabel];
     p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+    console.log('calculated chir squared',JSON.stringify(p.firstChiSquared))
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;

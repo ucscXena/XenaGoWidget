@@ -97,8 +97,6 @@ export class FilterSelector extends PureComponent {
       // CNV counts
       let labels = Object.keys(counts).sort(lowerCaseCompare);
       const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
-      // let total = sum(Object.values(counts));
-      // labelValues.unshift({label: 'CNV + Mutation (' + total + ')', value: 'All'});
 
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>
