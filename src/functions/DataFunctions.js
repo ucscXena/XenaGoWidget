@@ -31,8 +31,12 @@ export function getCopyNumberValue(copyNumberValue, amplificationThreshold, dele
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
 
-export function getGeneExpressionValue(inputValue) {
+export function getGeneExpressionHits(inputValue) {
   return (!isNaN(inputValue) && (inputValue>= GENE_EXPRESSION_MIN)) ? 1 : 0;
+}
+
+export function getGeneExpressionValue(inputValue) {
+  return !isNaN(inputValue) ? inputValue : 0 ;
 }
 
 export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
@@ -266,6 +270,9 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
 
   const possible = geneExpression[0].length * geneExpression.length;
   let scored = 0 ;
+  let counted = 0 ;
+  let sumTotal = 0 ;
+  let actualPossible = 0 ;
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -273,26 +280,31 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     const pathwayIndices = genePathwayLookup(gene);
     const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
     // we retrieve proper indices from the pathway to put back in the right place
+    actualPossible += sampleEntries.length * pathwayIndices.length
 
     // get pathways this gene is involved in
     for (const index of pathwayIndices) {
       // process all samples
       for (const sampleEntryIndex in sampleEntries) {
         // const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
-        const returnValue = getGeneExpressionValue(sampleEntries[sampleEntryIndex]);
+        const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
+        // sumTotal += sampleEntries[sampleEntryIndex];
+        sumTotal += returnValue;
+        ++counted ;
         if (returnValue > 0) {
-          returnArray[index][sampleEntryIndex].total += returnValue ;
           ++scored ;
+          returnArray[index][sampleEntryIndex].total += returnValue;
           returnArray[index][sampleEntryIndex].cnv += returnValue;
           returnArray[index][sampleEntryIndex].mutation += returnValue;
           returnArray[index][sampleEntryIndex].mutation4 += returnValue;
-          // returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+          // // returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
           returnArray[index][sampleEntryIndex].cnvLow += returnValue;
         }
       }
     }
   }
-  console.log('output gene epxression',JSON.stringify(returnArray),scored,possible, (100.0 * scored / possible));
+  // console.log('output gene epxression',JSON.stringify(returnArray),scored,possible, (100.0 * scored / possible));
+  console.log('output gene epxression',JSON.stringify([actualPossible,possible, (100.0 * scored / actualPossible),sumTotal,sumTotal / counted,counted,scored]));
   return {score: scored, returnArray};
 }
 

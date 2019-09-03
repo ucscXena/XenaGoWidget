@@ -1,9 +1,9 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick, groupBy, mapObject, pluck, flatten,sum} from 'ucsc-xena-client/dist/underscore_ext';
+import {pick, groupBy, mapObject, pluck, flatten} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import {getCopyNumberValue, getGeneExpressionValue} from '../functions/DataFunctions';
+import {getCopyNumberValue, getGeneExpressionHits} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
@@ -63,7 +63,7 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
     let geneIndex = geneList.indexOf(gene);
     let geneExpressionData= geneExpression[geneIndex];
     geneExpressionData.map((el) => {
-      geneExpressionTotal += getGeneExpressionValue(el);
+      geneExpressionTotal += getGeneExpressionHits(el);
     });
   }
 
