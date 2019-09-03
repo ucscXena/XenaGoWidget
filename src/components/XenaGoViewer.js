@@ -101,8 +101,6 @@ export default class XenaGoViewer extends PureComponent {
                             selectedCohort={selectedCohort}
                           />
                           <FilterSelector
-                            amplificationThreshold={selectedCohortData.amplificationThreshold}
-                            deletionThreshold={selectedCohortData.deletionThreshold}
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
