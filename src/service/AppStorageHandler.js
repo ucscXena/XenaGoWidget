@@ -3,6 +3,7 @@ import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {FILTER_ENUM} from "../components/FilterSelector";
 
 
 // synchronizing gene sorts between pathways
@@ -139,7 +140,7 @@ export class AppStorageHandler extends PureComponent {
     if (appState && appState.filterState && appState.filterState[cohortIndex]) {
       return appState.filterState[cohortIndex];
     }
-    return 'All';
+    return FILTER_ENUM.CNV_MUTATION;
   }
 
   static getSortState() {
