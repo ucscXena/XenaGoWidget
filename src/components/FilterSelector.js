@@ -3,7 +3,11 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten,sum} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import {getCopyNumberValue} from '../functions/DataFunctions';
+import {
+  DEFAULT_AMPLIFICATION_THRESHOLD,
+  DEFAULT_DELETION_THRESHOLD,
+  getCopyNumberValue
+} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
@@ -18,7 +22,7 @@ function lowerCaseCompare(a, b) {
 }
 
 
-function compileData(filteredEffects, data, geneList, amplificationThreshold, deletionThreshold) {
+function compileData(filteredEffects, data, geneList) {
   let {pathways, copyNumber, expression: {rows}} = data;
 
   let genes = new Set(flatten(pluck(pathways, 'gene')));
@@ -36,7 +40,7 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
     let copyNumberData = copyNumber[geneIndex];
 
     copyNumberData.map((el) => {
-      copyNumberTotal += getCopyNumberValue(el, amplificationThreshold, deletionThreshold);
+      copyNumberTotal += getCopyNumberValue(el,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD);
     });
   }
 
@@ -67,11 +71,11 @@ export class FilterSelector extends PureComponent {
     }
 
     render() {
-      const {pathwayData, selected, geneList, amplificationThreshold, deletionThreshold} = this.props;
+      const {pathwayData, selected, geneList} = this.props;
       if(pathwayData.expression.length === 0){
         return <div>Loading...</div>;
       }
-      let counts = compileData(Object.keys(this.getFilters()), pathwayData, geneList, amplificationThreshold, deletionThreshold);
+      let counts = compileData(Object.keys(this.getFilters()), pathwayData, geneList);
       // CNV counts
       let labels = Object.keys(counts).sort(lowerCaseCompare);
       let total = sum(Object.values(counts));
@@ -90,8 +94,6 @@ export class FilterSelector extends PureComponent {
 }
 
 FilterSelector.propTypes = {
-  amplificationThreshold: PropTypes.any.isRequired,
-  deletionThreshold: PropTypes.any.isRequired,
   geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
