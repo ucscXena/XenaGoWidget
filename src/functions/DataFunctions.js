@@ -15,7 +15,7 @@ import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 export const DEFAULT_DELETION_THRESHOLD = -2;
-const GENE_EXPRESSION_MIN = 10;
+const GENE_EXPRESSION_MIN = 12;
 
 const associateCache = lru(500);
 const pruneDataCache = lru(500);
@@ -268,19 +268,13 @@ export function filterMutations(expression,returnArray,samples,pathways){
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
-  const possible = geneExpression[0].length * geneExpression.length;
   let scored = 0 ;
-  let counted = 0 ;
-  let sumTotal = 0 ;
-  let actualPossible = 0 ;
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
 
     const pathwayIndices = genePathwayLookup(gene);
     const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
-    // we retrieve proper indices from the pathway to put back in the right place
-    actualPossible += sampleEntries.length * pathwayIndices.length
 
     // get pathways this gene is involved in
     for (const index of pathwayIndices) {
@@ -289,8 +283,6 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
         // const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
         const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
         // sumTotal += sampleEntries[sampleEntryIndex];
-        sumTotal += returnValue;
-        ++counted ;
         if (returnValue > 0) {
           ++scored ;
           returnArray[index][sampleEntryIndex].total += returnValue;
@@ -303,8 +295,6 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
       }
     }
   }
-  // console.log('output gene epxression',JSON.stringify(returnArray),scored,possible, (100.0 * scored / possible));
-  console.log('output gene epxression',JSON.stringify([actualPossible,possible, (100.0 * scored / actualPossible),sumTotal,sumTotal / counted,counted,scored]));
   return {score: scored, returnArray};
 }
 

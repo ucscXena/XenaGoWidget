@@ -82,7 +82,7 @@ function compileData(filteredEffects, data, geneList) {
   filterObject[FILTER_ENUM.CNV_MUTATION] = totalMutations + copyNumberTotal;
 
   // calculate gene expression hits total
-  filterObject[FILTER_ENUM.GENE_EXPRESSION] = calculateGeneExpressionTotal(genes,geneList,geneExpression);;
+  filterObject[FILTER_ENUM.GENE_EXPRESSION] = calculateGeneExpressionTotal(genes,geneList,geneExpression);
 
   return filterObject;
 }
