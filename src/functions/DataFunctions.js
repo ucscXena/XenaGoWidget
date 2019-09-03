@@ -13,8 +13,8 @@ import {
 } from './SortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
 
-const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
-const DEFAULT_DELETION_THRESHOLD = -2;
+export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
+export const DEFAULT_DELETION_THRESHOLD = -2;
 const GENE_EXPRESSION_MIN = 10;
 
 const associateCache = lru(500);

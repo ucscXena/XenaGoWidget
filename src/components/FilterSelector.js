@@ -3,7 +3,12 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {pick, groupBy, mapObject, pluck, flatten} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import {getCopyNumberValue, getGeneExpressionHits} from '../functions/DataFunctions';
+import {
+  DEFAULT_AMPLIFICATION_THRESHOLD,
+  DEFAULT_DELETION_THRESHOLD,
+  getCopyNumberValue,
+  getGeneExpressionHits
+} from '../functions/DataFunctions';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
@@ -21,19 +26,7 @@ function lowerCaseCompare(a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-
-function compileData(filteredEffects, data, geneList, amplificationThreshold, deletionThreshold) {
-  let {pathways, copyNumber, expression: {rows}, geneExpression} = data;
-
-  let genes = new Set(flatten(pluck(pathways, 'gene')));
-  let hasGene = row => genes.has(row.gene);
-  let effects = groupBy(rows.filter(hasGene), 'effect');
-
-  let returnObject = mapObject(pick(effects, filteredEffects),
-    list => list.length);
-
-  let filterObject = {};
-
+function calculateCopyNumberTotal(genes,geneList,copyNumber){
   // calculate gene expression hits total
   let copyNumberTotal = 0;
   // TODO: move to a reduce function and use 'index' method
@@ -41,22 +34,26 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
     let geneIndex = geneList.indexOf(gene);
     let copyNumberData = copyNumber[geneIndex];
     copyNumberData.map((el) => {
-      copyNumberTotal += getCopyNumberValue(el, amplificationThreshold, deletionThreshold);
+      copyNumberTotal += getCopyNumberValue(el, DEFAULT_AMPLIFICATION_THRESHOLD, DEFAULT_DELETION_THRESHOLD);
     });
   }
+  return copyNumberTotal;
+}
 
-  filterObject[FILTER_ENUM.COPY_NUMBER] = copyNumberTotal;
-
+function calculateMutationTotal(genes,rows,filteredEffects){
   // calculate mutations hits total
   let totalMutations = 0;
+  let hasGene = row => genes.has(row.gene);
+  let effects = groupBy(rows.filter(hasGene), 'effect');
+  let returnObject = mapObject(pick(effects, filteredEffects),
+    list => list.length);
   for (let obj in returnObject) {
     totalMutations += returnObject[obj];
   }
-  filterObject[FILTER_ENUM.MUTATION] = totalMutations;
+  return totalMutations;
+}
 
-  filterObject[FILTER_ENUM.CNV_MUTATION] = totalMutations + copyNumberTotal;
-
-  // calculate gene expression hits total
+function calculateGeneExpressionTotal(genes,geneList,geneExpression) {
   let geneExpressionTotal = 0;
   // TODO: move to a reduce function and use 'index' method
   for (let gene of genes) {
@@ -66,11 +63,26 @@ function compileData(filteredEffects, data, geneList, amplificationThreshold, de
       geneExpressionTotal += getGeneExpressionHits(el);
     });
   }
+  return geneExpressionTotal;
+}
 
-  // console.log('gene expression',JSON.stringify(geneExpression.length),JSON.stringify(geneExpression[0].length),JSON.stringify(genes),geneList.length,geneExpressionTotal)
+
+function compileData(filteredEffects, data, geneList) {
+  let {pathways, copyNumber, expression: {rows}, geneExpression} = data;
+
+  let genes = new Set(flatten(pluck(pathways, 'gene')));
+  let filterObject = {};
+
+  let copyNumberTotal = calculateCopyNumberTotal(genes,geneList,copyNumber);
+  filterObject[FILTER_ENUM.COPY_NUMBER] = copyNumberTotal;
+
+  const totalMutations = calculateMutationTotal(genes,rows,filteredEffects);
+  filterObject[FILTER_ENUM.MUTATION] = totalMutations;
+
+  filterObject[FILTER_ENUM.CNV_MUTATION] = totalMutations + copyNumberTotal;
 
   // calculate gene expression hits total
-  filterObject[FILTER_ENUM.GENE_EXPRESSION] = geneExpressionTotal;
+  filterObject[FILTER_ENUM.GENE_EXPRESSION] = calculateGeneExpressionTotal(genes,geneList,geneExpression);;
 
   return filterObject;
 }
