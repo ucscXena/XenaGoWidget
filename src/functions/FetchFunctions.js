@@ -9,7 +9,6 @@ import {FILTER_ENUM} from '../components/FilterSelector';
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
 export function getSamplesForCohort(cohort,filter) {
-  console.log('geting samples for ',JSON.stringify(cohort.geneExpression))
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
   switch (filter) {
