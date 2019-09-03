@@ -129,7 +129,6 @@ export function calculateGeneSetExpected(pathwayData, filter) {
   // a list for each sample  [0] = expected_N, vs [1] total_pop_N
   const { genomeBackgroundCopyNumber , genomeBackgroundMutation } = pathwayData;
   // let's assume they are the same order for now since they were fetched with the same sample data
-  filter = filter.indexOf(FILTER_ENUM.CNV_MUTATION) === 0 ? '' : filter;
 
   // // initiate to 0
   const pathwayExpected = {};
@@ -447,7 +446,6 @@ export function calculateAllPathways(pathwayData) {
     p.firstNumSamples = maxSamplesAffectedA;
     p.firstExpected = expectedA[p.golabel];
     p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
-    console.log('calculated chir squared',JSON.stringify(p.firstChiSquared))
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
