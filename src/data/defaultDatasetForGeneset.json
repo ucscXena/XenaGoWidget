@@ -2,7 +2,7 @@
   "TCGA Liver Cancer (LIHC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-LIHC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -37,7 +37,7 @@
   "TCGA Cervical Cancer (CESC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-CESC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -72,7 +72,7 @@
   "TCGA Sarcoma (SARC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-SARC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -107,7 +107,7 @@
   "TCGA Thymoma (THYM)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-THYM.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -142,7 +142,7 @@
   "TCGA Mesothelioma (MESO)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-MESO.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -177,7 +177,7 @@
   "TCGA Pancreatic Cancer (PAAD)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-PAAD.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -212,7 +212,7 @@
   "TCGA Ocular melanomas (UVM)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-UVM.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -247,7 +247,7 @@
   "TCGA Rectal Cancer (READ)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-READ.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -282,7 +282,7 @@
   "TCGA Lung Squamous Cell Carcinoma (LUSC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-LUSC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -317,7 +317,7 @@
   "TCGA Stomach Cancer (STAD)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-STAD.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -352,7 +352,7 @@
   "TCGA Colon Cancer (COAD)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-COAD.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -387,7 +387,7 @@
   "TCGA Lower Grade Glioma (LGG)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-LGG.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -422,7 +422,7 @@
   "TCGA Thyroid Cancer (THCA)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-THCA.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -457,7 +457,7 @@
   "TCGA Kidney Chromophobe (KICH)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-KICH.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -492,7 +492,7 @@
   "TCGA Kidney Papillary Cell Carcinoma (KIRP)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-KIRP.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -527,7 +527,7 @@
   "TCGA Bile Duct Cancer (CHOL)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-CHOL.htseq_counts.tsva"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -562,7 +562,7 @@
   "TCGA Glioblastoma (GBM)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-GBM.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -597,7 +597,7 @@
   "TCGA Lung Adenocarcinoma (LUAD)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-LUAD.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -632,7 +632,7 @@
   "TCGA Ovarian Cancer (OV)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-OV.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -667,7 +667,7 @@
   "TCGA Kidney Clear Cell Carcinoma (KIRC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "KIRC"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -702,7 +702,7 @@
   "TCGA Endometrioid Cancer (UCEC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "UCEC"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -737,7 +737,7 @@
   "TCGA Head and Neck Cancer (HNSC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-HNSC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -772,7 +772,7 @@
   "TCGA Adrenocortical Cancer (ACC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-ACC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -807,7 +807,7 @@
   "TCGA Prostate Cancer (PRAD)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-PRAD.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -842,7 +842,7 @@
   "TCGA Uterine Carcinosarcoma (UCS)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-UCS.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -877,7 +877,7 @@
   "TCGA Melanoma (SKCM)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-SKCM.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -912,7 +912,7 @@
   "TCGA Pheochromocytoma & Paraganglioma (PCPG)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-PCPG.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -947,7 +947,7 @@
   "TCGA Breast Cancer (BRCA)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-BRCA.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -982,7 +982,7 @@
   "TCGA Testicular Cancer (TGCT)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-TGCT.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1017,7 +1017,7 @@
   "TCGA Acute Myeloid Leukemia (LAML)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-LAML.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1052,7 +1052,7 @@
   "TCGA Large B-cell Lymphoma (DLBC)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-DLBC.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1087,7 +1087,7 @@
   "TCGA Bladder Cancer (BLCA)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-BLCA.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1122,7 +1122,7 @@
   "TCGA Esophageal Cancer (ESCA)": {
     "gene expression": {
       "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "EB++AdjustPANCAN_IlluminaHiSeq_RNASeqV2.geneExp.xena"
+      "dataset": "TCGA-ESCA.htseq_counts.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
