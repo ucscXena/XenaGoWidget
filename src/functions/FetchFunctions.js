@@ -128,6 +128,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
       combinationHandler({
         geneList,
         pathways,
+        filterCounts,
         samplesA,
         mutationsA,
         copyNumberA,
@@ -139,7 +140,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,
-        filterCounts,
       });
     });
 }
