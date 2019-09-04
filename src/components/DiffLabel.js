@@ -21,7 +21,6 @@ export class DiffLabel extends PureComponent {
     const {
       labelOffset, left, width, labelHeight, cohortIndex,
     } = this.props;
-    // const colorString = cohortIndex === 0 ? 'green' : 'hotpink';
     const colorString = 'black';
 
     return {
