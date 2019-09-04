@@ -391,7 +391,7 @@ export default class XenaGeneSetApp extends PureComponent {
             total: hoveredPathway.secondNumSamples,
           }
         }
-      ] : this.state.geneHoverData;
+      ] : null ;
 
       this.setState({
         hoveredPathway,

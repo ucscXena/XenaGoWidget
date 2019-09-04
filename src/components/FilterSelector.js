@@ -12,7 +12,7 @@ import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
 export const FILTER_ENUM = {
-  ALL:'All',
+  CNV_MUTATION:'CNV \u2992 Mutation',
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
 };
@@ -81,7 +81,7 @@ export class FilterSelector extends PureComponent {
       let total = sum(Object.values(counts));
 
       const labelValues = labels.map(label => ({label: label + ' (' + counts[label] + ')', value: label}));
-      labelValues.unshift({label: 'CNV \u2229 Mutation (' + total + ')', value: 'All'});
+      labelValues.unshift({label: 'CNV \u2229 Mutation (' + total + ')', value: FILTER_ENUM.CNV_MUTATION});
 
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>

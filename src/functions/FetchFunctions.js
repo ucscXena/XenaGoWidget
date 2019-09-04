@@ -12,7 +12,7 @@ export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
   switch (filter) {
-  case FILTER_ENUM.ALL:
+  case FILTER_ENUM.CNV_MUTATION:
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
       intersection);

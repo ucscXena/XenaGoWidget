@@ -63,8 +63,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       const totalHeight = layout.length * labelHeight;
       let geneList = getGenesForPathways(pathways);
 
-      filter = filter ? filter : 'All';
-
       // need to get an associatedData
       let hashAssociation = {
         expression,
