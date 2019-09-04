@@ -12,7 +12,6 @@ import {Card,Button} from 'react-toolbox';
 import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp';
 import {DetailedLegend} from './DetailedLegend';
 import {
-  getCohortDetails,
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
@@ -81,8 +80,6 @@ export default class XenaGoViewer extends PureComponent {
       }
 
       let layoutData = layout(calculatedWidth, geneDataStats.data);
-      const selectedCohortData = getCohortDetails(selectedCohort);
-
       if (pathwayData) {
         return (
           <table>
