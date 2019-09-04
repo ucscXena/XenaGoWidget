@@ -31,7 +31,7 @@ export class DiffLabel extends PureComponent {
       width,
       borderTop: cohortIndex === 0 ? `solid 2px ${colorString}` : '',
       borderBottom: cohortIndex === 1 ? `solid 2px ${colorString}` : '',
-      opacity: 1,
+      opacity: 0.5,
       cursor: 'crosshair',
     };
   }
