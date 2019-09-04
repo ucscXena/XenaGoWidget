@@ -26,6 +26,13 @@ export function getSamplesForCohort(cohort,filter) {
   }
 }
 
+export function getAllSamplesForCohorts(cohort){
+  return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
+    datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
+    cohort.geneExpression ? datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null): [],
+  );
+}
+
 export function calculateSamples(availableSamples,cohort){
   if(cohort.selectedSubCohorts.length > 0){
     return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
@@ -40,9 +47,14 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
   const geneList = getGenesForPathways(pathways);
 
   Rx.Observable.zip(
-    getSamplesForCohort(selectedCohorts[0],filter[0]),
-    getSamplesForCohort(selectedCohorts[1],filter[1]),
+    getAllSamplesForCohorts(selectedCohorts[0]),
+    getAllSamplesForCohorts(selectedCohorts[1]),
   ).flatMap((availableSamples) => {
+    // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
+    // const geneExpression =
+
+
+    // calculate samples for what samples we will actually fetch
     const samplesA = calculateSamples(availableSamples[0],selectedCohorts[0]);
     const samplesB = calculateSamples(availableSamples[1],selectedCohorts[1]);
 
