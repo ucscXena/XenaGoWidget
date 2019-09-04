@@ -28,6 +28,7 @@ import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
+import FaExpand from 'react-icons/lib/fa/arrows-alt';
 
 
 
@@ -648,6 +649,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                 />
                               </div>
                             }
+                            {!this.state.showPathwayDetails &&
+                            <FaExpand
+                              className={BaseStyle.mouseHover}
+                              onClick={this.handleShowGeneSetDetail}
+                            />
+                            }
                           </td>
                           <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                             <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
@@ -658,6 +665,12 @@ export default class XenaGeneSetApp extends PureComponent {
                                 className={BaseStyle.mouseHover}
                                 onClick={this.handleHideGeneSetDetail}
                               />
+                            }
+                            {!this.state.showPathwayDetails &&
+                            <FaExpand
+                              className={BaseStyle.mouseHover}
+                              onClick={this.handleShowGeneSetDetail}
+                            />
                             }
                           </td>
                         </tr>

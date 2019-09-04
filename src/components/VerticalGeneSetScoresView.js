@@ -8,9 +8,6 @@ import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
 import {getGenesForPathways} from '../functions/CohortFunctions';
-// import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
-import BaseStyle from '../css/base.css';
-import FaExpand from 'react-icons/lib/fa/arrows-alt';
 
 const HEADER_HEIGHT = 15;
 
@@ -90,14 +87,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       return (
         <div>
-          <div style={{position: 'absolute', top: 10 }}>
-            {!showDetails &&
-            <FaExpand
-              className={BaseStyle.mouseHover}
-              onClick={this.handleShowGeneSetDetail}
-            />
-            }
-          </div>
           <CanvasDrawing
             {...this.props}
             associatedData={returnedValue.data}
