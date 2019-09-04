@@ -121,10 +121,7 @@ export function createEmptyArray(pathwayLength, sampleLength) {
  * @param filter
  */
 export function calculateGeneSetExpected(pathwayData, filter) {
-  // a list for each sample  [0] = expected_N, vs [1] total_pop_N
-  const { genomeBackgroundCopyNumber } = pathwayData;
-  const { genomeBackgroundMutation } = pathwayData;
-
+  const { genomeBackgroundCopyNumber, genomeBackgroundMutation } = pathwayData;
   // // initiate to 0
   const pathwayExpected = {};
   // init data
@@ -138,13 +135,14 @@ export function calculateGeneSetExpected(pathwayData, filter) {
     const mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
     const mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
 
-
     // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
     for (const pathway of pathwayData.pathways) {
       const sample_probs = [];
 
       if (filter === FILTER_ENUM.COPY_NUMBER || filter === FILTER_ENUM.CNV_MUTATION) {
-        sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+        if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
+          sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+        }
       }
       if (filter === FILTER_ENUM.MUTATION || filter === FILTER_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
