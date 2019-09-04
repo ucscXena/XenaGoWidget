@@ -479,7 +479,7 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
   // TODO: just return this once fixed
-  const geneData = {
+  return {
     expression,
     samples,
     copyNumber,
@@ -489,7 +489,6 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
     pathways,
     pathwaySelection,
   };
-  return geneData;
 }
 
 export function scoreGeneData(inputGeneData) {
