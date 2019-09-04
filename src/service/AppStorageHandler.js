@@ -3,7 +3,7 @@ import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {FILTER_ENUM} from "../components/FilterSelector";
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 
 // synchronizing gene sorts between pathways
