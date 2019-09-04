@@ -7,7 +7,7 @@ import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
 
 export const FILTER_ENUM = {
-  CNV_MUTATION:'CNV \u2992 Mutation',
+  CNV_MUTATION:'CNV \u2229 Mutation',
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
 };
