@@ -135,7 +135,6 @@ body {
 
 .mouseHover :hover{
     cursor: pointer;
-  z-index: 1000;
 }
 
 .hoverScore{

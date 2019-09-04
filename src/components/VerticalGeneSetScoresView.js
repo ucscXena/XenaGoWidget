@@ -11,7 +11,6 @@ import {getGenesForPathways} from '../functions/CohortFunctions';
 // import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
 import BaseStyle from '../css/base.css';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
-import FaCompress from 'react-icons/lib/fa/compress';
 
 const HEADER_HEIGHT = 15;
 
@@ -66,6 +65,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       const totalHeight = layout.length * labelHeight;
       let geneList = getGenesForPathways(pathways);
+
+      filter = filter ? filter : 'All';
 
       // need to get an associatedData
       let hashAssociation = {
