@@ -90,7 +90,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       return (
         <div>
-          <div style={{position: 'relative', top: 10 }}>
+          <div style={{position: 'absolute', top: 10 }}>
             {!showDetails &&
             <FaExpand
               className={BaseStyle.mouseHover}

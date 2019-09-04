@@ -32,15 +32,15 @@ describe('Data Lookup Functions', () => {
   });
 
   it('Copy Number High', () => {
-    expect(0).toEqual(getCopyNumberHigh('NOTANUMBER',DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(undefined,DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-3,DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-2,DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-1,DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(0,DEFAULT_DELETION_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(1,DEFAULT_DELETION_THRESHOLD));
-    expect(1).toEqual(getCopyNumberHigh(2,DEFAULT_DELETION_THRESHOLD));
-    expect(1).toEqual(getCopyNumberHigh(3,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh('NOTANUMBER',DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(undefined,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-3,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-2,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-1,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(0,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(1,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(2,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(3,DEFAULT_AMPLIFICATION_THRESHOLD));
   });
 
   it('Copy Number Low', () => {
