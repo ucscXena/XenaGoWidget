@@ -168,6 +168,7 @@ export default class XenaGeneSetApp extends PureComponent {
       let {
         pathways,
         geneList,
+        filterCounts,
         cohortData,
 
         samplesA,
@@ -192,6 +193,7 @@ export default class XenaGeneSetApp extends PureComponent {
         cohortData,
         cohort: selectedCohorts[0],
         filter: this.state.filter[0],
+        filterCounts: filterCounts[0],
 
         copyNumber: copyNumberA,
         expression: mutationsA,
@@ -207,6 +209,7 @@ export default class XenaGeneSetApp extends PureComponent {
         cohortData,
         cohort: selectedCohorts[1],
         filter: this.state.filter[1],
+        filterCounts: filterCounts[1],
 
         copyNumber: copyNumberB,
         expression: mutationsB,
