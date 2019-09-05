@@ -131,6 +131,7 @@ export default class PathwayEditor extends PureComponent {
         this.setState({
           newGene: [],
           pathwaySet: selectedPathwaySet,
+          selectedPathway: newSelectedPathway,
         });
       });
 
