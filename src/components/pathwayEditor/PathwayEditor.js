@@ -46,13 +46,19 @@ export default class PathwayEditor extends PureComponent {
 
   handleChange = e => {
     let file = e.target.files[0];
-    let {onUpload} = this.props;
-
     let result = {};
     let fr = new FileReader();
+    let that = this ; // scope hack
     fr.onload = function (e) {
       result = JSON.parse(e.target.result);
-      onUpload(result);
+      const newState = {
+        name: 'Default Pathway',
+        pathways: result,
+        selected: true
+      };
+      that.setState({
+        pathwaySet: newState
+      });
     };
 
     fr.readAsText(file);
@@ -271,7 +277,6 @@ export default class PathwayEditor extends PureComponent {
 
 PathwayEditor.propTypes = {
   onClose: PropTypes.any,
-  onUpload: PropTypes.any,
   pathwaySet: PropTypes.any,
   selectedPathway: PropTypes.any,
 };

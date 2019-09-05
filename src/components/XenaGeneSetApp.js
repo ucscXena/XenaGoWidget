@@ -140,19 +140,6 @@ export default class XenaGeneSetApp extends PureComponent {
       );
     };
 
-
-    handleUpload = (file) => {
-      AppStorageHandler.storePathways(file);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: file,
-          selected: true
-        }
-      });
-    };
-
-
     handleCombinedCohortData = (input) => {
       let {
         pathways,
@@ -539,7 +526,6 @@ export default class XenaGeneSetApp extends PureComponent {
             >
               <PathwayEditor
                 onClose={this.handleSaveAndClosePathwayEditor}
-                onUpload={this.handleUpload}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'
                 selectedPathway={this.state.selectedPathway}
