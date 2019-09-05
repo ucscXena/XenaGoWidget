@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
+import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
@@ -49,9 +50,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, width, selectedCohort, cohortLabel,pathways} = this.props;
+      let {data, cohortIndex, filter, labelHeight, selectedCohort, cohortLabel,pathways,showDetails} = this.props;
       const {expression, samples, copyNumber} = data;
-      // console.log('input data',JSON.stringify(data))
       if (!data) {
         return <div>Loading Cohort {cohortLabel}</div>;
       }
@@ -62,12 +62,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       const totalHeight = layout.length * labelHeight;
       let geneList = getGenesForPathways(pathways);
-
-
-      // TODO: fix sort somehow
-
-      // TODO: fix filter somehow?
-      filter = filter ? filter : 'All';
 
       // need to get an associatedData
       let hashAssociation = {
@@ -108,7 +102,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             onClick={this.handleClick}
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
-            width={width}
+            width={showDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
           />
         </div>
       );
@@ -126,5 +120,5 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-  width: PropTypes.any.isRequired,
+  showDetails: PropTypes.any.isRequired,
 };

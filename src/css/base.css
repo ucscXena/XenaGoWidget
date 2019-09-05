@@ -185,7 +185,7 @@ body {
     stroke-width: 1;
     color: black;
     border-radius: 15px;
-    box-shadow: 0 0 2px 2px green inset;
+    box-shadow: 0 0 1px 1px gray inset;
 }
 
 .labelDefaultBottom :hover{
@@ -193,7 +193,7 @@ body {
     stroke-width: 1;
     color: black;
     border-radius: 15px;
-    box-shadow: 0 0 2px 2px green inset;
+    box-shadow: 0 0 1px 1px gray inset;
 }
 
 div[data-react-toolbox=dialog] > section{

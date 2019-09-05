@@ -1,7 +1,6 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import DefaultPathWays from '../data/genesets/tgac';
 import PathwayEditor from './pathwayEditor/PathwayEditor';
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
@@ -9,8 +8,7 @@ import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, generateScoredData,
 } from '../functions/DataFunctions';
-import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
-import FaArrowRight from 'react-icons/lib/fa/arrow-right';
+import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
@@ -27,6 +25,7 @@ import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
+import FaExpand from 'react-icons/lib/fa/arrows-alt';
 
 
 
@@ -35,8 +34,8 @@ export const PATHWAYS_VIEW = 'pathways';
 const VIEWER_HEIGHT = 500;
 
 const VERTICAL_SELECTOR_WIDTH = 220;
-const VERTICAL_GENESET_DETAIL_WIDTH = 180;
-const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
+export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
+export const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
 const ARROW_WIDTH = 20;
 const BORDER_OFFSET = 2;
 
@@ -69,7 +68,6 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props);
 
     const pathways = AppStorageHandler.getPathways();
-    // TODO: this should get subcohorts here, really
     let cohortDataA = AppStorageHandler.getCohortState(0);
     let cohortDataB = AppStorageHandler.getCohortState(1);
 
@@ -139,34 +137,11 @@ export default class XenaGeneSetApp extends PureComponent {
       );
     };
 
-
-    handleUpload = (file) => {
-      AppStorageHandler.storePathways(file);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: file,
-          selected: true
-        }
-      });
-    };
-
-    handleReset = () => {
-      AppStorageHandler.storePathways(DefaultPathWays);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: DefaultPathWays,
-          selected: true
-        }
-      });
-    };
-
-
     handleCombinedCohortData = (input) => {
       let {
         pathways,
         geneList,
+        filterCounts,
         cohortData,
 
         samplesA,
@@ -191,6 +166,7 @@ export default class XenaGeneSetApp extends PureComponent {
         cohortData,
         cohort: selectedCohorts[0],
         filter: this.state.filter[0],
+        filterCounts: filterCounts[0],
 
         copyNumber: copyNumberA,
         expression: mutationsA,
@@ -206,6 +182,7 @@ export default class XenaGeneSetApp extends PureComponent {
         cohortData,
         cohort: selectedCohorts[1],
         filter: this.state.filter[1],
+        filterCounts: filterCounts[1],
 
         copyNumber: copyNumberB,
         expression: mutationsB,
@@ -241,77 +218,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    addGeneSet = (selectedPathway) => {
-      const selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways: { $unshift: [{
-          goid: '',
-          golabel: selectedPathway,
-          gene: [],
-        }] }
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    addGene = (selectedPathway, selectedGene) => {
-      // get pathway to filter
-      let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-        gene: { $unshift: [selectedGene]}
-      });
-      let selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
-      });
-
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: newSelectedPathway,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    removeGene = (selectedPathway, selectedGene) => {
-      const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      const geneIndex = this.state.pathwaySet.pathways[pathwayIndex].gene.findIndex(g => g !== selectedGene);
-      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-        gene: { $splice: [[geneIndex,1]]}
-      });
-      let selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: newSelectedPathway,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    removeGeneSet = (selectedPathway) => {
-      const pathwayIndex  = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      const selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways: { $splice: [[pathwayIndex,1]] }
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: undefined,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
     getActiveApp() {
       return this.state.pathwaySet;
     }
@@ -322,9 +228,14 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    handleShowGeneSetViewer = () => {
+    handleSaveAndClosePathwayEditor = (updatedPathwaySet) => {
+      AppStorageHandler.storePathways(updatedPathwaySet.pathways);
       this.setState({
-        view: XENA_VIEW
+        view: XENA_VIEW,
+        pathwaySet: updatedPathwaySet,
+        pathways: updatedPathwaySet.pathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -390,12 +301,22 @@ export default class XenaGeneSetApp extends PureComponent {
             total: hoveredPathway.secondNumSamples,
           }
         }
-      ] : this.state.geneHoverData;
+      ] : null ;
 
       this.setState({
         hoveredPathway,
         geneHoverData
       });
+    };
+
+    handleVerticalGeneSetSelect = (pathwaySelection) => {
+      if(this.state.showPathwayDetails){
+        this.handlePathwaySelect(pathwaySelection);
+      }
+      else{
+        this.handleShowGeneSetDetail();
+      }
+
     };
 
     handlePathwaySelect = (pathwaySelection) => {
@@ -494,15 +415,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
       if(isEqual(this.state.geneData,[{},{}])) return true ;
       if(isEqual(this.state.pathwayData,[{},{}])) return true ;
-
-      if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
-      // if(!isEqual(this.state.selectedSubCohortsA, this.state.selectedSubCohortsB)) return true ;
-
-      return false;
+      return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1]);
     }
 
     handleChangeCohort = (selectedCohort, cohortIndex) => {
-      // let subCohortsA = getSubCohortsOnlyForCohort(this.state.selectedCohortA) ;
       let cohortDetails = getCohortDetails({name: selectedCohort});
       const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
       if(subCohorts){
@@ -570,7 +486,7 @@ export default class XenaGeneSetApp extends PureComponent {
             editGeneSetColors={this.editGeneSetColors}
             geneOptions={this.state.geneHits}
             onShowPathways={this.handleShowPathwayEditor}
-            onShowXena={this.handleShowGeneSetViewer}
+            onShowXena={this.handleSaveAndClosePathwayEditor}
             searchHandler={this.searchHandler}
             showClusterSort={showClusterSort}
             showDetailLayer={this.state.showDetailLayer}
@@ -601,21 +517,14 @@ export default class XenaGeneSetApp extends PureComponent {
             />
             <Dialog
               active={this.state.view === PATHWAYS_VIEW}
-              onEscKeyDown={this.handleShowGeneSetViewer}
-              onOverlayClick={this.handleShowGeneSetViewer}
+              onEscKeyDown={() => this.setState({view:XENA_VIEW})}
+              onOverlayClick={() => this.setState({view:XENA_VIEW})}
               title='Edit Pathways'
             >
               <PathwayEditor
-                addGeneHandler={this.addGene}
-                addGeneSetHandler={this.addGeneSet}
-                onClose={this.handleShowGeneSetViewer}
-                // highlightedGene={this.state.highlightedGene}
-                onReset={this.handleReset}
-                onUpload={this.handleUpload}
+                onClose={this.handleSaveAndClosePathwayEditor}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'
-                removeGeneHandler={this.removeGene}
-                removeGeneSetHandler={this.removeGeneSet}
                 selectedPathway={this.state.selectedPathway}
               />
             </Dialog>
@@ -633,18 +542,18 @@ export default class XenaGeneSetApp extends PureComponent {
                         <tr>
                           <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                             {this.state.showPathwayDetails &&
-                                            <div style={{paddingLeft: leftPadding}}>
-                                              <FaArrowRight
-                                                className={BaseStyle.mouseHover}
-                                                onClick={this.handleHideGeneSetDetail}
-                                              />
-                                            </div>
+                              <div style={{paddingLeft: leftPadding}}>
+                                <FaClose
+                                  className={BaseStyle.mouseHover}
+                                  onClick={this.handleHideGeneSetDetail}
+                                />
+                              </div>
                             }
                             {!this.state.showPathwayDetails &&
-                                            <FaArrowLeft
-                                              className={BaseStyle.mouseHover}
-                                              onClick={this.handleShowGeneSetDetail}
-                                            />
+                            <FaExpand
+                              className={BaseStyle.mouseHover}
+                              onClick={this.handleShowGeneSetDetail}
+                            />
                             }
                           </td>
                           <td width={VERTICAL_SELECTOR_WIDTH - 20}>
@@ -652,70 +561,66 @@ export default class XenaGeneSetApp extends PureComponent {
                           </td>
                           <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                             {this.state.showPathwayDetails &&
-                                            <FaArrowLeft
-                                              className={BaseStyle.mouseHover}
-                                              onClick={this.handleHideGeneSetDetail}
-                                            />
+                              <FaClose
+                                className={BaseStyle.mouseHover}
+                                onClick={this.handleHideGeneSetDetail}
+                              />
                             }
                             {!this.state.showPathwayDetails &&
-                                            <FaArrowRight
-                                              className={BaseStyle.mouseHover}
-                                              onClick={this.handleShowGeneSetDetail}
-                                            />
+                            <FaExpand
+                              className={BaseStyle.mouseHover}
+                              onClick={this.handleShowGeneSetDetail}
+                            />
                             }
                           </td>
                         </tr>
                         <tr>
-                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                            {this.state.showPathwayDetails &&
-                                            <VerticalGeneSetScoresView
-                                              cohortIndex={0}
-                                              cohortLabel={LABEL_A}
-                                              data={this.state.pathwayData[0]}
-                                              filter={this.state.filter[0]}
-                                              labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={pathways}
-                                              selectedCohort={this.state.selectedCohort[0]}
-                                              width={VERTICAL_GENESET_DETAIL_WIDTH}
-                                            />
-                            }
+                          <td>
+                            <VerticalGeneSetScoresView
+                              cohortIndex={0}
+                              cohortLabel={LABEL_A}
+                              data={this.state.pathwayData[0]}
+                              filter={this.state.filter[0]}
+                              labelHeight={18 + 2 * BORDER_OFFSET}
+                              onClick={this.handleVerticalGeneSetSelect}
+                              onHover={this.handlePathwayHover}
+                              onMouseOut={this.handlePathwayHover}
+                              pathways={pathways}
+                              selectedCohort={this.state.selectedCohort[0]}
+                              showDetails={this.state.showPathwayDetails}
+                            />
                           </td>
                           <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                             {this.state.pathways &&
-                                            <GeneSetSelector
-                                              geneStateColors={this.state.geneStateColors}
-                                              highlightedGene={this.state.highlightedGene}
-                                              hoveredPathway={this.state.hoveredPathway}
-                                              labelHeight={18}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={this.state.pathways}
-                                              selectedPathway={this.state.pathwaySelection}
-                                              topOffset={14}
-                                              width={VERTICAL_SELECTOR_WIDTH}
-                                            />
+                              <GeneSetSelector
+                                geneStateColors={this.state.geneStateColors}
+                                highlightedGene={this.state.highlightedGene}
+                                hoveredPathway={this.state.hoveredPathway}
+                                labelHeight={18}
+                                onClick={this.handlePathwaySelect}
+                                onHover={this.handlePathwayHover}
+                                onMouseOut={this.handlePathwayHover}
+                                pathways={this.state.pathways}
+                                selectedPathway={this.state.pathwaySelection}
+                                topOffset={14}
+                                width={VERTICAL_SELECTOR_WIDTH}
+                              />
                             }
                           </td>
-                          <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                            {this.state.showPathwayDetails &&
-                                            <VerticalGeneSetScoresView
-                                              cohortIndex={1}
-                                              cohortLabel={LABEL_B}
-                                              data={this.state.pathwayData[1]}
-                                              filter={this.state.filter[1]}
-                                              labelHeight={18 + 2 * BORDER_OFFSET}
-                                              onClick={this.handlePathwaySelect}
-                                              onHover={this.handlePathwayHover}
-                                              onMouseOut={this.handlePathwayHover}
-                                              pathways={pathways}
-                                              selectedCohort={this.state.selectedCohort[1]}
-                                              width={200}
-                                            />
-                            }
+                          <td>
+                            <VerticalGeneSetScoresView
+                              cohortIndex={1}
+                              cohortLabel={LABEL_B}
+                              data={this.state.pathwayData[1]}
+                              filter={this.state.filter[1]}
+                              labelHeight={18 + 2 * BORDER_OFFSET}
+                              onClick={this.handleVerticalGeneSetSelect}
+                              onHover={this.handlePathwayHover}
+                              onMouseOut={this.handlePathwayHover}
+                              pathways={pathways}
+                              selectedCohort={this.state.selectedCohort[1]}
+                              showDetails={this.state.showPathwayDetails}
+                            />
                           </td>
                         </tr>
                       </tbody>

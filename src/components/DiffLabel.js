@@ -21,7 +21,7 @@ export class DiffLabel extends PureComponent {
     const {
       labelOffset, left, width, labelHeight, cohortIndex,
     } = this.props;
-    const colorString = cohortIndex === 0 ? 'green' : 'hotpink';
+    const colorString = 'black';
 
     return {
       position: 'absolute',
@@ -29,16 +29,29 @@ export class DiffLabel extends PureComponent {
       left,
       height: labelHeight,
       width,
-      borderTop: cohortIndex === 0 ? `solid 5px ${colorString}` : '',
-      borderBottom: cohortIndex === 1 ? `solid 5px ${colorString}` : '',
+      borderTop: cohortIndex === 0 ? `solid 2px ${colorString}` : '',
+      borderBottom: cohortIndex === 1 ? `solid 2px ${colorString}` : '',
       opacity: 0.5,
       cursor: 'crosshair',
     };
   }
 
+  calculateDiamond(width,height,cohortIndex) {
+    const diamondWidth = 6 * (width /20) ;
+    const diamondHeight = 6 * (width / 20);
+    const offset = (width - diamondWidth) / 2.0;
+    if(cohortIndex === 0){
+      return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`;
+    }
+    else{
+      return `${offset} ${height},${offset + diamondWidth / 2} ${height - diamondHeight}, ${offset + diamondWidth} ${height}`;
+    }
+  }
+
+
   render() {
     const {
-      item, geneLength, numSamples, colorSettings,
+      item, geneLength, numSamples, colorSettings,width, cohortIndex, labelHeight
     } = this.props;
     const className = (item.gene.length === 1 ? item.gene[0] : item.golabel).replace(/ /g, '-');
     const colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
@@ -46,7 +59,9 @@ export class DiffLabel extends PureComponent {
       <svg
         className={className}
         style={this.style(colorDensity)}
-      />
+      >
+        <polygon fill='hotpink' points={this.calculateDiamond(width,labelHeight,cohortIndex)} stroke='black'/>
+      </svg>
     );
   }
 }

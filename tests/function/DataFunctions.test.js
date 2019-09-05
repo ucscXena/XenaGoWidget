@@ -2,6 +2,8 @@ import expect from 'expect';
 import {
   createEmptyArray,
   DEFAULT_DATA_VALUE,
+  DEFAULT_AMPLIFICATION_THRESHOLD,
+  DEFAULT_DELETION_THRESHOLD,
   getCopyNumberHigh,
   getCopyNumberLow,
   getCopyNumberValue,
@@ -11,58 +13,55 @@ import {
   scoreData,
   scoreChiSquaredData,
 } from '../../src/functions/DataFunctions';
+import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
 import DefaultPathways from '../../src/data/genesets/tgac';
-
-const AMP_THRESHOLD = 2 ;
-const DEL_THRESHOLD = -2 ;
-const MUTATION_MIN = 2 ;
 
 describe('Data Lookup Functions', () => {
 
   it('Copy Number Value', () => {
-    expect(0).toEqual(getCopyNumberValue('NOTANUMBER',AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberValue(undefined,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberValue(-3,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberValue(-2,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberValue(-1,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberValue(0,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberValue(1,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberValue(2,AMP_THRESHOLD,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberValue(3,AMP_THRESHOLD,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue('NOTANUMBER',DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(undefined,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(-3,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(-2,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(-1,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(0,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberValue(1,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(2,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberValue(3,DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
   });
 
   it('Copy Number High', () => {
-    expect(0).toEqual(getCopyNumberHigh('NOTANUMBER',AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(undefined,AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-3,AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-2,AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(-1,AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(0,AMP_THRESHOLD));
-    expect(0).toEqual(getCopyNumberHigh(1,AMP_THRESHOLD));
-    expect(1).toEqual(getCopyNumberHigh(2,AMP_THRESHOLD));
-    expect(1).toEqual(getCopyNumberHigh(3,AMP_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh('NOTANUMBER',DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(undefined,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-3,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-2,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(-1,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(0,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberHigh(1,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(2,DEFAULT_AMPLIFICATION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberHigh(3,DEFAULT_AMPLIFICATION_THRESHOLD));
   });
 
   it('Copy Number Low', () => {
-    expect(0).toEqual(getCopyNumberLow('NOTANUMBER',DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(undefined,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberLow(-3,DEL_THRESHOLD));
-    expect(1).toEqual(getCopyNumberLow(-2,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(-1,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(0,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(1,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(2,DEL_THRESHOLD));
-    expect(0).toEqual(getCopyNumberLow(3,DEL_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow('NOTANUMBER',DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(undefined,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberLow(-3,DEFAULT_DELETION_THRESHOLD));
+    expect(1).toEqual(getCopyNumberLow(-2,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(-1,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(0,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(1,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(2,DEFAULT_DELETION_THRESHOLD));
+    expect(0).toEqual(getCopyNumberLow(3,DEFAULT_DELETION_THRESHOLD));
   });
 
   it('Mutation Score', () => {
-    expect(1).toEqual(getMutationScore('Frame_Shift_Ins',MUTATION_MIN));
-    expect(1).toEqual(getMutationScore('SpliceDonorDeletion',MUTATION_MIN));
-    expect(1).toEqual(getMutationScore('InFrameInsertion',MUTATION_MIN));
-    expect(0).toEqual(getMutationScore('synonymous_variant',MUTATION_MIN));
-    expect(0).toEqual(getMutationScore('downstream_gene_variant',MUTATION_MIN));
-    expect(0).toEqual(getMutationScore('Copy Number',MUTATION_MIN));
+    expect(1).toEqual(getMutationScore('Frame_Shift_Ins',MIN_FILTER));
+    expect(1).toEqual(getMutationScore('SpliceDonorDeletion',MIN_FILTER));
+    expect(1).toEqual(getMutationScore('InFrameInsertion',MIN_FILTER));
+    expect(0).toEqual(getMutationScore('synonymous_variant',MIN_FILTER));
+    expect(0).toEqual(getMutationScore('downstream_gene_variant',MIN_FILTER));
+    expect(0).toEqual(getMutationScore('Copy Number',MIN_FILTER));
   });
 
   it('Gene Pathway Look', () => {

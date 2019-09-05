@@ -13,8 +13,8 @@ import {
 } from './SortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
 
-const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
-const DEFAULT_DELETION_THRESHOLD = -2;
+export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
+export const DEFAULT_DELETION_THRESHOLD = -2;
 
 const associateCache = lru(500);
 const pruneDataCache = lru(500);
@@ -121,12 +121,7 @@ export function createEmptyArray(pathwayLength, sampleLength) {
  * @param filter
  */
 export function calculateGeneSetExpected(pathwayData, filter) {
-  // a list for each sample  [0] = expected_N, vs [1] total_pop_N
-  const { genomeBackgroundCopyNumber } = pathwayData;
-  const { genomeBackgroundMutation } = pathwayData;
-  // let's assume they are the same order for now since they were fetched with the same sample data
-  filter = filter.indexOf('All') === 0 ? '' : filter;
-
+  const { genomeBackgroundCopyNumber, genomeBackgroundMutation } = pathwayData;
   // // initiate to 0
   const pathwayExpected = {};
   // init data
@@ -140,15 +135,16 @@ export function calculateGeneSetExpected(pathwayData, filter) {
     const mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
     const mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
 
-
     // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
     for (const pathway of pathwayData.pathways) {
       const sample_probs = [];
 
-      if (!filter || filter === 'Copy Number') {
-        sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+      if (filter === FILTER_ENUM.COPY_NUMBER || filter === FILTER_ENUM.CNV_MUTATION) {
+        if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
+          sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+        }
       }
-      if (!filter || filter === 'Mutation') {
+      if (filter === FILTER_ENUM.MUTATION || filter === FILTER_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
       }
       const total_prob = addIndepProb(sample_probs);
@@ -292,14 +288,13 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  * @returns {any[]}
  */
 export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
-  filter = filter.indexOf(FILTER_ENUM.ALL) === 0 ? '' : filter;
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-  if (!filter || filter === FILTER_ENUM.MUTATION) {
+  if (filter === FILTER_ENUM.CNV_MUTATION || filter === FILTER_ENUM.MUTATION) {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
   }
 
-  if (!filter || filter === FILTER_ENUM.COPY_NUMBER) {
+  if (filter === FILTER_ENUM.CNV_MUTATION|| filter === FILTER_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
@@ -475,23 +470,23 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber } = pathwayData;
+  const { expression, samples, copyNumber,filterCounts } = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
   // TODO: just return this once fixed
-  const geneData = {
+  return {
     expression,
     samples,
     copyNumber,
     filter,
+    filterCounts,
     geneList:pathwayData.geneList, // use the geneList form the
     pathways,
     pathwaySelection,
   };
-  return geneData;
 }
 
 export function scoreGeneData(inputGeneData) {

@@ -14,9 +14,12 @@ import FaRefresh from 'react-icons/lib/fa/refresh';
 import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
+import update from 'immutability-helper';
+import DefaultPathWays from '../../data/genesets/tgac';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
+const REFERENCE = refGene['hg38'];
 
 export default class PathwayEditor extends PureComponent {
 
@@ -28,9 +31,9 @@ export default class PathwayEditor extends PureComponent {
       newView: '',
       geneOptions: [],
       geneQuery: '',
-      reference: refGene['hg38'],
       limit: 25,
       selectedPathwayState: null,
+      pathwaySet: props.pathwaySet,
     };
   }
 
@@ -42,13 +45,19 @@ export default class PathwayEditor extends PureComponent {
 
   handleChange = e => {
     let file = e.target.files[0];
-    let {onUpload} = this.props;
-
     let result = {};
     let fr = new FileReader();
+    let that = this ; // scope hack
     fr.onload = function (e) {
       result = JSON.parse(e.target.result);
-      onUpload(result);
+      const newState = {
+        name: 'Default Pathway',
+        pathways: result,
+        selected: true
+      };
+      that.setState({
+        pathwaySet: newState
+      });
     };
 
     fr.readAsText(file);
@@ -68,13 +77,24 @@ export default class PathwayEditor extends PureComponent {
     downloadAnchorNode.remove();
   }
 
+  updateGenesForGeneSet = (updatedPathway) => {
+    const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => updatedPathway.golabel === p.golabel);
+    let selectedPathwaySet = update(this.state.pathwaySet, {
+      pathways:  { [pathwayIndex]: {$set:updatedPathway }}
+    });
+    this.setState({
+      pathwaySet: selectedPathwaySet,
+    });
+  };
 
-    removeGene = (selectedPathway, selectedGene) => {
-      this.props.removeGeneHandler(selectedPathway, selectedGene);
-    };
-
-    removePathway = (selectedPathway) => {
-      this.props.removeGeneSetHandler(selectedPathway);
+    removeGeneSet = (selectedPathway) => {
+      const pathwayIndex  = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
+      const selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways: { $splice: [[pathwayIndex,1]] }
+      });
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+      });
     };
 
     selectedPathway = (selectedPathway) => {
@@ -84,33 +104,47 @@ export default class PathwayEditor extends PureComponent {
       });
     };
 
-    handleAddNewGeneSet(newGeneSet) {
-      this.props.addGeneSetHandler(newGeneSet);
-      //
+    handleAddNewGeneSet(selectedPathway) {
+      const selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways: { $unshift: [{
+          goid: '',
+          golabel: selectedPathway,
+          gene: [],
+        }] }
+      });
       this.setState({
+        pathwaySet: selectedPathwaySet,
         newGeneSet: ''
       });
     }
 
     handleAddNewGene(selectedGeneSet, newGene) {
       newGene.map(g => {
-        this.props.addGeneHandler(selectedGeneSet, g);
+        // get pathway to filter
+        let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedGeneSet.golabel === p.golabel);
+        let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
+          gene: { $unshift: [g]}
+        });
+        const selectedPathwaySet = update(this.state.pathwaySet, {
+          pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
+        });
+        this.setState({
+          newGene: [],
+          pathwaySet: selectedPathwaySet,
+          selectedPathway: newSelectedPathway,
+        });
       });
 
-      this.setState({
-        newGene: []
-      });
     }
 
     queryNewGenes(geneQuery) {
-      let {reference: {host, name}, limit} = this.state;
       if (geneQuery.trim().length === 0) {
         this.setState({
           geneOptions: []
         });
         return;
       }
-      let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+      let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit);
       subscriber.subscribe(matches => {
         this.setState({
           geneOptions: matches
@@ -119,8 +153,26 @@ export default class PathwayEditor extends PureComponent {
       );
     }
 
+    // set the current model to existing one
+    onReset(){
+      const defaultPathwaySet =  {
+        name: 'Default Pathway',
+        pathways: DefaultPathWays,
+        selected: true
+      };
+      this.setState({
+        pathwaySet: defaultPathwaySet
+      });
+    }
+
+    // push the current model up
+    // then call close
+    onClose(){
+      this.props.onClose(this.state.pathwaySet);
+    }
 
     render() {
+
       return (
         <Grid style={{marginTop: 20,width:900}}>
           <Row style={{marginBottom:20}}>
@@ -134,11 +186,11 @@ export default class PathwayEditor extends PureComponent {
               >
                 <FaCloudUpload/>
               </BrowseButton>
-              <Button  onClick={() => this.props.onReset()}>
+              <Button  onClick={() => this.onReset()}>
               Reset <FaRefresh/>
               </Button>
-              <Button onClick={() => this.props.onClose()} primary raised>
-              Done <FaClose/>
+              <Button onClick={() => this.onClose()} primary raised>
+              Save and Close <FaClose/>
               </Button>
             </Col>
           </Row>
@@ -191,8 +243,8 @@ export default class PathwayEditor extends PureComponent {
             <Col md={7}>
               <PathwayView
                 clickPathwayHandler={this.selectedPathway}
-                removePathwayHandler={this.removePathway}
-                selectedPathwaySet={this.props.pathwaySet}
+                removePathwayHandler={this.removeGeneSet}
+                selectedPathwaySet={this.state.pathwaySet}
               />
             </Col>
             <Col md={3}>
@@ -206,8 +258,8 @@ export default class PathwayEditor extends PureComponent {
             </h3>
               }
               <GeneView
-                removeGeneHandler={this.removeGene}
                 selectedPathway={this.state.selectedPathway}
+                updateGenesForGeneSet={this.updateGenesForGeneSet}
               />
             </Col>
           </Row>
@@ -218,13 +270,7 @@ export default class PathwayEditor extends PureComponent {
 }
 
 PathwayEditor.propTypes = {
-  addGeneHandler: PropTypes.any,
-  addGeneSetHandler: PropTypes.any,
   onClose: PropTypes.any,
-  onReset: PropTypes.any,
-  onUpload: PropTypes.any,
   pathwaySet: PropTypes.any,
-  removeGeneHandler: PropTypes.any,
-  removeGeneSetHandler: PropTypes.any,
   selectedPathway: PropTypes.any,
 };
