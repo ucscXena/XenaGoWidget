@@ -21,7 +21,6 @@ export class DiffLabel extends PureComponent {
     const {
       labelOffset, left, width, labelHeight, cohortIndex,
     } = this.props;
-    // const colorString = cohortIndex === 0 ? 'green' : 'hotpink';
     const colorString = 'black';
 
     return {
@@ -61,7 +60,7 @@ export class DiffLabel extends PureComponent {
         className={className}
         style={this.style(colorDensity)}
       >
-        <polygon points={this.calculateDiamond(width,labelHeight,cohortIndex)}/>
+        <polygon fill='hotpink' points={this.calculateDiamond(width,labelHeight,cohortIndex)} stroke='black'/>
       </svg>
     );
   }

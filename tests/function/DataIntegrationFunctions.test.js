@@ -1,7 +1,7 @@
 import expect from 'expect';
 import {
-  // doDataAssociations,
-  // findAssociatedData,
+  doDataAssociations,
+  findAssociatedData,
   findPruneData,
   pruneColumns,
   calculateExpectedProb,
@@ -9,27 +9,27 @@ import {
   calculateAssociatedData,
   calculateObserved,
   calculatePathwayScore,
-  // calculateAllPathways,
+  calculateAllPathways,
   calculateDiffs, generateScoredData, filterCopyNumbers, filterMutations
 } from '../../src/functions/DataFunctions';
 
-// import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
-// import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
-// import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
-// import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
-// import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
-// import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
+import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
+import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
+import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
+import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
+import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
+import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
 
 import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
 import CalculateAssociateDataOutput1 from '../data/CalculateAssociateDataOutput1';
 
-// import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
-// import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
-// import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
-//
-// import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
-// import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
-// import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
+import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
+import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
+import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
+
+import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
+import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
+import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
 
 import FindPruneData1 from '../data/FindPruneAssociatedData1';
 import FindPruneDataKey1 from '../data/FindPruneDataKey1';
@@ -75,10 +75,9 @@ import {FILTER_ENUM} from '../../src/components/FilterSelector';
 
 describe('Data Integration Functions', () => {
 
-  // TODO: reactivate
-  // it('Associated Data', () => {
-  //   expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
-  // });
+  it('Associated Data', () => {
+    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
+  });
 
   it('Filter Mutations for Gene Set', () => {
     expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
@@ -132,9 +131,9 @@ describe('Data Integration Functions', () => {
   });
 
   // TODO: reactivate
-  // it('Find Associated Data', () => {
-  //   expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
-  // });
+  it('Find Associated Data', () => {
+    expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
+  });
 
 
   it('Find pruned columns', () => {
@@ -177,9 +176,9 @@ describe('Data Integration Functions', () => {
   // ERROR: 'Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in %s.%s', 'the componentWillUnmount method', '
   // TODO: probably because its calculating based on the fetch
   // TODO: activate this again
-  // it('Calculate All Pathways', () => {
-  //   expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
-  // });
+  it('Calculate All Pathways', () => {
+    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
+  });
 
   it('Calculate Diffs', () => {
     const CalculateDiffsA1 = [{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}];
