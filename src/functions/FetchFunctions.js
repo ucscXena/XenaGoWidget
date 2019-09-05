@@ -20,6 +20,8 @@ export function getSamplesForCohort(cohort,filter) {
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
   case FILTER_ENUM.MUTATION:
     return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
+  case FILTER_ENUM.GENE_EXPRESSION:
+    return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null);
   default:
     // eslint-disable-next-line no-console
     console.error('filter is not defined',filter);
@@ -34,11 +36,12 @@ export function getAllSamplesForCohorts(cohort){
 }
 
 
-export function createFilterCounts(mutationSamples,copyNumberSamples){
+export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpression){
   let filterCounts = {};
   filterCounts[FILTER_ENUM.MUTATION] =  mutationSamples.length;
   filterCounts[FILTER_ENUM.COPY_NUMBER] =  copyNumberSamples.length;
   filterCounts[FILTER_ENUM.CNV_MUTATION] =  uniq(intersection(copyNumberSamples,mutationSamples)).length;
+  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  geneExpression.length;
   return filterCounts;
 }
 
@@ -52,7 +55,7 @@ export function calculateSubCohortSamples(availableSamples, cohort){
   }
 }
 
-function getSamplesForFilter( mutationSamples,copyNumberSamples, filter){
+function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, filter){
   switch (filter) {
   case FILTER_ENUM.CNV_MUTATION:
     return uniq(intersection(mutationSamples, copyNumberSamples));
@@ -60,6 +63,8 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples, filter){
     return mutationSamples;
   case FILTER_ENUM.COPY_NUMBER:
     return copyNumberSamples;
+  case FILTER_ENUM.GENE_EXPRESSION:
+    return geneExpressionSamples;
   default:
     // eslint-disable-next-line no-console
     console.error('invalid filter', filter);
@@ -75,55 +80,71 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, null),
+    datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
+    // TODO: add gene expression 0
     datasetSamples(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, null),
     datasetSamples(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, null),
+    datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
+    // TODO: add gene expression 1
   ). flatMap((unfilteredSamples) => {
-    // TODO: pass in filter count somehow
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1]),createFilterCounts(unfilteredSamples[2],unfilteredSamples[3])];
+
+    // console.log('unfiltered samples',unfilteredSamples)
+    // TODO: add gene expression with the second one
+    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
-    // const geneExpression =
     // merge based on filter
     const availableSamples = [
       calculateSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
       calculateSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
-      calculateSubCohortSamples(unfilteredSamples[2],selectedCohorts[1]),
-      calculateSubCohortSamples(unfilteredSamples[3],selectedCohorts[1])
+      calculateSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
+      // TODO: add gene expression 0
+
+      calculateSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
+      calculateSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
+      calculateSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
+      // TODO: add gene expression 1
     ];
 
     // calculate samples for what samples we will actually fetch
-    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],filter[0]);
-    const samplesB = getSamplesForFilter(availableSamples[2],availableSamples[2],filter[1]);
+    // TODO: add gene expression
+    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
+    const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 
     // TODO: make this a testable function
+    // TODO: minimize fetches based on the filter
     return Rx.Observable.zip(
       sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
       datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
+      datasetFetch(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, samplesA, geneList),
       datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samplesA, [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samplesA, [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
       sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
+      datasetFetch(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, samplesB, geneList),
       datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
       (
-        mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-        mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+        mutationsA, copyNumberA, geneExpressionA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+        mutationsB, copyNumberB, geneExpressionB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
       ) => ({
         samplesA,
         mutationsA,
         copyNumberA,
+        geneExpressionA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
         mutationsB,
         copyNumberB,
+        geneExpressionB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
       }),
     );
   })
     .subscribe(({
-      samplesA, mutationsA, copyNumberA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-      samplesB, mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+      samplesA, mutationsA, copyNumberA, geneExpressionA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      samplesB, mutationsB, copyNumberB, geneExpressionB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
     }) => {
       combinationHandler({
         geneList,
@@ -132,11 +153,13 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         samplesA,
         mutationsA,
         copyNumberA,
+        geneExpressionA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
         mutationsB,
         copyNumberB,
+        geneExpressionB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,

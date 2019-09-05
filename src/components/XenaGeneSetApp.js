@@ -147,11 +147,13 @@ export default class XenaGeneSetApp extends PureComponent {
         samplesA,
         mutationsA,
         copyNumberA,
+        geneExpressionA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
         mutationsB,
         copyNumberB,
+        geneExpressionB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,
@@ -170,6 +172,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberA,
         expression: mutationsA,
+        geneExpression: geneExpressionA,
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -186,13 +189,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberB,
         expression: mutationsB,
+        geneExpression: geneExpressionB,
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
-
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;
 

@@ -6,6 +6,7 @@ import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 
 const MUTATION_KEY = 'simple somatic mutation';
+const GENE_EXPRESSION_KEY = 'gene expression';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
 const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
 const GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY = 'copy number';
@@ -83,15 +84,19 @@ export function fetchCohortData() {
   if (COHORT_DATA === undefined) {
     COHORT_DATA = Object.keys(DefaultDatasetForGeneset)
       .filter((cohort) => (DefaultDatasetForGeneset[cohort].viewInPathway)
-            && DefaultDatasetForGeneset[cohort][MUTATION_KEY])
+          && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
+          && DefaultDatasetForGeneset[cohort][GENE_EXPRESSION_KEY]
+      )
       .map((cohort) => {
         const mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
         const copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
         const genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
+        const geneExpression = DefaultDatasetForGeneset[cohort][GENE_EXPRESSION_KEY];
         return {
           name: cohort,
           mutationDataSetId: mutation.dataset,
           copyNumberDataSetId: copyNumberView.dataset,
+          geneExpression: geneExpression,
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,

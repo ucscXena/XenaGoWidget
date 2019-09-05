@@ -10,9 +10,13 @@ export const FILTER_ENUM = {
   CNV_MUTATION:'CNV \u2229 Mutation',
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
+  GENE_EXPRESSION:'Gene Expression',
 };
 
 function lowerCaseCompare(a, b) {
+  // put gene expression at the bottom
+  if(a==='Gene Expression') return 1 ;
+  if(b==='Gene Expression') return 1 ;
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
@@ -24,7 +28,7 @@ export class FilterSelector extends PureComponent {
 
     getFilters(){
       let filteredMutationVector = pick(mutationVector, v => v >= MIN_FILTER);
-      filteredMutationVector['Copy Number'] = 1;
+      filteredMutationVector[FILTER_ENUM.COPY_NUMBER] = 1;
       return filteredMutationVector;
     }
 

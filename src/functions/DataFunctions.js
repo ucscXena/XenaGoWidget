@@ -15,6 +15,7 @@ import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 export const DEFAULT_DELETION_THRESHOLD = -2;
+const GENE_EXPRESSION_MIN = 12;
 
 const associateCache = lru(500);
 const pruneDataCache = lru(500);
@@ -28,6 +29,14 @@ export const DEFAULT_DATA_VALUE = {
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
+}
+
+export function getGeneExpressionHits(inputValue) {
+  return (!isNaN(inputValue) && (inputValue>= GENE_EXPRESSION_MIN)) ? 1 : 0;
+}
+
+export function getGeneExpressionValue(inputValue) {
+  return !isNaN(inputValue) ? inputValue : 0 ;
 }
 
 export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
@@ -74,27 +83,25 @@ export function pruneColumns(data, pathways) {
 
 export function createAssociatedDataKey(inputHash) {
   const {
-    geneList, pathways, samples, filter, min, cohortIndex,
+    pathways, samples, filter, selectedCohort
   } = inputHash;
   return {
     filter,
-    geneList,
     pathways,
-    min,
-    cohortIndex,
-    sampleCount: samples.length,
+    samples:samples.sort(),
+    selectedCohort,
   };
 }
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter,
+    expression, copyNumber, geneList, pathways, samples, filter, geneExpression
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter);
+    data = doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
 
@@ -147,7 +154,14 @@ export function calculateGeneSetExpected(pathwayData, filter) {
       if (filter === FILTER_ENUM.MUTATION || filter === FILTER_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
       }
-      const total_prob = addIndepProb(sample_probs);
+      if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+        // TODO: add viper scores
+        // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+        // sample_probs.push(0);
+      }
+      // TODO: we should not filter out numbers
+      let total_prob = addIndepProb(sample_probs.filter(Number));
+      // const total_prob = addIndepProb(sample_probs);
       pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
     }
   }
@@ -246,6 +260,40 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
+
+export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
+  const genePathwayLookup = getGenePathwayLookup(pathways);
+
+  let scored = 0 ;
+  for (const gene of geneList) {
+    // if we have not processed that gene before, then process
+    const geneIndex = geneList.indexOf(gene);
+
+    const pathwayIndices = genePathwayLookup(gene);
+    const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
+
+    // get pathways this gene is involved in
+    for (const index of pathwayIndices) {
+      // process all samples
+      for (const sampleEntryIndex in sampleEntries) {
+        // const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
+        const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
+        // sumTotal += sampleEntries[sampleEntryIndex];
+        if (returnValue > 0) {
+          ++scored ;
+          returnArray[index][sampleEntryIndex].total += returnValue;
+          returnArray[index][sampleEntryIndex].cnv += returnValue;
+          returnArray[index][sampleEntryIndex].mutation += returnValue;
+          returnArray[index][sampleEntryIndex].mutation4 += returnValue;
+          // // returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+          returnArray[index][sampleEntryIndex].cnvLow += returnValue;
+        }
+      }
+    }
+  }
+  return {score: scored, returnArray};
+}
+
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -281,13 +329,14 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  *
  * @param expression
  * @param copyNumber
+ * @param geneExpression
  * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
+export function doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === FILTER_ENUM.CNV_MUTATION || filter === FILTER_ENUM.MUTATION) {
@@ -296,6 +345,11 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
 
   if (filter === FILTER_ENUM.CNV_MUTATION|| filter === FILTER_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
+    // get list of genes in identified pathways
+  }
+
+  if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     // get list of genes in identified pathways
   }
   return returnArray;
@@ -470,7 +524,7 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber,filterCounts } = pathwayData;
+  const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
@@ -478,9 +532,11 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
 
   // TODO: just return this once fixed
   return {
+    selectedCohort: cohort,
     expression,
     samples,
     copyNumber,
+    geneExpression,
     filter,
     filterCounts,
     geneList:pathwayData.geneList, // use the geneList form the
