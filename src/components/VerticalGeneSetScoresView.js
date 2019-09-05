@@ -80,7 +80,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      console.log('hash ',hashAssociation,prunedColumns)
       prunedColumns.samples = samples;
       let returnedValue = clusterSampleSort(prunedColumns);
 

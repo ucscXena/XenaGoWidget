@@ -87,6 +87,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
     // TODO: add gene expression 1
   ). flatMap((unfilteredSamples) => {
+
+    // console.log('unfiltered samples',unfilteredSamples)
     // TODO: add gene expression with the second one
     filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
