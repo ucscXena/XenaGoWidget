@@ -14,9 +14,11 @@ import FaRefresh from 'react-icons/lib/fa/refresh';
 import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
+import update from 'immutability-helper';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
+const REFERENCE = refGene['hg38'];
 
 export default class PathwayEditor extends PureComponent {
 
@@ -28,9 +30,9 @@ export default class PathwayEditor extends PureComponent {
       newView: '',
       geneOptions: [],
       geneQuery: '',
-      reference: refGene['hg38'],
       limit: 25,
       selectedPathwayState: null,
+      pathwaySet: props.pathwaySet,
     };
   }
 
@@ -84,10 +86,16 @@ export default class PathwayEditor extends PureComponent {
       });
     };
 
-    handleAddNewGeneSet(newGeneSet) {
-      this.props.addGeneSetHandler(newGeneSet);
-      //
+    handleAddNewGeneSet(selectedPathway) {
+      const selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways: { $unshift: [{
+          goid: '',
+          golabel: selectedPathway,
+          gene: [],
+        }] }
+      });
       this.setState({
+        pathwaySet: selectedPathwaySet,
         newGeneSet: ''
       });
     }
@@ -103,14 +111,13 @@ export default class PathwayEditor extends PureComponent {
     }
 
     queryNewGenes(geneQuery) {
-      let {reference: {host, name}, limit} = this.state;
       if (geneQuery.trim().length === 0) {
         this.setState({
           geneOptions: []
         });
         return;
       }
-      let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+      let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit);
       subscriber.subscribe(matches => {
         this.setState({
           geneOptions: matches
@@ -119,8 +126,24 @@ export default class PathwayEditor extends PureComponent {
       );
     }
 
+    // set the current model to existing one
+    onReset(){
+      // const oldModel = this.props.getModel()
+      // this.setState({
+      // });
+      this.props.onReset();
+    }
+
+    // push the current model up
+    // then call close
+    onClose(){
+      this.props.onClose(this.state.pathwaySet);
+    }
 
     render() {
+
+
+
       return (
         <Grid style={{marginTop: 20,width:900}}>
           <Row style={{marginBottom:20}}>
@@ -134,10 +157,10 @@ export default class PathwayEditor extends PureComponent {
               >
                 <FaCloudUpload/>
               </BrowseButton>
-              <Button  onClick={() => this.props.onReset()}>
+              <Button  onClick={() => this.onReset()}>
               Reset <FaRefresh/>
               </Button>
-              <Button onClick={() => this.props.onClose()} primary raised>
+              <Button onClick={() => this.onClose()} primary raised>
               Done <FaClose/>
               </Button>
             </Col>
@@ -192,7 +215,7 @@ export default class PathwayEditor extends PureComponent {
               <PathwayView
                 clickPathwayHandler={this.selectedPathway}
                 removePathwayHandler={this.removePathway}
-                selectedPathwaySet={this.props.pathwaySet}
+                selectedPathwaySet={this.state.pathwaySet}
               />
             </Col>
             <Col md={3}>

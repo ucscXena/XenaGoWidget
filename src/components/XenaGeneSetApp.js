@@ -326,9 +326,14 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    handleShowGeneSetViewer = () => {
+    handleShowGeneSetViewer = (updatedPathwaySet) => {
+      AppStorageHandler.storePathways(updatedPathwaySet.pathways);
       this.setState({
-        view: XENA_VIEW
+        view: XENA_VIEW,
+        pathwaySet: updatedPathwaySet,
+        pathways: updatedPathwaySet.pathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
