@@ -442,10 +442,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       if(isEqual(this.state.geneData,[{},{}])) return true ;
       if(isEqual(this.state.pathwayData,[{},{}])) return true ;
-
-      if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
-
-      return false;
+      return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1]);
     }
 
     handleChangeCohort = (selectedCohort, cohortIndex) => {
@@ -552,16 +549,11 @@ export default class XenaGeneSetApp extends PureComponent {
               title='Edit Pathways'
             >
               <PathwayEditor
-                addGeneHandler={this.addGene}
-                addGeneSetHandler={this.addGeneSet}
                 onClose={this.handleShowGeneSetViewer}
-                // highlightedGene={this.state.highlightedGene}
                 onReset={this.handleReset}
                 onUpload={this.handleUpload}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'
-                removeGeneHandler={this.removeGene}
-                removeGeneSetHandler={this.removeGeneSet}
                 selectedPathway={this.state.selectedPathway}
               />
             </Dialog>

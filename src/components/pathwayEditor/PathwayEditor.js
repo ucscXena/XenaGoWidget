@@ -267,13 +267,9 @@ export default class PathwayEditor extends PureComponent {
 }
 
 PathwayEditor.propTypes = {
-  addGeneHandler: PropTypes.any,
-  addGeneSetHandler: PropTypes.any,
   onClose: PropTypes.any,
   onReset: PropTypes.any,
   onUpload: PropTypes.any,
   pathwaySet: PropTypes.any,
-  removeGeneHandler: PropTypes.any,
-  removeGeneSetHandler: PropTypes.any,
   selectedPathway: PropTypes.any,
 };
