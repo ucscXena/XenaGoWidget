@@ -15,6 +15,7 @@ import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import update from 'immutability-helper';
+import {AppStorageHandler} from "../../service/AppStorageHandler";
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -72,11 +73,27 @@ export default class PathwayEditor extends PureComponent {
 
 
     removeGene = (selectedPathway, selectedGene) => {
-      this.props.removeGeneHandler(selectedPathway, selectedGene);
+      const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
+      const geneIndex = this.state.pathwaySet.pathways[pathwayIndex].gene.findIndex(g => g !== selectedGene);
+      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
+        gene: { $splice: [[geneIndex,1]]}
+      });
+      let selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
+      });
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+      });
     };
 
-    removePathway = (selectedPathway) => {
-      this.props.removeGeneSetHandler(selectedPathway);
+    removeGeneSet = (selectedPathway) => {
+      const pathwayIndex  = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
+      const selectedPathwaySet = update(this.state.pathwaySet, {
+        pathways: { $splice: [[pathwayIndex,1]] }
+      });
+      this.setState({
+        pathwaySet: selectedPathwaySet,
+      });
     };
 
     selectedPathway = (selectedPathway) => {
@@ -102,12 +119,21 @@ export default class PathwayEditor extends PureComponent {
 
     handleAddNewGene(selectedGeneSet, newGene) {
       newGene.map(g => {
-        this.props.addGeneHandler(selectedGeneSet, g);
+        console.log('adding new gene',selectedGeneSet,newGene)
+        // get pathway to filter
+        let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedGeneSet.golabel === p.golabel);
+        let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
+          gene: { $unshift: [g]}
+        });
+        const selectedPathwaySet = update(this.state.pathwaySet, {
+          pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
+        });
+        this.setState({
+          newGene: [],
+          pathwaySet: selectedPathwaySet,
+        });
       });
 
-      this.setState({
-        newGene: []
-      });
     }
 
     queryNewGenes(geneQuery) {
@@ -161,7 +187,7 @@ export default class PathwayEditor extends PureComponent {
               Reset <FaRefresh/>
               </Button>
               <Button onClick={() => this.onClose()} primary raised>
-              Done <FaClose/>
+              Save and Close <FaClose/>
               </Button>
             </Col>
           </Row>
@@ -214,7 +240,7 @@ export default class PathwayEditor extends PureComponent {
             <Col md={7}>
               <PathwayView
                 clickPathwayHandler={this.selectedPathway}
-                removePathwayHandler={this.removePathway}
+                removePathwayHandler={this.removeGeneSet}
                 selectedPathwaySet={this.state.pathwaySet}
               />
             </Col>
