@@ -77,20 +77,15 @@ export default class PathwayEditor extends PureComponent {
     downloadAnchorNode.remove();
   }
 
-
-    removeGene = (selectedPathway, selectedGene) => {
-      const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      const geneIndex = this.state.pathwaySet.pathways[pathwayIndex].gene.findIndex(g => g !== selectedGene);
-      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-        gene: { $splice: [[geneIndex,1]]}
-      });
-      let selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
-      });
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-      });
-    };
+  updateGenesForGeneSet = (updatedPathway) => {
+    const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => updatedPathway.golabel === p.golabel);
+    let selectedPathwaySet = update(this.state.pathwaySet, {
+      pathways:  { [pathwayIndex]: {$set:updatedPathway }}
+    });
+    this.setState({
+      pathwaySet: selectedPathwaySet,
+    });
+  };
 
     removeGeneSet = (selectedPathway) => {
       const pathwayIndex  = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
@@ -262,8 +257,8 @@ export default class PathwayEditor extends PureComponent {
             </h3>
               }
               <GeneView
-                removeGeneHandler={this.removeGene}
                 selectedPathway={this.state.selectedPathway}
+                updateGenesForGeneSet={this.updateGenesForGeneSet}
               />
             </Col>
           </Row>
