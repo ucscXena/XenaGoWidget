@@ -195,7 +195,11 @@ export default class XenaGeneSetApp extends PureComponent {
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
+      console.log('pathway data',pathwayDataA,pathwayDataB)
+
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
+      console.log('pathways',pathways)
+
 
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;

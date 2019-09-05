@@ -36,11 +36,12 @@ export function getAllSamplesForCohorts(cohort){
 }
 
 
-export function createFilterCounts(mutationSamples,copyNumberSamples){
+export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpression){
   let filterCounts = {};
   filterCounts[FILTER_ENUM.MUTATION] =  mutationSamples.length;
   filterCounts[FILTER_ENUM.COPY_NUMBER] =  copyNumberSamples.length;
   filterCounts[FILTER_ENUM.CNV_MUTATION] =  uniq(intersection(copyNumberSamples,mutationSamples)).length;
+  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  geneExpression.length;
   return filterCounts;
 }
 
@@ -87,7 +88,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     // TODO: add gene expression 1
   ). flatMap((unfilteredSamples) => {
     // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1]),createFilterCounts(unfilteredSamples[2],unfilteredSamples[3])];
+    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
     // merge based on filter
     const availableSamples = [
@@ -105,7 +106,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     // calculate samples for what samples we will actually fetch
     // TODO: add gene expression
     const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
-    const samplesB = getSamplesForFilter(availableSamples[2],availableSamples[3],availableSamples[4],filter[1]);
+    const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 
     // TODO: make this a testable function
     // TODO: minimize fetches based on the filter
