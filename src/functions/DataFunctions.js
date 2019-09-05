@@ -351,7 +351,7 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneL
   }
 
   if (filter === FILTER_ENUM.GENE_EXPRESSION) {
-    filterGeneExpression(geneExpression,returnArray,geneList,pathways);
+    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     // get list of genes in identified pathways
   }
   return returnArray;
