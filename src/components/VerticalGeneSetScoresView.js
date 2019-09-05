@@ -51,7 +51,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     render() {
 
       let {data, cohortIndex, filter, labelHeight, selectedCohort, cohortLabel,pathways,showDetails} = this.props;
-      const {expression, samples, copyNumber} = data;
+      const {expression, samples, copyNumber, geneExpression} = data;
       if (!data) {
         return <div>Loading Cohort {cohortLabel}</div>;
       }
@@ -67,6 +67,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let hashAssociation = {
         expression,
         copyNumber,
+        geneExpression,
         geneList,
         pathways,
         samples,
@@ -91,6 +92,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             cohortIndex={cohortIndex}
             data={{
               expression,
+              geneExpression,
               pathways: returnedValue.pathways,
               samples,
               sortedSamples: returnedValue.sortedSamples

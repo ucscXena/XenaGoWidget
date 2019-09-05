@@ -83,15 +83,13 @@ export function pruneColumns(data, pathways) {
 
 export function createAssociatedDataKey(inputHash) {
   const {
-    geneList, pathways, samples, filter, min, cohortIndex,
+    pathways, samples, filter, selectedCohort
   } = inputHash;
   return {
     filter,
-    geneList,
     pathways,
-    min,
-    cohortIndex,
-    sampleCount: samples.length,
+    samples:samples.sort(),
+    selectedCohort,
   };
 }
 
@@ -526,7 +524,7 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber,filterCounts,geneExpression } = pathwayData;
+  const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
@@ -534,6 +532,7 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
 
   // TODO: just return this once fixed
   return {
+    selectedCohort: cohort,
     expression,
     samples,
     copyNumber,

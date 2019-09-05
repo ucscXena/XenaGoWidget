@@ -137,7 +137,6 @@ describe('Data Integration Functions', () => {
 
 
   it('Find pruned columns', () => {
-    // let prunedDataOutput = findPruneData(FindPruneData1,FindPruneDataKey1);
     expect(FindPruneDataOutput1).toEqual(findPruneData(FindPruneData1,FindPruneDataKey1));
   });
 
