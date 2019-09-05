@@ -1,7 +1,6 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import DefaultPathWays from '../data/genesets/tgac';
 import PathwayEditor from './pathwayEditor/PathwayEditor';
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
@@ -9,8 +8,6 @@ import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, generateScoredData,
 } from '../functions/DataFunctions';
-// import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
-// import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';

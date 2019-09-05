@@ -15,7 +15,6 @@ import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import update from 'immutability-helper';
-import {AppStorageHandler} from '../../service/AppStorageHandler';
 import DefaultPathWays from '../../data/genesets/tgac';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -126,7 +125,6 @@ export default class PathwayEditor extends PureComponent {
 
     handleAddNewGene(selectedGeneSet, newGene) {
       newGene.map(g => {
-        console.log('adding new gene',selectedGeneSet,newGene);
         // get pathway to filter
         let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedGeneSet.golabel === p.golabel);
         let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
