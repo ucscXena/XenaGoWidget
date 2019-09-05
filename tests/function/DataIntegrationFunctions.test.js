@@ -76,7 +76,7 @@ import {FILTER_ENUM} from '../../src/components/FilterSelector';
 describe('Data Integration Functions', () => {
 
   it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
+    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
   });
 
   it('Filter Mutations for Gene Set', () => {
