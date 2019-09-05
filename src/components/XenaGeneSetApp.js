@@ -1,7 +1,6 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import DefaultPathWays from '../data/genesets/tgac';
 import PathwayEditor from './pathwayEditor/PathwayEditor';
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
@@ -9,8 +8,6 @@ import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, generateScoredData,
 } from '../functions/DataFunctions';
-// import FaArrowLeft from 'react-icons/lib/fa/arrow-left';
-// import FaArrowRight from 'react-icons/lib/fa/arrow-right';
 import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';
@@ -140,30 +137,6 @@ export default class XenaGeneSetApp extends PureComponent {
       );
     };
 
-
-    handleUpload = (file) => {
-      AppStorageHandler.storePathways(file);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: file,
-          selected: true
-        }
-      });
-    };
-
-    handleReset = () => {
-      AppStorageHandler.storePathways(DefaultPathWays);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: DefaultPathWays,
-          selected: true
-        }
-      });
-    };
-
-
     handleCombinedCohortData = (input) => {
       let {
         pathways,
@@ -245,77 +218,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    addGeneSet = (selectedPathway) => {
-      const selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways: { $unshift: [{
-          goid: '',
-          golabel: selectedPathway,
-          gene: [],
-        }] }
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    addGene = (selectedPathway, selectedGene) => {
-      // get pathway to filter
-      let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-        gene: { $unshift: [selectedGene]}
-      });
-      let selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
-      });
-
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: newSelectedPathway,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    removeGene = (selectedPathway, selectedGene) => {
-      const pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      const geneIndex = this.state.pathwaySet.pathways[pathwayIndex].gene.findIndex(g => g !== selectedGene);
-      let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
-        gene: { $splice: [[geneIndex,1]]}
-      });
-      let selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways:  { [pathwayIndex]: {$set:newSelectedPathway }}
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: newSelectedPathway,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
-    removeGeneSet = (selectedPathway) => {
-      const pathwayIndex  = this.state.pathwaySet.pathways.findIndex(p => selectedPathway.golabel === p.golabel);
-      const selectedPathwaySet = update(this.state.pathwaySet, {
-        pathways: { $splice: [[pathwayIndex,1]] }
-      });
-      AppStorageHandler.storePathways(selectedPathwaySet.pathways);
-      this.setState({
-        pathwaySet: selectedPathwaySet,
-        pathways: selectedPathwaySet.pathways,
-        selectedPathway: undefined,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
     getActiveApp() {
       return this.state.pathwaySet;
     }
@@ -326,9 +228,14 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    handleShowGeneSetViewer = () => {
+    handleSaveAndClosePathwayEditor = (updatedPathwaySet) => {
+      AppStorageHandler.storePathways(updatedPathwaySet.pathways);
       this.setState({
-        view: XENA_VIEW
+        view: XENA_VIEW,
+        pathwaySet: updatedPathwaySet,
+        pathways: updatedPathwaySet.pathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 
@@ -508,10 +415,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       if(isEqual(this.state.geneData,[{},{}])) return true ;
       if(isEqual(this.state.pathwayData,[{},{}])) return true ;
-
-      if(!isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])) return true ;
-
-      return false;
+      return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1]);
     }
 
     handleChangeCohort = (selectedCohort, cohortIndex) => {
@@ -582,7 +486,7 @@ export default class XenaGeneSetApp extends PureComponent {
             editGeneSetColors={this.editGeneSetColors}
             geneOptions={this.state.geneHits}
             onShowPathways={this.handleShowPathwayEditor}
-            onShowXena={this.handleShowGeneSetViewer}
+            onShowXena={this.handleSaveAndClosePathwayEditor}
             searchHandler={this.searchHandler}
             showClusterSort={showClusterSort}
             showDetailLayer={this.state.showDetailLayer}
@@ -613,21 +517,14 @@ export default class XenaGeneSetApp extends PureComponent {
             />
             <Dialog
               active={this.state.view === PATHWAYS_VIEW}
-              onEscKeyDown={this.handleShowGeneSetViewer}
-              onOverlayClick={this.handleShowGeneSetViewer}
+              onEscKeyDown={() => this.setState({view:XENA_VIEW})}
+              onOverlayClick={() => this.setState({view:XENA_VIEW})}
               title='Edit Pathways'
             >
               <PathwayEditor
-                addGeneHandler={this.addGene}
-                addGeneSetHandler={this.addGeneSet}
-                onClose={this.handleShowGeneSetViewer}
-                // highlightedGene={this.state.highlightedGene}
-                onReset={this.handleReset}
-                onUpload={this.handleUpload}
+                onClose={this.handleSaveAndClosePathwayEditor}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'
-                removeGeneHandler={this.removeGene}
-                removeGeneSetHandler={this.removeGeneSet}
                 selectedPathway={this.state.selectedPathway}
               />
             </Dialog>
