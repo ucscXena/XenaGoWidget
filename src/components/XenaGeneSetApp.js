@@ -152,17 +152,6 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    handleReset = () => {
-      AppStorageHandler.storePathways(DefaultPathWays);
-      this.setState({
-        pathwaySet: {
-          name: 'Default Pathway',
-          pathways: DefaultPathWays,
-          selected: true
-        }
-      });
-    };
-
 
     handleCombinedCohortData = (input) => {
       let {
@@ -255,7 +244,7 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    handleShowGeneSetViewer = (updatedPathwaySet) => {
+    handleSaveAndClosePathwayEditor = (updatedPathwaySet) => {
       AppStorageHandler.storePathways(updatedPathwaySet.pathways);
       this.setState({
         view: XENA_VIEW,
@@ -513,7 +502,7 @@ export default class XenaGeneSetApp extends PureComponent {
             editGeneSetColors={this.editGeneSetColors}
             geneOptions={this.state.geneHits}
             onShowPathways={this.handleShowPathwayEditor}
-            onShowXena={this.handleShowGeneSetViewer}
+            onShowXena={this.handleSaveAndClosePathwayEditor}
             searchHandler={this.searchHandler}
             showClusterSort={showClusterSort}
             showDetailLayer={this.state.showDetailLayer}
@@ -544,13 +533,12 @@ export default class XenaGeneSetApp extends PureComponent {
             />
             <Dialog
               active={this.state.view === PATHWAYS_VIEW}
-              onEscKeyDown={this.handleShowGeneSetViewer}
-              onOverlayClick={this.handleShowGeneSetViewer}
+              onEscKeyDown={() => this.setState({view:XENA_VIEW})}
+              onOverlayClick={() => this.setState({view:XENA_VIEW})}
               title='Edit Pathways'
             >
               <PathwayEditor
-                onClose={this.handleShowGeneSetViewer}
-                onReset={this.handleReset}
+                onClose={this.handleSaveAndClosePathwayEditor}
                 onUpload={this.handleUpload}
                 pathwaySet={this.state.pathwaySet}
                 ref='pathway-editor'

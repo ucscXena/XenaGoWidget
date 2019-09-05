@@ -15,7 +15,8 @@ import FaClose from 'react-icons/lib/fa/close';
 import Input from 'react-toolbox/lib/input';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import update from 'immutability-helper';
-import {AppStorageHandler} from "../../service/AppStorageHandler";
+import {AppStorageHandler} from '../../service/AppStorageHandler';
+import DefaultPathWays from '../../data/genesets/tgac';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
@@ -119,7 +120,7 @@ export default class PathwayEditor extends PureComponent {
 
     handleAddNewGene(selectedGeneSet, newGene) {
       newGene.map(g => {
-        console.log('adding new gene',selectedGeneSet,newGene)
+        console.log('adding new gene',selectedGeneSet,newGene);
         // get pathway to filter
         let pathwayIndex = this.state.pathwaySet.pathways.findIndex(p => selectedGeneSet.golabel === p.golabel);
         let newSelectedPathway = update(this.state.pathwaySet.pathways[pathwayIndex],{
@@ -154,10 +155,14 @@ export default class PathwayEditor extends PureComponent {
 
     // set the current model to existing one
     onReset(){
-      // const oldModel = this.props.getModel()
-      // this.setState({
-      // });
-      this.props.onReset();
+      const defaultPathwaySet =  {
+        name: 'Default Pathway',
+        pathways: DefaultPathWays,
+        selected: true
+      };
+      this.setState({
+        pathwaySet: defaultPathwaySet
+      });
     }
 
     // push the current model up
@@ -167,8 +172,6 @@ export default class PathwayEditor extends PureComponent {
     }
 
     render() {
-
-
 
       return (
         <Grid style={{marginTop: 20,width:900}}>
@@ -268,7 +271,6 @@ export default class PathwayEditor extends PureComponent {
 
 PathwayEditor.propTypes = {
   onClose: PropTypes.any,
-  onReset: PropTypes.any,
   onUpload: PropTypes.any,
   pathwaySet: PropTypes.any,
   selectedPathway: PropTypes.any,
