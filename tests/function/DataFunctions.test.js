@@ -11,13 +11,13 @@ import {
   getMutationScore,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData,
+  scoreChiSquaredData, cleanData, average,
 } from '../../src/functions/DataFunctions';
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
 import DefaultPathways from '../../src/data/genesets/tgac';
 
-describe('Data Lookup Functions', () => {
+describe('Data Unit Functions', () => {
 
   it('Copy Number Value', () => {
     expect(0).toEqual(getCopyNumberValue('NOTANUMBER',DEFAULT_AMPLIFICATION_THRESHOLD,DEFAULT_DELETION_THRESHOLD));
@@ -109,6 +109,13 @@ describe('Data Lookup Functions', () => {
     expect(0.6666666666666666).toEqual(scoreData(10,5,3));
   });
 
+  it('Clean data', () => {
+    expect([3,7,9]).toEqual(cleanData([3,'NaN',7],['NaN',9]));
+  });
+
+  it('Calculate mean', () => {
+    expect(7).toEqual(average([3,7,11]));
+  });
 
 });
 

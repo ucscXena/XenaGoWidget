@@ -6,7 +6,7 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
-  calculateAllPathways, generateScoredData,
+  calculateAllPathways, generateScoredData, generateZScoreForGeneExpression,
 } from '../functions/DataFunctions';
 import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
@@ -159,8 +159,9 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedCohorts,
       } = input;
 
-      // TODO: calculate Diff!
-      // TODO: update Xena Go Viewers
+      // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
+      const {geneExpressionZScoreA,geneExpressionZScoreB}  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
+
 
       let pathwayDataA = {
         geneList,
@@ -172,7 +173,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberA,
         expression: mutationsA,
-        geneExpression: geneExpressionA,
+        geneExpression: geneExpressionZScoreA,
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -189,11 +190,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberB,
         expression: mutationsB,
-        geneExpression: geneExpressionB,
+        geneExpression: geneExpressionZScoreB,
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
+
 
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
       pathwayDataA.pathways = pathways ;

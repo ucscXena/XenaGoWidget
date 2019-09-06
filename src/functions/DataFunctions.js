@@ -27,6 +27,49 @@ export const DEFAULT_DATA_VALUE = {
   total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0,
 };
 
+
+export function average(data){
+  let sum = data.reduce(function(sum, value){
+    return sum + value;
+  }, 0);
+
+  return sum / data.length;
+}
+
+export function cleanData(array1,array2){
+  return [...array1.filter( a => !isNaN(a)),...array2.filter( a => !isNaN(a))];
+}
+
+export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
+  let geneExpressionStats = [geneExpressionA.length];
+  for(const index in geneExpressionA){
+    const cleanGeneExpression = cleanData(geneExpressionA[index],geneExpressionB[index]);
+    const meanGeneExpression = average(cleanGeneExpression);
+    const stdevGeneExpression = Math.sqrt(meanGeneExpression);
+    geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression };
+  }
+  return geneExpressionStats;
+}
+
+export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB){
+
+  const geneExpressionStats = generateGeneExpressionStats(geneExpressionA,geneExpressionB);
+  const zScoreA = geneExpressionA.map( (ge, index) => {
+    const statRow = geneExpressionStats[index];
+    return ge.map( (e) => {
+      return (e - statRow.mean) / statRow.stdev ;
+    } );
+  });
+  const zScoreB = geneExpressionB.map( (ge, index) => {
+    const statRow = geneExpressionStats[index];
+    return ge.map( (e) => {
+      return (e - statRow.mean) / statRow.stdev ;
+    } );
+  });
+
+  return [zScoreA,zScoreB];
+}
+
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
 }
