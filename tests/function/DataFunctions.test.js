@@ -78,7 +78,7 @@ describe('Data Unit Functions', () => {
     let returnArray = createEmptyArray(20,5);
     expect(returnArray.length).toEqual(20);
     expect(returnArray[0].length).toEqual(5);
-    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0});
+    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
     returnArray[5][3] = {total:7,mutation:3,cnv:1};
     expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
     returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
@@ -89,7 +89,7 @@ describe('Data Unit Functions', () => {
     let returnArray = times(20, () => times(5, () => DEFAULT_DATA_VALUE));
     expect(returnArray.length===20);
     expect(returnArray[0].length===5);
-    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0});
+    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
     returnArray[5][3] = {total:7,mutation:3,cnv:1};
     expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
     returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));

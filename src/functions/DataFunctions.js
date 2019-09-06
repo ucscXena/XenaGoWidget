@@ -15,16 +15,15 @@ import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 export const DEFAULT_DELETION_THRESHOLD = -2;
-const GENE_EXPRESSION_MIN = 12;
 
 const associateCache = lru(500);
 const pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-const ignoreCache = false ;
+const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
-  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0,
+  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
 };
 
 
@@ -77,14 +76,6 @@ export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB)
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
-}
-
-export function getGeneExpressionHits(inputValue) {
-  return (!isNaN(inputValue) && (inputValue>= GENE_EXPRESSION_MIN)) ? 1 : 0;
-}
-
-export function getGeneExpressionValue(inputValue) {
-  return !isNaN(inputValue) ? inputValue : 0 ;
 }
 
 export function getCopyNumberHigh(copyNumberValue, amplificationThreshold) {
@@ -324,17 +315,12 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     for (const index of pathwayIndices) {
       // process all samples
       for (const sampleEntryIndex in sampleEntries) {
-        // const returnValue = sampleEntries[sampleEntryIndex] > GENE_EXPRESSION_MIN ? 1 : 0 ;;
-        const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
+        // const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
+        const returnValue = sampleEntries[sampleEntryIndex];
         // sumTotal += sampleEntries[sampleEntryIndex];
-        if (returnValue > 0) {
+        if (!isNaN(returnValue)) {
           ++scored ;
-          returnArray[index][sampleEntryIndex].total += returnValue;
-          returnArray[index][sampleEntryIndex].cnv += returnValue;
-          returnArray[index][sampleEntryIndex].mutation += returnValue;
-          returnArray[index][sampleEntryIndex].mutation4 += returnValue;
-          // // returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
-          returnArray[index][sampleEntryIndex].cnvLow += returnValue;
+          returnArray[index][sampleEntryIndex].geneExpression += returnValue ;
         }
       }
     }
