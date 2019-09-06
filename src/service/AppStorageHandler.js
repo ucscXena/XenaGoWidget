@@ -139,7 +139,7 @@ export class AppStorageHandler extends PureComponent {
     if (appState && appState.filterState && appState.filterState[cohortIndex]) {
       return appState.filterState[cohortIndex];
     }
-    return FILTER_ENUM.CNV_MUTATION;
+    return FILTER_ENUM.GENE_EXPRESSION;
   }
 
   static getSortState() {
