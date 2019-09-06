@@ -522,6 +522,11 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   return [geneDataA, geneDataB];
 }
 
+function meanDiff(geneExpressionMean0, geneExpressionMean1) {
+  // +/- 2, vs a height of 500
+  return Math.round((geneExpressionMean0 - geneExpressionMean1) * 200 );
+}
+
 /**
  * this nicely forces synchronization as well
  * @param geneData0
@@ -537,20 +542,31 @@ export function calculateDiffs(geneData0, geneData1) {
       return gene0List.indexOf(aGene) - gene0List.indexOf(bGene);
     });
 
-    for (const geneIndex in geneData0) {
-      const chiSquareValue = scoreChiSquareTwoByTwo(
-        geneData0[geneIndex].samplesAffected,
-        geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
-        gene1Objects[geneIndex].samplesAffected,
-        gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected,
-      );
-      let diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total
-        ? chiSquareValue : -chiSquareValue;
-      diffScore = isNaN(diffScore) ? 0 : diffScore;
-
-      geneData0[geneIndex].diffScore = diffScore;
-      gene1Objects[geneIndex].diffScore = diffScore;
+    if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
+      for (const geneIndex in geneData0) {
+        let diffScore = meanDiff(geneData0[geneIndex].geneExpressionMean,geneData1[geneIndex].geneExpressionMean);
+        diffScore = isNaN(diffScore) ? 0 : diffScore;
+        geneData0[geneIndex].diffScore = diffScore;
+        gene1Objects[geneIndex].diffScore = diffScore;
+      }
     }
+    else{
+      for (const geneIndex in geneData0) {
+        const chiSquareValue = scoreChiSquareTwoByTwo(
+          geneData0[geneIndex].samplesAffected,
+          geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
+          gene1Objects[geneIndex].samplesAffected,
+          gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected,
+        );
+        let diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total
+          ? chiSquareValue : -chiSquareValue;
+        diffScore = isNaN(diffScore) ? 0 : diffScore;
+
+        geneData0[geneIndex].diffScore = diffScore;
+        gene1Objects[geneIndex].diffScore = diffScore;
+      }
+    }
+
     return [geneData0, gene1Objects];
   }
 
