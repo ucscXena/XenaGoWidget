@@ -121,7 +121,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && data.expression.geneExpressionMean===undefined &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && data.pathway.geneExpressionMean===undefined &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -131,14 +131,22 @@ export default class HoverGeneView extends PureComponent {
                       </div>
                     </div>
             }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-            && data.expression.geneExpressionMean !== undefined &&
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+            && data.pathway.geneExpressionMean !== undefined &&
             <div>
               <Chip>
                 <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
               </Chip>
               <div className={BaseStyle.pathwayChip}>
-                <span><strong>Z-Score Average ({data.expression.total})</strong><br/> {data.expression.geneExpressionMean.toPrecision(2)} </span>
+                <span><strong>Mean ZScore</strong>
+                  <div
+                    style={{
+                      padding: 5, borderRadius: 5, marginLeft: 5,
+                      display: 'inline',color:interpolateGeneExpressionFont(data.pathway.geneExpressionMean),backgroundColor:interpolateGeneExpression(data.pathway.geneExpressionMean) }}
+                  >
+                    {data.pathway.geneExpressionMean.toPrecision(2)}
+                  </div>
+                </span>
               </div>
             </div>
             }
