@@ -160,8 +160,7 @@ export default class XenaGeneSetApp extends PureComponent {
       } = input;
 
       // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-      const {geneExpressionZScoreA,geneExpressionZScoreB}  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
-
+      const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
 
       let pathwayDataA = {
         geneList,
