@@ -579,6 +579,14 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   };
 }
 
+function calculateMeanGeneExpression(datum) {
+  let total = 0;
+  for (let i = 0; i < datum.length; ++i) {
+    total += datum[i].geneExpression;
+  }
+  return total / datum.length ;
+}
+
 export function scoreGeneData(inputGeneData) {
   const { samples, cohortIndex } = inputGeneData;
   const associatedDataKey = createAssociatedDataKey(inputGeneData);
@@ -596,6 +604,7 @@ export function scoreGeneData(inputGeneData) {
 
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
+    returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
   }

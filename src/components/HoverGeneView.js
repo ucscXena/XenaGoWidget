@@ -121,7 +121,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && data.expression.geneExpressionMean===undefined &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -130,6 +130,17 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                     </div>
+            }
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+            && data.expression.geneExpressionMean !== undefined &&
+            <div>
+              <Chip>
+                <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
+              </Chip>
+              <div className={BaseStyle.pathwayChip}>
+                <span><strong>Z-Score Average ({data.expression.total})</strong><br/> {data.expression.geneExpressionMean.toPrecision(2)} </span>
+              </div>
+            </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>

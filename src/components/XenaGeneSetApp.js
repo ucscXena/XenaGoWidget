@@ -271,7 +271,7 @@ export default class XenaGeneSetApp extends PureComponent {
           cohortIndex: otherCohortIndex,
           tissue: 'Header',
           pathway : otherPathway,
-          expression: otherPathway, // for dipslaying the hover
+          expression: otherPathway, // for displaying the hover
         };
 
         this.setState({
@@ -290,6 +290,7 @@ export default class XenaGeneSetApp extends PureComponent {
           expression: {
             affected: hoveredPathway.firstObserved,
             samplesAffected: hoveredPathway.firstObserved,
+            geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
             allGeneAffected: hoveredPathway.firstTotal,
             total: hoveredPathway.firstNumSamples,
           }
@@ -301,6 +302,7 @@ export default class XenaGeneSetApp extends PureComponent {
           expression: {
             affected: hoveredPathway.secondObserved,
             samplesAffected: hoveredPathway.secondObserved,
+            geneExpressionMean: hoveredPathway.secondGeneExpressionMean,
             allGeneAffected: hoveredPathway.secondTotal,
             total: hoveredPathway.secondNumSamples,
           }
