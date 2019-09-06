@@ -9,7 +9,7 @@ import {
   getMutation4ColorMask,
 } from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
-import * as d3 from "d3";
+import * as d3 from 'd3';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -62,10 +62,16 @@ export function getColorArray(colorString){
   return colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim()));
 }
 
+const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
+
+export let interpolateGeneExpression = (score) => interpolateGeneExpressionFunction(score);
+export let interpolateGeneExpressionFont = (score) => {
+  let colorArray = getColorArray(interpolateGeneExpressionFunction(score));
+  return colorArray[0]+colorArray[2]>255 ? 'black' : 'white';
+};
+
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   labelHeight, cohortIndex) {
-  // let interpolate = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
-  let interpolate = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -102,7 +108,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
           const buffStart = (pxRow + el.start) * 4;
           const buffEnd = (pxRow + el.start + el.size) * 4;
           for (let l = buffStart; l < buffEnd ; l += 4) {
-            let colorArray = getColorArray(interpolate(geneExpressionScore));
+            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
             img.data[l] = colorArray[0];
             img.data[l + 1] = colorArray[1];
             img.data[l + 2] = colorArray[2];

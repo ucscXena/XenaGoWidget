@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
+import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -48,6 +49,20 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
+                          {data.expression.geneExpression!==0 &&
+                          <Chip>
+                            <span className={BaseStyle.geneExpression}>
+                              <strong>ZScore</strong>
+                              <div
+                                style={{
+                                  padding: 5, borderRadius: 5, marginLeft: 5,
+                                  display: 'inline',color:interpolateGeneExpressionFont(data.expression.geneExpression),backgroundColor:interpolateGeneExpression(data.expression.geneExpression) }}
+                              >
+                                {data.expression.geneExpression.toPrecision(2)}
+                              </div>
+                            </span>
+                          </Chip>
+                          }
                           {data.selectCnv && data.expression.cnvHigh > 0 &&
                             <Chip>
                               <span
