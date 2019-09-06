@@ -8,6 +8,7 @@ import {
 } from '../functions/ColorFunctions';
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
+import {interpolateGeneExpression, interpolateGeneExpressionFunction} from "../functions/DrawFunctions";
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -67,8 +68,15 @@ export class HeaderLabel extends PureComponent {
 
     render() {
       let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-      let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
-      interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
+      let colorDensity ;
+      if(item.geneExpressionMean) {
+        colorDensity = item.geneExpressionMean;
+        interpolate = (score) => interpolateGeneExpressionFunction(score);
+      }
+      else {
+        colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
+        interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
+      }
       return (
         <svg
           style={this.style(colorDensity)}

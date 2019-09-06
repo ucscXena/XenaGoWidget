@@ -62,7 +62,7 @@ export function getColorArray(colorString){
   return colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim()));
 }
 
-const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
+export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
 
 export let interpolateGeneExpression = (score) => interpolateGeneExpressionFunction(score);
 export let interpolateGeneExpressionFont = (score) => {
