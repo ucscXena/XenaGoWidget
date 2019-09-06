@@ -36,6 +36,13 @@ export function average(data){
   return sum / data.length;
 }
 
+export function stdev(data,mean){
+  let variance = data.reduce(function(sum, value){
+    return sum + (Math.pow((value-mean),2));
+  }, 0);
+  return Math.sqrt(variance / data.length);
+}
+
 export function cleanData(array1,array2){
   return [...array1.filter( a => !isNaN(a)),...array2.filter( a => !isNaN(a))];
 }
@@ -45,7 +52,7 @@ export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
   for(const index in geneExpressionA){
     const cleanGeneExpression = cleanData(geneExpressionA[index],geneExpressionB[index]);
     const meanGeneExpression = average(cleanGeneExpression);
-    const stdevGeneExpression = Math.sqrt(meanGeneExpression);
+    const stdevGeneExpression = stdev(cleanGeneExpression,meanGeneExpression);
     geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression };
   }
   return geneExpressionStats;
