@@ -39,6 +39,7 @@ export function sortByType(renderedData) {
     // a = sample of a.length -1 genes
     // b = sample of b.length -1 genes
     for (let index = 0; index < a.length; ++index) {
+      if (b[index].geneExpression !== a[index].geneExpression) return b[index].geneExpression - a[index].geneExpression;
       if (b[index].cnvHigh !== a[index].cnvHigh) return b[index].cnvHigh - a[index].cnvHigh;
       if (b[index].cnvLow !== a[index].cnvLow) return b[index].cnvLow - a[index].cnvLow;
       if (b[index].mutation4 !== a[index].mutation4) return b[index].mutation4 - a[index].mutation4;
