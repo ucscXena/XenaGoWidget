@@ -73,22 +73,22 @@ export class SubCohortSelector extends PureComponent {
   }
 
   cancelUpdate(){
+    this.props.onToggle();
     this.setState({
-      selectedSubCohorts:this.state.originalSelectedSubCohorts,
+      selectedSubCohorts: this.props.selectedSubCohorts
     });
-    this.props.handleSubCohortChange(this.state.originalSelectedSubCohorts);
   }
 
   render() {
 
-    let {active, onToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+    let {active, subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
 
     return (
       <Dialog
         active={active}
-        onEscKeyDown={onToggle}
-        onOverlayClick={onToggle}
+        onEscKeyDown={() => this.cancelUpdate()}
+        onOverlayClick={() => this.cancelUpdate()}
         title='Edit Sub-Cohorts'
       >
         <table style={{ width:'100%'}}>
@@ -154,7 +154,7 @@ export class SubCohortSelector extends PureComponent {
                   raised
                 />
                 <Button
-                  icon='cancel' label='Cancel' onClick={onToggle}
+                  icon='cancel' label='Cancel' onClick={() => this.cancelUpdate()}
                   raised
                 />
               </td>
