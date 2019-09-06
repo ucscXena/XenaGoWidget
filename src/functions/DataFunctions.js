@@ -58,22 +58,20 @@ export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
   return geneExpressionStats;
 }
 
+export function generateZScore( data,stats){
+  return  data.map( (ge, index) => {
+    const statRow = stats[index];
+    return ge.map( (e) => {
+      if(isNaN(e))  return e ;
+      return (e - statRow.mean) / statRow.stdev ;
+    } );
+  });
+}
+
 export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB){
-
   const geneExpressionStats = generateGeneExpressionStats(geneExpressionA,geneExpressionB);
-  const zScoreA = geneExpressionA.map( (ge, index) => {
-    const statRow = geneExpressionStats[index];
-    return ge.map( (e) => {
-      return (e - statRow.mean) / statRow.stdev ;
-    } );
-  });
-  const zScoreB = geneExpressionB.map( (ge, index) => {
-    const statRow = geneExpressionStats[index];
-    return ge.map( (e) => {
-      return (e - statRow.mean) / statRow.stdev ;
-    } );
-  });
-
+  const zScoreA = generateZScore(geneExpressionA,geneExpressionStats);
+  const zScoreB = generateZScore(geneExpressionA,geneExpressionStats);
   return [zScoreA,zScoreB];
 }
 

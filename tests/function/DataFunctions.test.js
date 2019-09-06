@@ -11,7 +11,7 @@ import {
   getMutationScore,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev,
+  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev, generateZScore,
 } from '../../src/functions/DataFunctions';
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
@@ -123,7 +123,7 @@ describe('Data Unit Functions', () => {
   });
 
   it('Generate Gene Expression Stats', () => {
-    // two genes with 4 samples in A and 3 samples in B
+    // 2 genes with 4 samples in A and 3 samples in B
     const inputA = [[5,3,8,9],[2,11,'Nan',9]];
     const inputB = [[2,'NaN',9],[4,'Nan',9]];
     const geneStats = generateGeneExpressionStats(inputA,inputB);
@@ -131,8 +131,19 @@ describe('Data Unit Functions', () => {
     expect(geneStats[1].mean).toEqual(7);
     expect(Math.abs(geneStats[0].stdev-2.8284271247462)).toBeLessThan(0.00001);
     expect(Math.abs(geneStats[1].stdev-3.4058772731853)).toBeLessThan(0.00001);
+
+    // calculate zScore
+    const zScoreA = generateZScore(inputA,geneStats);
+    const zScoreB = generateZScore(inputB,geneStats);
+    expect([ [ -0.35355339059327373, -1.0606601717798212, 0.7071067811865475, 1.0606601717798212 ], [ -1.4680505487867588, 1.174440439029407, 'Nan', 0.5872202195147035 ] ]).toEqual(zScoreA);
+    expect([ [ -1.414213562373095, 'NaN', 1.0606601717798212 ], [ -0.8808303292720553, 'Nan', 0.5872202195147035 ] ]).toEqual(zScoreB);
   });
 
+  it('Calculate Z-Score', () => {
+    expect(generateZScore([[3,5]],[{mean:4,stdev:1}])).toEqual([[-1,1]]);
+    expect(generateZScore([[3,5],[11,7]],[{mean:4,stdev:1},{mean:9,stdev: 2}])).toEqual([[-1,1],[1,-1]]);
+    expect(generateZScore([[3,5,'Nan'],['Nan',11,7]],[{mean:4,stdev:1},{mean:9,stdev: 2}])).toEqual([[-1,1,'Nan'],['Nan',1,-1]]);
+  });
 
 });
 
