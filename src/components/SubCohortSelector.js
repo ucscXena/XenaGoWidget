@@ -73,22 +73,22 @@ export class SubCohortSelector extends PureComponent {
   }
 
   cancelUpdate(){
+    this.props.onToggle();
     this.setState({
-      selectedSubCohorts:this.state.originalSelectedSubCohorts,
+      selectedSubCohorts: this.props.selectedSubCohorts
     });
-    this.props.handleSubCohortChange(this.state.originalSelectedSubCohorts);
   }
 
   render() {
 
-    let {active, onToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+    let {active, subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
 
     return (
       <Dialog
         active={active}
-        onEscKeyDown={onToggle}
-        onOverlayClick={onToggle}
+        onEscKeyDown={() => this.cancelUpdate()}
+        onOverlayClick={() => this.cancelUpdate()}
         title='Edit Sub-Cohorts'
       >
         <table style={{ width:'100%'}}>
@@ -115,27 +115,36 @@ export class SubCohortSelector extends PureComponent {
                               type='checkbox'
                             />
                             <div  style={{display: 'inline'}}>{cs}</div>
-                            <Link href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }} style={{display:'inline', marginLeft: 20,fontSize: 'small'}}/>
+                            <Link
+                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }}
+                              style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                            />
                           </Col>
                         </Row>
                       );
                     })
                   }
-                  {/*<Row>*/}
-                  {/*  <Col md={12}>*/}
-                  {/*    <input*/}
-                  {/*      checked={selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
-                  {/*      disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
-                  {/*      name={UNASSIGNED_SUBTYPE.label}*/}
-                  {/*      onChange={this.handleChange}*/}
-                  {/*      style={{display:'inline', marginRight:10}}*/}
-                  {/*      type='checkbox'*/}
-                  {/*    />*/}
-                  {/*    <div  style={{display: 'inline'}}>{UNASSIGNED_SUBTYPE.label}</div>*/}
-                  {/*    <Link href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(UNASSIGNED_SUBTYPE.key); }} style={{display:'inline', marginLeft: 20,fontSize: 'small'}}/>*/}
-                  {/*  </Col>*/}
-                  {/*</Row>*/}
                 </Grid>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {!allSelected &&
+                <Link
+                  href='#'
+                  label={'(Select All)'}
+                  onClick={() => this.selectAll()}
+                  style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                />
+                }
+                {allSelected &&
+                <Link
+                  disabled
+                  label={'(Select All)'}
+                  primary raised
+                  style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                />
+                }
               </td>
             </tr>
             <tr>
@@ -144,18 +153,6 @@ export class SubCohortSelector extends PureComponent {
                   icon='save' label='View' onClick={() => this.updateSubCategories()} primary
                   raised
                 />
-                {!allSelected &&
-                            <Button
-                              label={'Select All'} onClick={() => this.selectAll()} primary
-                              raised
-                            />
-                }
-                {allSelected &&
-                            <Button
-                              disabled label={'Select All'} primary
-                              raised
-                            />
-                }
                 <Button
                   icon='cancel' label='Cancel' onClick={() => this.cancelUpdate()}
                   raised
