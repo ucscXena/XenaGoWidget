@@ -103,10 +103,12 @@ export default class NavigationBar extends PureComponent {
                         <MenuDivider/>
                         <MenuItem
                           caption={`${showClusterSort? '\u2713' : 'Show'} Sort by Top Cohort`}
+                          disabled={showClusterSort}
                           onClick={() => toggleShowClusterSort()}
                         />
                         <MenuItem
                           caption={`${!showClusterSort? '\u2713' : 'Show'} Diff Sort`}
+                          disabled={!showClusterSort}
                           onClick={() => toggleShowClusterSort()}
                         />
                       </IconMenu>

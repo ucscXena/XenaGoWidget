@@ -371,6 +371,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
+
     toggleShowDiffLayer = () => {
       this.setState({
         showDiffLayer: !this.state.showDiffLayer
