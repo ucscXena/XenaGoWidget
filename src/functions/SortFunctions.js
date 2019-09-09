@@ -63,6 +63,34 @@ export function sortByType(renderedData) {
  * @param prunedColumns
  * @returns {undefined}
  */
+export function topSort(prunedColumns) {
+  const sortedColumns = sortColumnDensities(prunedColumns);
+
+  sortedColumns.data.push(prunedColumns.samples);
+  let renderedData = transpose(sortedColumns.data);
+  renderedData = sortByType(renderedData);
+  renderedData = transpose(renderedData);
+  const returnColumns = {};
+  returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+  returnColumns.samples = sortedColumns.samples;
+  returnColumns.pathways = sortedColumns.pathways;
+  returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+
+  return returnColumns;
+}
+
+/**
+ * Sort by column density followed by row.
+ * https://github.com/nathandunn/XenaGoWidget/issues/67
+ *
+ * 1. find density for each column
+ * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
+ *
+ * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
+ *
+ * @param prunedColumns
+ * @returns {undefined}
+ */
 export function clusterSort(prunedColumns) {
   const sortedColumns = sortColumnDensities(prunedColumns);
 

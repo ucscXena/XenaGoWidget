@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort,
+  clusterSort, diffSort, scoreColumns, synchronizedSort, topSort,
 } from './SortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
 
@@ -501,7 +501,12 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = clusterSort(geneDataA);
+    if(filter===FILTER_ENUM.GENE_EXPRESSION){
+      sortedGeneDataA = topSort(geneDataA);
+    }
+    else{
+      sortedGeneDataA = clusterSort(geneDataA);
+    }
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList);
   } else {
