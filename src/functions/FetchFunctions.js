@@ -106,7 +106,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     ];
 
     // calculate samples for what samples we will actually fetch
-    // TODO: add gene expression
     const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
     const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 

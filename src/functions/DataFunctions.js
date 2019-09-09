@@ -70,7 +70,7 @@ export function generateZScore( data,stats){
 export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB){
   const geneExpressionStats = generateGeneExpressionStats(geneExpressionA,geneExpressionB);
   const zScoreA = generateZScore(geneExpressionA,geneExpressionStats);
-  const zScoreB = generateZScore(geneExpressionA,geneExpressionStats);
+  const zScoreB = generateZScore(geneExpressionB,geneExpressionStats);
   return [zScoreA,zScoreB];
 }
 
@@ -307,7 +307,6 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
-
     const pathwayIndices = genePathwayLookup(gene);
     const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
 
@@ -456,7 +455,6 @@ export function calculatePathwayScore(pathwayData, filter) {
 export function calculateAllPathways(pathwayData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
-
 
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
