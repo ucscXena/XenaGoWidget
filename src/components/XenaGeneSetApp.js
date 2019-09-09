@@ -6,7 +6,7 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
-  calculateAllPathways, generateScoredData,
+  calculateAllPathways, generateScoredData, generateZScoreForGeneExpression,
 } from '../functions/DataFunctions';
 import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
@@ -147,18 +147,20 @@ export default class XenaGeneSetApp extends PureComponent {
         samplesA,
         mutationsA,
         copyNumberA,
+        geneExpressionA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
         mutationsB,
         copyNumberB,
+        geneExpressionB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,
       } = input;
 
-      // TODO: calculate Diff!
-      // TODO: update Xena Go Viewers
+      // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
+      const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
 
       let pathwayDataA = {
         geneList,
@@ -170,6 +172,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberA,
         expression: mutationsA,
+        geneExpression: geneExpressionZScoreA,
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -186,13 +189,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
         copyNumber: copyNumberB,
         expression: mutationsB,
+        geneExpression: geneExpressionZScoreB,
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
-      pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
 
+      pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;
 
@@ -267,7 +271,7 @@ export default class XenaGeneSetApp extends PureComponent {
           cohortIndex: otherCohortIndex,
           tissue: 'Header',
           pathway : otherPathway,
-          expression: otherPathway, // for dipslaying the hover
+          expression: otherPathway, // for displaying the hover
         };
 
         this.setState({
@@ -286,6 +290,7 @@ export default class XenaGeneSetApp extends PureComponent {
           expression: {
             affected: hoveredPathway.firstObserved,
             samplesAffected: hoveredPathway.firstObserved,
+            geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
             allGeneAffected: hoveredPathway.firstTotal,
             total: hoveredPathway.firstNumSamples,
           }
@@ -297,6 +302,7 @@ export default class XenaGeneSetApp extends PureComponent {
           expression: {
             affected: hoveredPathway.secondObserved,
             samplesAffected: hoveredPathway.secondObserved,
+            geneExpressionMean: hoveredPathway.secondGeneExpressionMean,
             allGeneAffected: hoveredPathway.secondTotal,
             total: hoveredPathway.secondNumSamples,
           }

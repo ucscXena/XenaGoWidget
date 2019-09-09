@@ -40,5 +40,15 @@ describe('Fetch Functions', () => {
       expect(a.length).toEqual(579);
     }).subscribe( () => done(),e => done(logError(e)));
   });
+
+  it('Fetch Gene Expression samples for cohort', (done) => {
+    const cohort = {
+      name: 'TCGA Lung Adenocarcinoma (LUAD)'
+    };
+    const cohortDetails = getCohortDetails(cohort);
+    getSamplesForCohort(cohortDetails,FILTER_ENUM.GENE_EXPRESSION).do( (a) => {
+      expect(a.length).toEqual(576);
+    }).subscribe( () => done(),e => done(logError(e)));
+  });
 });
 

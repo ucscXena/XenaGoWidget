@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort,
+  clusterSort, diffSort, scoreColumns, synchronizedSort, topSort,
 } from './SortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
 
@@ -20,11 +20,59 @@ const associateCache = lru(500);
 const pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-const ignoreCache = false ;
+const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
-  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0,
+  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
 };
+
+
+export function average(data){
+  let sum = data.reduce(function(sum, value){
+    return sum + value;
+  }, 0);
+
+  return sum / data.length;
+}
+
+export function stdev(data,mean){
+  let variance = data.reduce(function(sum, value){
+    return sum + (Math.pow((value-mean),2));
+  }, 0);
+  return Math.sqrt(variance / data.length);
+}
+
+export function cleanData(array1,array2){
+  return [...array1.filter( a => !isNaN(a)),...array2.filter( a => !isNaN(a))];
+}
+
+export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
+  let geneExpressionStats = [geneExpressionA.length];
+  for(const index in geneExpressionA){
+    const cleanGeneExpression = cleanData(geneExpressionA[index],geneExpressionB[index]);
+    const meanGeneExpression = average(cleanGeneExpression);
+    const stdevGeneExpression = stdev(cleanGeneExpression,meanGeneExpression);
+    geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression };
+  }
+  return geneExpressionStats;
+}
+
+export function generateZScore( data,stats){
+  return  data.map( (ge, index) => {
+    const statRow = stats[index];
+    return ge.map( (e) => {
+      if(isNaN(e))  return e ;
+      return (e - statRow.mean) / statRow.stdev ;
+    } );
+  });
+}
+
+export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB){
+  const geneExpressionStats = generateGeneExpressionStats(geneExpressionA,geneExpressionB);
+  const zScoreA = generateZScore(geneExpressionA,geneExpressionStats);
+  const zScoreB = generateZScore(geneExpressionB,geneExpressionStats);
+  return [zScoreA,zScoreB];
+}
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;
@@ -74,27 +122,25 @@ export function pruneColumns(data, pathways) {
 
 export function createAssociatedDataKey(inputHash) {
   const {
-    geneList, pathways, samples, filter, min, cohortIndex,
+    pathways, samples, filter, selectedCohort
   } = inputHash;
   return {
     filter,
-    geneList,
     pathways,
-    min,
-    cohortIndex,
-    sampleCount: samples.length,
+    samples:samples.sort(),
+    selectedCohort,
   };
 }
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter,
+    expression, copyNumber, geneList, pathways, samples, filter, geneExpression
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter);
+    data = doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
 
@@ -147,7 +193,14 @@ export function calculateGeneSetExpected(pathwayData, filter) {
       if (filter === FILTER_ENUM.MUTATION || filter === FILTER_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
       }
-      const total_prob = addIndepProb(sample_probs);
+      if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+        // TODO: add viper scores
+        // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+        // sample_probs.push(0);
+      }
+      // TODO: we should not filter out numbers
+      let total_prob = addIndepProb(sample_probs.filter(Number));
+      // const total_prob = addIndepProb(sample_probs);
       pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
     }
   }
@@ -246,6 +299,34 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
+
+export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
+  const genePathwayLookup = getGenePathwayLookup(pathways);
+
+  let scored = 0 ;
+  for (const gene of geneList) {
+    // if we have not processed that gene before, then process
+    const geneIndex = geneList.indexOf(gene);
+    const pathwayIndices = genePathwayLookup(gene);
+    const sampleEntries = geneExpression[geneIndex]; // set of samples for this gene
+
+    // get pathways this gene is involved in
+    for (const index of pathwayIndices) {
+      // process all samples
+      for (const sampleEntryIndex in sampleEntries) {
+        // const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
+        const returnValue = sampleEntries[sampleEntryIndex];
+        // sumTotal += sampleEntries[sampleEntryIndex];
+        if (!isNaN(returnValue)) {
+          ++scored ;
+          returnArray[index][sampleEntryIndex].geneExpression += returnValue ;
+        }
+      }
+    }
+  }
+  return {score: scored, returnArray};
+}
+
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -281,13 +362,14 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  *
  * @param expression
  * @param copyNumber
+ * @param geneExpression
  * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneList, pathways, samples, filter) {
+export function doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === FILTER_ENUM.CNV_MUTATION || filter === FILTER_ENUM.MUTATION) {
@@ -296,6 +378,11 @@ export function doDataAssociations(expression, copyNumber, geneList, pathways, s
 
   if (filter === FILTER_ENUM.CNV_MUTATION|| filter === FILTER_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
+    // get list of genes in identified pathways
+  }
+
+  if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     // get list of genes in identified pathways
   }
   return returnArray;
@@ -369,7 +456,6 @@ export function calculateAllPathways(pathwayData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
 
-
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
@@ -415,7 +501,12 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = clusterSort(geneDataA);
+    if(filter===FILTER_ENUM.GENE_EXPRESSION){
+      sortedGeneDataA = topSort(geneDataA);
+    }
+    else{
+      sortedGeneDataA = clusterSort(geneDataA);
+    }
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList);
   } else {
@@ -434,6 +525,11 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   return [geneDataA, geneDataB];
 }
 
+function meanDiff(geneExpressionMean0, geneExpressionMean1) {
+  // +/- 2, vs a height of 500
+  return Math.round((geneExpressionMean0 - geneExpressionMean1) * 200 );
+}
+
 /**
  * this nicely forces synchronization as well
  * @param geneData0
@@ -449,20 +545,31 @@ export function calculateDiffs(geneData0, geneData1) {
       return gene0List.indexOf(aGene) - gene0List.indexOf(bGene);
     });
 
-    for (const geneIndex in geneData0) {
-      const chiSquareValue = scoreChiSquareTwoByTwo(
-        geneData0[geneIndex].samplesAffected,
-        geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
-        gene1Objects[geneIndex].samplesAffected,
-        gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected,
-      );
-      let diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total
-        ? chiSquareValue : -chiSquareValue;
-      diffScore = isNaN(diffScore) ? 0 : diffScore;
-
-      geneData0[geneIndex].diffScore = diffScore;
-      gene1Objects[geneIndex].diffScore = diffScore;
+    if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
+      for (const geneIndex in geneData0) {
+        let diffScore = meanDiff(geneData0[geneIndex].geneExpressionMean,geneData1[geneIndex].geneExpressionMean);
+        diffScore = isNaN(diffScore) ? 0 : diffScore;
+        geneData0[geneIndex].diffScore = diffScore;
+        gene1Objects[geneIndex].diffScore = diffScore;
+      }
     }
+    else{
+      for (const geneIndex in geneData0) {
+        const chiSquareValue = scoreChiSquareTwoByTwo(
+          geneData0[geneIndex].samplesAffected,
+          geneData0[geneIndex].total - geneData0[geneIndex].samplesAffected,
+          gene1Objects[geneIndex].samplesAffected,
+          gene1Objects[geneIndex].total - gene1Objects[geneIndex].samplesAffected,
+        );
+        let diffScore = geneData0[geneIndex].samplesAffected / geneData0[geneIndex].total > gene1Objects[geneIndex].samplesAffected / gene1Objects[geneIndex].total
+          ? chiSquareValue : -chiSquareValue;
+        diffScore = isNaN(diffScore) ? 0 : diffScore;
+
+        geneData0[geneIndex].diffScore = diffScore;
+        gene1Objects[geneIndex].diffScore = diffScore;
+      }
+    }
+
     return [geneData0, gene1Objects];
   }
 
@@ -470,7 +577,7 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber,filterCounts } = pathwayData;
+  const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
@@ -478,15 +585,25 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
 
   // TODO: just return this once fixed
   return {
+    selectedCohort: cohort,
     expression,
     samples,
     copyNumber,
+    geneExpression,
     filter,
     filterCounts,
     geneList:pathwayData.geneList, // use the geneList form the
     pathways,
     pathwaySelection,
   };
+}
+
+function calculateMeanGeneExpression(datum) {
+  let total = 0;
+  for (let i = 0; i < datum.length; ++i) {
+    total += datum[i].geneExpression;
+  }
+  return total / datum.length ;
 }
 
 export function scoreGeneData(inputGeneData) {
@@ -506,6 +623,7 @@ export function scoreGeneData(inputGeneData) {
 
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
+    returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
   }

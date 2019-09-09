@@ -76,7 +76,7 @@ import {FILTER_ENUM} from '../../src/components/FilterSelector';
 describe('Data Integration Functions', () => {
 
   it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
+    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
   });
 
   it('Filter Mutations for Gene Set', () => {
@@ -130,13 +130,13 @@ describe('Data Integration Functions', () => {
     expect(outputFile).toEqual(FilterBothOutput1);
   });
 
+  // TODO: reactivate
   it('Find Associated Data', () => {
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
   });
 
 
   it('Find pruned columns', () => {
-    // let prunedDataOutput = findPruneData(FindPruneData1,FindPruneDataKey1);
     expect(FindPruneDataOutput1).toEqual(findPruneData(FindPruneData1,FindPruneDataKey1));
   });
 
@@ -174,6 +174,7 @@ describe('Data Integration Functions', () => {
   // TODO: note for some reason this triggers:
   // ERROR: 'Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in %s.%s', 'the componentWillUnmount method', '
   // TODO: probably because its calculating based on the fetch
+  // TODO: activate this again
   it('Calculate All Pathways', () => {
     expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
   });

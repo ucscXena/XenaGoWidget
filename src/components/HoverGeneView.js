@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
+import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -48,6 +49,20 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
+                          {data.expression.geneExpression!==0 &&
+                          <Chip>
+                            <span className={BaseStyle.geneExpression}>
+                              <strong>ZScore</strong>
+                              <div
+                                style={{
+                                  padding: 5, borderRadius: 5, marginLeft: 5,
+                                  display: 'inline',color:interpolateGeneExpressionFont(data.expression.geneExpression),backgroundColor:interpolateGeneExpression(data.expression.geneExpression) }}
+                              >
+                                {data.expression.geneExpression.toPrecision(2)}
+                              </div>
+                            </span>
+                          </Chip>
+                          }
                           {data.selectCnv && data.expression.cnvHigh > 0 &&
                             <Chip>
                               <span
@@ -106,7 +121,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && data.pathway.geneExpressionMean===undefined &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -116,7 +131,26 @@ export default class HoverGeneView extends PureComponent {
                       </div>
                     </div>
             }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression.allGeneAffected &&
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+            && data.pathway.geneExpressionMean !== undefined &&
+            <div>
+              <Chip>
+                <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
+              </Chip>
+              <div className={BaseStyle.pathwayChip}>
+                <span><strong>Mean ZScore</strong>
+                  <div
+                    style={{
+                      padding: 5, borderRadius: 5, marginLeft: 5,
+                      display: 'inline',color:interpolateGeneExpressionFont(data.pathway.geneExpressionMean),backgroundColor:interpolateGeneExpression(data.pathway.geneExpressionMean) }}
+                  >
+                    {data.pathway.geneExpressionMean.toPrecision(2)}
+                  </div>
+                </span>
+              </div>
+            </div>
+            }
+            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel}
