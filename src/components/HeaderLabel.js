@@ -8,7 +8,7 @@ import {
 } from '../functions/ColorFunctions';
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
-import {interpolateGeneExpression, interpolateGeneExpressionFunction} from "../functions/DrawFunctions";
+import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
 
 let interpolate ;
 const highColor = '#1A535C';
