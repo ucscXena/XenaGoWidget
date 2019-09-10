@@ -141,7 +141,6 @@ export class SubCohortSelector extends PureComponent {
                 <Link
                   disabled
                   label={'(Select All)'}
-                  primary raised
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />
                 }

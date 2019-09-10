@@ -7,7 +7,7 @@ import {
   getSamplesFromSelectedSubCohorts,
   getSamplesFromSubCohort,
   getSamplesFromSubCohortList,
-  getSubCohortsOnlyForCohort
+  getSubCohortsOnlyForCohort,
 } from '../../src/functions/CohortFunctions';
 import DefaultCohortData from '../data/DefaultCohortData';
 import SamplePathway1 from '../data/SamplePathway1';
@@ -125,5 +125,12 @@ describe('Test Cohorts', () => {
     const cohort = {'name':'TCGA Mesothelioma (MESO)','mutationDataSetId':'TCGA.MESO.sampleMap/mutation_broad','copyNumberDataSetId':'TCGA.MESO.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes','genomeBackgroundCopyNumber':{'host':'https://xenago.xenahubs.net','dataset':'cnv_sampleEvent','feature_event_K':'event_K','feature_total_pop_N':'total_pop_N'},'genomeBackgroundMutation':{'host':'https://xenago.xenahubs.net','dataset':'mutation_sampleEvent','feature_event_K':'event_K','feature_total_pop_N':'total_pop_N'},'amplificationThreshold':2,'deletionThreshold':-2,'host':'https://tcga.xenahubs.net','subCohorts':[],'selectedSubCohorts':[]};
     expect(calculateSubCohortSamples(TEST_MESOTHELIOMA_SAMPLES,cohort)).toEqual(TEST_MESOTHELIOMA_SAMPLES);
   });
+
+  // it('Get Sub Cohorts with counts', () => {
+  //   const subCohortWithCount = getSubCohortsWithCountsForCohort('TCGA Ovarian Cancer (OV)');
+  //   expect(subCohortWithCount).toEqual('');
+  //
+  // });
+  //
 });
 

@@ -22,14 +22,19 @@ function lowerCaseCompareName(a, b) {
   }
 }
 
-function getSubCohortsForCohort(cohort) {
+export function getSubCohortsForCohort(cohort) {
   return SUB_COHORT_LIST[cohort];
 }
 
-export function getSubCohortsWithCountsForCohort(cohort) {
-  const subCohortsForCohort = getSubCohortsForCohort(cohort);
-  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
-}
+// export function getSubCohortsWithCountsForCohort(cohort) {
+//   const subCohortsForCohort = getSubCohortsForCohort(cohort);
+//   if (!subCohortsForCohort) return [];
+//   // console.log(subCohortsForCohort);
+//   // console.log(subCohortsForCohort,Object.entries(subCohortsForCohort).map( c => { name: c[0],samples: c[1]}  ))
+//   return [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key]
+//
+//   // return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
+// }
 
 export function getSubCohortsOnlyForCohort(cohort) {
   const subCohortsForCohort = getSubCohortsForCohort(cohort);

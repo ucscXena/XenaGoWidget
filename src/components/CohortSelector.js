@@ -8,7 +8,6 @@ import {SubCohortSelector} from './SubCohortSelector';
 import {
   fetchCohortData,
   getSubCohortsOnlyForCohort,
-  getSubCohortsWithCountsForCohort
 } from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
@@ -50,6 +49,8 @@ export class CohortSelector extends PureComponent {
     generateSubCohortDetails(){
       let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts;
       let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      // let subCohortsForCohort = getSubCohortsForCohort(this.state.selectedCohort.name);
+      // console.log('select with counts',selectedWithCounts)
       if(subCohortsForSelected === undefined) return '';
       return Object.values(selectedSubCohorts).map( s => {
         let splits = s.split('.');
@@ -101,8 +102,8 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
-      let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      // let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
       return (
