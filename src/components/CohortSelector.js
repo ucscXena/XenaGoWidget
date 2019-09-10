@@ -6,7 +6,7 @@ import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
 import {
-  fetchCohortData,
+  fetchCohortData, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
 } from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
@@ -66,7 +66,7 @@ export class CohortSelector extends PureComponent {
       let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: subCohortsForSelected;
+      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
 
       const availableSubtypes = Object.keys(subCohortsForSelected).length;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
@@ -102,7 +102,8 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       // let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
@@ -142,7 +143,7 @@ export class CohortSelector extends PureComponent {
               })
             }
           </select>
-          {subCohortsForSelected.length>0 &&
+          {Object.keys(subCohortsForSelected).length>0 &&
                    <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>

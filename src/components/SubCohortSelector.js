@@ -15,10 +15,11 @@ export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
     super(props);
+    console.log(Object.keys(props.subCohortsForSelected),props.selectedSubCohorts);
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
-      allSelected:isEqual(props.selectedSubCohorts.sort(),props.subCohortsForSelected.sort())
+      allSelected:isEqual(props.selectedSubCohorts.sort(),Object.keys(props.subCohortsForSelected).sort())
     };
   }
 
@@ -28,7 +29,7 @@ export class SubCohortSelector extends PureComponent {
       this.setState({
         selectedSubCohorts:this.props.selectedSubCohorts,
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
-        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+        allSelected:isEqual(this.props.selectedSubCohorts.sort(),Object.keys(this.props.subCohortsForSelected).sort()),
       });
     }
   }
@@ -36,7 +37,9 @@ export class SubCohortSelector extends PureComponent {
   handleSelectOnly = (field) => {
     const newSelected = [field];
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
+    console.log('new selected',newSelected,allSelected);
+
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -54,7 +57,7 @@ export class SubCohortSelector extends PureComponent {
       let indexValue = newSelected.indexOf(field);
       newSelected.splice(indexValue,1);
     }
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -62,9 +65,10 @@ export class SubCohortSelector extends PureComponent {
   };
 
   selectAll(){
+    console.log('sub cohorts for selected all',this.props.subCohortsForSelected);
     this.setState({
-      selectedSubCohorts:this.props.subCohortsForSelected,
-      allSelected:true,
+      selectedSubCohorts:Object.keys(this.props.subCohortsForSelected),
+      allSelected:false,
     });
   }
 
@@ -83,6 +87,7 @@ export class SubCohortSelector extends PureComponent {
 
     let {active, subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
+    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected);
 
     return (
       <Dialog
@@ -102,19 +107,21 @@ export class SubCohortSelector extends PureComponent {
               <td>
                 <Grid style={{marginTop: 20,width:900}}>
                   {
-                    subCohortsForSelected.sort().map( cs =>{
+                    Object.keys(subCohortsForSelected).sort().map( cs =>{
                       return (
                         <Row key={cs}>
                           <Col md={12}>
                             <input
                               checked={selectedSubCohorts.indexOf(cs)>=0}
                               disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
-                              name={cs}
+                              name={`${cs} - ${subCohortsForSelected[cs].length}`}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
                             />
-                            <div  style={{display: 'inline'}}>{cs}</div>
+                            <div  style={{display: 'inline'}}>
+                              {`${cs} (${subCohortsForSelected[cs].length})`}
+                            </div>
                             <Link
                               href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
