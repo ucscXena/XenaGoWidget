@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort, topSort,
+  clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort,
 } from './SortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
 
@@ -314,9 +314,7 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
     for (const index of pathwayIndices) {
       // process all samples
       for (const sampleEntryIndex in sampleEntries) {
-        // const returnValue = getGeneExpressionHits(sampleEntries[sampleEntryIndex]);
         const returnValue = sampleEntries[sampleEntryIndex];
-        // sumTotal += sampleEntries[sampleEntryIndex];
         if (!isNaN(returnValue)) {
           ++scored ;
           returnArray[index][sampleEntryIndex].geneExpression += returnValue ;
@@ -485,7 +483,6 @@ export function calculateAllPathways(pathwayData) {
 }
 
 export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
-  // let [pathwayDataA,pathwayDataB] = pathwayData;
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
@@ -501,14 +498,9 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    if(filter===FILTER_ENUM.GENE_EXPRESSION){
-      sortedGeneDataA = topSort(geneDataA);
-    }
-    else{
-      sortedGeneDataA = clusterSort(geneDataA);
-    }
+    sortedGeneDataA = filter[0]===FILTER_ENUM.GENE_EXPRESSION ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
   } else {
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);

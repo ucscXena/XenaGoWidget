@@ -1,5 +1,6 @@
 import update from 'immutability-helper';
-import { sumTotals, sumInstances } from './MathFunctions';
+import {sumTotals, sumInstances, sumGeneExpression} from './MathFunctions';
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const SortType = {
   DIFF: 'diff',
@@ -16,6 +17,14 @@ export function transpose(a) {
 export function scoreColumns(prunedColumns) {
   return prunedColumns.pathways.map((el, index) => update(el, {
     samplesAffected: { $set: sumInstances(prunedColumns.data[index]) },
+    geneExpressionMean: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
+    index: { $set: index },
+  }));
+}
+
+export function scoreGeneExpressionColumns(prunedColumns) {
+  return prunedColumns.pathways.map((el, index) => update(el, {
+    samplesAffected: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
     index: { $set: index },
   }));
 }
@@ -26,6 +35,18 @@ export function scoreColumns(prunedColumns) {
  */
 function sortColumnDensities(prunedColumns) {
   const pathways = scoreColumns(prunedColumns).sort((a, b) => b.samplesAffected - a.samplesAffected);
+  return update(prunedColumns, {
+    pathways: { $set: pathways },
+    data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
+  });
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortGeneExpression(prunedColumns) {
+  const pathways = scoreGeneExpressionColumns(prunedColumns).sort((a, b) => b.geneExpressionMean - a.geneExpressionMean);
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
@@ -63,9 +84,8 @@ export function sortByType(renderedData) {
  * @param prunedColumns
  * @returns {undefined}
  */
-export function topSort(prunedColumns) {
-  const sortedColumns = sortColumnDensities(prunedColumns);
-
+export function geneExpressionSort(prunedColumns) {
+  const sortedColumns = sortGeneExpression(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
   renderedData = sortByType(renderedData);
@@ -75,7 +95,6 @@ export function topSort(prunedColumns) {
   returnColumns.samples = sortedColumns.samples;
   returnColumns.pathways = sortedColumns.pathways;
   returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
   return returnColumns;
 }
 
@@ -182,9 +201,15 @@ function generateMissingColumns(pathways, geneList) {
   return returnColumns;
 }
 
-export function synchronizedSort(prunedColumns, geneList, rescore) {
+export function synchronizedSort(prunedColumns, geneList, rescore,filter) {
   rescore = rescore === undefined ? true : rescore;
-  let pathways = rescore ? scoreColumns(prunedColumns) : prunedColumns.pathways;
+  let pathways;
+  if(rescore){
+    pathways = filter===FILTER_ENUM.GENE_EXPRESSION  ?  scoreGeneExpressionColumns(prunedColumns) : scoreColumns(prunedColumns) ;
+  }
+  else{
+    pathways =  prunedColumns.pathways;
+  }
   const missingColumns = generateMissingColumns(pathways, geneList);
   pathways = [...pathways, ...missingColumns];
   pathways.sort((a, b) => {
