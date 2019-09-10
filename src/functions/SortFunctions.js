@@ -1,5 +1,5 @@
 import update from 'immutability-helper';
-import { sumTotals, sumInstances } from './MathFunctions';
+import {sumTotals, sumInstances, sumGeneExpression} from './MathFunctions';
 
 export const SortType = {
   DIFF: 'diff',
@@ -16,6 +16,7 @@ export function transpose(a) {
 export function scoreColumns(prunedColumns) {
   return prunedColumns.pathways.map((el, index) => update(el, {
     samplesAffected: { $set: sumInstances(prunedColumns.data[index]) },
+    geneExpressionMean: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
     index: { $set: index },
   }));
 }
@@ -26,6 +27,18 @@ export function scoreColumns(prunedColumns) {
  */
 function sortColumnDensities(prunedColumns) {
   const pathways = scoreColumns(prunedColumns).sort((a, b) => b.samplesAffected - a.samplesAffected);
+  return update(prunedColumns, {
+    pathways: { $set: pathways },
+    data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
+  });
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortGeneExpression(prunedColumns) {
+  const pathways = scoreColumns(prunedColumns).sort((a, b) => b.geneExpressionMean - a.geneExpressionMean);
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
@@ -63,9 +76,8 @@ export function sortByType(renderedData) {
  * @param prunedColumns
  * @returns {undefined}
  */
-export function topSort(prunedColumns) {
-  const sortedColumns = sortColumnDensities(prunedColumns);
-
+export function geneExpressionSort(prunedColumns) {
+  const sortedColumns = sortGeneExpression(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
   renderedData = sortByType(renderedData);

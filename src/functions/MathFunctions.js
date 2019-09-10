@@ -49,6 +49,14 @@ export function partition(n, m) {
   }));
 }
 
+export function sumGeneExpression(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; ++i) {
+    total += arr[i].geneExpression > 0 ? 1 : 0;
+  }
+  return total;
+}
+
 export function sumInstances(arr) {
   let total = 0;
   for (let i = 0; i < arr.length; ++i) {
