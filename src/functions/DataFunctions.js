@@ -28,16 +28,16 @@ export const DEFAULT_DATA_VALUE = {
 
 
 export function average(data){
-  let sum = data.reduce(function(sum, value){
-    return sum + value;
+  let sumValue = data.reduce(function(input, value){
+    return input + value;
   }, 0);
 
-  return sum / data.length;
+  return sumValue / data.length;
 }
 
 export function stdev(data,mean){
-  let variance = data.reduce(function(sum, value){
-    return sum + (Math.pow((value-mean),2));
+  let variance = data.reduce(function(input, value){
+    return input + (Math.pow((value-mean),2));
   }, 0);
   return Math.sqrt(variance / data.length);
 }
@@ -52,7 +52,7 @@ export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
     const cleanGeneExpression = cleanData(geneExpressionA[index],geneExpressionB[index]);
     const meanGeneExpression = average(cleanGeneExpression);
     const stdevGeneExpression = stdev(cleanGeneExpression,meanGeneExpression);
-    geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression };
+    geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression,count: cleanGeneExpression.length };
   }
   return geneExpressionStats;
 }
@@ -109,7 +109,6 @@ export const indexSamples = (samples) => {
 };
 
 export function pruneColumns(data, pathways) {
-  // TODO: we need to map the sum off each column
   const columnScores = data.map((d) => sum(d.total));
   const prunedPathways = pathways.filter((el, i) => columnScores[i] >= 0);
   const prunedAssociations = data.filter((el, i) => columnScores[i] >= 0);
@@ -517,9 +516,15 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   return [geneDataA, geneDataB];
 }
 
-function meanDiff(geneExpressionMean0, geneExpressionMean1) {
-  // +/- 2, vs a height of 500
-  return Math.round((geneExpressionMean0 - geneExpressionMean1) * 200 );
+// function meanDiff(geneExpressionMean0, geneExpressionMean1) {
+//   // +/- 2, vs a height of 500
+//   return Math.round((geneExpressionMean0 - geneExpressionMean1) * 200 );
+// }
+
+export function tTest(geneData0Element, geneData1Element) {
+  const poolSquared = Math.sqrt(   ( (( geneData0Element.total - 1 ) * geneData0Element.geneExpressionVariance)  + (( geneData1Element.total - 1 ) * geneData1Element.geneExpressionVariance) ) / (geneData0Element.total + geneData1Element.total - 2) );
+  const standardError = poolSquared * Math.sqrt( (1 / geneData0Element.total ) + ( 1 / geneData1Element.total ));
+  return  (geneData0Element.geneExpressionMean - geneData1Element.geneExpressionMean) / standardError;
 }
 
 /**
@@ -539,7 +544,9 @@ export function calculateDiffs(geneData0, geneData1) {
 
     if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
       for (const geneIndex in geneData0) {
-        let diffScore = meanDiff(geneData0[geneIndex].geneExpressionMean,geneData1[geneIndex].geneExpressionMean);
+        // TODO: calculate t-Score instead of diff score
+        let diffScore = tTest(geneData0[geneIndex],geneData1[geneIndex]);
+        // let diffScore = meanDiff(geneData0[geneIndex].geneExpressionMean,geneData1[geneIndex].geneExpressionMean);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
         geneData0[geneIndex].diffScore = diffScore;
         gene1Objects[geneIndex].diffScore = diffScore;
@@ -590,6 +597,15 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   };
 }
 
+function calculateVarianceGeneExpression(datum,mean) {
+  let total = 0;
+  for (let i = 0; i < datum.length; ++i) {
+    total += Math.pow(datum[i].geneExpression - mean,2.0);
+  }
+  return total / (datum.length-1) ;
+}
+
+
 function calculateMeanGeneExpression(datum) {
   let total = 0;
   for (let i = 0; i < datum.length; ++i) {
@@ -616,6 +632,7 @@ export function scoreGeneData(inputGeneData) {
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
     returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
+    returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
   }

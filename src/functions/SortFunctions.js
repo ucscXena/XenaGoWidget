@@ -14,9 +14,18 @@ export function transpose(a) {
 
 
 export function scoreColumns(prunedColumns) {
+  // const geneDataStats = prunedColumns.data.map( col => {
+  //   const sum1 = geneExpressionSum(col);
+  //   const mean1 = sum1 / col.length;
+  //   const variance = geneExpressionVariance(col,mean1);
+  //   return {mean:mean1,variance:variance,count:col.length};
+  // });
+  // console.log('input',prunedColumns.pathways,prunedColumns.data)
   return prunedColumns.pathways.map((el, index) => update(el, {
     samplesAffected: { $set: sumInstances(prunedColumns.data[index]) },
     geneExpressionMean: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
+    // geneExpressionMean: { $set: geneDataStats.sum/geneDataStats.count },
+    // geneExpressionVariance: { $set: geneDataStats.variance},
     index: { $set: index },
   }));
 }
