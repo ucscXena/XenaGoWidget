@@ -1,5 +1,6 @@
 import update from 'immutability-helper';
 import {sumTotals, sumInstances, sumGeneExpression} from './MathFunctions';
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const SortType = {
   DIFF: 'diff',
@@ -21,6 +22,13 @@ export function scoreColumns(prunedColumns) {
   }));
 }
 
+export function scoreGeneExpressionColumns(prunedColumns) {
+  return prunedColumns.pathways.map((el, index) => update(el, {
+    samplesAffected: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
+    index: { $set: index },
+  }));
+}
+
 /**
  * Populates density for each column
  * @param prunedColumns
@@ -38,7 +46,7 @@ function sortColumnDensities(prunedColumns) {
  * @param prunedColumns
  */
 function sortGeneExpression(prunedColumns) {
-  const pathways = scoreColumns(prunedColumns).sort((a, b) => b.geneExpressionMean - a.geneExpressionMean);
+  const pathways = scoreGeneExpressionColumns(prunedColumns).sort((a, b) => b.geneExpressionMean - a.geneExpressionMean);
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
@@ -87,7 +95,6 @@ export function geneExpressionSort(prunedColumns) {
   returnColumns.samples = sortedColumns.samples;
   returnColumns.pathways = sortedColumns.pathways;
   returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
   return returnColumns;
 }
 
@@ -194,9 +201,15 @@ function generateMissingColumns(pathways, geneList) {
   return returnColumns;
 }
 
-export function synchronizedSort(prunedColumns, geneList, rescore) {
+export function synchronizedSort(prunedColumns, geneList, rescore,filter) {
   rescore = rescore === undefined ? true : rescore;
-  let pathways = rescore ? scoreColumns(prunedColumns) : prunedColumns.pathways;
+  let pathways;
+  if(rescore){
+    pathways = filter===FILTER_ENUM.GENE_EXPRESSION  ?  scoreGeneExpressionColumns(prunedColumns) : scoreColumns(prunedColumns) ;
+  }
+  else{
+    pathways =  prunedColumns.pathways;
+  }
   const missingColumns = generateMissingColumns(pathways, geneList);
   pathways = [...pathways, ...missingColumns];
   pathways.sort((a, b) => {
