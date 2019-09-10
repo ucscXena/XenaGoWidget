@@ -5,7 +5,6 @@
     "gene": [
       "NUDT1"
     ],
-    "geneExpressionMean": 0,
     "samplesAffected": 1,
     "index": 0
   },
@@ -15,7 +14,6 @@
     "gene": [
       "DUT"
     ],
-    "geneExpressionMean": 0,
     "samplesAffected": 1,
     "index": 1
   },
@@ -25,7 +23,6 @@
     "gene": [
       "RRM2B"
     ],
-    "geneExpressionMean": 0,
     "samplesAffected": 17,
     "index": 2
   }

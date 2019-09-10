@@ -16,13 +16,13 @@ export function transpose(a) {
 export function scoreColumns(prunedColumns) {
   return prunedColumns.pathways.map((el, index) => update(el, {
     samplesAffected: { $set: sumInstances(prunedColumns.data[index]) },
-    geneExpressionMean: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
     index: { $set: index },
   }));
 }
 
 export function scoreGeneExpressionColumns(prunedColumns) {
   return prunedColumns.pathways.map((el, index) => update(el, {
+    // NOTE: a bit of a hack, but allows us to pass color through
     samplesAffected: { $set: sumGeneExpression(prunedColumns.data[index])/prunedColumns.data[index].length },
     index: { $set: index },
   }));
