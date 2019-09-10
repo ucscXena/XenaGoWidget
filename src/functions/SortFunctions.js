@@ -1,6 +1,5 @@
 import update from 'immutability-helper';
 import {sumTotals, sumInstances, sumGeneExpression} from './MathFunctions';
-import {FILTER_ENUM} from '../components/FilterSelector';
 
 export const SortType = {
   DIFF: 'diff',
@@ -201,11 +200,11 @@ function generateMissingColumns(pathways, geneList) {
   return returnColumns;
 }
 
-export function synchronizedSort(prunedColumns, geneList, rescore,filter) {
+export function synchronizedSort(prunedColumns, geneList, rescore,isGeneExpression) {
   rescore = rescore === undefined ? true : rescore;
   let pathways;
   if(rescore){
-    pathways = filter===FILTER_ENUM.GENE_EXPRESSION  ?  scoreGeneExpressionColumns(prunedColumns) : scoreColumns(prunedColumns) ;
+    pathways = isGeneExpression  ?  scoreGeneExpressionColumns(prunedColumns) : scoreColumns(prunedColumns) ;
   }
   else{
     pathways =  prunedColumns.pathways;

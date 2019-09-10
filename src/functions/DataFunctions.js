@@ -500,7 +500,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   if (showClusterSort) {
     sortedGeneDataA = filter[0]===FILTER_ENUM.GENE_EXPRESSION ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===FILTER_ENUM.GENE_EXPRESSION);
   } else {
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);

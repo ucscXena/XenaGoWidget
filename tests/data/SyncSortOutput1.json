@@ -181,6 +181,7 @@
   ],
   "pathways": [
     {
+      "geneExpressionMean": 0,
       "goid": "GO:0006281",
       "golabel": "Modulation of nucleotide pools",
       "gene": [
@@ -193,6 +194,7 @@
       "diffScore": 19.045540520878802
     },
     {
+      "geneExpressionMean": 0,
       "goid": "GO:0006281",
       "golabel": "Modulation of nucleotide pools",
       "gene": [
@@ -205,6 +207,7 @@
       "diffScore": -1.000166325994366
     },
     {
+      "geneExpressionMean": 0,
       "goid": "GO:0006281",
       "golabel": "Modulation of nucleotide pools",
       "gene": [

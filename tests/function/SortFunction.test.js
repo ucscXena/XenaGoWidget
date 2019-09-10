@@ -48,9 +48,9 @@ describe('Sort Functions', () => {
     expect(DiffSortOutputData1).toEqual(diffSort(DiffSortInput1));
   });
 
-  it('Synchrozine sort', () => {
+  it('Synchronized sort', () => {
     const geneList = ['RRM2B','NUDT1','DUT'];
-    expect(SyncSortOutputData1).toEqual(synchronizedSort(SyncSortInput1,geneList,undefined));
+    expect(SyncSortOutputData1).toEqual(synchronizedSort(SyncSortInput1,geneList,undefined,false));
   });
 });
 
