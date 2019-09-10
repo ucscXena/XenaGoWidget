@@ -516,11 +516,6 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   return [geneDataA, geneDataB];
 }
 
-// function meanDiff(geneExpressionMean0, geneExpressionMean1) {
-//   // +/- 2, vs a height of 500
-//   return Math.round((geneExpressionMean0 - geneExpressionMean1) * 200 );
-// }
-
 export function tTest(geneData0Element, geneData1Element) {
   const poolSquared = Math.sqrt(   ( (( geneData0Element.total - 1 ) * geneData0Element.geneExpressionVariance)  + (( geneData1Element.total - 1 ) * geneData1Element.geneExpressionVariance) ) / (geneData0Element.total + geneData1Element.total - 2) );
   const standardError = poolSquared * Math.sqrt( (1 / geneData0Element.total ) + ( 1 / geneData1Element.total ));
@@ -544,9 +539,7 @@ export function calculateDiffs(geneData0, geneData1) {
 
     if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
       for (const geneIndex in geneData0) {
-        // TODO: calculate t-Score instead of diff score
         let diffScore = tTest(geneData0[geneIndex],geneData1[geneIndex]);
-        // let diffScore = meanDiff(geneData0[geneIndex].geneExpressionMean,geneData1[geneIndex].geneExpressionMean);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
         geneData0[geneIndex].diffScore = diffScore;
         gene1Objects[geneIndex].diffScore = diffScore;

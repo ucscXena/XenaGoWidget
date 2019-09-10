@@ -61,7 +61,6 @@ export class DiffLabel extends PureComponent {
         style={this.style(colorDensity)}
       >
         <polygon fill='black' points={this.calculateDiamond(width,labelHeight,cohortIndex)} stroke='black'/>
-        {/*<polygon fill='hotpink' points={this.calculateDiamond(width,labelHeight,cohortIndex)} stroke='black'/>*/}
       </svg>
     );
   }
