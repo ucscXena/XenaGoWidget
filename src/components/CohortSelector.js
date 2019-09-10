@@ -5,7 +5,11 @@ import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
-import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {
+  fetchCohortData,
+  getSubCohortsOnlyForCohort,
+  getSubCohortsWithCountsForCohort
+} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
@@ -97,7 +101,8 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
       return (

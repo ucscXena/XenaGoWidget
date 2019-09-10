@@ -1,6 +1,6 @@
 import { uniq, pluck, flatten } from 'underscore';
 
-import subCohorts from '../data/Subtype_Selected';
+import SUB_COHORT_LIST from '../data/Subtype_Selected';
 import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
@@ -23,7 +23,12 @@ function lowerCaseCompareName(a, b) {
 }
 
 function getSubCohortsForCohort(cohort) {
-  return subCohorts[cohort];
+  return SUB_COHORT_LIST[cohort];
+}
+
+export function getSubCohortsWithCountsForCohort(cohort) {
+  const subCohortsForCohort = getSubCohortsForCohort(cohort);
+  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
 }
 
 export function getSubCohortsOnlyForCohort(cohort) {
@@ -70,7 +75,7 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  return uniq(subCohorts[cohort][subCohort]);
+  return uniq(SUB_COHORT_LIST[cohort][subCohort]);
 }
 
 export function getCohortDetails(selected) {
