@@ -60,6 +60,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         return {start: index * labelHeight, size: labelHeight};
       });
 
+      console.log('gene epxresssion data',geneExpression)
+
       const totalHeight = layout.length * labelHeight;
       let geneList = getGenesForPathways(pathways);
 

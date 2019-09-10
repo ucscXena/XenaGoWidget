@@ -10,6 +10,7 @@ import {
 } from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
+import {FILTER_ENUM} from '../components/FilterSelector';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -71,7 +72,7 @@ export let interpolateGeneExpressionFont = (score) => {
 };
 
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
-  labelHeight, cohortIndex) {
+  labelHeight, cohortIndex,filter) {
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -93,7 +94,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       rowData = data[i].reverse();
     }
 
-
     // let reverseMap = new Map(Array.from(regions).reverse());
     // XXX watch for poor iterator performance in this for...of.
     // eslint-disable-next-line no-restricted-syntax
@@ -101,8 +101,8 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      const geneExpressionScore = sumDataByType(d, 'geneExpression');
-      if(geneExpressionScore!==0){
+      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+        const geneExpressionScore = sumDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;
@@ -115,7 +115,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
             img.data[l + 3] = 255 ;
           }
         }
-
       }
       else{
         const cnvHighScore = sumDataByType(d, 'cnvHigh');
@@ -151,7 +150,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
         }
       }
     }
-
     ctx.putImageData(img, 0, 0);
   });
 }
@@ -180,10 +178,11 @@ function findPathwayData(pathwayWidth, count) {
 }
 
 
-function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex) {
+function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
+  const colorFilter = filter === FILTER_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
 
   layout.forEach((el, i) => {
     //     // TODO: may be faster to transform the whole data cohort at once
@@ -197,8 +196,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const r = sampleRegions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
       //
-      //         // TODO: should pass in geneList for each pathway and amortize over that . . .
-      let color = regionColor(d, 'total');
+      let color = regionColor(d, colorFilter);
       color = color > 255 ? 255 : color;
 
       const pxRow = el.start * 4 * img.width; // first column and row in the block
@@ -225,24 +223,25 @@ export default {
 
   drawGeneView(vg, props) {
     const {
-      width, height, layout, cohortIndex, associatedData,
+      width, height, layout, cohortIndex, associatedData, filter
     } = props;
+
 
     clearScreen(vg, width, height);
     if (associatedData.length === 0) {
       return;
     }
-
-    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex);
+    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex,filter);
   },
 
   drawGeneSetView(vg, props) {
     const {
-      width, layout, labelHeight, cohortIndex, associatedData,
+      width, layout, labelHeight, cohortIndex, associatedData,filter
     } = props;
     const totalHeight = labelHeight * layout.length;
     clearScreen(vg, width, totalHeight);
-    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex);
+    console.log('input GS filter',filter,props);
+    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter);
   },
 
 };

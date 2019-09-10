@@ -119,7 +119,7 @@ export default class PathwayScoresView extends PureComponent {
         height, offset, cohortIndex,
         colorSettings, highlightedGene,
         showDetailLayer, calculatedWidth,
-        showDiffLayer, layoutData,
+        showDiffLayer, layoutData,filter
       } = this.props;
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
@@ -131,6 +131,7 @@ export default class PathwayScoresView extends PureComponent {
                   associatedData={data}
                   cohortIndex={cohortIndex}
                   draw={DrawFunctions.drawGeneView}
+                  filter={filter}
                   height={height}
                   layout={layoutData}
                   width={calculatedWidth}
