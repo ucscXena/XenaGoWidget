@@ -30,15 +30,16 @@ export default class HoverGeneView extends PureComponent {
       return returnString;
 
     };
-
     getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
-    render() {
-      let {data, cohortIndex, filter} = this.props;
-      if (data.tissue) {
-        return (
-          <div>
-            {data.tissue !== 'Header' &&
+  getGeneExpressionScore = (data) => data.geneExpressionMean ? data.geneExpressionMean : 0 ;
+
+  render() {
+    let {data, cohortIndex, filter} = this.props;
+    if (data.tissue) {
+      return (
+        <div>
+          {data.tissue !== 'Header' &&
                     <div>
                       {data.pathway &&
                         <Chip>
@@ -117,8 +118,8 @@ export default class HoverGeneView extends PureComponent {
                         </Chip>
                       }
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
               && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== FILTER_ENUM.GENE_EXPRESSION &&
                     <div>
                       <Chip>
@@ -128,8 +129,8 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
             && data.pathway.geneExpressionMean !== undefined && filter === FILTER_ENUM.GENE_EXPRESSION &&
             <div>
               <Chip>
@@ -147,8 +148,8 @@ export default class HoverGeneView extends PureComponent {
                 </span>
               </div>
             </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel}
@@ -169,18 +170,14 @@ export default class HoverGeneView extends PureComponent {
                       </div>
 
                     </div>
-            }
-          </div>
-        );
-      }
-      else {
-        return <div/>;
-      }
+          }
+        </div>
+      );
     }
-
-    getGeneExpressionScore(data) {
-      return data.geneExpressionMean ? data.geneExpressionMean : 0 ;
+    else {
+      return <div/>;
     }
+  }
 }
 
 HoverGeneView.propTypes = {
