@@ -69,8 +69,8 @@ export class SubCohortSelector extends PureComponent {
   selectAll(){
     // console.log('sub cohorts for selected all',this.props.subCohortsForSelected);
     this.setState({
-      selectedSubCohorts:Object.keys(this.props.subCohortsForSelected),
-      allSelected:false,
+      selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
+      allSelected:true,
     });
   }
 
