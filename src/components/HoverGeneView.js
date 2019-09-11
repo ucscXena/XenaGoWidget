@@ -5,7 +5,7 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
-import {FILTER_ENUM} from "./FilterSelector";
+import {FILTER_ENUM} from './FilterSelector';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -31,14 +31,7 @@ export default class HoverGeneView extends PureComponent {
 
     };
 
-    getScore = (data, cohortIndex,filter) => {
-      if(filter===FILTER_ENUM.GENE_EXPRESSION){
-        return data.pathway.geneExpressionMean? data.pathway.geneExpressionMean : 0 ;
-      }
-      else{
-        return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
-      }
-    }
+    getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
     render() {
       let {data, cohortIndex, filter} = this.props;
@@ -167,7 +160,12 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
                       <div>
-                        <span><strong>Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+                        {filter !== FILTER_ENUM.GENE_EXPRESSION &&
+                        <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
+                        }
+                        {filter === FILTER_ENUM.GENE_EXPRESSION &&
+                        <span><strong>BPA Score</strong> {this.getGeneExpressionScore(data, cohortIndex)}</span>
+                        }
                       </div>
 
                     </div>
@@ -180,6 +178,9 @@ export default class HoverGeneView extends PureComponent {
       }
     }
 
+    getGeneExpressionScore(data) {
+      return data.geneExpressionMean ? data.geneExpressionMean : 0 ;
+    }
 }
 
 HoverGeneView.propTypes = {
