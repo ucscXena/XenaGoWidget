@@ -105,13 +105,12 @@ export class CohortSelector extends PureComponent {
       let {filterCounts,filter} = this.props ;
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
-      subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
-      // console.log('sub cohrots for selected',subCohortsForSelected)
-      // let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
+      // subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
       return (
         <div>
+          {subCohortsForSelected &&
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
@@ -122,6 +121,7 @@ export class CohortSelector extends PureComponent {
             selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
             subCohortsForSelected={subCohortsForSelected}
           />
+          }
           <div style={{
             marginTop: 10,
             marginLeft: 10,
@@ -147,7 +147,7 @@ export class CohortSelector extends PureComponent {
               })
             }
           </select>
-          {Object.keys(subCohortsForSelected).length>0 &&
+          {subCohortsForSelected && Object.keys(subCohortsForSelected).length>0 &&
                    <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>
