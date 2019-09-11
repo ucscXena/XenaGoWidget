@@ -115,8 +115,8 @@ export class SubCohortSelector extends PureComponent {
                         <Row key={cs.name}>
                           <Col md={12}>
                             <input
-                              checked={selectedSubCohorts.indexOf(cs.name)>=0}
-                              disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs.name)>=0} key={cs.name}
+                              checked={cs.count === 0 || selectedSubCohorts.indexOf(cs.name)>=0}
+                              disabled={cs.count === 0 || selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs.name)>=0} key={cs.name}
                               name={cs.name}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
