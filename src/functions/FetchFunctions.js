@@ -44,8 +44,8 @@ export function getAllSamplesForCohorts(cohort){
 
 export function calculateSubCohortCounts(availableSamples, cohort) {
   const subCohorts = getSubCohortsForCohort(cohort.name);
+  console.log('input objects',subCohorts)
   if(Object.keys(subCohorts).length > 0){
-    // console.log('values of sub cohorts',Object.values(subCohorts).flat());
     const allSubCohortSamples = uniq(intersection(Object.values(subCohorts).flat(),availableSamples));
     let returnObject = Object.entries(subCohorts).map( c => {
       return {
@@ -57,7 +57,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
-    // console.log('return object',returnObject)
+    console.log('return object',returnObject)
     return returnObject ;
   }
   else{
