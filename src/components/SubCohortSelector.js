@@ -89,7 +89,7 @@ export class SubCohortSelector extends PureComponent {
 
     let {active, subCohortsForSelected,cohortLabel,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
-    // console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
+    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
 
     return (
       <Dialog
@@ -109,23 +109,24 @@ export class SubCohortSelector extends PureComponent {
               <td>
                 <Grid style={{marginTop: 20,width:900}}>
                   {
-                    Object.keys(subCohortsForSelected).sort().map( cs =>{
+                    filterCounts.subCohortCounts.sort( (a,b) => a.name.localeCompare(b.name)).map( cs =>{
+                      console.log('cs',cs)
                       return (
-                        <Row key={cs}>
+                        <Row key={cs.name}>
                           <Col md={12}>
                             <input
-                              checked={selectedSubCohorts.indexOf(cs)>=0}
-                              disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
-                              name={cs}
+                              checked={selectedSubCohorts.indexOf(cs.name)>=0}
+                              disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs.name)>=0} key={cs.name}
+                              name={cs.name}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
                             />
                             <div  style={{display: 'inline'}}>
-                              {`${cs} (${subCohortsForSelected[cs].length})`}
+                              {`${cs.name} (${cs.count})`}
                             </div>
                             <Link
-                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }}
+                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name); }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                           </Col>
@@ -141,7 +142,7 @@ export class SubCohortSelector extends PureComponent {
                 {!allSelected &&
                 <Link
                   href='#'
-                  label={'(Select All)'}
+                  label={`(Select All - ${filterCounts.available})`}
                   onClick={() => this.selectAll()}
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />

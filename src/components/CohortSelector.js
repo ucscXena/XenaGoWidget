@@ -70,7 +70,6 @@ export class CohortSelector extends PureComponent {
 
       const availableSubtypes = Object.keys(subCohortsForSelected).length;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
-      // console.log('sub cohorts for selected',subCohortsForSelected, selectedSubTypes,availableSubtypes)
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
         return `All ${availableSubtypes} Subtypes`;
       }
@@ -103,7 +102,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let {filterCounts} = this.props ;
+      let {filterCounts,filter} = this.props ;
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
@@ -116,7 +115,7 @@ export class CohortSelector extends PureComponent {
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
-            filterCounts={filterCounts}
+            filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.state.selectedCohort}
@@ -161,6 +160,7 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
   cohortLabel: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
