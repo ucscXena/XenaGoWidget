@@ -80,6 +80,7 @@ export default class XenaGoViewer extends PureComponent {
       }
 
       let layoutData = layout(calculatedWidth, geneDataStats.data);
+      console.log('gene data stats',geneDataStats,geneDataStats.filterCounts)
       if (pathwayData) {
         return (
           <table>
@@ -93,6 +94,7 @@ export default class XenaGoViewer extends PureComponent {
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortLabel={cohortLabel}
+                            filterCounts={geneDataStats.filterCounts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}

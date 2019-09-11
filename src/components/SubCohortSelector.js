@@ -87,9 +87,9 @@ export class SubCohortSelector extends PureComponent {
 
   render() {
 
-    let {active, subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+    let {active, subCohortsForSelected,cohortLabel,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
-    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected);
+    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
 
     return (
       <Dialog
@@ -177,6 +177,7 @@ export class SubCohortSelector extends PureComponent {
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
+  filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,

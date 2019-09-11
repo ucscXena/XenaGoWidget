@@ -103,6 +103,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
+      let {filterCounts} = this.props ;
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
@@ -115,6 +116,7 @@ export class CohortSelector extends PureComponent {
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
+            filterCounts={filterCounts}
             handleSubCohortChange={this.onChangeSubCohort}
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.state.selectedCohort}
@@ -159,6 +161,7 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
   cohortLabel: PropTypes.string.isRequired,
+  filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
