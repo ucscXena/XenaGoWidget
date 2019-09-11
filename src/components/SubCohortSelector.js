@@ -102,7 +102,7 @@ export class SubCohortSelector extends PureComponent {
           <tbody>
             <tr>
               <td>
-                  ({cohortLabel}) Select Sub Cohorts for {selectedCohort.name}
+                Select Sub Cohorts for <br/>{selectedCohort.name}
               </td>
             </tr>
             <tr>
