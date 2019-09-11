@@ -5,6 +5,7 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
+import {FILTER_ENUM} from './FilterSelector';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -29,19 +30,17 @@ export default class HoverGeneView extends PureComponent {
       return returnString;
 
     };
-
     getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
-    render() {
-      let {data, title, cohortIndex} = this.props;
-      if (data.tissue) {
-        return (
-          <div>
-            {data.tissue !== 'Header' &&
+  getGeneExpressionScore = (data) => data.geneExpressionMean ? data.geneExpressionMean : 0 ;
+
+  render() {
+    let {data, cohortIndex, filter} = this.props;
+    if (data.tissue) {
+      return (
+        <div>
+          {data.tissue !== 'Header' &&
                     <div>
-                      {title &&
-                        <h3>{title}</h3>
-                      }
                       {data.pathway &&
                         <Chip>
                           <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -119,9 +118,9 @@ export default class HoverGeneView extends PureComponent {
                         </Chip>
                       }
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && data.pathway.geneExpressionMean===undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== FILTER_ENUM.GENE_EXPRESSION &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -130,9 +129,9 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && data.pathway.geneExpressionMean !== undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+            && data.pathway.geneExpressionMean !== undefined && filter === FILTER_ENUM.GENE_EXPRESSION &&
             <div>
               <Chip>
                 <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -149,8 +148,8 @@ export default class HoverGeneView extends PureComponent {
                 </span>
               </div>
             </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel}
@@ -162,23 +161,27 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
                       <div>
+                        {filter !== FILTER_ENUM.GENE_EXPRESSION &&
                         <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
+                        }
+                        {filter === FILTER_ENUM.GENE_EXPRESSION &&
+                        <span><strong>BPA Score</strong> {this.getGeneExpressionScore(data, cohortIndex)}</span>
+                        }
                       </div>
 
                     </div>
-            }
-          </div>
-        );
-      }
-      else {
-        return <div/>;
-      }
+          }
+        </div>
+      );
     }
-
+    else {
+      return <div/>;
+    }
+  }
 }
 
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  title: PropTypes.any,
+  filter: PropTypes.any.isRequired,
 };
