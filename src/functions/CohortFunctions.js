@@ -23,7 +23,8 @@ function lowerCaseCompareName(a, b) {
 }
 
 export function getSubCohortsForCohort(cohort) {
-  return SUB_COHORT_LIST[cohort];
+  // TODO: somehow this needs to be a const
+  return JSON.parse(JSON.stringify(SUB_COHORT_LIST))[cohort];
 }
 
 // export function getSubCohortsWithCountsForCohort(cohort) {
