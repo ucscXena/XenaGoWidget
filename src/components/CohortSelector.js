@@ -63,13 +63,14 @@ export class CohortSelector extends PureComponent {
     }
 
     generateSubCohortLabels(){
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
       let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
 
       const availableSubtypes = Object.keys(subCohortsForSelected).length;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+      console.log('sub cohorts for selected',subCohortsForSelected, selectedSubTypes,availableSubtypes)
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
         return `All ${availableSubtypes} Subtypes`;
       }
