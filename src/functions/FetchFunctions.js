@@ -71,21 +71,36 @@ export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpress
   // console.log('CN samples',JSON.stringify(copyNumberSamples));
   // console.log('GE samples',JSON.stringify(geneExpressionSamples));
   const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
-  let filterCounts = {};
-
+  const intersectedCnvMutationCohortSamples = calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort);
   const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
+  const copyNumberSubCohortSamples = calculateSelectedSubCohortSamples(copyNumberSamples,cohort);
+  const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
+  let filterCounts = {};
   // calculate mutations per subfilter
-  const subCohortCounts = calculateSubCohortCounts(mutationSamples,cohort);
-  console.log('sub cohort counts',subCohortCounts);
   filterCounts[FILTER_ENUM.MUTATION] =  {
-    available: mutationSamples.length
-    ,current:mutationSubCohortSamples.length
-    ,subCohortCounts : subCohortCounts
-    ,unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length
+    available: mutationSamples.length,
+    current:mutationSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
+    unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.COPY_NUMBER] =  { available: copyNumberSamples.length, current: calculateSelectedSubCohortSamples(copyNumberSamples,cohort).length};
-  filterCounts[FILTER_ENUM.CNV_MUTATION] =  { available: intersectedCnvMutation.length, current: calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort).length};
-  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  { available: geneExpressionSamples.length, current: calculateSelectedSubCohortSamples(geneExpressionSamples,cohort).length};
+  filterCounts[FILTER_ENUM.COPY_NUMBER] =  {
+    available: copyNumberSamples.length,
+    current: copyNumberSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
+    unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[FILTER_ENUM.CNV_MUTATION] =  {
+    available: intersectedCnvMutation.length,
+    current: intersectedCnvMutationCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
+    unassigned: copyNumberSamples.filter( s => intersectedCnvMutationCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  {
+    available: geneExpressionSamples.length,
+    current: geneExpressionSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
+    unassigned: copyNumberSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
+  };
   console.log('filter counts out ',filterCounts)
   return filterCounts;
 }
