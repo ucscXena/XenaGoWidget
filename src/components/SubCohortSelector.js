@@ -49,6 +49,7 @@ export class SubCohortSelector extends PureComponent {
   handleChange = (event) => {
     const field = event.target.name;
     const newValue = event.target.checked ;
+    console.log('new value',field,newValue)
     let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
     if(newValue){
       newSelected.push(field);
@@ -58,6 +59,7 @@ export class SubCohortSelector extends PureComponent {
       newSelected.splice(indexValue,1);
     }
     let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
+    console.log('selected vs new',this.state.selectedSubCohorts,newSelected)
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -114,7 +116,7 @@ export class SubCohortSelector extends PureComponent {
                             <input
                               checked={selectedSubCohorts.indexOf(cs)>=0}
                               disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
-                              name={`${cs} - ${subCohortsForSelected[cs].length}`}
+                              name={cs}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
