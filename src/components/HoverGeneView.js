@@ -5,6 +5,7 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
+import {FILTER_ENUM} from "./FilterSelector";
 
 export default class HoverGeneView extends PureComponent {
 
@@ -33,15 +34,12 @@ export default class HoverGeneView extends PureComponent {
     getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
     render() {
-      let {data, title, cohortIndex} = this.props;
+      let {data, cohortIndex, filter} = this.props;
       if (data.tissue) {
         return (
           <div>
             {data.tissue !== 'Header' &&
                     <div>
-                      {title &&
-                        <h3>{title}</h3>
-                      }
                       {data.pathway &&
                         <Chip>
                           <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -132,7 +130,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && data.pathway.geneExpressionMean !== undefined &&
+            && data.pathway.geneExpressionMean !== undefined && filter === FILTER_ENUM.GENE_EXPRESSION &&
             <div>
               <Chip>
                 <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -180,5 +178,5 @@ export default class HoverGeneView extends PureComponent {
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  title: PropTypes.any,
+  filter: PropTypes.any.isRequired,
 };
