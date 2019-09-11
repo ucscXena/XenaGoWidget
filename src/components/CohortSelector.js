@@ -70,7 +70,7 @@ export class CohortSelector extends PureComponent {
 
       const availableSubtypes = Object.keys(subCohortsForSelected).length;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
-      console.log('sub cohorts for selected',subCohortsForSelected, selectedSubTypes,availableSubtypes)
+      // console.log('sub cohorts for selected',subCohortsForSelected, selectedSubTypes,availableSubtypes)
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
         return `All ${availableSubtypes} Subtypes`;
       }
@@ -107,7 +107,7 @@ export class CohortSelector extends PureComponent {
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
-      console.log('sub cohrots for selected',subCohortsForSelected)
+      // console.log('sub cohrots for selected',subCohortsForSelected)
       // let subCohortsForSelected = getSubCohortsWithCountsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();

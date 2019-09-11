@@ -15,7 +15,7 @@ export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
     super(props);
-    console.log(Object.keys(props.subCohortsForSelected),props.selectedSubCohorts);
+    // console.log(Object.keys(props.subCohortsForSelected),props.selectedSubCohorts);
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
@@ -38,7 +38,7 @@ export class SubCohortSelector extends PureComponent {
     const newSelected = [field];
     // this is going to be almost always false
     let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
-    console.log('new selected',newSelected,allSelected);
+    // console.log('new selected',newSelected,allSelected);
 
     this.setState({
       selectedSubCohorts:newSelected,
@@ -67,7 +67,7 @@ export class SubCohortSelector extends PureComponent {
   };
 
   selectAll(){
-    console.log('sub cohorts for selected all',this.props.subCohortsForSelected);
+    // console.log('sub cohorts for selected all',this.props.subCohortsForSelected);
     this.setState({
       selectedSubCohorts:Object.keys(this.props.subCohortsForSelected),
       allSelected:false,
@@ -89,7 +89,7 @@ export class SubCohortSelector extends PureComponent {
 
     let {active, subCohortsForSelected,cohortLabel,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
-    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
+    // console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
 
     return (
       <Dialog

@@ -57,7 +57,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
-    console.log('return object',returnObject)
+    // console.log('return object',returnObject)
     return returnObject ;
   }
   else{
@@ -66,7 +66,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
 }
 
 export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,cohort){
-  console.log('cohort',cohort);
+  // console.log('cohort',cohort);
   // console.log('Mutation Samples',JSON.stringify(mutationSamples));
   // console.log('CN samples',JSON.stringify(copyNumberSamples));
   // console.log('GE samples',JSON.stringify(geneExpressionSamples));
