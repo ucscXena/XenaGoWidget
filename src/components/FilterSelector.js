@@ -39,7 +39,7 @@ export class FilterSelector extends PureComponent {
         return <div>Loading...</div>;
       }
       let labels = Object.keys(filterCounts).sort(lowerCaseCompare);
-      const labelValues = labels.map(label => ({label: label + ' (' + filterCounts[label] + ')', value: label}));
+      const labelValues = labels.map(label => ({label: label + ' (' + filterCounts[label].current + ')', value: label}));
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>
           <Dropdown

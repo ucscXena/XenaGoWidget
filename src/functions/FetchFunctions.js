@@ -1,10 +1,16 @@
-import { getGenesForPathways, getSamplesFromSelectedSubCohorts } from './CohortFunctions';
+import {
+  getGenesForPathways,
+  getSamplesFromSelectedSubCohorts,
+  getSamplesFromSubCohort,
+  getSubCohortsForCohort
+} from './CohortFunctions';
 import { intersection} from './MathFunctions';
 
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
+import {UNASSIGNED_SUBTYPE} from "../components/SubCohortSelector";
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
@@ -36,17 +42,56 @@ export function getAllSamplesForCohorts(cohort){
 }
 
 
-export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpression){
+export function calculateSubCohortCounts(availableSamples, cohort) {
+  const subCohorts = getSubCohortsForCohort(cohort.name);
+  if(Object.keys(subCohorts).length > 0){
+    // console.log('values of sub cohorts',Object.values(subCohorts).flat());
+    const allSubCohortSamples = uniq(intersection(Object.values(subCohorts).flat(),availableSamples));
+    let returnObject = Object.entries(subCohorts).map( c => {
+      return {
+        name: c[0],
+        count: uniq(intersection(c[1],availableSamples)).length
+      };
+    });
+    returnObject[UNASSIGNED_SUBTYPE.key] = {
+      name: UNASSIGNED_SUBTYPE.key,
+      count: availableSamples.length - allSubCohortSamples.length
+    };
+    console.log('return object',returnObject)
+    return returnObject ;
+  }
+  else{
+    return availableSamples;
+  }
+}
+
+export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,cohort){
+  console.log('cohort',cohort);
+  // console.log('Mutation Samples',JSON.stringify(mutationSamples));
+  // console.log('CN samples',JSON.stringify(copyNumberSamples));
+  // console.log('GE samples',JSON.stringify(geneExpressionSamples));
+  const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
   let filterCounts = {};
-  filterCounts[FILTER_ENUM.MUTATION] =  mutationSamples.length;
-  filterCounts[FILTER_ENUM.COPY_NUMBER] =  copyNumberSamples.length;
-  filterCounts[FILTER_ENUM.CNV_MUTATION] =  uniq(intersection(copyNumberSamples,mutationSamples)).length;
-  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  geneExpression.length;
+
+  const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
+  // calculate mutations per subfilter
+  const subCohortCounts = calculateSubCohortCounts(mutationSamples,cohort);
+  console.log('sub cohort counts',subCohortCounts);
+  filterCounts[FILTER_ENUM.MUTATION] =  {
+    available: mutationSamples.length
+    ,current:mutationSubCohortSamples.length
+    ,subCohortCounts : subCohortCounts
+    ,unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length
+  };
+  filterCounts[FILTER_ENUM.COPY_NUMBER] =  { available: copyNumberSamples.length, current: calculateSelectedSubCohortSamples(copyNumberSamples,cohort).length};
+  filterCounts[FILTER_ENUM.CNV_MUTATION] =  { available: intersectedCnvMutation.length, current: calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort).length};
+  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  { available: geneExpressionSamples.length, current: calculateSelectedSubCohortSamples(geneExpressionSamples,cohort).length};
+  console.log('filter counts out ',filterCounts)
   return filterCounts;
 }
 
 
-export function calculateSubCohortSamples(availableSamples, cohort){
+export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   if(cohort.selectedSubCohorts.length > 0){
     return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
   }
@@ -90,18 +135,18 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
 
     // console.log('unfiltered samples',unfilteredSamples)
     // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5])];
+    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2],selectedCohorts[0]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5],selectedCohorts[1])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
     // merge based on filter
     const availableSamples = [
-      calculateSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
-      calculateSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
-      calculateSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
       // TODO: add gene expression 0
 
-      calculateSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
-      calculateSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
-      calculateSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
       // TODO: add gene expression 1
     ];
 
