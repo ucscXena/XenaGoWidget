@@ -31,7 +31,14 @@ export default class HoverGeneView extends PureComponent {
 
     };
 
-    getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
+    getScore = (data, cohortIndex,filter) => {
+      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+        return data.pathway.geneExpressionMean? data.pathway.geneExpressionMean : 0 ;
+      }
+      else{
+        return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
+      }
+    }
 
     render() {
       let {data, cohortIndex, filter} = this.props;
@@ -160,7 +167,7 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
                       <div>
-                        <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
+                        <span><strong>Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
                       </div>
 
                     </div>
