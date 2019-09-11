@@ -53,7 +53,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
         count: uniq(intersection(c[1],availableSamples)).length
       };
     });
-    returnObject[UNASSIGNED_SUBTYPE.key] = {
+    returnObject[Object.keys(subCohorts).length] = {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
