@@ -50,6 +50,7 @@ describe('Test Cohorts', () => {
     const selectedCohort = {
       name: 'TCGA Ovarian Cancer (OV)',
       selectedSubCohorts: ['OVCA.Immunoreactive','OVCA.Differentiated'],
+      subCohorts: [UNASSIGNED_SUBTYPE.key,'OVCA.Immunoreactive','OVCA.Differentiated'],
     };
     let samples = calculateSelectedSubCohortSamples(TEST_AVAILABLE_OVARIAN_SAMPLES,selectedCohort);
     expect(samples.length).toEqual(50);
@@ -59,6 +60,7 @@ describe('Test Cohorts', () => {
     const selectedCohort = {
       name: 'TCGA Ovarian Cancer (OV)',
       selectedSubCohorts: [UNASSIGNED_SUBTYPE.key],
+      subCohorts: [UNASSIGNED_SUBTYPE.key,'OVCA.Immunoreactive','OVCA.Differentiated'],
     };
     let samples = calculateSelectedSubCohortSamples(TEST_AVAILABLE_OVARIAN_SAMPLES,selectedCohort);
     expect(samples.length).toEqual(49);

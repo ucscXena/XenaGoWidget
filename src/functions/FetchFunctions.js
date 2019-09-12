@@ -106,8 +106,8 @@ export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpress
 
 
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
-  // if only UNASSIGNED, we should return all
-  if(cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
+  // if UNASSIGNED is the only available sub cohort, then there are none really
+  if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
     return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
   }
   else{
