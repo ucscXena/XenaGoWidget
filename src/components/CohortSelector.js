@@ -105,6 +105,8 @@ export class CohortSelector extends PureComponent {
       let {filterCounts,filter} = this.props ;
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
+      console.log('sub cohorts filter counts json',JSON.stringify(filterCounts),JSON.stringify(subCohortsForSelected))
+      console.log('sub cohorts filter counts',filterCounts,subCohortsForSelected)
       // subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();

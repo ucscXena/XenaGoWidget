@@ -63,7 +63,12 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
     return returnObject ;
   }
   else{
-    return availableSamples;
+    return [
+      {
+        name: UNASSIGNED_SUBTYPE.key,
+        count: availableSamples.length,
+      }
+    ];
   }
 }
 
