@@ -126,11 +126,5 @@ describe('Test Cohorts', () => {
     expect(calculateSelectedSubCohortSamples(TEST_MESOTHELIOMA_SAMPLES,cohort)).toEqual(TEST_MESOTHELIOMA_SAMPLES);
   });
 
-  // it('Get Sub Cohorts with counts', () => {
-  //   const subCohortWithCount = getSubCohortsWithCountsForCohort('TCGA Ovarian Cancer (OV)');
-  //   expect(subCohortWithCount).toEqual('');
-  //
-  // });
-  //
 });
 

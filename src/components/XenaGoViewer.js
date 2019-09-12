@@ -98,7 +98,6 @@ export default class XenaGoViewer extends PureComponent {
       }
 
       let layoutData = layout(calculatedWidth, geneDataStats.data);
-      // console.log('gene data stats',geneDataStats,geneDataStats.filterCounts)
       if (pathwayData) {
         return (
           <table>

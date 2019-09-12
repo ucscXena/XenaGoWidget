@@ -51,8 +51,5 @@ describe('Fetch Functions', () => {
     }).subscribe( () => done(),e => done(logError(e)));
   });
 
-  it('Create Filter Counts', () => {
-
-  });
 });
 

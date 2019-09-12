@@ -39,7 +39,6 @@ export class FilterSelector extends PureComponent {
         return <div>Loading...</div>;
       }
       let labels = Object.keys(filterCounts).sort(lowerCaseCompare);
-      // const labelValues = labels.map(label => ({label: label + ' (' + filterCounts[label].current + '/' + filterCounts[label].available+ ')', value: label}));
       const labelValues = labels.map(label => {
         if(filterCounts[label].current!==filterCounts[label].available){
           return ({label: label + ' (' + filterCounts[label].current + '/' + filterCounts[label].available+ ')', value: label});
