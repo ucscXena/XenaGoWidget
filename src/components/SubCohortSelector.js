@@ -15,7 +15,6 @@ export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
     super(props);
-    // console.log(Object.keys(props.subCohortsForSelected),props.selectedSubCohorts);
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
@@ -38,8 +37,6 @@ export class SubCohortSelector extends PureComponent {
     const newSelected = [field];
     // this is going to be almost always false
     let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
-    // console.log('new selected',newSelected,allSelected);
-
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -49,7 +46,6 @@ export class SubCohortSelector extends PureComponent {
   handleChange = (event) => {
     const field = event.target.name;
     const newValue = event.target.checked ;
-    console.log('new value',field,newValue)
     let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
     if(newValue){
       newSelected.push(field);
@@ -59,7 +55,6 @@ export class SubCohortSelector extends PureComponent {
       newSelected.splice(indexValue,1);
     }
     let allSelected = isEqual(Object.keys(this.props.subCohortsForSelected).sort(),newSelected.sort()) ;
-    console.log('selected vs new',this.state.selectedSubCohorts,newSelected)
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -67,7 +62,6 @@ export class SubCohortSelector extends PureComponent {
   };
 
   selectAll(){
-    // console.log('sub cohorts for selected all',this.props.subCohortsForSelected);
     this.setState({
       selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
       allSelected:true,
@@ -87,9 +81,8 @@ export class SubCohortSelector extends PureComponent {
 
   render() {
 
-    let {active, subCohortsForSelected,selectedCohort,filterCounts} = this.props;
+    let {active,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
-    console.log('sub cohorts for selected',selectedSubCohorts,subCohortsForSelected,filterCounts);
 
     return (
       <Dialog
@@ -110,7 +103,6 @@ export class SubCohortSelector extends PureComponent {
                 <Grid style={{marginTop: 20,width:900}}>
                   {
                     filterCounts.subCohortCounts.sort( (a,b) => a.name.localeCompare(b.name)).map( cs =>{
-                      console.log('cs',cs)
                       return (
                         <Row key={cs.name}>
                           <Col md={12}>
