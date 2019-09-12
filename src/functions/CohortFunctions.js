@@ -23,8 +23,9 @@ function lowerCaseCompareName(a, b) {
 }
 
 export function getSubCohortsForCohort(cohort) {
-  // TODO: somehow this needs to be a const
-  return JSON.parse(JSON.stringify(SUB_COHORT_LIST))[cohort];
+  return {
+    ...SUB_COHORT_LIST[cohort]
+  };
 }
 
 export function getSubCohortsOnlyForCohort(cohort) {
