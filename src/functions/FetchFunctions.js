@@ -1,7 +1,6 @@
 import {
   getGenesForPathways,
   getSamplesFromSelectedSubCohorts,
-  getSamplesFromSubCohort,
   getSubCohortsForCohort
 } from './CohortFunctions';
 import { intersection} from './MathFunctions';
@@ -10,7 +9,7 @@ const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
-import {UNASSIGNED_SUBTYPE} from "../components/SubCohortSelector";
+import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
@@ -54,12 +53,12 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       };
     });
     // if it contains a final object, then great . . .
-    console.log('intermediats',JSON.stringify(returnObject))
+    console.log('intermediats',JSON.stringify(returnObject));
     returnObject[Object.keys(subCohorts).length] = {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
-    console.log('return object',JSON.stringify(returnObject))
+    console.log('return object',JSON.stringify(returnObject));
     return returnObject ;
   }
   else{
@@ -108,7 +107,7 @@ export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpress
     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
   };
-  console.log('filter counts out ',filterCounts)
+  console.log('filter counts out ',filterCounts);
   return filterCounts;
 }
 
