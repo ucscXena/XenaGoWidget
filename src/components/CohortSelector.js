@@ -12,6 +12,7 @@ import {
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
+import {FILTER_ENUM} from "./FilterSelector";
 const TooltipButton = Tooltip(Button);
 
 
@@ -98,15 +99,20 @@ export class CohortSelector extends PureComponent {
       this.setState({showSubCohortSelector: true});
     };
 
+    hasSubCohorts(){
+      let {filterCounts} = this.props ;
+      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts.length > 1;
+    }
+
     render() {
 
       let {filterCounts,filter} = this.props ;
-      let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
+      // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
       return (
         <div>
-          {subCohortsForSelected &&
+          {this.hasSubCohorts() &&
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
@@ -115,7 +121,6 @@ export class CohortSelector extends PureComponent {
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.state.selectedCohort}
             selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
-            subCohortsForSelected={subCohortsForSelected}
           />
           }
           <div style={{
@@ -143,7 +148,7 @@ export class CohortSelector extends PureComponent {
               })
             }
           </select>
-          {subCohortsForSelected && Object.keys(subCohortsForSelected).length>0 &&
+          {this.hasSubCohorts() &&
                    <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>
