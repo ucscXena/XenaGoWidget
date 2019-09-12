@@ -1,10 +1,15 @@
-import { getGenesForPathways, getSamplesFromSelectedSubCohorts } from './CohortFunctions';
+import {
+  getGenesForPathways,
+  getSamplesFromSelectedSubCohorts,
+  getSubCohortsForCohort
+} from './CohortFunctions';
 import { intersection} from './MathFunctions';
 
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
+import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 
 const { datasetSamples, datasetFetch, sparseData } = xenaQuery;
 
@@ -36,18 +41,73 @@ export function getAllSamplesForCohorts(cohort){
 }
 
 
-export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpression){
+export function calculateSubCohortCounts(availableSamples, cohort) {
+  const subCohorts = getSubCohortsForCohort(cohort.name);
+  if(subCohorts && Object.keys(subCohorts).length > 0){
+    const allSubCohortSamples = uniq(intersection(Object.values(subCohorts).flat(),availableSamples));
+    let returnObject = Object.entries(subCohorts).map( c => {
+      return {
+        name: c[0],
+        count: uniq(intersection(c[1],availableSamples)).length
+      };
+    });
+    // if it contains a final object, then great . . .
+    returnObject[Object.keys(subCohorts).length] = {
+      name: UNASSIGNED_SUBTYPE.key,
+      count: availableSamples.length - allSubCohortSamples.length
+    };
+    // console.log('return object',JSON.stringify(returnObject));
+    return returnObject ;
+  }
+  else{
+    return [
+      {
+        name: UNASSIGNED_SUBTYPE.key,
+        count: availableSamples.length,
+      }
+    ];
+  }
+}
+
+export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,cohort){
+  const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
+  const intersectedCnvMutationSubCohortSamples = calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort);
+  const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
+  const copyNumberSubCohortSamples = calculateSelectedSubCohortSamples(copyNumberSamples,cohort);
+  const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
   let filterCounts = {};
-  filterCounts[FILTER_ENUM.MUTATION] =  mutationSamples.length;
-  filterCounts[FILTER_ENUM.COPY_NUMBER] =  copyNumberSamples.length;
-  filterCounts[FILTER_ENUM.CNV_MUTATION] =  uniq(intersection(copyNumberSamples,mutationSamples)).length;
-  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  geneExpression.length;
+  // calculate mutations per subfilter
+  filterCounts[FILTER_ENUM.MUTATION] =  {
+    available: mutationSamples.length,
+    current:mutationSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
+    unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[FILTER_ENUM.COPY_NUMBER] =  {
+    available: copyNumberSamples.length,
+    current: copyNumberSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
+    unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[FILTER_ENUM.CNV_MUTATION] =  {
+    available: intersectedCnvMutation.length,
+    current: intersectedCnvMutationSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
+    unassigned: copyNumberSamples.filter( s => intersectedCnvMutationSubCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  {
+    available: geneExpressionSamples.length,
+    current: geneExpressionSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
+    unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
+  };
   return filterCounts;
 }
 
 
-export function calculateSubCohortSamples(availableSamples, cohort){
-  if(cohort.selectedSubCohorts.length > 0){
+export function calculateSelectedSubCohortSamples(availableSamples, cohort){
+  // if UNASSIGNED is the only available sub cohort, then there are none really
+  if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
     return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
   }
   else{
@@ -90,18 +150,18 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
 
     // console.log('unfiltered samples',unfilteredSamples)
     // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5])];
+    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2],selectedCohorts[0]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5],selectedCohorts[1])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
     // merge based on filter
     const availableSamples = [
-      calculateSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
-      calculateSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
-      calculateSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
       // TODO: add gene expression 0
 
-      calculateSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
-      calculateSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
-      calculateSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
       // TODO: add gene expression 1
     ];
 

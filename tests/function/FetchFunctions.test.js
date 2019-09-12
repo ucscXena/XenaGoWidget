@@ -50,5 +50,6 @@ describe('Fetch Functions', () => {
       expect(a.length).toEqual(576);
     }).subscribe( () => done(),e => done(logError(e)));
   });
+
 });
 

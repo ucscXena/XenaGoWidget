@@ -5,7 +5,7 @@ import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
-import {FilterSelector} from './FilterSelector';
+import {FILTER_ENUM, FilterSelector} from './FilterSelector';
 
 import {Card,Button} from 'react-toolbox';
 
@@ -59,6 +59,24 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
     };
 
+    hasDataForFilter(geneData,filter){
+      if(!geneData) return false;
+      switch (filter) {
+      case FILTER_ENUM.GENE_EXPRESSION:
+        return geneData.geneExpression!==undefined;
+      case FILTER_ENUM.COPY_NUMBER:
+        return geneData.copyNumber!==undefined;
+      case FILTER_ENUM.MUTATION:
+        return geneData.expression && geneData.expression.rows && geneData.expression.rows.length>0;
+      case FILTER_ENUM.CNV_MUTATION:
+        return this.hasDataForFilter(geneData,FILTER_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,FILTER_ENUM.MUTATION);
+      default:
+        // eslint-disable-next-line no-console
+        console.error('Error for gene data and filter',geneData,filter);
+        return false;
+      }
+    }
+
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
@@ -84,7 +102,7 @@ export default class XenaGoViewer extends PureComponent {
         return (
           <table>
             <tbody>
-              {geneDataStats && geneDataStats.expression.rows && geneDataStats.expression.rows.length > 0 &&
+              {this.hasDataForFilter(geneDataStats,filter) &&
                     <tr>
                       <td
                         style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
@@ -93,6 +111,8 @@ export default class XenaGoViewer extends PureComponent {
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortLabel={cohortLabel}
+                            filter={filter}
+                            filterCounts={geneDataStats.filterCounts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}

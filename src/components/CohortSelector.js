@@ -5,10 +5,14 @@ import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
-import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {
+  fetchCohortData, getSubCohortsForCohort,
+  getSubCohortsOnlyForCohort,
+} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
+import {FILTER_ENUM} from './FilterSelector';
 const TooltipButton = Tooltip(Button);
 
 
@@ -58,12 +62,12 @@ export class CohortSelector extends PureComponent {
     }
 
     generateSubCohortLabels(){
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: subCohortsForSelected;
+      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
 
-      const availableSubtypes = Object.keys(subCohortsForSelected).length;
+      const availableSubtypes = Object.keys(subCohortsForSelected).length+1;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
         return `All ${availableSubtypes} Subtypes`;
@@ -95,22 +99,30 @@ export class CohortSelector extends PureComponent {
       this.setState({showSubCohortSelector: true});
     };
 
+    hasSubCohorts(){
+      let {filterCounts} = this.props ;
+      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts.length > 1;
+    }
+
     render() {
 
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let {filterCounts,filter} = this.props ;
+      // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
       return (
         <div>
+          {this.hasSubCohorts() &&
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortLabel={subCohortLabel}
+            filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.state.selectedCohort}
             selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
-            subCohortsForSelected={subCohortsForSelected}
           />
+          }
           <div style={{
             marginTop: 10,
             marginLeft: 10,
@@ -136,7 +148,7 @@ export class CohortSelector extends PureComponent {
               })
             }
           </select>
-          {subCohortsForSelected.length>0 &&
+          {this.hasSubCohorts() &&
                    <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>
@@ -149,6 +161,8 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
   cohortLabel: PropTypes.string.isRequired,
+  filter: PropTypes.string.isRequired,
+  filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,

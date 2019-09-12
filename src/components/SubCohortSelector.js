@@ -18,7 +18,7 @@ export class SubCohortSelector extends PureComponent {
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
-      allSelected:isEqual(props.selectedSubCohorts.sort(),props.subCohortsForSelected.sort())
+      allSelected:isEqual(props.selectedSubCohorts.sort(),props.filterCounts.subCohortCounts.map( f => f.name).sort())
     };
   }
 
@@ -28,15 +28,16 @@ export class SubCohortSelector extends PureComponent {
       this.setState({
         selectedSubCohorts:this.props.selectedSubCohorts,
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
-        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.filterCounts.subCohortCounts.map( f => f.name).sort())
       });
     }
   }
 
+
   handleSelectOnly = (field) => {
     const newSelected = [field];
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -54,7 +55,7 @@ export class SubCohortSelector extends PureComponent {
       let indexValue = newSelected.indexOf(field);
       newSelected.splice(indexValue,1);
     }
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -63,7 +64,7 @@ export class SubCohortSelector extends PureComponent {
 
   selectAll(){
     this.setState({
-      selectedSubCohorts:this.props.subCohortsForSelected,
+      selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
       allSelected:true,
     });
   }
@@ -81,7 +82,7 @@ export class SubCohortSelector extends PureComponent {
 
   render() {
 
-    let {active, subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+    let {active,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
 
     return (
@@ -95,28 +96,30 @@ export class SubCohortSelector extends PureComponent {
           <tbody>
             <tr>
               <td>
-                  ({cohortLabel}) Select Sub Cohorts for {selectedCohort.name}
+                Select Sub Cohorts for <br/>{selectedCohort.name}
               </td>
             </tr>
             <tr>
               <td>
                 <Grid style={{marginTop: 20,width:900}}>
                   {
-                    subCohortsForSelected.sort().map( cs =>{
+                    filterCounts.subCohortCounts.sort( (a,b) => a.name.localeCompare(b.name)).map( cs =>{
                       return (
-                        <Row key={cs}>
+                        <Row key={cs.name}>
                           <Col md={12}>
                             <input
-                              checked={selectedSubCohorts.indexOf(cs)>=0}
-                              disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
-                              name={cs}
+                              checked={cs.count === 0 || selectedSubCohorts.indexOf(cs.name)>=0}
+                              disabled={cs.count === 0 || selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs.name)>=0} key={cs.name}
+                              name={cs.name}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
                             />
-                            <div  style={{display: 'inline'}}>{cs}</div>
+                            <div  style={{display: 'inline'}}>
+                              {`${cs.name} (${cs.count})`}
+                            </div>
                             <Link
-                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }}
+                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name); }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                           </Col>
@@ -132,7 +135,7 @@ export class SubCohortSelector extends PureComponent {
                 {!allSelected &&
                 <Link
                   href='#'
-                  label={'(Select All)'}
+                  label={`(Select All ${filterCounts.available})`}
                   onClick={() => this.selectAll()}
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />
@@ -140,8 +143,7 @@ export class SubCohortSelector extends PureComponent {
                 {allSelected &&
                 <Link
                   disabled
-                  label={'(Select All)'}
-                  primary raised
+                  label={`All ${filterCounts.available} Selected`}
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />
                 }
@@ -169,9 +171,9 @@ export class SubCohortSelector extends PureComponent {
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
+  filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
-  subCohortsForSelected: PropTypes.any,
 };
