@@ -53,12 +53,12 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       };
     });
     // if it contains a final object, then great . . .
-    console.log('intermediats',JSON.stringify(returnObject));
+    // console.log('intermediats',JSON.stringify(returnObject));
     returnObject[Object.keys(subCohorts).length] = {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
-    console.log('return object',JSON.stringify(returnObject));
+    // console.log('return object',JSON.stringify(returnObject));
     return returnObject ;
   }
   else{

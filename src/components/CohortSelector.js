@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
-import {SubCohortSelector, UNASSIGNED_SUBTYPE} from './SubCohortSelector';
+import {SubCohortSelector} from './SubCohortSelector';
 import {
   fetchCohortData, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
@@ -105,8 +105,8 @@ export class CohortSelector extends PureComponent {
       let {filterCounts,filter} = this.props ;
       // let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
       let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
-      console.log('sub cohorts filter counts json',JSON.stringify(filterCounts),JSON.stringify(subCohortsForSelected))
-      console.log('sub cohorts filter counts',filterCounts,subCohortsForSelected)
+      // console.log('sub cohorts filter counts json',JSON.stringify(filterCounts),JSON.stringify(subCohortsForSelected))
+      // console.log('sub cohorts filter counts',filterCounts,subCohortsForSelected)
       // subCohortsForSelected[UNASSIGNED_SUBTYPE.key] = [];
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
