@@ -196,21 +196,36 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const r = sampleRegions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
       //
-      let color = regionColor(d, colorFilter);
-      color = color > 255 ? 255 : color;
-
       const pxRow = el.start * 4 * img.width; // first column and row in the block
+      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+        const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        for (let xPos = 0; xPos < r.width; ++xPos) {
+          const buffStart = pxRow + (xPos + r.x) * 4;
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            img.data[l] = colorArray[0];
+            img.data[l + 1] = colorArray[1];
+            img.data[l + 2] = colorArray[2];
+            img.data[l + 3] = 255 ;
+          }
+        }
+      }
+      else{
+        let color = regionColor(d, colorFilter);
+        color = color > 255 ? 255 : color;
 
-      // start buffer at the correct column
-      for (let xPos = 0; xPos < r.width; ++xPos) {
-        const buffStart = pxRow + (xPos + r.x) * 4;
-        const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+        // start buffer at the correct column
+        for (let xPos = 0; xPos < r.width; ++xPos) {
+          const buffStart = pxRow + (xPos + r.x) * 4;
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
 
-        for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-          img.data[l] = colorMask[0];
-          img.data[l + 1] = colorMask[1];
-          img.data[l + 2] = colorMask[2];
-          img.data[l + 3] = color;
+          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+            img.data[l] = colorMask[0];
+            img.data[l + 1] = colorMask[1];
+            img.data[l + 2] = colorMask[2];
+            img.data[l + 3] = color;
+          }
         }
       }
     }
