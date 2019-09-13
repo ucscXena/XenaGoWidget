@@ -15,6 +15,7 @@ import {
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
+import {GeneExpressionLegend} from "./GeneExpressionLegend";
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
@@ -148,6 +149,7 @@ export default class XenaGoViewer extends PureComponent {
                             </Card>
                         }
                         { filter !== FILTER_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
+                        { filter === FILTER_ENUM.GENE_EXPRESSION && <GeneExpressionLegend/>}
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView
