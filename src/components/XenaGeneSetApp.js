@@ -475,6 +475,14 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
     };
 
+    swapCohorts(cohort){
+      alert('swap cohort'+JSON.stringify(cohort));
+    }
+
+    copyCohorts(cohort){
+      alert('copy cohort'+JSON.stringify(cohort));
+    }
+
     render() {
       let activeApp = this.getActiveApp();
       let pathways = activeApp.pathways;
@@ -667,6 +675,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // view
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}
+                                    copyCohorts={this.copyCohorts}
 
                                     // data
                                     filter={this.state.filter[0]}
@@ -694,6 +703,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     selectedCohort={this.state.selectedCohort[0]}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showDiffLayer={this.state.showDiffLayer}
+                                    swapCohorts={this.swapCohorts}
                                   />
                                   <XenaGoViewer
                                     // reference
@@ -703,6 +713,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     // view
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}
+                                    copyCohorts={this.copyCohorts}
 
                                     // data
                                     filter={this.state.filter[1]}
@@ -730,6 +741,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     selectedCohort={this.state.selectedCohort[1]}
                                     showDetailLayer={this.state.showDetailLayer}
                                     showDiffLayer={this.state.showDiffLayer}
+                                    swapCohorts={this.swapCohorts}
                                   />
                                 </td>
                   }

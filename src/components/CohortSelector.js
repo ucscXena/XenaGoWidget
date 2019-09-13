@@ -13,6 +13,7 @@ import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
 import {FILTER_ENUM} from './FilterSelector';
+import {ButtonGroup} from 'react-bootstrap';
 const TooltipButton = Tooltip(Button);
 
 
@@ -106,7 +107,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let {filterCounts,filter} = this.props ;
+      let {filterCounts,filter, selectedCohort, swapCohorts,copyCohorts} = this.props ;
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
@@ -127,11 +128,18 @@ export class CohortSelector extends PureComponent {
             marginTop: 10,
             marginLeft: 10,
             marginBottom: 3,
-            fontSize: 'large',
+            // fontSize: 'large',
             color: 'gray',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            display: 'inline',
           }}
-          >Cohort {this.props.cohortLabel}</div>
+          >Cohort {this.props.cohortLabel}
+          &nbsp; &nbsp;
+          </div>
+          <ButtonGroup style={{display: 'inline'}}>
+            <Button flat floating icon='swap_vert' mini onClick={() => swapCohorts(selectedCohort)}/>
+            <Button flat floating icon='file_copy' mini onClick={() => copyCohorts(selectedCohort)}/>
+          </ButtonGroup>
           <select
             className={BaseStyle.softflow}
             onChange={this.handleChange}
@@ -161,10 +169,12 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
   cohortLabel: PropTypes.string.isRequired,
+  copyCohorts: PropTypes.string.isRequired,
   filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
+  swapCohorts: PropTypes.any.isRequired,
 };

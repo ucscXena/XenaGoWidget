@@ -83,7 +83,7 @@ export default class XenaGoViewer extends PureComponent {
       let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData,
+        pathwayData, swapCohorts, copyCohorts
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -111,11 +111,13 @@ export default class XenaGoViewer extends PureComponent {
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortLabel={cohortLabel}
+                            copyCohorts={copyCohorts}
                             filter={filter}
                             filterCounts={geneDataStats.filterCounts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}
+                            swapCohorts={swapCohorts}
                           />
                           <FilterSelector
                             geneList={geneList}
@@ -145,7 +147,7 @@ export default class XenaGoViewer extends PureComponent {
                               }
                             </Card>
                         }
-                        <DetailedLegend/>
+                        { filter !== FILTER_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView
@@ -205,4 +207,6 @@ XenaGoViewer.propTypes = {
   showDetailLayer: PropTypes.any,
 
   showDiffLayer: PropTypes.any,
+  swapCohorts: PropTypes.any.isRequired,
+  copyCohorts: PropTypes.any.isRequired,
 };
