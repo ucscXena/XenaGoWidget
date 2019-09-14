@@ -45,7 +45,7 @@ export class SubCohortSelector extends PureComponent {
   };
 
   handleCompareVersus = (field) => {
-    alert('compare vs '+field)
+    alert('compare vs '+field);
     // const newSelected = [field];
     // // this is going to be almost always false
     // let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
