@@ -475,13 +475,59 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
     };
 
-    swapCohorts(cohort){
-      alert('swap cohort'+JSON.stringify(cohort));
-    }
+    swapCohorts = () => {
+      // TODO: swap cohorts, sub cohorts, filters,
+      const newCohortState = [
+        this.state.selectedCohort[1]  ,
+        this.state.selectedCohort[0],
+      ];
+      AppStorageHandler.storeCohortStateArray(newCohortState);
+      const filterState = [
+        this.state.filter[1]  ,
+        this.state.filter[0]  ,
+      ];
+      AppStorageHandler.storeFilterStateArray(filterState);
+      this.setState( {
+        selectedCohort: newCohortState,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
+        filter: filterState,
+      });
+    };
 
-    copyCohorts(cohort){
-      alert('copy cohort'+JSON.stringify(cohort));
-    }
+    copyCohorts = (cohortSourceIndex) => {
+      // TODO: swap cohorts, sub cohorts, filters,
+      const newCohortState = [
+        this.state.selectedCohort[cohortSourceIndex]  ,
+        this.state.selectedCohort[cohortSourceIndex],
+      ];
+      AppStorageHandler.storeCohortStateArray(newCohortState);
+      const filterState = [
+        this.state.filter[cohortSourceIndex]  ,
+        this.state.filter[cohortSourceIndex]  ,
+      ];
+      AppStorageHandler.storeFilterStateArray(filterState);
+      this.setState( {selectedCohort: newCohortState,
+        filter:filterState,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING
+      });
+
+      // let cohortDetails = getCohortDetails({name: selectedCohort});
+      // const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
+      // if(subCohorts){
+      //   cohortDetails.subCohorts= subCohorts;
+      //   cohortDetails.selectedSubCohorts = subCohorts;
+      // }
+      //
+      // const newCohortState = [
+      //   cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
+      //   cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
+      // ];
+      // AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
+      //
+      // this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
+    };
 
     render() {
       let activeApp = this.getActiveApp();

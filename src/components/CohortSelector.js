@@ -107,7 +107,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let {filterCounts,filter, selectedCohort, swapCohorts,copyCohorts} = this.props ;
+      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex} = this.props ;
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
@@ -137,8 +137,8 @@ export class CohortSelector extends PureComponent {
           &nbsp; &nbsp;
           </div>
           <ButtonGroup style={{display: 'inline'}}>
-            <Button flat floating icon='swap_vert' mini onClick={() => swapCohorts(selectedCohort)}/>
-            <Button flat floating icon='file_copy' mini onClick={() => copyCohorts(selectedCohort)}/>
+            <Button flat floating icon='swap_vert' mini onClick={() => swapCohorts()}/>
+            <Button flat floating icon='file_copy' mini onClick={() => copyCohorts(cohortIndex)}/>
           </ButtonGroup>
           <select
             className={BaseStyle.softflow}
@@ -168,8 +168,9 @@ export class CohortSelector extends PureComponent {
 }
 
 CohortSelector.propTypes = {
+  cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.string.isRequired,
-  copyCohorts: PropTypes.string.isRequired,
+  copyCohorts: PropTypes.any.isRequired,
   filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,

@@ -4,6 +4,7 @@ import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
 import {FILTER_ENUM} from '../components/FilterSelector';
+import {exception} from 'react-ga';
 
 
 // synchronizing gene sorts between pathways
@@ -133,6 +134,13 @@ export class AppStorageHandler extends PureComponent {
     AppStorageHandler.storeAppState(appState);
   }
 
+  static storeFilterStateArray(array){
+    if(array.length!==2) {
+      throw new exception('Must be an array of size two');
+    }
+    this.storeFilterState(array[0],0);
+    this.storeFilterState(array[1],1);
+  }
 
   static getFilterState(cohortIndex) {
     const appState = AppStorageHandler.getAppState();
@@ -157,6 +165,14 @@ export class AppStorageHandler extends PureComponent {
     const appState = AppStorageHandler.getAppState();
     appState.sortState = sortState;
     AppStorageHandler.storeAppState(appState);
+  }
+
+  static storeCohortStateArray(array){
+    if(array.length!==2) {
+      throw new exception('Must be an array of size two');
+    }
+    this.storeCohortState(array[0],0);
+    this.storeCohortState(array[1],1);
   }
 
   static storeCohortState(selected, cohortIndex) {
