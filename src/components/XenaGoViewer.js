@@ -15,7 +15,7 @@ import {
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
-import {GeneExpressionLegend} from "./GeneExpressionLegend";
+import {GeneExpressionLegend} from './GeneExpressionLegend';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
