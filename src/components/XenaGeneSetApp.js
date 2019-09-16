@@ -68,6 +68,8 @@ const generateUrl = (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1
   }
   return generatedUrl;
 };
+
+const generatedUrlFunction = memoize(generateUrl, (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => JSON.stringify([filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2]));
 /**
  * refactor that from index
  */
@@ -175,18 +177,18 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   componentDidUpdate() {
-    location.hash =
-      memoize(
-        generateUrl(
-          this.state.filter[0],
-          this.state.filter[1],
-          this.state.pathwaySelection.pathway.golabel,
-          this.state.selectedCohort[0].name,
-          this.state.selectedCohort[1].name,
-          this.state.selectedCohort[0].selectedSubCohorts,
-          this.state.selectedCohort[1].selectedSubCohorts,
-        )
-      );
+    const generatedUrl = generatedUrlFunction(
+      this.state.filter[0],
+      this.state.filter[1],
+      this.state.pathwaySelection.pathway.golabel,
+      this.state.selectedCohort[0].name,
+      this.state.selectedCohort[1].name,
+      this.state.selectedCohort[0].selectedSubCohorts,
+      this.state.selectedCohort[1].selectedSubCohorts,
+    );
+    if(location.hash !== generatedUrl){
+      location.hash = generatedUrl ;
+    }
   }
 
 
