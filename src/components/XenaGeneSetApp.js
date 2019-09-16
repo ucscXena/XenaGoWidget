@@ -475,25 +475,58 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
     };
 
-    swapCohorts = () => {
-      // TODO: swap cohorts, sub cohorts, filters,
-      const newCohortState = [
-        this.state.selectedCohort[1]  ,
-        this.state.selectedCohort[0],
-      ];
-      AppStorageHandler.storeCohortStateArray(newCohortState);
-      const filterState = [
-        this.state.filter[1]  ,
-        this.state.filter[0]  ,
-      ];
-      AppStorageHandler.storeFilterStateArray(filterState);
-      this.setState( {
-        selectedCohort: newCohortState,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-        filter: filterState,
-      });
-    };
+
+  handleVersusAll = (selectedSubCohort,cohortSourceIndex) => {
+    console.log('input seldcted cohort',selectedSubCohort,cohortSourceIndex);
+    console.log(this.state.selectedCohort)
+
+    // select ONLY
+    const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex],{
+      selectedSubCohorts: { $set: [selectedSubCohort] }
+    });
+
+    // select ALL
+    const targetCohort = update(this.state.selectedCohort[cohortSourceIndex],{
+      selectedSubCohorts: { $set: this.state.selectedCohort[cohortSourceIndex].subCohorts}
+    });
+
+
+    const newCohortState = [
+      cohortSourceIndex === 0 ? sourceCohort : targetCohort ,
+      cohortSourceIndex === 0 ? targetCohort : sourceCohort,
+    ];
+    AppStorageHandler.storeCohortStateArray(newCohortState);
+    const filterState = [
+      this.state.filter[cohortSourceIndex]  ,
+      this.state.filter[cohortSourceIndex]  ,
+    ];
+    AppStorageHandler.storeFilterStateArray(filterState);
+    this.setState( {selectedCohort: newCohortState,
+      filter:filterState,
+      fetch: true,
+      currentLoadState: LOAD_STATE.LOADING
+    });
+  };
+
+  swapCohorts = () => {
+    // TODO: swap cohorts, sub cohorts, filters,
+    const newCohortState = [
+      this.state.selectedCohort[1]  ,
+      this.state.selectedCohort[0],
+    ];
+    AppStorageHandler.storeCohortStateArray(newCohortState);
+    const filterState = [
+      this.state.filter[1]  ,
+      this.state.filter[0]  ,
+    ];
+    AppStorageHandler.storeFilterStateArray(filterState);
+    this.setState( {
+      selectedCohort: newCohortState,
+      fetch: true,
+      currentLoadState: LOAD_STATE.LOADING,
+      filter: filterState,
+    });
+  };
 
     copyCohorts = (cohortSourceIndex) => {
       // TODO: swap cohorts, sub cohorts, filters,
@@ -512,21 +545,6 @@ export default class XenaGeneSetApp extends PureComponent {
         fetch: true,
         currentLoadState: LOAD_STATE.LOADING
       });
-
-      // let cohortDetails = getCohortDetails({name: selectedCohort});
-      // const subCohorts = getSubCohortsOnlyForCohort(selectedCohort);
-      // if(subCohorts){
-      //   cohortDetails.subCohorts= subCohorts;
-      //   cohortDetails.selectedSubCohorts = subCohorts;
-      // }
-      //
-      // const newCohortState = [
-      //   cohortIndex === 0 ?  cohortDetails : this.state.selectedCohort[0]   ,
-      //   cohortIndex === 1 ?  cohortDetails  : this.state.selectedCohort[1]   ,
-      // ];
-      // AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
-      //
-      // this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
     };
 
     render() {
@@ -729,6 +747,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
 
                                     // maybe state?
+                                    handleVersusAll={this.handleVersusAll}
                                     highlightedGene={this.state.highlightedGene}
                                     onChangeCohort={this.handleChangeCohort}
                                     onChangeFilter={this.handleChangeFilter}
@@ -767,6 +786,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
 
                                     // maybe state?
+                                    handleVersusAll={this.handleVersusAll}
                                     highlightedGene={this.state.highlightedGene}
                                     onChangeCohort={this.handleChangeCohort}
                                     onChangeFilter={this.handleChangeFilter}

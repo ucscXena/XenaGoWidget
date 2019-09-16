@@ -84,7 +84,7 @@ export default class XenaGoViewer extends PureComponent {
       let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData, swapCohorts, copyCohorts
+        pathwayData, swapCohorts, copyCohorts, handleVersusAll,
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -116,6 +116,7 @@ export default class XenaGoViewer extends PureComponent {
                             copyCohorts={copyCohorts}
                             filter={filter}
                             filterCounts={geneDataStats.filterCounts}
+                            handleVersusAll={handleVersusAll}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             selectedCohort={selectedCohort}

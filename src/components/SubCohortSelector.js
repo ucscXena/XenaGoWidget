@@ -45,14 +45,8 @@ export class SubCohortSelector extends PureComponent {
   };
 
   handleCompareVersus = (field) => {
-    alert('compare versus '+field);
-    // const newSelected = [field];
-    // // this is going to be almost always false
-    // let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
-    // this.setState({
-    //   selectedSubCohorts:newSelected,
-    //   allSelected,
-    // });
+    this.props.onSelectVsAll(field,this.props.cohortIndex);
+    this.props.onToggle();
   };
 
   handleChange = (event) => {
@@ -134,7 +128,7 @@ export class SubCohortSelector extends PureComponent {
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                             <Link
-                              href='#' label={'(Compare Vs)'} onClick={() => { this.handleCompareVersus(cs.name); }}
+                              href='#' label={'(Vs All)'} onClick={() => { this.handleCompareVersus(cs.name); }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                           </Col>
@@ -185,9 +179,11 @@ export class SubCohortSelector extends PureComponent {
 
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
+  cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
   filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
+  onSelectVsAll: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,

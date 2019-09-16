@@ -30,16 +30,6 @@ export class CohortSelector extends PureComponent {
   }
 
     handleChange = (event) => {
-      // populate selected sub cohorts for the cohorts
-      // let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
-      // this.setState( {
-      //   selectedCohort: {
-      //     name: event.target.value,
-      //     subCohorts : subCohortsForSelected,
-      //     selectedSubCohorts:subCohortsForSelected,
-      //   },
-      // }
-      // );
       this.props.onChange(event.target.value);
     };
 
@@ -86,13 +76,6 @@ export class CohortSelector extends PureComponent {
       let selectionObject = update(this.state.selectedCohort,{
         selectedSubCohorts: { $set: newSelected },
       });
-
-      // this.setState(
-      //   {
-      //     selectedCohort: selectionObject,
-      //   }
-      // );
-
       this.props.onChangeSubCohort(selectionObject);
     };
 
@@ -107,7 +90,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex} = this.props ;
+      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex,handleVersusAll} = this.props ;
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
@@ -116,9 +99,11 @@ export class CohortSelector extends PureComponent {
           {this.hasSubCohorts() &&
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
+            cohortIndex={cohortIndex}
             cohortLabel={subCohortLabel}
             filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
+            onSelectVsAll={handleVersusAll}
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.props.selectedCohort}
             selectedSubCohorts={this.props.selectedCohort.selectedSubCohorts}
@@ -173,6 +158,7 @@ CohortSelector.propTypes = {
   copyCohorts: PropTypes.any.isRequired,
   filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,
+  handleVersusAll: PropTypes.func.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
