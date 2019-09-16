@@ -180,7 +180,6 @@ export class SubCohortSelector extends PureComponent {
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.any.isRequired,
   filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
   onSelectVsAll: PropTypes.any.isRequired,

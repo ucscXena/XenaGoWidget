@@ -81,7 +81,7 @@ export default class XenaGoViewer extends PureComponent {
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
-      let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
+      let {renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData, swapCohorts, copyCohorts, onVersusAll,
@@ -112,7 +112,6 @@ export default class XenaGoViewer extends PureComponent {
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortIndex={cohortIndex}
-                            cohortLabel={cohortLabel}
                             copyCohorts={copyCohorts}
                             filter={filter}
                             filterCounts={geneDataStats.filterCounts}
@@ -182,7 +181,6 @@ export default class XenaGoViewer extends PureComponent {
 
 XenaGoViewer.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
   copyCohorts: PropTypes.any.isRequired,

@@ -6,7 +6,7 @@ import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
 import {
-  fetchCohortData, getSubCohortsForCohort,
+  fetchCohortData, getLabelForIndex, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
 } from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
@@ -100,7 +100,6 @@ export class CohortSelector extends PureComponent {
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortIndex={cohortIndex}
-            cohortLabel={subCohortLabel}
             filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
             onSelectVsAll={onVersusAll}
@@ -118,7 +117,7 @@ export class CohortSelector extends PureComponent {
             fontWeight: 'bold',
             display: 'inline',
           }}
-          >Cohort {this.props.cohortLabel}
+          >Cohort {getLabelForIndex(cohortIndex)}
           &nbsp; &nbsp;
           </div>
           <ButtonGroup style={{display: 'inline'}}>
@@ -154,7 +153,6 @@ export class CohortSelector extends PureComponent {
 
 CohortSelector.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.string.isRequired,
   copyCohorts: PropTypes.any.isRequired,
   filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,

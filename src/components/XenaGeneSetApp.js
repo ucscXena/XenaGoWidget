@@ -40,11 +40,6 @@ const ARROW_WIDTH = 20;
 const BORDER_OFFSET = 2;
 
 export const MIN_FILTER = 2;
-
-
-export const LABEL_A = 'A';
-export const LABEL_B = 'B';
-
 export const MIN_GENE_WIDTH_PX = 80;// 8 or less
 export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
@@ -654,7 +649,6 @@ export default class XenaGeneSetApp extends PureComponent {
                           <td>
                             <VerticalGeneSetScoresView
                               cohortIndex={0}
-                              cohortLabel={LABEL_A}
                               data={this.state.pathwayData[0]}
                               filter={this.state.filter[0]}
                               labelHeight={18 + 2 * BORDER_OFFSET}
@@ -686,7 +680,6 @@ export default class XenaGeneSetApp extends PureComponent {
                           <td>
                             <VerticalGeneSetScoresView
                               cohortIndex={1}
-                              cohortLabel={LABEL_B}
                               data={this.state.pathwayData[1]}
                               filter={this.state.filter[1]}
                               labelHeight={18 + 2 * BORDER_OFFSET}
@@ -731,7 +724,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   <XenaGoViewer
                                     // reference
                                     cohortIndex={0}
-                                    cohortLabel={LABEL_A}
 
                                     // view
                                     collapsed={this.state.collapsed}
@@ -770,8 +762,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   <XenaGoViewer
                                     // reference
                                     cohortIndex={1}
-                                    cohortLabel={LABEL_B}
-
                                     // view
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}

@@ -12,6 +12,9 @@ const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
 const GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY = 'copy number';
 const GENOME_BACKGROUND_MUTATION_VIEW_KEY = 'mutation';
 
+export const LABEL_A = 'A';
+export const LABEL_B = 'B';
+
 function lowerCaseCompareName(a, b) {
   try {
     return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
@@ -26,6 +29,10 @@ export function getSubCohortsForCohort(cohort) {
   return {
     ...SUB_COHORT_LIST[cohort]
   };
+}
+
+export function getLabelForIndex(index){
+  return index=== 0 ? LABEL_A : LABEL_B;
 }
 
 export function getSubCohortsOnlyForCohort(cohort) {
