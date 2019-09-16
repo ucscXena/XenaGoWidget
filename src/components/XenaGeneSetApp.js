@@ -21,7 +21,7 @@ let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
 import {getCohortDetails, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {isEqual,memoize} from 'underscore';
+import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';

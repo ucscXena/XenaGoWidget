@@ -1,6 +1,6 @@
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import {getCohortDetails, getSubCohortsOnlyForCohort} from './CohortFunctions';
-import {memoize} from "underscore";
+import {memoize} from 'underscore';
 
 export function calculateFilters(urlVariables){
   // handling filters
