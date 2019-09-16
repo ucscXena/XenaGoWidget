@@ -7,7 +7,7 @@ import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort} from '../functions/SortFunctions';
-import {getGenesForPathways} from '../functions/CohortFunctions';
+import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
 
 const HEADER_HEIGHT = 15;
 
@@ -50,10 +50,10 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, cohortLabel,pathways,showDetails} = this.props;
+      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails} = this.props;
       const {expression, samples, copyNumber, geneExpression} = data;
       if (!data) {
-        return <div>Loading Cohort {cohortLabel}</div>;
+        return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
       // need a size and vertical start for each
       let layout = pathways.map((p, index) => {
@@ -113,7 +113,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 VerticalGeneSetScoresView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
