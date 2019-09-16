@@ -92,21 +92,23 @@ export default class XenaGeneSetApp extends PureComponent {
       };
       AppStorageHandler.storePathwaySelection(selectedGeneSet);
     }
+    // // handle selected cohorts
+    if(urlVariables.cohort1){
+      let cohort1Details = getCohortDetails({name: urlVariables.cohort1});
+      cohort1Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort1);
+      cohort1Details.selectedSubCohorts = urlVariables.subCohorts1 ? urlVariables.subCohorts1 : cohort1Details.subCohorts ;
+      AppStorageHandler.storeCohortState(cohort1Details,0);
+    }
+    if(urlVariables.cohort2){
+      const cohort2Details = getCohortDetails({name: urlVariables.cohort2});
+      cohort2Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort2);
+      cohort2Details.selectedSubCohorts = urlVariables.subCohorts2 ? urlVariables.subCohorts2 : cohort2Details.subCohorts ;
+      AppStorageHandler.storeCohortState(cohort2Details,1);
+    }
 
-
+    // handle selected subCohorts
     const cohortDataA = AppStorageHandler.getCohortState(0);
     const cohortDataB = AppStorageHandler.getCohortState(1);
-
-    console.log('cohort A data',cohortDataA);
-    console.log('cohort B data',cohortDataB);
-
-    // TODO: handle selected cohorts
-    // if(urlVariables.cohort1){
-    //
-    // }
-
-
-    // TODO: handle selected subCohorts
 
 
 
@@ -162,7 +164,6 @@ export default class XenaGeneSetApp extends PureComponent {
     location.hash += `&cohort2=${this.state.selectedCohort[1].name}`;
     location.hash += `&filter1=${this.state.filter[0]}`;
     location.hash += `&filter2=${this.state.filter[1]}`;
-    console.log(this.state);
     location.hash += `&geneset=${this.state.pathwaySelection.pathway.golabel}`;
   }
 
@@ -260,7 +261,7 @@ export default class XenaGeneSetApp extends PureComponent {
         geneData,
         pathwayData: [pathwayDataA,pathwayDataB],
         loading: LOAD_STATE.LOADED,
-        currentLoadState: LOAD_STATE.LOADED,
+        currentLoadState: currentLoadState,
         processing: false,
         fetch: false,
       });
