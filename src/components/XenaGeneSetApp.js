@@ -21,7 +21,7 @@ let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
 import {getCohortDetails, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {isEqual} from 'underscore';
+import {isEqual,memoize} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
@@ -54,6 +54,20 @@ const LOAD_STATE = {
 let currentLoadState = LOAD_STATE.UNLOADED ;
 let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
 
+const generateUrl = (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
+  let generatedUrl = `cohort1=${cohort1}`;
+  generatedUrl += `&cohort2=${cohort2}`;
+  generatedUrl += `&filter1=${filter1}`;
+  generatedUrl += `&filter2=${filter2}`;
+  generatedUrl += `&geneset=${geneset}`;
+  if( selectedSubCohorts1){
+    generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`;
+  }
+  if( selectedSubCohorts2){
+    generatedUrl += `&selectedSubCohorts2=${selectedSubCohorts2}`;
+  }
+  return generatedUrl;
+};
 /**
  * refactor that from index
  */
@@ -158,36 +172,23 @@ export default class XenaGeneSetApp extends PureComponent {
         shadingValue: 10,
       }
     };
-
-
   }
 
   componentDidUpdate() {
-    location.hash = this.generateUrl(
-      this.state.filter[0],
-      this.state.filter[1],
-      this.state.pathwaySelection.pathway.golabel,
-      this.state.selectedCohort[0].name,
-      this.state.selectedCohort[1].name,
-      this.state.selectedCohort[0].selectedSubCohorts,
-      this.state.selectedCohort[1].selectedSubCohorts,
-    );
+    location.hash =
+      memoize(
+        generateUrl(
+          this.state.filter[0],
+          this.state.filter[1],
+          this.state.pathwaySelection.pathway.golabel,
+          this.state.selectedCohort[0].name,
+          this.state.selectedCohort[1].name,
+          this.state.selectedCohort[0].selectedSubCohorts,
+          this.state.selectedCohort[1].selectedSubCohorts,
+        )
+      );
   }
 
-  generateUrl(filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2){
-    let generatedUrl = `cohort1=${cohort1}`;
-    generatedUrl += `&cohort2=${cohort2}`;
-    generatedUrl += `&filter1=${filter1}`;
-    generatedUrl += `&filter2=${filter2}`;
-    generatedUrl += `&geneset=${geneset}`;
-    if( selectedSubCohorts1){
-      generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`;
-    }
-    if( selectedSubCohorts2){
-      generatedUrl += `&selectedSubCohorts2=${selectedSubCohorts2}`;
-    }
-    return generatedUrl;
-  }
 
   queryGenes = (geneQuery) => {
     let {reference: {host, name}, limit} = this.state;
