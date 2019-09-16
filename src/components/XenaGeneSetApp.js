@@ -26,6 +26,7 @@ import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
+import QueryString from 'querystring';
 
 
 
@@ -63,15 +64,26 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props);
 
     const pathways = AppStorageHandler.getPathways();
-    let cohortDataA = AppStorageHandler.getCohortState(0);
-    let cohortDataB = AppStorageHandler.getCohortState(1);
+    const cohortDataA = AppStorageHandler.getCohortState(0);
+    const cohortDataB = AppStorageHandler.getCohortState(1);
+
+
+
+
+    const urlVariables = QueryString.parse(location.hash.substr(1));
+    if(urlVariables.filter1){
+      AppStorageHandler.storeFilterState(urlVariables.filter1,0);
+    }
+    if(urlVariables.filter2){
+      AppStorageHandler.storeFilterState(urlVariables.filter2,1);
+    }
+    const filterDataA = AppStorageHandler.getFilterState(0);
+    const filterDataB = AppStorageHandler.getFilterState(1);
+
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
-      selectedCohort:[
-        cohortDataA,
-        cohortDataB,
-      ],
+      selectedCohort:[ cohortDataA, cohortDataB, ],
       view: XENA_VIEW,
       fetch: false,
       loading:LOAD_STATE.UNLOADED,
@@ -83,10 +95,7 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways,
         selected: true
       },
-      filter:[
-        AppStorageHandler.getFilterState(0)  ,
-        AppStorageHandler.getFilterState(1)  ,
-      ],
+      filter:[ filterDataA,filterDataB ],
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
@@ -115,22 +124,30 @@ export default class XenaGeneSetApp extends PureComponent {
     };
   }
 
-    queryGenes = (geneQuery) => {
-      let {reference: {host, name}, limit} = this.state;
-      if (geneQuery.trim().length === 0) {
-        this.setState({
-          geneHits: []
-        });
-        return;
-      }
-      let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
-      subscriber.subscribe(matches => {
-        this.setState({
-          geneHits: matches
-        });
-      }
-      );
-    };
+  componentDidUpdate() {
+    // location.hash = '';
+    location.hash = `cohort1=${this.state.selectedCohort[0].name}`;
+    location.hash += `&cohort2=${this.state.selectedCohort[1].name}`;
+    location.hash += `&filter1=${this.state.filter[0]}`;
+    location.hash += `&filter2=${this.state.filter[1]}`;
+  }
+
+  queryGenes = (geneQuery) => {
+    let {reference: {host, name}, limit} = this.state;
+    if (geneQuery.trim().length === 0) {
+      this.setState({
+        geneHits: []
+      });
+      return;
+    }
+    let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+    subscriber.subscribe(matches => {
+      this.setState({
+        geneHits: matches
+      });
+    }
+    );
+  };
 
     handleCombinedCohortData = (input) => {
       let {
