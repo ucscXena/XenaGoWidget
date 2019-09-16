@@ -70,7 +70,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const urlVariables = QueryString.parse(location.hash.substr(1));
 
-    // TODO, refactor all of this to another class
+
     // handling filters
     if(urlVariables.filter1){
       AppStorageHandler.storeFilterState(urlVariables.filter1,0);
@@ -96,13 +96,15 @@ export default class XenaGeneSetApp extends PureComponent {
     if(urlVariables.cohort1){
       let cohort1Details = getCohortDetails({name: urlVariables.cohort1});
       cohort1Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort1);
-      cohort1Details.selectedSubCohorts = urlVariables.subCohorts1 ? urlVariables.subCohorts1 : cohort1Details.subCohorts ;
+      cohort1Details.selectedSubCohorts = urlVariables.selectedSubCohorts1 ? urlVariables.selectedSubCohorts1.split(',') : cohort1Details.subCohorts ;
+      console.log('selected sub cohorts 1',urlVariables.selectedSubCohorts1,cohort1Details.selectedSubCohorts);
       AppStorageHandler.storeCohortState(cohort1Details,0);
     }
     if(urlVariables.cohort2){
       const cohort2Details = getCohortDetails({name: urlVariables.cohort2});
       cohort2Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort2);
-      cohort2Details.selectedSubCohorts = urlVariables.subCohorts2 ? urlVariables.subCohorts2 : cohort2Details.subCohorts ;
+      cohort2Details.selectedSubCohorts = urlVariables.selectedSubCohorts2 ? urlVariables.selectedSubCohorts2.split(',') : cohort2Details.subCohorts ;
+      console.log('selected sub cohorts 2',urlVariables.selectedSubCohorts2,cohort2Details.selectedSubCohorts);
       AppStorageHandler.storeCohortState(cohort2Details,1);
     }
 
@@ -156,15 +158,35 @@ export default class XenaGeneSetApp extends PureComponent {
         shadingValue: 10,
       }
     };
+
+
   }
 
   componentDidUpdate() {
-    // location.hash = '';
-    location.hash = `cohort1=${this.state.selectedCohort[0].name}`;
-    location.hash += `&cohort2=${this.state.selectedCohort[1].name}`;
-    location.hash += `&filter1=${this.state.filter[0]}`;
-    location.hash += `&filter2=${this.state.filter[1]}`;
-    location.hash += `&geneset=${this.state.pathwaySelection.pathway.golabel}`;
+    location.hash = this.generateUrl(
+      this.state.filter[0],
+      this.state.filter[1],
+      this.state.pathwaySelection.pathway.golabel,
+      this.state.selectedCohort[0].name,
+      this.state.selectedCohort[1].name,
+      this.state.selectedCohort[0].selectedSubCohorts,
+      this.state.selectedCohort[1].selectedSubCohorts,
+    );
+  }
+
+  generateUrl(filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2){
+    let generatedUrl = `cohort1=${cohort1}`;
+    generatedUrl += `&cohort2=${cohort2}`;
+    generatedUrl += `&filter1=${filter1}`;
+    generatedUrl += `&filter2=${filter2}`;
+    generatedUrl += `&geneset=${geneset}`;
+    if( selectedSubCohorts1){
+      generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`;
+    }
+    if( selectedSubCohorts2){
+      generatedUrl += `&selectedSubCohorts2=${selectedSubCohorts2}`;
+    }
+    return generatedUrl;
   }
 
   queryGenes = (geneQuery) => {
