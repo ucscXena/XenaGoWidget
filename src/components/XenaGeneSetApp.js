@@ -64,8 +64,6 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props);
 
     const pathways = AppStorageHandler.getPathways();
-    const cohortDataA = AppStorageHandler.getCohortState(0);
-    const cohortDataB = AppStorageHandler.getCohortState(1);
 
 
 
@@ -96,8 +94,16 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
 
-    // TODO: handle selected cohorts
+    const cohortDataA = AppStorageHandler.getCohortState(0);
+    const cohortDataB = AppStorageHandler.getCohortState(1);
 
+    console.log('cohort A data',cohortDataA);
+    console.log('cohort B data',cohortDataB);
+
+    // TODO: handle selected cohorts
+    // if(urlVariables.cohort1){
+    //
+    // }
 
 
     // TODO: handle selected subCohorts
@@ -156,7 +162,7 @@ export default class XenaGeneSetApp extends PureComponent {
     location.hash += `&cohort2=${this.state.selectedCohort[1].name}`;
     location.hash += `&filter1=${this.state.filter[0]}`;
     location.hash += `&filter2=${this.state.filter[1]}`;
-    console.log(this.state)
+    console.log(this.state);
     location.hash += `&geneset=${this.state.pathwaySelection.pathway.golabel}`;
   }
 

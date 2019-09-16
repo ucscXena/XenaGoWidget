@@ -1,7 +1,7 @@
 import { uniq, pluck, flatten } from 'underscore';
 
 import SUB_COHORT_LIST from '../data/Subtype_Selected';
-import DefaultDatasetForGeneset from '../data/defaultDatasetForGeneset';
+import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 
@@ -91,16 +91,16 @@ let COHORT_DATA;
 
 export function fetchCohortData() {
   if (COHORT_DATA === undefined) {
-    COHORT_DATA = Object.keys(DefaultDatasetForGeneset)
-      .filter((cohort) => (DefaultDatasetForGeneset[cohort].viewInPathway)
-          && DefaultDatasetForGeneset[cohort][MUTATION_KEY]
-          && DefaultDatasetForGeneset[cohort][GENE_EXPRESSION_KEY]
+    COHORT_DATA = Object.keys(DETAIL_DATASET_FOR_GENESET)
+      .filter((cohort) => (DETAIL_DATASET_FOR_GENESET[cohort].viewInPathway)
+          && DETAIL_DATASET_FOR_GENESET[cohort][MUTATION_KEY]
+          && DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY]
       )
       .map((cohort) => {
-        const mutation = DefaultDatasetForGeneset[cohort][MUTATION_KEY];
-        const copyNumberView = DefaultDatasetForGeneset[cohort][COPY_NUMBER_VIEW_KEY];
-        const genomeBackground = DefaultDatasetForGeneset[cohort][GENOME_BACKGROUND_VIEW_KEY];
-        const geneExpression = DefaultDatasetForGeneset[cohort][GENE_EXPRESSION_KEY];
+        const mutation = DETAIL_DATASET_FOR_GENESET[cohort][MUTATION_KEY];
+        const copyNumberView = DETAIL_DATASET_FOR_GENESET[cohort][COPY_NUMBER_VIEW_KEY];
+        const genomeBackground = DETAIL_DATASET_FOR_GENESET[cohort][GENOME_BACKGROUND_VIEW_KEY];
+        const geneExpression = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY];
         return {
           name: cohort,
           mutationDataSetId: mutation.dataset,
