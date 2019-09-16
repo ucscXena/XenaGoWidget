@@ -145,6 +145,7 @@ export default class HoverGeneView extends PureComponent {
                   >
                     {data.pathway.geneExpressionMean.toPrecision(2)}
                   </div>
+                  <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
                 </span>
               </div>
             </div>
