@@ -71,6 +71,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     const urlVariables = QueryString.parse(location.hash.substr(1));
+
+    // TODO, refactor all of this to another class
+    // handling filters
     if(urlVariables.filter1){
       AppStorageHandler.storeFilterState(urlVariables.filter1,0);
     }
@@ -80,6 +83,28 @@ export default class XenaGeneSetApp extends PureComponent {
     const filterDataA = AppStorageHandler.getFilterState(0);
     const filterDataB = AppStorageHandler.getFilterState(1);
 
+    // handle selected Pathway / GeneSet
+    let selectedGeneSet = undefined;
+    if(urlVariables.geneset){
+      // find a geneset for the name
+      const geneset = pathways.find( p => p.golabel === urlVariables.geneset );
+      const selectedGeneSet = {
+        pathway: geneset,
+        tissue: 'Header'
+      };
+      AppStorageHandler.storePathwaySelection(selectedGeneSet);
+    }
+
+
+    // TODO: handle selected cohorts
+
+
+
+    // TODO: handle selected subCohorts
+
+
+
+
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
@@ -87,6 +112,7 @@ export default class XenaGeneSetApp extends PureComponent {
       view: XENA_VIEW,
       fetch: false,
       loading:LOAD_STATE.UNLOADED,
+      pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
@@ -130,6 +156,8 @@ export default class XenaGeneSetApp extends PureComponent {
     location.hash += `&cohort2=${this.state.selectedCohort[1].name}`;
     location.hash += `&filter1=${this.state.filter[0]}`;
     location.hash += `&filter2=${this.state.filter[1]}`;
+    console.log(this.state)
+    location.hash += `&geneset=${this.state.pathwaySelection.pathway.golabel}`;
   }
 
   queryGenes = (geneQuery) => {
