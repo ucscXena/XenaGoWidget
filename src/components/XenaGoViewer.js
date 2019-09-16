@@ -84,7 +84,7 @@ export default class XenaGoViewer extends PureComponent {
       let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData, swapCohorts, copyCohorts, handleVersusAll,
+        pathwayData, swapCohorts, copyCohorts, onVersusAll,
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -116,9 +116,9 @@ export default class XenaGoViewer extends PureComponent {
                             copyCohorts={copyCohorts}
                             filter={filter}
                             filterCounts={geneDataStats.filterCounts}
-                            handleVersusAll={handleVersusAll}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
+                            onVersusAll={onVersusAll}
                             selectedCohort={selectedCohort}
                             swapCohorts={swapCohorts}
                           />
@@ -177,12 +177,6 @@ export default class XenaGoViewer extends PureComponent {
           </table>
         );
       }
-
-      // return (
-      //     <Dialog active={processing} title='Loading'>
-      //         {selectedCohort}
-      //     </Dialog>
-      // );
     }
 }
 
@@ -201,6 +195,7 @@ XenaGoViewer.propTypes = {
   onChangeSubCohort: PropTypes.any.isRequired,
   onGeneHover: PropTypes.any.isRequired, // optional
   onSetCollapsed: PropTypes.any,
+  onVersusAll: PropTypes.func.isRequired,
   pathwayData: PropTypes.any.isRequired,
   pathwaySelection: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,

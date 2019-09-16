@@ -477,9 +477,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
   handleVersusAll = (selectedSubCohort,cohortSourceIndex) => {
-    console.log('input seldcted cohort',selectedSubCohort,cohortSourceIndex);
-    console.log(this.state.selectedCohort)
-
     // select ONLY
     const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex],{
       selectedSubCohorts: { $set: [selectedSubCohort] }
@@ -747,17 +744,17 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
 
                                     // maybe state?
-                                    handleVersusAll={this.handleVersusAll}
                                     highlightedGene={this.state.highlightedGene}
                                     onChangeCohort={this.handleChangeCohort}
                                     onChangeFilter={this.handleChangeFilter}
+                                    onChangeSubCohort={this.handleChangeSubCohort}
 
                                     // new pathway data
-                                    onChangeSubCohort={this.handleChangeSubCohort}
                                     onGeneHover={this.handleGeneHover}
+                                    onSetCollapsed={this.handleSetCollapsed}
 
                                     // functions
-                                    onSetCollapsed={this.handleSetCollapsed}
+                                    onVersusAll={this.handleVersusAll}
                                     pathwayData={this.state.pathwayData[0]}
                                     pathwaySelection={this.state.pathwaySelection}
                                     pathways={pathways}
@@ -786,17 +783,17 @@ export default class XenaGeneSetApp extends PureComponent {
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
 
                                     // maybe state?
-                                    handleVersusAll={this.handleVersusAll}
                                     highlightedGene={this.state.highlightedGene}
                                     onChangeCohort={this.handleChangeCohort}
                                     onChangeFilter={this.handleChangeFilter}
+                                    onChangeSubCohort={this.handleChangeSubCohort}
 
                                     // new pathway data
-                                    onChangeSubCohort={this.handleChangeSubCohort}
                                     onGeneHover={this.handleGeneHover}
+                                    onSetCollapsed={this.handleSetCollapsed}
 
                                     // functions
-                                    onSetCollapsed={this.handleSetCollapsed}
+                                    onVersusAll={this.handleVersusAll}
                                     pathwayData={this.state.pathwayData[1]}
                                     pathwaySelection={this.state.pathwaySelection}
                                     pathways={pathways}
