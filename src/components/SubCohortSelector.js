@@ -44,6 +44,11 @@ export class SubCohortSelector extends PureComponent {
     });
   };
 
+  handleCompareVersus = (field) => {
+    this.props.onSelectVsAll(field,this.props.cohortIndex);
+    this.props.onToggle();
+  };
+
   handleChange = (event) => {
     const field = event.target.name;
     const newValue = event.target.checked ;
@@ -122,6 +127,10 @@ export class SubCohortSelector extends PureComponent {
                               href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name); }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
+                            <Link
+                              href='#' label={'(Vs All)'} onClick={() => { this.handleCompareVersus(cs.name); }}
+                              style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                            />
                           </Col>
                         </Row>
                       );
@@ -170,9 +179,11 @@ export class SubCohortSelector extends PureComponent {
 
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
+  cohortIndex: PropTypes.any.isRequired,
   cohortLabel: PropTypes.any.isRequired,
   filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
+  onSelectVsAll: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,

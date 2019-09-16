@@ -15,6 +15,7 @@ import {
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
+import {GeneExpressionLegend} from './GeneExpressionLegend';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
@@ -83,7 +84,7 @@ export default class XenaGoViewer extends PureComponent {
       let {renderHeight, renderOffset, cohortIndex,selectedCohort,cohortLabel,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData,
+        pathwayData, swapCohorts, copyCohorts, onVersusAll,
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -110,12 +111,16 @@ export default class XenaGoViewer extends PureComponent {
                       >
                         <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
+                            cohortIndex={cohortIndex}
                             cohortLabel={cohortLabel}
+                            copyCohorts={copyCohorts}
                             filter={filter}
                             filterCounts={geneDataStats.filterCounts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
+                            onVersusAll={onVersusAll}
                             selectedCohort={selectedCohort}
+                            swapCohorts={swapCohorts}
                           />
                           <FilterSelector
                             geneList={geneList}
@@ -145,7 +150,8 @@ export default class XenaGoViewer extends PureComponent {
                               }
                             </Card>
                         }
-                        <DetailedLegend/>
+                        { filter !== FILTER_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
+                        { filter === FILTER_ENUM.GENE_EXPRESSION && <GeneExpressionLegend/>}
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView
@@ -171,12 +177,6 @@ export default class XenaGoViewer extends PureComponent {
           </table>
         );
       }
-
-      // return (
-      //     <Dialog active={processing} title='Loading'>
-      //         {selectedCohort}
-      //     </Dialog>
-      // );
     }
 }
 
@@ -185,6 +185,7 @@ XenaGoViewer.propTypes = {
   cohortLabel: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
+  copyCohorts: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
   geneHoverData: PropTypes.any.isRequired,
@@ -192,17 +193,19 @@ XenaGoViewer.propTypes = {
   onChangeCohort: PropTypes.any.isRequired,
   onChangeFilter: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
-  onGeneHover: PropTypes.any.isRequired,
-  onSetCollapsed: PropTypes.any, // optional
+  onGeneHover: PropTypes.any.isRequired, // optional
+  onSetCollapsed: PropTypes.any,
+  onVersusAll: PropTypes.func.isRequired,
   pathwayData: PropTypes.any.isRequired,
   pathwaySelection: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
+
+
   renderHeight: PropTypes.any.isRequired,
-
-
   renderOffset: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-  showDetailLayer: PropTypes.any,
 
+  showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
+  swapCohorts: PropTypes.any.isRequired,
 };
