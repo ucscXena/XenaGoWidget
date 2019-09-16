@@ -27,6 +27,7 @@ import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
+import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 
 
 
@@ -54,22 +55,6 @@ const LOAD_STATE = {
 let currentLoadState = LOAD_STATE.UNLOADED ;
 let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
 
-const generateUrl = (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
-  let generatedUrl = `cohort1=${cohort1}`;
-  generatedUrl += `&cohort2=${cohort2}`;
-  generatedUrl += `&filter1=${filter1}`;
-  generatedUrl += `&filter2=${filter2}`;
-  generatedUrl += `&geneset=${geneset}`;
-  if( selectedSubCohorts1){
-    generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`;
-  }
-  if( selectedSubCohorts2){
-    generatedUrl += `&selectedSubCohorts2=${selectedSubCohorts2}`;
-  }
-  return generatedUrl;
-};
-
-const generatedUrlFunction = memoize(generateUrl, (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => JSON.stringify([filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2]));
 /**
  * refactor that from index
  */
@@ -80,61 +65,15 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props);
 
     const pathways = AppStorageHandler.getPathways();
-
-
-
-
     const urlVariables = QueryString.parse(location.hash.substr(1));
 
-
-    // handling filters
-    if(urlVariables.filter1){
-      AppStorageHandler.storeFilterState(urlVariables.filter1,0);
-    }
-    if(urlVariables.filter2){
-      AppStorageHandler.storeFilterState(urlVariables.filter2,1);
-    }
-    const filterDataA = AppStorageHandler.getFilterState(0);
-    const filterDataB = AppStorageHandler.getFilterState(1);
-
-    // handle selected Pathway / GeneSet
-    let selectedGeneSet = undefined;
-    if(urlVariables.geneset){
-      // find a geneset for the name
-      const geneset = pathways.find( p => p.golabel === urlVariables.geneset );
-      const selectedGeneSet = {
-        pathway: geneset,
-        tissue: 'Header'
-      };
-      AppStorageHandler.storePathwaySelection(selectedGeneSet);
-    }
-    // // handle selected cohorts
-    if(urlVariables.cohort1){
-      let cohort1Details = getCohortDetails({name: urlVariables.cohort1});
-      cohort1Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort1);
-      cohort1Details.selectedSubCohorts = urlVariables.selectedSubCohorts1 ? urlVariables.selectedSubCohorts1.split(',') : cohort1Details.subCohorts ;
-      console.log('selected sub cohorts 1',urlVariables.selectedSubCohorts1,cohort1Details.selectedSubCohorts);
-      AppStorageHandler.storeCohortState(cohort1Details,0);
-    }
-    if(urlVariables.cohort2){
-      const cohort2Details = getCohortDetails({name: urlVariables.cohort2});
-      cohort2Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort2);
-      cohort2Details.selectedSubCohorts = urlVariables.selectedSubCohorts2 ? urlVariables.selectedSubCohorts2.split(',') : cohort2Details.subCohorts ;
-      console.log('selected sub cohorts 2',urlVariables.selectedSubCohorts2,cohort2Details.selectedSubCohorts);
-      AppStorageHandler.storeCohortState(cohort2Details,1);
-    }
-
-    // handle selected subCohorts
-    const cohortDataA = AppStorageHandler.getCohortState(0);
-    const cohortDataB = AppStorageHandler.getCohortState(1);
-
-
-
-
+    const filters = calculateFilters(urlVariables);
+    const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
+    const cohorts = calculateCohorts(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
-      selectedCohort:[ cohortDataA, cohortDataB, ],
+      selectedCohort: cohorts,
       view: XENA_VIEW,
       fetch: false,
       loading:LOAD_STATE.UNLOADED,
@@ -147,7 +86,7 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways,
         selected: true
       },
-      filter:[ filterDataA,filterDataB ],
+      filter:filters,
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
