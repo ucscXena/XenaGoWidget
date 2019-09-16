@@ -31,15 +31,15 @@ export class CohortSelector extends PureComponent {
 
     handleChange = (event) => {
       // populate selected sub cohorts for the cohorts
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
-      this.setState( {
-        selectedCohort: {
-          name: event.target.value,
-          subCohorts : subCohortsForSelected,
-          selectedSubCohorts:subCohortsForSelected,
-        },
-      }
-      );
+      // let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
+      // this.setState( {
+      //   selectedCohort: {
+      //     name: event.target.value,
+      //     subCohorts : subCohortsForSelected,
+      //     selectedSubCohorts:subCohortsForSelected,
+      //   },
+      // }
+      // );
       this.props.onChange(event.target.value);
     };
 
@@ -63,10 +63,10 @@ export class CohortSelector extends PureComponent {
     }
 
     generateSubCohortLabels(){
-      let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.props.selectedCohort.name);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts ? this.props.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
 
       const availableSubtypes = Object.keys(subCohortsForSelected).length+1;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
@@ -77,7 +77,7 @@ export class CohortSelector extends PureComponent {
     }
 
     onChangeSubCohort = (newSelected) => {
-      const changes = !isEqual(this.state.selectedSubCohorts,newSelected);
+      const changes = !isEqual(this.props.selectedSubCohorts,newSelected);
       this.setState({showSubCohortSelector:false});
       if(!changes){
         return ;
@@ -87,11 +87,11 @@ export class CohortSelector extends PureComponent {
         selectedSubCohorts: { $set: newSelected },
       });
 
-      this.setState(
-        {
-          selectedCohort: selectionObject,
-        }
-      );
+      // this.setState(
+      //   {
+      //     selectedCohort: selectionObject,
+      //   }
+      // );
 
       this.props.onChangeSubCohort(selectionObject);
     };
@@ -120,8 +120,8 @@ export class CohortSelector extends PureComponent {
             filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
             onToggle={this.handleSubCohortToggle}
-            selectedCohort={this.state.selectedCohort}
-            selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
+            selectedCohort={this.props.selectedCohort}
+            selectedSubCohorts={this.props.selectedCohort.selectedSubCohorts}
           />
           }
           <div style={{
@@ -144,7 +144,7 @@ export class CohortSelector extends PureComponent {
             className={BaseStyle.softflow}
             onChange={this.handleChange}
             style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-            value={this.state.selectedCohort.name}
+            value={this.props.selectedCohort.name}
           >
             {
               fetchCohortData().map(c => {
