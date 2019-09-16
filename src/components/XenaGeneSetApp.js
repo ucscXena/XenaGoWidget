@@ -26,6 +26,8 @@ import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
+import QueryString from 'querystring';
+import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 
 
 
@@ -63,18 +65,19 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props);
 
     const pathways = AppStorageHandler.getPathways();
-    let cohortDataA = AppStorageHandler.getCohortState(0);
-    let cohortDataB = AppStorageHandler.getCohortState(1);
+    const urlVariables = QueryString.parse(location.hash.substr(1));
+
+    const filters = calculateFilters(urlVariables);
+    const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
+    const cohorts = calculateCohorts(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
-      selectedCohort:[
-        cohortDataA,
-        cohortDataB,
-      ],
+      selectedCohort: cohorts,
       view: XENA_VIEW,
       fetch: false,
       loading:LOAD_STATE.UNLOADED,
+      pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
@@ -83,10 +86,7 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways,
         selected: true
       },
-      filter:[
-        AppStorageHandler.getFilterState(0)  ,
-        AppStorageHandler.getFilterState(1)  ,
-      ],
+      filter:filters,
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
@@ -115,22 +115,38 @@ export default class XenaGeneSetApp extends PureComponent {
     };
   }
 
-    queryGenes = (geneQuery) => {
-      let {reference: {host, name}, limit} = this.state;
-      if (geneQuery.trim().length === 0) {
-        this.setState({
-          geneHits: []
-        });
-        return;
-      }
-      let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
-      subscriber.subscribe(matches => {
-        this.setState({
-          geneHits: matches
-        });
-      }
-      );
-    };
+  componentDidUpdate() {
+    const generatedUrl = generatedUrlFunction(
+      this.state.filter[0],
+      this.state.filter[1],
+      this.state.pathwaySelection.pathway.golabel,
+      this.state.selectedCohort[0].name,
+      this.state.selectedCohort[1].name,
+      this.state.selectedCohort[0].selectedSubCohorts,
+      this.state.selectedCohort[1].selectedSubCohorts,
+    );
+    if(location.hash !== generatedUrl){
+      location.hash = generatedUrl ;
+    }
+  }
+
+
+  queryGenes = (geneQuery) => {
+    let {reference: {host, name}, limit} = this.state;
+    if (geneQuery.trim().length === 0) {
+      this.setState({
+        geneHits: []
+      });
+      return;
+    }
+    let subscriber = sparseDataMatchPartialField(host, 'name2', name, geneQuery, limit);
+    subscriber.subscribe(matches => {
+      this.setState({
+        geneHits: matches
+      });
+    }
+    );
+  };
 
     handleCombinedCohortData = (input) => {
       let {
@@ -209,7 +225,7 @@ export default class XenaGeneSetApp extends PureComponent {
         geneData,
         pathwayData: [pathwayDataA,pathwayDataB],
         loading: LOAD_STATE.LOADED,
-        currentLoadState: LOAD_STATE.LOADED,
+        currentLoadState: currentLoadState,
         processing: false,
         fetch: false,
       });

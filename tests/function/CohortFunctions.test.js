@@ -9,7 +9,7 @@ import {
   getSamplesFromSubCohortList,
   getSubCohortsOnlyForCohort,
 } from '../../src/functions/CohortFunctions';
-import DefaultCohortData from '../data/DefaultCohortData';
+import DefaultCohortData from '../data/TestDefaultCohortData';
 import SamplePathway1 from '../data/SamplePathway1';
 import {UNASSIGNED_SUBTYPE} from '../../src/components/SubCohortSelector';
 import {calculateSelectedSubCohortSamples} from '../../src/functions/FetchFunctions';
