@@ -1,8 +1,8 @@
 {
   "TCGA Liver Cancer (LIHC)": {
     "gene expression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LIHC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LIHC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
