@@ -595,6 +595,10 @@
     "viewInPathway": true
   },
   "TCGA Lung Adenocarcinoma (LUAD)": {
+    "gene expression pathway activity": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "pathway_act/TCGA_LUAD_BPA.tsv"
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LUAD_tpm_tab.tsv"
@@ -945,6 +949,10 @@
     "viewInPathway": true
   },
   "TCGA Breast Cancer (BRCA)": {
+    "gene expression pathway activity": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "pathway_act/TCGA_BRCA_BPA_Z.tsv"
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-BRCA_tpm_tab.tsv"
