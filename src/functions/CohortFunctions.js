@@ -6,6 +6,7 @@ import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 
 const MUTATION_KEY = 'simple somatic mutation';
+const GENE_EXPRESSION_PATHWAy_ACTIVITY_KEY = 'gene expression pathway activity';
 const GENE_EXPRESSION_KEY = 'gene expression';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
 const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
