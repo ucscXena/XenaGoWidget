@@ -15,13 +15,13 @@ const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways';
 const DefaultAppA = {
   renderOffset: 5,
   pathwayData: {
-    cohort: 'TCGA Ovarian Cancer (OV)',
+    cohort: 'TCGA Breast Cancer (BRCA)',
     copyNumber: [],
     expression: [],
     samples: [],
   },
   loadState: 'loading',
-  selectedCohort: 'TCGA Ovarian Cancer (OV)',
+  selectedCohort: 'TCGA Breast Cancer (BRCA)',
   cohortData: {},
   minFilter: 2,
   filterPercentage: 0.005,
@@ -120,7 +120,7 @@ export class AppStorageHandler extends PureComponent {
     }
 
     // TODO: is this correct, or should return a json with {name:xxx} ?
-    return cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Lung Adenocarcinoma (LUAD)');
+    return cohortIndex === 0 ? this.generateCohortState('TCGA Breast Cancer (BRCA)') : this.generateCohortState('TCGA Lung Adenocarcinoma (LUAD)');
   }
 
   static storeFilterState(selected, cohortIndex) {
