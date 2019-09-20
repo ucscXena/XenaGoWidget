@@ -102,15 +102,13 @@ export function fetchCohortData() {
         const copyNumberView = DETAIL_DATASET_FOR_GENESET[cohort][COPY_NUMBER_VIEW_KEY];
         const genomeBackground = DETAIL_DATASET_FOR_GENESET[cohort][GENOME_BACKGROUND_VIEW_KEY];
         const geneExpression = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY];
+        const geneExpressionPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY];
         return {
           name: cohort,
           mutationDataSetId: mutation.dataset,
           copyNumberDataSetId: copyNumberView.dataset,
           geneExpression: geneExpression,
-          geneExpressionPathwayActivity: genomeBackground[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]? genomeBackground[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]:{
-            host:'',
-            dataset:'',
-          },
+          geneExpressionPathwayActivity: geneExpressionPathwayActivity,
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,
