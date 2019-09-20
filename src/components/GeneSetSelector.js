@@ -99,7 +99,6 @@ export class GeneSetSelector extends PureComponent {
         );
       }
       interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
-      console.log('pathways',pathways);
 
       return pathways.map((p) => {
         let labelString = '(' + p.gene.length + ') ' + p.golabel;

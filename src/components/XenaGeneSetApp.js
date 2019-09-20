@@ -223,8 +223,6 @@ export default class XenaGeneSetApp extends PureComponent {
       let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
 
       currentLoadState = LOAD_STATE.LOADED;
-      console.log('pathway Data A',pathwayDataA)
-      console.log('pathway Data B',pathwayDataB)
       this.setState({
         pathwaySelection: selection,
         geneList,

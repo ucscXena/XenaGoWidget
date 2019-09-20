@@ -446,7 +446,6 @@ export function calculatePathwayScore(pathwayData, filter) {
 
 
 function calculateGeneExpressionPathwayActivity(pathwayData, filter) {
-  console.log('input activity',pathwayData,filter)
   return pathwayData.pathways.map( (p,index) => filter===FILTER_ENUM.GENE_EXPRESSION ? average(pathwayData.geneExpressionPathwayActivity[index])  : 0 );
 }
 
@@ -459,14 +458,12 @@ export function calculateAllPathways(pathwayData) {
   const pathwayDataB = pathwayData[1];
 
   const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA, pathwayDataA.filter);
-  console.log('activity A',geneExpressionPathwayActivityA)
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
   const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB.filter);
-  console.log('activity B',geneExpressionPathwayActivityB)
   const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
   const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
