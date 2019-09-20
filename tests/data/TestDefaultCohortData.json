@@ -7,6 +7,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LAML_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -30,6 +34,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-ACC_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -55,6 +63,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-CHOL_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -78,6 +90,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-BLCA_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -103,6 +119,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-BRCA_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -126,6 +146,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-CESC_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -151,6 +175,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv2"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -174,6 +202,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UCEC_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -199,6 +231,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-ESCA_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -222,6 +258,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-GBM_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -247,6 +287,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-HNSC_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -270,6 +314,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KICH_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -295,6 +343,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KIRC_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -318,6 +370,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KIRP_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -343,6 +399,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-DLBC_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -366,6 +426,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LIHC_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -391,6 +455,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LGG_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -414,6 +482,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LUAD_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -439,6 +511,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LUSC_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -462,6 +538,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-SKCM_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -487,6 +567,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-MESO_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -510,6 +594,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UVM_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -535,6 +623,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-OV_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -558,6 +650,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PAAD_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -583,6 +679,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PCPG_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -606,6 +706,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PRAD_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -631,6 +735,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv2"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -654,6 +762,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-SARC_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -679,6 +791,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-STAD_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -702,6 +818,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-TGCT_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -727,6 +847,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-THYM_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -751,6 +875,10 @@
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-THCA_tpm_tab.tsv"
     },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
+    },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "cnv_sampleEvent",
@@ -774,6 +902,10 @@
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UCS_tpm_tab.tsv"
+    },
+    "geneExpressionPathwayActivity": {
+      "host": "",
+      "dataset": ""
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",

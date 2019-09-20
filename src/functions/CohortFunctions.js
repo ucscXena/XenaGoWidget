@@ -6,7 +6,7 @@ import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 
 const MUTATION_KEY = 'simple somatic mutation';
-const GENE_EXPRESSION_PATHWAy_ACTIVITY_KEY = 'gene expression pathway activity';
+const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
 const GENE_EXPRESSION_KEY = 'gene expression';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
 const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
@@ -107,6 +107,10 @@ export function fetchCohortData() {
           mutationDataSetId: mutation.dataset,
           copyNumberDataSetId: copyNumberView.dataset,
           geneExpression: geneExpression,
+          geneExpressionPathwayActivity: genomeBackground[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]? genomeBackground[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]:{
+            host:'',
+            dataset:'',
+          },
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,
