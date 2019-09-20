@@ -159,12 +159,14 @@ export default class XenaGeneSetApp extends PureComponent {
         mutationsA,
         copyNumberA,
         geneExpressionA,
+        geneExpressionPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
         mutationsB,
         copyNumberB,
         geneExpressionB,
+        geneExpressionPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,
@@ -172,6 +174,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
       const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
+
 
       let pathwayDataA = {
         geneList,
@@ -184,6 +187,7 @@ export default class XenaGeneSetApp extends PureComponent {
         copyNumber: copyNumberA,
         expression: mutationsA,
         geneExpression: geneExpressionZScoreA,
+        geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -201,6 +205,7 @@ export default class XenaGeneSetApp extends PureComponent {
         copyNumber: copyNumberB,
         expression: mutationsB,
         geneExpression: geneExpressionZScoreB,
+        geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,

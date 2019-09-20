@@ -114,11 +114,23 @@ export class GeneSetSelector extends PureComponent {
             onMouseOver={this.onHover.bind(this, p)}
             style={GeneSetSelector.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered,  width, labelHeight, highlighted)}
           >
+            {p.firstGeneExpressionPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(p.firstGeneExpressionPathwayActivity)} width={width / 2 - 1}
+              x={0}
+            />
+            }
             {p.firstObserved &&
                     <rect
                       height={labelHeight} style={this.pillStyle(p.firstChiSquared)} width={width / 2 - 1}
                       x={0}
                     />
+            }
+            {p.secondGeneExpressionPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(p.secondGeneExpressionPathwayActivity)} width={width / 2}
+              x={width / 2 + 1}
+            />
             }
             {p.secondObserved &&
                     <rect

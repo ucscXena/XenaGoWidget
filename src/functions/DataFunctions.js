@@ -445,6 +445,10 @@ export function calculatePathwayScore(pathwayData, filter) {
 }
 
 
+function calculateGeneExpressionPathwayActivity(pathwayData, filter) {
+  return pathwayData.pathways.map( (p,index) => filter===FILTER_ENUM.GENE_EXPRESSION ? average(pathwayData.geneExpressionPathwayActivity[index])  : 0 );
+}
+
 /**
  * Note:
  * @param pathwayData
@@ -453,11 +457,13 @@ export function calculateAllPathways(pathwayData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
 
+  const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA, pathwayDataA.filter);
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
+  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB.filter);
   const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
   const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
@@ -467,11 +473,14 @@ export function calculateAllPathways(pathwayData) {
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
+    p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
     p.firstExpected = expectedA[p.golabel];
     p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+
+    p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
