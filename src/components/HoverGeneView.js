@@ -32,11 +32,14 @@ export default class HoverGeneView extends PureComponent {
     };
     getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
 
-  getGeneExpressionScore = (data) => data.geneExpressionMean ? data.geneExpressionMean : 0 ;
+  getGeneExpressionScore = (data,cohortIndex) => {
+    return cohortIndex === 0 ? Number.parseFloat(data.pathway.firstGeneExpressionPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondGeneExpressionPathwayActivity).toFixed(2) ;
+  };
 
   render() {
     let {data, cohortIndex, filter} = this.props;
     if (data.tissue) {
+      console.log('data',data)
       return (
         <div>
           {data.tissue !== 'Header' &&
