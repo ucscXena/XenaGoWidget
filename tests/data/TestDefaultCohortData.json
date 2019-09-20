@@ -4,8 +4,8 @@
     "mutationDataSetId": "TCGA.LAML.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.LAML.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LAML.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LAML_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -28,8 +28,8 @@
     "mutationDataSetId": "TCGA.ACC.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.ACC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.ACC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-ACC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -52,8 +52,8 @@
     "mutationDataSetId": "TCGA.CHOL.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.CHOL.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.CHOL.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-CHOL_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -76,8 +76,8 @@
     "mutationDataSetId": "TCGA.BLCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.BLCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.BLCA.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-BLCA_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -100,8 +100,8 @@
     "mutationDataSetId": "TCGA.BRCA.sampleMap/mutation_curated_wustl",
     "copyNumberDataSetId": "TCGA.BRCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.BRCA.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-BRCA_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -124,8 +124,8 @@
     "mutationDataSetId": "TCGA.CESC.sampleMap/mutation_curated_wustl",
     "copyNumberDataSetId": "TCGA.CESC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.CESC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-CESC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -148,8 +148,8 @@
     "mutationDataSetId": "TCGA.COAD.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.COAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.COAD.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv2"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -172,8 +172,8 @@
     "mutationDataSetId": "TCGA.UCEC.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.UCEC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.UCEC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UCEC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -196,8 +196,8 @@
     "mutationDataSetId": "TCGA.ESCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.ESCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.ESCA.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-ESCA_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -220,8 +220,8 @@
     "mutationDataSetId": "TCGA.GBM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.GBM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.GBM.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-GBM_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -244,8 +244,8 @@
     "mutationDataSetId": "TCGA.HNSC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.HNSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.HNSC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-HNSC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -268,8 +268,8 @@
     "mutationDataSetId": "TCGA.KICH.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.KICH.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.KICH.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KICH_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -292,8 +292,8 @@
     "mutationDataSetId": "TCGA.KIRC.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.KIRC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.KIRC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KIRC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -316,8 +316,8 @@
     "mutationDataSetId": "TCGA.KIRP.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.KIRP.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.KIRP.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KIRP_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -340,8 +340,8 @@
     "mutationDataSetId": "TCGA.DLBC.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.DLBC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.DLBC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-DLBC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -364,8 +364,8 @@
     "mutationDataSetId": "TCGA.LIHC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LIHC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LIHC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LIHC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -388,8 +388,8 @@
     "mutationDataSetId": "TCGA.LGG.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LGG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LGG.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LGG_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -412,8 +412,8 @@
     "mutationDataSetId": "TCGA.LUAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LUAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LUAD.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LUAD_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -436,8 +436,8 @@
     "mutationDataSetId": "TCGA.LUSC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LUSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.LUSC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LUSC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -460,8 +460,8 @@
     "mutationDataSetId": "TCGA.SKCM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.SKCM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.SKCM.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-SKCM_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -484,8 +484,8 @@
     "mutationDataSetId": "TCGA.MESO.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.MESO.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.MESO.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-MESO_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -508,8 +508,8 @@
     "mutationDataSetId": "TCGA.UVM.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.UVM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.UVM.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UVM_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -532,8 +532,8 @@
     "mutationDataSetId": "TCGA.OV.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.OV.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.OV.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-OV_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -556,8 +556,8 @@
     "mutationDataSetId": "TCGA.PAAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PAAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.PAAD.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PAAD_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -580,8 +580,8 @@
     "mutationDataSetId": "TCGA.PCPG.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PCPG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.PCPG.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PCPG_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -604,8 +604,8 @@
     "mutationDataSetId": "TCGA.PRAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PRAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.PRAD.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PRAD_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -628,8 +628,8 @@
     "mutationDataSetId": "TCGA.READ.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.READ.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.READ.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv2"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -652,8 +652,8 @@
     "mutationDataSetId": "TCGA.SARC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.SARC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.SARC.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-SARC_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -676,8 +676,8 @@
     "mutationDataSetId": "TCGA.STAD.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.STAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.STAD.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-STAD_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -700,8 +700,8 @@
     "mutationDataSetId": "TCGA.TGCT.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.TGCT.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://tcga.xenahubs.net",
-      "dataset": "TCGA.TGCT.sampleMap/HiSeqV2"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-TGCT_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -724,8 +724,8 @@
     "mutationDataSetId": "TCGA.THYM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.THYM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://gdc.xenahubs.net",
-      "dataset": "TCGA-THYM.htseq_fpkm-uq.tsv"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-THYM_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -748,8 +748,8 @@
     "mutationDataSetId": "TCGA.THCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.THCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://gdc.xenahubs.net",
-      "dataset": "TCGA-THCA.htseq_fpkm-uq.tsv"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-THCA_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -772,8 +772,8 @@
     "mutationDataSetId": "TCGA.UCS.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.UCS.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
-      "host": "https://gdc.xenahubs.net",
-      "dataset": "TCGA-UCS.htseq_fpkm-uq.tsv"
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UCS_tpm_tab.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
