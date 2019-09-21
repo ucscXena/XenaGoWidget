@@ -120,8 +120,8 @@
       "dataset": "expr_tpm/TCGA-BRCA_tpm_tab.tsv"
     },
     "geneExpressionPathwayActivity": {
-      "host": "",
-      "dataset": ""
+       "host": "https://xenago.xenahubs.net",
+       "dataset": "pathway_act/TCGA_BRCA_BPA_Z.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",
@@ -484,8 +484,8 @@
       "dataset": "expr_tpm/TCGA-LUAD_tpm_tab.tsv"
     },
     "geneExpressionPathwayActivity": {
-      "host": "",
-      "dataset": ""
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "pathway_act/TCGA_LUAD_BPA_Z.tsv"
     },
     "genomeBackgroundCopyNumber": {
       "host": "https://xenago.xenahubs.net",

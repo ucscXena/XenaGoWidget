@@ -1,5 +1,9 @@
 {
   "TCGA Liver Cancer (LIHC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LIHC_tpm_tab.tsv"
@@ -35,6 +39,10 @@
     "viewInPathway": true
   },
   "TCGA Cervical Cancer (CESC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-CESC_tpm_tab.tsv"
@@ -70,6 +78,10 @@
     "viewInPathway": true
   },
   "TCGA Sarcoma (SARC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-SARC_tpm_tab.tsv"
@@ -105,6 +117,10 @@
     "viewInPathway": true
   },
   "TCGA Thymoma (THYM)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-THYM_tpm_tab.tsv"
@@ -140,6 +156,10 @@
     "viewInPathway": true
   },
   "TCGA Mesothelioma (MESO)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-MESO_tpm_tab.tsv"
@@ -175,6 +195,10 @@
     "viewInPathway": true
   },
   "TCGA Pancreatic Cancer (PAAD)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PAAD_tpm_tab.tsv"
@@ -210,6 +234,10 @@
     "viewInPathway": true
   },
   "TCGA Ocular melanomas (UVM)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UVM_tpm_tab.tsv"
@@ -245,6 +273,10 @@
     "viewInPathway": true
   },
   "TCGA Rectal Cancer (READ)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv2"
@@ -280,6 +312,10 @@
     "viewInPathway": true
   },
   "TCGA Lung Squamous Cell Carcinoma (LUSC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LUSC_tpm_tab.tsv"
@@ -315,6 +351,10 @@
     "viewInPathway": true
   },
   "TCGA Stomach Cancer (STAD)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-STAD_tpm_tab.tsv"
@@ -350,6 +390,10 @@
     "viewInPathway": true
   },
   "TCGA Colon Cancer (COAD)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv2"
@@ -385,6 +429,10 @@
     "viewInPathway": true
   },
   "TCGA Lower Grade Glioma (LGG)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LGG_tpm_tab.tsv"
@@ -420,6 +468,10 @@
     "viewInPathway": true
   },
   "TCGA Thyroid Cancer (THCA)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-THCA_tpm_tab.tsv"
@@ -455,6 +507,10 @@
     "viewInPathway": true
   },
   "TCGA Kidney Chromophobe (KICH)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KICH_tpm_tab.tsv"
@@ -490,6 +546,10 @@
     "viewInPathway": true
   },
   "TCGA Kidney Papillary Cell Carcinoma (KIRP)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KIRP_tpm_tab.tsv"
@@ -525,6 +585,10 @@
     "viewInPathway": true
   },
   "TCGA Bile Duct Cancer (CHOL)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-CHOL_tpm_tab.tsv"
@@ -560,6 +624,10 @@
     "viewInPathway": true
   },
   "TCGA Glioblastoma (GBM)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-GBM_tpm_tab.tsv"
@@ -634,6 +702,10 @@
     "viewInPathway": true
   },
   "TCGA Ovarian Cancer (OV)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-OV_tpm_tab.tsv"
@@ -669,6 +741,10 @@
     "viewInPathway": true
   },
   "TCGA Kidney Clear Cell Carcinoma (KIRC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-KIRC_tpm_tab.tsv"
@@ -704,6 +780,10 @@
     "viewInPathway": true
   },
   "TCGA Endometrioid Cancer (UCEC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UCEC_tpm_tab.tsv"
@@ -739,6 +819,10 @@
     "viewInPathway": true
   },
   "TCGA Head and Neck Cancer (HNSC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-HNSC_tpm_tab.tsv"
@@ -774,6 +858,10 @@
     "viewInPathway": true
   },
   "TCGA Adrenocortical Cancer (ACC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-ACC_tpm_tab.tsv"
@@ -809,6 +897,10 @@
     "viewInPathway": true
   },
   "TCGA Prostate Cancer (PRAD)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PRAD_tpm_tab.tsv"
@@ -844,6 +936,10 @@
     "viewInPathway": true
   },
   "TCGA Uterine Carcinosarcoma (UCS)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-UCS_tpm_tab.tsv"
@@ -879,6 +975,10 @@
     "viewInPathway": true
   },
   "TCGA Melanoma (SKCM)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-SKCM_tpm_tab.tsv"
@@ -914,6 +1014,10 @@
     "viewInPathway": true
   },
   "TCGA Pheochromocytoma & Paraganglioma (PCPG)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-PCPG_tpm_tab.tsv"
@@ -988,6 +1092,10 @@
     "viewInPathway": true
   },
   "TCGA Testicular Cancer (TGCT)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-TGCT_tpm_tab.tsv"
@@ -1023,6 +1131,10 @@
     "viewInPathway": true
   },
   "TCGA Acute Myeloid Leukemia (LAML)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-LAML_tpm_tab.tsv"
@@ -1058,6 +1170,10 @@
     "viewInPathway": true
   },
   "TCGA Large B-cell Lymphoma (DLBC)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-DLBC_tpm_tab.tsv"
@@ -1093,6 +1209,10 @@
     "viewInPathway": true
   },
   "TCGA Bladder Cancer (BLCA)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-BLCA_tpm_tab.tsv"
@@ -1128,6 +1248,10 @@
     "viewInPathway": true
   },
   "TCGA Esophageal Cancer (ESCA)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
       "dataset": "expr_tpm/TCGA-ESCA_tpm_tab.tsv"
@@ -1163,6 +1287,10 @@
     "viewInPathway": true
   },
   "Cancer Cell Line Encyclopedia (Breast)": {
+    "gene expression pathway activity": {
+      "host": "",
+      "dataset": ""
+    },
     "copy number": {
       "host": "https://ucscpublic.xenahubs.net",
       "dataset": "ccle/CCLE_copynumber_byGene_2013-12-03_breast"
