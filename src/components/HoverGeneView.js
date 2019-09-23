@@ -157,12 +157,16 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel}
                       </span>
+                      {filter !== FILTER_ENUM.GENE_EXPRESSION &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
+                      }
+                      {filter !== FILTER_ENUM.GENE_EXPRESSION &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
+                      }
                       <div>
                         {filter !== FILTER_ENUM.GENE_EXPRESSION &&
                         <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
