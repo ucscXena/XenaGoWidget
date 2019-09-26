@@ -90,13 +90,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             {...this.props}
             associatedData={returnedValue.data}
             cohortIndex={cohortIndex}
-            data={{
-              expression,
-              geneExpression,
-              pathways: returnedValue.pathways,
-              samples,
-              sortedSamples: returnedValue.sortedSamples
-            }}
             draw={DrawFunctions.drawGeneSetView}
             height={totalHeight}
             labelHeight={labelHeight}
