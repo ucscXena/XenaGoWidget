@@ -11,6 +11,10 @@ import PropTypes from 'prop-types';
 
 const DEFAULT_LIMIT = 25 ;
 
+function scorePathway(p) {
+  return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+}
+
 export default class GeneSetFilter extends PureComponent {
 
   constructor(props){
@@ -20,7 +24,8 @@ export default class GeneSetFilter extends PureComponent {
       name: '',
       sortBy: 'Total',
       geneSet: 'Full 8K',
-      filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT)
+      filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT),
+      totalPathways: 0,
     };
   }
 
@@ -32,18 +37,18 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   filterByName(){
-    const filteredPathways = this.props.pathways.filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  p.goid.toLowerCase().indexOf(this.state.name)>=0));
-    // const filterLimits = filteredPathways.length > this.state.limit ? filteredPathways.slice(0,this.state.limit)
+    const filteredPathways = this.props.pathways
+      .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  p.goid.toLowerCase().indexOf(this.state.name)>=0))
+      .sort( (a,b) => scorePathway(b)-scorePathway(a)) ;
+
     this.setState({
       filteredPathways: filteredPathways.slice(0,this.state.limit),
+      totalPathways: filteredPathways.length
     });
   }
 
   render() {
-
-    this.filterByName(this.state.name,this.state.limit)
-
-    console.log('props',this.props.pathways);
+    this.filterByName(this.state.name,this.state.limit);
     return (
       <div className={BaseStyle.geneSetBox}>
         <table className={BaseStyle.geneSetFilterBox}>
@@ -82,7 +87,7 @@ export default class GeneSetFilter extends PureComponent {
             </tr>
             <tr>
               <td>
-                Limit
+                Limit (Tot: {this.state.totalPathways})
               </td>
               <td>
                 <input
@@ -111,7 +116,7 @@ export default class GeneSetFilter extends PureComponent {
         <select disabled multiple style={{overflow:'scroll', height:200}}>
           {
             this.state.filteredPathways.map( p => {
-              return <option key={p.golabel}>{p.golabel}</option>;
+              return <option key={p.golabel}>( { (scorePathway(p))}) {p.golabel}</option>;
             })
           }
         </select>
