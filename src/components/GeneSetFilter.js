@@ -5,7 +5,9 @@ import FaEdit from 'react-icons/lib/fa/edit';
 import FaSort from 'react-icons/lib/fa/sort-alpha-asc';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {Button} from 'react-toolbox/lib/button';
-import Dropdown from 'react-toolbox/lib/dropdown';
+// import Dropdown from 'react-toolbox/lib/dropdown';
+// import {CohortSelector} from "./CohortSelector";
+import PropTypes from "prop-types";
 
 export default class GeneSetFilter extends PureComponent {
 
@@ -16,7 +18,15 @@ export default class GeneSetFilter extends PureComponent {
 
   }
 
+  filterByName(name){
+    console.log('filter by name ',name);
+    console.log('filter pathway props',this.props.pathways);
+    const filteredPathways = this.props.pathways.filter( p => ( p.golabel.indexOf(name)>=0 ||  p.goid.indexOf(name)>=0));
+    console.log('filtered pathwyas',filteredPathways)
+  }
+
   render() {
+
     return (
       <div>
         <table className={BaseStyle.verticalLegendBox}>
@@ -47,7 +57,7 @@ export default class GeneSetFilter extends PureComponent {
             </tr>
             <tr>
               <td>
-                <input size={30}/>
+                <input onChange={(event) => this.filterByName(event.target.value)} size={30}/>
               </td>
               <td>
                 <FaFilter/>
@@ -80,4 +90,8 @@ export default class GeneSetFilter extends PureComponent {
       </div>
     );
   }
+}
+
+GeneSetFilter.propTypes = {
+  pathways: PropTypes.any.isRequired,
 }
