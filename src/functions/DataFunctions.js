@@ -133,13 +133,13 @@ export function createAssociatedDataKey(inputHash) {
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter, geneExpression
+    expression, copyNumber, geneList, pathways, samples, filter, geneExpression, geneExpressionPathwayActivity,
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter);
+    data = doDataAssociations(expression, copyNumber, geneExpression,geneExpressionPathwayActivity, geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
 
@@ -298,6 +298,40 @@ export function filterMutations(expression,returnArray,samples,pathways){
   return returnArray;
 }
 
+export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity, returnArray) {
+  // const genePathwayLookup = getGenePathwayLookup(pathways);
+  // console.log('input gepa',geneExpressionPathwayActivity)
+  let scored = 0 ;
+  for(const pathwayIndex in returnArray){
+    for(const sampleIndex in returnArray[pathwayIndex]){
+      returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
+      ++scored;
+      //         returnArray[index][sampleEntryIndex].geneExpressionPathwayActivity += returnValue ;
+    }
+  }
+  // let scored = 0 ;
+  // for (const gene of geneList) {
+  //   // if we have not processed that gene before, then process
+  //   const geneIndex = geneList.indexOf(gene);
+  //   const pathwayIndices = genePathwayLookup(gene);
+  //   const sampleEntries = geneExpressionPathwayActivity[geneIndex]; // set of samples for this gene
+  //
+  //   // get pathways this gene is involved in
+  //   for (const index of pathwayIndices) {
+  //     // process all samples
+  //     for (const sampleEntryIndex in sampleEntries) {
+  //       const returnValue = sampleEntries[sampleEntryIndex];
+  //       if (!isNaN(returnValue)) {
+  //         ++scored ;
+  //         returnArray[index][sampleEntryIndex].geneExpressionPathwayActivity += returnValue ;
+  //       }
+  //     }
+  //   }
+  // }
+  console.log('return gepa',returnArray,scored);
+  // take mean?
+  return {score: scored, returnArray};
+}
 
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
@@ -354,19 +388,21 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   return returnArray;
 }
 
+
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
  * @param expression
  * @param copyNumber
  * @param geneExpression
+ * @param geneExpressionPathwayActivity
  * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneExpression, geneList, pathways, samples, filter) {
+export function doDataAssociations(expression, copyNumber, geneExpression, geneExpressionPathwayActivity, geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === FILTER_ENUM.CNV_MUTATION || filter === FILTER_ENUM.MUTATION) {
@@ -380,6 +416,10 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneL
 
   if (filter === FILTER_ENUM.GENE_EXPRESSION) {
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
+    console.log('activity,',geneExpressionPathwayActivity);
+    if(geneExpressionPathwayActivity){
+      returnArray = filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity,returnArray,geneList,pathways).returnArray;
+    }
     // get list of genes in identified pathways
   }
   return returnArray;

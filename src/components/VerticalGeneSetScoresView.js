@@ -72,6 +72,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         pathways,
         samples,
         filter,
+        geneExpressionPathwayActivity,
         selectedCohort
       };
       if (expression === undefined || expression.length === 0) {
@@ -79,12 +80,15 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       }
       let associatedDataKey = createAssociatedDataKey(hashAssociation);
       let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+      console.log('pre ass dataa',associatedData)
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
       prunedColumns.samples = samples;
       let returnedValue = clusterSampleSort(prunedColumns);
 
-      console.log('input activity',geneExpressionPathwayActivity)
+      // console.log('input activity',geneExpressionPathwayActivity)
+      console.log('VGSA props',this.props)
+      console.log('VGSA ass dataa',returnedValue.data)
 
       return (
         <div>
