@@ -299,37 +299,13 @@ export function filterMutations(expression,returnArray,samples,pathways){
 }
 
 export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity, returnArray) {
-  // const genePathwayLookup = getGenePathwayLookup(pathways);
-  // console.log('input gepa',geneExpressionPathwayActivity)
   let scored = 0 ;
   for(const pathwayIndex in returnArray){
     for(const sampleIndex in returnArray[pathwayIndex]){
       returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
       ++scored;
-      //         returnArray[index][sampleEntryIndex].geneExpressionPathwayActivity += returnValue ;
     }
   }
-  // let scored = 0 ;
-  // for (const gene of geneList) {
-  //   // if we have not processed that gene before, then process
-  //   const geneIndex = geneList.indexOf(gene);
-  //   const pathwayIndices = genePathwayLookup(gene);
-  //   const sampleEntries = geneExpressionPathwayActivity[geneIndex]; // set of samples for this gene
-  //
-  //   // get pathways this gene is involved in
-  //   for (const index of pathwayIndices) {
-  //     // process all samples
-  //     for (const sampleEntryIndex in sampleEntries) {
-  //       const returnValue = sampleEntries[sampleEntryIndex];
-  //       if (!isNaN(returnValue)) {
-  //         ++scored ;
-  //         returnArray[index][sampleEntryIndex].geneExpressionPathwayActivity += returnValue ;
-  //       }
-  //     }
-  //   }
-  // }
-  console.log('return gepa',returnArray,scored);
-  // take mean?
   return {score: scored, returnArray};
 }
 
@@ -416,7 +392,6 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneE
 
   if (filter === FILTER_ENUM.GENE_EXPRESSION) {
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
-    console.log('activity,',geneExpressionPathwayActivity);
     if(geneExpressionPathwayActivity){
       returnArray = filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity,returnArray,geneList,pathways).returnArray;
     }

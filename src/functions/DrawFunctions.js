@@ -180,7 +180,6 @@ function findPathwayData(pathwayWidth, count) {
 
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
 
-  console.log('actual input data',data)
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
@@ -201,8 +200,8 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       //
       const pxRow = el.start * 4 * img.width; // first column and row in the block
       if(filter===FILTER_ENUM.GENE_EXPRESSION){
-        const geneExpressionScore = sumDataByType(d, 'geneExpression');
-        // const geneExpressionScore = sumDataByType(d, 'geneExpressionPathwayActivity');
+        // const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        const geneExpressionScore = sumDataByType(d, 'geneExpressionPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
