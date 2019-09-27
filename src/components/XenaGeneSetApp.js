@@ -28,6 +28,7 @@ import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
+import GeneSetFilter from "./GeneSetFilter";
 
 
 
@@ -629,6 +630,11 @@ export default class XenaGeneSetApp extends PureComponent {
                         <tr>
                           <td colSpan={3}>
                             <VerticalLegend/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan={3}>
+                            <GeneSetFilter/>
                           </td>
                         </tr>
                         <tr>
