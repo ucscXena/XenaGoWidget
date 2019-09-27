@@ -31,6 +31,8 @@ import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFuncti
 import GeneSetFilter from './GeneSetFilter';
 import Button from 'react-toolbox/lib/button';
 
+import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+
 
 
 export const XENA_VIEW = 'xena';
@@ -645,7 +647,8 @@ export default class XenaGeneSetApp extends PureComponent {
                               style={{width:400}}
                               title="Gene Set Search"
                             >
-                              <GeneSetFilter pathways={this.state.pathways}/>
+                              {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
+                              <GeneSetFilter pathways={LargePathways}/>
                             </Dialog>
                             }
                           </td>

@@ -38,7 +38,7 @@ export default class GeneSetFilter extends PureComponent {
 
   filterByName(){
     const filteredPathways = this.props.pathways
-      .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  p.goid.toLowerCase().indexOf(this.state.name)>=0))
+      .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => scorePathway(b)-scorePathway(a)) ;
 
     this.setState({
