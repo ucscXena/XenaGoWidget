@@ -23,7 +23,7 @@ const pruneDataCache = lru(500);
 const ignoreCache = false ;
 
 export const DEFAULT_DATA_VALUE = {
-  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
+  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0, bpaZScore: 0,
 };
 
 
@@ -445,8 +445,8 @@ export function calculatePathwayScore(pathwayData, filter) {
 }
 
 
-function calculateGeneExpressionPathwayActivity(pathwayData, filter) {
-  if(filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
+function calculateGeneExpressionPathwayActivity(pathwayData) {
+  if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
   return pathwayData.pathways.map( (p,index) => 100*average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
@@ -458,13 +458,14 @@ export function calculateAllPathways(pathwayData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
 
-  const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA, pathwayDataA.filter);
+  const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
+  // each pathway needs to have its own set BPA samples
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
-  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB.filter);
+  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB);
   const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
   const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);

@@ -179,6 +179,8 @@ function findPathwayData(pathwayWidth, count) {
 
 
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
+
+  console.log('actual input data',data)
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);

@@ -51,7 +51,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     render() {
 
       let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails} = this.props;
-      const {expression, samples, copyNumber, geneExpression} = data;
+      const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
@@ -83,6 +83,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
       prunedColumns.samples = samples;
       let returnedValue = clusterSampleSort(prunedColumns);
+
+      console.log('input activity',geneExpressionPathwayActivity)
 
       return (
         <div>
