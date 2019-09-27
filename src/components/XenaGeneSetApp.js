@@ -29,6 +29,7 @@ import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetFilter from './GeneSetFilter';
+import Button from 'react-toolbox/lib/button';
 
 
 
@@ -92,6 +93,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData: [{}, {}],
       pathwayData: [{}, {}],
       showPathwayDetails: false,
+      showGeneSetSearch: false,
       geneHits: [],
       selectedGene: undefined,
       reference: refGene['hg38'],
@@ -634,8 +636,17 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         <tr>
                           <td colSpan={3}>
+                            <Button icon='search' label='Search' onClick={() => this.setState({showGeneSetSearch:true})} raised/>
                             {this.state.pathways &&
-                            <GeneSetFilter pathways={this.state.pathways}/>
+                            <Dialog
+                              active={this.state.showGeneSetSearch}
+                              onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
+                              onOverlayClick={() => this.setState({showGeneSetSearch:false})}
+                              style={{width:400}}
+                              title="Gene Set Search"
+                            >
+                              <GeneSetFilter pathways={this.state.pathways}/>
+                            </Dialog>
                             }
                           </td>
                         </tr>
