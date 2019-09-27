@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 const DEFAULT_LIMIT = 25 ;
 
 function scorePathway(p) {
-  return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+  return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(0);
 }
 
 export default class GeneSetFilter extends PureComponent {
@@ -116,7 +116,7 @@ export default class GeneSetFilter extends PureComponent {
         <select disabled multiple style={{overflow:'scroll', height:200}}>
           {
             this.state.filteredPathways.map( p => {
-              return <option key={p.golabel}>( { (scorePathway(p))}) {p.golabel}</option>;
+              return <option key={p.golabel}>({ (scorePathway(p))}) {p.golabel}</option>;
             })
           }
         </select>
