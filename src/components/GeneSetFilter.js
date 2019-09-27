@@ -9,15 +9,18 @@ import {Button} from 'react-toolbox/lib/button';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
 
+const DEFAULT_LIMIT = 25 ;
+
 export default class GeneSetFilter extends PureComponent {
 
   constructor(props){
     super(props);
     this.state = {
-      limit: 25,
+      limit: DEFAULT_LIMIT,
+      name: '',
       sortBy: 'Total',
       geneSet: 'Full 8K',
-      filteredPathways : props.pathways
+      filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT)
     };
   }
 
@@ -28,22 +31,22 @@ export default class GeneSetFilter extends PureComponent {
 
   }
 
-  filterByName(name){
-    console.log('filter by name ',name);
-    console.log('filter pathway props',this.props.pathways);
-    const filteredPathways = this.props.pathways.filter( p => ( p.golabel.indexOf(name)>=0 ||  p.goid.indexOf(name)>=0));
+  filterByName(){
+    const filteredPathways = this.props.pathways.filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  p.goid.toLowerCase().indexOf(this.state.name)>=0));
+    // const filterLimits = filteredPathways.length > this.state.limit ? filteredPathways.slice(0,this.state.limit)
     this.setState({
-      filteredPathways
+      filteredPathways: filteredPathways.slice(0,this.state.limit),
     });
-    console.log('filtered pathwyas',filteredPathways);
   }
 
   render() {
 
+    this.filterByName(this.state.name,this.state.limit)
+
     console.log('props',this.props.pathways);
     return (
-      <div>
-        <table className={BaseStyle.verticalLegendBox}>
+      <div className={BaseStyle.geneSetBox}>
+        <table className={BaseStyle.geneSetFilterBox}>
           <tbody>
             <tr>
               <td>
@@ -71,7 +74,7 @@ export default class GeneSetFilter extends PureComponent {
             </tr>
             <tr>
               <td>
-                <input onChange={(event) => this.filterByName(event.target.value)} size={30}/>
+                <input onChange={(event) => this.setState({name: event.target.value.toLowerCase()})} size={30}/>
               </td>
               <td>
                 <FaFilter/>
@@ -82,7 +85,11 @@ export default class GeneSetFilter extends PureComponent {
                 Limit
               </td>
               <td>
-                <input  style={{width: 25}}  />
+                <input
+                  onChange={(event) => this.setState({limit: event.target.value})}
+                  style={{width: 25}}
+                  value={this.state.limit}
+                />
               </td>
             </tr>
             <tr>
@@ -101,13 +108,13 @@ export default class GeneSetFilter extends PureComponent {
             </tr>
           </tbody>
         </table>
-        <ul>
+        <select disabled multiple style={{overflow:'scroll', height:200}}>
           {
             this.state.filteredPathways.map( p => {
-              return <li key={p.golabel}>{p.golabel}</li>;
+              return <option key={p.golabel}>{p.golabel}</option>;
             })
           }
-        </ul>
+        </select>
       </div>
     );
   }
