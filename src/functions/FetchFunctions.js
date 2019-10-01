@@ -133,6 +133,17 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
+export const convertPathwaysToGeneSetLabel = (pathways) => {
+  return pathways.map( p => {
+    if(p.goid){
+      return p.golabel +' ('+p.goid+')';
+    }
+    else{
+      return p.golabel;
+    }
+  } );
+};
+
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
@@ -169,19 +180,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
     const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 
-    // const geneSetList = getGeneSetsForGeneList(geneList);
-    // eslint-disable-next-line no-unused-vars
-
-
-    // import tgac into arrays
-    const geneSetLabels = DefaultPathWays.map( p => {
-      if(p.goid){
-        return p.golabel +' ('+p.goid+')';
-      }
-      else{
-        return p.golabel;
-      }
-    } );
+    const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
 
     // TODO: make this a testable function
     // TODO: minimize fetches based on the filter

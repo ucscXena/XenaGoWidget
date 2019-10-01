@@ -8,11 +8,17 @@ import {Button} from 'react-toolbox/lib/button';
 // import Dropdown from 'react-toolbox/lib/dropdown';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
+import {convertPathwaysToGeneSetLabel} from '../functions/FetchFunctions';
+import { sum } from 'ucsc-xena-client/dist/underscore_ext';
+// import DefaultPathWays from '../data/genesets/tgac';
+const Rx = require('ucsc-xena-client/dist/rx');
+const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
+const {  datasetProbeValues } = xenaQuery;
 
 const DEFAULT_LIMIT = 25 ;
 
 function scorePathway(p) {
-  return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(0);
+  return (100*(p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity)).toFixed(0);
 }
 
 export default class GeneSetFilter extends PureComponent {
@@ -24,9 +30,48 @@ export default class GeneSetFilter extends PureComponent {
       name: '',
       sortBy: 'Total',
       geneSet: 'Full 8K',
+      loadedPathways: [],
+      selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
+      samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
+      // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT),
       totalPathways: 0,
     };
+
+    let { selectedCohort, samples } = this.state;
+
+    const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,1000);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways);
+
+    console.log('query with',samples[0].length,samples[1].length,geneSetLabels.length);
+
+    Rx.Observable.zip(
+      datasetProbeValues(selectedCohort[0].geneExpressionPathwayActivity.host, selectedCohort[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
+      datasetProbeValues(selectedCohort[1].geneExpressionPathwayActivity.host, selectedCohort[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
+      (
+        geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+      ) => ({
+        geneExpressionPathwayActivityA,
+        geneExpressionPathwayActivityB,
+      }),
+    )
+      .subscribe( (output ) => {
+        // get the average activity for each
+        const scoredPathwaySamples = [
+          output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+          output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+        ];
+        const loadedPathways = this.props.pathways.map( (pathway,index) => {
+          pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
+          pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
+          return pathway ;
+        });
+        // console.log('scoreed pathways',scoredPathwaySamples,loadedPathways);
+        this.setState({
+          loadedPathways
+        });
+      });
+
   }
 
   resetGeneSets(){
@@ -37,18 +82,22 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   filterByName(){
-    const filteredPathways = this.props.pathways
+    const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => scorePathway(b)-scorePathway(a)) ;
 
     this.setState({
-      filteredPathways: filteredPathways.slice(0,this.state.limit),
+      filteredPathways: filteredPathways,
       totalPathways: filteredPathways.length
     });
   }
 
+  componentDidUpdate() {
+    this.filterByName();
+  }
+
   render() {
-    this.filterByName(this.state.name,this.state.limit);
+    // this.filterByName(this.state.name,this.state.limit);
     return (
       <div className={BaseStyle.geneSetBox}>
         <table className={BaseStyle.geneSetFilterBox}>
@@ -70,7 +119,8 @@ export default class GeneSetFilter extends PureComponent {
                 Sort By
                 <select>
                   <option>Total BPA</option>
-                  <option>Diff BPA</option>
+                  <option>A - B BPA</option>
+                  <option>A-Z</option>
                 </select>
               </td>
               <td>
@@ -113,10 +163,10 @@ export default class GeneSetFilter extends PureComponent {
             </tr>
           </tbody>
         </table>
-        <select disabled multiple style={{overflow:'scroll', height:200}}>
+        <select disabled multiple style={{overflow:'scroll', height:200,width: 300}}>
           {
             this.state.filteredPathways.map( p => {
-              return <option key={p.golabel}>({ (scorePathway(p))}) {p.golabel}</option>;
+              return <option key={p.golabel}>({ (scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
             })
           }
         </select>
@@ -126,5 +176,6 @@ export default class GeneSetFilter extends PureComponent {
 }
 
 GeneSetFilter.propTypes = {
+  pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
 };

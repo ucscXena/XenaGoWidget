@@ -570,6 +570,8 @@ export default class XenaGeneSetApp extends PureComponent {
       let pathways = activeApp.pathways;
       let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
+
+
       if(this.doRefetch()){
         currentLoadState = LOAD_STATE.LOADING;
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
@@ -648,7 +650,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               title="Gene Set Search"
                             >
                               {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
-                              <GeneSetFilter pathways={LargePathways}/>
+                              <GeneSetFilter pathways={LargePathways} pathwayData={this.state.pathwayData}/>
                             </Dialog>
                             }
                           </td>
