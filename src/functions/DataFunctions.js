@@ -20,7 +20,7 @@ const associateCache = lru(500);
 const pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-const ignoreCache = false ;
+const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
   total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
@@ -300,6 +300,7 @@ export function filterMutations(expression,returnArray,samples,pathways){
 
 export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity, returnArray) {
   let scored = 0 ;
+  console.log('outyput activity',returnArray,geneExpressionPathwayActivity)
   for(const pathwayIndex in returnArray){
     for(const sampleIndex in returnArray[pathwayIndex]){
       returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
@@ -461,7 +462,9 @@ export function calculatePathwayScore(pathwayData, filter) {
 
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
+  console.log('activity here',pathwayData)
   if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
+  console.log('pathway data',pathwayData.geneExpressionPathwayActivity)
   return pathwayData.pathways.map( (p,index) => 100*average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
@@ -596,6 +599,7 @@ export function calculateDiffs(geneData0, geneData1) {
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
+  console.log('pathway selection',pathwaySelection)
   const { pathway: { goid, golabel } } = pathwaySelection;
 
   const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
@@ -635,9 +639,11 @@ function calculateMeanGeneExpression(datum) {
 
 export function scoreGeneData(inputGeneData) {
   const { samples, cohortIndex } = inputGeneData;
+  console.log('input',inputGeneData)
   const associatedDataKey = createAssociatedDataKey(inputGeneData);
   const associatedData = findAssociatedData(inputGeneData, associatedDataKey);
   const prunedColumns = findPruneData(associatedData, associatedDataKey);
+  console.log('output pruned',prunedColumns)
   prunedColumns.samples = samples;
   const calculatedPathways = scoreColumns(prunedColumns);
   const returnedValue = update(prunedColumns, {
@@ -646,6 +652,7 @@ export function scoreGeneData(inputGeneData) {
   });
 
   // set affected versus total
+  console.log('rerunted value',returnedValue)
   const samplesLength = returnedValue.data[0].length;
 
   for (const d in returnedValue.data) {

@@ -31,8 +31,6 @@ import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFuncti
 import GeneSetFilter from './GeneSetFilter';
 import Button from 'react-toolbox/lib/button';
 
-import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
-
 
 
 export const XENA_VIEW = 'xena';
@@ -216,8 +214,10 @@ export default class XenaGeneSetApp extends PureComponent {
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
+      console.log('compbined input pathways',JSON.stringify(pathways.length),JSON.stringify(pathwayDataA.pathways.length));
 
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
+      console.log('compbined OUTPUT pathways',JSON.stringify(pathways.length));
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;
 
@@ -566,7 +566,11 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     setActivePathway = (newPathways) => {
+      console.log('get pathways',JSON.stringify(AppStorageHandler.getPathways().length));
+      console.log('store pathways',JSON.stringify(newPathways.length));
+      AppStorageHandler.storePathways(newPathways);
       this.setState({
+        showGeneSetSearch: false,
         pathways:newPathways,
         fetch: true,
         currentLoadState: LOAD_STATE.LOADING,
@@ -574,11 +578,12 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     render() {
-      let activeApp = this.getActiveApp();
-      let pathways = activeApp.pathways;
+      let storedPathways = AppStorageHandler.getPathways();
+      let pathways = this.state.pathways ? this.state.pathways : storedPathways;
+      console.log('pathways',storedPathways);
+      console.log('active app',pathways);
+      console.log('state pathwayas',this.state.pathways);
       let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
-
-
 
       if(this.doRefetch()){
         currentLoadState = LOAD_STATE.LOADING;
@@ -648,18 +653,26 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         <tr>
                           <td colSpan={3}>
-                            <Button icon='edit' label='Edit Pathways' onClick={() => this.setState({showGeneSetSearch:true})} raised/>
+                            <Button icon='edit' onClick={() => this.setState({showGeneSetSearch:true})} raised>
+                            Edit Pathways&nbsp;
+                              {this.state.pathways &&
+                            <div style={{display:'inline'}}>
+                              ({this.state.pathways.length})
+                            </div>
+                              }
+
+                            </Button>
                             {this.state.pathways &&
-                            <Dialog
-                              active={this.state.showGeneSetSearch}
-                              onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
-                              onOverlayClick={() => this.setState({showGeneSetSearch:false})}
-                              style={{width:400}}
-                              title="Gene Set Search"
-                            >
-                              {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
-                              <GeneSetFilter pathwayData={this.state.pathwayData} pathways={LargePathways} setPathways={this.setActivePathway}/>
-                            </Dialog>
+                          <Dialog
+                            active={this.state.showGeneSetSearch}
+                            onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
+                            onOverlayClick={() => this.setState({showGeneSetSearch:false})}
+                            style={{width:400}}
+                            title="Gene Set Search"
+                          >
+                            {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
+                            <GeneSetFilter pathwayData={this.state.pathwayData} pathways={this.state.pathways} setPathways={this.setActivePathway}/>
+                          </Dialog>
                             }
                           </td>
                         </tr>

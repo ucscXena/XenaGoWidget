@@ -10,7 +10,7 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import DefaultPathWays from '../data/genesets/tgac';
+// import DefaultPathWays from '../data/genesets/tgac';
 
 const { datasetSamples, datasetFetch, sparseData , datasetProbeValues } = xenaQuery;
 
@@ -147,6 +147,7 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
+  console.log('fetching wtih pathways',pathways.length)
   let filterCounts ;
 
   Rx.Observable.zip(
@@ -180,7 +181,9 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
     const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
+    // console.log('gene set labels for ',geneSetLabels,convertPathwaysToGeneSetLabel(pathways))
+    const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
     // TODO: make this a testable function
     // TODO: minimize fetches based on the filter

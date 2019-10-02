@@ -78,6 +78,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       if (expression === undefined || expression.length === 0) {
         return <div>Loading...</div>;
       }
+      console.log('input pathways',JSON.stringify(pathways.length))
       let associatedDataKey = createAssociatedDataKey(hashAssociation);
       let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
