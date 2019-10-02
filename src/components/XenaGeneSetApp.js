@@ -225,6 +225,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
       let selection = AppStorageHandler.getPathwaySelection();
+      if(!selection.golabel){
+        selection.pathway = pathways[0];
+      }
       let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
 
       currentLoadState = LOAD_STATE.LOADED;
@@ -565,11 +568,23 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
-    setActivePathway = (newPathways) => {
+    setActiveGeneSets = (newPathways) => {
       console.log('get pathways',JSON.stringify(AppStorageHandler.getPathways().length));
       console.log('store pathways',JSON.stringify(newPathways.length));
       AppStorageHandler.storePathways(newPathways);
+
+      console.log('original pathway selection',this.state.pathwaySelection);
+
+      let pathwaySelection = newPathways.filter( p => this.state.pathwaySelection.pathway.golabel===p.golabel );
+      console.log('has a pathway selection',pathwaySelection,newPathways);
+      pathwaySelection = {
+        tissue: 'Header',
+        pathway: pathwaySelection.length>0 ? pathwaySelection[0] : newPathways[0],
+      };
+      console.log('B a pathway selection',pathwaySelection);
+
       this.setState({
+        pathwaySelection,
         showGeneSetSearch: false,
         pathways:newPathways,
         fetch: true,
@@ -670,8 +685,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             style={{width:400}}
                             title="Gene Set Search"
                           >
-                            {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
-                            <GeneSetFilter pathwayData={this.state.pathwayData} pathways={this.state.pathways} setPathways={this.setActivePathway}/>
+                            <GeneSetFilter pathwayData={this.state.pathwayData} pathways={this.state.pathways} setPathways={this.setActiveGeneSets}/>
                           </Dialog>
                             }
                           </td>

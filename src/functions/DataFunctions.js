@@ -518,7 +518,7 @@ export function calculateAllPathways(pathwayData) {
 export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
-  console.log('input pathways for scoring data',pathways);
+  console.log('input pathways for scoring data',pathways,selection);
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
   console.log('gene data output',geneDataA,geneDataB);
@@ -607,7 +607,7 @@ export function calculateDiffs(geneData0, geneData1) {
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
 
-  console.log('pathway selection',pathwaySelection);
+  console.log('pathway selection',JSON.stringify(pathwaySelection));
   let { pathway: { goid, golabel } } = pathwaySelection;
 
   console.log('gene set pathways',geneSetPathways,golabel);
