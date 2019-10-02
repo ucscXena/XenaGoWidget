@@ -2,7 +2,8 @@ import PureComponent from './PureComponent';
 import React from 'react';
 import BaseStyle from '../css/base.css';
 import FaEdit from 'react-icons/lib/fa/edit';
-import FaSort from 'react-icons/lib/fa/sort-alpha-asc';
+import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
+import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {Button} from 'react-toolbox/lib/button';
 // import Dropdown from 'react-toolbox/lib/dropdown';
@@ -24,6 +25,7 @@ export default class GeneSetFilter extends PureComponent {
     this.state = {
       limit: DEFAULT_LIMIT,
       name: '',
+      sortOrder:'asc',
       sortBy: 'Total',
       geneSet: 'Full 8K',
       loadedPathways: [],
@@ -37,7 +39,7 @@ export default class GeneSetFilter extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,1000);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,10);
     // const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways);
 
     console.log('query with',samples[0].length,samples[1].length,geneSetLabels.length);
@@ -91,9 +93,9 @@ export default class GeneSetFilter extends PureComponent {
       .sort( (a,b) => {
         switch(this.state.sortBy) {
         default:
-          return this.scorePathway(b)-this.scorePathway(a);
+          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (this.scorePathway(b)-this.scorePathway(a)) ;
         case 'Alpha':
-          return b.golabel - a.golabel;
+          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
         }
       }) ;
 
@@ -132,7 +134,12 @@ export default class GeneSetFilter extends PureComponent {
                 </select>
               </td>
               <td>
-                <FaSort/>
+                { this.state.sortOrder === 'asc' &&
+                  <FaSortAsc onClick={ () => this.setState({sortOrder:'desc'})}/>
+                }
+                { this.state.sortOrder === 'desc' &&
+                <FaSortDesc onClick={ () => this.setState({sortOrder:'asc'})}/>
+                }
               </td>
             </tr>
             <tr>
