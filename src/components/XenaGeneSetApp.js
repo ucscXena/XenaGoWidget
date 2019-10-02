@@ -650,7 +650,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         </tr>
                         <tr>
                           <td colSpan={3}>
-                            <Button icon='search' label='Search' onClick={() => this.setState({showGeneSetSearch:true})} raised/>
+                            <Button icon='edit' label='Edit Pathways' onClick={() => this.setState({showGeneSetSearch:true})} raised/>
                             {this.state.pathways &&
                             <Dialog
                               active={this.state.showGeneSetSearch}
