@@ -15,6 +15,7 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaArrowCircleOLeft from 'react-icons/lib/fa/arrow-circle-o-left';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import {ButtonGroup} from 'react-bootstrap';
+import update from 'immutability-helper';
 // import DefaultPathWays from '../data/genesets/tgac';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -36,8 +37,8 @@ export default class GeneSetFilter extends PureComponent {
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
-      filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT),
-      cartPathways : props.pathways.slice(0,DEFAULT_LIMIT),
+      filteredPathways : [],
+      cartPathways : [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
       totalPathways: 0,
@@ -74,7 +75,8 @@ export default class GeneSetFilter extends PureComponent {
         });
         // console.log('scoreed pathways',scoredPathwaySamples,loadedPathways);
         this.setState({
-          loadedPathways
+          loadedPathways,
+          cartPathways:props.pathways.slice(0,DEFAULT_LIMIT),
         });
       });
 
@@ -175,23 +177,31 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                   </tbody>
                 </table>
-                <select multiple style={{overflow:'scroll', height:200,width: 300}}>
+                <select
+                  multiple onChange={(event) => {
+                    const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
+                      console.log('input change',opt);
+                      return opt.value;
+                    });
+                    this.setState({ selectedFilteredPathways: selectedEvents});
+                  }} style={{overflow:'scroll', height:200,width: 300}}
+                >
                   {
                     this.state.filteredPathways.map( p => {
-                      return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
               </td>
               <td width={100}>
                 <ButtonGroup>
-                  <Button onClick={() => this.handleAddSelectedToCart}>
+                  <Button onClick={() => this.handleAddSelectedToCart()}>
                     <FaArrowCircleORight/>
                   </Button>
                   <Button onClick={() => this.handleClearCart()}>
                     <FaTrashO/>
                   </Button>
-                  <Button onClick={() => this.handleRemoveSelectedFromCart}>
+                  <Button onClick={() => this.handleRemoveSelectedFromCart()}>
                     <FaArrowCircleOLeft/>
                   </Button>
                 </ButtonGroup>
@@ -203,7 +213,7 @@ export default class GeneSetFilter extends PureComponent {
                       const compareString = b.golabel.toLowerCase();
                       return (a.golabel.toLowerCase()).localeCompare(compareString);
                     }).map( p => {
-                      return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
@@ -230,11 +240,24 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleAddSelectedToCart() {
+    console.log('adding to cart',this.state.selectedFilteredPathways, this.state.cartPathways);
+
+    // find filteredPathways from each selectedFilter
+    const selectedFilteredPathways = this.state.filteredPathways
+      .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
+      .filter( f => this.state.cartPathways.indexOf(f)<0 );
+    const cartPathways = update(this.state.cartPathways, {
+      $push: selectedFilteredPathways
+    });
+    console.log('final cart cart',cartPathways, ' from',this.state.cartPathways);
+    this.setState({
+      cartPathways
+    });
   }
 
 
   handleClearCart() {
-    console.log('clearing cart')
+    console.log('clearing cart');
     this.setState({cartPathways:[]});
   }
 
@@ -242,12 +265,13 @@ export default class GeneSetFilter extends PureComponent {
 
   }
 
+  // TODO: push back to production pathways
   handleViewGeneSets() {
 
   }
 
   handleResetGeneSets() {
-    console.log('clearing cart')
+    console.log('clearing cart');
     this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
 
   }
