@@ -300,10 +300,15 @@ export function filterMutations(expression,returnArray,samples,pathways){
 
 export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity, returnArray) {
   let scored = 0 ;
-  console.log('outyput activity',returnArray,geneExpressionPathwayActivity)
+  console.log('outyput activity',JSON.stringify([returnArray.length,returnArray[0].length]),JSON.stringify([geneExpressionPathwayActivity.length,geneExpressionPathwayActivity[0].length]));
   for(const pathwayIndex in returnArray){
     for(const sampleIndex in returnArray[pathwayIndex]){
-      returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
+      if(geneExpressionPathwayActivity[pathwayIndex]){
+        returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
+      }
+      else{
+        returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = 0;
+      }
       ++scored;
     }
   }
@@ -462,9 +467,9 @@ export function calculatePathwayScore(pathwayData, filter) {
 
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
-  console.log('activity here',pathwayData)
+  console.log('activity here',pathwayData);
   if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
-  console.log('pathway data',pathwayData.geneExpressionPathwayActivity)
+  console.log('pathway data',pathwayData.geneExpressionPathwayActivity);
   return pathwayData.pathways.map( (p,index) => 100*average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
@@ -513,8 +518,10 @@ export function calculateAllPathways(pathwayData) {
 export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
+  console.log('input pathways for scoring data',pathways);
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
+  console.log('gene data output',geneDataA,geneDataB);
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
@@ -599,10 +606,17 @@ export function calculateDiffs(geneData0, geneData1) {
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
-  console.log('pathway selection',pathwaySelection)
-  const { pathway: { goid, golabel } } = pathwaySelection;
 
-  const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  console.log('pathway selection',pathwaySelection);
+  let { pathway: { goid, golabel } } = pathwaySelection;
+
+  console.log('gene set pathways',geneSetPathways,golabel);
+  let geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  if(geneList.length===0){
+    golabel = geneSetPathways[0].golabel;
+    geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  }
+  console.log('output gene list is probably empty',geneList);
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
   // TODO: just return this once fixed
@@ -639,11 +653,11 @@ function calculateMeanGeneExpression(datum) {
 
 export function scoreGeneData(inputGeneData) {
   const { samples, cohortIndex } = inputGeneData;
-  console.log('input',inputGeneData)
+  console.log('input',inputGeneData);
   const associatedDataKey = createAssociatedDataKey(inputGeneData);
   const associatedData = findAssociatedData(inputGeneData, associatedDataKey);
   const prunedColumns = findPruneData(associatedData, associatedDataKey);
-  console.log('output pruned',prunedColumns)
+  console.log('output pruned',prunedColumns);
   prunedColumns.samples = samples;
   const calculatedPathways = scoreColumns(prunedColumns);
   const returnedValue = update(prunedColumns, {
@@ -652,7 +666,7 @@ export function scoreGeneData(inputGeneData) {
   });
 
   // set affected versus total
-  console.log('rerunted value',returnedValue)
+  console.log('rerunted value',returnedValue);
   const samplesLength = returnedValue.data[0].length;
 
   for (const d in returnedValue.data) {

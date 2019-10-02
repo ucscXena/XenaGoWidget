@@ -118,19 +118,21 @@ export default class GeneSetFilter extends PureComponent {
     });
   }
 
-
-  handleAddSelectedToCart() {
-    console.log('adding to cart',this.state.selectedFilteredPathways, this.state.cartPathways);
-
+  getSelectedCartData(){
     // find filteredPathways from each selectedFilter
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 );
-    const cartPathways = update(this.state.cartPathways, {
+    return update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     });
+  }
+
+  handleAddSelectedToCart() {
+    console.log('adding to cart',this.state.selectedFilteredPathways, this.state.cartPathways);
+
     this.setState({
-      cartPathways
+      cartPathways: this.getSelectedCartData()
     });
   }
 
@@ -150,7 +152,7 @@ export default class GeneSetFilter extends PureComponent {
 
   // TODO: push back to production pathways
   handleViewGeneSets() {
-    this.props.setPathways(this.state.cartPathways);
+    this.props.setPathways(this.getSelectedCartData());
   }
 
   handleResetGeneSets() {
