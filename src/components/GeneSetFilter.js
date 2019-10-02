@@ -17,10 +17,6 @@ const {  datasetProbeValues } = xenaQuery;
 
 const DEFAULT_LIMIT = 25 ;
 
-function scorePathway(p) {
-  return (100*(p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity)).toFixed(0);
-}
-
 export default class GeneSetFilter extends PureComponent {
 
   constructor(props){
@@ -37,6 +33,7 @@ export default class GeneSetFilter extends PureComponent {
       filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT),
       totalPathways: 0,
     };
+
 
     let { selectedCohort, samples } = this.state;
 
@@ -74,17 +71,31 @@ export default class GeneSetFilter extends PureComponent {
 
   }
 
-  resetGeneSets(){
-
+  componentDidUpdate() {
+    this.filterByName();
   }
-  viewGeneSets(){
 
+  scorePathway(p) {
+    switch (this.state.sortBy) {
+    default:
+    case 'Total':
+      return (100*(p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity)).toFixed(0);
+    case 'Diff':
+      return (100*(p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity)).toFixed(0);
+    }
   }
 
   filterByName(){
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
-      .sort( (a,b) => scorePathway(b)-scorePathway(a)) ;
+      .sort( (a,b) => {
+        switch(this.state.sortBy) {
+        default:
+          return this.scorePathway(b)-this.scorePathway(a);
+        case 'Alpha':
+          return b.golabel - a.golabel;
+        }
+      }) ;
 
     this.setState({
       filteredPathways: filteredPathways,
@@ -92,9 +103,6 @@ export default class GeneSetFilter extends PureComponent {
     });
   }
 
-  componentDidUpdate() {
-    this.filterByName();
-  }
 
   render() {
     // this.filterByName(this.state.name,this.state.limit);
@@ -117,10 +125,10 @@ export default class GeneSetFilter extends PureComponent {
             <tr>
               <td>
                 Sort By
-                <select>
-                  <option>Total BPA</option>
-                  <option>A - B BPA</option>
-                  <option>A-Z</option>
+                <select onChange={(event) => this.setState({sortBy: event.target.value})}>
+                  <option value='Total'>Total BPA</option>
+                  <option value='Diff'>A - B BPA</option>
+                  <option value='Alpha'>A-Z</option>
                 </select>
               </td>
               <td>
@@ -166,7 +174,7 @@ export default class GeneSetFilter extends PureComponent {
         <select disabled multiple style={{overflow:'scroll', height:200,width: 300}}>
           {
             this.state.filteredPathways.map( p => {
-              return <option key={p.golabel}>({ (scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+              return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
             })
           }
         </select>
