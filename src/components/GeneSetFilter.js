@@ -47,9 +47,8 @@ export default class GeneSetFilter extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,100);
-    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
     console.log('query with',samples[0].length,samples[1].length,geneSetLabels.length);
 
