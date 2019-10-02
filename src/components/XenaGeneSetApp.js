@@ -565,6 +565,16 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
+    setActivePathway = (newPathways) => {
+      console.log('new pathways',newPathways,this.state.pathways)
+      // const newPathwayData = update(this.state.pathwayData, {
+      //   $update: {pathways: newPathways}
+      // });
+      this.setState({
+        pathways:newPathways
+      });
+    };
+
     render() {
       let activeApp = this.getActiveApp();
       let pathways = activeApp.pathways;
@@ -650,7 +660,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               title="Gene Set Search"
                             >
                               {/*<GeneSetFilter pathways={this.state.pathways}/>*/}
-                              <GeneSetFilter pathways={LargePathways} pathwayData={this.state.pathwayData}/>
+                              <GeneSetFilter pathwayData={this.state.pathwayData} pathways={LargePathways} setPathways={this.setActivePathway}/>
                             </Dialog>
                             }
                           </td>

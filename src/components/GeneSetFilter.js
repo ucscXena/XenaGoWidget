@@ -280,16 +280,16 @@ export default class GeneSetFilter extends PureComponent {
 
   // TODO: push back to production pathways
   handleViewGeneSets() {
-
+    this.props.setPathways(this.state.cartPathways);
   }
 
   handleResetGeneSets() {
     this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
-
   }
 }
 
 GeneSetFilter.propTypes = {
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
+  setPathways: PropTypes.any.isRequired,
 };
