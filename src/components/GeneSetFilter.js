@@ -11,6 +11,10 @@ import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {convertPathwaysToGeneSetLabel} from '../functions/FetchFunctions';
 import { sum } from 'ucsc-xena-client/dist/underscore_ext';
+import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
+import FaArrowCircleOLeft from 'react-icons/lib/fa/arrow-circle-o-left';
+import FaTrashO from 'react-icons/lib/fa/trash-o';
+import {ButtonGroup} from 'react-bootstrap';
 // import DefaultPathWays from '../data/genesets/tgac';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -33,13 +37,16 @@ export default class GeneSetFilter extends PureComponent {
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : props.pathways.slice(0,DEFAULT_LIMIT),
+      cartPathways : props.pathways.slice(0,DEFAULT_LIMIT),
+      selectedFilteredPathways : [],
+      selectedCartPathways : [],
       totalPathways: 0,
     };
 
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,1000);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways).slice(0,100);
     // const geneSetLabels = convertPathwaysToGeneSetLabel(this.props.pathways);
 
     console.log('query with',samples[0].length,samples[1].length,geneSetLabels.length);
@@ -110,83 +117,139 @@ export default class GeneSetFilter extends PureComponent {
     // this.filterByName(this.state.name,this.state.limit);
     return (
       <div className={BaseStyle.geneSetBox}>
-        <table className={BaseStyle.geneSetFilterBox}>
+        <table>
           <tbody>
             <tr>
-              <td>
-                <select>
-                  <option>Full 8K</option>
-                  <option>Default Gene Set (42)</option>
-                  <option>Flybase</option>
-                </select>
-              </td>
-              <td>
-                <FaEdit/>
-              </td>
-            </tr>
-            <tr>
-              <td>
+              <td width={200}>
+                <table className={BaseStyle.geneSetFilterBox}>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select>
+                          <option>Full 8K</option>
+                          <option>Default Gene Set (42)</option>
+                          <option>Flybase</option>
+                        </select>
+                      </td>
+                      <td>
+                        <FaEdit/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
                 Sort By
-                <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                  <option value='Total'>Total BPA</option>
-                  <option value='Diff'>A - B BPA</option>
-                  <option value='Alpha'>A-Z</option>
+                        <select onChange={(event) => this.setState({sortBy: event.target.value})}>
+                          <option value='Total'>Total BPA</option>
+                          <option value='Diff'>A - B BPA</option>
+                          <option value='Alpha'>A-Z</option>
+                        </select>
+                      </td>
+                      <td>
+                        { this.state.sortOrder === 'asc' &&
+                  <FaSortAsc onClick={() => this.setState({sortOrder:'desc'})}/>
+                        }
+                        { this.state.sortOrder === 'desc' &&
+                <FaSortDesc onClick={() => this.setState({sortOrder:'asc'})}/>
+                        }
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input onChange={(event) => this.setState({name: event.target.value.toLowerCase()})} size={30}/>
+                      </td>
+                      <td>
+                        <FaFilter/>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                Limit (Tot: {this.state.totalPathways})
+                      </td>
+                      <td>
+                        <input
+                          onChange={(event) => this.setState({limit: event.target.value})}
+                          style={{width: 25}}
+                          value={this.state.limit}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <select multiple style={{overflow:'scroll', height:200,width: 300}}>
+                  {
+                    this.state.filteredPathways.map( p => {
+                      return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                    })
+                  }
                 </select>
               </td>
-              <td>
-                { this.state.sortOrder === 'asc' &&
-                  <FaSortAsc onClick={ () => this.setState({sortOrder:'desc'})}/>
-                }
-                { this.state.sortOrder === 'desc' &&
-                <FaSortDesc onClick={ () => this.setState({sortOrder:'asc'})}/>
-                }
+              <td width={100}>
+                <ButtonGroup>
+                  <Button onClick={() => this.handleAddSelectedToCart}>
+                    <FaArrowCircleORight/>
+                  </Button>
+                  <Button onClick={() => this.handleClearCart()}>
+                    <FaTrashO/>
+                  </Button>
+                  <Button onClick={() => this.handleRemoveSelectedFromCart}>
+                    <FaArrowCircleOLeft/>
+                  </Button>
+                </ButtonGroup>
               </td>
-            </tr>
-            <tr>
-              <td>
-                <input onChange={(event) => this.setState({name: event.target.value.toLowerCase()})} size={30}/>
-              </td>
-              <td>
-                <FaFilter/>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                Limit (Tot: {this.state.totalPathways})
-              </td>
-              <td>
-                <input
-                  onChange={(event) => this.setState({limit: event.target.value})}
-                  style={{width: 25}}
-                  value={this.state.limit}
-                />
+              <td width={200}>
+                <select multiple style={{overflow:'scroll',height: 300}}>
+                  {
+                    this.state.cartPathways.sort( (a,b) =>{
+                      const compareString = b.golabel.toLowerCase();
+                      return (a.golabel.toLowerCase()).localeCompare(compareString);
+                    }).map( p => {
+                      return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                    })
+                  }
+                </select>
               </td>
             </tr>
             <tr>
               <td>
                 <Button
                   label='View' mini
-                  onClick={() => this.viewGeneSets}
+                  onClick={() => this.handleViewGeneSets()}
                   primary raised
                 />
                 <Button
                   label='Reset' mini
-                  onClick={() => this.resetGeneSets}
+                  onClick={() => this.handleResetGeneSets()}
                   raised
                 />
               </td>
             </tr>
           </tbody>
         </table>
-        <select disabled multiple style={{overflow:'scroll', height:200,width: 300}}>
-          {
-            this.state.filteredPathways.map( p => {
-              return <option key={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
-            })
-          }
-        </select>
       </div>
     );
+  }
+
+  handleAddSelectedToCart() {
+  }
+
+
+  handleClearCart() {
+    console.log('clearing cart')
+    this.setState({cartPathways:[]});
+  }
+
+  handleRemoveSelectedFromCart() {
+
+  }
+
+  handleViewGeneSets() {
+
+  }
+
+  handleResetGeneSets() {
+    console.log('clearing cart')
+    this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
+
   }
 }
 
