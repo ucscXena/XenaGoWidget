@@ -566,12 +566,10 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     setActivePathway = (newPathways) => {
-      console.log('new pathways',newPathways,this.state.pathways)
-      // const newPathwayData = update(this.state.pathwayData, {
-      //   $update: {pathways: newPathways}
-      // });
       this.setState({
-        pathways:newPathways
+        pathways:newPathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
       });
     };
 

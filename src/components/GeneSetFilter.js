@@ -21,7 +21,7 @@ const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 const {  datasetProbeValues } = xenaQuery;
 
-const DEFAULT_LIMIT = 25 ;
+const DEFAULT_LIMIT = 45;
 
 export default class GeneSetFilter extends PureComponent {
 
