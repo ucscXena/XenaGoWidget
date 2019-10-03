@@ -50,8 +50,6 @@ export default class GeneSetFilter extends PureComponent {
     // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
     const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
-    console.log('query with',samples[0].length,samples[1].length,geneSetLabels.length);
-
     Rx.Observable.zip(
       datasetProbeValues(selectedCohort[0].geneExpressionPathwayActivity.host, selectedCohort[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
       datasetProbeValues(selectedCohort[1].geneExpressionPathwayActivity.host, selectedCohort[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
@@ -73,8 +71,7 @@ export default class GeneSetFilter extends PureComponent {
           pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
           return pathway ;
         });
-        // console.log('scoreed pathways',scoredPathwaySamples,loadedPathways);
-        const pathwayLabels = props.pathways.map( p => p.golabel)
+        const pathwayLabels = props.pathways.map( p => p.golabel);
         const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
         // cart pathways are loaded pathways related to
 
@@ -129,8 +126,6 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleAddSelectedToCart() {
-    console.log('adding to cart',this.state.selectedFilteredPathways, this.state.cartPathways);
-
     this.setState({
       cartPathways: this.getSelectedCartData()
     });
@@ -225,7 +220,6 @@ export default class GeneSetFilter extends PureComponent {
                   multiple
                   onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                      console.log('input change',opt);
                       return opt.value;
                     });
                     this.setState({ selectedFilteredPathways: selectedEvents});
@@ -257,7 +251,6 @@ export default class GeneSetFilter extends PureComponent {
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                      console.log('input change',opt);
                       return opt.value;
                     });
                     this.setState({ selectedCartPathways: selectedEvents});

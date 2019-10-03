@@ -57,7 +57,6 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     };
-    // console.log('return object',JSON.stringify(returnObject));
     return returnObject ;
   }
   else{
@@ -147,7 +146,6 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
-  console.log('fetching wtih pathways',pathways.length)
   let filterCounts ;
 
   Rx.Observable.zip(
@@ -182,7 +180,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
 
     // const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
-    // console.log('gene set labels for ',geneSetLabels,convertPathwaysToGeneSetLabel(pathways))
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
     // TODO: make this a testable function

@@ -214,10 +214,7 @@ export default class XenaGeneSetApp extends PureComponent {
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
-      console.log('compbined input pathways',JSON.stringify(pathways.length),JSON.stringify(pathwayDataA.pathways.length));
-
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
-      console.log('compbined OUTPUT pathways',JSON.stringify(pathways.length));
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;
 
@@ -569,20 +566,13 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     setActiveGeneSets = (newPathways) => {
-      console.log('get pathways',JSON.stringify(AppStorageHandler.getPathways().length));
-      console.log('store pathways',JSON.stringify(newPathways.length));
       AppStorageHandler.storePathways(newPathways);
 
-      console.log('original pathway selection',this.state.pathwaySelection);
-
       let pathwaySelection = newPathways.filter( p => this.state.pathwaySelection.pathway.golabel===p.golabel );
-      console.log('has a pathway selection',pathwaySelection,newPathways);
       pathwaySelection = {
         tissue: 'Header',
         pathway: pathwaySelection.length>0 ? pathwaySelection[0] : newPathways[0],
       };
-      console.log('B a pathway selection',pathwaySelection);
-
       this.setState({
         pathwaySelection,
         showGeneSetSearch: false,
@@ -595,9 +585,6 @@ export default class XenaGeneSetApp extends PureComponent {
     render() {
       let storedPathways = AppStorageHandler.getPathways();
       let pathways = this.state.pathways ? this.state.pathways : storedPathways;
-      // console.log('pathways',storedPathways);
-      // console.log('active app',pathways);
-      // console.log('state pathwayas',this.state.pathways);
       let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
       if(this.doRefetch()){
