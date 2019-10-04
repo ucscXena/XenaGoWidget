@@ -20,6 +20,7 @@ const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 const {  datasetProbeValues } = xenaQuery;
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+import {Dialog} from 'react-toolbox/lib';
 
 const DEFAULT_LIMIT = 45;
 
@@ -47,8 +48,8 @@ export default class GeneSetFilter extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
-    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
     Rx.Observable.zip(
       datasetProbeValues(selectedCohort[0].geneExpressionPathwayActivity.host, selectedCohort[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
@@ -149,6 +150,10 @@ export default class GeneSetFilter extends PureComponent {
   handleViewGeneSets() {
     this.props.setPathways(this.getSelectedCartData());
   }
+  // TODO: push back to production pathways
+  handleCancel() {
+    this.props.cancelPathwayEdit();
+  }
 
   handleResetGeneSets() {
     this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
@@ -181,8 +186,8 @@ export default class GeneSetFilter extends PureComponent {
                     Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
                           <option value='Total'>Total BPA</option>
-                          <option value='Diff'>A - B BPA</option>
-                          <option value='Alpha'>A-Z</option>
+                          <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
                       <td>
@@ -280,6 +285,11 @@ export default class GeneSetFilter extends PureComponent {
                   onClick={() => this.handleResetGeneSets()}
                   raised
                 />
+                <Button
+                  label='Cancel' mini
+                  onClick={() => this.handleCancel()}
+                  raised
+                />
               </td>
             </tr>
           </tbody>
@@ -291,6 +301,7 @@ export default class GeneSetFilter extends PureComponent {
 }
 
 GeneSetFilter.propTypes = {
+  cancelPathwayEdit: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
