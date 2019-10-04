@@ -467,7 +467,7 @@ export function calculatePathwayScore(pathwayData, filter) {
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
   if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
-  return pathwayData.pathways.map( (p,index) => 100*average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
+  return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
 /**
