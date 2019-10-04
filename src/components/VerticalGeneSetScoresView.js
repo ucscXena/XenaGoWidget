@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
 import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
+import {FILTER_ENUM} from './FilterSelector';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {clusterSampleSort} from '../functions/SortFunctions';
+import {clusterSampleSort, selectedSampleGeneExpressionActivitySort} from '../functions/SortFunctions';
 import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
 
 const HEADER_HEIGHT = 15;
@@ -50,7 +51,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails} = this.props;
+      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
       const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
@@ -83,7 +84,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
       prunedColumns.samples = samples;
-      let returnedValue = clusterSampleSort(prunedColumns);
+      let returnedValue = filter===FILTER_ENUM.GENE_EXPRESSION ?  selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet) : clusterSampleSort(prunedColumns);
 
       return (
         <div>
@@ -115,5 +116,6 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
+  selectedGeneSet: PropTypes.any.isRequired,
   showDetails: PropTypes.any.isRequired,
 };

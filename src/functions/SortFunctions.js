@@ -182,6 +182,52 @@ export function clusterSampleSort(prunedColumns) {
   return returnColumns;
 }
 
+function sortWithIndeces(toSort) {
+  for (var i = 0; i < toSort.length; i++) {
+    toSort[i] = [toSort[i], i];
+  }
+  toSort.sort(function(left, right) {
+    return left[0] < right[0] ? 1 : -1;
+  });
+  toSort.sortIndices = [];
+  for (var j = 0; j < toSort.length; j++) {
+    toSort.sortIndices.push(toSort[j][1]);
+    toSort[j] = toSort[j][0];
+  }
+  return toSort;
+}
+/**
+ * Sorts based on a selected sample
+ * @param prunedColumns
+ * @param selectedGeneSet
+ * @returns {*}
+ */
+export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
+
+  // console.log('pruned columns',prunedColumns,selectedGeneSet);
+  const selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.geneExpressionPathwayActivity);
+  sortWithIndeces( selectedData);
+  const sortedIndices = selectedData.sortIndices;
+
+  // prunedColumns =
+  // - data = 41 gene sets times N samples
+  // - pathways = 41 gene set descriptions
+  // - samples = N sample descriptions
+  const transposedData = transpose(prunedColumns.data);
+
+  // for the transposed data sort by sortedIndexes
+  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
+  const sortedTransposedData = [];
+  sortedIndices.forEach((d, i) => {
+    sortedTransposedData[i] = transposedData[d];
+  });
+  const unTransposedData = transpose(sortedTransposedData);
+  const returnColumns = prunedColumns;
+  returnColumns.data = unTransposedData;
+  return returnColumns;
+}
+
 function generateMissingColumns(pathways, geneList) {
   const pathwayGenes = pathways.map((p) => p.gene[0]);
   const missingGenes = geneList.filter((g) => pathwayGenes.indexOf(g) < 0);
