@@ -724,6 +724,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               onMouseOut={this.handlePathwayHover}
                               pathways={pathways}
                               selectedCohort={this.state.selectedCohort[0]}
+                              selectedGeneSet={this.state.pathwaySelection}
                               showDetails={this.state.showPathwayDetails}
                             />
                           </td>
@@ -755,6 +756,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               onMouseOut={this.handlePathwayHover}
                               pathways={pathways}
                               selectedCohort={this.state.selectedCohort[1]}
+                              selectedGeneSet={this.state.pathwaySelection}
                               showDetails={this.state.showPathwayDetails}
                             />
                           </td>
