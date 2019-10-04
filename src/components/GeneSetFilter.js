@@ -251,7 +251,29 @@ export default class GeneSetFilter extends PureComponent {
                 </Button>
               </td>
               <td width={200}>
+                <table>
+                  <tr>
+                    <td>
                 <Chip>{this.state.cartPathways.length}</Chip>
+                    </td>
+                  <td>
+                    Sort By
+                    <select onChange={(event) => this.setState({sortBy: event.target.value})}>
+                      <option value='Total'>Total BPA</option>
+                      <option value='Diff'>Cohort Diff BPA</option>
+                      <option value='Alpha'>Alphabetically</option>
+                    </select>
+                  </td>
+                  <td>
+                    { this.state.sortOrder === 'asc' &&
+                    <FaSortAsc onClick={() => this.setState({sortOrder:'desc'})}/>
+                    }
+                    { this.state.sortOrder === 'desc' &&
+                    <FaSortDesc onClick={() => this.setState({sortOrder:'asc'})}/>
+                    }
+                  </td>
+                </tr>
+                </table>
                 <br/>
                 <select
                   multiple onChange={(event) => {
