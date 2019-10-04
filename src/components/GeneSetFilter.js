@@ -20,7 +20,6 @@ const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 const {  datasetProbeValues } = xenaQuery;
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
-import {Dialog} from 'react-toolbox/lib';
 
 const DEFAULT_LIMIT = 45;
 
@@ -33,6 +32,8 @@ export default class GeneSetFilter extends PureComponent {
       name: '',
       sortOrder:'asc',
       sortBy: 'Total',
+      sortCartOrder:'asc',
+      sortCartBy: 'Total',
       geneSet: 'Full 8K',
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
@@ -88,13 +89,23 @@ export default class GeneSetFilter extends PureComponent {
     this.filterByName();
   }
 
+  scoreCartPathway(p) {
+    switch (this.state.sortCartBy) {
+    default:
+    case 'Total':
+      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+    case 'Diff':
+      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
+    }
+  }
+
   scorePathway(p) {
     switch (this.state.sortBy) {
     default:
     case 'Total':
-      return (100*(p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity)).toFixed(0);
+      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
     case 'Diff':
-      return (100*(p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity)).toFixed(0);
+      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
     }
   }
 
@@ -254,25 +265,27 @@ export default class GeneSetFilter extends PureComponent {
                 <table>
                   <tr>
                     <td>
-                <Chip>{this.state.cartPathways.length}</Chip>
+                      <Chip>{this.state.cartPathways.length}</Chip>
                     </td>
-                  <td>
+                    <td>
                     Sort By
-                    <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                      <option value='Total'>Total BPA</option>
-                      <option value='Diff'>Cohort Diff BPA</option>
-                      <option value='Alpha'>Alphabetically</option>
-                    </select>
-                  </td>
-                  <td>
-                    { this.state.sortOrder === 'asc' &&
-                    <FaSortAsc onClick={() => this.setState({sortOrder:'desc'})}/>
-                    }
-                    { this.state.sortOrder === 'desc' &&
-                    <FaSortDesc onClick={() => this.setState({sortOrder:'asc'})}/>
-                    }
-                  </td>
-                </tr>
+                      <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
+                        <option value='Total'>Total BPA</option>
+                        <option value='Diff'>Cohort Diff BPA</option>
+                        <option value='Alpha'>Alphabetically</option>
+                      </select>
+                    </td>
+                    <td>
+                      <Button mini raised>
+                        { this.state.sortCartOrder === 'asc' &&
+                    <FaSortAsc onClick={() => this.setState({sortCartOrder:'desc'})}/>
+                        }
+                        { this.state.sortCartOrder === 'desc' &&
+                    <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
+                        }
+                      </Button>
+                    </td>
+                  </tr>
                 </table>
                 <br/>
                 <select
@@ -286,10 +299,15 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   {
                     this.state.cartPathways.sort( (a,b) =>{
-                      const compareString = b.golabel.toLowerCase();
-                      return (a.golabel.toLowerCase()).localeCompare(compareString);
+                      switch (this.state.sortCartBy) {
+                      case 'Total':
+                      case 'Diff':
+                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (this.scoreCartPathway(b) - this.scoreCartPathway(a));
+                      case 'Alpha':
+                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
+                      }
                     }).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p.golabel}>({ (this.scoreCartPathway(p))}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
