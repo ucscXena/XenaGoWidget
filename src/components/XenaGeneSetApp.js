@@ -28,6 +28,8 @@ import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
+import GeneSetFilter from './GeneSetFilter';
+import Button from 'react-toolbox/lib/button';
 
 
 
@@ -91,6 +93,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData: [{}, {}],
       pathwayData: [{}, {}],
       showPathwayDetails: false,
+      showGeneSetSearch: false,
       geneHits: [],
       selectedGene: undefined,
       reference: refGene['hg38'],
@@ -211,7 +214,6 @@ export default class XenaGeneSetApp extends PureComponent {
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
       };
 
-
       pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
       pathwayDataA.pathways = pathways ;
       pathwayDataB.pathways = pathways ;
@@ -220,6 +222,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
       let selection = AppStorageHandler.getPathwaySelection();
+      if(!selection.golabel){
+        selection.pathway = pathways[0];
+      }
       let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
 
       currentLoadState = LOAD_STATE.LOADED;
@@ -560,9 +565,26 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
+    setActiveGeneSets = (newPathways) => {
+      AppStorageHandler.storePathways(newPathways);
+
+      let pathwaySelection = newPathways.filter( p => this.state.pathwaySelection.pathway.golabel===p.golabel );
+      pathwaySelection = {
+        tissue: 'Header',
+        pathway: pathwaySelection.length>0 ? pathwaySelection[0] : newPathways[0],
+      };
+      this.setState({
+        pathwaySelection,
+        showGeneSetSearch: false,
+        pathways:newPathways,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
+      });
+    };
+
     render() {
-      let activeApp = this.getActiveApp();
-      let pathways = activeApp.pathways;
+      let storedPathways = AppStorageHandler.getPathways();
+      let pathways = this.state.pathways ? this.state.pathways : storedPathways;
       let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
       if(this.doRefetch()){
@@ -629,6 +651,30 @@ export default class XenaGeneSetApp extends PureComponent {
                         <tr>
                           <td colSpan={3}>
                             <VerticalLegend/>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colSpan={3}>
+                            <Button icon='edit' onClick={() => this.setState({showGeneSetSearch:true})} raised>
+                            Edit Pathways&nbsp;
+                              {this.state.pathways &&
+                            <div style={{display:'inline'}}>
+                              ({this.state.pathways.length})
+                            </div>
+                              }
+
+                            </Button>
+                            {this.state.pathways &&
+                          <Dialog
+                            active={this.state.showGeneSetSearch}
+                            onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
+                            onOverlayClick={() => this.setState({showGeneSetSearch:false})}
+                            style={{width:400}}
+                            title="Gene Set Search"
+                          >
+                            <GeneSetFilter cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})} pathwayData={this.state.pathwayData} pathways={this.state.pathways} setPathways={this.setActiveGeneSets}/>
+                          </Dialog>
+                            }
                           </td>
                         </tr>
                         <tr>

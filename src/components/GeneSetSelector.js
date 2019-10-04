@@ -116,7 +116,7 @@ export class GeneSetSelector extends PureComponent {
           >
             {p.firstGeneExpressionPathwayActivity &&
             <rect
-              height={labelHeight} style={this.pillStyle(p.firstGeneExpressionPathwayActivity)} width={width / 2 - 1}
+              height={labelHeight} style={this.pillStyle(100*p.firstGeneExpressionPathwayActivity)} width={width / 2 - 1}
               x={0}
             />
             }
@@ -128,7 +128,7 @@ export class GeneSetSelector extends PureComponent {
             }
             {p.secondGeneExpressionPathwayActivity &&
             <rect
-              height={labelHeight} style={this.pillStyle(p.secondGeneExpressionPathwayActivity)} width={width / 2}
+              height={labelHeight} style={this.pillStyle(100*p.secondGeneExpressionPathwayActivity)} width={width / 2}
               x={width / 2 + 1}
             />
             }

@@ -159,6 +159,5 @@ describe('Data Unit Functions', () => {
     expect(Math.abs(tTest( element1,element2)-44.160)).toBeLessThan(0.001);
   });
 
-
 });
 

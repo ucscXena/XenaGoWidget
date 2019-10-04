@@ -206,7 +206,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            let colorArray = isNaN(geneExpressionScore) ? [0,0,0] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
             img.data[l] = colorArray[0];
             img.data[l + 1] = colorArray[1];
             img.data[l + 2] = colorArray[2];

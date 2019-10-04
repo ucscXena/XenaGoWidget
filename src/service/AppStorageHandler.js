@@ -63,9 +63,9 @@ const DefaultAppB = update(DefaultAppA, {
  * This is just for handling memory.
  */
 export class AppStorageHandler extends PureComponent {
-  static storePathways(pathway) {
-    if (pathway) {
-      localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathway));
+  static storePathways(pathways) {
+    if (pathways) {
+      localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways));
     }
   }
 

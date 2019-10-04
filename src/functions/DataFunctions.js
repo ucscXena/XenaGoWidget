@@ -20,7 +20,7 @@ const associateCache = lru(500);
 const pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-const ignoreCache = false ;
+const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
   total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
@@ -302,7 +302,12 @@ export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivit
   let scored = 0 ;
   for(const pathwayIndex in returnArray){
     for(const sampleIndex in returnArray[pathwayIndex]){
-      returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
+      if(geneExpressionPathwayActivity[pathwayIndex]){
+        returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = geneExpressionPathwayActivity[pathwayIndex][sampleIndex];
+      }
+      else{
+        returnArray[pathwayIndex][sampleIndex].geneExpressionPathwayActivity = 0;
+      }
       ++scored;
     }
   }
@@ -462,7 +467,7 @@ export function calculatePathwayScore(pathwayData, filter) {
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
   if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
-  return pathwayData.pathways.map( (p,index) => 100*average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
+  return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
 /**
@@ -596,9 +601,14 @@ export function calculateDiffs(geneData0, geneData1) {
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
-  const { pathway: { goid, golabel } } = pathwaySelection;
 
-  const geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  let { pathway: { goid, golabel } } = pathwaySelection;
+
+  let geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  if(geneList.length===0){
+    golabel = geneSetPathways[0].golabel;
+    geneList = getGenesForNamedPathways(golabel, geneSetPathways);
+  }
   const pathways = geneList.map((gene) => ({ goid, golabel, gene: [gene] }));
 
   // TODO: just return this once fixed
