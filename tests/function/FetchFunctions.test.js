@@ -1,5 +1,5 @@
 import expect from 'expect';
-import {getSamplesForCohort} from '../../src/functions/FetchFunctions';
+import { getSamplesForCohort} from '../../src/functions/FetchFunctions';
 import {getCohortDetails} from '../../src/functions/CohortFunctions';
 import {FILTER_ENUM} from '../../src/components/FilterSelector';
 

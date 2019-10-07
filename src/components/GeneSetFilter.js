@@ -9,31 +9,29 @@ import {Button} from 'react-toolbox/lib/button';
 // import Dropdown from 'react-toolbox/lib/dropdown';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
-import {convertPathwaysToGeneSetLabel} from '../functions/FetchFunctions';
-import { sum } from 'ucsc-xena-client/dist/underscore_ext';
+import {
+  convertPathwaysToGeneSetLabel,
+  fetchPathwayActivityMeans
+} from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
-// import DefaultPathWays from '../data/genesets/tgac';
-const Rx = require('ucsc-xena-client/dist/rx');
-const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-const {  datasetProbeValues } = xenaQuery;
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 
-const DEFAULT_LIMIT = 45;
+const VIEW_LIMIT = 200;
+const CART_LIMIT = 45;
 
 export default class GeneSetFilter extends PureComponent {
 
   constructor(props){
     super(props);
     this.state = {
-      limit: DEFAULT_LIMIT,
       name: '',
       sortOrder:'asc',
-      sortBy: 'Total',
+      sortBy: 'Diff',
       sortCartOrder:'asc',
-      sortCartBy: 'Total',
+      sortCartBy: 'Diff',
       geneSet: 'Full 8K',
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
@@ -44,68 +42,86 @@ export default class GeneSetFilter extends PureComponent {
       selectedFilteredPathways : [],
       selectedCartPathways : [],
       totalPathways: 0,
+      cartPathwayLimit: CART_LIMIT,
+      limit: VIEW_LIMIT,
     };
 
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
-    Rx.Observable.zip(
-      datasetProbeValues(selectedCohort[0].geneExpressionPathwayActivity.host, selectedCohort[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
-      datasetProbeValues(selectedCohort[1].geneExpressionPathwayActivity.host, selectedCohort[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
-      (
-        geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
-      ) => ({
-        geneExpressionPathwayActivityA,
-        geneExpressionPathwayActivityB,
-      }),
-    )
-      .subscribe( (output ) => {
-        // get the average activity for each
-        const scoredPathwaySamples = [
-          output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-          output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-        ];
-        const loadedPathways = LargePathways.map( (pathway,index) => {
-          pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
-          pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
-          return pathway ;
-        });
-        const pathwayLabels = props.pathways.map( p => p.golabel);
-        const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-        // cart pathways are loaded pathways related to
-
-        this.setState({
-          loadedPathways,
-          cartPathways,
-        });
-      });
+    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
 
   }
+
 
   componentDidUpdate() {
     this.filterByName();
   }
 
+  handleMeanActivityData = (output) => {
+    let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
+
+    let indexMap = {};
+    LargePathways.forEach( (p,index) => {
+      indexMap[p.golabel] = index ;
+    });
+
+    for(let index in output.geneExpressionPathwayActivityA.field){
+      const field = output.geneExpressionPathwayActivityA.field[index];
+      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
+      const sourceIndex = indexMap[cleanField];
+      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
+      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+    }
+
+    const pathwayLabels = this.props.pathways.map( p => p.golabel);
+    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+
+    this.setState({
+      loadedPathways,
+      cartPathways,
+    });
+  };
+
+  // handleBulkData = (output) => {
+  //   const scoredPathwaySamples = [
+  //     output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+  //     output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+  //   ];
+  //   const loadedPathways = LargePathways.map( (pathway,index) => {
+  //     pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
+  //     pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
+  //     return pathway ;
+  //   });
+  //   const pathwayLabels = this.props.pathways.map( p => p.golabel);
+  //   const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+  //
+  //   this.setState({
+  //     loadedPathways,
+  //     cartPathways,
+  //   });
+  // };
+
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
-    default:
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+    default:
     case 'Diff':
-      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
   }
 
   scorePathway(p) {
     switch (this.state.sortBy) {
-    default:
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+    default:
     case 'Diff':
-      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
   }
 
@@ -132,9 +148,10 @@ export default class GeneSetFilter extends PureComponent {
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 );
-    return update(this.state.cartPathways, {
+    const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     });
+    return selectedCartData.slice(0,this.state.cartPathwayLimit);
   }
 
   handleAddSelectedToCart() {
@@ -196,8 +213,8 @@ export default class GeneSetFilter extends PureComponent {
                       <td>
                     Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                          <option value='Total'>Total BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Total'>Total BPA</option>
                           <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
@@ -220,7 +237,7 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                    Limit (Tot: {this.state.totalPathways})
+                    View Limit (Tot: {this.state.totalPathways})
                       </td>
                       <td>
                         <input
@@ -232,6 +249,7 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                   </tbody>
                 </table>
+                {this.state.selectedFilteredPathways.length} Selected
                 <select
                   multiple
                   onChange={(event) => {
@@ -242,7 +260,7 @@ export default class GeneSetFilter extends PureComponent {
                   }} style={{overflow:'scroll', height:200,width: 300}}
                 >
                   {
-                    this.state.filteredPathways.map( p => {
+                    this.state.filteredPathways.slice(0,this.state.limit).map( p => {
                       return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
@@ -263,29 +281,43 @@ export default class GeneSetFilter extends PureComponent {
               </td>
               <td width={200}>
                 <table>
-                  <tr>
-                    <td>
-                      <Chip>{this.state.cartPathways.length}</Chip>
-                    </td>
-                    <td>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
+                      </td>
+                      <td>
                     Sort By
-                      <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
-                        <option value='Total'>Total BPA</option>
-                        <option value='Diff'>Cohort Diff BPA</option>
-                        <option value='Alpha'>Alphabetically</option>
-                      </select>
-                    </td>
-                    <td>
-                      <Button mini raised>
-                        { this.state.sortCartOrder === 'asc' &&
+                        <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
+                          <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Total'>Total BPA</option>
+                          <option value='Alpha'>Alphabetically</option>
+                        </select>
+                      </td>
+                      <td>
+                        <Button mini raised>
+                          { this.state.sortCartOrder === 'asc' &&
                     <FaSortAsc onClick={() => this.setState({sortCartOrder:'desc'})}/>
-                        }
-                        { this.state.sortCartOrder === 'desc' &&
+                          }
+                          { this.state.sortCartOrder === 'desc' &&
                     <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
-                        }
-                      </Button>
-                    </td>
-                  </tr>
+                          }
+                        </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Cart Limit
+                      </td>
+                      <td>
+                        <input
+                          onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}
+                          style={{width: 25}}
+                          value={this.state.cartPathwayLimit}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <br/>
                 <select
