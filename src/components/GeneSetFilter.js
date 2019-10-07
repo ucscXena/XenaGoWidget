@@ -246,6 +246,7 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                   </tbody>
                 </table>
+                {this.state.selectedFilteredPathways.length} Selected
                 <select
                   multiple
                   onChange={(event) => {
