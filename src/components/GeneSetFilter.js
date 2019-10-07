@@ -29,9 +29,9 @@ export default class GeneSetFilter extends PureComponent {
       limit: DEFAULT_LIMIT,
       name: '',
       sortOrder:'asc',
-      sortBy: 'Total',
+      sortBy: 'Diff',
       sortCartOrder:'asc',
-      sortCartBy: 'Total',
+      sortCartBy: 'Diff',
       geneSet: 'Full 8K',
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
@@ -41,7 +41,8 @@ export default class GeneSetFilter extends PureComponent {
       cartPathways : [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
-      totalPathways: 0,
+      totalPathways: DEFAULT_LIMIT,
+      cartPathwayLimit: DEFAULT_LIMIT,
     };
 
 
@@ -105,9 +106,9 @@ export default class GeneSetFilter extends PureComponent {
 
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
-    default:
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+    default:
     case 'Diff':
       return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
@@ -115,9 +116,9 @@ export default class GeneSetFilter extends PureComponent {
 
   scorePathway(p) {
     switch (this.state.sortBy) {
-    default:
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+    default:
     case 'Diff':
       return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
@@ -146,9 +147,10 @@ export default class GeneSetFilter extends PureComponent {
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 );
-    return update(this.state.cartPathways, {
+    const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     });
+    return selectedCartData.length<this.state.cartPathwayLimit ? selectedCartData : selectedCartData.slice(0,this.state.cartPathwayLimit)
   }
 
   handleAddSelectedToCart() {
@@ -210,8 +212,8 @@ export default class GeneSetFilter extends PureComponent {
                       <td>
                     Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                          <option value='Total'>Total BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Total'>Total BPA</option>
                           <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
@@ -234,7 +236,7 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                    Limit (Tot: {this.state.totalPathways})
+                    View Limit (Tot: {this.state.totalPathways})
                       </td>
                       <td>
                         <input
@@ -281,13 +283,13 @@ export default class GeneSetFilter extends PureComponent {
                   <tbody>
                     <tr>
                       <td>
-                        <Chip>{this.state.cartPathways.length}</Chip>
+                        <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
                       <td>
                     Sort By
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
-                          <option value='Total'>Total BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Total'>Total BPA</option>
                           <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
@@ -300,6 +302,18 @@ export default class GeneSetFilter extends PureComponent {
                     <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
                           }
                         </Button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Cart Limit
+                      </td>
+                      <td>
+                        <input
+                          onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}
+                          style={{width: 25}}
+                          value={this.state.cartPathwayLimit}
+                        />
                       </td>
                     </tr>
                   </tbody>
