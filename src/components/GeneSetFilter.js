@@ -13,7 +13,6 @@ import {
   convertPathwaysToGeneSetLabel,
   fetchPathwayActivityMeans
 } from '../functions/FetchFunctions';
-import { sum } from 'ucsc-xena-client/dist/underscore_ext';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
