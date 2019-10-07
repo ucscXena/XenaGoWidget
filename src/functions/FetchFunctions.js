@@ -10,6 +10,7 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
+import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 // import DefaultPathWays from '../data/genesets/tgac';
 
 const { datasetSamples, datasetFetch, sparseData , datasetProbeValues } = xenaQuery;
@@ -142,6 +143,24 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
     }
   } );
 };
+
+export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+
+  Rx.Observable.zip(
+    datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
+    datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
+    (
+      geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+    ) => ({
+      geneExpressionPathwayActivityA,
+      geneExpressionPathwayActivityB,
+    }),
+  )
+    .subscribe( (output ) => {
+      // get the average activity for each
+      dataHandler(output);
+    });
+}
 
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {

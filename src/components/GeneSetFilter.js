@@ -9,7 +9,7 @@ import {Button} from 'react-toolbox/lib/button';
 // import Dropdown from 'react-toolbox/lib/dropdown';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
-import {convertPathwaysToGeneSetLabel} from '../functions/FetchFunctions';
+import {convertPathwaysToGeneSetLabel, fetchPathwayActivityMeans} from '../functions/FetchFunctions';
 import { sum } from 'ucsc-xena-client/dist/underscore_ext';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
@@ -52,42 +52,34 @@ export default class GeneSetFilter extends PureComponent {
     const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
     // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
-    Rx.Observable.zip(
-      datasetProbeValues(selectedCohort[0].geneExpressionPathwayActivity.host, selectedCohort[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
-      datasetProbeValues(selectedCohort[1].geneExpressionPathwayActivity.host, selectedCohort[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
-      (
-        geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
-      ) => ({
-        geneExpressionPathwayActivityA,
-        geneExpressionPathwayActivityB,
-      }),
-    )
-      .subscribe( (output ) => {
-        // get the average activity for each
-        const scoredPathwaySamples = [
-          output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-          output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-        ];
-        const loadedPathways = LargePathways.map( (pathway,index) => {
-          pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
-          pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
-          return pathway ;
-        });
-        const pathwayLabels = props.pathways.map( p => p.golabel);
-        const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-        // cart pathways are loaded pathways related to
-
-        this.setState({
-          loadedPathways,
-          cartPathways,
-        });
-      });
+    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleData);
 
   }
+
 
   componentDidUpdate() {
     this.filterByName();
   }
+
+  handleData = (output) => {
+    const scoredPathwaySamples = [
+      output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+      output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+    ];
+    const loadedPathways = LargePathways.map( (pathway,index) => {
+      pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
+      pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
+      return pathway ;
+    });
+    const pathwayLabels = this.props.pathways.map( p => p.golabel);
+    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+    // cart pathways are loaded pathways related to
+
+    this.setState({
+      loadedPathways,
+      cartPathways,
+    });
+  };
 
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
