@@ -278,29 +278,31 @@ export default class GeneSetFilter extends PureComponent {
               </td>
               <td width={200}>
                 <table>
-                  <tr>
-                    <td>
-                      <Chip>{this.state.cartPathways.length}</Chip>
-                    </td>
-                    <td>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <Chip>{this.state.cartPathways.length}</Chip>
+                      </td>
+                      <td>
                     Sort By
-                      <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
-                        <option value='Total'>Total BPA</option>
-                        <option value='Diff'>Cohort Diff BPA</option>
-                        <option value='Alpha'>Alphabetically</option>
-                      </select>
-                    </td>
-                    <td>
-                      <Button mini raised>
-                        { this.state.sortCartOrder === 'asc' &&
+                        <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
+                          <option value='Total'>Total BPA</option>
+                          <option value='Diff'>Cohort Diff BPA</option>
+                          <option value='Alpha'>Alphabetically</option>
+                        </select>
+                      </td>
+                      <td>
+                        <Button mini raised>
+                          { this.state.sortCartOrder === 'asc' &&
                     <FaSortAsc onClick={() => this.setState({sortCartOrder:'desc'})}/>
-                        }
-                        { this.state.sortCartOrder === 'desc' &&
+                          }
+                          { this.state.sortCartOrder === 'desc' &&
                     <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
-                        }
-                      </Button>
-                    </td>
-                  </tr>
+                          }
+                        </Button>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <br/>
                 <select
