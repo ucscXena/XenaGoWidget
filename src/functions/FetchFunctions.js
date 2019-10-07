@@ -144,6 +144,59 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
+const demoAllFieldMeanQuery =
+  '; allFieldMean\n' +
+  '(fn [dataset samples]\n' +
+  '  (let [fields (map :name (query {:select [:field.name]\n' +
+  '                                  :from [:field]\n' +
+  '                                  :join [:dataset [:= :dataset.id :dataset_id]]\n' +
+  '                                  :where [:and [:= :dataset.name dataset] [:<> :field.name "sampleID"]]}))\n' +
+  '        data (fetch [{:table dataset\n' +
+  '                      :columns fields\n' +
+  '                      :samples samples}])]\n' +
+  '  {:field fields\n' +
+  '   :mean (map car (mean data 1))}))';
+
+const quote = x => '"' + x + '"';
+
+export function demoAllFieldMean(host, dataset, samples) {
+  const query = `(${demoAllFieldMeanQuery} ${quote(dataset)} [${samples.map(quote).join(' ')}])`;
+  return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
+}
+
+export function demoAllFieldMeanRunner(){
+
+  /////// demo
+  const demoSamples = [
+    'TCGA-AB-2815-03',
+    'TCGA-AB-2817-03',
+    'TCGA-AB-2818-03',
+    'TCGA-AB-2819-03',
+    'TCGA-AB-2820-03',
+    'TCGA-AB-2821-03',
+    'TCGA-AB-2822-03',
+    'TCGA-AB-2823-03',
+    'TCGA-AB-2825-03',
+    'TCGA-AB-2826-03',
+    'TCGA-AB-2828-03',
+    'TCGA-AB-2830-03',
+    'TCGA-AB-2834-03',
+    'TCGA-AB-2835-03',
+    'TCGA-AB-2836-03',
+    'TCGA-AB-2839-03',
+    'TCGA-AB-2840-03',
+    'TCGA-AB-2841-03',
+    'TCGA-AB-2842-03',
+    'TCGA-AB-2843-03'
+  ];
+
+  demoAllFieldMean('https://xenago.xenahubs.net', 'expr_tpm/TCGA-LAML_tpm_tab.tsv', demoSamples).subscribe(data => {
+    console.log('demo data');
+    console.log(data);
+  });
+
+}
+
 export function allFieldMean(cohort, samples) {
 
   const allFieldMeanQuery =
@@ -166,6 +219,8 @@ export function allFieldMean(cohort, samples) {
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+
+  demoAllFieldMeanRunner();
 
   allFieldMean(selectedCohorts[0], samples).subscribe(data => {
     console.log('demo data');
