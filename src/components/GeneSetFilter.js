@@ -19,14 +19,14 @@ import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 
-const DEFAULT_LIMIT = 45;
+const VIEW_LIMIT = 200;
+const CART_LIMIT = 45;
 
 export default class GeneSetFilter extends PureComponent {
 
   constructor(props){
     super(props);
     this.state = {
-      limit: DEFAULT_LIMIT,
       name: '',
       sortOrder:'asc',
       sortBy: 'Diff',
@@ -41,8 +41,9 @@ export default class GeneSetFilter extends PureComponent {
       cartPathways : [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
-      totalPathways: DEFAULT_LIMIT,
-      cartPathwayLimit: DEFAULT_LIMIT,
+      totalPathways: 0,
+      cartPathwayLimit: CART_LIMIT,
+      limit: VIEW_LIMIT,
     };
 
 
@@ -150,7 +151,7 @@ export default class GeneSetFilter extends PureComponent {
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     });
-    return selectedCartData.length<this.state.cartPathwayLimit ? selectedCartData : selectedCartData.slice(0,this.state.cartPathwayLimit)
+    return selectedCartData.slice(0,this.state.cartPathwayLimit);
   }
 
   handleAddSelectedToCart() {
@@ -259,7 +260,7 @@ export default class GeneSetFilter extends PureComponent {
                   }} style={{overflow:'scroll', height:200,width: 300}}
                 >
                   {
-                    this.state.filteredPathways.map( p => {
+                    this.state.filteredPathways.slice(0,this.state.limit).map( p => {
                       return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
