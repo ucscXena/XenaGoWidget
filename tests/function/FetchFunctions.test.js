@@ -1,5 +1,5 @@
 import expect from 'expect';
-import {getSamplesForCohort} from '../../src/functions/FetchFunctions';
+import {fetchPathwayActivityMeans, getSamplesForCohort} from '../../src/functions/FetchFunctions';
 import {getCohortDetails} from '../../src/functions/CohortFunctions';
 import {FILTER_ENUM} from '../../src/components/FilterSelector';
 
@@ -49,6 +49,17 @@ describe('Fetch Functions', () => {
     getSamplesForCohort(cohortDetails,FILTER_ENUM.GENE_EXPRESSION).do( (a) => {
       expect(a.length).toEqual(576);
     }).subscribe( () => done(),e => done(logError(e)));
+  });
+
+  it('Test fetching pathway activity means', (done) => {
+    let selectedCohorts = [];
+    let samples = [];
+    let geneSetLabels = [];
+    fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,( output )=> {
+      console.log(output);
+      expect(true).toEqual(false);
+      done();
+    });
   });
 
 });

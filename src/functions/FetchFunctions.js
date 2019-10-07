@@ -10,10 +10,10 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+// import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 // import DefaultPathWays from '../data/genesets/tgac';
 
-const { datasetSamples, datasetFetch, sparseData , datasetProbeValues } = xenaQuery;
+const { datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 
 export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
@@ -144,7 +144,34 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
+export function allFieldMean(cohort, samples) {
+
+  const allFieldMeanQuery =
+    '; allFieldMean\n' +
+    '(fn [dataset samples]\n' +
+    '  (let [fields (map :name (query {:select [:field.name]\n' +
+    '                                  :from [:field]\n' +
+    '                                  :join [:dataset [:= :dataset.id :dataset_id]]\n' +
+    '                                  :where [:and [:= :dataset.name dataset] [:<> :field.name "sampleID"]]}))\n' +
+    '        data (fetch [{:table dataset\n' +
+    '                      :columns fields\n' +
+    '                      :samples samples}])]\n' +
+    '  {:field fields\n' +
+    '   :mean (map car (mean data 1))}))';
+
+  const quote = x => '"' + x + '"';
+  const { dataset, host} = cohort.geneExpressionPathwayActivity;
+  const query = `(${allFieldMeanQuery} ${quote(dataset)} [${samples.map(quote).join(' ')}])`;
+  return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
+}
+
 export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+
+  allFieldMean(selectedCohorts[0], samples).subscribe(data => {
+    console.log('demo data');
+    console.log(data);
+  });
+
 
   Rx.Observable.zip(
     datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
