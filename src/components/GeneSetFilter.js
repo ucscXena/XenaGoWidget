@@ -11,7 +11,6 @@ import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
-  fetchPathwayActivityBulk,
   fetchPathwayActivityMeans
 } from '../functions/FetchFunctions';
 import { sum } from 'ucsc-xena-client/dist/underscore_ext';
@@ -19,10 +18,6 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
-// import DefaultPathWays from '../data/genesets/tgac';
-const Rx = require('ucsc-xena-client/dist/rx');
-const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-const {  datasetProbeValues } = xenaQuery;
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 
 const DEFAULT_LIMIT = 45;
@@ -90,24 +85,24 @@ export default class GeneSetFilter extends PureComponent {
     });
   };
 
-  handleBulkData = (output) => {
-    const scoredPathwaySamples = [
-      output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-      output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-    ];
-    const loadedPathways = LargePathways.map( (pathway,index) => {
-      pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
-      pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
-      return pathway ;
-    });
-    const pathwayLabels = this.props.pathways.map( p => p.golabel);
-    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-
-    this.setState({
-      loadedPathways,
-      cartPathways,
-    });
-  };
+  // handleBulkData = (output) => {
+  //   const scoredPathwaySamples = [
+  //     output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+  //     output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
+  //   ];
+  //   const loadedPathways = LargePathways.map( (pathway,index) => {
+  //     pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
+  //     pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
+  //     return pathway ;
+  //   });
+  //   const pathwayLabels = this.props.pathways.map( p => p.golabel);
+  //   const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+  //
+  //   this.setState({
+  //     loadedPathways,
+  //     cartPathways,
+  //   });
+  // };
 
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
@@ -115,7 +110,7 @@ export default class GeneSetFilter extends PureComponent {
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
     case 'Diff':
-      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
   }
 
@@ -125,7 +120,7 @@ export default class GeneSetFilter extends PureComponent {
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
     case 'Diff':
-      return (p.secondGeneExpressionPathwayActivity - p.firstGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
   }
 
