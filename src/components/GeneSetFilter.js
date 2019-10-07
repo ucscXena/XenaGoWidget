@@ -9,7 +9,11 @@ import {Button} from 'react-toolbox/lib/button';
 // import Dropdown from 'react-toolbox/lib/dropdown';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
-import {convertPathwaysToGeneSetLabel, fetchPathwayActivityMeans} from '../functions/FetchFunctions';
+import {
+  convertPathwaysToGeneSetLabel,
+  fetchPathwayActivityBulk,
+  fetchPathwayActivityMeans
+} from '../functions/FetchFunctions';
 import { sum } from 'ucsc-xena-client/dist/underscore_ext';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
@@ -49,10 +53,10 @@ export default class GeneSetFilter extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
+    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
+    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
-    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleData);
+    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
 
   }
 
@@ -61,7 +65,32 @@ export default class GeneSetFilter extends PureComponent {
     this.filterByName();
   }
 
-  handleData = (output) => {
+  handleMeanActivityData = (output) => {
+    let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
+
+    let indexMap = {};
+    LargePathways.forEach( (p,index) => {
+      indexMap[p.golabel] = index ;
+    });
+
+    for(let index in output.geneExpressionPathwayActivityA.field){
+      const field = output.geneExpressionPathwayActivityA.field[index];
+      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
+      const sourceIndex = indexMap[cleanField];
+      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
+      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+    }
+
+    const pathwayLabels = this.props.pathways.map( p => p.golabel);
+    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+
+    this.setState({
+      loadedPathways,
+      cartPathways,
+    });
+  };
+
+  handleBulkData = (output) => {
     const scoredPathwaySamples = [
       output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
       output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
@@ -73,7 +102,6 @@ export default class GeneSetFilter extends PureComponent {
     });
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
     const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-    // cart pathways are loaded pathways related to
 
     this.setState({
       loadedPathways,

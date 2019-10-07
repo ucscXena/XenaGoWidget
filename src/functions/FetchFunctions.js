@@ -218,16 +218,7 @@ export function allFieldMean(cohort, samples) {
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
 
-export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
-
-  // demoAllFieldMeanRunner();
-
-  allFieldMean(selectedCohorts[0], samples[0],geneSetLabels).subscribe(data => {
-    console.log('demo data');
-    console.log(data);
-  });
-
-
+export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,dataHandler){
   Rx.Observable.zip(
     datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
     datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
@@ -242,6 +233,47 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,
       // get the average activity for each
       dataHandler(output);
     });
+
+}
+
+export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+
+  // demoAllFieldMeanRunner();
+
+  Rx.Observable.zip(
+    allFieldMean(selectedCohorts[0], samples[0]),
+    allFieldMean(selectedCohorts[1], samples[1]),
+    (
+      geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+    ) => ({
+      geneExpressionPathwayActivityA,
+      geneExpressionPathwayActivityB,
+    }),
+  )
+    .subscribe( (output ) => {
+      // get the average activity for each
+      dataHandler(output);
+    });
+//   allFieldMean(selectedCohorts, samples,geneSetLabels).subscribe(data => {
+//     console.log('demo data');
+//     console.log(data);
+//   });
+//
+//
+//   Rx.Observable.zip(
+//     datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
+//     datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
+//     (
+//       geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+//     ) => ({
+//       geneExpressionPathwayActivityA,
+//       geneExpressionPathwayActivityB,
+//     }),
+//   )
+//     .subscribe( (output ) => {
+//       // get the average activity for each
+//       dataHandler(output);
+//     });
 }
 
 // TODO: move into a service as an async method
