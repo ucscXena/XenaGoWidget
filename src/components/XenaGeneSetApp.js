@@ -20,7 +20,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
-import {getCohortDetails, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {getCohortDetails, getSubCohortsOnlyForCohort, matchFilters} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
@@ -30,6 +30,7 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetFilter from './GeneSetFilter';
 import Button from 'react-toolbox/lib/button';
+import {FILTER_ENUM} from './FilterSelector';
 
 
 
@@ -476,10 +477,7 @@ export default class XenaGeneSetApp extends PureComponent {
     handleChangeFilter = (newFilter, cohortIndex) => {
       AppStorageHandler.storeFilterState(newFilter, cohortIndex);
       let {pathwayData,pathwaySelection,filter} = this.state;
-      let filterState = [
-        cohortIndex===0 ? newFilter : filter[0]  ,
-        cohortIndex===1 ? newFilter : filter[1]  ,
-      ];
+      const filterState = matchFilters(filter,newFilter,cohortIndex);
 
       let newPathwayData = update(pathwayData,{
         [cohortIndex]: {
