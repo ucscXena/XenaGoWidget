@@ -30,7 +30,6 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetFilter from './GeneSetFilter';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM} from './FilterSelector';
 
 
 
