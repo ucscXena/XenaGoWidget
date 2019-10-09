@@ -60,7 +60,12 @@ export default class GeneSetFilter extends PureComponent {
     const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
     if(this.props.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
-      fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+      fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.props.filter,this.handleMeanActivityData);
+    }
+    // TODO: make a more generic version to share with all
+    if(this.props.filter[0]===FILTER_ENUM.COPY_NUMBER && this.props.filter[1]===FILTER_ENUM.COPY_NUMBER){
+      // fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.props.filter,this.handleMeanActivityData);
+      fetchMeanScores(selectedCohort,samples,geneSetLabels,this.props.filter,this.handleMeanScores);
     }
     else{
       fetchMeanScores(selectedCohort,samples,geneSetLabels,this.props.filter,this.handleMeanScores);

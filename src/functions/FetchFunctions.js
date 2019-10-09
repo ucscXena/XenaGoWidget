@@ -144,7 +144,7 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
-export function allFieldMean(cohort, samples) {
+export function allFieldCopyNumberMean(cohort,samples){
 
   const allFieldMeanQuery =
     '; allFieldMean\n' +
@@ -159,7 +159,43 @@ export function allFieldMean(cohort, samples) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
-  const { dataset, host} = cohort.geneExpressionPathwayActivity;
+  const { dataset, host} = cohort.copyNumber
+  const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
+  return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
+}
+
+export function allFieldMean(cohort, samples,filter) {
+
+  console.log('cohort',cohort)
+
+  const allFieldMeanQuery =
+    '; allFieldMean\n' +
+    '(fn [dataset samples]\n' +
+    '  (let [fields (map :name (query {:select [:field.name]\n' +
+    '                                  :from [:field]\n' +
+    '                                  :join [:dataset [:= :dataset.id :dataset_id]]\n' +
+    '                                  :where [:and [:= :dataset.name dataset] [:<> :field.name "sampleID"]]}))\n' +
+    '        data (fetch [{:table dataset\n' +
+    '                      :columns fields\n' +
+    '                      :samples samples}])]\n' +
+    '  {:field fields\n' +
+    '   :mean (map car (mean data 1))}))';
+  const quote = x => '"' + x + '"';
+  // TODO: handle mutation somehow?
+  let dataset, host ;
+  console.log('setting filter',filter);
+  if(filter===FILTER_ENUM.GENE_EXPRESSION){
+    dataset = cohort.geneExpressionPathwayActivity.dataset;
+    host = cohort.geneExpressionPathwayActivity.host;
+  }
+  else
+  if(filter===FILTER_ENUM.COPY_NUMBER){
+    console.log('setting for filter CVN')
+    dataset = cohort.copyNumberDataSetId;
+    host = cohort.host;
+  }
+
+  console.log('data set ',dataset,host)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -235,13 +271,13 @@ export function fetchMeanScores(selectedCohorts,samples,geneSetLabels,filter,dat
     });
 }
 
-export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,filter,dataHandler){
 
   // demoAllFieldMeanRunner();
 
   Rx.Observable.zip(
-    allFieldMean(selectedCohorts[0], samples[0]),
-    allFieldMean(selectedCohorts[1], samples[1]),
+    allFieldMean(selectedCohorts[0], samples[0],filter[0]),
+    allFieldMean(selectedCohorts[1], samples[1],filter[1]),
     (
       scoresA,scoresB
     ) => ({
