@@ -19,6 +19,12 @@ import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 import {FILTER_ENUM} from "./FilterSelector";
+import {
+  calculateAllPathways,
+  calculateGeneSetExpected,
+  calculateObserved,
+  calculatePathwayScore
+} from "../functions/DataFunctions";
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -67,20 +73,43 @@ export default class GeneSetFilter extends PureComponent {
     this.filterByName();
   }
 
-  handleMeanScores = (output) => {
+  handleMeanScores = (pathwayData) => {
+    console.log('handling mean scores',pathwayData)
     let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
+    pathwayData[0].pathways = loadedPathways;
+    pathwayData[1].pathways = loadedPathways;
 
     let indexMap = {};
-    LargePathways.forEach( (p,index) => {
+    loadedPathways.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
+    console.log('starting calcs')
 
-    for(let index in output.scoresA.field){
-      const field = output.scoresA.field[index];
+    const observationsA = calculateObserved(pathwayData[0], pathwayData[0].filter);
+    const totalsA = calculatePathwayScore(pathwayData[0], pathwayData[0].filter);
+    const expectedA = calculateGeneSetExpected(pathwayData[0], pathwayData[0].filter);
+    const maxSamplesAffectedA = pathwayData[0].samples.length;
+
+    console.log(observationsA,totalsA,expectedA,maxSamplesAffectedA)
+
+    const observationsB = calculateObserved(pathwayData[1], pathwayData[1].filter);
+    const totalsB = calculatePathwayScore(pathwayData[1], pathwayData[1].filter);
+    const expectedB = calculateGeneSetExpected(pathwayData[1], pathwayData[1].filter);
+    const maxSamplesAffectedB = pathwayData[1].samples.length;
+
+    console.log(observationsB,totalsB,expectedB,maxSamplesAffectedB)
+
+    // console.log('calculating ALL pathways')
+    // let pathways = calculateAllPathways(output)
+    // console.log('output pathwyas',pathways)
+
+
+    for(let index in pathwayData.scoresA.field){
+      const field = pathwayData.scoresA.field[index];
       const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
       const sourceIndex = indexMap[cleanField];
-      loadedPathways[sourceIndex].firstScore = output.scoresA.mean[index];
-      loadedPathways[sourceIndex].secondScore = output.scoresB.mean[index];
+      loadedPathways[sourceIndex].firstScore = pathwayData.scoresA.mean[index];
+      loadedPathways[sourceIndex].secondScore = pathwayData.scoresB.mean[index];
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);

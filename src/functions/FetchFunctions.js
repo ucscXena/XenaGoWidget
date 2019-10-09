@@ -199,28 +199,39 @@ export function fetchMeanScores(selectedCohorts,samples,geneSetLabels,filter,dat
     datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samples[1], [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
     datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samples[1], [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
     (
-      mutationsA, copyNumberA, geneExpressionA,geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-      mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB,genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+      mutationsA, copyNumberA,  genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      mutationsB, copyNumberB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
     ) => ({
-      samplesA,
       mutationsA,
       copyNumberA,
-      geneExpressionA,
-      geneExpressionPathwayActivityA,
       genomeBackgroundMutationA,
       genomeBackgroundCopyNumberA,
-      samplesB,
       mutationsB,
       copyNumberB,
-      geneExpressionB,
-      geneExpressionPathwayActivityB,
       genomeBackgroundMutationB,
       genomeBackgroundCopyNumberB,
     }),
   )
     .subscribe( (output ) => {
-      // get the average activity for each
-      dataHandler(output);
+      console.log('output',output)
+      dataHandler( [
+        {
+          filter: filter[0],
+          samples: samples[0],
+          genomeBackgroundCopyNumber: output.genomeBackgroundCopyNumberA,
+          genomeBackgroundMutation: output.genomeBackgroundMutationA,
+          copyNumber: output.copyNumberA,
+          expression: output.expressionA,
+        },
+        {
+          filter: filter[1],
+          samples: samples[1],
+          genomeBackgroundCopyNumber: output.genomeBackgroundCopyNumberB,
+          genomeBackgroundMutation: output.genomeBackgroundMutationB,
+          copyNumber: output.copyNumberB,
+          expression: output.expressionB,
+        },
+      ]);
     });
 }
 
