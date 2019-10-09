@@ -18,13 +18,12 @@ import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
-import {FILTER_ENUM} from "./FilterSelector";
+import {FILTER_ENUM} from './FilterSelector';
 import {
-  calculateAllPathways,
   calculateGeneSetExpected,
   calculateObserved,
   calculatePathwayScore
-} from "../functions/DataFunctions";
+} from '../functions/DataFunctions';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -79,7 +78,7 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleMeanScores = (pathwayData) => {
-    console.log('handling mean scores',pathwayData)
+    console.log('handling mean scores',pathwayData);
     let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
     pathwayData[0].pathways = loadedPathways;
     pathwayData[1].pathways = loadedPathways;
@@ -88,21 +87,21 @@ export default class GeneSetFilter extends PureComponent {
     loadedPathways.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
-    console.log('starting calcs')
+    console.log('starting calcs');
 
     const observationsA = calculateObserved(pathwayData[0], pathwayData[0].filter);
     const totalsA = calculatePathwayScore(pathwayData[0], pathwayData[0].filter);
     const expectedA = calculateGeneSetExpected(pathwayData[0], pathwayData[0].filter);
     const maxSamplesAffectedA = pathwayData[0].samples.length;
 
-    console.log(observationsA,totalsA,expectedA,maxSamplesAffectedA)
+    console.log(observationsA,totalsA,expectedA,maxSamplesAffectedA);
 
     const observationsB = calculateObserved(pathwayData[1], pathwayData[1].filter);
     const totalsB = calculatePathwayScore(pathwayData[1], pathwayData[1].filter);
     const expectedB = calculateGeneSetExpected(pathwayData[1], pathwayData[1].filter);
     const maxSamplesAffectedB = pathwayData[1].samples.length;
 
-    console.log(observationsB,totalsB,expectedB,maxSamplesAffectedB)
+    console.log(observationsB,totalsB,expectedB,maxSamplesAffectedB);
 
     // console.log('calculating ALL pathways')
     // let pathways = calculateAllPathways(output)
