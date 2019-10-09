@@ -184,13 +184,38 @@ export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,d
 
 export function fetchMeanScores(selectedCohorts,samples,geneSetLabels,filter,dataHandler){
   // demoAllFieldMeanRunner();
+
+  // (1) fetch copy number versus copy number background
+  // (2) fetch mutation versus mutation background
+  // (3) fetch both and combine
+
   Rx.Observable.zip(
-    allFieldMean(selectedCohorts[0], samples[0]),
-    allFieldMean(selectedCohorts[1], samples[1]),
+    sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samples[0], geneSetLabels),
+    datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samples[0], geneSetLabels),
+    datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samples[0], [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
+    datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samples[0], [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
+    sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samples[1], geneSetLabels),
+    datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samples[1], geneSetLabels),
+    datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samples[1], [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
+    datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samples[1], [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
     (
-      scoresA,scoresB
+      mutationsA, copyNumberA, geneExpressionA,geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB,genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
     ) => ({
-      scoresA,scoresB
+      samplesA,
+      mutationsA,
+      copyNumberA,
+      geneExpressionA,
+      geneExpressionPathwayActivityA,
+      genomeBackgroundMutationA,
+      genomeBackgroundCopyNumberA,
+      samplesB,
+      mutationsB,
+      copyNumberB,
+      geneExpressionB,
+      geneExpressionPathwayActivityB,
+      genomeBackgroundMutationB,
+      genomeBackgroundCopyNumberB,
     }),
   )
     .subscribe( (output ) => {
