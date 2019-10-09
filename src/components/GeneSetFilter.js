@@ -86,24 +86,6 @@ export default class GeneSetFilter extends PureComponent {
     });
   };
 
-  // handleBulkData = (output) => {
-  //   const scoredPathwaySamples = [
-  //     output.geneExpressionPathwayActivityA[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-  //     output.geneExpressionPathwayActivityB[1].map( p => sum(p.map( f => isNaN(f) ? 0 : f ))/p.length),
-  //   ];
-  //   const loadedPathways = LargePathways.map( (pathway,index) => {
-  //     pathway.firstGeneExpressionPathwayActivity = scoredPathwaySamples[0][index];
-  //     pathway.secondGeneExpressionPathwayActivity = scoredPathwaySamples[1][index];
-  //     return pathway ;
-  //   });
-  //   const pathwayLabels = this.props.pathways.map( p => p.golabel);
-  //   const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-  //
-  //   this.setState({
-  //     loadedPathways,
-  //     cartPathways,
-  //   });
-  // };
 
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
@@ -261,7 +243,7 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
@@ -339,7 +321,7 @@ export default class GeneSetFilter extends PureComponent {
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       }
                     }).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scoreCartPathway(p))}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p.golabel}>({ (this.scoreCartPathway(p))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
