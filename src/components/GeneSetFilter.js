@@ -10,7 +10,7 @@ import {Button} from 'react-toolbox/lib/button';
 // import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
 import {
-  convertPathwaysToGeneSetLabel,
+  convertPathwaysToGeneSetLabel, fetchMeanScores,
   fetchPathwayActivityMeans
 } from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
@@ -18,6 +18,7 @@ import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+import {FILTER_ENUM} from "./FilterSelector";
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -52,7 +53,12 @@ export default class GeneSetFilter extends PureComponent {
     // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
     const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
 
-    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+    if(this.props.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
+      fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+    }
+    else{
+      fetchMeanScores(selectedCohort,samples,geneSetLabels,this.props.filter,this.handleMeanScores);
+    }
 
   }
 
@@ -61,7 +67,7 @@ export default class GeneSetFilter extends PureComponent {
     this.filterByName();
   }
 
-  handleMeanActivityData = (output) => {
+  handleMeanScores = (output) => {
     let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
 
     let indexMap = {};
@@ -75,6 +81,31 @@ export default class GeneSetFilter extends PureComponent {
       const sourceIndex = indexMap[cleanField];
       loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
       loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+    }
+
+    const pathwayLabels = this.props.pathways.map( p => p.golabel);
+    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+
+    this.setState({
+      loadedPathways,
+      cartPathways,
+    });
+  };
+
+  handleMeanActivityData = (output) => {
+    let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
+
+    let indexMap = {};
+    LargePathways.forEach( (p,index) => {
+      indexMap[p.golabel] = index ;
+    });
+
+    for(let index in output.scoresA.field){
+      const field = output.scoresA.field[index];
+      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
+      const sourceIndex = indexMap[cleanField];
+      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.scoresA.mean[index];
+      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.scoresB.mean[index];
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
@@ -356,6 +387,7 @@ export default class GeneSetFilter extends PureComponent {
 
 GeneSetFilter.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
+  filter: PropTypes.array.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,

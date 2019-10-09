@@ -182,6 +182,23 @@ export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,d
 
 }
 
+export function fetchMeanScores(selectedCohorts,samples,geneSetLabels,filter,dataHandler){
+  // demoAllFieldMeanRunner();
+  Rx.Observable.zip(
+    allFieldMean(selectedCohorts[0], samples[0]),
+    allFieldMean(selectedCohorts[1], samples[1]),
+    (
+      scoresA,scoresB
+    ) => ({
+      scoresA,scoresB
+    }),
+  )
+    .subscribe( (output ) => {
+      // get the average activity for each
+      dataHandler(output);
+    });
+}
+
 export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
 
   // demoAllFieldMeanRunner();
@@ -190,10 +207,9 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,
     allFieldMean(selectedCohorts[0], samples[0]),
     allFieldMean(selectedCohorts[1], samples[1]),
     (
-      geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+      scoresA,scoresB
     ) => ({
-      geneExpressionPathwayActivityA,
-      geneExpressionPathwayActivityB,
+      scoresA,scoresB
     }),
   )
     .subscribe( (output ) => {
