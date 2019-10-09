@@ -75,12 +75,12 @@ export default class GeneSetFilter extends PureComponent {
       indexMap[p.golabel] = index ;
     });
 
-    for(let index in output.geneExpressionPathwayActivityA.field){
-      const field = output.geneExpressionPathwayActivityA.field[index];
+    for(let index in output.scoresA.field){
+      const field = output.scoresA.field[index];
       const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
       const sourceIndex = indexMap[cleanField];
-      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
-      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+      loadedPathways[sourceIndex].firstScore = output.scoresA.mean[index];
+      loadedPathways[sourceIndex].secondScore = output.scoresB.mean[index];
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
@@ -104,8 +104,8 @@ export default class GeneSetFilter extends PureComponent {
       const field = output.scoresA.field[index];
       const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
       const sourceIndex = indexMap[cleanField];
-      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.scoresA.mean[index];
-      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.scoresB.mean[index];
+      loadedPathways[sourceIndex].firstScore = output.scoresA.mean[index];
+      loadedPathways[sourceIndex].secondScore = output.scoresB.mean[index];
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
@@ -121,20 +121,20 @@ export default class GeneSetFilter extends PureComponent {
   scoreCartPathway(p) {
     switch (this.state.sortCartBy) {
     case 'Total':
-      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstScore + p.secondScore).toFixed(2);
     default:
     case 'Diff':
-      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstScore - p.secondScore).toFixed(2);
     }
   }
 
   scorePathway(p) {
     switch (this.state.sortBy) {
     case 'Total':
-      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstScore + p.secondScore).toFixed(2);
     default:
     case 'Diff':
-      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+      return (p.firstScore - p.secondScore).toFixed(2);
     }
   }
 
