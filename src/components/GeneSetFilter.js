@@ -60,12 +60,18 @@ export default class GeneSetFilter extends PureComponent {
 
   handleMeanActivityData = (output) => {
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
-    let loadedPathways = JSON.parse(JSON.stringify(pathways));
+    // let loadedPathways = JSON.parse(JSON.stringify(pathways));
+    let loadedPathways = pathways.map( p => {
+      p.firstGeneExpressionPathwayActivity = 0 ;
+      p.secondGeneExpressionPathwayActivity = 0 ;
+      return p ;
+    });
 
     let indexMap = {};
     pathways.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
+
 
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];
@@ -77,6 +83,7 @@ export default class GeneSetFilter extends PureComponent {
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
     const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+
 
     this.setState({
       loadedPathways,
