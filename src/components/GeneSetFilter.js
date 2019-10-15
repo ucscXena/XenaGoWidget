@@ -167,6 +167,15 @@ export default class GeneSetFilter extends PureComponent {
 
   handleRemoveGeneFromGeneSet(gene){
     console.log('removing gene',gene);
+    console.log('input ',this.state.selectedEditGeneSet.gene);
+    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  g !== gene  );
+    console.log('new genes ',newGenes);
+
+    this.setState({
+      selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
+        gene: { $set: newGenes }
+      })
+    });
   }
 
   handleRemoveSelectedFromCart() {
@@ -192,9 +201,6 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   render() {
-    // this.filterByName(this.state.name,this.state.limit);
-
-    console.log('selected edit gene set',this.state.selectedEditGeneSet);
     return (
       <div className={BaseStyle.geneSetBox}>
         <table>
@@ -258,6 +264,7 @@ export default class GeneSetFilter extends PureComponent {
                 </table>
                 {this.state.selectedFilteredPathways.length} Selected
                 <select
+                  disabled={this.state.editGeneSet}
                   multiple
                   onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
@@ -274,7 +281,10 @@ export default class GeneSetFilter extends PureComponent {
                 </select>
               </td>
               <td width={100}>
-                <Button disabled={this.state.selectedFilteredPathways.length===0} onClick={() => this.handleAddSelectedToCart()}>
+                <Button
+                  disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet}
+                  onClick={() => this.handleAddSelectedToCart()}
+                >
                   <FaArrowCircleORight/> Select
                 </Button>
                 {this.state.editGeneSet === undefined &&
@@ -298,7 +308,10 @@ export default class GeneSetFilter extends PureComponent {
                   {/*<FaArrowCircleOLeft/>*/}
                   <FaTrashO  color='orange'/> Deselect
                 </Button>
-                <Button onClick={() => this.handleClearCart()}>
+                <Button
+                  disabled={this.state.editGeneSet}
+                  onClick={() => this.handleClearCart()}
+                >
                   <FaTrashO color='red'/> Clear All
                 </Button>
               </td>
