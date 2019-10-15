@@ -15,6 +15,7 @@ import {
 } from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
+import FaCheckSquare from 'react-icons/lib/fa/check-square';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 
@@ -26,6 +27,7 @@ export default class GeneSetFilter extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
+      editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
       sortBy: 'Diff',
@@ -147,6 +149,15 @@ export default class GeneSetFilter extends PureComponent {
     });
   }
 
+  handleEditGeneSet(geneSet) {
+    console.log('handling editing a gene set',geneSet);
+    this.setState({editGeneSet:geneSet});
+  }
+
+  handleDoneEditGeneSet(geneSet) {
+    console.log('handling editing a gene set',geneSet);
+    this.setState({editGeneSet:undefined});
+  }
 
   handleClearCart() {
     this.setState({cartPathways:[]});
@@ -255,11 +266,27 @@ export default class GeneSetFilter extends PureComponent {
                 </select>
               </td>
               <td width={100}>
-                <Button onClick={() => this.handleAddSelectedToCart()}>
+                <Button disabled={this.state.selectedFilteredPathways.length===0} onClick={() => this.handleAddSelectedToCart()}>
                   <FaArrowCircleORight/> Select
                 </Button>
+                {this.state.editGeneSet === undefined &&
+                <Button
+                  disabled={this.state.selectedFilteredPathways.length !== 1}
+                  onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0])}
+                >
+                  <FaEdit/> Edit
+                </Button>
+                }
+                {this.state.editGeneSet&&
+                <Button
+                  disabled={this.state.selectedFilteredPathways.length !== 1}
+                  onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
+                >
+                  <FaCheckSquare/> Done
+                </Button>
+                }
                 <hr/>
-                <Button onClick={() => this.handleRemoveSelectedFromCart()}>
+                <Button disabled={this.state.selectedCartPathways.length===0} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
                   <FaTrashO  color='orange'/> Deselect
                 </Button>
@@ -267,6 +294,7 @@ export default class GeneSetFilter extends PureComponent {
                   <FaTrashO color='red'/> Clear All
                 </Button>
               </td>
+              {!this.state.editGeneSet &&
               <td width={200}>
                 <table>
                   <tbody>
@@ -275,7 +303,7 @@ export default class GeneSetFilter extends PureComponent {
                         <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
                       <td>
-                    Sort By
+                      Sort By
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
                           <option value='Diff'>Cohort Diff BPA</option>
                           <option value='Total'>Total BPA</option>
@@ -284,18 +312,18 @@ export default class GeneSetFilter extends PureComponent {
                       </td>
                       <td>
                         <Button mini raised>
-                          { this.state.sortCartOrder === 'asc' &&
-                    <FaSortAsc onClick={() => this.setState({sortCartOrder:'desc'})}/>
+                          {this.state.sortCartOrder === 'asc' &&
+                        <FaSortAsc onClick={() => this.setState({sortCartOrder: 'desc'})}/>
                           }
-                          { this.state.sortCartOrder === 'desc' &&
-                    <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
+                          {this.state.sortCartOrder === 'desc' &&
+                        <FaSortDesc onClick={() => this.setState({sortCartOrder: 'asc'})}/>
                           }
                         </Button>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        Cart Limit
+                      Cart Limit
                       </td>
                       <td>
                         <input
@@ -313,12 +341,12 @@ export default class GeneSetFilter extends PureComponent {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
                       return opt.value;
                     });
-                    this.setState({ selectedCartPathways: selectedEvents});
+                    this.setState({selectedCartPathways: selectedEvents});
                   }}
-                  style={{overflow:'scroll',height: 300}}
+                  style={{overflow: 'scroll', height: 300}}
                 >
                   {
-                    this.state.cartPathways.sort( (a,b) =>{
+                    this.state.cartPathways.sort((a, b) => {
                       switch (this.state.sortCartBy) {
                       case 'Total':
                       case 'Diff':
@@ -326,12 +354,19 @@ export default class GeneSetFilter extends PureComponent {
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       }
-                    }).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scoreCartPathway(p))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
+                    }).map(p => {
+                      return (<option key={p.golabel} value={p.golabel}>({(this.scoreCartPathway(p))},
+                        N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
                   }
                 </select>
               </td>
+              }
+              {this.state.editGeneSet &&
+                <div>
+                  Editing {this.state.editGeneSet}
+                </div>
+              }
             </tr>
             <tr>
               <td>
