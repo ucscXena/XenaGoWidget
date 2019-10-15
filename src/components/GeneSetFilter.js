@@ -19,6 +19,7 @@ import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
+import {ButtonGroup} from "react-bootstrap";
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -154,13 +155,15 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleEditGeneSet(geneSet) {
-    console.log('handling editing a gene set',geneSet,getPathwaysForGeneSetName(this.state.geneSet));
     const selectedEditGeneSet = getPathwaysForGeneSetName(this.state.geneSet).filter( gs => gs.golabel === geneSet);
     this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
   }
 
-  handleDoneEditGeneSet(geneSet) {
-    console.log('handling editing a gene set',geneSet);
+  handleDoneEditGeneSet() {
+    this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined});
+  }
+
+  handleCancelEditGeneSet() {
     this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined});
   }
 
@@ -316,12 +319,22 @@ export default class GeneSetFilter extends PureComponent {
                 </Button>
                 }
                 {this.state.editGeneSet&&
-                <Button
-                  disabled={this.state.selectedFilteredPathways.length !== 1}
-                  onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
-                >
-                  <FaCheckSquare/> Done
-                </Button>
+                  <ButtonGroup>
+                    <Button
+                      disabled={this.state.selectedFilteredPathways.length !== 1}
+                      onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
+                      primary raised
+                    >
+                      <FaCheckSquare/> Done
+                    </Button>
+                    <Button
+                      disabled={this.state.selectedFilteredPathways.length !== 1}
+                      onClick={() => this.handleCancelEditGeneSet(this.state.selectedFilteredPathways[0])}
+                      raised
+                    >
+                       Cancel
+                    </Button>
+                  </ButtonGroup>
                 }
                 <hr/>
                 <Button disabled={this.state.selectedCartPathways.length===0} onClick={() => this.handleRemoveSelectedFromCart()} >
