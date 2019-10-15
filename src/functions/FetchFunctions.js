@@ -10,8 +10,9 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {FILTER_ENUM} from '../components/FilterSelector';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-// import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
-// import DefaultPathWays from '../data/genesets/tgac';
+import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+import DefaultPathways from '../data/genesets/tgac';
+import FlybasePathways from '../data/genesets/flyBase';
 
 const { datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 
@@ -133,7 +134,20 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
+export const getPathwaysForGeneSetName = (name) => {
+  switch (name) {
+  case '8K':
+    return LargePathways;
+  case 'Default':
+    return DefaultPathways;
+  case 'Flybase':
+    return FlybasePathways;
+  }
+  return null ;
+};
+
 export const convertPathwaysToGeneSetLabel = (pathways) => {
+  console.log('pathways',pathways)
   return pathways.map( p => {
     if(p.goid){
       return p.golabel +' ('+p.goid+')';

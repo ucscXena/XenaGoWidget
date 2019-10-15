@@ -11,13 +11,12 @@ import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
-  fetchPathwayActivityMeans
+  fetchPathwayActivityMeans, getPathwaysForGeneSetName
 } from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
-import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -32,7 +31,7 @@ export default class GeneSetFilter extends PureComponent {
       sortBy: 'Diff',
       sortCartOrder:'asc',
       sortCartBy: 'Diff',
-      geneSet: 'Full 8K',
+      geneSet: '8K',
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
@@ -49,9 +48,7 @@ export default class GeneSetFilter extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways).slice(0,100);
-    const geneSetLabels = convertPathwaysToGeneSetLabel(LargePathways);
-
+    const geneSetLabels = convertPathwaysToGeneSetLabel(getPathwaysForGeneSetName(this.state.geneSet));
     fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
 
   }
@@ -62,10 +59,11 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleMeanActivityData = (output) => {
-    let loadedPathways = JSON.parse(JSON.stringify(LargePathways));
+    const pathways = getPathwaysForGeneSetName(this.state.geneSet);
+    let loadedPathways = JSON.parse(JSON.stringify(pathways));
 
     let indexMap = {};
-    LargePathways.forEach( (p,index) => {
+    pathways.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
 
@@ -181,10 +179,10 @@ export default class GeneSetFilter extends PureComponent {
                   <tbody>
                     <tr>
                       <td>
-                        <select>
-                          <option>Full 8K</option>
-                          <option>Default Gene Set (42)</option>
-                          <option>Flybase</option>
+                        <select onChange={(event) => this.setState({geneSet: event.target.value})}>
+                          <option value='8K'>Gene Expression (8K)</option>
+                          <option value='Default'>Default Gene Set (42)</option>
+                          <option value='Flybase'>Flybase (47)</option>
                         </select>
                       </td>
                       <td>
