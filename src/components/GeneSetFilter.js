@@ -41,6 +41,7 @@ export default class GeneSetFilter extends PureComponent {
       // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : [],
       cartPathways : [],
+      selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
       totalPathways: 0,
@@ -279,7 +280,7 @@ export default class GeneSetFilter extends PureComponent {
               </td>
               <td width={100}>
                 <Button
-                  disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet}
+                  disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
                   onClick={() => this.handleAddSelectedToCart()}
                 >
                   <FaArrowCircleORight/> Select
@@ -306,7 +307,7 @@ export default class GeneSetFilter extends PureComponent {
                   <FaTrashO  color='orange'/> Deselect
                 </Button>
                 <Button
-                  disabled={this.state.editGeneSet}
+                  disabled={this.state.editGeneSet===undefined}
                   onClick={() => this.handleClearCart()}
                 >
                   <FaTrashO color='red'/> Clear All
@@ -381,31 +382,43 @@ export default class GeneSetFilter extends PureComponent {
               </td>
               }
               {this.state.editGeneSet &&
-                <div>
-                  <h4>Editing {this.state.editGeneSet}</h4>
-                  <select
-                    multiple
-                    onChange={(event) => {
-                      const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                        return opt.value;
-                      });
-                      this.setState({ selectedGenesForGeneSet: selectedEvents});
-                    }}
-                    style={{height:300,width: 80}}
-                  >
-                    {
-                      this.state.selectedEditGeneSet.gene.map ( gs =>
-                        (<option>
-                          {gs}
-                        </option>)
-                      )
-                    }
-                  </select>
-                  <Button onClick={() => this.handleRemoveGeneFromGeneSet()} >
-                    Remove Gene(s) <FaTrash/>
-                  </Button>
-
-                </div>
+                <td>
+                  <h4>Editing <br/>{this.state.editGeneSet}</h4>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select
+                            multiple
+                            onChange={(event) => {
+                              const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
+                                return opt.value;
+                              });
+                              this.setState({ selectedGenesForGeneSet: selectedEvents});
+                            }}
+                            style={{height:300,width: 80}}
+                          >
+                            {
+                              this.state.selectedEditGeneSet.gene.map ( gs =>
+                                (<option key={gs}>
+                                  {gs}
+                                </option>)
+                              )
+                            }
+                          </select>
+                        </td>
+                        <td>
+                          <Button
+                            disabled={this.state.selectedGenesForGeneSet.length===0}
+                            onClick={() => this.handleRemoveGeneFromGeneSet()}
+                          >
+                          Remove Gene(s) <FaTrash/>
+                          </Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
               }
             </tr>
             <tr>
