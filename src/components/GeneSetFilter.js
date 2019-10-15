@@ -9,7 +9,7 @@ import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
-  fetchPathwayActivityMeans, getPathwaysForGeneSetName
+  fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
@@ -17,6 +17,8 @@ import FaCheckSquare from 'react-icons/lib/fa/check-square';
 import FaTrash from 'react-icons/lib/fa/trash';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
+import Autocomplete from 'react-toolbox/lib/autocomplete';
+import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -33,6 +35,8 @@ export default class GeneSetFilter extends PureComponent {
       sortCartOrder:'asc',
       sortCartBy: 'Diff',
       geneSet: '8K',
+      newGene: [],
+      geneOptions: [],
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
@@ -164,6 +168,15 @@ export default class GeneSetFilter extends PureComponent {
     this.setState({cartPathways:[]});
   }
 
+
+  handleAddGeneToGeneSet(newGene) {
+    this.setState({
+      selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
+        gene: { $push: newGene }
+      })
+    });
+  }
+
   handleRemoveGeneFromGeneSet(){
     const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  this.state.selectedGenesForGeneSet.indexOf(g)<0 );
     this.setState({
@@ -193,6 +206,17 @@ export default class GeneSetFilter extends PureComponent {
 
   handleResetGeneSets() {
     this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
+  }
+
+  queryNewGenes(geneQuery) {
+    if (geneQuery.trim().length === 0) {
+      this.setState({
+        geneOptions: []
+      });
+      return;
+    }
+
+    lookupGeneByName(geneQuery,(matches) => { this.setState( {geneOptions:matches});});
   }
 
   render() {
@@ -406,6 +430,19 @@ export default class GeneSetFilter extends PureComponent {
                           </select>
                         </td>
                         <td>
+                          <Autocomplete
+                            disabled={this.state.newGene.length > 0}
+                            label='&nbsp;&nbsp;Add Gene'
+                            onChange={(newGene) => {
+                              this.handleAddGeneToGeneSet(newGene);
+                              // this.setState({newGene: newGene});
+                            }}
+                            onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
+                            source={this.state.geneOptions}
+                            style={{marginLeft:10,fontWeight:'bolder'}}
+                            value={this.state.newGene}
+                          />
+
                           <Button
                             disabled={this.state.selectedGenesForGeneSet.length===0}
                             onClick={() => this.handleRemoveGeneFromGeneSet()}
@@ -443,7 +480,6 @@ export default class GeneSetFilter extends PureComponent {
       </div>
     );
   }
-
 }
 
 GeneSetFilter.propTypes = {
