@@ -147,7 +147,6 @@ export const getPathwaysForGeneSetName = (name) => {
 };
 
 export const convertPathwaysToGeneSetLabel = (pathways) => {
-  console.log('pathways',pathways)
   return pathways.map( p => {
     if(p.goid){
       return p.golabel +' ('+p.goid+')';
