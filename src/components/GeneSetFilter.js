@@ -19,7 +19,7 @@ import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
-import {ButtonGroup} from "react-bootstrap";
+import {ButtonGroup} from 'react-bootstrap';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -154,8 +154,19 @@ export default class GeneSetFilter extends PureComponent {
     });
   }
 
+
+  handleNewGeneSet() {
+    const newGeneSet = {
+      golabel:'New Gene Set',
+      gene: []
+    };
+    this.setState({editGeneSet:'New Gene Set',selectedEditGeneSet: newGeneSet});
+  }
+
   handleEditGeneSet(geneSet) {
     const selectedEditGeneSet = getPathwaysForGeneSetName(this.state.geneSet).filter( gs => gs.golabel === geneSet);
+    console.log('gene set',geneSet);
+    console.log('selected edited gene set',selectedEditGeneSet);
     this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
   }
 
@@ -223,6 +234,7 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   render() {
+    console.log('edit gene set view',this.state.editGeneSet)
     return (
       <div className={BaseStyle.geneSetBox}>
         <table>
@@ -311,12 +323,19 @@ export default class GeneSetFilter extends PureComponent {
                   <FaArrowCircleORight/> Add to View
                 </Button>
                 {this.state.editGeneSet === undefined &&
-                <Button
-                  disabled={this.state.selectedFilteredPathways.length !== 1}
-                  onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0])}
-                >
-                  <FaEdit/> Edit
-                </Button>
+                  <ButtonGroup>
+                    <Button
+                      disabled={this.state.selectedFilteredPathways.length !== 1}
+                      onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0])}
+                    >
+                      <FaEdit/> Edit
+                    </Button>
+                    <Button
+                      onClick={() => this.handleNewGeneSet()}
+                    >
+                      <FaPlusCircle/> New
+                    </Button>
+                  </ButtonGroup>
                 }
                 {this.state.editGeneSet&&
                   <ButtonGroup>
@@ -342,7 +361,7 @@ export default class GeneSetFilter extends PureComponent {
                   <FaTrashO  color='orange'/> Remove from View
                 </Button>
                 <Button
-                  disabled={this.state.editGeneSet===undefined}
+                  disabled={this.state.editGeneSet!==undefined}
                   onClick={() => this.handleClearCart()}
                 >
                   <FaTrashO color='red'/> Clear View
