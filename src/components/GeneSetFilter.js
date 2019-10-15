@@ -6,8 +6,6 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {Button} from 'react-toolbox/lib/button';
-// import Dropdown from 'react-toolbox/lib/dropdown';
-// import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
@@ -283,7 +281,7 @@ export default class GeneSetFilter extends PureComponent {
                   disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
                   onClick={() => this.handleAddSelectedToCart()}
                 >
-                  <FaArrowCircleORight/> Select
+                  <FaArrowCircleORight/> Add to View
                 </Button>
                 {this.state.editGeneSet === undefined &&
                 <Button
@@ -304,13 +302,13 @@ export default class GeneSetFilter extends PureComponent {
                 <hr/>
                 <Button disabled={this.state.selectedCartPathways.length===0} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
-                  <FaTrashO  color='orange'/> Deselect
+                  <FaTrashO  color='orange'/> Remove from View
                 </Button>
                 <Button
                   disabled={this.state.editGeneSet===undefined}
                   onClick={() => this.handleClearCart()}
                 >
-                  <FaTrashO color='red'/> Clear All
+                  <FaTrashO color='red'/> Clear View
                 </Button>
               </td>
               {!this.state.editGeneSet &&
@@ -342,7 +340,7 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                      Cart Limit
+                      View Limit
                       </td>
                       <td>
                         <input
