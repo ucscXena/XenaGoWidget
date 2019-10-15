@@ -65,8 +65,8 @@ export default class GeneSetFilter extends PureComponent {
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
     // let loadedPathways = JSON.parse(JSON.stringify(pathways));
     let loadedPathways = pathways.map( p => {
-      p.firstGeneExpressionPathwayActivity = 0 ;
-      p.secondGeneExpressionPathwayActivity = 0 ;
+      p.firstGeneExpressionPathwayActivity = undefined ;
+      p.secondGeneExpressionPathwayActivity = undefined ;
       return p ;
     });
 
@@ -165,12 +165,8 @@ export default class GeneSetFilter extends PureComponent {
     this.setState({cartPathways:[]});
   }
 
-  handleRemoveGeneFromGeneSet(gene){
-    console.log('removing gene',gene);
-    console.log('input ',this.state.selectedEditGeneSet.gene);
-    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  g !== gene  );
-    console.log('new genes ',newGenes);
-
+  handleRemoveGeneFromGeneSet(){
+    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  this.state.selectedGenesForGeneSet.indexOf(g)<0 );
     this.setState({
       selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
         gene: { $set: newGenes }
@@ -271,7 +267,8 @@ export default class GeneSetFilter extends PureComponent {
                       return opt.value;
                     });
                     this.setState({ selectedFilteredPathways: selectedEvents});
-                  }} style={{overflow:'scroll', height:200,width: 300}}
+                  }}
+                  style={{overflow:'scroll', height:200,width: 300}}
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
@@ -386,18 +383,28 @@ export default class GeneSetFilter extends PureComponent {
               {this.state.editGeneSet &&
                 <div>
                   <h4>Editing {this.state.editGeneSet}</h4>
-                  <ul>
+                  <select
+                    multiple
+                    onChange={(event) => {
+                      const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
+                        return opt.value;
+                      });
+                      this.setState({ selectedGenesForGeneSet: selectedEvents});
+                    }}
+                    style={{height:300,width: 80}}
+                  >
                     {
                       this.state.selectedEditGeneSet.gene.map ( gs =>
-                        (<li>
+                        (<option>
                           {gs}
-                          <Button onClick={() => this.handleRemoveGeneFromGeneSet(gs)}>
-                            <FaTrash/>
-                          </Button>
-                        </li>)
+                        </option>)
                       )
                     }
-                  </ul>
+                  </select>
+                  <Button onClick={() => this.handleRemoveGeneFromGeneSet()} >
+                    Remove Gene(s) <FaTrash/>
+                  </Button>
+
                 </div>
               }
             </tr>
