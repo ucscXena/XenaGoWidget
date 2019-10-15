@@ -179,11 +179,12 @@ export default class GeneSetFilter extends PureComponent {
                   <tbody>
                     <tr>
                       <td>
-                        <select onChange={(event) => this.setState({geneSet: event.target.value})}>
-                          <option value='8K'>Gene Expression (8K)</option>
-                          <option value='Default'>Default Gene Set (42)</option>
-                          <option value='Flybase'>Flybase (47)</option>
-                        </select>
+                        <h3>Gene Expression Set</h3>
+                        {/*<select onChange={(event) => this.setState({geneSet: event.target.value})}>*/}
+                        {/*  <option value='8K'>Gene Expression (8K)</option>*/}
+                        {/*  <option value='Default'>Default Gene Set (42)</option>*/}
+                        {/*  <option value='Flybase'>Flybase (47)</option>*/}
+                        {/*</select>*/}
                       </td>
                       <td>
                         <FaEdit/>
