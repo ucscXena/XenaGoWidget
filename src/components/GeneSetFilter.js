@@ -165,8 +165,6 @@ export default class GeneSetFilter extends PureComponent {
 
   handleEditGeneSet(geneSet) {
     const selectedEditGeneSet = getPathwaysForGeneSetName(this.state.geneSet).filter( gs => gs.golabel === geneSet);
-    console.log('gene set',geneSet);
-    console.log('selected edited gene set',selectedEditGeneSet);
     this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
   }
 
@@ -234,7 +232,6 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   render() {
-    console.log('edit gene set view',this.state.editGeneSet)
     return (
       <div className={BaseStyle.geneSetBox}>
         <table>
