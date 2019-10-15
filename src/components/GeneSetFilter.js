@@ -16,6 +16,7 @@ import {
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import FaCheckSquare from 'react-icons/lib/fa/check-square';
+import FaTrash from 'react-icons/lib/fa/trash';
 import update from 'immutability-helper';
 import {Chip} from 'react-toolbox';
 
@@ -150,17 +151,22 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleEditGeneSet(geneSet) {
-    console.log('handling editing a gene set',geneSet);
-    this.setState({editGeneSet:geneSet});
+    console.log('handling editing a gene set',geneSet,getPathwaysForGeneSetName(this.state.geneSet));
+    const selectedEditGeneSet = getPathwaysForGeneSetName(this.state.geneSet).filter( gs => gs.golabel === geneSet);
+    this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
   }
 
   handleDoneEditGeneSet(geneSet) {
     console.log('handling editing a gene set',geneSet);
-    this.setState({editGeneSet:undefined});
+    this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined});
   }
 
   handleClearCart() {
     this.setState({cartPathways:[]});
+  }
+
+  handleRemoveGeneFromGeneSet(gene){
+    console.log('removing gene',gene);
   }
 
   handleRemoveSelectedFromCart() {
@@ -187,6 +193,8 @@ export default class GeneSetFilter extends PureComponent {
 
   render() {
     // this.filterByName(this.state.name,this.state.limit);
+
+    console.log('selected edit gene set',this.state.selectedEditGeneSet);
     return (
       <div className={BaseStyle.geneSetBox}>
         <table>
@@ -364,7 +372,19 @@ export default class GeneSetFilter extends PureComponent {
               }
               {this.state.editGeneSet &&
                 <div>
-                  Editing {this.state.editGeneSet}
+                  <h4>Editing {this.state.editGeneSet}</h4>
+                  <ul>
+                    {
+                      this.state.selectedEditGeneSet.gene.map ( gs =>
+                        (<li>
+                          {gs}
+                          <Button onClick={() => this.handleRemoveGeneFromGeneSet(gs)}>
+                            <FaTrash/>
+                          </Button>
+                        </li>)
+                      )
+                    }
+                  </ul>
                 </div>
               }
             </tr>
