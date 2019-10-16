@@ -14,7 +14,8 @@ import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 import DefaultPathways from '../data/genesets/tgac';
 import FlybasePathways from '../data/genesets/flyBase';
 
-const { datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
+const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
+const REFERENCE = refGene['hg38'];
 
 export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
@@ -193,6 +194,13 @@ export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,d
       dataHandler(output);
     });
 
+}
+
+export function lookupGeneByName(geneQuery,callback){
+  let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit);
+  subscriber.subscribe(matches => {
+    callback(matches);
+  });
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){

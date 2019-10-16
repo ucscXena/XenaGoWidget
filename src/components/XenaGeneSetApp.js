@@ -669,7 +669,12 @@ export default class XenaGeneSetApp extends PureComponent {
                             style={{width:400}}
                             title="Gene Set Search"
                           >
-                            <GeneSetFilter cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})} pathwayData={this.state.pathwayData} pathways={this.state.pathways} setPathways={this.setActiveGeneSets}/>
+                            <GeneSetFilter
+                              cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
+                              pathwayData={this.state.pathwayData}
+                              pathways={this.state.pathways}
+                              setPathways={this.setActiveGeneSets}
+                            />
                           </Dialog>
                             }
                           </td>

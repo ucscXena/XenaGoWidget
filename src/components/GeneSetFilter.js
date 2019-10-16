@@ -6,17 +6,23 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {Button} from 'react-toolbox/lib/button';
-// import Dropdown from 'react-toolbox/lib/dropdown';
-// import {CohortSelector} from "./CohortSelector";
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
-  fetchPathwayActivityMeans, getPathwaysForGeneSetName
+  fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
+import FaCheckSquare from 'react-icons/lib/fa/check-square';
+import FaTrash from 'react-icons/lib/fa/trash';
 import update from 'immutability-helper';
-import {Chip} from 'react-toolbox';
+import {Chip, Input} from 'react-toolbox';
+import Autocomplete from 'react-toolbox/lib/autocomplete';
+import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
+import {ButtonGroup} from 'react-bootstrap';
+import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
+import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
+import Dialog from 'react-toolbox/lib/dialog';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -26,23 +32,28 @@ export default class GeneSetFilter extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
+      editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
       sortBy: 'Diff',
       sortCartOrder:'asc',
       sortCartBy: 'Diff',
       geneSet: '8K',
+      newGene: [],
+      geneOptions: [],
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : [],
       cartPathways : [],
+      selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
       totalPathways: 0,
       cartPathwayLimit: CART_LIMIT,
       limit: VIEW_LIMIT,
+      newGeneStateName:'',
     };
 
 
@@ -62,8 +73,8 @@ export default class GeneSetFilter extends PureComponent {
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
     // let loadedPathways = JSON.parse(JSON.stringify(pathways));
     let loadedPathways = pathways.map( p => {
-      p.firstGeneExpressionPathwayActivity = 0 ;
-      p.secondGeneExpressionPathwayActivity = 0 ;
+      p.firstGeneExpressionPathwayActivity = undefined ;
+      p.secondGeneExpressionPathwayActivity = undefined ;
       return p ;
     });
 
@@ -148,8 +159,85 @@ export default class GeneSetFilter extends PureComponent {
   }
 
 
+  handleNewGeneSet() {
+    const newGeneSet = {
+      golabel:'New Gene Set',
+      gene: []
+    };
+    this.setState({newGeneStateName:newGeneSet.golabel,selectedEditGeneSet: newGeneSet,});
+  }
+
+  handleEditGeneSet(geneSet,geneSetList) {
+    const selectedEditGeneSet = geneSetList.filter( gs => gs.golabel === geneSet);
+    this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
+  }
+
+  handleDoneEditGeneSet() {
+    const selectedGoLabel = this.state.selectedEditGeneSet.golabel;
+    // find the new one we want
+    const selectedEditedGeneSet = update(this.state.selectedEditGeneSet,{
+      firstGeneExpressionPathwayActivity : { $set: undefined },
+      secondGeneExpressionPathwayActivity : { $set: undefined },
+      modified: { $set: true},
+      golabel: { $set: selectedGoLabel + '_modified'},
+    });
+
+    // slice out found via golabel
+    const pathwayIndex = this.state.loadedPathways.findIndex( p => {
+      return p.golabel === selectedGoLabel+'_modified' ;
+    });
+
+    const newPathways= pathwayIndex >=0 ?
+      update(this.state.loadedPathways,{[pathwayIndex]: {$set:selectedEditedGeneSet}}) :
+      update(this.state.loadedPathways,{$push:[selectedEditedGeneSet]});
+
+    const cartIndex = this.state.cartPathways.findIndex( p => {
+      return p.golabel === selectedGoLabel ;
+    });
+
+    const newCart = cartIndex < 0 ?
+      update(this.state.cartPathways,{$push:[selectedEditedGeneSet]}):
+      update(this.state.cartPathways,{[cartIndex]: {$set:selectedEditedGeneSet}});
+
+    this.setState(
+      {
+        editGeneSet:undefined,
+        selectedEditGeneSet:undefined,
+        cartPathways:newCart,
+        loadedPathways:newPathways,
+      }
+    );
+  }
+
+  handleCancelEditGeneSet() {
+    this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined});
+  }
+
   handleClearCart() {
     this.setState({cartPathways:[]});
+  }
+
+
+  handleAddGeneToGeneSet(newGene) {
+    const foundGene = this.state.selectedEditGeneSet.gene.findIndex( g => g===newGene[0]);
+    if(foundGene>=0){
+      alert('Gene already added: '+newGene[0]) ;
+      return ;
+    }
+    this.setState({
+      selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
+        gene: { $push: newGene }
+      })
+    });
+  }
+
+  handleRemoveGeneFromGeneSet(){
+    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  this.state.selectedGenesForGeneSet.indexOf(g)<0 );
+    this.setState({
+      selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
+        gene: { $set: newGenes }
+      })
+    });
   }
 
   handleRemoveSelectedFromCart() {
@@ -174,10 +262,61 @@ export default class GeneSetFilter extends PureComponent {
     this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
   }
 
+  queryNewGenes(geneQuery) {
+    if (geneQuery.trim().length === 0) {
+      this.setState({
+        geneOptions: []
+      });
+      return;
+    }
+
+    lookupGeneByName(geneQuery,(matches) => { this.setState( {geneOptions:matches});});
+  }
+
+  handleNewGeneSetNameInput = (name, value) => {
+    this.setState({newGeneStateName:value});
+  };
+
+
+  handleNewGeneSetSaveAndStart = () => {
+    const nameToEdit = this.state.newGeneStateName;
+    const selectedEditGeneSet = {
+      firstGeneExpressionPathwayActivity : undefined,
+      secondGeneExpressionPathwayActivity : undefined,
+      modified: true,
+      golabel: nameToEdit,
+      gene: [],
+    };
+
+    this.setState({editGeneSet:nameToEdit,newGeneStateName:'',selectedEditGeneSet});
+  };
+
+
+  cancelUpdate(){
+    this.setState({
+      newGeneStateName: '',
+    });
+  }
+
   render() {
-    // this.filterByName(this.state.name,this.state.limit);
     return (
       <div className={BaseStyle.geneSetBox}>
+        <Dialog
+          active={this.state.newGeneStateName!==''}
+          onEscKeyDown={() => this.cancelUpdate()}
+          onOverlayClick={() => this.cancelUpdate()}
+          title='Edit Gene Set Name'
+        >
+          <Input
+            name='newGeneSetName'
+            onChange={this.handleNewGeneSetNameInput.bind(this,'newGeneSetName')}
+            // onChange={(newName) => this.setState({newGeneStateName:newName})}
+            value={this.state.newGeneStateName}
+          />
+          {/*<Button label='Save' onClick={() => this.setState({editGeneSet:this.state.newGeneStateName,newGeneStateName:undefined})} primary raised/>*/}
+          <Button label='Save' onClick={this.handleNewGeneSetSaveAndStart.bind(this,'newGeneSetName')} primary raised/>
+          <Button label='Cancel' onClick={() => this.setState({newGeneStateName:''})} />
+        </Dialog>
         <table>
           <tbody>
             <tr>
@@ -193,8 +332,18 @@ export default class GeneSetFilter extends PureComponent {
                         {/*  <option value='Flybase'>Flybase (47)</option>*/}
                         {/*</select>*/}
                       </td>
+                      {/*<td>*/}
+                      {/*  <FaEdit/>*/}
+                      {/*</td>*/}
+                    </tr>
+                    <tr>
                       <td>
-                        <FaEdit/>
+                        <Button  mini raised>
+                          <FaCloudDownload/>
+                        </Button>
+                        <Button mini raised>
+                          <FaCloudUpload/>
+                        </Button>
                       </td>
                     </tr>
                     <tr>
@@ -239,13 +388,15 @@ export default class GeneSetFilter extends PureComponent {
                 </table>
                 {this.state.selectedFilteredPathways.length} Selected
                 <select
+                  disabled={this.state.editGeneSet}
                   multiple
                   onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
                       return opt.value;
                     });
                     this.setState({ selectedFilteredPathways: selectedEvents});
-                  }} style={{overflow:'scroll', height:200,width: 300}}
+                  }}
+                  style={{overflow:'scroll', height:200,width: 300}}
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
@@ -255,27 +406,65 @@ export default class GeneSetFilter extends PureComponent {
                 </select>
               </td>
               <td width={100}>
-                <Button onClick={() => this.handleAddSelectedToCart()}>
-                  <FaArrowCircleORight/> Select
+                <Button
+                  disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
+                  onClick={() => this.handleAddSelectedToCart()}
+                >
+                  <FaArrowCircleORight/> Add to View
                 </Button>
+                {this.state.editGeneSet === undefined &&
+                  <ButtonGroup>
+                    <Button
+                      disabled={this.state.selectedFilteredPathways.length !== 1}
+                      onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
+                    >
+                      <FaEdit/> Edit
+                    </Button>
+                    <Button
+                      onClick={() => this.handleNewGeneSet()}
+                    >
+                      <FaPlusCircle/> New
+                    </Button>
+                  </ButtonGroup>
+                }
+                {this.state.editGeneSet&&
+                  <ButtonGroup>
+                    <Button
+                      onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
+                      primary raised
+                    >
+                      <FaCheckSquare/> Done
+                    </Button>
+                    <Button
+                      onClick={() => this.handleCancelEditGeneSet(this.state.selectedFilteredPathways[0])}
+                      raised
+                    >
+                       Cancel
+                    </Button>
+                  </ButtonGroup>
+                }
                 <hr/>
-                <Button onClick={() => this.handleRemoveSelectedFromCart()}>
+                <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
-                  <FaTrashO  color='orange'/> Deselect
+                  <FaTrashO  color='orange'/> Remove from View
                 </Button>
-                <Button onClick={() => this.handleClearCart()}>
-                  <FaTrashO color='red'/> Clear All
+                <Button
+                  disabled={this.state.editGeneSet!==undefined}
+                  onClick={() => this.handleClearCart()}
+                >
+                  <FaTrashO color='red'/> Clear View
                 </Button>
               </td>
+              {!this.state.editGeneSet &&
               <td width={200}>
-                <table>
+                <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
                       <td>
                         <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
                       <td>
-                    Sort By
+                      Sort By
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
                           <option value='Diff'>Cohort Diff BPA</option>
                           <option value='Total'>Total BPA</option>
@@ -284,18 +473,18 @@ export default class GeneSetFilter extends PureComponent {
                       </td>
                       <td>
                         <Button mini raised>
-                          { this.state.sortCartOrder === 'asc' &&
-                    <FaSortAsc onClick={() => this.setState({sortCartOrder:'desc'})}/>
+                          {this.state.sortCartOrder === 'asc' &&
+                        <FaSortAsc onClick={() => this.setState({sortCartOrder: 'desc'})}/>
                           }
-                          { this.state.sortCartOrder === 'desc' &&
-                    <FaSortDesc onClick={() => this.setState({sortCartOrder:'asc'})}/>
+                          {this.state.sortCartOrder === 'desc' &&
+                        <FaSortDesc onClick={() => this.setState({sortCartOrder: 'asc'})}/>
                           }
                         </Button>
                       </td>
                     </tr>
                     <tr>
                       <td>
-                        Cart Limit
+                      View Limit
                       </td>
                       <td>
                         <input
@@ -303,6 +492,15 @@ export default class GeneSetFilter extends PureComponent {
                           style={{width: 25}}
                           value={this.state.cartPathwayLimit}
                         />
+                      </td>
+                      <td>
+                        <Button
+                          disabled={this.state.selectedCartPathways.length !== 1}
+                          onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
+                        >
+                          <FaEdit/> Edit
+                        </Button>
+
                       </td>
                     </tr>
                   </tbody>
@@ -313,12 +511,12 @@ export default class GeneSetFilter extends PureComponent {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
                       return opt.value;
                     });
-                    this.setState({ selectedCartPathways: selectedEvents});
+                    this.setState({selectedCartPathways: selectedEvents});
                   }}
-                  style={{overflow:'scroll',height: 300}}
+                  style={{overflow: 'scroll', height: 300}}
                 >
                   {
-                    this.state.cartPathways.sort( (a,b) =>{
+                    this.state.cartPathways.sort((a, b) => {
                       switch (this.state.sortCartBy) {
                       case 'Total':
                       case 'Diff':
@@ -326,16 +524,94 @@ export default class GeneSetFilter extends PureComponent {
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       }
-                    }).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scoreCartPathway(p))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
+                    }).map(p => {
+                      return (<option key={p.golabel} value={p.golabel}>({(this.scoreCartPathway(p))},
+                        N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
                   }
                 </select>
               </td>
+              }
+              {this.state.editGeneSet &&
+                <td>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <select
+                            multiple
+                            onChange={(event) => {
+                              const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
+                                return opt.value;
+                              });
+                              this.setState({ selectedGenesForGeneSet: selectedEvents});
+                            }}
+                            style={{height:350,width: 80}}
+                          >
+                            {
+                              this.state.selectedEditGeneSet.gene.map ( gs =>
+                                (<option key={gs}>
+                                  {gs}
+                                </option>)
+                              )
+                            }
+                          </select>
+                        </td>
+                        <td>
+                          <table className={BaseStyle.geneSetFilterBox}>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <h4>Editing <br/>{this.state.editGeneSet}</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Button  mini raised>
+                                    <FaCloudDownload/>
+                                  </Button>
+                                  <Button mini raised>
+                                    <FaCloudUpload/>
+                                  </Button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Autocomplete
+                                    disabled={this.state.newGene.length > 0}
+                                    label='&nbsp;&nbsp;Add Gene'
+                                    onChange={(newGene) => {
+                                      this.handleAddGeneToGeneSet(newGene);
+                                    // this.setState({newGene: newGene});
+                                    }}
+                                    onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
+                                    source={this.state.geneOptions}
+                                    style={{marginLeft:10,fontWeight:'bolder'}}
+                                    value={this.state.newGene}
+                                  />
+
+                                  <Button
+                                    disabled={this.state.selectedGenesForGeneSet.length===0}
+                                    onClick={() => this.handleRemoveGeneFromGeneSet()}
+                                  >
+                                  Remove Gene(s) <FaTrash/>
+                                  </Button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              }
             </tr>
             <tr>
               <td>
                 <Button
+                  disabled={this.state.editGeneSet!==undefined}
                   label='View' mini
                   onClick={() => this.handleViewGeneSets()}
                   primary raised
@@ -357,7 +633,6 @@ export default class GeneSetFilter extends PureComponent {
       </div>
     );
   }
-
 }
 
 GeneSetFilter.propTypes = {

@@ -221,7 +221,8 @@ export default class PathwayEditor extends PureComponent {
             {this.state.selectedPathway &&
           <Col md={3}>
             <Autocomplete
-              disabled={this.state.newGene.length > 0} label='New Gene' onChange={(newGene) => {
+              disabled={this.state.newGene.length > 0} label='New Gene'
+              onChange={(newGene) => {
                 this.setState({newGene: newGene});
               }}
               onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
