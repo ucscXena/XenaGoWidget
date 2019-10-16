@@ -20,6 +20,8 @@ import {Chip} from 'react-toolbox';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
+import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
+import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -281,8 +283,18 @@ export default class GeneSetFilter extends PureComponent {
                         {/*  <option value='Flybase'>Flybase (47)</option>*/}
                         {/*</select>*/}
                       </td>
+                      {/*<td>*/}
+                      {/*  <FaEdit/>*/}
+                      {/*</td>*/}
+                    </tr>
+                    <tr>
                       <td>
-                        <FaEdit/>
+                        <Button  mini raised>
+                          <FaCloudDownload/>
+                        </Button>
+                        <Button mini raised>
+                          <FaCloudUpload/>
+                        </Button>
                       </td>
                     </tr>
                     <tr>
@@ -396,7 +408,7 @@ export default class GeneSetFilter extends PureComponent {
               </td>
               {!this.state.editGeneSet &&
               <td width={200}>
-                <table>
+                <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
                       <td>
@@ -473,7 +485,6 @@ export default class GeneSetFilter extends PureComponent {
               }
               {this.state.editGeneSet &&
                 <td>
-                  <h4>Editing <br/>{this.state.editGeneSet}</h4>
                   <table>
                     <tbody>
                       <tr>
@@ -486,7 +497,7 @@ export default class GeneSetFilter extends PureComponent {
                               });
                               this.setState({ selectedGenesForGeneSet: selectedEvents});
                             }}
-                            style={{height:300,width: 80}}
+                            style={{height:350,width: 80}}
                           >
                             {
                               this.state.selectedEditGeneSet.gene.map ( gs =>
@@ -498,25 +509,49 @@ export default class GeneSetFilter extends PureComponent {
                           </select>
                         </td>
                         <td>
-                          <Autocomplete
-                            disabled={this.state.newGene.length > 0}
-                            label='&nbsp;&nbsp;Add Gene'
-                            onChange={(newGene) => {
-                              this.handleAddGeneToGeneSet(newGene);
-                              // this.setState({newGene: newGene});
-                            }}
-                            onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
-                            source={this.state.geneOptions}
-                            style={{marginLeft:10,fontWeight:'bolder'}}
-                            value={this.state.newGene}
-                          />
+                          <table className={BaseStyle.geneSetFilterBox}>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <h4>Editing <br/>{this.state.editGeneSet}</h4>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Button  mini raised>
+                                    <FaCloudDownload/>
+                                  </Button>
+                                  <Button mini raised>
+                                    <FaCloudUpload/>
+                                  </Button>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <Autocomplete
+                                    disabled={this.state.newGene.length > 0}
+                                    label='&nbsp;&nbsp;Add Gene'
+                                    onChange={(newGene) => {
+                                      this.handleAddGeneToGeneSet(newGene);
+                                    // this.setState({newGene: newGene});
+                                    }}
+                                    onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
+                                    source={this.state.geneOptions}
+                                    style={{marginLeft:10,fontWeight:'bolder'}}
+                                    value={this.state.newGene}
+                                  />
 
-                          <Button
-                            disabled={this.state.selectedGenesForGeneSet.length===0}
-                            onClick={() => this.handleRemoveGeneFromGeneSet()}
-                          >
-                          Remove Gene(s) <FaTrash/>
-                          </Button>
+                                  <Button
+                                    disabled={this.state.selectedGenesForGeneSet.length===0}
+                                    onClick={() => this.handleRemoveGeneFromGeneSet()}
+                                  >
+                                  Remove Gene(s) <FaTrash/>
+                                  </Button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+
                         </td>
                       </tr>
                     </tbody>
