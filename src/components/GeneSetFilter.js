@@ -337,14 +337,12 @@ export default class GeneSetFilter extends PureComponent {
                 {this.state.editGeneSet&&
                   <ButtonGroup>
                     <Button
-                      disabled={this.state.selectedFilteredPathways.length !== 1}
                       onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
                       primary raised
                     >
                       <FaCheckSquare/> Done
                     </Button>
                     <Button
-                      disabled={this.state.selectedFilteredPathways.length !== 1}
                       onClick={() => this.handleCancelEditGeneSet(this.state.selectedFilteredPathways[0])}
                       raised
                     >
