@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, AppBar,  Navigation } from 'react-toolbox';
 import {IconMenu, MenuItem, MenuDivider} from 'react-toolbox';
 
-import {XENA_VIEW, PATHWAYS_VIEW} from '../../src/components/XenaGeneSetApp';
 import PureComponent from '../../src/components/PureComponent';
 import BaseStyle from '../css/base.css';
 import * as PropTypes from 'underscore';
@@ -49,7 +48,7 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-      let {editGeneSetColors, onShowPathways, onShowXena, view, showClusterSort,toggleShowClusterSort,
+      let {editGeneSetColors, showClusterSort,toggleShowClusterSort,
         showDetailLayer, showDiffLayer,
         toggleShowDiffLayer,toggleShowDetailLayer } = this.props;
       return (
@@ -79,18 +78,6 @@ export default class NavigationBar extends PureComponent {
                           caption='Edit Colors' icon='color_lens' onClick={() => editGeneSetColors()}
                           value='download'
                         />
-                        {view === XENA_VIEW &&
-                                        <MenuItem
-                                          caption='Edit Pathways' icon='border_color' onClick={() => onShowPathways()}
-                                          value='settings'
-                                        />
-                        }
-                        {view === PATHWAYS_VIEW &&
-                                        <MenuItem
-                                          caption='Show GeneSet Viewer' icon='pageview' onClick={() => onShowXena()}
-                                          value='favorite'
-                                        />
-                        }
                         <MenuDivider/>
                         <MenuItem
                           caption={`${showDiffLayer? '\u2713' : 'Show'} Diff Layer`}
@@ -151,7 +138,6 @@ NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
   editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
-  onShowPathways: PropTypes.any,
   onShowXena: PropTypes.any,
   searchHandler: PropTypes.any,
   showClusterSort: PropTypes.any,
