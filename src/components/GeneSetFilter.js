@@ -218,6 +218,11 @@ export default class GeneSetFilter extends PureComponent {
 
 
   handleAddGeneToGeneSet(newGene) {
+    const foundGene = this.state.selectedEditGeneSet.gene.findIndex( g => g===newGene[0]);
+    if(foundGene>=0){
+      alert('Gene already added: '+newGene[0]) ;
+      return ;
+    }
     this.setState({
       selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
         gene: { $push: newGene }
