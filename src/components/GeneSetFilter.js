@@ -16,12 +16,13 @@ import FaTrashO from 'react-icons/lib/fa/trash-o';
 import FaCheckSquare from 'react-icons/lib/fa/check-square';
 import FaTrash from 'react-icons/lib/fa/trash';
 import update from 'immutability-helper';
-import {Chip} from 'react-toolbox';
+import {Chip, Input} from 'react-toolbox';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
 import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
 import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
+import Dialog from 'react-toolbox/lib/dialog';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -52,6 +53,7 @@ export default class GeneSetFilter extends PureComponent {
       totalPathways: 0,
       cartPathwayLimit: CART_LIMIT,
       limit: VIEW_LIMIT,
+      newGeneStateName:'',
     };
 
 
@@ -162,7 +164,7 @@ export default class GeneSetFilter extends PureComponent {
       golabel:'New Gene Set',
       gene: []
     };
-    this.setState({editGeneSet:'New Gene Set',selectedEditGeneSet: newGeneSet});
+    this.setState({newGeneStateName:newGeneSet.golabel,selectedEditGeneSet: newGeneSet,});
   }
 
   handleEditGeneSet(geneSet,geneSetList) {
@@ -171,7 +173,6 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   handleDoneEditGeneSet() {
-
     const selectedGoLabel = this.state.selectedEditGeneSet.golabel;
     // find the new one we want
     const selectedEditedGeneSet = update(this.state.selectedEditGeneSet,{
@@ -194,9 +195,9 @@ export default class GeneSetFilter extends PureComponent {
       return p.golabel === selectedGoLabel ;
     });
 
-    const newCart = update(this.state.cartPathways,{
-      [cartIndex]: {$set:selectedEditedGeneSet}
-    });
+    const newCart = cartIndex < 0 ?
+      update(this.state.cartPathways,{$push:[selectedEditedGeneSet]}):
+      update(this.state.cartPathways,{[cartIndex]: {$set:selectedEditedGeneSet}});
 
     this.setState(
       {
@@ -272,9 +273,50 @@ export default class GeneSetFilter extends PureComponent {
     lookupGeneByName(geneQuery,(matches) => { this.setState( {geneOptions:matches});});
   }
 
+  handleNewGeneSetNameInput = (name, value) => {
+    this.setState({newGeneStateName:value});
+  };
+
+
+  handleNewGeneSetSaveAndStart = () => {
+    const nameToEdit = this.state.newGeneStateName;
+    const selectedEditGeneSet = {
+      firstGeneExpressionPathwayActivity : undefined,
+      secondGeneExpressionPathwayActivity : undefined,
+      modified: true,
+      golabel: nameToEdit,
+      gene: [],
+    };
+
+    this.setState({editGeneSet:nameToEdit,newGeneStateName:'',selectedEditGeneSet});
+  };
+
+
+  cancelUpdate(){
+    this.setState({
+      newGeneStateName: '',
+    });
+  }
+
   render() {
     return (
       <div className={BaseStyle.geneSetBox}>
+        <Dialog
+          active={this.state.newGeneStateName!==''}
+          onEscKeyDown={() => this.cancelUpdate()}
+          onOverlayClick={() => this.cancelUpdate()}
+          title='Edit Gene Set Name'
+        >
+          <Input
+            name='newGeneSetName'
+            onChange={this.handleNewGeneSetNameInput.bind(this,'newGeneSetName')}
+            // onChange={(newName) => this.setState({newGeneStateName:newName})}
+            value={this.state.newGeneStateName}
+          />
+          {/*<Button label='Save' onClick={() => this.setState({editGeneSet:this.state.newGeneStateName,newGeneStateName:undefined})} primary raised/>*/}
+          <Button label='Save' onClick={this.handleNewGeneSetSaveAndStart.bind(this,'newGeneSetName')} primary raised/>
+          <Button label='Cancel' onClick={() => this.setState({newGeneStateName:''})} />
+        </Dialog>
         <table>
           <tbody>
             <tr>
@@ -569,6 +611,7 @@ export default class GeneSetFilter extends PureComponent {
             <tr>
               <td>
                 <Button
+                  disabled={this.state.editGeneSet!==undefined}
                   label='View' mini
                   onClick={() => this.handleViewGeneSets()}
                   primary raised
