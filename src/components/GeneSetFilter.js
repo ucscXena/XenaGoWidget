@@ -163,8 +163,8 @@ export default class GeneSetFilter extends PureComponent {
     this.setState({editGeneSet:'New Gene Set',selectedEditGeneSet: newGeneSet});
   }
 
-  handleEditGeneSet(geneSet) {
-    const selectedEditGeneSet = getPathwaysForGeneSetName(this.state.geneSet).filter( gs => gs.golabel === geneSet);
+  handleEditGeneSet(geneSet,geneSetList) {
+    const selectedEditGeneSet = geneSetList.filter( gs => gs.golabel === geneSet);
     this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
   }
 
@@ -355,7 +355,7 @@ export default class GeneSetFilter extends PureComponent {
                   <ButtonGroup>
                     <Button
                       disabled={this.state.selectedFilteredPathways.length !== 1}
-                      onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0])}
+                      onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
                     >
                       <FaEdit/> Edit
                     </Button>
@@ -431,6 +431,15 @@ export default class GeneSetFilter extends PureComponent {
                           style={{width: 25}}
                           value={this.state.cartPathwayLimit}
                         />
+                      </td>
+                      <td>
+                        <Button
+                          disabled={this.state.selectedCartPathways.length !== 1}
+                          onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
+                        >
+                          <FaEdit/> Edit
+                        </Button>
+
                       </td>
                     </tr>
                   </tbody>
