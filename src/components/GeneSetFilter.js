@@ -395,7 +395,7 @@ export default class GeneSetFilter extends PureComponent {
                   </ButtonGroup>
                 }
                 <hr/>
-                <Button disabled={this.state.selectedCartPathways.length===0} onClick={() => this.handleRemoveSelectedFromCart()} >
+                <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
                   <FaTrashO  color='orange'/> Remove from View
                 </Button>
