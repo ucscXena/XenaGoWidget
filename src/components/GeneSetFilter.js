@@ -172,24 +172,26 @@ export default class GeneSetFilter extends PureComponent {
 
   handleDoneEditGeneSet() {
 
+    const selectedGoLabel = this.state.selectedEditGeneSet.golabel;
     // find the new one we want
     const selectedEditedGeneSet = update(this.state.selectedEditGeneSet,{
       firstGeneExpressionPathwayActivity : { $set: undefined },
       secondGeneExpressionPathwayActivity : { $set: undefined },
       modified: { $set: true},
+      golabel: { $set: selectedGoLabel + '_modified'},
     });
 
     // slice out found via golabel
     const pathwayIndex = this.state.loadedPathways.findIndex( p => {
-      return p.golabel === selectedEditedGeneSet.golabel ;
+      return p.golabel === selectedGoLabel+'_modified' ;
     });
 
-    const newPathways= update(this.state.loadedPathways,{
-      [pathwayIndex]: {$set:selectedEditedGeneSet}
-    });
+    const newPathways= pathwayIndex >=0 ?
+      update(this.state.loadedPathways,{[pathwayIndex]: {$set:selectedEditedGeneSet}}) :
+      update(this.state.loadedPathways,{$push:[selectedEditedGeneSet]});
 
     const cartIndex = this.state.cartPathways.findIndex( p => {
-      return p.golabel === selectedEditedGeneSet.golabel ;
+      return p.golabel === selectedGoLabel ;
     });
 
     const newCart = update(this.state.cartPathways,{
