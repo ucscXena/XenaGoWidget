@@ -52,11 +52,12 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "expect": "latest",
+    "husky": "^3.0.9",
     "nwb": "^0.23.0",
     "postcss-loader": "^2.1.3",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "expect": "latest"
+    "react-dom": "^16.2.0"
   },
   "author": "",
   "homepage": "",
