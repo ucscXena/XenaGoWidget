@@ -115,12 +115,36 @@ export class AppStorageHandler extends PureComponent {
 
   static getCohortState(cohortIndex) {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.cohortState && appState.cohortState[cohortIndex]) {
+    if (appState && appState.cohortState && appState.cohortState[cohortIndex] && AppStorageHandler.isValidCohortState(appState.cohortState[cohortIndex])) {
       return appState.cohortState[cohortIndex];
     }
 
-    // TODO: is this correct, or should return a json with {name:xxx} ?
-    return cohortIndex === 0 ? this.generateCohortState('TCGA Breast Cancer (BRCA)') : this.generateCohortState('TCGA Lung Adenocarcinoma (LUAD)');
+    const defaultCohortState = cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)');
+    AppStorageHandler.storeCohortState(defaultCohortState,cohortIndex);
+
+    return defaultCohortState;
+  }
+
+  static isValidCohortState(cohortState) {
+    return cohortState
+      && cohortState.host
+      && cohortState.mutationDataSetId
+      && cohortState.copyNumberDataSetId
+      && cohortState.genomeBackgroundMutation
+      && cohortState.genomeBackgroundCopyNumber
+      && cohortState.geneExpression
+    ;
+  }
+
+  static isValidFilterState(filterState) {
+    switch (filterState) {
+    case FILTER_ENUM.COPY_NUMBER:
+    case FILTER_ENUM.MUTATION:
+    case FILTER_ENUM.CNV_MUTATION:
+    case FILTER_ENUM.GENE_EXPRESSION:
+      return true;
+    }
+    return false ;
   }
 
   static storeFilterState(selected, cohortIndex) {
@@ -144,7 +168,7 @@ export class AppStorageHandler extends PureComponent {
 
   static getFilterState(cohortIndex) {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.filterState && appState.filterState[cohortIndex]) {
+    if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
       return appState.filterState[cohortIndex];
     }
     return FILTER_ENUM.GENE_EXPRESSION;
