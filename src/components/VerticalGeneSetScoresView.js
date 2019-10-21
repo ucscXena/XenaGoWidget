@@ -116,6 +116,6 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-  selectedGeneSet: PropTypes.any.isRequired,
+  selectedGeneSet: PropTypes.any,
   showDetails: PropTypes.any.isRequired,
 };
