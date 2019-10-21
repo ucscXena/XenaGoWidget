@@ -148,9 +148,19 @@ export class AppStorageHandler extends PureComponent {
   }
 
 
+  static isValidFilterState(filterState) {
+    switch (filterState) {
+    case FILTER_ENUM.COPY_NUMBER:
+    case FILTER_ENUM.MUTATION:
+    case FILTER_ENUM.CNV_MUTATION:
+      return true;
+    }
+    return false ;
+  }
+
   static getFilterState(cohortIndex) {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.filterState && appState.filterState[cohortIndex]) {
+    if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
       return appState.filterState[cohortIndex];
     }
     return FILTER_ENUM.CNV_MUTATION;
