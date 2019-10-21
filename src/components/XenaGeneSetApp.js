@@ -71,9 +71,6 @@ export default class XenaGeneSetApp extends PureComponent {
     let cohortDataA = AppStorageHandler.getCohortState(0);
     let cohortDataB = AppStorageHandler.getCohortState(1);
 
-    console.log('cohort A',cohortDataA)
-    console.log('cohort B',cohortDataB)
-
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
       selectedCohort:[
