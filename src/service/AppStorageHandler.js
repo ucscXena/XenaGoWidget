@@ -115,13 +115,25 @@ export class AppStorageHandler extends PureComponent {
 
   static getCohortState(cohortIndex) {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.cohortState && appState.cohortState[cohortIndex]) {
+    if (appState && appState.cohortState && appState.cohortState[cohortIndex] && AppStorageHandler.isValidCohortState(appState.cohortState[cohortIndex])) {
       return appState.cohortState[cohortIndex];
     }
 
     // TODO: is this correct, or should return a json with {name:xxx} ?
     // return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
-    return cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)');
+    const defaultCohortState = cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)');
+    AppStorageHandler.storeCohortState(defaultCohortState,cohortIndex);
+
+    return defaultCohortState;
+  }
+
+  static isValidCohortState(cohortState) {
+    return cohortState && cohortState.host
+      && cohortState.mutationDataSetId
+      && cohortState.copyNumberDataSetId
+      && cohortState.genomeBackgroundMutation
+      && cohortState.genomeBackgroundCopyNumber
+    ;
   }
 
   static storeFilterState(selected, cohortIndex) {

@@ -72,6 +72,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
   const geneList = getGenesForPathways(pathways);
   let filterCounts ;
 
+  console.log('selected  cohorts',selectedCohorts)
+
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, null),
