@@ -27,7 +27,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
 
-export default class GeneSetFilter extends PureComponent {
+export default class GeneSetEditor extends PureComponent {
 
   constructor(props){
     super(props);
@@ -613,7 +613,7 @@ export default class GeneSetFilter extends PureComponent {
   }
 }
 
-GeneSetFilter.propTypes = {
+GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,

@@ -28,7 +28,7 @@ import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
-import GeneSetFilter from './GeneSetFilter';
+import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 
 
@@ -666,10 +666,9 @@ export default class XenaGeneSetApp extends PureComponent {
                             active={this.state.showGeneSetSearch}
                             onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
                             onOverlayClick={() => this.setState({showGeneSetSearch:false})}
-                            style={{width:400}}
                             title="Gene Set Editor"
                           >
-                            <GeneSetFilter
+                            <GeneSetEditor
                               cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
                               pathwayData={this.state.pathwayData}
                               pathways={this.state.pathways}
