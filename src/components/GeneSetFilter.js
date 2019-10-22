@@ -123,9 +123,9 @@ export default class GeneSetFilter extends PureComponent {
         const scoreB = this.scorePathway(b,this.state.sortBy);
         switch(this.state.sortBy) {
         default:
-          if(scoreA==='NaN' || scoreB ==='NaN'){
-            return -1;
-          }
+          if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
+          if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
+          if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (scoreB-scoreA) ;
         case 'Alpha':
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
@@ -497,9 +497,9 @@ export default class GeneSetFilter extends PureComponent {
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       default:
-                        if(scoreA==='NaN' || scoreB ==='NaN'){
-                          return -1;
-                        }
+                        if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
+                        if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
+                        if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       }
                     }).map(p => {
