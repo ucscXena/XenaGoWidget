@@ -413,7 +413,11 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p,this.state.sortBy))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
+                      return (<option key={p.golabel} value={p.golabel}>(
+                        {this.props.isGeneExpression &&
+                         `${this.scorePathway(p,this.state.sortBy)}, `
+                        }
+                        N: {p.gene.length}) {p.golabel.substr(0,35)}</option>);
                     })
                   }
                 </select>
@@ -496,7 +500,10 @@ export default class GeneSetEditor extends PureComponent {
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       }
                     }).map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>({(this.scorePathway(p,this.state.sortCartBy))},
+                      return (<option key={p.golabel} value={p.golabel}>(
+                        {this.props.isGeneExpression &&
+                        `${this.scorePathway(p,this.state.sortCartBy)}, `
+                        }
                         N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
                   }
