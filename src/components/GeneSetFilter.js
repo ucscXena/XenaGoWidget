@@ -325,29 +325,6 @@ export default class GeneSetFilter extends PureComponent {
                   <tbody>
                     <tr>
                       <td>
-                        <h3>Gene Expression Set</h3>
-                        {/*<select onChange={(event) => this.setState({geneSet: event.target.value})}>*/}
-                        {/*  <option value='8K'>Gene Expression (8K)</option>*/}
-                        {/*  <option value='Default'>Default Gene Set (42)</option>*/}
-                        {/*  <option value='Flybase'>Flybase (47)</option>*/}
-                        {/*</select>*/}
-                      </td>
-                      {/*<td>*/}
-                      {/*  <FaEdit/>*/}
-                      {/*</td>*/}
-                    </tr>
-                    <tr>
-                      <td>
-                        <Button  mini raised>
-                          <FaCloudDownload/>
-                        </Button>
-                        <Button mini raised>
-                          <FaCloudUpload/>
-                        </Button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
                     Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
                           <option value='Diff'>Cohort Diff BPA</option>
@@ -386,6 +363,37 @@ export default class GeneSetFilter extends PureComponent {
                     </tr>
                   </tbody>
                 </table>
+                {this.state.editGeneSet === undefined &&
+                <ButtonGroup>
+                  <Button
+                    disabled={this.state.selectedFilteredPathways.length !== 1}
+                    onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
+                  >
+                    <FaEdit/> Edit GeneSet
+                  </Button>
+                  <Button
+                    onClick={() => this.handleNewGeneSet()}
+                  >
+                    <FaPlusCircle/> New GeneSet
+                  </Button>
+                </ButtonGroup>
+                }
+                {this.state.editGeneSet&&
+                <ButtonGroup>
+                  <Button
+                    onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
+                    primary raised
+                  >
+                    <FaCheckSquare/> Done
+                  </Button>
+                  <Button
+                    onClick={() => this.handleCancelEditGeneSet(this.state.selectedFilteredPathways[0])}
+                    raised
+                  >
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+                }
                 {this.state.selectedFilteredPathways.length} Selected
                 <select
                   disabled={this.state.editGeneSet}
@@ -412,37 +420,6 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   <FaArrowCircleORight/> Add to View
                 </Button>
-                {this.state.editGeneSet === undefined &&
-                  <ButtonGroup>
-                    <Button
-                      disabled={this.state.selectedFilteredPathways.length !== 1}
-                      onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
-                    >
-                      <FaEdit/> Edit
-                    </Button>
-                    <Button
-                      onClick={() => this.handleNewGeneSet()}
-                    >
-                      <FaPlusCircle/> New
-                    </Button>
-                  </ButtonGroup>
-                }
-                {this.state.editGeneSet&&
-                  <ButtonGroup>
-                    <Button
-                      onClick={() => this.handleDoneEditGeneSet(this.state.selectedFilteredPathways[0])}
-                      primary raised
-                    >
-                      <FaCheckSquare/> Done
-                    </Button>
-                    <Button
-                      onClick={() => this.handleCancelEditGeneSet(this.state.selectedFilteredPathways[0])}
-                      raised
-                    >
-                       Cancel
-                    </Button>
-                  </ButtonGroup>
-                }
                 <hr/>
                 <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
@@ -498,7 +475,7 @@ export default class GeneSetFilter extends PureComponent {
                           disabled={this.state.selectedCartPathways.length !== 1}
                           onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
                         >
-                          <FaEdit/> Edit
+                          <FaEdit/> Edit GeneSet
                         </Button>
 
                       </td>

@@ -667,7 +667,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
                             onOverlayClick={() => this.setState({showGeneSetSearch:false})}
                             style={{width:400}}
-                            title="Gene Set Search"
+                            title="Gene Set Editor"
                           >
                             <GeneSetFilter
                               cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
