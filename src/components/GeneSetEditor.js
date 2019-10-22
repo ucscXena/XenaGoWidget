@@ -402,7 +402,7 @@ export default class GeneSetEditor extends PureComponent {
                     });
                     this.setState({ selectedFilteredPathways: selectedEvents});
                   }}
-                  style={{overflow:'scroll', height:200,width: 300}}
+                  style={{overflow:'scroll', height:200,width: 220}}
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
@@ -411,27 +411,32 @@ export default class GeneSetEditor extends PureComponent {
                   }
                 </select>
               </td>
-              <td width={100}>
+              <td valign='top' width={20}>
+                <h4 style={{verticalAlign: 'top'}}>Edit View</h4>
                 <Button
                   disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
                   onClick={() => this.handleAddSelectedToCart()}
                 >
-                  <FaArrowCircleORight/> Add to View
+                  <FaArrowCircleORight/> Add
                 </Button>
+                <br/>
+                <br/>
                 <hr/>
+                <br/>
+                <br/>
                 <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
                   {/*<FaArrowCircleOLeft/>*/}
-                  <FaTrashO  color='orange'/> Remove from View
+                  <FaTrashO  color='orange'/> Remove
                 </Button>
                 <Button
                   disabled={this.state.editGeneSet!==undefined}
                   onClick={() => this.handleClearCart()}
                 >
-                  <FaTrashO color='red'/> Clear View
+                  <FaTrashO color='red'/> Clear
                 </Button>
               </td>
               {!this.state.editGeneSet &&
-              <td width={200}>
+              <td width={400}>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
@@ -440,6 +445,7 @@ export default class GeneSetEditor extends PureComponent {
                       </td>
                       <td>
                       Sort By
+                        <br/>
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
                           <option value='Abs_Diff'>Abs Diff BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
@@ -587,7 +593,7 @@ export default class GeneSetEditor extends PureComponent {
               }
             </tr>
             <tr>
-              <td>
+              <td colSpan={3}>
                 <Button
                   disabled={this.state.editGeneSet!==undefined}
                   label='View' mini

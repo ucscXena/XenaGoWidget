@@ -639,6 +639,21 @@ export default class XenaGeneSetApp extends PureComponent {
                 selectedPathway={this.state.selectedPathway}
               />
             </Dialog>
+            {this.state.pathways &&
+            <Dialog
+              active={this.state.showGeneSetSearch}
+              onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
+              onOverlayClick={() => this.setState({showGeneSetSearch:false})}
+              title="Gene Set Editor"
+            >
+              <GeneSetEditor
+                cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
+                pathwayData={this.state.pathwayData}
+                pathways={this.state.pathways}
+                setPathways={this.setActiveGeneSets}
+              />
+            </Dialog>
+            }
             <table>
               <tbody>
                 <tr>
@@ -661,21 +676,6 @@ export default class XenaGeneSetApp extends PureComponent {
                               }
 
                             </Button>
-                            {this.state.pathways &&
-                          <Dialog
-                            active={this.state.showGeneSetSearch}
-                            onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
-                            onOverlayClick={() => this.setState({showGeneSetSearch:false})}
-                            title="Gene Set Editor"
-                          >
-                            <GeneSetEditor
-                              cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
-                              pathwayData={this.state.pathwayData}
-                              pathways={this.state.pathways}
-                              setPathways={this.setActiveGeneSets}
-                            />
-                          </Dialog>
-                            }
                           </td>
                         </tr>
                         <tr>
