@@ -421,6 +421,7 @@ export default class GeneSetEditor extends PureComponent {
                 </Button>
                 <br/>
                 <br/>
+                <br/>
                 <hr/>
                 <br/>
                 <br/>

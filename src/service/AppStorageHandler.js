@@ -65,12 +65,12 @@ const DefaultAppB = update(DefaultAppA, {
 export class AppStorageHandler extends PureComponent {
   static storePathways(pathways) {
     if (pathways) {
-      localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways));
+      sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways));
     }
   }
 
   static getPathways() {
-    const storedPathway = JSON.parse(localStorage.getItem(LOCAL_PATHWAY_STORAGE));
+    const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_PATHWAY_STORAGE));
     return storedPathway || DefaultPathWays;
   }
 
@@ -79,7 +79,7 @@ export class AppStorageHandler extends PureComponent {
   }
 
   static getAppState() {
-    const storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
+    const storedPathwaySelection = JSON.parse(sessionStorage.getItem(LOCAL_STATE_STORAGE));
     return storedPathwaySelection || AppStorageHandler.getDefaultSelectionPathway();
   }
 
@@ -89,7 +89,7 @@ export class AppStorageHandler extends PureComponent {
 
   static storeAppState(selection) {
     if (selection) {
-      localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
+      sessionStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
     } else {
       // eslint-disable-next-line no-console
       console.warn('storing empty pathway');
@@ -214,13 +214,13 @@ export class AppStorageHandler extends PureComponent {
 
   static storeAppData(pathway) {
     if (pathway) {
-      localStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
+      sessionStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
     }
   }
 
 
   static getAppData(pathways) {
-    const storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
+    const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_APP_STORAGE));
     if (storedPathway) {
       return storedPathway;
     }
