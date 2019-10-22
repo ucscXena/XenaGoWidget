@@ -20,6 +20,7 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
+import {getSources} from '../functions/GeneSetSourceFunctions';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -30,6 +31,7 @@ export default class GeneSetEditor extends PureComponent {
     super(props);
     this.state = {
       editGeneSet: undefined,
+      geneSetSource:'GoPathways',
       name: '',
       sortOrder:'asc',
       sortBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
@@ -41,7 +43,6 @@ export default class GeneSetEditor extends PureComponent {
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
-      // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : [],
       cartPathways : [],
       selectedGenesForGeneSet: [],
@@ -295,6 +296,12 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   render() {
+
+    // console.log(getSources());
+    // getSources().map( s => {
+    //   console.log(s);
+    // });
+
     return (
       <div className={BaseStyle.geneSetBox}>
         <Dialog
@@ -319,6 +326,16 @@ export default class GeneSetEditor extends PureComponent {
               <td width={200}>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
+                    <tr>
+                      <td>
+                      Source
+                        <select onChange={(event) => this.setState({geneSetSource: event.target.value})}>
+                          { getSources().map( s => {
+                            return <option key={s.name} selected={s.name===this.state.geneSetSource}>{s.name}</option>;
+                          })}
+                        </select>
+                      </td>
+                    </tr>
                     <tr>
                       {this.props.isGeneExpression &&
                       <td>
