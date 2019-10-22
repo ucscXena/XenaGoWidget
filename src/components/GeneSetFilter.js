@@ -369,7 +369,7 @@ export default class GeneSetFilter extends PureComponent {
                     disabled={this.state.selectedFilteredPathways.length !== 1}
                     onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
                   >
-                    <FaEdit/> Edit GeneSet
+                    <FaEdit/> Edit
                   </Button>
                   <Button
                     onClick={() => this.handleNewGeneSet()}
@@ -475,7 +475,7 @@ export default class GeneSetFilter extends PureComponent {
                           disabled={this.state.selectedCartPathways.length !== 1}
                           onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
                         >
-                          <FaEdit/> Edit GeneSet
+                          <FaEdit/> Edit
                         </Button>
 
                       </td>
