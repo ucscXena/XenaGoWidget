@@ -33,9 +33,9 @@ export default class GeneSetEditor extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
-      sortBy: 'Abs_Diff',
+      sortBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
       sortCartOrder:'asc',
-      sortCartBy: 'Abs_Diff',
+      sortCartBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -321,8 +321,9 @@ export default class GeneSetEditor extends PureComponent {
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
+                      {this.props.isGeneExpression &&
                       <td>
-                    Sort By
+                        Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
                           <option value='Abs_Diff'>Abs Diff BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
@@ -330,6 +331,8 @@ export default class GeneSetEditor extends PureComponent {
                           <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
+                      }
+
                       <td>
                         { this.state.sortOrder === 'asc' &&
                     <FaSortAsc onClick={() => this.setState({sortOrder:'desc'})}/>
@@ -341,10 +344,7 @@ export default class GeneSetEditor extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                        <input onChange={(event) => this.setState({name: event.target.value.toLowerCase()})} size={30}/>
-                      </td>
-                      <td>
-                        <FaFilter/>
+                        <input onChange={(event) => this.setState({name: event.target.value.toLowerCase()})} placeholder='Filter by name' size={30}/>
                       </td>
                     </tr>
                     <tr>
@@ -413,7 +413,11 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p,this.state.sortBy))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
+                      return (<option key={p.golabel} value={p.golabel}>(
+                        {this.props.isGeneExpression &&
+                         `${this.scorePathway(p,this.state.sortBy)}, `
+                        }
+                        N: {p.gene.length}) {p.golabel.substr(0,35)}</option>);
                     })
                   }
                 </select>
@@ -427,6 +431,7 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                         <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
+                      {this.props.isGeneExpression &&
                       <td>
                       Sort By
                         <br/>
@@ -437,6 +442,7 @@ export default class GeneSetEditor extends PureComponent {
                           <option value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
+                      }
                       <td>
                         {this.state.sortCartOrder === 'asc' &&
                         <FaSortAsc onClick={() => this.setState({sortCartOrder: 'desc'})}/>
@@ -468,7 +474,6 @@ export default class GeneSetEditor extends PureComponent {
                     <FaEdit/> Edit
                   </Button>
                   <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
-                    {/*<FaArrowCircleOLeft/>*/}
                     <FaTrashO  color='orange'/> Remove
                   </Button>
                 </ButtonGroup>
@@ -495,7 +500,10 @@ export default class GeneSetEditor extends PureComponent {
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       }
                     }).map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>({(this.scorePathway(p,this.state.sortCartBy))},
+                      return (<option key={p.golabel} value={p.golabel}>(
+                        {this.props.isGeneExpression &&
+                        `${this.scorePathway(p,this.state.sortCartBy)}, `
+                        }
                         N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
                   }
@@ -604,6 +612,7 @@ export default class GeneSetEditor extends PureComponent {
 
 GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
+  isGeneExpression: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
