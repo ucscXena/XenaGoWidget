@@ -35,9 +35,9 @@ export default class GeneSetFilter extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
-      sortBy: 'Diff',
+      sortBy: 'Abs_Diff',
       sortCartOrder:'asc',
-      sortCartBy: 'Diff',
+      sortCartBy: 'Abs_Diff',
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -103,23 +103,14 @@ export default class GeneSetFilter extends PureComponent {
   };
 
 
-  scoreCartPathway(p) {
-    switch (this.state.sortCartBy) {
+  scorePathway(p,sortBy) {
+    switch (sortBy) {
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
-    default:
+    case 'Abs_Diff':
+      return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     case 'Diff':
-      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
-    }
-  }
-
-  scorePathway(p) {
-    if(p.firstGeneExpressionPathwayActivity==='NaN' || p.secondGeneExpressionPathwayActivity==='NaN') return 0 ;
-    switch (this.state.sortBy) {
-    case 'Total':
-      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
     default:
-    case 'Diff':
       return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
     }
   }
@@ -128,13 +119,13 @@ export default class GeneSetFilter extends PureComponent {
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
-        const scoreA = this.scorePathway(a);
-        const scoreB = this.scorePathway(b);
+        const scoreA = this.scorePathway(a,this.state.sortBy);
+        const scoreB = this.scorePathway(b,this.state.sortBy);
         switch(this.state.sortBy) {
         default:
-          if(scoreA==='NaN' || scoreB ==='NaN'){
-            return -1;
-          }
+          if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
+          if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
+          if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (scoreB-scoreA) ;
         case 'Alpha':
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
@@ -333,6 +324,7 @@ export default class GeneSetFilter extends PureComponent {
                       <td>
                     Sort By
                         <select onChange={(event) => this.setState({sortBy: event.target.value})}>
+                          <option value='Abs_Diff'>Abs Diff BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
                           <option value='Total'>Total BPA</option>
                           <option value='Alpha'>Alphabetically</option>
@@ -414,7 +406,7 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   {
                     this.state.filteredPathways.slice(0,this.state.limit).map( p => {
-                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
+                      return <option key={p.golabel} value={p.golabel}>({ (this.scorePathway(p,this.state.sortBy))}, N: {p.gene.length}) {p.golabel.substr(0,35)}</option>;
                     })
                   }
                 </select>
@@ -449,6 +441,7 @@ export default class GeneSetFilter extends PureComponent {
                       <td>
                       Sort By
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
+                          <option value='Abs_Diff'>Abs Diff BPA</option>
                           <option value='Diff'>Cohort Diff BPA</option>
                           <option value='Total'>Total BPA</option>
                           <option value='Alpha'>Alphabetically</option>
@@ -498,20 +491,19 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
-                      const scoreA = this.scoreCartPathway(a);
-                      const scoreB = this.scoreCartPathway(b);
+                      const scoreA = this.scorePathway(a,this.state.sortCartBy);
+                      const scoreB = this.scorePathway(b,this.state.sortCartBy);
                       switch (this.state.sortCartBy) {
-                      case 'Total':
-                      case 'Diff':
-                        if(scoreA==='NaN' || scoreB ==='NaN'){
-                          return (this.state.sortCartOrder === 'asc' ? 1 : -1) ;
-                        }
-                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
+                      default:
+                        if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
+                        if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
+                        if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
+                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       }
                     }).map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>({(this.scoreCartPathway(p))},
+                      return (<option key={p.golabel} value={p.golabel}>({(this.scorePathway(p,this.state.sortCartBy))},
                         N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
                   }
