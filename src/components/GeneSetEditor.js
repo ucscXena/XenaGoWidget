@@ -20,8 +20,6 @@ import {Chip, Input} from 'react-toolbox';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
-import FaCloudUpload from 'react-icons/lib/fa/cloud-upload';
-import FaCloudDownload from 'react-icons/lib/fa/cloud-download';
 import Dialog from 'react-toolbox/lib/dialog';
 
 const VIEW_LIMIT = 200;
@@ -211,7 +209,9 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleClearCart() {
-    this.setState({cartPathways:[]});
+    if(confirm('Remove all Gene Sets from view?')){
+      this.setState({cartPathways:[]});
+    }
   }
 
 
@@ -364,18 +364,25 @@ export default class GeneSetEditor extends PureComponent {
                 {this.state.editGeneSet === undefined &&
                 <ButtonGroup>
                   <Button
-                    disabled={this.state.selectedFilteredPathways.length !== 1}
-                    onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
-                  >
-                    <FaEdit/> Edit
-                  </Button>
-                  <Button
                     onClick={() => this.handleNewGeneSet()}
                   >
                     <FaPlusCircle/> New GeneSet
                   </Button>
+                  <Button
+                    disabled={this.state.selectedFilteredPathways.length !== 1}
+                    onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0],this.state.filteredPathways)}
+                  >
+                    <FaEdit/> Edit GeneSet
+                  </Button>
+                  <Button
+                    disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
+                    onClick={() => this.handleAddSelectedToCart()}
+                  >
+                    <FaArrowCircleORight/> Add To View
+                  </Button>
                 </ButtonGroup>
                 }
+
                 {this.state.editGeneSet&&
                 <ButtonGroup>
                   <Button
@@ -411,31 +418,7 @@ export default class GeneSetEditor extends PureComponent {
                   }
                 </select>
               </td>
-              <td valign='top' width={20}>
-                <h4 style={{verticalAlign: 'top'}}>Edit View</h4>
-                <Button
-                  disabled={this.state.selectedFilteredPathways.length===0 || this.state.editGeneSet!==undefined}
-                  onClick={() => this.handleAddSelectedToCart()}
-                >
-                  <FaArrowCircleORight/> Add
-                </Button>
-                <br/>
-                <br/>
-                <br/>
-                <hr/>
-                <br/>
-                <br/>
-                <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
-                  {/*<FaArrowCircleOLeft/>*/}
-                  <FaTrashO  color='orange'/> Remove
-                </Button>
-                <Button
-                  disabled={this.state.editGeneSet!==undefined}
-                  onClick={() => this.handleClearCart()}
-                >
-                  <FaTrashO color='red'/> Clear
-                </Button>
-              </td>
+              <td valign='top' width={20} />
               {!this.state.editGeneSet &&
               <td width={400}>
                 <table className={BaseStyle.geneSetFilterBox}>
@@ -474,19 +457,21 @@ export default class GeneSetEditor extends PureComponent {
                           value={this.state.cartPathwayLimit}
                         />
                       </td>
-                      <td>
-                        <Button
-                          disabled={this.state.selectedCartPathways.length !== 1}
-                          onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
-                        >
-                          <FaEdit/> Edit
-                        </Button>
-
-                      </td>
                     </tr>
                   </tbody>
                 </table>
-                <br/>
+                <ButtonGroup>
+                  <Button
+                    disabled={this.state.selectedCartPathways.length !== 1}
+                    onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
+                  >
+                    <FaEdit/> Edit
+                  </Button>
+                  <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
+                    {/*<FaArrowCircleOLeft/>*/}
+                    <FaTrashO  color='orange'/> Remove
+                  </Button>
+                </ButtonGroup>
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
@@ -494,7 +479,7 @@ export default class GeneSetEditor extends PureComponent {
                     });
                     this.setState({selectedCartPathways: selectedEvents});
                   }}
-                  style={{overflow: 'scroll', height: 300}}
+                  style={{overflow: 'scroll', height: 250}}
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
@@ -515,6 +500,13 @@ export default class GeneSetEditor extends PureComponent {
                     })
                   }
                 </select>
+                <br/>
+                <Button
+                  disabled={this.state.editGeneSet!==undefined}
+                  onClick={() => this.handleClearCart()}
+                >
+                  <FaTrashO color='red'/> Clear All
+                </Button>
               </td>
               }
               {this.state.editGeneSet &&
@@ -548,16 +540,6 @@ export default class GeneSetEditor extends PureComponent {
                               <tr>
                                 <td>
                                   <h4>Editing <br/>{this.state.editGeneSet}</h4>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <Button  mini raised>
-                                    <FaCloudDownload/>
-                                  </Button>
-                                  <Button mini raised>
-                                    <FaCloudUpload/>
-                                  </Button>
                                 </td>
                               </tr>
                               <tr>
