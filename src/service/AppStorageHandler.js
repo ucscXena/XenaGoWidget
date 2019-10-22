@@ -133,6 +133,7 @@ export class AppStorageHandler extends PureComponent {
       && cohortState.genomeBackgroundMutation
       && cohortState.genomeBackgroundCopyNumber
       && cohortState.geneExpression
+      && cohortState.geneExpressionPathwayActivity
     ;
   }
 
