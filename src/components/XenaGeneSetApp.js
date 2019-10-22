@@ -30,6 +30,7 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
+import {FILTER_ENUM} from './FilterSelector';
 
 
 
@@ -648,6 +649,7 @@ export default class XenaGeneSetApp extends PureComponent {
             >
               <GeneSetEditor
                 cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
+                isGeneExpression={this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION}
                 pathwayData={this.state.pathwayData}
                 pathways={this.state.pathways}
                 setPathways={this.setActiveGeneSets}
