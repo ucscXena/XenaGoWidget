@@ -39,15 +39,16 @@ export class CohortSelector extends PureComponent {
 
 
     generateSubCohortDetails(){
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts;
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts;
+      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.props.selectedCohort.name);
       if(subCohortsForSelected === undefined) return '';
       return Object.values(selectedSubCohorts).map( s => {
         let splits = s.split('.');
-        if(splits.length>0) {
+        if(splits.length>1) {
           return splits[1];
-        } else {
-          return s;
+        }
+        else {
+          return splits[0];
         }
       }).join(', ');
     }
