@@ -138,7 +138,6 @@ NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
   editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
-  onShowXena: PropTypes.any,
   searchHandler: PropTypes.any,
   showClusterSort: PropTypes.any,
   showDetailLayer: PropTypes.any,
@@ -146,5 +145,4 @@ NavigationBar.propTypes = {
   toggleShowClusterSort: PropTypes.any,
   toggleShowDetailLayer: PropTypes.any,
   toggleShowDiffLayer: PropTypes.any,
-  view: PropTypes.any,
 };

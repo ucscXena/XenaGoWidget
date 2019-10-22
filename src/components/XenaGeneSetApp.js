@@ -1,7 +1,6 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
-import PathwayEditor from './pathwayEditor/PathwayEditor';
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
@@ -77,18 +76,12 @@ export default class XenaGeneSetApp extends PureComponent {
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
       selectedCohort: cohorts,
-      view: XENA_VIEW,
       fetch: false,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
-      pathwaySet: {
-        name: 'Default Pathway',
-        pathways,
-        selected: true
-      },
       filter:filters,
       hoveredPathway: undefined,
       geneData: [{}, {}],
@@ -244,33 +237,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    getActiveApp() {
-      return this.state.pathwaySet;
-    }
-
-    handleShowPathwayEditor = () => {
-      this.setState({
-        view: PATHWAYS_VIEW
-      });
-    };
-
-    handleSaveAndClosePathwayEditor = (updatedPathwaySet) => {
-      AppStorageHandler.storePathways(updatedPathwaySet.pathways);
-      this.setState({
-        view: XENA_VIEW,
-        pathwaySet: updatedPathwaySet,
-        pathways: updatedPathwaySet.pathways,
-        fetch: true,
-        currentLoadState: LOAD_STATE.LOADING,
-      });
-    };
-
     editGeneSetColors = () => {
-      // alert('configuring xena')
       this.handleColorToggle();
-      // this.setState({
-      //     view: XENA_VIEW
-      // })
     };
 
     geneHighlight = (geneName) => {
@@ -597,8 +565,6 @@ export default class XenaGeneSetApp extends PureComponent {
             acceptGeneHandler={this.geneHighlight}
             editGeneSetColors={this.editGeneSetColors}
             geneOptions={this.state.geneHits}
-            onShowPathways={this.handleShowPathwayEditor}
-            onShowXena={this.handleSaveAndClosePathwayEditor}
             searchHandler={this.searchHandler}
             showClusterSort={showClusterSort}
             showDetailLayer={this.state.showDetailLayer}
@@ -606,7 +572,6 @@ export default class XenaGeneSetApp extends PureComponent {
             toggleShowClusterSort={this.toggleShowClusterSort}
             toggleShowDetailLayer={this.toggleShowDetailLayer}
             toggleShowDiffLayer={this.toggleShowDiffLayer}
-            view={this.state.view}
           />
 
           <div>
@@ -627,19 +592,6 @@ export default class XenaGeneSetApp extends PureComponent {
               onColorChange={this.handleColorChange}
               onColorToggle={this.handleColorToggle}
             />
-            <Dialog
-              active={this.state.view === PATHWAYS_VIEW}
-              onEscKeyDown={() => this.setState({view:XENA_VIEW})}
-              onOverlayClick={() => this.setState({view:XENA_VIEW})}
-              title='Edit Pathways'
-            >
-              <PathwayEditor
-                onClose={this.handleSaveAndClosePathwayEditor}
-                pathwaySet={this.state.pathwaySet}
-                ref='pathway-editor'
-                selectedPathway={this.state.selectedPathway}
-              />
-            </Dialog>
             {this.state.pathways &&
             <Dialog
               active={this.state.showGeneSetSearch}
@@ -834,7 +786,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   <XenaGoViewer
                                     // reference
                                     cohortIndex={1}
-                                    // view
                                     collapsed={this.state.collapsed}
                                     colorSettings={this.state.geneStateColors}
                                     copyCohorts={this.copyCohorts}

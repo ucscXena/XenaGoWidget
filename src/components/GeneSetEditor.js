@@ -4,7 +4,6 @@ import BaseStyle from '../css/base.css';
 import FaEdit from 'react-icons/lib/fa/edit';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
-import FaFilter from 'react-icons/lib/fa/filter';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
