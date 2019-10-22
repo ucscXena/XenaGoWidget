@@ -449,14 +449,12 @@ export default class GeneSetFilter extends PureComponent {
                         </select>
                       </td>
                       <td>
-                        <Button mini raised>
-                          {this.state.sortCartOrder === 'asc' &&
+                        {this.state.sortCartOrder === 'asc' &&
                         <FaSortAsc onClick={() => this.setState({sortCartOrder: 'desc'})}/>
-                          }
-                          {this.state.sortCartOrder === 'desc' &&
+                        }
+                        {this.state.sortCartOrder === 'desc' &&
                         <FaSortDesc onClick={() => this.setState({sortCartOrder: 'asc'})}/>
-                          }
-                        </Button>
+                        }
                       </td>
                     </tr>
                     <tr>
