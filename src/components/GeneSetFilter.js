@@ -114,6 +114,7 @@ export default class GeneSetFilter extends PureComponent {
   }
 
   scorePathway(p) {
+    if(p.firstGeneExpressionPathwayActivity==='NaN' || p.secondGeneExpressionPathwayActivity==='NaN') return 0 ;
     switch (this.state.sortBy) {
     case 'Total':
       return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
@@ -127,9 +128,14 @@ export default class GeneSetFilter extends PureComponent {
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
+        const scoreA = this.scorePathway(a);
+        const scoreB = this.scorePathway(b);
         switch(this.state.sortBy) {
         default:
-          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (this.scorePathway(b)-this.scorePathway(a)) ;
+          if(scoreA==='NaN' || scoreB ==='NaN'){
+            return -1;
+          }
+          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (scoreB-scoreA) ;
         case 'Alpha':
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
         }
@@ -492,10 +498,15 @@ export default class GeneSetFilter extends PureComponent {
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
+                      const scoreA = this.scoreCartPathway(a);
+                      const scoreB = this.scoreCartPathway(b);
                       switch (this.state.sortCartBy) {
                       case 'Total':
                       case 'Diff':
-                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (this.scoreCartPathway(b) - this.scoreCartPathway(a));
+                        if(scoreA==='NaN' || scoreB ==='NaN'){
+                          return (this.state.sortCartOrder === 'asc' ? 1 : -1) ;
+                        }
+                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       }
