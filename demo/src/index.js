@@ -8,7 +8,7 @@ import ReactGA from 'react-ga';
 
 
 function initializeReactGA() {
-  ReactGA.initialize('UA-150650247-1');
+  ReactGA.initialize('UA-136203053-1');
   ReactGA.pageview('/');
 }
 
