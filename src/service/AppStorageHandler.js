@@ -1,5 +1,4 @@
 import update from 'immutability-helper';
-import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
@@ -62,7 +61,15 @@ const DefaultAppB = update(DefaultAppA, {
 /**
  * This is just for handling memory.
  */
-export class AppStorageHandler extends PureComponent {
+export class AppStorageHandler {
+
+
+  static resetSessionStorage() {
+    sessionStorage.removeItem(LOCAL_APP_STORAGE);
+    sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE);
+    sessionStorage.removeItem(LOCAL_STATE_STORAGE);
+  }
+
   static storePathways(pathways) {
     if (pathways) {
       sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways));
