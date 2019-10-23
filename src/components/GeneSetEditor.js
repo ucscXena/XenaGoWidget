@@ -90,7 +90,10 @@ export default class GeneSetEditor extends PureComponent {
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel);
-    const cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+    // included data from original pathways
+    let cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
+    const cartLabels = cartPathways.map( p => p.golabel);
+    cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )];
 
 
     this.setState({
