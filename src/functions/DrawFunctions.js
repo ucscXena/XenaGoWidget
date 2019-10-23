@@ -38,9 +38,14 @@ function findRegions(height, count) {
 
 export function sumDataByType(data, type) {
   let total = 0;
-  // eslint-disable-next-line no-return-assign
   data.forEach((d) => total += d[type]);
   return total;
+}
+
+export function meanDataByType(data, type) {
+  let total = 0;
+  data.forEach((d) => total += d[type]);
+  return total / data.length;
 }
 
 function generateMask(mutation4Score, mutation4ColorMask,
@@ -201,7 +206,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const pxRow = el.start * 4 * img.width; // first column and row in the block
       if(filter===FILTER_ENUM.GENE_EXPRESSION){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
-        const geneExpressionScore = sumDataByType(d, 'geneExpressionPathwayActivity');
+        const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
