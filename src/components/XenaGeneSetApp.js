@@ -7,6 +7,7 @@ import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, generateScoredData, generateZScoreForGeneExpression,
 } from '../functions/DataFunctions';
+import FaRefresh from 'react-icons/lib/fa/refresh';
 import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';
@@ -629,6 +630,10 @@ export default class XenaGeneSetApp extends PureComponent {
                             </div>
                               }
 
+                            </Button>
+                            <Button onClick={() => {AppStorageHandler.resetSessionStorage() ; location.reload(); } } raised>
+                              <FaRefresh/>
+                              Reset
                             </Button>
                           </td>
                         </tr>
