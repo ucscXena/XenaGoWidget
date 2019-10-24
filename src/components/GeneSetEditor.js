@@ -34,7 +34,7 @@ export default class GeneSetEditor extends PureComponent {
       sortOrder:'asc',
       sortBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
       sortCartOrder:'asc',
-      sortCartBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
+      sortCartBy: props.isGeneExpression ? 'Diff' : 'Alpha',
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -328,10 +328,10 @@ export default class GeneSetEditor extends PureComponent {
                     <td>
                       Sort By
                       <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                        <option value='Abs_Diff'>Abs Diff BPA</option>
-                        <option value='Diff'>Cohort Diff BPA</option>
-                        <option value='Total'>Total BPA</option>
-                        <option value='Alpha'>Alphabetically</option>
+                        <option selected={this.state.sortBy==='AbsDiff'} value='Abs_Diff'>Abs Diff BPA</option>
+                        <option selected={this.state.sortBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
+                        <option selected={this.state.sortBy==='Total'} value='Total'>Total BPA</option>
+                        <option selected={this.state.sortBy==='Alpha'} value='Alpha'>Alphabetically</option>
                       </select>
                     </td>
                       }
@@ -405,7 +405,7 @@ export default class GeneSetEditor extends PureComponent {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.props.isGeneExpression &&
-                        `${this.scorePathway(p, this.state.sortBy)}, `
+                        `${this.scorePathway(p, 'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
@@ -427,10 +427,10 @@ export default class GeneSetEditor extends PureComponent {
                       Sort By
                         <br/>
                         <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
-                          <option value='Abs_Diff'>Abs Diff BPA</option>
-                          <option value='Diff'>Cohort Diff BPA</option>
-                          <option value='Total'>Total BPA</option>
-                          <option value='Alpha'>Alphabetically</option>
+                          <option selected={this.state.sortCartBy==='AbsDiff'} value='Abs_Diff'>Abs Diff BPA</option>
+                          <option selected={this.state.sortCartBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
+                          <option selected={this.state.sortCartBy==='Total'} value='Total'>Total BPA</option>
+                          <option selected={this.state.sortCartBy==='Alpha'} value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
                       }
@@ -493,7 +493,7 @@ export default class GeneSetEditor extends PureComponent {
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.props.isGeneExpression &&
-                        `${this.scorePathway(p,this.state.sortCartBy)}, `
+                        `${this.scorePathway(p,'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
                     })
