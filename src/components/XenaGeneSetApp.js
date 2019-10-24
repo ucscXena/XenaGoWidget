@@ -631,7 +631,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               }
 
                             </Button>
-                            <Button onClick={() => {AppStorageHandler.resetSessionStorage() ; location.reload(); } } raised>
+                            <Button onClick={() => {AppStorageHandler.resetSessionStorage() ; location.reload(); }} raised>
                               <FaRefresh/>
                               Reset
                             </Button>
