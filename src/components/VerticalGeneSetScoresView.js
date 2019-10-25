@@ -8,7 +8,7 @@ import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort, selectedSampleGeneExpressionActivitySort} from '../functions/SortFunctions';
 import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
-import {FILTER_ENUM} from "../functions/FilterFunctions";
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 
 const HEADER_HEIGHT = 15;
 

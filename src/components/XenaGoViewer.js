@@ -16,7 +16,7 @@ import {
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
-import {FILTER_ENUM} from "../functions/FilterFunctions";
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 

@@ -29,10 +29,8 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM, getLabelValues} from '../functions/FilterFunctions';
-import {Dropdown} from 'react-toolbox';
-import { Col, Row, Grid } from 'react-bootstrap';
-import {CohortEditorSelector} from "./CohortEditorSelector";
+import {FILTER_ENUM} from '../functions/FilterFunctions';
+import {CohortEditorSelector} from './CohortEditorSelector';
 
 
 
