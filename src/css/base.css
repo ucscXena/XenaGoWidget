@@ -120,6 +120,17 @@ body {
   border-radius:15px;
 }
 
+.cohortEditorBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  /*height: 80px;*/
+  overflow: auto;
+}
+
 .geneSetFilterBox{
   margin: 5px;
   padding: 5px;
@@ -131,6 +142,9 @@ body {
   overflow: auto;
 }
 
+.inlineButton{
+  display:inline;
+}
 
 
 .verticalLegendBox{

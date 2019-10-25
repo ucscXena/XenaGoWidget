@@ -12,8 +12,8 @@ import {
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
-import {FILTER_ENUM} from './FilterSelector';
 import {ButtonGroup} from 'react-bootstrap';
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 const TooltipButton = Tooltip(Button);
 
 
@@ -86,7 +86,9 @@ export class CohortSelector extends PureComponent {
 
     hasSubCohorts(){
       let {filterCounts} = this.props ;
-      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts.length > 1;
+      return filterCounts && Object.keys(filterCounts).length>0
+        && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts
+        && filterCounts[FILTER_ENUM.MUTATION].subCohortCounts.length > 1;
     }
 
     render() {

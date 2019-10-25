@@ -10,7 +10,7 @@ import {
 } from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
-import {FILTER_ENUM} from '../components/FilterSelector';
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 
 function clearScreen(vg, width, height) {
   vg.save();

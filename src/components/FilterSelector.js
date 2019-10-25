@@ -5,13 +5,7 @@ import {pick} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
 import mutationVector from '../data/mutationVector';
 import {MIN_FILTER} from './XenaGeneSetApp';
-
-export const FILTER_ENUM = {
-  CNV_MUTATION:'CNV \u2229 Mutation',
-  MUTATION:'Mutation',
-  COPY_NUMBER:'Copy Number',
-  GENE_EXPRESSION:'Gene Expression',
-};
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 
 function lowerCaseCompare(a, b) {
   // put gene expression at the bottom

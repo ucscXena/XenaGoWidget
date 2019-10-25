@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
 import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
-import {FILTER_ENUM} from './FilterSelector';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
 import {clusterSampleSort, selectedSampleGeneExpressionActivitySort} from '../functions/SortFunctions';
 import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
+import {FILTER_ENUM} from "../functions/FilterFunctions";
 
 const HEADER_HEIGHT = 15;
 

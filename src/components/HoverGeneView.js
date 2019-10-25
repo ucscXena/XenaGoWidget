@@ -5,7 +5,7 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
-import {FILTER_ENUM} from './FilterSelector';
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 
 export default class HoverGeneView extends PureComponent {
 

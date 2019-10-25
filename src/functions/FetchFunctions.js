@@ -8,7 +8,7 @@ import { intersection} from './MathFunctions';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
-import {FILTER_ENUM} from '../components/FilterSelector';
+import {FILTER_ENUM} from '../functions/FilterFunctions';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 import DefaultPathways from '../data/genesets/tgac';

@@ -5,7 +5,7 @@ import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
-import {FILTER_ENUM, FilterSelector} from './FilterSelector';
+import {FilterSelector} from './FilterSelector';
 
 import {Card,Button} from 'react-toolbox';
 
@@ -16,6 +16,7 @@ import {
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+import {FILTER_ENUM} from "../functions/FilterFunctions";
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 

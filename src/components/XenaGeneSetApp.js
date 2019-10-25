@@ -24,13 +24,15 @@ import {getCohortDetails, getSubCohortsOnlyForCohort, matchFilters} from '../fun
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {SortType} from '../functions/SortFunctions';
-import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM} from './FilterSelector';
+import {FILTER_ENUM, getLabelValues} from '../functions/FilterFunctions';
+import {Dropdown} from 'react-toolbox';
+import { Col, Row, Grid } from 'react-bootstrap';
+import {CohortEditorSelector} from "./CohortEditorSelector";
 
 
 
@@ -612,14 +614,19 @@ export default class XenaGeneSetApp extends PureComponent {
             <table>
               <tbody>
                 <tr>
+                  <td colSpan={3}>
+                    <CohortEditorSelector
+                      cohort={this.state.selectedCohort}
+                      filter={this.state.filter[0]}
+                      onChangeCohorts={this.handleChangeCohort}
+                      onChangeFilter={this.handleChangeFilter}
+                    />
+                  </td>
+                </tr>
+                <tr>
                   <td>
                     <table>
                       <tbody>
-                        <tr>
-                          <td colSpan={3}>
-                            <VerticalLegend/>
-                          </td>
-                        </tr>
                         <tr>
                           <td colSpan={3}>
                             <Button icon='edit' onClick={() => this.setState({showGeneSetSearch:true})} raised>
@@ -727,7 +734,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
                   {this.state.loading===LOAD_STATE.LOADED &&
                                 <td
-                                  className="map_wrapper" onMouseMove={(ev) => {
+                                  className="map_wrapper"
+                                  colSpan={2} onMouseMove={(ev) => {
                                     let topClient = ev.currentTarget.getBoundingClientRect().top;
                                     let scrollDownBuffer = 0 ;
                                     if(topClient < 0 ){
