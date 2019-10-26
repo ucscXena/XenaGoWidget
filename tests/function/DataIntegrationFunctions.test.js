@@ -71,7 +71,7 @@ import FilterBothSamples1 from '../data/FilterBothSamples1';
 import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
 import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
-import {FILTER_ENUM} from '../../src/components/FilterSelector';
+import {FILTER_ENUM} from '../../src/functions/FilterFunctions';
 
 describe('Data Integration Functions', () => {
 
