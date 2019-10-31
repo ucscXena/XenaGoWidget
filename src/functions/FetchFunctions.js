@@ -206,6 +206,7 @@ export function lookupGeneByName(geneQuery,callback){
 export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
 
   // demoAllFieldMeanRunner();
+  console.log('fetch means: ',samples);
 
   Rx.Observable.zip(
     allFieldMean(selectedCohorts[0], samples[0]),
