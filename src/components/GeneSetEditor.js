@@ -211,9 +211,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleClearCart() {
-    // if(confirm('Remove all Gene Sets from view?')){
-      this.setState({cartPathways:[]});
-    // }
+    this.setState({cartPathways:[]});
   }
 
 
