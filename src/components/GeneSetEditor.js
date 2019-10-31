@@ -211,9 +211,9 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleClearCart() {
-    if(confirm('Remove all Gene Sets from view?')){
+    // if(confirm('Remove all Gene Sets from view?')){
       this.setState({cartPathways:[]});
-    }
+    // }
   }
 
 
@@ -320,7 +320,7 @@ export default class GeneSetEditor extends PureComponent {
           <tbody>
             <tr>
               {!this.state.editGeneSet &&
-              <td className={BaseStyle.geneSetFilterBox}  width={200}>
+              <td className={BaseStyle.geneSetFilterBox}  width={250}>
                 <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>Source</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
@@ -408,14 +408,14 @@ export default class GeneSetEditor extends PureComponent {
                         {this.props.isGeneExpression &&
                         `${this.scorePathway(p, 'Diff')}, `
                         }
-                        N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
+                        N: {p.gene.length}) {p.golabel}</option>);
                     })
                   }
                 </select>
               </td>
               }
-              <td style={{verticalAlign: 'middle'}} valign='top' width={20}>
-                <FaArrowCircleORight style={{verticalAlign:'middle'}}/>
+              <td style={{verticalAlign: 'middle'}} valign='top' width={80}>
+                {/*<FaArrowCircleORight style={{verticalAlign:'middle',align:'center'}}/>*/}
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
@@ -479,7 +479,7 @@ export default class GeneSetEditor extends PureComponent {
                     });
                     this.setState({selectedCartPathways: selectedEvents});
                   }}
-                  style={{overflow: 'scroll', height: 250}}
+                  style={{overflow: 'scroll', height: 250, width: 250}}
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
@@ -499,7 +499,7 @@ export default class GeneSetEditor extends PureComponent {
                         {this.props.isGeneExpression &&
                         `${this.scorePathway(p,'Diff')}, `
                         }
-                        N: {p.gene.length}) {p.golabel.substr(0, 35)}</option>);
+                        N: {p.gene.length}) {p.golabel}</option>);
                     })
                   }
                 </select>
