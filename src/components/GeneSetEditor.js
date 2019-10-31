@@ -4,13 +4,13 @@ import BaseStyle from '../css/base.css';
 import FaEdit from 'react-icons/lib/fa/edit';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
+import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
   convertPathwaysToGeneSetLabel,
   fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
-import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import FaCheckSquare from 'react-icons/lib/fa/check-square';
 import FaTrash from 'react-icons/lib/fa/trash';
@@ -320,7 +320,8 @@ export default class GeneSetEditor extends PureComponent {
           <tbody>
             <tr>
               {!this.state.editGeneSet &&
-              <td width={200}>
+              <td className={BaseStyle.geneSetFilterBox}  width={200}>
+                <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>Source</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
@@ -413,9 +414,12 @@ export default class GeneSetEditor extends PureComponent {
                 </select>
               </td>
               }
-              <td valign='top' width={20} />
+              <td style={{verticalAlign: 'middle'}} valign='top' width={20}>
+                <FaArrowCircleORight style={{verticalAlign:'middle'}}/>
+              </td>
               {!this.state.editGeneSet &&
-              <td width={400}>
+              <td className={BaseStyle.geneSetFilterBox} width={300} >
+                <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>View</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
