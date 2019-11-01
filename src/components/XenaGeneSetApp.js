@@ -87,7 +87,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
-      reloadPathways: true,
+      reloadPathways: process.env.NODE_ENV!=='test' ,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
