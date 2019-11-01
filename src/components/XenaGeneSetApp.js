@@ -588,7 +588,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const sortedPathways = loadedPathways
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
-      // .slice(50,200)
       .sort( (a,b) => (this.state.filterOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
       .slice(0,this.state.geneSetLimit)
       .sort( (a,b) => (this.state.sortViewOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
@@ -737,6 +736,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onClick={() => { this.setState( {
                               fetch: true,
                               currentLoadState: LOAD_STATE.LOADING,
+                              reloadPathways: true,
                             });}} primary raised
                           >Sort Gene Sets Now</Button>
                         </td>
