@@ -554,82 +554,79 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
   handleMeanActivityData = (output) => {
-    console.log('hanlding mean activity',output);
+    console.log('handling mean activity',output);
 
     // 1. fetch activity
-    // const pathways = getPathwaysForGeneSetName(this.state.geneSet);
-    // // let loadedPathways = JSON.parse(JSON.stringify(pathways));
-    // let loadedPathways = pathways.map( p => {
-    //   p.firstGeneExpressionPathwayActivity = undefined ;
-    //   p.secondGeneExpressionPathwayActivity = undefined ;
-    //   return p ;
-    // });
-    //
-    // let indexMap = {};
-    // pathways.forEach( (p,index) => {
-    //   indexMap[p.golabel] = index ;
-    // });
-    //
-    //
-    // for(let index in output.geneExpressionPathwayActivityA.field){
-    //   const field = output.geneExpressionPathwayActivityA.field[index];
-    //   const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
-    //   const sourceIndex = indexMap[cleanField];
-    //   loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
-    //   loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
-    // }
-    //
-    // const pathwayLabels = this.props.pathways.map( p => p.golabel);
-    // // included data from original pathways
-    // let cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-    // const cartLabels = cartPathways.map( p => p.golabel);
-    // cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )];
-    //
-    //
+    const pathways = getPathwaysForGeneSetName('8K');
+    let loadedPathways = pathways.map( p => {
+      p.firstGeneExpressionPathwayActivity = undefined ;
+      p.secondGeneExpressionPathwayActivity = undefined ;
+      return p ;
+    });
+    let indexMap = {};
+    pathways.forEach( (p,index) => {
+      indexMap[p.golabel] = index ;
+    });
+
+    for(let index in output.geneExpressionPathwayActivityA.field){
+      const field = output.geneExpressionPathwayActivityA.field[index];
+      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
+      const sourceIndex = indexMap[cleanField];
+      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
+      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+    }
+
+    const sortedPathways = loadedPathways
+      .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
+      .sort( (a,b) => Math.abs(b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity) - Math.abs(a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) )
+      .slice(0,45)
+      .sort( (a,b) => (a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) - (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity));
+
+
+
+    // choose the top 45 (of limit) sources
+    // sort by absolute diff to get the top 45
+    // final diff sort to get the order we want to set the pathywas ass
+    console.log('loaded pathways',loadedPathways);
+    console.log('sorted pathways',sortedPathways);
+
+    // set new pathways to state to trigger re-render a refetch(hopefully just one re-render)
     // this.setState({
-    //   loadedPathways,
-    //   cartPathways,
+    //   pathways:sortedPathways,
+    //   fetch: true,
+    //   currentLoadState: LOAD_STATE.LOADED,
     // });
 
-
-
-    // 2. reset pathways based on this
-
-
-    // 2.a push to pathway as well
-
-
-
-    // 3. now we can fetch
-
-    // then refetch
-    // fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
-
+    fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
   };
 
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
+    // console.log('render pathways',pathways)
     let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
+      console.log('doRefetch');
 
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
         console.log('pathway data A',this.state.pathwayData);
-        if(samples[0]){
+        if(samples[0] && samples[1]){
           console.log('pathway data B',this.state.pathwayData);
           const geneSetLabels = convertPathwaysToGeneSetLabel(getPathwaysForGeneSetName('8K'));
           fetchPathwayActivityMeans(this.state.selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
         }
         else{
+          console.log('C');
           fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
         }
       }
       else{
+        console.log('D');
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
 

@@ -204,8 +204,10 @@ function sortWithIndeces(toSort) {
  */
 export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
 
-  // console.log('pruned columns',prunedColumns,selectedGeneSet);
-  const selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  console.log('pruned columns',prunedColumns,selectedGeneSet);
+  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  console.log('selected pathway index',selectedPathwayIndex,prunedColumns.data)
+  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
   const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.geneExpressionPathwayActivity);
   sortWithIndeces( selectedData);
   const sortedIndices = selectedData.sortIndices;

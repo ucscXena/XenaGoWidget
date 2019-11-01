@@ -68,7 +68,6 @@ export default class GeneSetEditor extends PureComponent {
 
   handleMeanActivityData = (output) => {
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
-    // let loadedPathways = JSON.parse(JSON.stringify(pathways));
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;
