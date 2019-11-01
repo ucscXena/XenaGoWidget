@@ -214,7 +214,7 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
     .flatMap((unfilteredSamples) => {
       const availableSamples = [
         calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
-        calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
+        calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
       ];
 
       console.log('fetch samples: ',availableSamples);
