@@ -155,7 +155,7 @@ export default class HoverGeneView extends PureComponent {
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
-                        {data.pathway.golabel}
+                        {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
                       {filter !== FILTER_ENUM.GENE_EXPRESSION &&
                       <div>
