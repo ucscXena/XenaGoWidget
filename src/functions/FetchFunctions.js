@@ -203,9 +203,35 @@ export function lookupGeneByName(geneQuery,callback){
   });
 }
 
-export function fetchPathwayActivityMeans(selectedCohorts,samples,geneSetLabels,dataHandler){
+export function fetchBestPathways(selectedCohorts,dataHandler){
+  Rx.Observable.zip(
+    datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
+    datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
+  )
+    .flatMap((unfilteredSamples) => {
+      const availableSamples = [
+        calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
+        calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
+      ];
 
-  // demoAllFieldMeanRunner();
+      return Rx.Observable.zip(
+        allFieldMean(selectedCohorts[0], availableSamples[0]),
+        allFieldMean(selectedCohorts[1], availableSamples[1]),
+        (
+          geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
+        ) => ({
+          geneExpressionPathwayActivityA,
+          geneExpressionPathwayActivityB,
+        }),
+      );
+    })
+    .subscribe( (output ) => {
+      // get the average activity for each
+      dataHandler(output);
+    });
+}
+
+export function fetchPathwayActivityMeans(selectedCohorts,samples,dataHandler){
 
   Rx.Observable.zip(
     allFieldMean(selectedCohorts[0], samples[0]),
@@ -237,7 +263,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     datasetSamples(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, null),
     datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
     // TODO: add gene expression 1
-  ). flatMap((unfilteredSamples) => {
+  ).flatMap((unfilteredSamples) => {
 
     // TODO: add gene expression with the second one
     filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2],selectedCohorts[0]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5],selectedCohorts[1])];
