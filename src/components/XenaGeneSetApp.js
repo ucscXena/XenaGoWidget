@@ -53,6 +53,8 @@ export const MIN_GENE_WIDTH_PX = 80;// 8 or less
 export const MAX_GENE_WIDTH = 85;
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH; // 85 genes
 
+export const DEFAULT_GENE_SET_LIMIT = 45 ;
+
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
   LOADING: 'loading',
@@ -82,7 +84,8 @@ export default class XenaGeneSetApp extends PureComponent {
       // TODO: this should use the full cohort Data, not just the top-level
       selectedCohort: cohorts,
       fetch: false,
-      reloadPathways: true,
+      automaticallyReloadPathways: true,
+      reloadPathways: false,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
@@ -92,12 +95,13 @@ export default class XenaGeneSetApp extends PureComponent {
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
-      showPathwayDetails: false,
+      showPathwayDetails: true,
       showGeneSetSearch: false,
       geneHits: [],
       selectedGene: undefined,
       reference: refGene['hg38'],
       limit: 25,
+      geneSetLimit: DEFAULT_GENE_SET_LIMIT,
       highlightedGene: undefined,
       collapsed: true,
       mousing: false,
@@ -435,7 +439,7 @@ export default class XenaGeneSetApp extends PureComponent {
       ];
       AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
 
-      this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:true});
+      this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
     handleChangeSubCohort = (selectedCohort, cohortIndex) => {
@@ -445,7 +449,7 @@ export default class XenaGeneSetApp extends PureComponent {
         }
       });
       AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
-      this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:true});
+      this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
     handleChangeFilter = (newFilter, cohortIndex) => {
@@ -580,7 +584,7 @@ export default class XenaGeneSetApp extends PureComponent {
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
       // .slice(50,200)
       .sort( (a,b) => Math.abs(a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > Math.abs(b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity) ? -1 : 1)
-      .slice(0,45)
+      .slice(0,this.state.geneSetLimit)
       .sort( (a,b) => ((a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity)) ? -1 : 1);
 
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
@@ -597,7 +601,9 @@ export default class XenaGeneSetApp extends PureComponent {
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
+        console.log('reload pathways',this.state.reloadPathways,this.state.automaticallyReloadPathways);
         if(samples[0] && samples[1] && this.state.reloadPathways){
+          console.log('reading the pathways?')
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
@@ -688,18 +694,20 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
                       <tr>
-                        <td colSpan={3}>
-                          Automatically <input type='checkbox'/>
+                        <td className={BaseStyle.autoSortBox} colSpan={2}>
+                          Sort on Change
+                          <input
+                            checked={this.state.automaticallyReloadPathways} onChange={() => this.setState({ automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
+                            type='checkbox'
+                          />
                           <br/>
-                          Select <input type='text'/> Gene Sets by
+                          Limit <input onChange={(event) => this.setState({geneSetLimit:event.target.value} )} size={3} value={this.state.geneSetLimit}/>
+                        Gene Sets by
                           <select>
                             <option>Difference</option>
                             <option>Left versus Right</option>
                           </select>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colSpan={3}>
+                          <br/>
                           Sort Gene Sets by
                           <select>
                             <option>Difference</option>
@@ -707,6 +715,13 @@ export default class XenaGeneSetApp extends PureComponent {
                             <option>Total</option>
                             <option>Name</option>
                           </select>
+                          <br/>
+                          <Button
+                            onClick={() => { this.setState( {
+                              fetch: true,
+                              currentLoadState: LOAD_STATE.LOADING,
+                            });}} raised
+                          >Apply Now</Button>
                         </td>
                       </tr>
                       <tr>
