@@ -8,7 +8,6 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
-  convertPathwaysToGeneSetLabel,
   fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
@@ -56,8 +55,7 @@ export default class GeneSetEditor extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(getPathwaysForGeneSetName(this.state.geneSet));
-    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+    fetchPathwayActivityMeans(selectedCohort,samples,this.handleMeanActivityData);
 
   }
 

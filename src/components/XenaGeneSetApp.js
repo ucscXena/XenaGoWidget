@@ -15,9 +15,9 @@ import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
 import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
-  convertPathwaysToGeneSetLabel,
+  convertPathwaysToGeneSetLabel, fetchBestPathways,
   fetchCombinedCohorts,
-  fetchPathwayActivityMeans, getPathwaysForGeneSetName
+  getPathwaysForGeneSetName
 } from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -578,9 +578,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const sortedPathways = loadedPathways
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
-      .sort( (a,b) => Math.abs(b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity) - Math.abs(a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) )
+      // .slice(50,200)
+      .sort( (a,b) => Math.abs(a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > Math.abs(b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity) ? -1 : 1)
       .slice(0,45)
-      .sort( (a,b) => (a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) - (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity));
+      .sort( (a,b) => ((a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity)) ? -1 : 1);
 
 
 
@@ -616,9 +617,10 @@ export default class XenaGeneSetApp extends PureComponent {
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
         console.log('pathway data A',this.state.pathwayData);
         if(samples[0] && samples[1]){
+          console.log('# of samples',samples[0].length,samples[1].length);
           console.log('pathway data B',this.state.pathwayData);
-          const geneSetLabels = convertPathwaysToGeneSetLabel(getPathwaysForGeneSetName('8K'));
-          fetchPathwayActivityMeans(this.state.selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+          // fetchPathwayActivityMeans(this.state.selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+          fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
           console.log('C');
