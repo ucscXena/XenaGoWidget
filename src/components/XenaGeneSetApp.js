@@ -688,6 +688,28 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
                       <tr>
+                        <td colSpan={3}>
+                          Automatically <input type='checkbox'/>
+                          <br/>
+                          Select <input type='text'/> Gene Sets by
+                          <select>
+                            <option>Difference</option>
+                            <option>Left versus Right</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colSpan={3}>
+                          Sort Gene Sets by
+                          <select>
+                            <option>Difference</option>
+                            <option>Left versus Right</option>
+                            <option>Total</option>
+                            <option>Name</option>
+                          </select>
+                        </td>
+                      </tr>
+                      <tr>
                         <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
                           {this.state.showPathwayDetails &&
                               <div style={{paddingLeft: leftPadding}}>
