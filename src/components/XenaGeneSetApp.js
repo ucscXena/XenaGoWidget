@@ -706,10 +706,10 @@ export default class XenaGeneSetApp extends PureComponent {
                           <br/>
                           Limit <input onChange={(event) => this.setState({geneSetLimit:event.target.value} )} size={3} value={this.state.geneSetLimit}/>
                           Filter Gene Sets by
-                          <select onChange={(event) => this.setState({filterBy:event.target.value})}>
-                            <option selected={this.state.filterBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
-                            <option selected={this.state.filterBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                            <option selected={this.state.filterBy==='Total'} value='Total'>Total BPA</option>
+                          <select onChange={(event) => this.setState({filterBy:event.target.value})} value={this.state.filterBy}>
+                            <option value='AbsDiff'>Abs Diff BPA</option>
+                            <option value='Diff'>Cohort Diff BPA</option>
+                            <option value='Total'>Total BPA</option>
                           </select>
                           {this.state.filterOrder === 'asc' &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
@@ -719,10 +719,10 @@ export default class XenaGeneSetApp extends PureComponent {
                           }
                           <br/>
                           Sort Visible Gene Sets by
-                          <select onChange={(event) => this.setState({sortViewBy:event.target.value})}>
-                            <option selected={this.state.sortViewBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
-                            <option selected={this.state.sortViewBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                            <option selected={this.state.sortViewBy==='Total'} value='Total'>Total BPA</option>
+                          <select onChange={(event) => this.setState({sortViewBy:event.target.value})} value={this.state.sortViewBy}>
+                            <option  value='AbsDiff'>Abs Diff BPA</option>
+                            <option  value='Diff'>Cohort Diff BPA</option>
+                            <option value='Total'>Total BPA</option>
                           </select>
                           {this.state.sortViewOrder === 'asc' &&
                           <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
