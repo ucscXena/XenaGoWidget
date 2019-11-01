@@ -87,7 +87,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
-      reloadPathways: false,
+      reloadPathways: true,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
@@ -605,8 +605,7 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
-        const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
-        if(samples[0] && samples[1] && this.state.reloadPathways){
+        if(this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
