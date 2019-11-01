@@ -15,7 +15,7 @@ import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
 import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
-  convertPathwaysToGeneSetLabel, fetchBestPathways,
+  fetchBestPathways,
   fetchCombinedCohorts,
   getPathwaysForGeneSetName
 } from '../functions/FetchFunctions';
@@ -554,8 +554,6 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
   handleMeanActivityData = (output) => {
-    console.log('handling mean activity',output);
-
     // 1. fetch activity
     const pathways = getPathwaysForGeneSetName('8K');
     let loadedPathways = pathways.map( p => {
@@ -583,21 +581,6 @@ export default class XenaGeneSetApp extends PureComponent {
       .slice(0,45)
       .sort( (a,b) => ((a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity)) ? -1 : 1);
 
-
-
-    // choose the top 45 (of limit) sources
-    // sort by absolute diff to get the top 45
-    // final diff sort to get the order we want to set the pathywas ass
-    console.log('loaded pathways',loadedPathways);
-    console.log('sorted pathways',sortedPathways);
-
-    // set new pathways to state to trigger re-render a refetch(hopefully just one re-render)
-    // this.setState({
-    //   pathways:sortedPathways,
-    //   fetch: true,
-    //   currentLoadState: LOAD_STATE.LOADED,
-    // });
-
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
   };
@@ -605,33 +588,23 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
-    // console.log('render pathways',pathways)
     let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
-      console.log('doRefetch');
-
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
-        console.log('pathway data A',this.state.pathwayData);
         if(samples[0] && samples[1]){
-          console.log('# of samples',samples[0].length,samples[1].length);
-          console.log('pathway data B',this.state.pathwayData);
-          // fetchPathwayActivityMeans(this.state.selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
-          console.log('C');
           fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
         }
       }
       else{
-        console.log('D');
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
-
     }
 
     return (

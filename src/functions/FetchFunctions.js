@@ -204,9 +204,6 @@ export function lookupGeneByName(geneQuery,callback){
 }
 
 export function fetchBestPathways(selectedCohorts,dataHandler){
-
-  // demoAllFieldMeanRunner();
-
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
     datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
@@ -216,8 +213,6 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
         calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
         calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
       ];
-
-      console.log('fetch samples: ',availableSamples);
 
       return Rx.Observable.zip(
         allFieldMean(selectedCohorts[0], availableSamples[0]),
@@ -237,9 +232,6 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,dataHandler){
-
-  // demoAllFieldMeanRunner();
-  console.log('fetch means: ',samples);
 
   Rx.Observable.zip(
     allFieldMean(selectedCohorts[0], samples[0]),
