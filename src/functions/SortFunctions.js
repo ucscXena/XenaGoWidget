@@ -196,6 +196,19 @@ function sortWithIndeces(toSort) {
   }
   return toSort;
 }
+
+export function scorePathway(p,sortBy) {
+  switch (sortBy) {
+  case 'Total':
+    return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+  case 'Abs_Diff':
+    return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+  case 'Diff':
+  default:
+    return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+  }
+}
+
 /**
  * Sorts based on a selected sample
  * @param prunedColumns
@@ -204,8 +217,8 @@ function sortWithIndeces(toSort) {
  */
 export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
 
-  // console.log('pruned columns',prunedColumns,selectedGeneSet);
-  const selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
   const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.geneExpressionPathwayActivity);
   sortWithIndeces( selectedData);
   const sortedIndices = selectedData.sortIndices;

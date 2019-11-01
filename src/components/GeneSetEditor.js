@@ -8,7 +8,6 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
-  convertPathwaysToGeneSetLabel,
   fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
@@ -20,6 +19,7 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
+import {scorePathway} from '../functions/SortFunctions';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -56,8 +56,7 @@ export default class GeneSetEditor extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    const geneSetLabels = convertPathwaysToGeneSetLabel(getPathwaysForGeneSetName(this.state.geneSet));
-    fetchPathwayActivityMeans(selectedCohort,samples,geneSetLabels,this.handleMeanActivityData);
+    fetchPathwayActivityMeans(selectedCohort,samples,this.handleMeanActivityData);
 
   }
 
@@ -68,7 +67,6 @@ export default class GeneSetEditor extends PureComponent {
 
   handleMeanActivityData = (output) => {
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
-    // let loadedPathways = JSON.parse(JSON.stringify(pathways));
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;
@@ -102,25 +100,12 @@ export default class GeneSetEditor extends PureComponent {
     });
   };
 
-
-  scorePathway(p,sortBy) {
-    switch (sortBy) {
-    case 'Total':
-      return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
-    case 'Abs_Diff':
-      return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
-    case 'Diff':
-    default:
-      return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
-    }
-  }
-
   filterByName(){
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
-        const scoreA = this.scorePathway(a,this.state.sortBy);
-        const scoreB = this.scorePathway(b,this.state.sortBy);
+        const scoreA = scorePathway(a,this.state.sortBy);
+        const scoreB = scorePathway(b,this.state.sortBy);
         switch(this.state.sortBy) {
         default:
           if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
@@ -404,7 +389,7 @@ export default class GeneSetEditor extends PureComponent {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.props.isGeneExpression &&
-                        `${this.scorePathway(p, 'Diff')}, `
+                        `${scorePathway(p, 'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
                     })
@@ -481,8 +466,8 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
-                      const scoreA = this.scorePathway(a,this.state.sortCartBy);
-                      const scoreB = this.scorePathway(b,this.state.sortCartBy);
+                      const scoreA = scorePathway(a,this.state.sortCartBy);
+                      const scoreB = scorePathway(b,this.state.sortCartBy);
                       switch (this.state.sortCartBy) {
                       case 'Alpha':
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
@@ -495,7 +480,7 @@ export default class GeneSetEditor extends PureComponent {
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.props.isGeneExpression &&
-                        `${this.scorePathway(p,'Diff')}, `
+                        `${scorePathway(p,'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
                     })
