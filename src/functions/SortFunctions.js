@@ -196,6 +196,19 @@ function sortWithIndeces(toSort) {
   }
   return toSort;
 }
+
+export function scorePathway(p,sortBy) {
+  switch (sortBy) {
+  case 'Total':
+    return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
+  case 'Abs_Diff':
+    return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+  case 'Diff':
+  default:
+    return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+  }
+}
+
 /**
  * Sorts based on a selected sample
  * @param prunedColumns

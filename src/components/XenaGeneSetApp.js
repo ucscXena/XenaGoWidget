@@ -27,7 +27,7 @@ import CrossHairV from './CrossHairV';
 import {getCohortDetails, getSubCohortsOnlyForCohort, matchFilters} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
-import {SortType} from '../functions/SortFunctions';
+import {scorePathway, SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
@@ -35,6 +35,8 @@ import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFuncti
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import {FILTER_ENUM} from './FilterSelector';
+import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
+import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 
 
 
@@ -91,6 +93,10 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
+      sortViewOrder:'desc',
+      sortViewBy:'Diff',
+      filterOrder:'desc',
+      filterBy:'AbsDiff',
       filter:filters,
       hoveredPathway: undefined,
       geneData: [{}, {}],
@@ -583,9 +589,9 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedPathways = loadedPathways
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
       // .slice(50,200)
-      .sort( (a,b) => Math.abs(a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > Math.abs(b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity) ? -1 : 1)
+      .sort( (a,b) => (this.state.filterOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
       .slice(0,this.state.geneSetLimit)
-      .sort( (a,b) => ((a.firstGeneExpressionPathwayActivity - a.secondGeneExpressionPathwayActivity) > (b.firstGeneExpressionPathwayActivity - b.secondGeneExpressionPathwayActivity)) ? -1 : 1);
+      .sort( (a,b) => (this.state.sortViewOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
 
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
@@ -603,7 +609,7 @@ export default class XenaGeneSetApp extends PureComponent {
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
         console.log('reload pathways',this.state.reloadPathways,this.state.automaticallyReloadPathways);
         if(samples[0] && samples[1] && this.state.reloadPathways){
-          console.log('reading the pathways?')
+          console.log('reading the pathways?');
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
@@ -702,26 +708,39 @@ export default class XenaGeneSetApp extends PureComponent {
                           />
                           <br/>
                           Limit <input onChange={(event) => this.setState({geneSetLimit:event.target.value} )} size={3} value={this.state.geneSetLimit}/>
-                        Gene Sets by
+                          Filter Gene Sets by
                           <select>
-                            <option>Difference</option>
-                            <option>Left versus Right</option>
+                            <option selected={this.state.filterBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
+                            <option selected={this.state.filterBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
+                            <option selected={this.state.filterBy==='Total'} value='Total'>Total BPA</option>
                           </select>
+                          {this.state.filterOrder === 'asc' &&
+                          <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
+                          }
+                          {this.state.filterOrder === 'desc' &&
+                          <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
+                          }
                           <br/>
-                          Sort Gene Sets by
+                          Sort Visible Gene Sets by
                           <select>
-                            <option>Difference</option>
-                            <option>Left versus Right</option>
-                            <option>Total</option>
-                            <option>Name</option>
+                            <option selected={this.state.sortViewBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
+                            <option selected={this.state.sortViewBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
+                            <option selected={this.state.sortViewBy==='Total'} value='Total'>Total BPA</option>
                           </select>
+                          {this.state.sortViewOrder === 'asc' &&
+                          <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
+                          }
+                          {this.state.sortViewOrder  === 'desc' &&
+                          <FaSortDesc onClick={() => this.setState({sortViewOrder: 'asc'})}/>
+                          }
+                          <br/>
                           <br/>
                           <Button
                             onClick={() => { this.setState( {
                               fetch: true,
                               currentLoadState: LOAD_STATE.LOADING,
-                            });}} raised
-                          >Apply Now</Button>
+                            });}} primary raised
+                          >Sort Gene Sets Now</Button>
                         </td>
                       </tr>
                       <tr>
