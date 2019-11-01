@@ -699,7 +699,7 @@ export default class XenaGeneSetApp extends PureComponent {
                       </tr>
                       <tr>
                         <td className={BaseStyle.autoSortBox} colSpan={2}>
-                          Sort on Change
+                          Sort on Cohort Change
                           <input
                             checked={this.state.automaticallyReloadPathways} onChange={() => this.setState({ automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
                             type='checkbox'
