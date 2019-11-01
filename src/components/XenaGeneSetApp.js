@@ -607,9 +607,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
-        console.log('reload pathways',this.state.reloadPathways,this.state.automaticallyReloadPathways);
         if(samples[0] && samples[1] && this.state.reloadPathways){
-          console.log('reading the pathways?');
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{

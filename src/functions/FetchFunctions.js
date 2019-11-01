@@ -204,7 +204,6 @@ export function lookupGeneByName(geneQuery,callback){
 }
 
 export function fetchBestPathways(selectedCohorts,dataHandler){
-  console.log('reloading the patwhways?')
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
     datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
