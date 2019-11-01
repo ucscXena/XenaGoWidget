@@ -82,6 +82,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // TODO: this should use the full cohort Data, not just the top-level
       selectedCohort: cohorts,
       fetch: false,
+      reloadPathways: true,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
@@ -434,7 +435,7 @@ export default class XenaGeneSetApp extends PureComponent {
       ];
       AppStorageHandler.storeCohortState(newCohortState[cohortIndex], cohortIndex);
 
-      this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
+      this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:true});
     };
 
     handleChangeSubCohort = (selectedCohort, cohortIndex) => {
@@ -444,7 +445,7 @@ export default class XenaGeneSetApp extends PureComponent {
         }
       });
       AppStorageHandler.storeCohortState(updateCohortState[cohortIndex], cohortIndex);
-      this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING});
+      this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:true});
     };
 
     handleChangeFilter = (newFilter, cohortIndex) => {
@@ -464,7 +465,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       let newPathways = calculateAllPathways(newPathwayData);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING});
+      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:false});
     };
 
 
@@ -549,6 +550,7 @@ export default class XenaGeneSetApp extends PureComponent {
         showGeneSetSearch: false,
         pathways:newPathways,
         fetch: true,
+        reloadPathways: false,
         currentLoadState: LOAD_STATE.LOADING,
       });
     };
@@ -595,7 +597,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
         const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
-        if(samples[0] && samples[1]){
+        if(samples[0] && samples[1] && this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
