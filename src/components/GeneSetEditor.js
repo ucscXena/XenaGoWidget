@@ -32,7 +32,7 @@ export default class GeneSetEditor extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
-      sortBy: props.isGeneExpression ? 'Abs_Diff' : 'Alpha',
+      sortBy: props.isGeneExpression ? 'AbsDiff' : 'Alpha',
       sortCartOrder:'asc',
       sortCartBy: props.isGeneExpression ? 'Diff' : 'Alpha',
       geneSet: '8K',
@@ -311,11 +311,14 @@ export default class GeneSetEditor extends PureComponent {
                       {this.props.isGeneExpression &&
                     <td>
                       Sort By
-                      <select onChange={(event) => this.setState({sortBy: event.target.value})}>
-                        <option selected={this.state.sortBy==='AbsDiff'} value='Abs_Diff'>Abs Diff BPA</option>
-                        <option selected={this.state.sortBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                        <option selected={this.state.sortBy==='Total'} value='Total'>Total BPA</option>
-                        <option selected={this.state.sortBy==='Alpha'} value='Alpha'>Alphabetically</option>
+                      <select
+                        onChange={(event) => this.setState({sortBy: event.target.value})}
+                        value={this.state.sortBy}
+                      >
+                        <option  value='AbsDiff'>Abs Diff BPA</option>
+                        <option  value='Diff'>Cohort Diff BPA</option>
+                        <option  value='Total'>Total BPA</option>
+                        <option  value='Alpha'>Alphabetically</option>
                       </select>
                     </td>
                       }
@@ -413,11 +416,14 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                       Sort By
                         <br/>
-                        <select onChange={(event) => this.setState({sortCartBy: event.target.value})}>
-                          <option selected={this.state.sortCartBy==='AbsDiff'} value='Abs_Diff'>Abs Diff BPA</option>
-                          <option selected={this.state.sortCartBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                          <option selected={this.state.sortCartBy==='Total'} value='Total'>Total BPA</option>
-                          <option selected={this.state.sortCartBy==='Alpha'} value='Alpha'>Alphabetically</option>
+                        <select
+                          onChange={(event) => this.setState({sortCartBy: event.target.value})}
+                          value={this.state.sortCartBy}
+                        >
+                          <option  value='AbsDiff'>Abs Diff BPA</option>
+                          <option  value='Diff'>Cohort Diff BPA</option>
+                          <option  value='Total'>Total BPA</option>
+                          <option  value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
                       }

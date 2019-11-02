@@ -88,7 +88,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
-      reloadPathways: false,
+      reloadPathways: process.env.NODE_ENV!=='test' ,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
@@ -589,7 +589,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const sortedPathways = loadedPathways
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
-      // .slice(50,200)
       .sort( (a,b) => (this.state.filterOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
       .slice(0,this.state.geneSetLimit)
       .sort( (a,b) => (this.state.sortViewOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
@@ -607,8 +606,7 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
       if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
-        const samples = [this.state.pathwayData[0].samples,this.state.pathwayData[1].samples];
-        if(samples[0] && samples[1] && this.state.reloadPathways){
+        if(this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
         else{
@@ -719,10 +717,10 @@ export default class XenaGeneSetApp extends PureComponent {
                           <br/>
                           Limit <input onChange={(event) => this.setState({geneSetLimit:event.target.value} )} size={3} value={this.state.geneSetLimit}/>
                           Filter Gene Sets by
-                          <select>
-                            <option selected={this.state.filterBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
-                            <option selected={this.state.filterBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                            <option selected={this.state.filterBy==='Total'} value='Total'>Total BPA</option>
+                          <select onChange={(event) => this.setState({filterBy:event.target.value})} value={this.state.filterBy}>
+                            <option value='AbsDiff'>Abs Diff BPA</option>
+                            <option value='Diff'>Cohort Diff BPA</option>
+                            <option value='Total'>Total BPA</option>
                           </select>
                           {this.state.filterOrder === 'asc' &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
@@ -732,10 +730,10 @@ export default class XenaGeneSetApp extends PureComponent {
                           }
                           <br/>
                           Sort Visible Gene Sets by
-                          <select>
-                            <option selected={this.state.sortViewBy==='AbsDiff'} value='AbsDiff'>Abs Diff BPA</option>
-                            <option selected={this.state.sortViewBy==='Diff'} value='Diff'>Cohort Diff BPA</option>
-                            <option selected={this.state.sortViewBy==='Total'} value='Total'>Total BPA</option>
+                          <select onChange={(event) => this.setState({sortViewBy:event.target.value})} value={this.state.sortViewBy}>
+                            <option  value='AbsDiff'>Abs Diff BPA</option>
+                            <option  value='Diff'>Cohort Diff BPA</option>
+                            <option value='Total'>Total BPA</option>
                           </select>
                           {this.state.sortViewOrder === 'asc' &&
                           <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
@@ -749,6 +747,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onClick={() => { this.setState( {
                               fetch: true,
                               currentLoadState: LOAD_STATE.LOADING,
+                              reloadPathways: true,
                             });}} primary raised
                           >Sort Gene Sets Now</Button>
                         </td>

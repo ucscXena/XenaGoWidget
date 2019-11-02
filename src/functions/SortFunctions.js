@@ -201,7 +201,7 @@ export function scorePathway(p,sortBy) {
   switch (sortBy) {
   case 'Total':
     return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
-  case 'Abs_Diff':
+  case 'AbsDiff':
     return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
   case 'Diff':
   default:
