@@ -12,7 +12,7 @@ import {
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
-import {FILTER_ENUM} from './FilterSelector';
+import {FILTER_ENUM} from './ViewSelector';
 import {ButtonGroup} from 'react-bootstrap';
 const TooltipButton = Tooltip(Button);
 

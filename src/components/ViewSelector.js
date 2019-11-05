@@ -21,7 +21,7 @@ function lowerCaseCompare(a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-export class FilterSelector extends PureComponent {
+export class ViewSelector extends PureComponent {
 
     handleSetSelected = (targetValue) => {
       this.props.onChange(targetValue);
@@ -56,7 +56,7 @@ export class FilterSelector extends PureComponent {
     }
 }
 
-FilterSelector.propTypes = {
+ViewSelector.propTypes = {
   geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,

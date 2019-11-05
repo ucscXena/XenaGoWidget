@@ -5,7 +5,7 @@ import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
-import {FILTER_ENUM, FilterSelector} from './FilterSelector';
+import {FILTER_ENUM, ViewSelector} from './ViewSelector';
 
 import {Card,Button} from 'react-toolbox';
 
@@ -121,7 +121,7 @@ export default class XenaGoViewer extends PureComponent {
                             selectedCohort={selectedCohort}
                             swapCohorts={swapCohorts}
                           />
-                          <FilterSelector
+                          <ViewSelector
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}

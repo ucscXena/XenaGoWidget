@@ -34,7 +34,7 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM} from './FilterSelector';
+import {FILTER_ENUM} from './ViewSelector';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 
