@@ -8,7 +8,7 @@ import { intersection} from './MathFunctions';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
-import {FILTER_ENUM} from '../components/ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 import DefaultPathways from '../data/genesets/tgac';
@@ -21,15 +21,15 @@ export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
   switch (filter) {
-  case FILTER_ENUM.CNV_MUTATION:
+  case VIEW_ENUM.CNV_MUTATION:
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
       intersection);
-  case FILTER_ENUM.COPY_NUMBER:
+  case VIEW_ENUM.COPY_NUMBER:
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
-  case FILTER_ENUM.MUTATION:
+  case VIEW_ENUM.MUTATION:
     return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
-  case FILTER_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.GENE_EXPRESSION:
     return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null);
   default:
     // eslint-disable-next-line no-console
@@ -80,25 +80,25 @@ export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpress
   const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
   let filterCounts = {};
   // calculate mutations per subfilter
-  filterCounts[FILTER_ENUM.MUTATION] =  {
+  filterCounts[VIEW_ENUM.MUTATION] =  {
     available: mutationSamples.length,
     current:mutationSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
     unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.COPY_NUMBER] =  {
+  filterCounts[VIEW_ENUM.COPY_NUMBER] =  {
     available: copyNumberSamples.length,
     current: copyNumberSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
     unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.CNV_MUTATION] =  {
+  filterCounts[VIEW_ENUM.CNV_MUTATION] =  {
     available: intersectedCnvMutation.length,
     current: intersectedCnvMutationSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
     unassigned: copyNumberSamples.filter( s => intersectedCnvMutationSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  {
+  filterCounts[VIEW_ENUM.GENE_EXPRESSION] =  {
     available: geneExpressionSamples.length,
     current: geneExpressionSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
@@ -120,13 +120,13 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
 
 function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, filter){
   switch (filter) {
-  case FILTER_ENUM.CNV_MUTATION:
+  case VIEW_ENUM.CNV_MUTATION:
     return uniq(intersection(mutationSamples, copyNumberSamples));
-  case FILTER_ENUM.MUTATION:
+  case VIEW_ENUM.MUTATION:
     return mutationSamples;
-  case FILTER_ENUM.COPY_NUMBER:
+  case VIEW_ENUM.COPY_NUMBER:
     return copyNumberSamples;
-  case FILTER_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.GENE_EXPRESSION:
     return geneExpressionSamples;
   default:
     // eslint-disable-next-line no-console

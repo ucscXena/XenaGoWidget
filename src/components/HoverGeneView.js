@@ -5,7 +5,7 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
-import {FILTER_ENUM} from './ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -122,7 +122,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== FILTER_ENUM.GENE_EXPRESSION &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -133,7 +133,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && data.pathway.geneExpressionMean !== undefined && filter === FILTER_ENUM.GENE_EXPRESSION &&
+            && data.pathway.geneExpressionMean !== undefined && filter === VIEW_ENUM.GENE_EXPRESSION &&
             <div>
               <Chip>
                 <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -157,21 +157,21 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
-                      {filter !== FILTER_ENUM.GENE_EXPRESSION &&
+                      {filter !== VIEW_ENUM.GENE_EXPRESSION &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                       }
-                      {filter !== FILTER_ENUM.GENE_EXPRESSION &&
+                      {filter !== VIEW_ENUM.GENE_EXPRESSION &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
                       }
                       <div>
-                        {filter !== FILTER_ENUM.GENE_EXPRESSION &&
+                        {filter !== VIEW_ENUM.GENE_EXPRESSION &&
                         <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
                         }
-                        {filter === FILTER_ENUM.GENE_EXPRESSION &&
+                        {filter === VIEW_ENUM.GENE_EXPRESSION &&
                         <span><strong>BPA Score</strong> {this.getGeneExpressionScore(data, cohortIndex)}</span>
                         }
                       </div>

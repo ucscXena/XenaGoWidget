@@ -2,7 +2,7 @@ import update from 'immutability-helper';
 import DefaultPathWays from '../data/genesets/tgac';
 import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {FILTER_ENUM} from '../components/ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import {exception} from 'react-ga';
 
 
@@ -146,10 +146,10 @@ export class AppStorageHandler {
 
   static isValidFilterState(filterState) {
     switch (filterState) {
-    case FILTER_ENUM.COPY_NUMBER:
-    case FILTER_ENUM.MUTATION:
-    case FILTER_ENUM.CNV_MUTATION:
-    case FILTER_ENUM.GENE_EXPRESSION:
+    case VIEW_ENUM.COPY_NUMBER:
+    case VIEW_ENUM.MUTATION:
+    case VIEW_ENUM.CNV_MUTATION:
+    case VIEW_ENUM.GENE_EXPRESSION:
       return true;
     }
     return false ;
@@ -179,7 +179,7 @@ export class AppStorageHandler {
     if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
       return appState.filterState[cohortIndex];
     }
-    return FILTER_ENUM.GENE_EXPRESSION;
+    return VIEW_ENUM.GENE_EXPRESSION;
   }
 
   static getSortState() {

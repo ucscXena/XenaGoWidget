@@ -10,7 +10,7 @@ import {
 } from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
-import {FILTER_ENUM} from '../components/ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -106,7 +106,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+      if(filter===VIEW_ENUM.GENE_EXPRESSION){
         const geneExpressionScore = sumDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
@@ -188,7 +188,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
-  const colorFilter = filter === FILTER_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
+  const colorFilter = filter === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
 
 
   layout.forEach((el, i) => {
@@ -204,7 +204,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const d = rowData.slice(r.start, r.end + 1);
       //
       const pxRow = el.start * 4 * img.width; // first column and row in the block
-      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+      if(filter===VIEW_ENUM.GENE_EXPRESSION){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
@@ -220,7 +220,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
         }
       }
       else
-      if(filter===FILTER_ENUM.PARADIGM_ACTIVITY){
+      if(filter===VIEW_ENUM.PARADIGM_ACTIVITY){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'paradigmPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {

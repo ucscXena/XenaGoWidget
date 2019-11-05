@@ -4,7 +4,7 @@ import SUB_COHORT_LIST from '../data/Subtype_Selected';
 import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
-import {FILTER_ENUM} from '../components/ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
@@ -132,11 +132,11 @@ export function matchFilters(filter,newFilter,cohortIndex){
     cohortIndex===1  ? newFilter : filter[1]  ,
   ];
   // if the new filter is gene expression, then set the other one to gene expression
-  if(newFilter===FILTER_ENUM.GENE_EXPRESSION){
-    filterState[otherCohort] = FILTER_ENUM.GENE_EXPRESSION;
+  if(newFilter===VIEW_ENUM.GENE_EXPRESSION){
+    filterState[otherCohort] = VIEW_ENUM.GENE_EXPRESSION;
   }
   // unset filter on both if gene expression
-  if(filterState[otherCohort]===FILTER_ENUM.GENE_EXPRESSION){
+  if(filterState[otherCohort]===VIEW_ENUM.GENE_EXPRESSION){
     filterState[otherCohort]=newFilter; // will set if not Gene expression, or be the same if is
   }
   return filterState;

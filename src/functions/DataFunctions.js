@@ -11,7 +11,7 @@ import { getGenesForNamedPathways } from './CohortFunctions';
 import {
   clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort,
 } from './SortFunctions';
-import {FILTER_ENUM} from '../components/ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 export const DEFAULT_AMPLIFICATION_THRESHOLD = 2;
 export const DEFAULT_DELETION_THRESHOLD = -2;
@@ -184,15 +184,15 @@ export function calculateGeneSetExpected(pathwayData, filter) {
     for (const pathway of pathwayData.pathways) {
       const sample_probs = [];
 
-      if (filter === FILTER_ENUM.COPY_NUMBER || filter === FILTER_ENUM.CNV_MUTATION) {
+      if (filter === VIEW_ENUM.COPY_NUMBER || filter === VIEW_ENUM.CNV_MUTATION) {
         if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
           sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
         }
       }
-      if (filter === FILTER_ENUM.MUTATION || filter === FILTER_ENUM.CNV_MUTATION) {
+      if (filter === VIEW_ENUM.MUTATION || filter === VIEW_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
       }
-      if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+      if (filter === VIEW_ENUM.GENE_EXPRESSION) {
         // TODO: add viper scores
         // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
         // sample_probs.push(0);
@@ -386,16 +386,16 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
 export function doDataAssociations(expression, copyNumber, geneExpression, geneExpressionPathwayActivity, geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-  if (filter === FILTER_ENUM.CNV_MUTATION || filter === FILTER_ENUM.MUTATION) {
+  if (filter === VIEW_ENUM.CNV_MUTATION || filter === VIEW_ENUM.MUTATION) {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
   }
 
-  if (filter === FILTER_ENUM.CNV_MUTATION|| filter === FILTER_ENUM.COPY_NUMBER) {
+  if (filter === VIEW_ENUM.CNV_MUTATION|| filter === VIEW_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
 
-  if (filter === FILTER_ENUM.GENE_EXPRESSION) {
+  if (filter === VIEW_ENUM.GENE_EXPRESSION) {
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     if(geneExpressionPathwayActivity){
       returnArray = filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity,returnArray,geneList,pathways).returnArray;
@@ -465,12 +465,12 @@ export function calculatePathwayScore(pathwayData, filter) {
 }
 
 function calculateParadigmPathwayActivity(pathwayData) {
-  if(pathwayData.filter!==FILTER_ENUM.PARADIGM_ACTIVITY) return 0 ;
+  if(pathwayData.filter!==VIEW_ENUM.PARADIGM_ACTIVITY) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
-  if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
+  if(pathwayData.filter!==VIEW_ENUM.GENE_EXPRESSION) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
@@ -536,9 +536,9 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = (filter[0]===FILTER_ENUM.GENE_EXPRESSION || filter[0]===FILTER_ENUM.PARADIGM_ACTIVITY) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM_ACTIVITY) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===FILTER_ENUM.GENE_EXPRESSION);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===VIEW_ENUM.GENE_EXPRESSION);
   } else {
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);

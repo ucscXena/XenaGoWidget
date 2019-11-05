@@ -71,12 +71,12 @@ import FilterBothSamples1 from '../data/FilterBothSamples1';
 import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
 import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
-import {FILTER_ENUM} from '../../src/components/ViewSelector';
+import {VIEW_ENUM} from '../../src/data/ViewEnum';
 
 describe('Data Integration Functions', () => {
 
   it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, FILTER_ENUM.CNV_MUTATION));
+    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION));
   });
 
   it('Filter Mutations for Gene Set', () => {
@@ -154,21 +154,21 @@ describe('Data Integration Functions', () => {
 
   it('Calculates Gene Set Expected', () => {
     const output = {'Notch signaling':44.66612281988055,'Hippo signaling':52.1623051662852,'DNA base excision repair':55.53700332143,'DNA strand break joining':36.0005741958846,'Poly(ADP-ribose) polymerase (PARP)':20.22441477095158,'Direct reversal of DNA damage':20.22441477095158,'Repair of DNA-topoisomerase crosslinks':14.052370390208129,'Mismatch excision repair':52.1623051662852,'Nucleotide excision repair':93.69964333865461,'Homologous recombination':79.75208290162034,'Fanconi anemia':71.76449060935416,'Non-homologous DNA end-joining':40.494172925681866,'Modulation of nucleotide pools':20.22441477095158,'DNA polymerase':67.01629760269542,'Editing and processing nucleases':44.66612281988055,'Ubiquitination and modification':55.53700332143,'Chromatin structure and modification':20.22441477095158,'Sensitivity to DNA damaging agents':31.15117209447816,'Known/suspected DNA repair function':48.5465919536048,'Conserved DNA damage response':67.01629760269542,'DNA damage checkpoint':108.51888599280187,'PI3-K signaling':79.75208290162034,'Wnt signaling':110.82744575678224,'Intrinsic apoptotic pathway':126.86065451569475,'Extrinsic apoptotic pathway':124.30913748095283,'Cell cycle':122.14170706932096,'Histone modification':130.7722056038411,'Oxidative stress':121.0867993902569,'Ras signaling':128.36970184888767,'TGF-B signaling':120.41471508174367,'TP53 signaling':119.49147447610773,'cell cycle (Pancan Atlas)':67.01629760269542,'HIPPO (Pancan Atlas)':100.25136824082601,'MYC (Pancan Atlas)':61.64567804721665,'NOTCH (Pancan Atlas)':115.99727879436857,'NRF2 (Pancan Atlas)':20.22441477095158,'PI3K (Pancan Atlas)':91.42545483343683,'TGF-Beta (Pancan Atlas)':40.494172925681866,'RTK RAS (Pancan Atlas)':119.29453257346131,'TP53 (Pancan Atlas)':36.0005741958846,'WNT (Pancan Atlas)':115.12856126958182};
-    expect(calculateGeneSetExpected(ExpectedGeneSetData1,FILTER_ENUM.CNV_MUTATION)).toEqual(output);
+    expect(calculateGeneSetExpected(ExpectedGeneSetData1,VIEW_ENUM.CNV_MUTATION)).toEqual(output);
   });
 
   it('Calculate Associated Data', () => {
-    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,FILTER_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
+    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
   });
 
   it('Calculate Observed', () => {
     const outputScore = [53,66,53,19,18,16,18,43,64,86,53,31,33,57,53,66,10,64,37,126,98,85,115,132,124,120,130,131,134,119,132,87,115,89,126,18,111,21,122,116,117];
-    expect(calculateObserved(CalculateAssociatedDataPathwayData1,FILTER_ENUM.CNV_MUTATION)).toEqual(outputScore);
+    expect(calculateObserved(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(outputScore);
   });
 
   it('Calculate PathwayScore', () => {
     const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
-    expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,FILTER_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
+    expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
   });
 
   // TODO: note for some reason this triggers:
@@ -190,7 +190,7 @@ describe('Data Integration Functions', () => {
 
   it('Generate Scored Data', () => {
     const Selection = {'pathway':{'goid':'GO:0006281','golabel':'Modulation of nucleotide pools','gene':['NUDT1','DUT','RRM2B'],'firstObserved':33,'firstTotal':33,'firstNumSamples':136,'firstExpected':20.22441477095158,'firstChiSquared':9.479983189100402,'secondObserved':43,'secondTotal':44,'secondNumSamples':492,'secondExpected':28.71748902704271,'secondChiSquared':7.5436558288678714},'tissue':'Header'};
-    const Filters = [FILTER_ENUM.CNV_MUTATION,FILTER_ENUM.CNV_MUTATION];
+    const Filters = [VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION];
     expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters,false));
 
   });

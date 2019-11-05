@@ -34,7 +34,7 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM} from './ViewSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 
@@ -610,7 +610,7 @@ export default class XenaGeneSetApp extends PureComponent {
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
-      if(this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION){
+      if(this.state.filter[0]===VIEW_ENUM.GENE_EXPRESSION){
         if(this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
         }
@@ -666,7 +666,7 @@ export default class XenaGeneSetApp extends PureComponent {
             >
               <GeneSetEditor
                 cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
-                isGeneExpression={this.state.filter[0]===FILTER_ENUM.GENE_EXPRESSION}
+                isGeneExpression={this.state.filter[0]===VIEW_ENUM.GENE_EXPRESSION}
                 pathwayData={this.state.pathwayData}
                 pathways={this.state.pathways}
                 setPathways={this.setActiveGeneSets}
