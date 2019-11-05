@@ -219,6 +219,22 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           }
         }
       }
+      else
+      if(filter===FILTER_ENUM.PARADIGM_ACTIVITY){
+        // const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        const geneExpressionScore = meanDataByType(d, 'paradigmPathwayActivity');
+        for (let xPos = 0; xPos < r.width; ++xPos) {
+          const buffStart = pxRow + (xPos + r.x) * 4;
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+            let colorArray = isNaN(geneExpressionScore) ? [0,0,0] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            img.data[l] = colorArray[0];
+            img.data[l + 1] = colorArray[1];
+            img.data[l + 2] = colorArray[2];
+            img.data[l + 3] = 255 ;
+          }
+        }
+      }
       else{
         let color = regionColor(d, colorFilter);
         color = color > 255 ? 255 : color;
