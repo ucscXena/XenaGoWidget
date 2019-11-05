@@ -465,7 +465,7 @@ export function calculatePathwayScore(pathwayData, filter) {
 }
 
 function calculateParadigmPathwayActivity(pathwayData) {
-  if(pathwayData.filter!==VIEW_ENUM.PARADIGM_ACTIVITY) return 0 ;
+  if(pathwayData.filter!==VIEW_ENUM.PARADIGM) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
@@ -536,7 +536,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM_ACTIVITY) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===VIEW_ENUM.GENE_EXPRESSION);
   } else {
@@ -608,7 +608,8 @@ export function calculateDiffs(geneData0, geneData1) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber,filterCounts,geneExpression ,cohort} = pathwayData;
+  const { expression, samples, copyNumber,filterCounts,geneExpression , paradigm, cohort} = pathwayData;
+  console.log('returning pathway data',pathwayData)
 
   let { pathway: { goid, golabel } } = pathwaySelection;
 
@@ -626,6 +627,7 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
     samples,
     copyNumber,
     geneExpression,
+    paradigm,
     filter,
     filterCounts,
     geneList:pathwayData.geneList, // use the geneList form the

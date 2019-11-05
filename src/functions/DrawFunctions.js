@@ -220,7 +220,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
         }
       }
       else
-      if(filter===VIEW_ENUM.PARADIGM_ACTIVITY){
+      if(filter===VIEW_ENUM.PARADIGM){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'paradigmPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
