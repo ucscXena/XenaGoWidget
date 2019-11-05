@@ -16,7 +16,7 @@ import {
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
-import {ViewSelector} from "./ViewSelector";
+import {ViewSelector} from './ViewSelector';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
@@ -72,6 +72,8 @@ export default class XenaGoViewer extends PureComponent {
         return geneData.expression && geneData.expression.rows && geneData.expression.rows.length>0;
       case VIEW_ENUM.CNV_MUTATION:
         return this.hasDataForFilter(geneData,VIEW_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,VIEW_ENUM.MUTATION);
+      case VIEW_ENUM.PARADIGM:
+        return geneData.paradigm!==undefined;
       default:
         // eslint-disable-next-line no-console
         console.error('Error for gene data and filter',geneData,filter);
