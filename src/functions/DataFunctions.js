@@ -464,6 +464,10 @@ export function calculatePathwayScore(pathwayData, filter) {
   return calculateAssociatedData(pathwayData, filter).map((pathway) => sumTotals(pathway));
 }
 
+function calculateParadigmPathwayActivity(pathwayData) {
+  if(pathwayData.filter!==FILTER_ENUM.PARADIGM_ACTIVITY) return 0 ;
+  return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
+}
 
 function calculateGeneExpressionPathwayActivity(pathwayData) {
   if(pathwayData.filter!==FILTER_ENUM.GENE_EXPRESSION) return 0 ;
@@ -479,6 +483,7 @@ export function calculateAllPathways(pathwayData) {
   const pathwayDataB = pathwayData[1];
 
   const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
+  const paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
   // each pathway needs to have its own set BPA samples
   const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
@@ -486,6 +491,7 @@ export function calculateAllPathways(pathwayData) {
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
   const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB);
+  const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB, pathwayDataB);
   const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
   const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
@@ -496,6 +502,7 @@ export function calculateAllPathways(pathwayData) {
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
     p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
+    p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
@@ -503,6 +510,7 @@ export function calculateAllPathways(pathwayData) {
     p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
 
     p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
+    p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
@@ -528,7 +536,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = filter[0]===FILTER_ENUM.GENE_EXPRESSION ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    sortedGeneDataA = (filter[0]===FILTER_ENUM.GENE_EXPRESSION || filter[0]===FILTER_ENUM.PARADIGM_ACTIVITY) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===FILTER_ENUM.GENE_EXPRESSION);
   } else {

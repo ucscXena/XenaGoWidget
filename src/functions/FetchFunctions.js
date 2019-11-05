@@ -254,6 +254,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
   const geneList = getGenesForPathways(pathways);
   let filterCounts ;
 
+  console.log('selected cohorts',selectedCohorts);
+
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, null),
@@ -266,7 +268,14 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
   ).flatMap((unfilteredSamples) => {
 
     // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2],selectedCohorts[0]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5],selectedCohorts[1])];
+    filterCounts = [createFilterCounts(unfilteredSamples[0],
+      unfilteredSamples[1],
+      unfilteredSamples[2],
+      selectedCohorts[0]),
+    createFilterCounts(unfilteredSamples[3],
+      unfilteredSamples[4],
+      unfilteredSamples[5],
+      selectedCohorts[1])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
     // merge based on filter
     const availableSamples = [
@@ -295,23 +304,26 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
       datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
       datasetFetch(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, samplesA, geneList),
       datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samplesA, geneSetLabels),
+      datasetProbeValues(selectedCohorts[0].paradigmPathwayActivity.host, selectedCohorts[0].paradigmPathwayActivity.dataset, samplesA, geneSetLabels),
       datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samplesA, [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samplesA, [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
       sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, samplesB, geneList),
       datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samplesB, geneSetLabels),
+      datasetProbeValues(selectedCohorts[1].paradigmPathwayActivity.host, selectedCohorts[1].paradigmPathwayActivity.dataset, samplesB, geneSetLabels),
       datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
       (
-        mutationsA, copyNumberA, geneExpressionA,geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-        mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB,genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+        mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, paradigmPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+        mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, paradigmPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
       ) => ({
         samplesA,
         mutationsA,
         copyNumberA,
         geneExpressionA,
         geneExpressionPathwayActivityA,
+        paradigmPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
@@ -319,14 +331,15 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberB,
         geneExpressionB,
         geneExpressionPathwayActivityB,
+        paradigmPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
       }),
     );
   })
     .subscribe(({
-      samplesA, mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-      samplesB, mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+      samplesA, mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, paradigmPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      samplesB, mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, paradigmPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
     }) => {
       combinationHandler({
         geneList,
@@ -337,6 +350,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberA,
         geneExpressionA,
         geneExpressionPathwayActivityA,
+        paradigmPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
@@ -344,6 +358,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberB,
         geneExpressionB,
         geneExpressionPathwayActivityB,
+        paradigmPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,

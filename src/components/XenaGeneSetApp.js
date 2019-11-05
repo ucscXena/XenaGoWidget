@@ -173,6 +173,7 @@ export default class XenaGeneSetApp extends PureComponent {
         copyNumberA,
         geneExpressionA,
         geneExpressionPathwayActivityA,
+        paradigmPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
@@ -180,6 +181,7 @@ export default class XenaGeneSetApp extends PureComponent {
         copyNumberB,
         geneExpressionB,
         geneExpressionPathwayActivityB,
+        paradigmPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,
@@ -201,6 +203,7 @@ export default class XenaGeneSetApp extends PureComponent {
         expression: mutationsA,
         geneExpression: geneExpressionZScoreA,
         geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
+        paradigmPathwayActivity: paradigmPathwayActivityA[1],
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -219,6 +222,7 @@ export default class XenaGeneSetApp extends PureComponent {
         expression: mutationsB,
         geneExpression: geneExpressionZScoreB,
         geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
+        paradigmPathwayActivity: paradigmPathwayActivityB[1],
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
         genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
@@ -571,6 +575,8 @@ export default class XenaGeneSetApp extends PureComponent {
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;
+      p.firstParadigmPathwayActivity = undefined ;
+      p.secondParadigmPathwayActivity = undefined ;
       return p ;
     });
     let indexMap = {};
