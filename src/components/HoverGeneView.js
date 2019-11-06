@@ -127,7 +127,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                     <div>
                       <Chip>
                         <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -138,7 +138,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && data.pathway.geneExpressionMean !== undefined && filter === VIEW_ENUM.GENE_EXPRESSION &&
+            && data.pathway.geneExpressionMean !== undefined && ( filter === VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.PARADIGM )  &&
             <div>
               <Chip>
                 <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
@@ -162,12 +162,12 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION &&
+                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                       }
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION &&
+                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
