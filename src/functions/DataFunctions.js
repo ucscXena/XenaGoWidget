@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort,
+  clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort, paradigmSort,
 } from './SortFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 
@@ -573,13 +573,26 @@ export function calculateAllPathways(pathwayData) {
   });
 }
 
+function sortGeneData(inputData,view){
+  switch(view){
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return geneExpressionSort(inputData);
+  case VIEW_ENUM.PARADIGM:
+    return paradigmSort(inputData);
+  default:
+    return clusterSort(inputData);
+  }
+}
+
 export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
+  console.log('generating gene data',geneDataA,'from',pathwayDataA);
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
+  console.log('cored gene ddaeta',scoredGeneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
   const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways);
   geneDataA.pathways = scoredGenePathways[0];
@@ -588,10 +601,13 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   geneDataB.data = scoredGeneDataB.data;
   let sortedGeneDataA;
   let sortedGeneDataB;
+  console.log('shoring clust sort',showClusterSort)
   if (showClusterSort) {
-    sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    // sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    // sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
+    sortedGeneDataA = sortGeneData(geneDataA,filter[0]);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]===VIEW_ENUM.GENE_EXPRESSION);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
   } else {
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);
@@ -689,6 +705,23 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
   };
 }
 
+function calculateVarianceParadigm(datum,mean) {
+  let total = 0;
+  for (let i = 0; i < datum.length; ++i) {
+    total += Math.pow(datum[i].paradigm - mean,2.0);
+  }
+  return total / (datum.length-1) ;
+}
+
+
+function calculateMeanParadigm(datum) {
+  let total = 0;
+  for (let i = 0; i < datum.length; ++i) {
+    total += datum[i].paradigm;
+  }
+  return total / datum.length ;
+}
+
 function calculateVarianceGeneExpression(datum,mean) {
   let total = 0;
   for (let i = 0; i < datum.length; ++i) {
@@ -707,7 +740,8 @@ function calculateMeanGeneExpression(datum) {
 }
 
 export function scoreGeneData(inputGeneData) {
-  const { samples, cohortIndex } = inputGeneData;
+  const { samples, cohortIndex, filter } = inputGeneData;
+
   const associatedDataKey = createAssociatedDataKey(inputGeneData);
   const associatedData = findAssociatedData(inputGeneData, associatedDataKey);
   const prunedColumns = findPruneData(associatedData, associatedDataKey);
@@ -721,13 +755,27 @@ export function scoreGeneData(inputGeneData) {
   // set affected versus total
   const samplesLength = returnedValue.data[0].length;
 
+  console.log('dat ato draw',returnedValue.data);
+
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
-    returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
-    returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
+    if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
+      returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
+    }
+    else{
+      returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
+      returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
+      // returnedValue.pathways[d].geneExpressionMean = calculateMeanParadigm(returnedValue.data[d]);
+      // returnedValue.pathways[d].geneExpressionVariance = calculateVarianceParadigm(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
+      returnedValue.pathways[d].paradigmMean = calculateMeanParadigm(returnedValue.data[d]);
+      returnedValue.pathways[d].paradigmVariance = calculateVarianceParadigm(returnedValue.data[d],returnedValue.pathways[d].paradigmMean);
+    }
     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
   }
+
+  console.log('returned data',returnedValue);
 
   return returnedValue;
 }

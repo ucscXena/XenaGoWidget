@@ -128,11 +128,11 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       }
       else
       if(filter===VIEW_ENUM.PARADIGM){
+        const geneExpressionScore = sumDataByType(d, 'paradigm');
         if(count<10){
-          console.log('d',d);
+          console.log('d',d,geneExpressionScore);
           count = count +1 ;
         }
-        const geneExpressionScore = sumDataByType(d, 'paradigm');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;

@@ -1,5 +1,6 @@
 import update from 'immutability-helper';
-import {sumTotals, sumInstances, sumGeneExpression} from './MathFunctions';
+import {sumTotals, sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 export const SortType = {
   DIFF: 'diff',
@@ -20,6 +21,14 @@ export function scoreColumns(prunedColumns) {
   }));
 }
 
+export function scoreParadigmColumns(prunedColumns) {
+  return prunedColumns.pathways.map((el, index) => update(el, {
+    // NOTE: a bit of a hack, but allows us to pass color through
+    samplesAffected: { $set: sumParadigm(prunedColumns.data[index])/prunedColumns.data[index].length },
+    index: { $set: index },
+  }));
+}
+
 export function scoreGeneExpressionColumns(prunedColumns) {
   return prunedColumns.pathways.map((el, index) => update(el, {
     // NOTE: a bit of a hack, but allows us to pass color through
@@ -34,6 +43,18 @@ export function scoreGeneExpressionColumns(prunedColumns) {
  */
 function sortColumnDensities(prunedColumns) {
   const pathways = scoreColumns(prunedColumns).sort((a, b) => b.samplesAffected - a.samplesAffected);
+  return update(prunedColumns, {
+    pathways: { $set: pathways },
+    data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
+  });
+}
+
+/**
+ * Populates density for each column
+ * @param prunedColumns
+ */
+function sortParadigm(prunedColumns) {
+  const pathways = scoreParadigmColumns(prunedColumns).sort((a, b) => b.paradigmMean - a.paradigmMean);
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
@@ -109,6 +130,32 @@ export function geneExpressionSort(prunedColumns) {
  * @param prunedColumns
  * @returns {undefined}
  */
+export function paradigmSort(prunedColumns) {
+  const sortedColumns = sortGeneExpression(prunedColumns);
+  sortedColumns.data.push(prunedColumns.samples);
+  let renderedData = transpose(sortedColumns.data);
+  renderedData = sortByType(renderedData);
+  renderedData = transpose(renderedData);
+  const returnColumns = {};
+  returnColumns.sortedSamples = renderedData[renderedData.length - 1];
+  returnColumns.samples = sortedColumns.samples;
+  returnColumns.pathways = sortedColumns.pathways;
+  returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
+  return returnColumns;
+}
+
+/**
+ * Sort by column density followed by row.
+ * https://github.com/nathandunn/XenaGoWidget/issues/67
+ *
+ * 1. find density for each column
+ * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
+ *
+ * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
+ *
+ * @param prunedColumns
+ * @returns {undefined}
+ */
 export function clusterSort(prunedColumns) {
   const sortedColumns = sortColumnDensities(prunedColumns);
 
@@ -133,6 +180,7 @@ export function clusterSort(prunedColumns) {
 function sortPathwaysDiffs(prunedColumns, reverse) {
   reverse = reverse || false;
   const pathways = prunedColumns.pathways.sort((a, b) => (b.diffScore - a.diffScore) * (reverse ? -1 : 1));
+  console.log('input pruned columngs',prunedColumns)
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
@@ -290,11 +338,22 @@ function generateMissingColumns(pathways, geneList) {
   return returnColumns;
 }
 
-export function synchronizedSort(prunedColumns, geneList, rescore,isGeneExpression) {
+function scoreGenePrunedColumns(prunedColumns, view) {
+  switch (view) {
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return scoreGeneExpressionColumns(prunedColumns);
+  case VIEW_ENUM.PARADIGM:
+    return scoreParadigmColumns(prunedColumns);
+  default:
+    return scoreColumns(prunedColumns);
+  }
+}
+
+export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   rescore = rescore === undefined ? true : rescore;
   let pathways;
   if(rescore){
-    pathways = isGeneExpression  ?  scoreGeneExpressionColumns(prunedColumns) : scoreColumns(prunedColumns) ;
+    pathways =  scoreGenePrunedColumns(prunedColumns,view);
   }
   else{
     pathways =  prunedColumns.pathways;

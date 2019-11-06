@@ -17,7 +17,6 @@ import {Dialog} from 'react-toolbox';
 import {
   fetchBestPathways,
   fetchCombinedCohorts, getCohortDataForView, getGeneSetsForView,
-  getPathwaysForGeneSetName
 } from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -34,16 +33,11 @@ import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
-import {VIEW_ENUM} from '../data/ViewEnum';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 
 
-
-export const XENA_VIEW = 'xena';
-export const PATHWAYS_VIEW = 'pathways';
 const VIEWER_HEIGHT = 500;
-
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 export const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
@@ -189,6 +183,7 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedCohorts,
       } = input;
 
+      console.log('handling combine data with',input)
       // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
       const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
 
