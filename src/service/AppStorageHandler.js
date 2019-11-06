@@ -179,7 +179,7 @@ export class AppStorageHandler {
     if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
       return appState.filterState[cohortIndex];
     }
-    return VIEW_ENUM.GENE_EXPRESSION;
+    return VIEW_ENUM.PARADIGM;
   }
 
   static getSortState() {
