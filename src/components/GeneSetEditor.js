@@ -20,6 +20,7 @@ import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
 import {scorePathway} from '../functions/SortFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -32,16 +33,15 @@ export default class GeneSetEditor extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
-      sortBy: props.isGeneExpression ? 'AbsDiff' : 'Alpha',
+      sortBy: props.view===VIEW_ENUM.GENE_EXPRESSION || props.view===VIEW_ENUM.PARADIGM  ? 'AbsDiff' : 'Alpha',
       sortCartOrder:'asc',
-      sortCartBy: props.isGeneExpression ? 'Diff' : 'Alpha',
+      sortCartBy: props.view===VIEW_ENUM.GENE_EXPRESSION || props.view===VIEW_ENUM.PARADIGM ? 'Diff' : 'Alpha',
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
       loadedPathways: [],
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
-      // filteredPathways : state.pathways.slice(0,DEFAULT_LIMIT),
       filteredPathways : [],
       cartPathways : [],
       selectedGenesForGeneSet: [],
@@ -56,7 +56,7 @@ export default class GeneSetEditor extends PureComponent {
 
     let { selectedCohort, samples } = this.state;
 
-    fetchPathwayActivityMeans(selectedCohort,samples,this.handleMeanActivityData);
+    fetchPathwayActivityMeans(selectedCohort,samples,props.view,this.handleMeanActivityData);
 
   }
 
@@ -65,7 +65,13 @@ export default class GeneSetEditor extends PureComponent {
     this.filterByName();
   }
 
+  showScore(){
+    return this.props.view === VIEW_ENUM.GENE_EXPRESSION || this.props.view === VIEW_ENUM.PARADIGM;
+  }
+
   handleMeanActivityData = (output) => {
+    console.log('input', this.state);
+    console.log('props', this.props);
     const pathways = getPathwaysForGeneSetName(this.state.geneSet);
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
@@ -308,7 +314,7 @@ export default class GeneSetEditor extends PureComponent {
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
-                      {this.props.isGeneExpression &&
+                      {this.showScore() &&
                     <td>
                       Sort By
                       <select
@@ -391,7 +397,7 @@ export default class GeneSetEditor extends PureComponent {
                   {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
-                        {this.props.isGeneExpression &&
+                        {this.showScore() &&
                         `${scorePathway(p, 'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
@@ -412,7 +418,7 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                         <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
-                      {this.props.isGeneExpression &&
+                      {this.showScore() &&
                       <td>
                       Sort By
                         <br/>
@@ -485,7 +491,7 @@ export default class GeneSetEditor extends PureComponent {
                       }
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
-                        {this.props.isGeneExpression &&
+                        {this.showScore() &&
                         `${scorePathway(p,'Diff')}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
@@ -616,8 +622,8 @@ export default class GeneSetEditor extends PureComponent {
 
 GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
-  isGeneExpression: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

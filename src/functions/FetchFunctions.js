@@ -147,6 +147,19 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
+export const getGeneSetsForView= (name) => {
+  switch (name) {
+  case VIEW_ENUM.PARADIGM:
+    return ParadigmPathways;
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return LargePathways;
+  case 'Flybase':
+    // return DefaultPathways;
+    return FlybasePathways;
+  }
+  return null ;
+};
+
 export const getPathwaysForGeneSetName = (name) => {
   switch (name) {
   case 'Paradigm':
@@ -172,7 +185,7 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
-export function allFieldMean(cohort, samples) {
+export function allFieldMean(cohort, samples,view) {
 
   const allFieldMeanQuery =
     '; allFieldMean\n' +
@@ -187,7 +200,9 @@ export function allFieldMean(cohort, samples) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
-  const { dataset, host} = cohort.geneExpressionPathwayActivity;
+  const { dataset, host} = view===VIEW_ENUM.PARADIGM ?  cohort.paradigmPathwayActivity : cohort.geneExpressionPathwayActivity;
+  // const { dataset, host} = cohort;
+  // console.log('cohort ,',cohort)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -217,10 +232,45 @@ export function lookupGeneByName(geneQuery,callback){
   });
 }
 
-export function fetchBestPathways(selectedCohorts,dataHandler){
+export function getCohortDataForView(selectedCohorts,view){
+  switch(view){
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return [
+      {
+        host: selectedCohorts[0].geneExpression.host,
+        dataset: selectedCohorts[0].geneExpression.dataset
+      },
+      {
+        host: selectedCohorts[1].geneExpression.host,
+        dataset: selectedCohorts[1].geneExpression.dataset
+      },
+    ];
+  case VIEW_ENUM.PARADIGM:
+    return [
+      {
+        host: selectedCohorts[0].paradigm.host,
+        dataset: selectedCohorts[0].paradigm.dataset
+      },
+      {
+        host: selectedCohorts[1].paradigm.host,
+        dataset: selectedCohorts[1].paradigm.dataset
+      },
+    ];
+  default:
+    return null ;
+  }
+
+}
+
+export function fetchBestPathways(selectedCohorts,view,dataHandler){
+
+  const cohortData = getCohortDataForView(selectedCohorts,view);
+
+  console.log('select cohorts vs data',selectedCohorts[0],cohortData[0],view)
+
   Rx.Observable.zip(
-    datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
-    datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
+    datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
+    datasetSamples(cohortData[1].host, cohortData[1].dataset, null),
   )
     .flatMap((unfilteredSamples) => {
       const availableSamples = [
@@ -229,8 +279,10 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
       ];
 
       return Rx.Observable.zip(
-        allFieldMean(selectedCohorts[0], availableSamples[0]),
-        allFieldMean(selectedCohorts[1], availableSamples[1]),
+        // allFieldMean(cohortData[0], availableSamples[0]),
+        // allFieldMean(cohortData[1], availableSamples[1]),
+        allFieldMean(selectedCohorts[0], availableSamples[0],view),
+        allFieldMean(selectedCohorts[1], availableSamples[1],view),
         (
           geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
         ) => ({
@@ -245,11 +297,13 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
     });
 }
 
-export function fetchPathwayActivityMeans(selectedCohorts,samples,dataHandler){
+export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
+
+  const cohortData = getCohortDataForView(selectedCohorts,view);
 
   Rx.Observable.zip(
-    allFieldMean(selectedCohorts[0], samples[0]),
-    allFieldMean(selectedCohorts[1], samples[1]),
+    allFieldMean(cohortData[0], samples[0]),
+    allFieldMean(cohortData[1], samples[1]),
     (
       geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
     ) => ({

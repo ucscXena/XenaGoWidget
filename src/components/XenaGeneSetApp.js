@@ -16,7 +16,7 @@ import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
   fetchBestPathways,
-  fetchCombinedCohorts,
+  fetchCombinedCohorts, getCohortDataForView, getGeneSetsForView,
   getPathwaysForGeneSetName
 } from '../functions/FetchFunctions';
 
@@ -483,7 +483,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       let newPathways = calculateAllPathways(newPathwayData);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:false});
+      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
 
@@ -575,18 +575,18 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleMeanActivityData = (output) => {
     // 1. fetch activity
-    const pathways = getPathwaysForGeneSetName('8K');
-    let loadedPathways = pathways.map( p => {
+    const geneSets = getGeneSetsForView(this.state.filter[0]);
+    let loadedPathways = geneSets.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;
-      p.firstParadigmPathwayActivity = undefined ;
-      p.secondParadigmPathwayActivity = undefined ;
       return p ;
     });
     let indexMap = {};
-    pathways.forEach( (p,index) => {
+    geneSets.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
+
+    console.log('output',output);
 
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];
@@ -601,7 +601,6 @@ export default class XenaGeneSetApp extends PureComponent {
       .sort( (a,b) => (this.state.filterOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
       .slice(0,this.state.geneSetLimit)
       .sort( (a,b) => (this.state.sortViewOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
-
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
   };
@@ -614,9 +613,10 @@ export default class XenaGeneSetApp extends PureComponent {
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
-      if(this.state.filter[0]===VIEW_ENUM.GENE_EXPRESSION){
+
+      if(getCohortDataForView(this.state.selectedCohort,this.state.filter[0])!==null){
         if(this.state.reloadPathways){
-          fetchBestPathways(this.state.selectedCohort,this.handleMeanActivityData);
+          fetchBestPathways(this.state.selectedCohort,this.state.filter[0],this.handleMeanActivityData);
         }
         else{
           fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
@@ -670,10 +670,10 @@ export default class XenaGeneSetApp extends PureComponent {
             >
               <GeneSetEditor
                 cancelPathwayEdit={() => this.setState({showGeneSetSearch:false})}
-                isGeneExpression={this.state.filter[0]===VIEW_ENUM.GENE_EXPRESSION}
                 pathwayData={this.state.pathwayData}
                 pathways={this.state.pathways}
                 setPathways={this.setActiveGeneSets}
+                view={this.state.filter[0]}
               />
             </Dialog>
           }
