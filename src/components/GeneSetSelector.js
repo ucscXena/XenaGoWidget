@@ -100,6 +100,8 @@ export class GeneSetSelector extends PureComponent {
       }
       interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain,geneStateColors.midDomain,geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
 
+      console.log('coloring pathways',pathways)
+
       return pathways.map((p) => {
         let labelString = '(' + p.gene.length + ') ' + p.golabel;
         labelString = labelString.replace(/_/g,' ');
@@ -121,6 +123,12 @@ export class GeneSetSelector extends PureComponent {
               x={0}
             />
             }
+            {p.firstParadigmPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.firstParadigmPathwayActivity)} width={width / 2 - 1}
+              x={0}
+            />
+            }
             {p.firstObserved &&
                     <rect
                       height={labelHeight} style={this.pillStyle(p.firstChiSquared)} width={width / 2 - 1}
@@ -130,6 +138,12 @@ export class GeneSetSelector extends PureComponent {
             {p.secondGeneExpressionPathwayActivity &&
             <rect
               height={labelHeight} style={this.pillStyle(100*p.secondGeneExpressionPathwayActivity)} width={width / 2}
+              x={width / 2 + 1}
+            />
+            }
+            {p.secondParadigmPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.secondParadigmPathwayActivity)} width={width / 2}
               x={width / 2 + 1}
             />
             }
