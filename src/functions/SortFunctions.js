@@ -131,7 +131,7 @@ export function geneExpressionSort(prunedColumns) {
  * @returns {undefined}
  */
 export function paradigmSort(prunedColumns) {
-  const sortedColumns = sortGeneExpression(prunedColumns);
+  const sortedColumns = sortParadigm(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
   renderedData = sortByType(renderedData);

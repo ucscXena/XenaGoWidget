@@ -11,7 +11,7 @@ import {
   getMutationScore,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev, generateZScore, tTest,
+  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev, generateZScore, tTestGeneExpression,
 } from '../../src/functions/DataFunctions';
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
@@ -148,15 +148,15 @@ describe('Data Unit Functions', () => {
   it('TTest from two sets', () => {
     let element1 = {geneExpressionMean: 5, geneExpressionVariance: Math.pow(1,2.0), total: 100 } ;
     let element2 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)+14.134)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)+14.134)).toBeLessThan(0.001);
 
     element1 = {geneExpressionMean: -5, geneExpressionVariance: Math.pow(1.5,2.0), total: 100 } ;
     element2 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)+57.408)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)+57.408)).toBeLessThan(0.001);
 
     element1 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(1.5,2.0), total: 100 } ;
     element2 = {geneExpressionMean: -2, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)-44.160)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)-44.160)).toBeLessThan(0.001);
   });
 
 });

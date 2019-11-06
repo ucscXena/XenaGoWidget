@@ -609,6 +609,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
   } else {
+    console.log('doing a diff sort',geneDataA)
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);
   }
@@ -624,7 +625,13 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   return [geneDataA, geneDataB];
 }
 
-export function tTest(geneData0Element, geneData1Element) {
+export function tTestParadigm(geneData0Element, geneData1Element) {
+  const poolSquared = Math.sqrt(   ( (( geneData0Element.total - 1 ) * geneData0Element.paradigmVariance)  + (( geneData1Element.total - 1 ) * geneData1Element.paradigmVariance) ) / (geneData0Element.total + geneData1Element.total - 2) );
+  const standardError = poolSquared * Math.sqrt( (1 / geneData0Element.total ) + ( 1 / geneData1Element.total ));
+  return  (geneData0Element.paradigmMean - geneData1Element.paradigmMean) / standardError;
+}
+
+export function tTestGeneExpression(geneData0Element, geneData1Element) {
   const poolSquared = Math.sqrt(   ( (( geneData0Element.total - 1 ) * geneData0Element.geneExpressionVariance)  + (( geneData1Element.total - 1 ) * geneData1Element.geneExpressionVariance) ) / (geneData0Element.total + geneData1Element.total - 2) );
   const standardError = poolSquared * Math.sqrt( (1 / geneData0Element.total ) + ( 1 / geneData1Element.total ));
   return  (geneData0Element.geneExpressionMean - geneData1Element.geneExpressionMean) / standardError;
@@ -645,9 +652,18 @@ export function calculateDiffs(geneData0, geneData1) {
       return gene0List.indexOf(aGene) - gene0List.indexOf(bGene);
     });
 
+    if(geneData0[0].paradigmMean && geneData1[0].paradigmMean ){
+      for (const geneIndex in geneData0) {
+        let diffScore = tTestParadigm(geneData0[geneIndex],geneData1[geneIndex]);
+        diffScore = isNaN(diffScore) ? 0 : diffScore;
+        geneData0[geneIndex].diffScore = diffScore;
+        gene1Objects[geneIndex].diffScore = diffScore;
+      }
+    }
+    else
     if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
       for (const geneIndex in geneData0) {
-        let diffScore = tTest(geneData0[geneIndex],geneData1[geneIndex]);
+        let diffScore = tTestGeneExpression(geneData0[geneIndex],geneData1[geneIndex]);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
         geneData0[geneIndex].diffScore = diffScore;
         gene1Objects[geneIndex].diffScore = diffScore;
