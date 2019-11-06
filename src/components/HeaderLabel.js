@@ -70,12 +70,12 @@ export class HeaderLabel extends PureComponent {
     render() {
       let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(item.paradigmMean !== 0 ) {
+      if(item.paradigmMean) {
         colorDensity = item.paradigmMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
       else
-      if(item.geneExpressionMean) {
+      if(item.geneExpressionMean !==0) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
