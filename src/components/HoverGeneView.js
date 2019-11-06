@@ -43,20 +43,23 @@ export default class HoverGeneView extends PureComponent {
 
     render() {
       let {data, cohortIndex, filter} = this.props;
+      if(data.pathway){
+        console.log(data.pathway.gene[0]);
+      }
       if (data.tissue) {
         return (
           <div>
             {data.tissue !== 'Header' &&
                     <div>
                       {data.pathway &&
-                        <Chip>
-                          <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
-                        </Chip>
+                      <div className={BaseStyle.pathwayChip}>
+                        <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/g,' ')}</span>
+                      </div>
                       }
                       {data.expression != null &&
                         <div>
                           {data.expression.geneExpression!==0 &&
-                          <Chip>
+                          <div className={BaseStyle.pathwayChip}>
                             <span className={BaseStyle.geneExpression}>
                               <strong>ZScore</strong>
                               <div
@@ -67,7 +70,7 @@ export default class HoverGeneView extends PureComponent {
                                 {data.expression.geneExpression.toPrecision(2)}
                               </div>
                             </span>
-                          </Chip>
+                          </div>
                           }
                           {data.selectCnv && data.expression.cnvHigh > 0 &&
                             <Chip>
@@ -129,9 +132,9 @@ export default class HoverGeneView extends PureComponent {
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
               && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                     <div>
-                      <Chip>
-                        <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
-                      </Chip>
+                      <div className={BaseStyle.pathwayChip}>
+                        <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/,' ')}</span>
+                      </div>
                       <div className={BaseStyle.pathwayChip}>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
@@ -140,9 +143,9 @@ export default class HoverGeneView extends PureComponent {
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
             && data.pathway.geneExpressionMean !== undefined && ( filter === VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.PARADIGM )  &&
             <div>
-              <Chip>
-                <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
-              </Chip>
+              <div className={BaseStyle.pathwayChip}>
+                <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/g,' ')}</span>
+              </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
                   <div

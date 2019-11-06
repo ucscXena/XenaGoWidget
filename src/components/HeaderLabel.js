@@ -85,7 +85,7 @@ export class HeaderLabel extends PureComponent {
             fill={this.fontColor(colorDensity)} fontFamily='Arial' fontSize={10} transform='rotate(-90)' x={-labelHeight + 4}
             y={10}
           >
-            {width < 10 ? '' : labelString}
+            {width < 10 ? '' : labelString.replace(/_/g,' ')}
           </text>
         </svg>
       );
