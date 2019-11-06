@@ -11,7 +11,7 @@ import {
   getMutationScore,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev, generateZScore, tTestGeneExpression,
+  scoreChiSquaredData, cleanData, average, generateStats, stdev, generateZScore, tTestGeneExpression,
 } from '../../src/functions/DataFunctions';
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
@@ -126,7 +126,7 @@ describe('Data Unit Functions', () => {
     // 2 genes with 4 samples in A and 3 samples in B
     const inputA = [[5,3,8,9],[2,11,'Nan',9]];
     const inputB = [[2,'NaN',9],[4,'Nan',9]];
-    const geneStats = generateGeneExpressionStats(inputA,inputB);
+    const geneStats = generateStats(inputA,inputB);
     expect(geneStats[0].mean).toEqual(6);
     expect(geneStats[1].mean).toEqual(7);
     expect(Math.abs(geneStats[0].stdev-2.8284271247462)).toBeLessThan(0.00001);

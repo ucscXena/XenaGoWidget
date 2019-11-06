@@ -46,15 +46,15 @@ export function cleanData(array1,array2){
   return [...array1.filter( a => !isNaN(a)),...array2.filter( a => !isNaN(a))];
 }
 
-export function generateGeneExpressionStats(geneExpressionA, geneExpressionB){
-  let geneExpressionStats = [geneExpressionA.length];
-  for(const index in geneExpressionA){
-    const cleanGeneExpression = cleanData(geneExpressionA[index],geneExpressionB[index]);
+export function generateStats(inputA, inputB){
+  let stats = [inputA.length];
+  for(const index in inputA){
+    const cleanGeneExpression = cleanData(inputA[index],inputB[index]);
     const meanGeneExpression = average(cleanGeneExpression);
     const stdevGeneExpression = stdev(cleanGeneExpression,meanGeneExpression);
-    geneExpressionStats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression,count: cleanGeneExpression.length };
+    stats[index] = { mean: meanGeneExpression,stdev:stdevGeneExpression,count: cleanGeneExpression.length };
   }
-  return geneExpressionStats;
+  return stats;
 }
 
 export function generateZScore( data,stats){
@@ -67,12 +67,14 @@ export function generateZScore( data,stats){
   });
 }
 
-export function generateZScoreForGeneExpression(geneExpressionA,geneExpressionB){
-  const geneExpressionStats = generateGeneExpressionStats(geneExpressionA,geneExpressionB);
-  const zScoreA = generateZScore(geneExpressionA,geneExpressionStats);
-  const zScoreB = generateZScore(geneExpressionB,geneExpressionStats);
+export function generateZScoreForBoth(inputA, inputB){
+  const geneExpressionStats = generateStats(inputA,inputB);
+  const zScoreA = generateZScore(inputA,geneExpressionStats);
+  const zScoreB = generateZScore(inputB,geneExpressionStats);
   return [zScoreA,zScoreB];
 }
+
+
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0;

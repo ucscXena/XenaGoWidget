@@ -5,7 +5,7 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
-  calculateAllPathways, generateScoredData, generateZScoreForGeneExpression,
+  calculateAllPathways, generateScoredData, generateZScoreForBoth,
 } from '../functions/DataFunctions';
 import FaRefresh from 'react-icons/lib/fa/refresh';
 import FaClose from 'react-icons/lib/fa/close';
@@ -185,7 +185,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
       console.log('handling combine data with',input)
       // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-      const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForGeneExpression(geneExpressionA,geneExpressionB);
+      const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
+      const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
+      // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
 
 
       let pathwayDataA = {
@@ -200,7 +202,7 @@ export default class XenaGeneSetApp extends PureComponent {
         expression: mutationsA,
         geneExpression: geneExpressionZScoreA,
         geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
-        paradigm: paradigmA[1],
+        paradigm: paradigmZScoreA,
         paradigmPathwayActivity: paradigmPathwayActivityA[1],
         samples: samplesA,
         genomeBackgroundMutation: genomeBackgroundMutationA,
@@ -220,7 +222,7 @@ export default class XenaGeneSetApp extends PureComponent {
         expression: mutationsB,
         geneExpression: geneExpressionZScoreB,
         geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
-        paradigm: paradigmB[1],
+        paradigm: paradigmZScoreB,
         paradigmPathwayActivity: paradigmPathwayActivityB[1],
         samples: samplesB,
         genomeBackgroundMutation: genomeBackgroundMutationB,
