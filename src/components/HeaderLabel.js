@@ -55,7 +55,8 @@ export class HeaderLabel extends PureComponent {
         top: labelOffset,
         left: left,
         height: labelHeight,
-        width: width, backgroundColor: colorString,
+        width: width,
+        backgroundColor: colorString,
         strokeWidth: 1,
         cursor: 'crosshair',
       };
@@ -69,6 +70,11 @@ export class HeaderLabel extends PureComponent {
     render() {
       let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
+      if(item.paradigmMean !== 0 ) {
+        colorDensity = item.paradigmMean;
+        interpolate = (score) => interpolateGeneExpressionFunction(score);
+      }
+      else
       if(item.geneExpressionMean) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
