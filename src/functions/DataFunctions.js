@@ -23,7 +23,7 @@ const pruneDataCache = lru(500);
 const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
-  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
+  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0, paradigm: 0
 };
 
 
@@ -133,13 +133,18 @@ export function createAssociatedDataKey(inputHash) {
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter, geneExpression, geneExpressionPathwayActivity,
+    expression, copyNumber, geneList, pathways, samples, filter,
+    geneExpression, geneExpressionPathwayActivity,
+    paradigm, paradigmPathwayActivity,
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber, geneExpression,geneExpressionPathwayActivity, geneList, pathways, samples, filter);
+    data = doDataAssociations(expression, copyNumber,
+      geneExpression,geneExpressionPathwayActivity,
+      paradigm,paradigmPathwayActivity,
+      geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
 
@@ -191,11 +196,6 @@ export function calculateGeneSetExpected(pathwayData, filter) {
       }
       if (filter === VIEW_ENUM.MUTATION || filter === VIEW_ENUM.CNV_MUTATION) {
         sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
-      }
-      if (filter === VIEW_ENUM.GENE_EXPRESSION) {
-        // TODO: add viper scores
-        // sample_probs.push(this.calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
-        // sample_probs.push(0);
       }
       // TODO: we should not filter out numbers
       let total_prob = addIndepProb(sample_probs.filter(Number));
@@ -314,6 +314,46 @@ export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivit
   return {score: scored, returnArray};
 }
 
+export function filterParadigmPathwayActivity(paradigmPathwayActivity, returnArray) {
+  let scored = 0 ;
+  for(const pathwayIndex in returnArray){
+    for(const sampleIndex in returnArray[pathwayIndex]){
+      if(paradigmPathwayActivity[pathwayIndex]){
+        returnArray[pathwayIndex][sampleIndex].paradigmPathwayActivity = paradigmPathwayActivity[pathwayIndex][sampleIndex];
+      }
+      else{
+        returnArray[pathwayIndex][sampleIndex].paradigmPathwayActivity = 0;
+      }
+      ++scored;
+    }
+  }
+  return {score: scored, returnArray};
+}
+
+export function filterParadigm(paradigm,returnArray,geneList,pathways){
+  const genePathwayLookup = getGenePathwayLookup(pathways);
+  let scored = 0 ;
+  for (const gene of geneList) {
+    // if we have not processed that gene before, then process
+    const geneIndex = geneList.indexOf(gene);
+    const pathwayIndices = genePathwayLookup(gene);
+    const sampleEntries = paradigm[geneIndex]; // set of samples for this gene
+
+    // get pathways this gene is involved in
+    for (const index of pathwayIndices) {
+      // process all samples
+      for (const sampleEntryIndex in sampleEntries) {
+        const returnValue = sampleEntries[sampleEntryIndex];
+        if (!isNaN(returnValue)) {
+          ++scored ;
+          returnArray[index][sampleEntryIndex].paradigm += returnValue ;
+        }
+      }
+    }
+  }
+  return {score: scored, returnArray};
+}
+
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
 
@@ -377,13 +417,18 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
  * @param copyNumber
  * @param geneExpression
  * @param geneExpressionPathwayActivity
+ * @param paradigm
+ * @param paradigmPathwayActivity
  * @param geneList
  * @param pathways
  * @param samples
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber, geneExpression, geneExpressionPathwayActivity, geneList, pathways, samples, filter) {
+export function doDataAssociations(expression, copyNumber,
+  geneExpression, geneExpressionPathwayActivity,
+  paradigm, paradigmPathwayActivity,
+  geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === VIEW_ENUM.CNV_MUTATION || filter === VIEW_ENUM.MUTATION) {
@@ -399,6 +444,14 @@ export function doDataAssociations(expression, copyNumber, geneExpression, geneE
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     if(geneExpressionPathwayActivity){
       returnArray = filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity,returnArray,geneList,pathways).returnArray;
+    }
+    // get list of genes in identified pathways
+  }
+
+  if (filter === VIEW_ENUM.PARADIGM) {
+    returnArray = filterParadigm(paradigm,returnArray,geneList,pathways).returnArray;
+    if(paradigmPathwayActivity){
+      returnArray = filterParadigmPathwayActivity(paradigmPathwayActivity,returnArray,geneList,pathways).returnArray;
     }
     // get list of genes in identified pathways
   }
@@ -609,7 +662,7 @@ export function calculateDiffs(geneData0, geneData1) {
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression , paradigm, cohort} = pathwayData;
-  console.log('returning pathway data',pathwayData)
+  console.log('returning pathway data',pathwayData);
 
   let { pathway: { goid, golabel } } = pathwaySelection;
 

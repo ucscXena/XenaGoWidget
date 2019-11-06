@@ -82,6 +82,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
   const img = ctx.createImageData(width, totalHeight);
+  let count = 0 ;
 
   const cnvHighColorMask = getCNVHighColorMask();
   const cnvLowColorMask = getCNVLowColorMask();
@@ -108,6 +109,30 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
 
       if(filter===VIEW_ENUM.GENE_EXPRESSION){
         const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        if(count<10 && geneExpressionScore>0){
+          console.log('ge',d,geneExpressionScore);
+          count = count +1 ;
+        }
+        for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
+          const pxRow = y * width;
+          const buffStart = (pxRow + el.start) * 4;
+          const buffEnd = (pxRow + el.start + el.size) * 4;
+          for (let l = buffStart; l < buffEnd ; l += 4) {
+            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            img.data[l] = colorArray[0];
+            img.data[l + 1] = colorArray[1];
+            img.data[l + 2] = colorArray[2];
+            img.data[l + 3] = 255 ;
+          }
+        }
+      }
+      else
+      if(filter===VIEW_ENUM.PARADIGM){
+        if(count<10){
+          console.log('d',d);
+          count = count +1 ;
+        }
+        const geneExpressionScore = sumDataByType(d, 'paradigm');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;

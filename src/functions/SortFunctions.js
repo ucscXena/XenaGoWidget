@@ -215,6 +215,37 @@ export function scorePathway(p,sortBy) {
  * @param selectedGeneSet
  * @returns {*}
  */
+export function selectedSampleParadigmActivitySort(prunedColumns, selectedGeneSet) {
+  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
+  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
+  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.paradigmPathwayActivity);
+  sortWithIndeces( selectedData);
+  const sortedIndices = selectedData.sortIndices;
+
+  // prunedColumns =
+  // - data = 41 gene sets times N samples
+  // - pathways = 41 gene set descriptions
+  // - samples = N sample descriptions
+  const transposedData = transpose(prunedColumns.data);
+
+  // for the transposed data sort by sortedIndexes
+  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
+  const sortedTransposedData = [];
+  sortedIndices.forEach((d, i) => {
+    sortedTransposedData[i] = transposedData[d];
+  });
+  const unTransposedData = transpose(sortedTransposedData);
+  const returnColumns = prunedColumns;
+  returnColumns.data = unTransposedData;
+  return returnColumns;
+}
+
+/**
+ * Sorts based on a selected sample
+ * @param prunedColumns
+ * @param selectedGeneSet
+ * @returns {*}
+ */
 export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
 
   let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);

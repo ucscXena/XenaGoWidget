@@ -7,7 +7,11 @@ import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '
 import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {clusterSampleSort, selectedSampleGeneExpressionActivitySort} from '../functions/SortFunctions';
+import {
+  clusterSampleSort,
+  selectedSampleGeneExpressionActivitySort,
+  selectedSampleParadigmActivitySort
+} from '../functions/SortFunctions';
 import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
 
 const HEADER_HEIGHT = 15;
@@ -52,7 +56,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     render() {
 
       let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
-      const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity} = data;
+      const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity, paradigm,  paradigmPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
@@ -69,11 +73,13 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         expression,
         copyNumber,
         geneExpression,
+        geneExpressionPathwayActivity,
+        paradigm,
+        paradigmPathwayActivity,
         geneList,
         pathways,
         samples,
         filter,
-        geneExpressionPathwayActivity,
         selectedCohort
       };
       if (expression === undefined || expression.length === 0) {
@@ -84,7 +90,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
       prunedColumns.samples = samples;
-      let returnedValue = filter===VIEW_ENUM.GENE_EXPRESSION ?  selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet) : clusterSampleSort(prunedColumns);
+      let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
 
       return (
         <div>
@@ -103,6 +109,17 @@ export default class VerticalGeneSetScoresView extends PureComponent {
           />
         </div>
       );
+    }
+
+    sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
+      switch (filter) {
+      case VIEW_ENUM.GENE_EXPRESSION:
+        return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
+      case VIEW_ENUM.PARADIGM:
+        return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
+      default:
+        return clusterSampleSort(prunedColumns);
+      }
     }
 }
 
