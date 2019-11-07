@@ -194,7 +194,7 @@
     "paradigm": {
             "dataset": "merge_merged_reals/CESC_merge_merged_reals.txt",
           "host": "https://tcga.xenahubs.net"
-        }
+    },
       "paradigmPathwayActivity": {
         "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt",
         "host": "https://pancanatlas.xenahubs.net"
