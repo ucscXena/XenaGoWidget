@@ -54,10 +54,13 @@ export default class GeneSetEditor extends PureComponent {
     };
 
 
+
+
+  }
+
+  componentDidMount() {
     let { selectedCohort, samples } = this.state;
-
-    fetchPathwayActivityMeans(selectedCohort,samples,props.view,this.handleMeanActivityData);
-
+    fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData);
   }
 
 

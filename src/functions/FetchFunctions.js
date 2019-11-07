@@ -200,9 +200,10 @@ export function allFieldMean(cohort, samples,view) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
+  console.log('input cohort',cohort)
   const { dataset, host} = view===VIEW_ENUM.PARADIGM ?  cohort.paradigmPathwayActivity : cohort.geneExpressionPathwayActivity;
   // const { dataset, host} = cohort;
-  // console.log('cohort ,',cohort)
+  console.log('cohort ,',cohort)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -279,8 +280,6 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
       ];
 
       return Rx.Observable.zip(
-        // allFieldMean(cohortData[0], availableSamples[0]),
-        // allFieldMean(cohortData[1], availableSamples[1]),
         allFieldMean(selectedCohorts[0], availableSamples[0],view),
         allFieldMean(selectedCohorts[1], availableSamples[1],view),
         (
@@ -299,11 +298,9 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
 
-  const cohortData = getCohortDataForView(selectedCohorts,view);
-
   Rx.Observable.zip(
-    allFieldMean(cohortData[0], samples[0]),
-    allFieldMean(cohortData[1], samples[1]),
+    allFieldMean(selectedCohorts[0], samples[0],view),
+    allFieldMean(selectedCohorts[1], samples[1],view),
     (
       geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
     ) => ({
