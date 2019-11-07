@@ -3,5 +3,5 @@ export const VIEW_ENUM = {
   MUTATION:'Mutation',
   COPY_NUMBER:'Copy Number',
   GENE_EXPRESSION:'Gene Expression',
-  PARADIGM:'Paradigm',
+  PARADIGM:'Paradigm IPL',
 };

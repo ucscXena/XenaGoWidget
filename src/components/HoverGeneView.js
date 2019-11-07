@@ -50,7 +50,7 @@ export default class HoverGeneView extends PureComponent {
                     <div>
                       {data.pathway &&
                       <div className={BaseStyle.pathwayChip}>
-                        <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/g,' ')}</span>
+                        <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
                       </div>
                       }
                       {data.expression != null &&
@@ -144,7 +144,7 @@ export default class HoverGeneView extends PureComponent {
               && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                     <div>
                       <div className={BaseStyle.pathwayChip}>
-                        <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/,' ')}</span>
+                        <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
                       </div>
                       <div className={BaseStyle.pathwayChip}>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
@@ -155,7 +155,7 @@ export default class HoverGeneView extends PureComponent {
             && data.pathway.geneExpressionMean !== undefined && ( filter === VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.PARADIGM )  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
-                <span><strong>Gene</strong> {data.pathway.gene[0].replace(/_/g,' ')}</span>
+                <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
@@ -208,7 +208,7 @@ export default class HoverGeneView extends PureComponent {
                       </div>
                       }
                       <div>
-                        <span><strong>Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+                        <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
                       </div>
                     </div>
             }

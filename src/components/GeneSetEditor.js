@@ -322,9 +322,9 @@ export default class GeneSetEditor extends PureComponent {
                         onChange={(event) => this.setState({sortBy: event.target.value})}
                         value={this.state.sortBy}
                       >
-                        <option  value='AbsDiff'>Abs Diff BPA</option>
-                        <option  value='Diff'>Cohort Diff BPA</option>
-                        <option  value='Total'>Total BPA</option>
+                        <option  value='AbsDiff'>Abs Diff</option>
+                        <option  value='Diff'>Cohort Diff</option>
+                        <option  value='Total'>Total</option>
                         <option  value='Alpha'>Alphabetically</option>
                       </select>
                     </td>
@@ -427,9 +427,9 @@ export default class GeneSetEditor extends PureComponent {
                           onChange={(event) => this.setState({sortCartBy: event.target.value})}
                           value={this.state.sortCartBy}
                         >
-                          <option  value='AbsDiff'>Abs Diff BPA</option>
-                          <option  value='Diff'>Cohort Diff BPA</option>
-                          <option  value='Total'>Total BPA</option>
+                          <option  value='AbsDiff'>Abs Diff</option>
+                          <option  value='Diff'>Cohort Diff</option>
+                          <option  value='Total'>Total</option>
                           <option  value='Alpha'>Alphabetically</option>
                         </select>
                       </td>
