@@ -594,7 +594,7 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
-  const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways);
+  const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways,filter);
   geneDataA.pathways = scoredGenePathways[0];
   geneDataB.pathways = scoredGenePathways[1];
   geneDataA.data = scoredGeneDataA.data;
@@ -639,7 +639,7 @@ export function tTestGeneExpression(geneData0Element, geneData1Element) {
  * @param geneData1
  * @returns {*[]}
  */
-export function calculateDiffs(geneData0, geneData1) {
+export function calculateDiffs(geneData0, geneData1,view) {
   if (geneData0 && geneData1 && geneData0.length === geneData1.length) {
     const gene0List = geneData0.map((g) => g.gene[0]);
     const gene1Objects = geneData1.sort((a, b) => {
@@ -648,7 +648,7 @@ export function calculateDiffs(geneData0, geneData1) {
       return gene0List.indexOf(aGene) - gene0List.indexOf(bGene);
     });
 
-    if(geneData0[0].paradigmMean!==undefined && geneData1[0].paradigmMean!==undefined ){
+    if(view===VIEW_ENUM.PARADIGM){
       for (const geneIndex in geneData0) {
         let diffScore = tTestParadigm(geneData0[geneIndex],geneData1[geneIndex]);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
@@ -657,7 +657,7 @@ export function calculateDiffs(geneData0, geneData1) {
       }
     }
     else
-    if(geneData0[0].geneExpressionMean!==0 && geneData1[0].geneExpressionMean!==0 ){
+    if(view===VIEW_ENUM.GENE_EXPRESSION){
       for (const geneIndex in geneData0) {
         let diffScore = tTestGeneExpression(geneData0[geneIndex],geneData1[geneIndex]);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
@@ -770,11 +770,8 @@ export function scoreGeneData(inputGeneData) {
       returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
       returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
     }
-    else{
-      returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
-      returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
-      // returnedValue.pathways[d].geneExpressionMean = calculateMeanParadigm(returnedValue.data[d]);
-      // returnedValue.pathways[d].geneExpressionVariance = calculateVarianceParadigm(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
+    else
+    if(filter===VIEW_ENUM.PARADIGM){
       returnedValue.pathways[d].paradigmMean = calculateMeanParadigm(returnedValue.data[d]);
       returnedValue.pathways[d].paradigmVariance = calculateVarianceParadigm(returnedValue.data[d],returnedValue.pathways[d].paradigmMean);
     }
