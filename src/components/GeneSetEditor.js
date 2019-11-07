@@ -8,7 +8,7 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
-  fetchPathwayActivityMeans, getPathwaysForGeneSetName, lookupGeneByName
+  fetchPathwayActivityMeans, getGeneSetsForView, getPathwaysForGeneSetName, lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import FaCheckSquare from 'react-icons/lib/fa/check-square';
@@ -73,9 +73,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleMeanActivityData = (output) => {
-    console.log('input', this.state);
-    console.log('props', this.props);
-    const pathways = getPathwaysForGeneSetName(this.state.geneSet);
+    const pathways = getGeneSetsForView(this.props.view);
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;

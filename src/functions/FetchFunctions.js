@@ -160,20 +160,6 @@ export const getGeneSetsForView= (name) => {
   return null ;
 };
 
-export const getPathwaysForGeneSetName = (name) => {
-  switch (name) {
-  case 'Paradigm':
-    return ParadigmPathways;
-  case '8K':
-    return LargePathways;
-  case 'Default':
-    return DefaultPathways;
-  case 'Flybase':
-    return FlybasePathways;
-  }
-  return null ;
-};
-
 export const convertPathwaysToGeneSetLabel = (pathways) => {
   return pathways.map( p => {
     if(p.goid){
