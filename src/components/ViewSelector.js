@@ -1,12 +1,7 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import mutationVector from '../data/mutationVector';
-import {MIN_FILTER} from './XenaGeneSetApp';
-import {VIEW_ENUM} from '../data/ViewEnum';
-
 
 function lowerCaseCompare(a, b) {
   // put gene expression at the bottom
@@ -20,12 +15,6 @@ export class ViewSelector extends PureComponent {
     handleSetSelected = (targetValue) => {
       this.props.onChange(targetValue);
     };
-
-    getFilters(){
-      let filteredMutationVector = pick(mutationVector, v => v >= MIN_FILTER);
-      filteredMutationVector[VIEW_ENUM.COPY_NUMBER] = 1;
-      return filteredMutationVector;
-    }
 
     render() {
       const {pathwayData, selected} = this.props;

@@ -134,13 +134,6 @@ export function matchFilters(filter,newFilter,cohortIndex){
     cohortIndex===0  ? newFilter : filter[0]  ,
     cohortIndex===1  ? newFilter : filter[1]  ,
   ];
-  // if the new filter is gene expression, then set the other one to gene expression
-  if(newFilter===VIEW_ENUM.GENE_EXPRESSION){
-    filterState[otherCohort] = VIEW_ENUM.GENE_EXPRESSION;
-  }
-  // unset filter on both if gene expression
-  if(filterState[otherCohort]===VIEW_ENUM.GENE_EXPRESSION){
-    filterState[otherCohort]=newFilter; // will set if not Gene expression, or be the same if is
-  }
+  filterState[otherCohort] = newFilter;
   return filterState;
 }
