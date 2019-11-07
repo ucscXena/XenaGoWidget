@@ -4,7 +4,6 @@ import SUB_COHORT_LIST from '../data/Subtype_Selected';
 import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
