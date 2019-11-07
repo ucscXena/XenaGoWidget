@@ -58,32 +58,32 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          {data.expression.paradigm &&
+                          {filter===VIEW_ENUM.PARADIGM &&
                           <div className={BaseStyle.pathwayChip}>
-                            <span className={BaseStyle.paradigm}>
-                              <strong>ZScore</strong>
-                              <div
-                                style={{
-                                  padding: 5, borderRadius: 5, marginLeft: 5,
-                                  display: 'inline',color:interpolateGeneExpressionFont(data.expression.paradigm),backgroundColor:interpolateGeneExpression(data.expression.paradigm) }}
-                              >
-                                {data.expression.paradigm.toPrecision(2)}
-                              </div>
-                            </span>
+                            <strong>ZScore</strong>
+                            <div
+                              style={{
+                                padding: 5, borderRadius: 5, marginLeft: 5,
+                                display: 'inline',color:interpolateGeneExpressionFont(data.expression.paradigm)
+                                ,backgroundColor:interpolateGeneExpression(data.expression.paradigm)
+                              }}
+                            >
+                              {data.expression.paradigm.toPrecision(2)}
+                            </div>
                           </div>
                           }
-                          {data.expression.geneExpression!==0 &&
+                          {filter===VIEW_ENUM.GENE_EXPRESSION &&
                           <div className={BaseStyle.pathwayChip}>
-                            <span className={BaseStyle.geneExpression}>
-                              <strong>ZScore</strong>
-                              <div
-                                style={{
-                                  padding: 5, borderRadius: 5, marginLeft: 5,
-                                  display: 'inline',color:interpolateGeneExpressionFont(data.expression.geneExpression),backgroundColor:interpolateGeneExpression(data.expression.geneExpression) }}
-                              >
-                                {data.expression.geneExpression.toPrecision(2)}
-                              </div>
-                            </span>
+                            <strong>ZScore</strong>
+                            <div
+                              style={{
+                                padding: 5, borderRadius: 5, marginLeft: 5,
+                                display: 'inline',color:interpolateGeneExpressionFont(data.expression.geneExpression),
+                                backgroundColor:interpolateGeneExpression(data.expression.geneExpression)
+                              }}
+                            >
+                              {data.expression.geneExpression.toPrecision(2)}
+                            </div>
                           </div>
                           }
                           {data.selectCnv && data.expression.cnvHigh > 0 &&
