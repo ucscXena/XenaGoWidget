@@ -58,6 +58,20 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
+                          {data.expression.paradigm &&
+                          <div className={BaseStyle.pathwayChip}>
+                            <span className={BaseStyle.paradigm}>
+                              <strong>ZScore</strong>
+                              <div
+                                style={{
+                                  padding: 5, borderRadius: 5, marginLeft: 5,
+                                  display: 'inline',color:interpolateGeneExpressionFont(data.expression.paradigm),backgroundColor:interpolateGeneExpression(data.expression.paradigm) }}
+                              >
+                                {data.expression.paradigm.toPrecision(2)}
+                              </div>
+                            </span>
+                          </div>
+                          }
                           {data.expression.geneExpression!==0 &&
                           <div className={BaseStyle.pathwayChip}>
                             <span className={BaseStyle.geneExpression}>
@@ -148,13 +162,34 @@ export default class HoverGeneView extends PureComponent {
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
+                  {data.pathway.paradigmMean &&
                   <div
                     style={{
-                      padding: 5, borderRadius: 5, marginLeft: 5,
-                      display: 'inline',color:interpolateGeneExpressionFont(data.pathway.geneExpressionMean),backgroundColor:interpolateGeneExpression(data.pathway.geneExpressionMean) }}
+                      padding: 5,
+                      borderRadius: 5,
+                      marginLeft: 5,
+                      display: 'inline',
+                      color: interpolateGeneExpressionFont(data.pathway.paradigmMean),
+                      backgroundColor: interpolateGeneExpression(data.pathway.paradigmMean)
+                    }}
+                  >
+                    {data.pathway.paradigmMean.toPrecision(2)}
+                  </div>
+                  }
+                  {data.pathway.geneExpressionMean &&
+                  <div
+                    style={{
+                      padding: 5,
+                      borderRadius: 5,
+                      marginLeft: 5,
+                      display: 'inline',
+                      color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
+                      backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
+                    }}
                   >
                     {data.pathway.geneExpressionMean.toPrecision(2)}
                   </div>
+                  }
                   <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
                 </span>
               </div>
@@ -178,7 +213,6 @@ export default class HoverGeneView extends PureComponent {
                       <div>
                         <span><strong>Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
                       </div>
-
                     </div>
             }
           </div>
