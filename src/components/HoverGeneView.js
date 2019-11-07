@@ -162,7 +162,7 @@ export default class HoverGeneView extends PureComponent {
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
-                  {data.pathway.paradigmMean &&
+                  {filter===VIEW_ENUM.PARADIGM &&
                   <div
                     style={{
                       padding: 5,
@@ -176,7 +176,7 @@ export default class HoverGeneView extends PureComponent {
                     {data.pathway.paradigmMean.toPrecision(2)}
                   </div>
                   }
-                  {data.pathway.geneExpressionMean &&
+                  {filter===VIEW_ENUM.GENE_EXPRESSION &&
                   <div
                     style={{
                       padding: 5,
