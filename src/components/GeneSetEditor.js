@@ -8,7 +8,7 @@ import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
 import {Button} from 'react-toolbox/lib/button';
 import PropTypes from 'prop-types';
 import {
-  fetchPathwayActivityMeans, getGeneSetsForView, getPathwaysForGeneSetName, lookupGeneByName
+  fetchPathwayActivityMeans, getGeneSetsForView,  lookupGeneByName
 } from '../functions/FetchFunctions';
 import FaTrashO from 'react-icons/lib/fa/trash-o';
 import FaCheckSquare from 'react-icons/lib/fa/check-square';

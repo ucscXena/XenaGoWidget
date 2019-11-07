@@ -12,7 +12,6 @@ import {VIEW_ENUM} from '../data/ViewEnum';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
 import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
-import DefaultPathways from '../data/genesets/tgac';
 import FlybasePathways from '../data/genesets/flyBase';
 
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
@@ -186,10 +185,7 @@ export function allFieldMean(cohort, samples,view) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
-  console.log('input cohort',cohort)
   const { dataset, host} = view===VIEW_ENUM.PARADIGM ?  cohort.paradigmPathwayActivity : cohort.geneExpressionPathwayActivity;
-  // const { dataset, host} = cohort;
-  console.log('cohort ,',cohort)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -253,8 +249,6 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
   const cohortData = getCohortDataForView(selectedCohorts,view);
 
-  console.log('select cohorts vs data',selectedCohorts[0],cohortData[0],view)
-
   Rx.Observable.zip(
     datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
     datasetSamples(cohortData[1].host, cohortData[1].dataset, null),
@@ -304,8 +298,6 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
 export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
   let filterCounts ;
-
-  console.log('selected cohorts',selectedCohorts);
 
   Rx.Observable.zip(
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),

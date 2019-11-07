@@ -183,7 +183,6 @@ export default class XenaGeneSetApp extends PureComponent {
         selectedCohorts,
       } = input;
 
-      console.log('handling combine data with',input)
       // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
       const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
       const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
@@ -582,8 +581,6 @@ export default class XenaGeneSetApp extends PureComponent {
     geneSets.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
-
-    console.log('output',output);
 
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];

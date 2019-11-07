@@ -82,7 +82,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
   const img = ctx.createImageData(width, totalHeight);
-  let count = 0 ;
 
   const cnvHighColorMask = getCNVHighColorMask();
   const cnvLowColorMask = getCNVLowColorMask();

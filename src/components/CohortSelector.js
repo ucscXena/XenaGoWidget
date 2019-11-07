@@ -13,7 +13,7 @@ import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
 import {ButtonGroup} from 'react-bootstrap';
-import {VIEW_ENUM} from "../data/ViewEnum";
+import {VIEW_ENUM} from '../data/ViewEnum';
 const TooltipButton = Tooltip(Button);
 
 

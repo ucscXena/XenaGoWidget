@@ -53,6 +53,17 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       this.props.onClick(getPointData(event, this.props));
     };
 
+    sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
+      switch (filter) {
+      case VIEW_ENUM.GENE_EXPRESSION:
+        return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
+      case VIEW_ENUM.PARADIGM:
+        return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
+      default:
+        return clusterSampleSort(prunedColumns);
+      }
+    }
+
     render() {
 
       let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
@@ -109,17 +120,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
           />
         </div>
       );
-    }
-
-    sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-      switch (filter) {
-      case VIEW_ENUM.GENE_EXPRESSION:
-        return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
-      case VIEW_ENUM.PARADIGM:
-        return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
-      default:
-        return clusterSampleSort(prunedColumns);
-      }
     }
 }
 
