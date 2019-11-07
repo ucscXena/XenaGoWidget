@@ -591,10 +591,8 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
   const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
-  console.log('generating gene data',geneDataA,'from',pathwayDataA);
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
-  console.log('cored gene ddaeta',scoredGeneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
   const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways);
   geneDataA.pathways = scoredGenePathways[0];
@@ -603,7 +601,6 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   geneDataB.data = scoredGeneDataB.data;
   let sortedGeneDataA;
   let sortedGeneDataB;
-  console.log('shoring clust sort',showClusterSort)
   if (showClusterSort) {
     // sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
     // sortedGeneDataA = (filter[0]===VIEW_ENUM.GENE_EXPRESSION || filter[0]===VIEW_ENUM.PARADIGM) ? geneExpressionSort(geneDataA) : clusterSort(geneDataA);
@@ -611,7 +608,6 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
   } else {
-    console.log('doing a diff sort',geneDataA)
     sortedGeneDataA = diffSort(geneDataA);
     sortedGeneDataB = diffSort(geneDataB);
   }
@@ -654,7 +650,7 @@ export function calculateDiffs(geneData0, geneData1) {
       return gene0List.indexOf(aGene) - gene0List.indexOf(bGene);
     });
 
-    if(geneData0[0].paradigmMean && geneData1[0].paradigmMean ){
+    if(geneData0[0].paradigmMean!==undefined && geneData1[0].paradigmMean!==undefined ){
       for (const geneIndex in geneData0) {
         let diffScore = tTestParadigm(geneData0[geneIndex],geneData1[geneIndex]);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
@@ -696,10 +692,7 @@ export function calculateDiffs(geneData0, geneData1) {
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
   const { expression, samples, copyNumber,filterCounts,geneExpression , paradigm, cohort} = pathwayData;
-  console.log('returning pathway data',pathwayData);
-
   let { pathway: { goid, golabel } } = pathwaySelection;
-
   let geneList = getGenesForNamedPathways(golabel, geneSetPathways);
   if(geneList.length===0){
     golabel = geneSetPathways[0].golabel;
@@ -773,8 +766,6 @@ export function scoreGeneData(inputGeneData) {
   // set affected versus total
   const samplesLength = returnedValue.data[0].length;
 
-  console.log('dat ato draw',returnedValue.data);
-
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
     if(filter===VIEW_ENUM.GENE_EXPRESSION){
@@ -792,8 +783,6 @@ export function scoreGeneData(inputGeneData) {
     returnedValue.pathways[d].affected = sumTotals(returnedValue.data[d]);
     returnedValue.pathways[d].samplesAffected = sumInstances(returnedValue.data[d]);
   }
-
-  console.log('returned data',returnedValue);
 
   return returnedValue;
 }

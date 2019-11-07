@@ -181,7 +181,6 @@ export function clusterSort(prunedColumns) {
 function sortPathwaysDiffs(prunedColumns, reverse) {
   reverse = reverse || false;
   const pathways = prunedColumns.pathways.sort((a, b) => (b.diffScore - a.diffScore) * (reverse ? -1 : 1));
-  console.log('input pruned columngs',prunedColumns)
   return update(prunedColumns, {
     pathways: { $set: pathways },
     data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
