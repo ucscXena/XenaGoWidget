@@ -51,5 +51,14 @@ describe('Fetch Functions', () => {
     }).subscribe( () => done(),e => done(logError(e)));
   });
 
+  it('Fetch Paradigm IPL samples for cohort', (done) => {
+    const cohort = {
+      name: 'TCGA Lung Adenocarcinoma (LUAD)'
+    };
+    const cohortDetails = getCohortDetails(cohort);
+    getSamplesForCohort(cohortDetails,VIEW_ENUM.PARADIGM).do( (a) => {
+      expect(a.length).toEqual(507);
+    }).subscribe( () => done(),e => done(logError(e)));
+  });
 });
 

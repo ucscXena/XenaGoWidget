@@ -77,8 +77,7 @@ export function sortByType(renderedData) {
   // sort samples first based on what gene in position 1 has the highest value
   // proceed to each gene
   return renderedData.sort((a, b) => {
-    // a = sample of a.length -1 genes
-    // b = sample of b.length -1 genes
+    // a = sample of a.length -1 genes"paradigm": 0,
     for (let index = 0; index < a.length; ++index) {
       if (b[index].paradigm !== a[index].paradigm) return b[index].paradigm - a[index].paradigm;
       if (b[index].geneExpression !== a[index].geneExpression) return b[index].geneExpression - a[index].geneExpression;

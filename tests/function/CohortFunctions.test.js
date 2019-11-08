@@ -129,12 +129,12 @@ describe('Test Cohorts', () => {
     expect(calculateSelectedSubCohortSamples(TEST_MESOTHELIOMA_SAMPLES,cohort)).toEqual(TEST_MESOTHELIOMA_SAMPLES);
   });
 
-  it('change to non gene expression from either cohort', () =>{
+  it('Change to non gene expression from either cohort', () =>{
     expect(matchFilters([VIEW_ENUM.GENE_EXPRESSION,VIEW_ENUM.GENE_EXPRESSION],VIEW_ENUM.MUTATION,0)).toEqual([VIEW_ENUM.MUTATION,VIEW_ENUM.MUTATION]);
     expect(matchFilters([VIEW_ENUM.GENE_EXPRESSION,VIEW_ENUM.GENE_EXPRESSION],VIEW_ENUM.MUTATION,1)).toEqual([VIEW_ENUM.MUTATION,VIEW_ENUM.MUTATION]);
   });
 
-  it('change and match filters 2', () =>{
+  it('Change and match filters 2', () =>{
     expect(matchFilters([VIEW_ENUM.COPY_NUMBER,VIEW_ENUM.MUTATION],VIEW_ENUM.CNV_MUTATION,0)).toEqual([VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION]);
     expect(matchFilters([VIEW_ENUM.COPY_NUMBER,VIEW_ENUM.MUTATION],VIEW_ENUM.GENE_EXPRESSION,0)).toEqual([VIEW_ENUM.GENE_EXPRESSION,VIEW_ENUM.GENE_EXPRESSION]);
     expect(matchFilters([VIEW_ENUM.COPY_NUMBER,VIEW_ENUM.MUTATION],VIEW_ENUM.CNV_MUTATION,1)).toEqual([VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION]);

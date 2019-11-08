@@ -556,19 +556,16 @@ export function calculateAllPathways(pathwayData) {
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
-    if(geneExpressionPathwayActivityA[index]) p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
-    if(paradigmPathwayActivityA[index]) p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
-
-    p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
-    p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
+    if(!isNaN(geneExpressionPathwayActivityA[index])) p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
+    if(!isNaN(paradigmPathwayActivityA[index])) p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
     p.firstExpected = expectedA[p.golabel];
     p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
 
-    if(geneExpressionPathwayActivityB[index]) p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
-    if(paradigmPathwayActivityB[index]) p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
+    if(!isNaN(geneExpressionPathwayActivityB[index])) p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
+    if(!isNaN(paradigmPathwayActivityB[index])) p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
