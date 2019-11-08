@@ -62,4 +62,3 @@ describe('Fetch Functions', () => {
     }).subscribe( () => done(),e => done(logError(e)));
   });
 });
-
