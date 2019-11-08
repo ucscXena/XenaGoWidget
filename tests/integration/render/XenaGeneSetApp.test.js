@@ -16,9 +16,10 @@ describe('Render XenaGeneSet App', () => {
     unmountComponentAtNode(node);
   });
 
-  it('Displays main menu', () => {
+  it('Displays main menu', (done) => {
     render(<XenaGeneSetApp/>, node, () => {
       expect(node.innerHTML).toContain('Xena Gene Set Viewer');
+      done();
     });
   });
 });

@@ -39,17 +39,9 @@ describe('Data Integration Functions', () => {
     expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION));
   });
 
-  // TODO: reactivate
-  it('Find Associated Data', () => {
-    expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
-  });
-
-
   it('Calculate Associated Data', () => {
-    console.log(JSON.stringify(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)))
     expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
   });
-
 
   it('Calculate PathwayScore', () => {
     const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
@@ -79,6 +71,11 @@ describe('Data Integration Functions', () => {
     const CalculateDiffsOutput2 =[{},[{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}]] ;
     expect(calculateDiffs(CalculateDiffsA1,{},null)).toEqual(CalculateDiffsOutput1);
     expect(calculateDiffs({},CalculateDiffsB2,null)).toEqual(CalculateDiffsOutput2);
+  });
+
+  // TODO: reactivate
+  it('Find Associated Data', () => {
+    expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
   });
 
 });

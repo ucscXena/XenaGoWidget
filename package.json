@@ -19,7 +19,7 @@
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
     "test": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react",
-    "lint": "eslint --ignore-pattern src/data src tests/integration/components tests/integration/function tests/function ",
+    "lint": "eslint --ignore-pattern src/data src tests/integration/render tests/integration/function tests/function ",
     "test:coverage": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --coverage",
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --server"
   },
