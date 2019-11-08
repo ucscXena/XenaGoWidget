@@ -6,32 +6,32 @@ import {
   calculatePathwayScore,
   calculateAllPathways,
   calculateDiffs, generateScoredData,
-} from '../../src/functions/DataFunctions';
+} from '../../../src/functions/DataFunctions';
 
-import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
-import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
-import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
-import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
-import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
-import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
+import AssociatedDataCopyNumber1 from '../../data/AssociatedDataCopyNumber1';
+import AssociatedDataExpression1 from '../../data/AssociatedDataExpression1';
+import AssociatedDataGeneList1 from '../../data/AssociatedDataGeneList1';
+import AssociatedDataPathways1 from '../../data/AssociatedDataPathways1';
+import AssociatedDataSamples1 from '../../data/AssociatedDataSamples1';
+import AssociatedDataOutput1 from '../../data/AssociatedDataOutput1';
 
-import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
-import CalculateAssociateDataOutput1 from '../data/CalculateAssociateDataOutput1';
+import CalculateAssociatedDataPathwayData1 from '../../data/CalculateAssociatedDataPathwayData1';
+import CalculateAssociateDataOutput1 from '../../data/CalculateAssociateDataOutput1';
 
-import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
-import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
-import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
+import CalculateAllPathwaysA from '../../data/CalculateAllPathwaysA';
+import CalculateAllPathwaysB from '../../data/CalculateAllPathwaysB';
+import CalculateAllPathwaysOutput from '../../data/CalculateAllPathwaysOutput';
 
-import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
-import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
-import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
+import FindAssociatedDataInputHash1 from '../../data/FindAssociatedDataInputHash1';
+import FindAssociatedDataKey1 from '../../data/FindAssociatedDataKey';
+import FindAssociatedDataOutput1 from '../../data/FindAssociatedOutput1';
 
-import GenerateScoredDataPathwayDataA from '../data/GenerateScoredDataPathwayDataA';
-import GenerateScoredDataPathwayDataB from '../data/GenerateScoredDataPathwayDataB';
-import GenerateScoredDataPathways from '../data/GenerateScoredDataPathways';
-import GenerateScoredDataOutput from '../data/GenerateScoredDataOutput';
+import GenerateScoredDataPathwayDataA from '../../data/GenerateScoredDataPathwayDataA';
+import GenerateScoredDataPathwayDataB from '../../data/GenerateScoredDataPathwayDataB';
+import GenerateScoredDataPathways from '../../data/GenerateScoredDataPathways';
+import GenerateScoredDataOutput from '../../data/GenerateScoredDataOutput';
 
-import {VIEW_ENUM} from '../../src/data/ViewEnum';
+import {VIEW_ENUM} from '../../../src/data/ViewEnum';
 
 describe('Data Integration Functions', () => {
 
@@ -46,6 +46,7 @@ describe('Data Integration Functions', () => {
 
 
   it('Calculate Associated Data', () => {
+    console.log(JSON.stringify(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)))
     expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
   });
 
@@ -80,6 +81,4 @@ describe('Data Integration Functions', () => {
     expect(calculateDiffs({},CalculateDiffsB2,null)).toEqual(CalculateDiffsOutput2);
   });
 
-
 });
-
