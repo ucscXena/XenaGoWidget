@@ -55,7 +55,8 @@ export class HeaderLabel extends PureComponent {
         top: labelOffset,
         left: left,
         height: labelHeight,
-        width: width, backgroundColor: colorString,
+        width: width,
+        backgroundColor: colorString,
         strokeWidth: 1,
         cursor: 'crosshair',
       };
@@ -69,7 +70,12 @@ export class HeaderLabel extends PureComponent {
     render() {
       let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(item.geneExpressionMean) {
+      if(item.paradigmMean) {
+        colorDensity = item.paradigmMean;
+        interpolate = (score) => interpolateGeneExpressionFunction(score);
+      }
+      else
+      if(item.geneExpressionMean !==0) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
@@ -85,7 +91,7 @@ export class HeaderLabel extends PureComponent {
             fill={this.fontColor(colorDensity)} fontFamily='Arial' fontSize={10} transform='rotate(-90)' x={-labelHeight + 4}
             y={10}
           >
-            {width < 10 ? '' : labelString}
+            {width < 10 ? '' : labelString.replace(/_/g,' ')}
           </text>
         </svg>
       );

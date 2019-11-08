@@ -8,10 +8,10 @@ import { intersection} from './MathFunctions';
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
-import {FILTER_ENUM} from '../components/FilterSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
-import DefaultPathways from '../data/genesets/tgac';
+import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
 import FlybasePathways from '../data/genesets/flyBase';
 
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
@@ -21,16 +21,18 @@ export function getSamplesForCohort(cohort,filter) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
   switch (filter) {
-  case FILTER_ENUM.CNV_MUTATION:
+  case VIEW_ENUM.CNV_MUTATION:
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
       intersection);
-  case FILTER_ENUM.COPY_NUMBER:
+  case VIEW_ENUM.COPY_NUMBER:
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
-  case FILTER_ENUM.MUTATION:
+  case VIEW_ENUM.MUTATION:
     return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
-  case FILTER_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.GENE_EXPRESSION:
     return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null);
+  case VIEW_ENUM.PARADIGM:
+    return datasetSamples(cohort.paradigm.host, cohort.paradigm.dataset, null);
   default:
     // eslint-disable-next-line no-console
     console.error('filter is not defined',filter);
@@ -72,37 +74,44 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
   }
 }
 
-export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,cohort){
+export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,paradigmSamples,cohort){
   const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
   const intersectedCnvMutationSubCohortSamples = calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort);
   const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
   const copyNumberSubCohortSamples = calculateSelectedSubCohortSamples(copyNumberSamples,cohort);
   const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
+  const paradigmSubCohortSamples = calculateSelectedSubCohortSamples(paradigmSamples,cohort);
   let filterCounts = {};
   // calculate mutations per subfilter
-  filterCounts[FILTER_ENUM.MUTATION] =  {
+  filterCounts[VIEW_ENUM.MUTATION] =  {
     available: mutationSamples.length,
     current:mutationSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
     unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.COPY_NUMBER] =  {
+  filterCounts[VIEW_ENUM.COPY_NUMBER] =  {
     available: copyNumberSamples.length,
     current: copyNumberSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
     unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.CNV_MUTATION] =  {
+  filterCounts[VIEW_ENUM.CNV_MUTATION] =  {
     available: intersectedCnvMutation.length,
     current: intersectedCnvMutationSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
     unassigned: copyNumberSamples.filter( s => intersectedCnvMutationSubCohortSamples.indexOf(s)<0).length,
   };
-  filterCounts[FILTER_ENUM.GENE_EXPRESSION] =  {
+  filterCounts[VIEW_ENUM.GENE_EXPRESSION] =  {
     available: geneExpressionSamples.length,
     current: geneExpressionSubCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
+  };
+  filterCounts[VIEW_ENUM.PARADIGM] =  {
+    available: paradigmSamples.length,
+    current: paradigmSubCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(paradigmSamples,cohort),
+    unassigned: paradigmSamples.filter( s => paradigmSubCohortSamples.indexOf(s)<0).length,
   };
   return filterCounts;
 }
@@ -118,16 +127,18 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   }
 }
 
-function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, filter){
+function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, paradigmSamples, filter){
   switch (filter) {
-  case FILTER_ENUM.CNV_MUTATION:
+  case VIEW_ENUM.CNV_MUTATION:
     return uniq(intersection(mutationSamples, copyNumberSamples));
-  case FILTER_ENUM.MUTATION:
+  case VIEW_ENUM.MUTATION:
     return mutationSamples;
-  case FILTER_ENUM.COPY_NUMBER:
+  case VIEW_ENUM.COPY_NUMBER:
     return copyNumberSamples;
-  case FILTER_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.GENE_EXPRESSION:
     return geneExpressionSamples;
+  case VIEW_ENUM.PARADIGM:
+    return paradigmSamples;
   default:
     // eslint-disable-next-line no-console
     console.error('invalid filter', filter);
@@ -135,13 +146,14 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
-export const getPathwaysForGeneSetName = (name) => {
+export const getGeneSetsForView= (name) => {
   switch (name) {
-  case '8K':
+  case VIEW_ENUM.PARADIGM:
+    return ParadigmPathways;
+  case VIEW_ENUM.GENE_EXPRESSION:
     return LargePathways;
-  case 'Default':
-    return DefaultPathways;
   case 'Flybase':
+    // return DefaultPathways;
     return FlybasePathways;
   }
   return null ;
@@ -158,7 +170,7 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
-export function allFieldMean(cohort, samples) {
+export function allFieldMean(cohort, samples,view) {
 
   const allFieldMeanQuery =
     '; allFieldMean\n' +
@@ -173,7 +185,7 @@ export function allFieldMean(cohort, samples) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
-  const { dataset, host} = cohort.geneExpressionPathwayActivity;
+  const { dataset, host} = view===VIEW_ENUM.PARADIGM ?  cohort.paradigmPathwayActivity : cohort.geneExpressionPathwayActivity;
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -203,10 +215,43 @@ export function lookupGeneByName(geneQuery,callback){
   });
 }
 
-export function fetchBestPathways(selectedCohorts,dataHandler){
+export function getCohortDataForView(selectedCohorts,view){
+  switch(view){
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return [
+      {
+        host: selectedCohorts[0].geneExpression.host,
+        dataset: selectedCohorts[0].geneExpression.dataset
+      },
+      {
+        host: selectedCohorts[1].geneExpression.host,
+        dataset: selectedCohorts[1].geneExpression.dataset
+      },
+    ];
+  case VIEW_ENUM.PARADIGM:
+    return [
+      {
+        host: selectedCohorts[0].paradigm.host,
+        dataset: selectedCohorts[0].paradigm.dataset
+      },
+      {
+        host: selectedCohorts[1].paradigm.host,
+        dataset: selectedCohorts[1].paradigm.dataset
+      },
+    ];
+  default:
+    return null ;
+  }
+
+}
+
+export function fetchBestPathways(selectedCohorts,view,dataHandler){
+
+  const cohortData = getCohortDataForView(selectedCohorts,view);
+
   Rx.Observable.zip(
-    datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
-    datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
+    datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
+    datasetSamples(cohortData[1].host, cohortData[1].dataset, null),
   )
     .flatMap((unfilteredSamples) => {
       const availableSamples = [
@@ -215,8 +260,8 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
       ];
 
       return Rx.Observable.zip(
-        allFieldMean(selectedCohorts[0], availableSamples[0]),
-        allFieldMean(selectedCohorts[1], availableSamples[1]),
+        allFieldMean(selectedCohorts[0], availableSamples[0],view),
+        allFieldMean(selectedCohorts[1], availableSamples[1],view),
         (
           geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
         ) => ({
@@ -231,11 +276,11 @@ export function fetchBestPathways(selectedCohorts,dataHandler){
     });
 }
 
-export function fetchPathwayActivityMeans(selectedCohorts,samples,dataHandler){
+export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
 
   Rx.Observable.zip(
-    allFieldMean(selectedCohorts[0], samples[0]),
-    allFieldMean(selectedCohorts[1], samples[1]),
+    allFieldMean(selectedCohorts[0], samples[0],view),
+    allFieldMean(selectedCohorts[1], samples[1],view),
     (
       geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
     ) => ({
@@ -258,32 +303,45 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),
     datasetSamples(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, null),
     datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
+    datasetSamples(selectedCohorts[0].paradigm.host, selectedCohorts[0].paradigm.dataset, null),
     // TODO: add gene expression 0
     datasetSamples(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, null),
     datasetSamples(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, null),
     datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
+    datasetSamples(selectedCohorts[1].paradigm.host, selectedCohorts[1].paradigm.dataset, null),
     // TODO: add gene expression 1
   ).flatMap((unfilteredSamples) => {
 
     // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],unfilteredSamples[1],unfilteredSamples[2],selectedCohorts[0]),createFilterCounts(unfilteredSamples[3],unfilteredSamples[4],unfilteredSamples[5],selectedCohorts[1])];
+    filterCounts = [createFilterCounts(unfilteredSamples[0],
+      unfilteredSamples[1],
+      unfilteredSamples[2],
+      unfilteredSamples[3],
+      selectedCohorts[0]),
+    createFilterCounts(unfilteredSamples[4],
+      unfilteredSamples[5],
+      unfilteredSamples[6],
+      unfilteredSamples[7],
+      selectedCohorts[1])];
     // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
     // merge based on filter
     const availableSamples = [
       calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
       calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
       calculateSelectedSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[3],selectedCohorts[0]),
       // TODO: add gene expression 0
 
-      calculateSelectedSubCohortSamples(unfilteredSamples[3],selectedCohorts[1]),
       calculateSelectedSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
       calculateSelectedSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[6],selectedCohorts[1]),
+      calculateSelectedSubCohortSamples(unfilteredSamples[7],selectedCohorts[1]),
       // TODO: add gene expression 1
     ];
 
     // calculate samples for what samples we will actually fetch
-    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],filter[0]);
-    const samplesB = getSamplesForFilter(availableSamples[3],availableSamples[4],availableSamples[5],filter[1]);
+    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],availableSamples[3],filter[0]);
+    const samplesB = getSamplesForFilter(availableSamples[4],availableSamples[5],availableSamples[6],availableSamples[7],filter[1]);
 
     // const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
@@ -295,23 +353,29 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
       datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),
       datasetFetch(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, samplesA, geneList),
       datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samplesA, geneSetLabels),
+      datasetProbeValues(selectedCohorts[0].paradigm.host, selectedCohorts[0].paradigm.dataset, samplesA, geneList),
+      datasetProbeValues(selectedCohorts[0].paradigmPathwayActivity.host, selectedCohorts[0].paradigmPathwayActivity.dataset, samplesA, geneSetLabels),
       datasetFetch(selectedCohorts[0].genomeBackgroundMutation.host, selectedCohorts[0].genomeBackgroundMutation.dataset, samplesA, [selectedCohorts[0].genomeBackgroundMutation.feature_event_K, selectedCohorts[0].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[0].genomeBackgroundCopyNumber.host, selectedCohorts[0].genomeBackgroundCopyNumber.dataset, samplesA, [selectedCohorts[0].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[0].genomeBackgroundCopyNumber.feature_total_pop_N]),
       sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, samplesB, geneList),
       datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samplesB, geneSetLabels),
+      datasetProbeValues(selectedCohorts[1].paradigm.host, selectedCohorts[1].paradigm.dataset, samplesB, geneList),
+      datasetProbeValues(selectedCohorts[1].paradigmPathwayActivity.host, selectedCohorts[1].paradigmPathwayActivity.dataset, samplesB, geneSetLabels),
       datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
       datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
       (
-        mutationsA, copyNumberA, geneExpressionA,geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-        mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB,genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+        mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, paradigmA, paradigmPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+        mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, paradigmB, paradigmPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
       ) => ({
         samplesA,
         mutationsA,
         copyNumberA,
         geneExpressionA,
         geneExpressionPathwayActivityA,
+        paradigmA,
+        paradigmPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
@@ -319,14 +383,16 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberB,
         geneExpressionB,
         geneExpressionPathwayActivityB,
+        paradigmB,
+        paradigmPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
       }),
     );
   })
     .subscribe(({
-      samplesA, mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
-      samplesB, mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
+      samplesA, mutationsA, copyNumberA, geneExpressionA, geneExpressionPathwayActivityA, paradigmA, paradigmPathwayActivityA, genomeBackgroundMutationA, genomeBackgroundCopyNumberA,
+      samplesB, mutationsB, copyNumberB, geneExpressionB, geneExpressionPathwayActivityB, paradigmB, paradigmPathwayActivityB, genomeBackgroundMutationB, genomeBackgroundCopyNumberB,
     }) => {
       combinationHandler({
         geneList,
@@ -337,6 +403,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberA,
         geneExpressionA,
         geneExpressionPathwayActivityA,
+        paradigmA,
+        paradigmPathwayActivityA,
         genomeBackgroundMutationA,
         genomeBackgroundCopyNumberA,
         samplesB,
@@ -344,6 +412,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
         copyNumberB,
         geneExpressionB,
         geneExpressionPathwayActivityB,
+        paradigmB,
+        paradigmPathwayActivityB,
         genomeBackgroundMutationB,
         genomeBackgroundCopyNumberB,
         selectedCohorts,

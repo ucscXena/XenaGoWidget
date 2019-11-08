@@ -1,17 +1,7 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {pick} from 'ucsc-xena-client/dist/underscore_ext';
 import {Dropdown} from 'react-toolbox';
-import mutationVector from '../data/mutationVector';
-import {MIN_FILTER} from './XenaGeneSetApp';
-
-export const FILTER_ENUM = {
-  CNV_MUTATION:'CNV \u2229 Mutation',
-  MUTATION:'Mutation',
-  COPY_NUMBER:'Copy Number',
-  GENE_EXPRESSION:'Gene Expression',
-};
 
 function lowerCaseCompare(a, b) {
   // put gene expression at the bottom
@@ -20,17 +10,11 @@ function lowerCaseCompare(a, b) {
   return a.toLowerCase().localeCompare(b.toLowerCase());
 }
 
-export class FilterSelector extends PureComponent {
+export class ViewSelector extends PureComponent {
 
     handleSetSelected = (targetValue) => {
       this.props.onChange(targetValue);
     };
-
-    getFilters(){
-      let filteredMutationVector = pick(mutationVector, v => v >= MIN_FILTER);
-      filteredMutationVector[FILTER_ENUM.COPY_NUMBER] = 1;
-      return filteredMutationVector;
-    }
 
     render() {
       const {pathwayData, selected} = this.props;
@@ -55,7 +39,7 @@ export class FilterSelector extends PureComponent {
     }
 }
 
-FilterSelector.propTypes = {
+ViewSelector.propTypes = {
   geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,

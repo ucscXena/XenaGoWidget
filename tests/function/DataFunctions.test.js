@@ -11,7 +11,7 @@ import {
   getMutationScore,
   scoreChiSquareTwoByTwo,
   scoreData,
-  scoreChiSquaredData, cleanData, average, generateGeneExpressionStats, stdev, generateZScore, tTest,
+  scoreChiSquaredData, cleanData, average, generateStats, stdev, generateZScore, tTestGeneExpression,
 } from '../../src/functions/DataFunctions';
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp';
 import {times} from 'underscore';
@@ -78,7 +78,7 @@ describe('Data Unit Functions', () => {
     let returnArray = createEmptyArray(20,5);
     expect(returnArray.length).toEqual(20);
     expect(returnArray[0].length).toEqual(5);
-    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
+    expect(returnArray[5][3]).toEqual({total:0,paradigm:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
     returnArray[5][3] = {total:7,mutation:3,cnv:1};
     expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
     returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
@@ -89,7 +89,7 @@ describe('Data Unit Functions', () => {
     let returnArray = times(20, () => times(5, () => DEFAULT_DATA_VALUE));
     expect(returnArray.length===20);
     expect(returnArray[0].length===5);
-    expect(returnArray[5][3]).toEqual({total:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
+    expect(returnArray[5][3]).toEqual({total:0,paradigm:0,mutation4:0,mutation3:0,mutation2:0,mutation:0,cnv:0,cnvLow:0,cnvHigh:0,geneExpression:0});
     returnArray[5][3] = {total:7,mutation:3,cnv:1};
     expect(returnArray[5][3]).toEqual({total:7,mutation:3,cnv:1});
     returnArray = new Array(20).fill(0).map(() => new Array(5).fill({total:0,mutation:0,cnv:0}));
@@ -126,7 +126,7 @@ describe('Data Unit Functions', () => {
     // 2 genes with 4 samples in A and 3 samples in B
     const inputA = [[5,3,8,9],[2,11,'Nan',9]];
     const inputB = [[2,'NaN',9],[4,'Nan',9]];
-    const geneStats = generateGeneExpressionStats(inputA,inputB);
+    const geneStats = generateStats(inputA,inputB);
     expect(geneStats[0].mean).toEqual(6);
     expect(geneStats[1].mean).toEqual(7);
     expect(Math.abs(geneStats[0].stdev-2.8284271247462)).toBeLessThan(0.00001);
@@ -148,15 +148,15 @@ describe('Data Unit Functions', () => {
   it('TTest from two sets', () => {
     let element1 = {geneExpressionMean: 5, geneExpressionVariance: Math.pow(1,2.0), total: 100 } ;
     let element2 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)+14.134)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)+14.134)).toBeLessThan(0.001);
 
     element1 = {geneExpressionMean: -5, geneExpressionVariance: Math.pow(1.5,2.0), total: 100 } ;
     element2 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)+57.408)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)+57.408)).toBeLessThan(0.001);
 
     element1 = {geneExpressionMean: 8, geneExpressionVariance: Math.pow(1.5,2.0), total: 100 } ;
     element2 = {geneExpressionMean: -2, geneExpressionVariance: Math.pow(2,2.0), total: 200} ;
-    expect(Math.abs(tTest( element1,element2)-44.160)).toBeLessThan(0.001);
+    expect(Math.abs(tTestGeneExpression( element1,element2)-44.160)).toBeLessThan(0.001);
   });
 
 });

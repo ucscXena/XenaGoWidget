@@ -5,7 +5,7 @@ import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
-import {FILTER_ENUM, FilterSelector} from './FilterSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 import {Card,Button} from 'react-toolbox';
 
@@ -16,6 +16,7 @@ import {
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+import {ViewSelector} from './ViewSelector';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
@@ -63,14 +64,16 @@ export default class XenaGoViewer extends PureComponent {
     hasDataForFilter(geneData,filter){
       if(!geneData) return false;
       switch (filter) {
-      case FILTER_ENUM.GENE_EXPRESSION:
+      case VIEW_ENUM.GENE_EXPRESSION:
         return geneData.geneExpression!==undefined;
-      case FILTER_ENUM.COPY_NUMBER:
+      case VIEW_ENUM.COPY_NUMBER:
         return geneData.copyNumber!==undefined;
-      case FILTER_ENUM.MUTATION:
+      case VIEW_ENUM.MUTATION:
         return geneData.expression && geneData.expression.rows && geneData.expression.rows.length>0;
-      case FILTER_ENUM.CNV_MUTATION:
-        return this.hasDataForFilter(geneData,FILTER_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,FILTER_ENUM.MUTATION);
+      case VIEW_ENUM.CNV_MUTATION:
+        return this.hasDataForFilter(geneData,VIEW_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,VIEW_ENUM.MUTATION);
+      case VIEW_ENUM.PARADIGM:
+        return geneData.paradigm!==undefined;
       default:
         // eslint-disable-next-line no-console
         console.error('Error for gene data and filter',geneData,filter);
@@ -121,7 +124,7 @@ export default class XenaGoViewer extends PureComponent {
                             selectedCohort={selectedCohort}
                             swapCohorts={swapCohorts}
                           />
-                          <FilterSelector
+                          <ViewSelector
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
@@ -149,8 +152,8 @@ export default class XenaGoViewer extends PureComponent {
                               }
                             </Card>
                         }
-                        { filter !== FILTER_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
-                        { filter === FILTER_ENUM.GENE_EXPRESSION && <GeneExpressionLegend/>}
+                        { filter !== VIEW_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
+                        { filter === VIEW_ENUM.GENE_EXPRESSION && <GeneExpressionLegend/>}
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView
