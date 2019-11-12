@@ -152,8 +152,6 @@ export default class XenaGoViewer extends PureComponent {
                               }
                             </Card>
                         }
-                        { filter !== VIEW_ENUM.GENE_EXPRESSION && <DetailedLegend/>}
-                        { filter === VIEW_ENUM.GENE_EXPRESSION && <GeneExpressionLegend/>}
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView

@@ -5,7 +5,7 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
-  calculateAllPathways, generateScoredData, generateZScoreForBoth,
+  calculateAllPathways, generateScoredData, generateZScoreForBoth, isFilterGeneExpression,
 } from '../functions/DataFunctions';
 import FaRefresh from 'react-icons/lib/fa/refresh';
 import FaClose from 'react-icons/lib/fa/close';
@@ -35,6 +35,9 @@ import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
+import {VIEW_ENUM} from '../data/ViewEnum';
+import {DetailedLegend} from './DetailedLegend';
+import {GeneExpressionLegend} from './GeneExpressionLegend';
 
 
 const VIEWER_HEIGHT = 500;
@@ -678,8 +681,12 @@ export default class XenaGeneSetApp extends PureComponent {
                   <table>
                     <tbody>
                       <tr>
-                        <td colSpan={3}>
+                        <td colSpan={1}>
                           <VerticalLegend/>
+                        </td>
+                        <td colSpan={1}>
+                          { !isFilterGeneExpression(this.state.filter[0]) && <DetailedLegend/>}
+                          { isFilterGeneExpression(this.state.filter[0]) && <GeneExpressionLegend/>}
                         </td>
                       </tr>
                       <tr>

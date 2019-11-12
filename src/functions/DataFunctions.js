@@ -411,6 +411,15 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   return returnArray;
 }
 
+export function isFilterGeneExpression(filter){
+  switch (filter) {
+  case VIEW_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.PARADIGM:
+    return true;
+  default:
+    return false;
+  }
+}
 
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
