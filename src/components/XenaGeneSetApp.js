@@ -888,8 +888,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // functions
                                     pathwayData={this.state.pathwayData[0]}
-                                    pathways={pathways}
                                     pathwaySelection={this.state.pathwaySelection}
+                                    pathways={pathways}
                                     renderHeight={VIEWER_HEIGHT}
                                     renderOffset={0}
 
@@ -924,8 +924,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                     // functions
                                     pathwayData={this.state.pathwayData[1]}
-                                    pathways={pathways}
                                     pathwaySelection={this.state.pathwaySelection}
+                                    pathways={pathways}
                                     renderHeight={VIEWER_HEIGHT}
                                     renderOffset={VIEWER_HEIGHT - 3}
 

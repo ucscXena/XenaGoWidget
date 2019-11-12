@@ -45,7 +45,6 @@ export default class LabelWrapper extends PureComponent {
           cohortIndex={cohortIndex}
           colorMask={getGeneColorMask()}
           colorSettings={colorSettings}
-          view={view}
           height={height}
           highlightedGene={highlightedGene}
           labelHeight={geneLabelHeight}
@@ -53,6 +52,7 @@ export default class LabelWrapper extends PureComponent {
           numSamples={numSamples}
           pathways={pathways}
           showDiffLayer={this.props.showDiffLayer}
+          view={view}
         />
       </div>
     );

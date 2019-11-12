@@ -18,7 +18,7 @@ export class SubCohortSelector extends PureComponent {
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
-      allSelected:isEqual(props.selectedSubCohorts.sort(),props.filterCounts.subCohortCounts.map( f => f.name).sort())
+      allSelected:isEqual(props.selectedSubCohorts.sort(),props.viewCounts.subCohortCounts.map( f => f.name).sort())
     };
   }
 
