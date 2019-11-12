@@ -9,7 +9,7 @@ import {
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
 import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
-import {VIEW_ENUM} from "../data/ViewEnum";
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 let interpolate ;
 const highColor = '#1A535C';
