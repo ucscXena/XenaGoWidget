@@ -140,6 +140,7 @@ export default class PathwayScoresView extends PureComponent {
           <LabelWrapper
             cohortIndex={cohortIndex}
             colorSettings={colorSettings}
+            filter={filter}
             geneLabelHeight={GENE_LABEL_HEIGHT}
             height={height}
             highlightedGene={highlightedGene}

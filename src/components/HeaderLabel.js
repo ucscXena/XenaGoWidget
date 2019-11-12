@@ -9,6 +9,7 @@ import {
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
 import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
+import {VIEW_ENUM} from "../data/ViewEnum";
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -68,14 +69,14 @@ export class HeaderLabel extends PureComponent {
     };
 
     render() {
-      let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
+      let {width, filter, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(item.paradigmMean) {
+      if(filter===VIEW_ENUM.PARADIGM) {
         colorDensity = item.paradigmMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
       else
-      if(item.geneExpressionMean !==0) {
+      if(filter===VIEW_ENUM.GENE_EXPRESSION) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
@@ -83,12 +84,19 @@ export class HeaderLabel extends PureComponent {
         colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
       }
+      if(labelString.indexOf('small')>0){
+        console.log('paradigm',item,colorDensity,this.fontColor(colorDensity))
+      }
       return (
         <svg
           style={this.style(colorDensity)}
         >
           <text
-            fill={this.fontColor(colorDensity)} fontFamily='Arial' fontSize={10} transform='rotate(-90)' x={-labelHeight + 4}
+            fill={this.fontColor(colorDensity)}
+            fontFamily='Arial'
+            fontSize={10}
+            transform='rotate(-90)'
+            x={-labelHeight + 4}
             y={10}
           >
             {width < 10 ? '' : labelString.replace(/_/g,' ')}
@@ -100,6 +108,7 @@ export class HeaderLabel extends PureComponent {
 
 HeaderLabel.propTypes = {
   colorSettings: PropTypes.any.isRequired,
+  filter: PropTypes.any.isRequired,
   geneLength: PropTypes.any.isRequired,
   highlighted: PropTypes.any.isRequired,
   item: PropTypes.any.isRequired,
