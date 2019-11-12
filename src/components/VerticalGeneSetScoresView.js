@@ -42,6 +42,8 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
   return undefined;
 }
 
+let sharedAssociatedData = [[],[]];
+
 function getPointData(event, props) {
   console.log('getting point data props in VGSS',props);
   let {labelHeight, pathways,cohortIndex, data, width} = props;
@@ -54,9 +56,14 @@ function getPointData(event, props) {
 
   // TODO: if VIEW_ENUM.PARADIGM
 
+  console.log('from associated data',sharedAssociatedData);
+
   let pathway = pathways[pathwayIndex];
   if(VIEW_ENUM.PARADIGM){
-    let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
+    // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
+    console.log('look up ',cohortIndex,pathwayIndex,sampleIndex);
+    let activity = sharedAssociatedData[cohortIndex][pathwayIndex][sampleIndex].paradigmPathwayActivity;
+    // console.log('activity',activity,activity)
     if(cohortIndex===0){
       pathway.firstParadigmPathwayActivity = activity ;
     }
@@ -75,6 +82,7 @@ function getPointData(event, props) {
   };
   // return pathways[pathwayIndex];
 }
+
 
 /**
  * Extends PathwaysScoreView (but the old one)
@@ -148,6 +156,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
       let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
       console.log('output returned value',returnedValue);
+      sharedAssociatedData[cohortIndex] = prunedColumns.data;
 
 
       return (
