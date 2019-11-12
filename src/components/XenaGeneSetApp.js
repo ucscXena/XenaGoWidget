@@ -357,15 +357,15 @@ export default class XenaGeneSetApp extends PureComponent {
 
     };
 
-    handlePathwaySelect = (pathwaySelection) => {
+    handlePathwaySelect = (selection) => {
 
       let {pathwayData,filter} = this.state;
 
-      if (pathwaySelection.gene.length === 0) {
+      if (selection.pathway.gene.length === 0) {
         return;
       }
       let pathwaySelectionWrapper = {
-        pathway:pathwaySelection,
+        pathway:selection.pathway,
         tissue: 'Header'
       };
       AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper);
