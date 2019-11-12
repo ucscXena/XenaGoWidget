@@ -6,6 +6,7 @@ import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from "../functions/DataFunctions";
 
 export default class HoverGeneView extends PureComponent {
 
@@ -152,7 +153,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && data.pathway.geneExpressionMean !== undefined && ( filter === VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.PARADIGM )  &&
+            && ( isViewGeneExpression(filter))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
                 <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>

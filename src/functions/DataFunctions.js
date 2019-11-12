@@ -411,7 +411,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   return returnArray;
 }
 
-export function isFilterGeneExpression(filter){
+export function isViewGeneExpression(filter){
   switch (filter) {
   case VIEW_ENUM.GENE_EXPRESSION:
   case VIEW_ENUM.PARADIGM:
