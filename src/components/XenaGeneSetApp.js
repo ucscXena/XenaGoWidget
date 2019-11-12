@@ -315,6 +315,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
       const hoveredPathway = hoveredPoint.pathway;
 
+      const sourceCohort = hoveredPoint.cohortIndex;
+
       console.log('hovered pathway',hoveredPathway);
 
       // const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0 ;
@@ -334,32 +336,37 @@ export default class XenaGeneSetApp extends PureComponent {
       //   geneHoverData
       // });
 
-      const geneHoverData = hoveredPathway ? [
-        {
-          tissue: hoveredPoint.tissue,
-          cohortIndex: 0,
-          pathway: hoveredPathway,
-          expression: {
-            affected: hoveredPathway.firstObserved,
-            samplesAffected: hoveredPathway.firstObserved,
-            geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
-            allGeneAffected: hoveredPathway.firstTotal,
-            total: hoveredPathway.firstNumSamples,
-          }
-        },
-        {
-
-          tissue: hoveredPoint.tissue,
-          cohortIndex: 1,
-          pathway: hoveredPathway,
-          expression: {
-            affected: hoveredPathway.secondObserved,
-            samplesAffected: hoveredPathway.secondObserved,
-            geneExpressionMean: hoveredPathway.secondGeneExpressionMean,
-            allGeneAffected: hoveredPathway.secondTotal,
-            total: hoveredPathway.secondNumSamples,
-          }
+      const cohort0 = {
+        tissue: sourceCohort===0 ? hoveredPoint.tissue : 'Header',
+        source: 'GeneSet',
+        cohortIndex: 0,
+        pathway: hoveredPathway,
+        expression: {
+          affected: hoveredPathway.firstObserved,
+          samplesAffected: hoveredPathway.firstObserved,
+          geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
+          allGeneAffected: hoveredPathway.firstTotal,
+          total: hoveredPathway.firstNumSamples,
         }
+      };
+
+      const cohort1 = {
+        tissue: sourceCohort===1 ? hoveredPoint.tissue : 'Header',
+        source: 'GeneSet',
+        cohortIndex: 1,
+        pathway: hoveredPathway,
+        expression: {
+          affected: hoveredPathway.firstObserved,
+          samplesAffected: hoveredPathway.firstObserved,
+          geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
+          allGeneAffected: hoveredPathway.firstTotal,
+          total: hoveredPathway.firstNumSamples,
+        }
+      };
+
+      const geneHoverData = hoveredPathway ? [
+        cohort0,
+        cohort1,
       ] : null ;
 
 

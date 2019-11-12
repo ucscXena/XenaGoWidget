@@ -44,11 +44,19 @@ export default class HoverGeneView extends PureComponent {
 
     render() {
       let {data, cohortIndex, filter} = this.props;
-      console.log('hover GENE data',cohortIndex,data);
       if (data.tissue) {
         return (
           <div>
-            {data.tissue !== 'Header' &&
+            {data.tissue !== 'Header' && data.source === 'GeneSet' &&
+            <div className={BaseStyle.pathwayChip}>
+              <span><strong>Pathway</strong> {data.pathway.golabel}</span>
+              <br/>
+              <span><strong>Sample</strong> {data.tissue}</span>
+              <br/>
+              <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+            </div>
+            }
+            {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
                     <div>
                       {data.pathway &&
                       <div className={BaseStyle.pathwayChip}>
@@ -199,12 +207,12 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
+                      {!isViewGeneExpression(filter) &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                       }
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
+                      {!isViewGeneExpression(filter) &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
