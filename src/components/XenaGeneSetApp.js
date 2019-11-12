@@ -336,7 +336,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       const geneHoverData = hoveredPathway ? [
         {
-          tissue: hoveredPathway.tissue,
+          tissue: hoveredPoint.tissue,
           cohortIndex: 0,
           pathway: hoveredPathway,
           expression: {
@@ -349,7 +349,7 @@ export default class XenaGeneSetApp extends PureComponent {
         },
         {
 
-          tissue: hoveredPathway.tissue,
+          tissue: hoveredPoint.tissue,
           cohortIndex: 1,
           pathway: hoveredPathway,
           expression: {
@@ -361,6 +361,9 @@ export default class XenaGeneSetApp extends PureComponent {
           }
         }
       ] : null ;
+
+
+      console.log('PRE HOVER GENE data ',geneHoverData);
 
       this.setState({
         hoveredPathway,
