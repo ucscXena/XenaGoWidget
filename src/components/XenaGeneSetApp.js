@@ -8,7 +8,6 @@ import {
   calculateAllPathways, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
 } from '../functions/DataFunctions';
 import FaRefresh from 'react-icons/lib/fa/refresh';
-import FaClose from 'react-icons/lib/fa/close';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
@@ -28,7 +27,6 @@ import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {scorePathway, SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
-import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
@@ -44,7 +42,6 @@ const VIEWER_HEIGHT = 500;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 export const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
-const ARROW_WIDTH = 20;
 const BORDER_OFFSET = 2;
 
 export const MIN_FILTER = 2;
@@ -608,7 +605,7 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
-    let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
+    // let leftPadding = this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH - ARROW_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH;
 
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
@@ -755,38 +752,12 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
                       <tr>
-                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                          {this.state.showPathwayDetails &&
-                              <div style={{paddingLeft: leftPadding}}>
-                                <FaClose
-                                  className={BaseStyle.mouseHover}
-                                  onClick={this.handleHideGeneSetDetail}
-                                />
-                              </div>
-                          }
-                          {!this.state.showPathwayDetails &&
-                            <FaExpand
-                              className={BaseStyle.mouseHover}
-                              onClick={this.handleShowGeneSetDetail}
-                            />
-                          }
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
                         </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                           <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
                         </td>
-                        <td width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}>
-                          {this.state.showPathwayDetails &&
-                              <FaClose
-                                className={BaseStyle.mouseHover}
-                                onClick={this.handleHideGeneSetDetail}
-                              />
-                          }
-                          {!this.state.showPathwayDetails &&
-                            <FaExpand
-                              className={BaseStyle.mouseHover}
-                              onClick={this.handleShowGeneSetDetail}
-                            />
-                          }
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
                         </td>
                       </tr>
                       <tr>
@@ -802,7 +773,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[0]}
                             selectedGeneSet={this.state.pathwaySelection}
-                            width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                         </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
@@ -834,7 +805,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[1]}
                             selectedGeneSet={this.state.pathwaySelection}
-                            width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                         </td>
                       </tr>
