@@ -37,6 +37,7 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+// import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
 
 
 const VIEWER_HEIGHT = 500;
@@ -294,6 +295,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     handlePathwayHover = (hoveredPathway) => {
+
+      console.log(hoveredPathway);
+
 
       const geneHoverData = hoveredPathway ? [
         {
@@ -798,7 +802,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[0]}
                             selectedGeneSet={this.state.pathwaySelection}
-                            showDetails={this.state.showPathwayDetails}
+                            width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
                           />
                         </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
@@ -830,7 +834,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[1]}
                             selectedGeneSet={this.state.pathwaySelection}
-                            showDetails={this.state.showPathwayDetails}
+                            width={this.state.showPathwayDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
                           />
                         </td>
                       </tr>

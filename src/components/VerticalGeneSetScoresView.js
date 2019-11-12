@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
-import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
@@ -28,11 +27,18 @@ function getMousePos(evt) {
   };
 }
 
+function sampleIndexFromX(x, width, cohortIndex, data) {
+  console.log('sample from X',x,width,cohortIndex,data);
+  return undefined;
+}
+
 function getPointData(event, props) {
-  let {labelHeight, pathways} = props;
+  let {labelHeight, pathways,cohortIndex, data, width} = props;
   // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event);
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
+  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, data);
+  console.log('sample index',sampleIndex);
   return pathways[pathwayIndex];
 }
 
@@ -40,6 +46,7 @@ function getPointData(event, props) {
  * Extends PathwaysScoreView (but the old one)
  */
 export default class VerticalGeneSetScoresView extends PureComponent {
+
 
     handleHoverOut = () => {
       this.props.onHover(null);
@@ -66,7 +73,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
+      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways, selectedGeneSet, width} = this.props;
       const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity, paradigm,  paradigmPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
@@ -116,11 +123,12 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             onClick={this.handleClick}
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
-            width={showDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+            width={width}
           />
         </div>
       );
     }
+
 }
 
 VerticalGeneSetScoresView.propTypes = {
@@ -134,5 +142,5 @@ VerticalGeneSetScoresView.propTypes = {
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedGeneSet: PropTypes.any,
-  showDetails: PropTypes.any.isRequired,
+  width: PropTypes.any.isRequired,
 };
