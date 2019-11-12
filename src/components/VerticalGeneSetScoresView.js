@@ -50,9 +50,14 @@ function getPointData(event, props) {
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, data.samples.length);
   console.log('point data',pathwayIndex,sampleIndex);
+  // return update( pathways[pathwayIndex],{
+  //   tissue: { $set: sampleIndex < 0 ? 'Header' : data.samples[sampleIndex]},
+  //   cohortIndex: { $set: cohortIndex},
+  // });
   return {
     pathway: pathways[pathwayIndex],
     tissue: sampleIndex < 0 ? 'Header' : data.samples[sampleIndex],
+    cohortIndex,
   };
   // return pathways[pathwayIndex];
 }
@@ -68,6 +73,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     };
 
     handleHover = (event) => {
+      console.log('VGS',this.props.cohortIndex);
       this.props.onHover(getPointData(event, this.props));
     };
 

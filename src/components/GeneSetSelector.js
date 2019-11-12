@@ -87,6 +87,7 @@ export class GeneSetSelector extends PureComponent {
     };
 
     onHover = (geneSet) => {
+      console.log('gene set selector',geneSet);
       this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null);
     };
 

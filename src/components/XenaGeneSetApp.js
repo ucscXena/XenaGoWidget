@@ -311,13 +311,33 @@ export default class XenaGeneSetApp extends PureComponent {
     handlePathwayHover = (hoveredPoint) => {
 
       console.log('hovered point',hoveredPoint);
-      const hoveredPathway = hoveredPoint!==null ? hoveredPoint.pathway : null ;
-      console.log(hoveredPathway);
+      if(!hoveredPoint) return ;
 
+      const hoveredPathway = hoveredPoint.pathway;
+
+      console.log('hovered pathway',hoveredPathway);
+
+      // const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0 ;
+      // let geneHoverData = [];
+      // geneHoverData[geneHover.cohortIndex] = geneHover;
+      //
+      // const gene = geneHover.pathway.gene[0] ;
+      // const otherPathway = this.state.geneData[otherCohortIndex].pathways.filter( p => p.gene[0] === gene )[0];
+      // geneHoverData[otherCohortIndex] = {
+      //   cohortIndex: otherCohortIndex,
+      //   tissue: 'Header',
+      //   pathway : otherPathway,
+      //   expression: otherPathway, // for displaying the hover
+      // };
+      //
+      // this.setState({
+      //   geneHoverData
+      // });
 
       const geneHoverData = hoveredPathway ? [
         {
-          tissue: 'Header',
+          tissue: hoveredPathway.tissue,
+          cohortIndex: 0,
           pathway: hoveredPathway,
           expression: {
             affected: hoveredPathway.firstObserved,
@@ -329,7 +349,8 @@ export default class XenaGeneSetApp extends PureComponent {
         },
         {
 
-          tissue: 'Header',
+          tissue: hoveredPathway.tissue,
+          cohortIndex: 1,
           pathway: hoveredPathway,
           expression: {
             affected: hoveredPathway.secondObserved,
