@@ -25,7 +25,13 @@ import CrossHairV from './CrossHairV';
 import {getCohortDetails, getSubCohortsOnlyForCohort, matchFilters} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
-import {scorePathway, SortType} from '../functions/SortFunctions';
+import {
+  clusterSampleSort,
+  scorePathway,
+  selectedSampleGeneExpressionActivitySort,
+  selectedSampleParadigmActivitySort,
+  SortType
+} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
@@ -35,6 +41,7 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+import {VIEW_ENUM} from '../data/ViewEnum';
 // import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
 
 
@@ -155,107 +162,117 @@ export default class XenaGeneSetApp extends PureComponent {
     );
   };
 
-    handleCombinedCohortData = (input) => {
-      let {
-        pathways,
-        geneList,
-        filterCounts,
-        cohortData,
+  sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
+    switch (filter) {
+    case VIEW_ENUM.GENE_EXPRESSION:
+      return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
+    case VIEW_ENUM.PARADIGM:
+      return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
+    default:
+      return clusterSampleSort(prunedColumns);
+    }
+  }
 
-        samplesA,
-        mutationsA,
-        copyNumberA,
-        geneExpressionA,
-        geneExpressionPathwayActivityA,
-        paradigmA,
-        paradigmPathwayActivityA,
-        genomeBackgroundMutationA,
-        genomeBackgroundCopyNumberA,
-        samplesB,
-        mutationsB,
-        copyNumberB,
-        geneExpressionB,
-        geneExpressionPathwayActivityB,
-        paradigmB,
-        paradigmPathwayActivityB,
-        genomeBackgroundMutationB,
-        genomeBackgroundCopyNumberB,
-        selectedCohorts,
-      } = input;
+  handleCombinedCohortData = (input) => {
+    let {
+      pathways,
+      geneList,
+      filterCounts,
+      cohortData,
 
-      // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-      const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
-      const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
-      // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
+      samplesA,
+      mutationsA,
+      copyNumberA,
+      geneExpressionA,
+      geneExpressionPathwayActivityA,
+      paradigmA,
+      paradigmPathwayActivityA,
+      genomeBackgroundMutationA,
+      genomeBackgroundCopyNumberA,
+      samplesB,
+      mutationsB,
+      copyNumberB,
+      geneExpressionB,
+      geneExpressionPathwayActivityB,
+      paradigmB,
+      paradigmPathwayActivityB,
+      genomeBackgroundMutationB,
+      genomeBackgroundCopyNumberB,
+      selectedCohorts,
+    } = input;
 
-
-      let pathwayDataA = {
-        geneList,
-        pathways,
-        cohortData,
-        cohort: selectedCohorts[0],
-        filter: this.state.filter[0],
-        filterCounts: filterCounts[0],
-
-        copyNumber: copyNumberA,
-        expression: mutationsA,
-        geneExpression: geneExpressionZScoreA,
-        geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
-        paradigm: paradigmZScoreA,
-        paradigmPathwayActivity: paradigmPathwayActivityA[1],
-        samples: samplesA,
-        genomeBackgroundMutation: genomeBackgroundMutationA,
-        genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
-      };
+    // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
+    const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
+    const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
+    // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
 
 
-      let pathwayDataB = {
-        geneList,
-        pathways,
-        cohortData,
-        cohort: selectedCohorts[1],
-        filter: this.state.filter[1],
-        filterCounts: filterCounts[1],
+    let pathwayDataA = {
+      geneList,
+      pathways,
+      cohortData,
+      cohort: selectedCohorts[0],
+      filter: this.state.filter[0],
+      filterCounts: filterCounts[0],
 
-        copyNumber: copyNumberB,
-        expression: mutationsB,
-        geneExpression: geneExpressionZScoreB,
-        geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
-        paradigm: paradigmZScoreB,
-        paradigmPathwayActivity: paradigmPathwayActivityB[1],
-        samples: samplesB,
-        genomeBackgroundMutation: genomeBackgroundMutationB,
-        genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
-      };
-
-      pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
-      pathwayDataA.pathways = pathways ;
-      pathwayDataB.pathways = pathways ;
-
-      AppStorageHandler.storePathways(pathways);
-
-
-      let selection = AppStorageHandler.getPathwaySelection();
-      if(!selection.golabel){
-        selection.pathway = pathways[0];
-      }
-      let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
-
-      currentLoadState = LOAD_STATE.LOADED;
-      this.setState({
-        pathwaySelection: selection,
-        geneList,
-        pathways,
-        geneData,
-        pathwayData: [pathwayDataA,pathwayDataB],
-        loading: LOAD_STATE.LOADED,
-        currentLoadState: currentLoadState,
-        processing: false,
-        fetch: false,
-      });
-
-
+      copyNumber: copyNumberA,
+      expression: mutationsA,
+      geneExpression: geneExpressionZScoreA,
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
+      paradigm: paradigmZScoreA,
+      paradigmPathwayActivity: paradigmPathwayActivityA[1],
+      samples: samplesA,
+      genomeBackgroundMutation: genomeBackgroundMutationA,
+      genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
     };
+
+
+    let pathwayDataB = {
+      geneList,
+      pathways,
+      cohortData,
+      cohort: selectedCohorts[1],
+      filter: this.state.filter[1],
+      filterCounts: filterCounts[1],
+
+      copyNumber: copyNumberB,
+      expression: mutationsB,
+      geneExpression: geneExpressionZScoreB,
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
+      paradigm: paradigmZScoreB,
+      paradigmPathwayActivity: paradigmPathwayActivityB[1],
+      samples: samplesB,
+      genomeBackgroundMutation: genomeBackgroundMutationB,
+      genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
+    };
+
+    pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
+    pathwayDataA.pathways = pathways ;
+    pathwayDataB.pathways = pathways ;
+
+    AppStorageHandler.storePathways(pathways);
+
+    let selection = AppStorageHandler.getPathwaySelection();
+    if(!selection.golabel){
+      selection.pathway = pathways[0];
+    }
+    let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
+
+    currentLoadState = LOAD_STATE.LOADED;
+    this.setState({
+      pathwaySelection: selection,
+      geneList,
+      pathways,
+      geneData,
+      pathwayData: [pathwayDataA,pathwayDataB],
+      loading: LOAD_STATE.LOADED,
+      currentLoadState: currentLoadState,
+      processing: false,
+      fetch: false,
+    });
+
+
+  };
 
     editGeneSetColors = () => {
       this.handleColorToggle();
@@ -291,8 +308,10 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-    handlePathwayHover = (hoveredPathway) => {
+    handlePathwayHover = (hoveredPoint) => {
 
+      console.log('hovered point',hoveredPoint);
+      const hoveredPathway = hoveredPoint!==null ? hoveredPoint.pathway : null ;
       console.log(hoveredPathway);
 
 
@@ -752,13 +771,11 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
                       <tr>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                        </td>
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH} />
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                           <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
                         </td>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                        </td>
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH} />
                       </tr>
                       <tr>
                         <td>

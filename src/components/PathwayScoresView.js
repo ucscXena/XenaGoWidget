@@ -124,6 +124,9 @@ export default class PathwayScoresView extends PureComponent {
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
 
+      console.log('data for PSV',data);
+      console.log('sorted samples for PSV',sortedSamples);
+
       return (
         <div style={style.xenaGoView}>
           {showDetailLayer &&

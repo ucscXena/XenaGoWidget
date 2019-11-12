@@ -27,19 +27,34 @@ function getMousePos(evt) {
   };
 }
 
-function sampleIndexFromX(x, width, cohortIndex, data) {
-  console.log('sample from X',x,width,cohortIndex,data);
+function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
+  if(cohortIndex===0){
+    return Math.trunc( x / (width / sampleLength) );
+  }
+  else
+  if(cohortIndex===1){
+    return Math.trunc( x / (width / sampleLength) );
+  }
+  else{
+    console.error('how we get here?');
+  }
+
   return undefined;
 }
 
 function getPointData(event, props) {
+  console.log('getting point data');
   let {labelHeight, pathways,cohortIndex, data, width} = props;
   // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event);
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
-  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, data);
-  console.log('sample index',sampleIndex);
-  return pathways[pathwayIndex];
+  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, data.samples.length);
+  console.log('point data',pathwayIndex,sampleIndex);
+  return {
+    pathway: pathways[pathwayIndex],
+    tissue: sampleIndex < 0 ? 'Header' : data.samples[sampleIndex],
+  };
+  // return pathways[pathwayIndex];
 }
 
 /**
@@ -73,7 +88,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways, selectedGeneSet, width} = this.props;
+      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways, width} = this.props;
       const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity, paradigm,  paradigmPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
@@ -107,14 +122,18 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      prunedColumns.samples = samples;
-      let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
+      console.log('Gene Set pruned columns',prunedColumns.data);
+      // prunedColumns.samples = samples;
+      // console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
+      // let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
+      // console.log('output returned value',returnedValue);
+
 
       return (
         <div>
           <CanvasDrawing
             {...this.props}
-            associatedData={returnedValue.data}
+            associatedData={prunedColumns.data}
             cohortIndex={cohortIndex}
             draw={DrawFunctions.drawGeneSetView}
             height={totalHeight}

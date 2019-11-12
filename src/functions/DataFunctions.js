@@ -123,11 +123,12 @@ export function pruneColumns(data, pathways) {
 
 export function createAssociatedDataKey(inputHash) {
   const {
-    pathways, samples, filter, selectedCohort
+    pathways, samples, filter, selectedCohort, selectedGeneSet
   } = inputHash;
   return {
     filter,
     pathways,
+    selectedGeneSet,
     samples:samples.sort(),
     selectedCohort,
   };
