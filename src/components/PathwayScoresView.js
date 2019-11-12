@@ -124,7 +124,8 @@ export default class PathwayScoresView extends PureComponent {
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
 
-      console.log('data for PSV',data);
+      console.log('data for PSV',data,cohortIndex);
+      console.log('data for PSV data stats',this.props.dataStats);
       console.log('sorted samples for PSV',sortedSamples);
 
       return (

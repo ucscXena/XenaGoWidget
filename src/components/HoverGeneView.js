@@ -45,6 +45,7 @@ export default class HoverGeneView extends PureComponent {
     render() {
       let {data, cohortIndex, filter} = this.props;
       if (data.tissue) {
+        // console.log('hoping that we get activity for the data item,',data)
         return (
           <div>
             {data.tissue !== 'Header' && data.source === 'GeneSet' &&
@@ -54,6 +55,7 @@ export default class HoverGeneView extends PureComponent {
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
               <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+              {/*<span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>*/}
             </div>
             }
             {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
