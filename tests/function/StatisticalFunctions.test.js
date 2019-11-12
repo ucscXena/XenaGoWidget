@@ -3,10 +3,10 @@ import {addIndepProb} from '../../src/functions/DataFunctions';
 
 describe('Test statistical function', () => {
 
-  it('Calculates single function properly', () => {
+  it('Calculates indep function properly', () => {
     expect([addIndepProb([3])]).toContain(3);
   });
-  it('Calculates multiple function properly 1', () => {
+  it('Calculates indep function properly 1', () => {
     expect([addIndepProb([3,3])]).toContain(-3);
   });
   it('Calculates multiple function properly 2', () => {

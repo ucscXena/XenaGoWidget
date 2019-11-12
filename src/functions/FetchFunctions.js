@@ -39,14 +39,6 @@ export function getSamplesForCohort(cohort,filter) {
   }
 }
 
-export function getAllSamplesForCohorts(cohort){
-  return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
-    datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-    intersection
-  );
-}
-
-
 export function calculateSubCohortCounts(availableSamples, cohort) {
   const subCohorts = getSubCohortsForCohort(cohort.name);
   if(subCohorts && Object.keys(subCohorts).length > 0){

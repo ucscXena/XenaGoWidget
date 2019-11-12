@@ -1,13 +1,8 @@
 import expect from 'expect';
-import { getSamplesForCohort} from '../../src/functions/FetchFunctions';
-import {getCohortDetails} from '../../src/functions/CohortFunctions';
-import {VIEW_ENUM} from '../../src/data/ViewEnum';
-
-function logError(err) {
-  // eslint-disable-next-line no-console
-  console.log(err.stack);
-  return err;
-}
+import { getSamplesForCohort} from '../../../src/functions/FetchFunctions';
+import {getCohortDetails} from '../../../src/functions/CohortFunctions';
+import {VIEW_ENUM} from '../../../src/data/ViewEnum';
+import {logError} from '../../ErrorLogger';
 
 describe('Fetch Functions', () => {
 
@@ -62,4 +57,3 @@ describe('Fetch Functions', () => {
     }).subscribe( () => done(),e => done(logError(e)));
   });
 });
-

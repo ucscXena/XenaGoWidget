@@ -1,35 +1,15 @@
 import expect from 'expect';
 import {
-  doDataAssociations,
-  findAssociatedData,
   findPruneData,
   pruneColumns,
   calculateExpectedProb,
   calculateGeneSetExpected,
-  calculateAssociatedData,
   calculateObserved,
-  calculatePathwayScore,
-  calculateAllPathways,
-  calculateDiffs, generateScoredData, filterCopyNumbers, filterMutations
+  filterCopyNumbers,
+  filterMutations
 } from '../../src/functions/DataFunctions';
 
-import AssociatedDataCopyNumber1 from '../data/AssociatedDataCopyNumber1';
-import AssociatedDataExpression1 from '../data/AssociatedDataExpression1';
-import AssociatedDataGeneList1 from '../data/AssociatedDataGeneList1';
-import AssociatedDataPathways1 from '../data/AssociatedDataPathways1';
-import AssociatedDataSamples1 from '../data/AssociatedDataSamples1';
-import AssociatedDataOutput1 from '../data/AssociatedDataOutput1';
-
 import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
-import CalculateAssociateDataOutput1 from '../data/CalculateAssociateDataOutput1';
-
-import CalculateAllPathwaysA from '../data/CalculateAllPathwaysA';
-import CalculateAllPathwaysB from '../data/CalculateAllPathwaysB';
-import CalculateAllPathwaysOutput from '../data/CalculateAllPathwaysOutput';
-
-import FindAssociatedDataInputHash1 from '../data/FindAssociatedDataInputHash1';
-import FindAssociatedDataKey1 from '../data/FindAssociatedDataKey';
-import FindAssociatedDataOutput1 from '../data/FindAssociatedOutput1';
 
 import FindPruneData1 from '../data/FindPruneAssociatedData1';
 import FindPruneDataKey1 from '../data/FindPruneDataKey1';
@@ -40,11 +20,6 @@ import ExpectedGeneSetData1 from '../data/ExpectedGeneSetData1';
 import PruneColumnData1 from '../data/PruneColumnData1';
 import PruneColumnPathwaysData1 from '../data/PrunePathwaysData1';
 import PruneColumnOutput1 from '../data/PruneColumnOutput1';
-
-import GenerateScoredDataPathwayDataA from '../data/GenerateScoredDataPathwayDataA';
-import GenerateScoredDataPathwayDataB from '../data/GenerateScoredDataPathwayDataB';
-import GenerateScoredDataPathways from '../data/GenerateScoredDataPathways';
-import GenerateScoredDataOutput from '../data/GenerateScoredDataOutput';
 
 import FilterMutationExpression1 from '../data/FilterMutationExpression1';
 import FilterMutationOutput1 from '../data/FilterMutationOutput1';
@@ -73,11 +48,7 @@ import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
 import {VIEW_ENUM} from '../../src/data/ViewEnum';
 
-describe('Data Integration Functions', () => {
-
-  it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION));
-  });
+describe('Data Filtering Functions', () => {
 
   it('Filter Mutations for Gene Set', () => {
     expect(FilterMutationOutput1).toEqual(filterMutations(FilterMutationExpression1, FilterMutationReturnArray1, FilterMutationSamples1, FilterMutationPathways1));
@@ -130,12 +101,6 @@ describe('Data Integration Functions', () => {
     expect(outputFile).toEqual(FilterBothOutput1);
   });
 
-  // TODO: reactivate
-  it('Find Associated Data', () => {
-    expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
-  });
-
-
   it('Find pruned columns', () => {
     expect(FindPruneDataOutput1).toEqual(findPruneData(FindPruneData1,FindPruneDataKey1));
   });
@@ -157,45 +122,9 @@ describe('Data Integration Functions', () => {
     expect(calculateGeneSetExpected(ExpectedGeneSetData1,VIEW_ENUM.CNV_MUTATION)).toEqual(output);
   });
 
-  it('Calculate Associated Data', () => {
-    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
-  });
-
   it('Calculate Observed', () => {
     const outputScore = [53,66,53,19,18,16,18,43,64,86,53,31,33,57,53,66,10,64,37,126,98,85,115,132,124,120,130,131,134,119,132,87,115,89,126,18,111,21,122,116,117];
     expect(calculateObserved(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(outputScore);
   });
 
-  it('Calculate PathwayScore', () => {
-    const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
-    expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
-  });
-
-  // TODO: note for some reason this triggers:
-  // ERROR: 'Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in %s.%s', 'the componentWillUnmount method', '
-  // TODO: probably because its calculating based on the fetch
-  // TODO: activate this again
-  it('Calculate All Pathways', () => {
-    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
-  });
-
-  it('Calculate Diffs', () => {
-    const CalculateDiffsA1 = [{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}];
-    const CalculateDiffsOutput1 = [[{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}],{}];
-    const CalculateDiffsB2 = [{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}];
-    const CalculateDiffsOutput2 =[{},[{'gene':['AKT1']},{'gene':['AKT2']},{'gene':['AKT3']},{'gene':['BTK']},{'gene':['GRB10']},{'gene':['GRB2']},{'gene':['HSPB1']},{'gene':['ILK']},{'gene':['MTCP1']},{'gene':['PDK2']},{'gene':['PDPK1']},{'gene':['PIK3CA']},{'gene':['PIK3CG']},{'gene':['PIK3R1']},{'gene':['PIK3R2']},{'gene':['PAK1']},{'gene':['PRKCA']},{'gene':['PRKCB']},{'gene':['PRKCZ']},{'gene':['PTEN']},{'gene':['TCL1A']}]] ;
-    expect(calculateDiffs(CalculateDiffsA1,{},null)).toEqual(CalculateDiffsOutput1);
-    expect(calculateDiffs({},CalculateDiffsB2,null)).toEqual(CalculateDiffsOutput2);
-  });
-
-  it('Generate Scored Data', () => {
-    const Selection = {'pathway':{'goid':'GO:0006281','golabel':'Modulation of nucleotide pools','gene':['NUDT1','DUT','RRM2B'],'firstObserved':33,'firstTotal':33,'firstNumSamples':136,'firstExpected':20.22441477095158,'firstChiSquared':9.479983189100402,'secondObserved':43,'secondTotal':44,'secondNumSamples':492,'secondExpected':28.71748902704271,'secondChiSquared':7.5436558288678714},'tissue':'Header'};
-    const Filters = [VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION];
-    expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters,false));
-
-  });
-
-
-
 });
-
