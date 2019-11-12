@@ -110,7 +110,7 @@ export default class XenaGoViewer extends PureComponent {
                         style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
                         valign="top"
                       >
-                        <Card style={{height: 300, width: style.gene.columnWidth, marginTop: 5}}>
+                        <Card style={{height: 400, width: style.gene.columnWidth, marginTop: 5}}>
                           <CohortSelector
                             cohortIndex={cohortIndex}
                             copyCohorts={copyCohorts}
