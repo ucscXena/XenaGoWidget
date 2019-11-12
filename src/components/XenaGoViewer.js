@@ -10,12 +10,10 @@ import {VIEW_ENUM} from '../data/ViewEnum';
 import {Card,Button} from 'react-toolbox';
 
 import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp';
-import {DetailedLegend} from './DetailedLegend';
 import {
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
-import {GeneExpressionLegend} from './GeneExpressionLegend';
 import {ViewSelector} from './ViewSelector';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
