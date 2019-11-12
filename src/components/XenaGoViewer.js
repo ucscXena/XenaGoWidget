@@ -39,7 +39,7 @@ const style = {
 export default class XenaGoViewer extends PureComponent {
 
     handleGeneHover = (geneHoverProps) => {
-      if (geneHoverProps) {
+      if (geneHoverProps && geneHoverProps.expression) {
         geneHoverProps.cohortIndex = this.props.cohortIndex;
         geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected;
       }
