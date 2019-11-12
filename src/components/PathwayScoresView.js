@@ -119,7 +119,7 @@ export default class PathwayScoresView extends PureComponent {
         height, offset, cohortIndex,
         colorSettings, highlightedGene,
         showDetailLayer, calculatedWidth,
-        showDiffLayer, layoutData,filter
+        showDiffLayer, layoutData,view
       } = this.props;
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
@@ -131,16 +131,15 @@ export default class PathwayScoresView extends PureComponent {
                   associatedData={data}
                   cohortIndex={cohortIndex}
                   draw={DrawFunctions.drawGeneView}
-                  filter={filter}
                   height={height}
                   layout={layoutData}
+                  view={view}
                   width={calculatedWidth}
                 />
           }
           <LabelWrapper
             cohortIndex={cohortIndex}
             colorSettings={colorSettings}
-            filter={filter}
             geneLabelHeight={GENE_LABEL_HEIGHT}
             height={height}
             highlightedGene={highlightedGene}
@@ -151,6 +150,7 @@ export default class PathwayScoresView extends PureComponent {
             onMouseOut={this.handleLabelHoverOut}
             pathways={pathways}
             showDiffLayer={showDiffLayer}
+            view={view}
             width={calculatedWidth}
           />
         </div>
@@ -163,7 +163,6 @@ PathwayScoresView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   colorSettings: PropTypes.any,
   dataStats: PropTypes.object.isRequired,
-  filter: PropTypes.any.isRequired,
   height: PropTypes.number.isRequired,
   highlightedGene: PropTypes.any,
   layoutData: PropTypes.any.isRequired,
@@ -171,6 +170,7 @@ PathwayScoresView.propTypes = {
   onHover: PropTypes.any.isRequired,
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
+  view: PropTypes.any.isRequired,
 };
 
 

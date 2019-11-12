@@ -47,8 +47,8 @@ export default class XenaGoViewer extends PureComponent {
 
     };
 
-    handleChangeFilter = (filter) => {
-      this.props.onChangeFilter(filter,this.props.cohortIndex);
+    handleChangeView = (filter) => {
+      this.props.onChangeView(filter,this.props.cohortIndex);
     };
 
     handleSelectCohort = (selected) => {
@@ -59,9 +59,9 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
     };
 
-    hasDataForFilter(geneData,filter){
+    hasDataForView(geneData, view){
       if(!geneData) return false;
-      switch (filter) {
+      switch (view) {
       case VIEW_ENUM.GENE_EXPRESSION:
         return geneData.geneExpression!==undefined;
       case VIEW_ENUM.COPY_NUMBER:
@@ -69,12 +69,12 @@ export default class XenaGoViewer extends PureComponent {
       case VIEW_ENUM.MUTATION:
         return geneData.expression && geneData.expression.rows && geneData.expression.rows.length>0;
       case VIEW_ENUM.CNV_MUTATION:
-        return this.hasDataForFilter(geneData,VIEW_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,VIEW_ENUM.MUTATION);
+        return this.hasDataForView(geneData,VIEW_ENUM.COPY_NUMBER) && this.hasDataForView(geneData,VIEW_ENUM.MUTATION);
       case VIEW_ENUM.PARADIGM:
         return geneData.paradigm!==undefined;
       default:
         // eslint-disable-next-line no-console
-        console.error('Error for gene data and filter',geneData,filter);
+        console.error('Error for gene data and view',geneData,view);
         return false;
       }
     }
@@ -82,7 +82,7 @@ export default class XenaGoViewer extends PureComponent {
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
-      let {renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
+      let {renderHeight, renderOffset, cohortIndex,selectedCohort,view,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData, swapCohorts, copyCohorts, onVersusAll,
@@ -104,7 +104,7 @@ export default class XenaGoViewer extends PureComponent {
         return (
           <table>
             <tbody>
-              {this.hasDataForFilter(geneDataStats,filter) &&
+              {this.hasDataForView(geneDataStats,view) &&
                     <tr>
                       <td
                         style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
@@ -114,24 +114,24 @@ export default class XenaGoViewer extends PureComponent {
                           <CohortSelector
                             cohortIndex={cohortIndex}
                             copyCohorts={copyCohorts}
-                            filter={filter}
                             filterCounts={geneDataStats.filterCounts}
                             onChange={this.handleSelectCohort}
                             onChangeSubCohort={this.handleSelectSubCohort}
                             onVersusAll={onVersusAll}
                             selectedCohort={selectedCohort}
                             swapCohorts={swapCohorts}
+                            view={view}
                           />
                           <ViewSelector
                             geneList={geneList}
-                            onChange={this.handleChangeFilter}
+                            onChange={this.handleChangeView}
                             pathwayData={geneDataStats}
-                            selected={filter}
+                            selected={view}
                           />
                           <HoverGeneView
                             cohortIndex={cohortIndex}
                             data={geneHoverData}
-                            filter={filter}
+                            view={view}
                           />
                         </Card>
                         {geneDataStats.pathways.length > MAX_GENE_WIDTH &&
@@ -158,7 +158,6 @@ export default class XenaGoViewer extends PureComponent {
                           collapsed={collapsed}
                           colorSettings={colorSettings}
                           dataStats={geneDataStats}
-                          filter={filter}
                           geneList={geneList}
                           height={renderHeight}
                           highlightedGene={highlightedGene}
@@ -167,6 +166,7 @@ export default class XenaGoViewer extends PureComponent {
                           onHover={this.handleGeneHover}
                           showDetailLayer={showDetailLayer}
                           showDiffLayer={showDiffLayer}
+                          view={view}
                         />
                       </td>
                     </tr>
@@ -183,26 +183,26 @@ XenaGoViewer.propTypes = {
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
   copyCohorts: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
   geneHoverData: PropTypes.any.isRequired,
   highlightedGene: PropTypes.any,
   onChangeCohort: PropTypes.any.isRequired,
-  onChangeFilter: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
-  onGeneHover: PropTypes.any.isRequired, // optional
-  onSetCollapsed: PropTypes.any,
+  onChangeView: PropTypes.any.isRequired,
+  onGeneHover: PropTypes.any.isRequired,
+  onSetCollapsed: PropTypes.any, // optional
   onVersusAll: PropTypes.func.isRequired,
   pathwayData: PropTypes.any.isRequired,
   pathwaySelection: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-
-
   renderHeight: PropTypes.any.isRequired,
+
+
   renderOffset: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-
   showDetailLayer: PropTypes.any,
+
   showDiffLayer: PropTypes.any,
   swapCohorts: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

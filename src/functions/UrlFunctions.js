@@ -2,15 +2,15 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import {getCohortDetails, getSubCohortsOnlyForCohort} from './CohortFunctions';
 import {memoize} from 'underscore';
 
-export function calculateFilters(urlVariables){
+export function calculateViews(urlVariables){
   // handling filters
-  if(urlVariables.filter1){
-    AppStorageHandler.storeFilterState(urlVariables.filter1,0);
+  if(urlVariables.view1){
+    AppStorageHandler.storeViewState(urlVariables.view1,0);
   }
-  if(urlVariables.filter2){
-    AppStorageHandler.storeFilterState(urlVariables.filter2,1);
+  if(urlVariables.view2){
+    AppStorageHandler.storeViewState(urlVariables.view2,1);
   }
-  return [ AppStorageHandler.getFilterState(0), AppStorageHandler.getFilterState(1)];
+  return [ AppStorageHandler.getViewState(0), AppStorageHandler.getViewState(1)];
 }
 
 export function calculateGeneSet(urlVariables,pathways){

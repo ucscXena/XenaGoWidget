@@ -18,16 +18,16 @@ export class ViewSelector extends PureComponent {
 
     render() {
       const {pathwayData, selected} = this.props;
-      const filterCounts = pathwayData.filterCounts;
+      const viewCounts = pathwayData.viewCounts;
       if(pathwayData.expression.length === 0){
         return <div>Loading...</div>;
       }
-      let labels = Object.keys(filterCounts).sort(lowerCaseCompare);
+      let labels = Object.keys(viewCounts).sort(lowerCaseCompare);
       const labelValues = labels.map(label => {
-        if(filterCounts[label].current!==filterCounts[label].available){
-          return ({label: label + ' (' + filterCounts[label].current + '/' + filterCounts[label].available+ ')', value: label});
+        if(viewCounts[label].current!==viewCounts[label].available){
+          return ({label: label + ' (' + viewCounts[label].current + '/' + viewCounts[label].available+ ')', value: label});
         }
-        return ({label: label + ' (' + filterCounts[label].current +')', value: label});
+        return ({label: label + ' (' + viewCounts[label].current +')', value: label});
       });
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>

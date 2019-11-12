@@ -91,7 +91,7 @@ export class CohortSelector extends PureComponent {
 
     render() {
 
-      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex,onVersusAll} = this.props ;
+      let {filterCounts,view, swapCohorts,copyCohorts,cohortIndex,onVersusAll} = this.props ;
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
@@ -101,12 +101,12 @@ export class CohortSelector extends PureComponent {
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
             cohortIndex={cohortIndex}
-            filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
             onSelectVsAll={onVersusAll}
             onToggle={this.handleSubCohortToggle}
             selectedCohort={this.props.selectedCohort}
             selectedSubCohorts={this.props.selectedCohort.selectedSubCohorts}
+            viewCounts={filterCounts[view]}
           />
           }
           <div style={{
@@ -155,7 +155,6 @@ export class CohortSelector extends PureComponent {
 CohortSelector.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   copyCohorts: PropTypes.any.isRequired,
-  filter: PropTypes.string.isRequired,
   filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
@@ -163,4 +162,5 @@ CohortSelector.propTypes = {
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
   swapCohorts: PropTypes.any.isRequired,
+  view: PropTypes.string.isRequired,
 };

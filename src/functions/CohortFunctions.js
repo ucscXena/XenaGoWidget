@@ -127,12 +127,12 @@ export function fetchCohortData() {
   return COHORT_DATA;
 }
 
-export function matchFilters(filter,newFilter,cohortIndex){
+export function matchViews(view, newView, cohortIndex){
   const otherCohort = cohortIndex === 0 ? 1 : 0 ;
   let filterState = [
-    cohortIndex===0  ? newFilter : filter[0]  ,
-    cohortIndex===1  ? newFilter : filter[1]  ,
+    cohortIndex===0  ? newView : view[0]  ,
+    cohortIndex===1  ? newView : view[1]  ,
   ];
-  filterState[otherCohort] = newFilter;
+  filterState[otherCohort] = newView;
   return filterState;
 }

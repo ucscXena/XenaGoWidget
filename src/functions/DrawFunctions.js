@@ -11,6 +11,7 @@ import {
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from './DataFunctions';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -77,7 +78,7 @@ export let interpolateGeneExpressionFont = (score) => {
 };
 
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
-  labelHeight, cohortIndex,filter) {
+  labelHeight, cohortIndex,view) {
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -106,7 +107,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      if(view===VIEW_ENUM.GENE_EXPRESSION){
         const geneExpressionScore = sumDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
@@ -122,7 +123,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
         }
       }
       else
-      if(filter===VIEW_ENUM.PARADIGM){
+      if(view===VIEW_ENUM.PARADIGM){
         const geneExpressionScore = sumDataByType(d, 'paradigm');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
@@ -199,12 +200,12 @@ function findPathwayData(pathwayWidth, count) {
 }
 
 
-function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
+function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,view) {
 
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
-  const colorFilter = filter === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
+  const colorView = isViewGeneExpression(view) ? 'geneExpression': 'total';
 
 
   layout.forEach((el, i) => {
@@ -220,7 +221,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const d = rowData.slice(r.start, r.end + 1);
       //
       const pxRow = el.start * 4 * img.width; // first column and row in the block
-      if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      if(view===VIEW_ENUM.GENE_EXPRESSION){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
@@ -236,7 +237,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
         }
       }
       else
-      if(filter===VIEW_ENUM.PARADIGM){
+      if(view===VIEW_ENUM.PARADIGM){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'paradigmPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
@@ -252,7 +253,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
         }
       }
       else{
-        let color = regionColor(d, colorFilter);
+        let color = regionColor(d, colorView);
         color = color > 255 ? 255 : color;
 
         // start buffer at the correct column
@@ -278,7 +279,7 @@ export default {
 
   drawGeneView(vg, props) {
     const {
-      width, height, layout, cohortIndex, associatedData, filter
+      width, height, layout, cohortIndex, associatedData, view
     } = props;
 
 
@@ -286,16 +287,16 @@ export default {
     if (associatedData.length === 0) {
       return;
     }
-    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex,filter);
+    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex,view);
   },
 
   drawGeneSetView(vg, props) {
     const {
-      width, layout, labelHeight, cohortIndex, associatedData,filter
+      width, layout, labelHeight, cohortIndex, associatedData,view
     } = props;
     const totalHeight = labelHeight * layout.length;
     clearScreen(vg, width, totalHeight);
-    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter);
+    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,view);
   },
 
 };

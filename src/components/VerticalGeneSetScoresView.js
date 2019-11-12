@@ -53,8 +53,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       this.props.onClick(getPointData(event, this.props));
     };
 
-    sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-      switch (filter) {
+    sortSampleActivity(view, prunedColumns, selectedGeneSet) {
+      switch (view) {
       case VIEW_ENUM.GENE_EXPRESSION:
         return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
       case VIEW_ENUM.PARADIGM:
@@ -66,7 +66,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
+      let {data, cohortIndex, view, labelHeight, selectedCohort, pathways,showDetails, selectedGeneSet} = this.props;
       const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity, paradigm,  paradigmPathwayActivity} = data;
       if (!data) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
@@ -90,7 +90,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         geneList,
         pathways,
         samples,
-        filter,
+        view,
         selectedCohort
       };
       if (expression === undefined || expression.length === 0) {
@@ -101,7 +101,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
       prunedColumns.samples = samples;
-      let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
+      let returnedValue = this.sortSampleActivity(view,prunedColumns,selectedGeneSet) ;
 
       return (
         <div>
@@ -126,7 +126,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 VerticalGeneSetScoresView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
   onHover: PropTypes.any.isRequired,
@@ -135,4 +134,5 @@ VerticalGeneSetScoresView.propTypes = {
   selectedCohort: PropTypes.any.isRequired,
   selectedGeneSet: PropTypes.any,
   showDetails: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

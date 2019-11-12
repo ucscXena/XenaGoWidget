@@ -43,7 +43,7 @@ export default class HoverGeneView extends PureComponent {
     };
 
     render() {
-      let {data, cohortIndex, filter} = this.props;
+      let {data, cohortIndex, view} = this.props;
       if (data.tissue) {
         return (
           <div>
@@ -56,7 +56,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          {filter===VIEW_ENUM.PARADIGM &&
+                          {view===VIEW_ENUM.PARADIGM &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -70,7 +70,7 @@ export default class HoverGeneView extends PureComponent {
                             </div>
                           </div>
                           }
-                          {filter===VIEW_ENUM.GENE_EXPRESSION &&
+                          {view===VIEW_ENUM.GENE_EXPRESSION &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -142,7 +142,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && view !== VIEW_ENUM.GENE_EXPRESSION && view !== VIEW_ENUM.PARADIGM &&
                     <div>
                       <div className={BaseStyle.pathwayChip}>
                         <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
@@ -153,14 +153,14 @@ export default class HoverGeneView extends PureComponent {
                     </div>
             }
             {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && ( isViewGeneExpression(filter))  &&
+            && ( isViewGeneExpression(view))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
                 <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
-                  {filter===VIEW_ENUM.PARADIGM &&
+                  {view===VIEW_ENUM.PARADIGM &&
                   <div
                     style={{
                       padding: 5,
@@ -174,7 +174,7 @@ export default class HoverGeneView extends PureComponent {
                     {data.pathway.paradigmMean.toPrecision(2)}
                   </div>
                   }
-                  {filter===VIEW_ENUM.GENE_EXPRESSION &&
+                  {view===VIEW_ENUM.GENE_EXPRESSION &&
                   <div
                     style={{
                       padding: 5,
@@ -198,18 +198,18 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
+                      {view !== VIEW_ENUM.GENE_EXPRESSION && view !== VIEW_ENUM.PARADIGM &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                       }
-                      {filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
+                      {view !== VIEW_ENUM.GENE_EXPRESSION && view !== VIEW_ENUM.PARADIGM &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
                       }
                       <div>
-                        <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+                        <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,view)}</span>
                       </div>
                     </div>
             }
@@ -225,5 +225,5 @@ export default class HoverGeneView extends PureComponent {
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

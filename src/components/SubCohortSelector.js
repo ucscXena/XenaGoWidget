@@ -28,7 +28,7 @@ export class SubCohortSelector extends PureComponent {
       this.setState({
         selectedSubCohorts:this.props.selectedSubCohorts,
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
-        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.filterCounts.subCohortCounts.map( f => f.name).sort())
+        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.viewCounts.subCohortCounts.map(f => f.name).sort())
       });
     }
   }
@@ -37,7 +37,7 @@ export class SubCohortSelector extends PureComponent {
   handleSelectOnly = (field) => {
     const newSelected = [field];
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.viewCounts.subCohortCounts.map(f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -60,7 +60,7 @@ export class SubCohortSelector extends PureComponent {
       let indexValue = newSelected.indexOf(field);
       newSelected.splice(indexValue,1);
     }
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.viewCounts.subCohortCounts.map(f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -69,7 +69,7 @@ export class SubCohortSelector extends PureComponent {
 
   selectAll(){
     this.setState({
-      selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
+      selectedSubCohorts:this.props.viewCounts.subCohortCounts.map(a => a.name),
       allSelected:true,
     });
   }
@@ -87,7 +87,7 @@ export class SubCohortSelector extends PureComponent {
 
   render() {
 
-    let {active,selectedCohort,filterCounts} = this.props;
+    let {active,selectedCohort,viewCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
 
     return (
@@ -108,7 +108,7 @@ export class SubCohortSelector extends PureComponent {
               <td>
                 <Grid style={{marginTop: 20,width:900}}>
                   {
-                    filterCounts.subCohortCounts.sort( (a,b) => a.name.localeCompare(b.name)).map( cs =>{
+                    viewCounts.subCohortCounts.sort( (a, b) => a.name.localeCompare(b.name)).map(cs =>{
                       return (
                         <Row key={cs.name}>
                           <Col md={12}>
@@ -144,7 +144,7 @@ export class SubCohortSelector extends PureComponent {
                 {!allSelected &&
                 <Link
                   href='#'
-                  label={`(Select All ${filterCounts.available})`}
+                  label={`(Select All ${viewCounts.available})`}
                   onClick={() => this.selectAll()}
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />
@@ -152,7 +152,7 @@ export class SubCohortSelector extends PureComponent {
                 {allSelected &&
                 <Link
                   disabled
-                  label={`All ${filterCounts.available} Selected`}
+                  label={`All ${viewCounts.available} Selected`}
                   style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                 />
                 }
@@ -180,10 +180,10 @@ export class SubCohortSelector extends PureComponent {
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
-  filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
   onSelectVsAll: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
+  viewCounts: PropTypes.any.isRequired,
 };

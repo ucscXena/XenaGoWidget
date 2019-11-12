@@ -23,7 +23,7 @@ export default class LabelWrapper extends PureComponent {
       colorSettings
       , geneLabelHeight
       , width
-      , filter
+      , view
       , height
       , layout
       , onMouseMove
@@ -45,7 +45,7 @@ export default class LabelWrapper extends PureComponent {
           cohortIndex={cohortIndex}
           colorMask={getGeneColorMask()}
           colorSettings={colorSettings}
-          filter={filter}
+          view={view}
           height={height}
           highlightedGene={highlightedGene}
           labelHeight={geneLabelHeight}
@@ -61,7 +61,6 @@ export default class LabelWrapper extends PureComponent {
 LabelWrapper.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   colorSettings: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   geneLabelHeight: PropTypes.any.isRequired,
   height: PropTypes.any.isRequired,
   highlightedGene: PropTypes.any,
@@ -72,5 +71,6 @@ LabelWrapper.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   showDiffLayer: PropTypes.any,
+  view: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
 };

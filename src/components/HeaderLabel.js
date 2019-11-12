@@ -69,14 +69,14 @@ export class HeaderLabel extends PureComponent {
     };
 
     render() {
-      let {width, filter, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
+      let {width, view, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(filter===VIEW_ENUM.PARADIGM) {
+      if(view===VIEW_ENUM.PARADIGM) {
         colorDensity = item.paradigmMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
       else
-      if(filter===VIEW_ENUM.GENE_EXPRESSION) {
+      if(view===VIEW_ENUM.GENE_EXPRESSION) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
@@ -105,7 +105,6 @@ export class HeaderLabel extends PureComponent {
 
 HeaderLabel.propTypes = {
   colorSettings: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   geneLength: PropTypes.any.isRequired,
   highlighted: PropTypes.any.isRequired,
   item: PropTypes.any.isRequired,
@@ -114,5 +113,6 @@ HeaderLabel.propTypes = {
   labelString: PropTypes.string.isRequired,
   left: PropTypes.any.isRequired,
   numSamples: PropTypes.number.isRequired,
+  view: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
 };
