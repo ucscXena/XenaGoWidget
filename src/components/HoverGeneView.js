@@ -6,7 +6,7 @@ import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
-import {isViewGeneExpression} from "../functions/DataFunctions";
+import {isViewGeneExpression} from '../functions/DataFunctions';
 
 export default class HoverGeneView extends PureComponent {
 

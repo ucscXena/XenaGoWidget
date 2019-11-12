@@ -9,7 +9,7 @@ import {
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
 import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
-import {VIEW_ENUM} from "../data/ViewEnum";
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -83,9 +83,6 @@ export class HeaderLabel extends PureComponent {
       else {
         colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
         interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
-      }
-      if(labelString.indexOf('small')>0){
-        console.log('paradigm',item,colorDensity,this.fontColor(colorDensity))
       }
       return (
         <svg
