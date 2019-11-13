@@ -599,8 +599,8 @@ function sortGeneData(inputData,view){
 export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
-  const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter[0]);
-  const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter[1]);
+  const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter);
+  const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter);
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
@@ -612,9 +612,9 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   let sortedGeneDataA;
   let sortedGeneDataB;
   if (showClusterSort) {
-    sortedGeneDataA = sortGeneData(geneDataA,filter[0]);
+    sortedGeneDataA = sortGeneData(geneDataA,filter);
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter);
   } else {
     // sortedGeneDataA = diffSort(geneDataA,'INVERSE');
     // sortedGeneDataB = diffSort(geneDataB);

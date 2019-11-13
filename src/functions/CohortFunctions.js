@@ -127,12 +127,3 @@ export function fetchCohortData() {
   return COHORT_DATA;
 }
 
-export function matchFilters(filter,newFilter,cohortIndex){
-  const otherCohort = cohortIndex === 0 ? 1 : 0 ;
-  let filterState = [
-    cohortIndex===0  ? newFilter : filter[0]  ,
-    cohortIndex===1  ? newFilter : filter[1]  ,
-  ];
-  filterState[otherCohort] = newFilter;
-  return filterState;
-}

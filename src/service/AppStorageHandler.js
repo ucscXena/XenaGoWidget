@@ -155,29 +155,21 @@ export class AppStorageHandler {
     return false ;
   }
 
-  static storeFilterState(selected, cohortIndex) {
+  static storeFilterState(selected) {
     if (!selected) return;
     const appState = AppStorageHandler.getAppState();
     if (!appState.filterState) {
-      appState.filterState = [];
+      appState.filterState = undefined ;
     }
     // TODO: remove this hack
-    appState.filterState[cohortIndex] = selected;
+    appState.filterState = selected;
     AppStorageHandler.storeAppState(appState);
   }
 
-  static storeFilterStateArray(array){
-    if(array.length!==2) {
-      throw new exception('Must be an array of size two');
-    }
-    this.storeFilterState(array[0],0);
-    this.storeFilterState(array[1],1);
-  }
-
-  static getFilterState(cohortIndex) {
+  static getFilterState() {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
-      return appState.filterState[cohortIndex];
+    if (appState && appState.filterState  && this.isValidFilterState(appState.filterState)) {
+      return appState.filterState;
     }
     return VIEW_ENUM.PARADIGM;
   }
