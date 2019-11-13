@@ -332,8 +332,8 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
     ];
 
     // calculate samples for what samples we will actually fetch
-    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],availableSamples[3],filter[0]);
-    const samplesB = getSamplesForFilter(availableSamples[4],availableSamples[5],availableSamples[6],availableSamples[7],filter[1]);
+    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],availableSamples[3],filter);
+    const samplesB = getSamplesForFilter(availableSamples[4],availableSamples[5],availableSamples[6],availableSamples[7],filter);
 
     // const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);

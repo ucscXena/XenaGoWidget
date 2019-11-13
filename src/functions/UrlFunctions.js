@@ -2,15 +2,12 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import {getCohortDetails, getSubCohortsOnlyForCohort} from './CohortFunctions';
 import {memoize} from 'underscore';
 
-export function calculateFilters(urlVariables){
+export function calculateFilter(urlVariables){
   // handling filters
-  if(urlVariables.filter1){
-    AppStorageHandler.storeFilterState(urlVariables.filter1,0);
+  if(urlVariables.filter){
+    AppStorageHandler.storeFilterState(urlVariables.filter);
   }
-  if(urlVariables.filter2){
-    AppStorageHandler.storeFilterState(urlVariables.filter2,1);
-  }
-  return [ AppStorageHandler.getFilterState(0), AppStorageHandler.getFilterState(1)];
+  return AppStorageHandler.getFilterState();
 }
 
 export function calculateGeneSet(urlVariables,pathways){
@@ -46,11 +43,10 @@ export function calculateCohorts(urlVariables){
   // handle selected subCohorts
   return [ AppStorageHandler.getCohortState(0), AppStorageHandler.getCohortState(1)];
 }
-export const generateUrl = (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
+export const generateUrl = (filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
   let generatedUrl = `cohort1=${cohort1}`;
   generatedUrl += `&cohort2=${cohort2}`;
-  generatedUrl += `&filter1=${filter1}`;
-  generatedUrl += `&filter2=${filter2}`;
+  generatedUrl += `&filter=${filter}`;
   generatedUrl += `&geneset=${geneset}`;
   if( selectedSubCohorts1){
     generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`;
@@ -61,4 +57,5 @@ export const generateUrl = (filter1,filter2,geneset,cohort1,cohort2,selectedSubC
   return generatedUrl;
 };
 
-export const generatedUrlFunction = memoize(generateUrl, (filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => JSON.stringify([filter1,filter2,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2]));
+export const generatedUrlFunction = memoize(generateUrl, (filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) =>
+  JSON.stringify([filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2]));

@@ -23,14 +23,14 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
-import {getCohortDetails, getSubCohortsOnlyForCohort, matchFilters} from '../functions/CohortFunctions';
+import {getCohortDetails, getSubCohortsOnlyForCohort } from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {scorePathway, SortType} from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import FaExpand from 'react-icons/lib/fa/arrows-alt';
 import QueryString from 'querystring';
-import {calculateCohorts, calculateFilters, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
+import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
@@ -74,7 +74,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const pathways = AppStorageHandler.getPathways();
     const urlVariables = QueryString.parse(location.hash.substr(1));
 
-    const filters = calculateFilters(urlVariables);
+    const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
     const cohorts = calculateCohorts(urlVariables);
 
@@ -93,7 +93,7 @@ export default class XenaGeneSetApp extends PureComponent {
       sortViewBy:'Diff',
       filterOrder:'desc',
       filterBy:'AbsDiff',
-      filter:filters,
+      filter:filter,
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
@@ -126,8 +126,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   componentDidUpdate() {
     const generatedUrl = generatedUrlFunction(
-      this.state.filter[0],
-      this.state.filter[1],
+      this.state.filter,
       this.state.pathwaySelection.pathway.golabel,
       this.state.selectedCohort[0].name,
       this.state.selectedCohort[1].name,
@@ -196,7 +195,7 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways,
         cohortData,
         cohort: selectedCohorts[0],
-        filter: this.state.filter[0],
+        filter: this.state.filter,
         filterCounts: filterCounts[0],
 
         copyNumber: copyNumberA,
@@ -216,7 +215,7 @@ export default class XenaGeneSetApp extends PureComponent {
         pathways,
         cohortData,
         cohort: selectedCohorts[1],
-        filter: this.state.filter[1],
+        filter: this.state.filter,
         filterCounts: filterCounts[1],
 
         copyNumber: copyNumberB,
@@ -466,9 +465,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handleChangeFilter = (newFilter, cohortIndex) => {
       AppStorageHandler.storeFilterState(newFilter, cohortIndex);
-      let {pathwayData,pathwaySelection,filter} = this.state;
-      const filterState = matchFilters(filter,newFilter,cohortIndex);
-
+      let {pathwayData,pathwaySelection} = this.state;
       let newPathwayData = update(pathwayData,{
         [cohortIndex]: {
           filter: { $set: newFilter},
@@ -480,8 +477,8 @@ export default class XenaGeneSetApp extends PureComponent {
       };
 
       let newPathways = calculateAllPathways(newPathwayData);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,filterState,showClusterSort);
-      this.setState({ filter:filterState ,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
+      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter,showClusterSort);
+      this.setState({ filter:newFilter,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
 
@@ -502,13 +499,7 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortSourceIndex === 0 ? targetCohort : sourceCohort,
     ];
     AppStorageHandler.storeCohortStateArray(newCohortState);
-    const filterState = [
-      this.state.filter[cohortSourceIndex]  ,
-      this.state.filter[cohortSourceIndex]  ,
-    ];
-    AppStorageHandler.storeFilterStateArray(filterState);
     this.setState( {selectedCohort: newCohortState,
-      filter:filterState,
       fetch: true,
       currentLoadState: LOAD_STATE.LOADING
     });
@@ -521,16 +512,10 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[0],
     ];
     AppStorageHandler.storeCohortStateArray(newCohortState);
-    const filterState = [
-      this.state.filter[1]  ,
-      this.state.filter[0]  ,
-    ];
-    AppStorageHandler.storeFilterStateArray(filterState);
     this.setState( {
       selectedCohort: newCohortState,
       fetch: true,
       currentLoadState: LOAD_STATE.LOADING,
-      filter: filterState,
     });
   };
 
@@ -541,13 +526,7 @@ export default class XenaGeneSetApp extends PureComponent {
         this.state.selectedCohort[cohortSourceIndex],
       ];
       AppStorageHandler.storeCohortStateArray(newCohortState);
-      const filterState = [
-        this.state.filter[cohortSourceIndex]  ,
-        this.state.filter[cohortSourceIndex]  ,
-      ];
-      AppStorageHandler.storeFilterStateArray(filterState);
       this.setState( {selectedCohort: newCohortState,
-        filter:filterState,
         fetch: true,
         currentLoadState: LOAD_STATE.LOADING
       });
@@ -573,7 +552,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleMeanActivityData = (output) => {
     // 1. fetch activity
-    const geneSets = getGeneSetsForView(this.state.filter[0]);
+    const geneSets = getGeneSetsForView(this.state.filter);
     let loadedPathways = geneSets.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined ;
       p.secondGeneExpressionPathwayActivity = undefined ;
@@ -610,9 +589,9 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
 
-      if(getCohortDataForView(this.state.selectedCohort,this.state.filter[0])!==null){
+      if(getCohortDataForView(this.state.selectedCohort,this.state.filter)!==null){
         if(this.state.reloadPathways){
-          fetchBestPathways(this.state.selectedCohort,this.state.filter[0],this.handleMeanActivityData);
+          fetchBestPathways(this.state.selectedCohort,this.state.filter,this.handleMeanActivityData);
         }
         else{
           fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
@@ -669,7 +648,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 pathwayData={this.state.pathwayData}
                 pathways={this.state.pathways}
                 setPathways={this.setActiveGeneSets}
-                view={this.state.filter[0]}
+                view={this.state.filter}
               />
             </Dialog>
           }
@@ -684,8 +663,8 @@ export default class XenaGeneSetApp extends PureComponent {
                           <VerticalLegend/>
                         </td>
                         <td colSpan={1}>
-                          { !isViewGeneExpression(this.state.filter[0]) && <DetailedLegend/>}
-                          { isViewGeneExpression(this.state.filter[0]) && <GeneExpressionLegend/>}
+                          { !isViewGeneExpression(this.state.filter) && <DetailedLegend/>}
+                          { isViewGeneExpression(this.state.filter) && <GeneExpressionLegend/>}
                         </td>
                       </tr>
                       <tr>
@@ -790,7 +769,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           <VerticalGeneSetScoresView
                             cohortIndex={0}
                             data={this.state.pathwayData[0]}
-                            filter={this.state.filter[0]}
+                            filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             onClick={this.handleVerticalGeneSetSelect}
                             onHover={this.handlePathwayHover}
@@ -822,7 +801,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           <VerticalGeneSetScoresView
                             cohortIndex={1}
                             data={this.state.pathwayData[1]}
-                            filter={this.state.filter[1]}
+                            filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             onClick={this.handleVerticalGeneSetSelect}
                             onHover={this.handlePathwayHover}
@@ -873,7 +852,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     copyCohorts={this.copyCohorts}
 
                                     // data
-                                    filter={this.state.filter[0]}
+                                    filter={this.state.filter}
                                     geneDataStats={this.state.geneData[0]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[0] : {}}
 
@@ -909,7 +888,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                     copyCohorts={this.copyCohorts}
 
                                     // data
-                                    filter={this.state.filter[1]}
+                                    filter={this.state.filter}
                                     geneDataStats={this.state.geneData[1]}
                                     geneHoverData={this.state.geneHoverData ? this.state.geneHoverData[1] : {}}
 
