@@ -45,7 +45,7 @@ describe('Sort Functions', () => {
   });
 
   it('Diff sort', () => {
-    expect(DiffSortOutputData1).toEqual(diffSort(DiffSortInput1));
+    expect(DiffSortOutputData1).toEqual(diffSort(DiffSortInput1,'SORT_BY_TYPE'));
   });
 
   it('Synchronized sort', () => {

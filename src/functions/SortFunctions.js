@@ -189,13 +189,24 @@ function sortPathwaysDiffs(prunedColumns, reverse) {
 /**
  * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
  * @param prunedColumns
+ * @param sortType
  */
-export function diffSort(prunedColumns) {
+export function diffSort(prunedColumns,sortType) {
   // console.log('diffsort input',JSON.stringify(prunedColumns),prunedColumns)
   const sortedColumns = sortPathwaysDiffs(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByType(renderedData);
+  if(sortType==='SORT_BY_TYPE'){
+    renderedData = sortByType(renderedData);
+  }
+  else
+  if(sortType==='INVERSE'){
+    // console.log('diff sort',sortType)
+    renderedData = renderedData.reverse();
+  }
+  // else, no transform
+
+
   renderedData = transpose(renderedData);
   const returnColumns = {};
   returnColumns.sortedSamples = renderedData[renderedData.length - 1];

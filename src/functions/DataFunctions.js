@@ -616,8 +616,10 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
     const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
     sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter[1]);
   } else {
-    sortedGeneDataA = diffSort(geneDataA);
-    sortedGeneDataB = diffSort(geneDataB);
+    // sortedGeneDataA = diffSort(geneDataA,'INVERSE');
+    // sortedGeneDataB = diffSort(geneDataB);
+    sortedGeneDataA = diffSort(geneDataA,'SORT_BY_TYPE');
+    sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
   }
   geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
   geneDataA.samples = sortedGeneDataA.samples;
