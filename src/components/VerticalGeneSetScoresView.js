@@ -6,12 +6,8 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {
-  clusterSampleSort,
-  selectedSampleGeneExpressionActivitySort,
-  selectedSampleParadigmActivitySort
-} from '../functions/SortFunctions';
 import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
+import {sortSampleActivity} from '../functions/SortFunctions';
 
 const HEADER_HEIGHT = 15;
 
@@ -103,16 +99,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       this.props.onClick(getPointData(event, this.props));
     };
 
-    sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-      switch (filter) {
-      case VIEW_ENUM.GENE_EXPRESSION:
-        return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
-      case VIEW_ENUM.PARADIGM:
-        return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
-      default:
-        return clusterSampleSort(prunedColumns);
-      }
-    }
 
     render() {
 
@@ -151,10 +137,10 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
 
       let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      console.log('Gene Set pruned columns',prunedColumns.data);
+      console.log('Gene Set pruned columns',prunedColumns);
       prunedColumns.samples = samples;
       console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
-      let returnedValue = this.sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
+      let returnedValue = sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
       console.log('output returned value',returnedValue);
       sharedAssociatedData[cohortIndex] = prunedColumns.data;
 

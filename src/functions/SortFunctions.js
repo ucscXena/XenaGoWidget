@@ -256,6 +256,18 @@ export function scorePathway(p,sortBy) {
   }
 }
 
+export function sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
+  console.log('sorting sample activity',filter,prunedColumns,selectedGeneSet);
+  switch (filter) {
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
+  case VIEW_ENUM.PARADIGM:
+    return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
+  default:
+    return clusterSampleSort(prunedColumns);
+  }
+}
+
 /**
  * Sorts based on a selected sample
  * @param prunedColumns
@@ -265,6 +277,7 @@ export function scorePathway(p,sortBy) {
 export function selectedSampleParadigmActivitySort(prunedColumns, selectedGeneSet) {
   let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
   if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
+  // console.log('data',prunedColumns);
   const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.paradigmPathwayActivity);
   sortWithIndeces( selectedData);
   const sortedIndices = selectedData.sortIndices;
