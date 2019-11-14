@@ -48,6 +48,7 @@ function getPointData(event, props) {
   if(VIEW_ENUM.PARADIGM){
     // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
     console.log('look up ',cohortIndex,pathwayIndex,sampleIndex);
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     // console.log('activity',activity,activity)
     if(cohortIndex===0){
