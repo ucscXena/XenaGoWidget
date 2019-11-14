@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import DrawFunctions from '../functions/DrawFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
-import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {getGenesForPathways, getLabelForIndex} from '../functions/CohortFunctions';
-import {sortSampleActivity} from '../functions/SortFunctions';
+import {getLabelForIndex} from '../functions/CohortFunctions';
+import {pruneColumns} from '../functions/DataFunctions';
 
 const HEADER_HEIGHT = 15;
 
@@ -38,27 +37,18 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
   return undefined;
 }
 
-let sharedAssociatedData = [[],[]];
-
 function getPointData(event, props) {
-  console.log('getting point data props in VGSS',props);
-  let {labelHeight, pathways,cohortIndex, data, width} = props;
+  let {labelHeight, pathways,cohortIndex, width,associatedData} = props;
   // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event);
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
-  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, data.samples.length);
-
-  console.log('point data',pathwayIndex,sampleIndex);
-
-  // TODO: if VIEW_ENUM.PARADIGM
-
-  console.log('from associated data',sharedAssociatedData);
+  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
 
   let pathway = pathways[pathwayIndex];
   if(VIEW_ENUM.PARADIGM){
     // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
     console.log('look up ',cohortIndex,pathwayIndex,sampleIndex);
-    let activity = sharedAssociatedData[cohortIndex][pathwayIndex][sampleIndex].paradigmPathwayActivity;
+    let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     // console.log('activity',activity,activity)
     if(cohortIndex===0){
       pathway.firstParadigmPathwayActivity = activity ;
@@ -73,7 +63,7 @@ function getPointData(event, props) {
   // });
   return {
     pathway: pathway,
-    tissue: sampleIndex < 0 ? 'Header' : data.samples[sampleIndex],
+    tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
     cohortIndex,
   };
   // return pathways[pathwayIndex];
@@ -102,10 +92,10 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, pathways, width, selectedGeneSet} = this.props;
+      let {cohortIndex, labelHeight, pathways, width, selectedGeneSet,associatedData} = this.props;
       console.log('VSGS selected',selectedGeneSet);
-      const {expression, samples, copyNumber, geneExpression, geneExpressionPathwayActivity, paradigm,  paradigmPathwayActivity} = data;
-      if (!data) {
+      // const {expression } = data;
+      if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
       // need a size and vertical start for each
@@ -114,42 +104,28 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       });
 
       const totalHeight = layout.length * labelHeight;
-      let geneList = getGenesForPathways(pathways);
-
-      // need to get an associatedData
-      let hashAssociation = {
-        expression,
-        copyNumber,
-        geneExpression,
-        geneExpressionPathwayActivity,
-        paradigm,
-        paradigmPathwayActivity,
-        geneList,
-        pathways,
-        samples,
-        filter,
-        selectedCohort
-      };
-      if (expression === undefined || expression.length === 0) {
+      if (associatedData.length === 0) {
         return <div>Loading...</div>;
       }
-      let associatedDataKey = createAssociatedDataKey(hashAssociation);
-      let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-
-      let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      console.log('Gene Set pruned columns',prunedColumns);
-      prunedColumns.samples = samples;
-      console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
-      let returnedValue = sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
-      console.log('output returned value',returnedValue);
-      sharedAssociatedData[cohortIndex] = prunedColumns.data;
+      // let associatedDataKey = createAssociatedDataKey(hashAssociation);
+      // let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
+      //
+      // let prunedColumns = findPruneData(associatedData,associatedDataKey);
+      // console.log('Gene Set pruned columns',prunedColumns);
+      let prunedColumns = pruneColumns(associatedData,pathways);
+      console.log('pruned columns',prunedColumns,associatedData);
+      // prunedColumns.samples = samples;
+      // console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
+      // let returnedValue = sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
+      // console.log('output returned value',returnedValue);
+      // sharedAssociatedData[cohortIndex] = prunedColumns.data;
 
 
       return (
         <div>
           <CanvasDrawing
             {...this.props}
-            associatedData={prunedColumns.data}
+            associatedData={associatedData}
             cohortIndex={cohortIndex}
             draw={DrawFunctions.drawGeneSetView}
             height={totalHeight}
@@ -167,8 +143,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 }
 
 VerticalGeneSetScoresView.propTypes = {
+  associatedData: PropTypes.any,
   cohortIndex: PropTypes.any.isRequired,
-  data: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,

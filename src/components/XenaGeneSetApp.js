@@ -85,6 +85,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
+      associatedData:[],
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
@@ -265,6 +266,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
+      associatedData:[associatedDataA,associatedDataB],
       pathwaySelection: selection,
       geneList,
       pathways,
@@ -674,7 +676,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onColorChange={this.handleColorChange}
             onColorToggle={this.handleColorToggle}
           />
-          {this.state.pathways && this.state.sortedPathwayData &&
+          {this.state.pathways && this.state.sortedPathwayData && this.state.associatedData &&
             <Dialog
               active={this.state.showGeneSetSearch}
               onEscKeyDown={() => this.setState({showGeneSetSearch:false})}
@@ -777,8 +779,8 @@ export default class XenaGeneSetApp extends PureComponent {
                       <tr>
                         <td>
                           <VerticalGeneSetScoresView
+                            associatedData={this.state.associatedData[0]}
                             cohortIndex={0}
-                            data={this.state.sortedPathwayData[0]}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             onClick={this.handlePathwaySelect}
@@ -809,8 +811,8 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                         <td>
                           <VerticalGeneSetScoresView
+                            associatedData={this.state.associatedData[1]}
                             cohortIndex={1}
-                            data={this.state.sortedPathwayData[1]}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             onClick={this.handlePathwaySelect}

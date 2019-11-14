@@ -422,6 +422,16 @@ export function isViewGeneExpression(filter){
   }
 }
 
+function labelArray(returnArray,pathways, samples) {
+  for(let pathwayIndex in pathways){
+    for(let sampleIndex in samples){
+      returnArray[pathwayIndex][sampleIndex].golabel = pathways[pathwayIndex].golabel;
+      returnArray[pathwayIndex][sampleIndex].sample = samples[sampleIndex];
+    }
+  }
+  return returnArray ;
+}
+
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
@@ -442,6 +452,7 @@ export function doDataAssociations(expression, copyNumber,
   paradigm, paradigmPathwayActivity,
   geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
+  returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === VIEW_ENUM.CNV_MUTATION || filter === VIEW_ENUM.MUTATION) {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
