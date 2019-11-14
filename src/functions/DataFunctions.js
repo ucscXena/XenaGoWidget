@@ -521,14 +521,6 @@ export function calculateAssociatedData(pathwayData, filter) {
   return associatedData;
 }
 
-export function calculateObserved(pathwayData, filter) {
-  return calculateAssociatedData(pathwayData, filter).map((pathway) => sumInstances(pathway));
-}
-
-export function calculatePathwayScore(pathwayData, filter) {
-  return calculateAssociatedData(pathwayData, filter).map((pathway) => sumTotals(pathway));
-}
-
 function calculateParadigmPathwayActivity(pathwayData) {
   if(pathwayData.filter!==VIEW_ENUM.PARADIGM) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
@@ -542,23 +534,30 @@ function calculateGeneExpressionPathwayActivity(pathwayData) {
 /**
  * Note:
  * @param pathwayData
+ * @param associatedData
  */
-export function calculateAllPathways(pathwayData) {
+export function calculateAllPathways(pathwayData,associatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
+  const associatedDataA = associatedData[0];
+  const associatedDataB = associatedData[1];
 
   const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
   const paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
   // each pathway needs to have its own set BPA samples
-  const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
-  const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
+  // const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
+  const observationsA = associatedDataA.map( pathway => sumInstances(pathway));
+  // const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
+  const totalsA = associatedDataA.map( pathway => sumTotals(pathway));
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
   const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB);
   const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB, pathwayDataB);
-  const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
-  const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
+  // const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
+  const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
+  // const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
+  const totalsB = associatedDataB.map( pathway => sumTotals(pathway));
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
   const maxSamplesAffectedB = pathwayDataB.samples.length;
 

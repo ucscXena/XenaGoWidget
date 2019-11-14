@@ -3,7 +3,6 @@ import {
   doDataAssociations,
   findAssociatedData,
   calculateAssociatedData,
-  calculatePathwayScore,
   calculateAllPathways,
   calculateDiffs, generateScoredData,
 } from '../../../src/functions/DataFunctions';
@@ -32,6 +31,7 @@ import GenerateScoredDataPathways from '../../data/GenerateScoredDataPathways';
 import GenerateScoredDataOutput from '../../data/GenerateScoredDataOutput';
 
 import {VIEW_ENUM} from '../../../src/data/ViewEnum';
+import {sumTotals} from '../../../src/functions/MathFunctions';
 
 describe('Data Integration Functions', () => {
 
@@ -45,7 +45,8 @@ describe('Data Integration Functions', () => {
 
   it('Calculate PathwayScore', () => {
     const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
-    expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
+    // expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
+    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION).map( pathway => sumTotals(pathway))).toEqual(pathwayScore);
   });
 
   // TODO: note for some reason this triggers:
@@ -53,7 +54,10 @@ describe('Data Integration Functions', () => {
   // TODO: probably because its calculating based on the fetch
   // TODO: activate this again
   it('Calculate All Pathways', () => {
-    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
+    let associatedDataA = calculateAssociatedData(CalculateAllPathwaysA,VIEW_ENUM.CNV_MUTATION);
+    let associatedDataB = calculateAssociatedData(CalculateAllPathwaysB,VIEW_ENUM.CNV_MUTATION);
+    // console.log(JSON.stringify(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB],[associatedDataA,associatedDataB])));
+    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB],[associatedDataA,associatedDataB])).toEqual(CalculateAllPathwaysOutput);
   });
 
 

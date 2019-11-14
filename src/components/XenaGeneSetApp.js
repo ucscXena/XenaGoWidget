@@ -5,7 +5,7 @@ import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
-  calculateAllPathways, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
+  calculateAllPathways, calculateAssociatedData, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
 } from '../functions/DataFunctions';
 import FaRefresh from 'react-icons/lib/fa/refresh';
 import BaseStyle from '../css/base.css';
@@ -244,7 +244,10 @@ export default class XenaGeneSetApp extends PureComponent {
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
     };
 
-    pathways = calculateAllPathways([pathwayDataA,pathwayDataB]);
+    let associatedDataA = calculateAssociatedData(pathwayDataA,this.state.filter);
+    let associatedDataB = calculateAssociatedData(pathwayDataB,this.state.filter);
+
+    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[associatedDataA,associatedDataB]);
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 

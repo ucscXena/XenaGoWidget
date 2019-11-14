@@ -4,9 +4,8 @@ import {
   pruneColumns,
   calculateExpectedProb,
   calculateGeneSetExpected,
-  calculateObserved,
   filterCopyNumbers,
-  filterMutations
+  filterMutations, calculateAssociatedData
 } from '../../src/functions/DataFunctions';
 
 import CalculateAssociatedDataPathwayData1 from '../data/CalculateAssociatedDataPathwayData1';
@@ -47,6 +46,7 @@ import FilterBothCopyNumber1 from '../data/FilterBothCopyNumber1';
 import FilterBothGeneList1 from '../data/FilterBothGeneList1';
 import FilterBothOutput1 from '../data/FilterBothOutput1';
 import {VIEW_ENUM} from '../../src/data/ViewEnum';
+import {sumInstances} from '../../src/functions/MathFunctions';
 
 describe('Data Filtering Functions', () => {
 
@@ -124,7 +124,7 @@ describe('Data Filtering Functions', () => {
 
   it('Calculate Observed', () => {
     const outputScore = [53,66,53,19,18,16,18,43,64,86,53,31,33,57,53,66,10,64,37,126,98,85,115,132,124,120,130,131,134,119,132,87,115,89,126,18,111,21,122,116,117];
-    expect(calculateObserved(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(outputScore);
+    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION).map((pathway) => sumInstances(pathway))).toEqual(outputScore);
   });
 
 });
