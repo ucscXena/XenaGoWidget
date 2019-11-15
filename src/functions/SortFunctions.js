@@ -419,12 +419,29 @@ function sortDataBySampleOrder(sortedSample, geneDatum,filter) {
   console.log('sorted samples for GENE',sortedSample,geneDatum,filter);
 
   // lookup the samples for both and create an index based on the first sample set
-
+  const sampleIndices = geneDatum.samples.map( s => sortedSample.indexOf(s) );
+  console.log('gene data samples',geneDatum.samples,sampleIndices);
 
   // swap element based on the filter for each pathway
+  // const newGeneData = update(geneDatum,)
 
+  const transposedData = transpose(geneDatum.paradigm);
+  console.log('tp',transposedData);
+  let sortedData = new Array(transposedData.length);
+  for(let dataIndex in transposedData){
+    sortedData[dataIndex] = transposedData[sampleIndices[dataIndex]];
+  }
 
-  return geneDatum ;
+  // if(filter===VIEW_ENUM.PARADIGM){
+  //   newGeneData.paradigm = sortByIndicies(geneDatum.paradigm,);
+  // }
+  let newGeneData = update(geneDatum,{
+    paradigm: {$set: transpose(sortedData)},
+  });
+  console.log('new gene data',newGeneData,geneDatum);
+
+  // return geneDatum ;
+  return newGeneData ;
 }
 
 export function sortGeneDataWithSamples(sortedSamples,geneData,filter){
