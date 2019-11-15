@@ -260,11 +260,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedDataA,this.state.filter);
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedDataB,this.state.filter);
 
-    // TODO: remove
-    // let sortedPathwayData = this.sortPathwaysBySample(selection.pathway,[pathwayDataA,pathwayDataB],this.state.filter);
 
-    // pathways = calculateAllPathways([pathwayDataA,[associatedDataA,associatedDataB]);
-    // pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[associatedDataA,associatedDataB]);
     pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB]);
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
@@ -274,7 +270,9 @@ export default class XenaGeneSetApp extends PureComponent {
     // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
     // console.log('input',[pathwayDataA,pathwayDataB],sortedPathwayData);
-    const sortedGeneData = sortGeneDataWithSamples([sortedAssociatedDataA.samples,sortedAssociatedDataB.samples],geneData);
+    const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
+    const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
+    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({

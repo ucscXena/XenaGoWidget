@@ -415,16 +415,22 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   };
 }
 
-function sortDataBySampleOrder(sortedSample, geneDatum) {
-  console.log('sorted samples',sortedSample,geneDatum);
+function sortDataBySampleOrder(sortedSample, geneDatum,filter) {
+  console.log('sorted samples for GENE',sortedSample,geneDatum,filter);
+
+  // lookup the samples for both and create an index based on the first sample set
+
+
+  // swap element based on the filter for each pathway
+
 
   return geneDatum ;
 }
 
-export function sortGeneDataWithSamples(sortedSamples,geneData){
+export function sortGeneDataWithSamples(sortedSamples,geneData,filter){
   return [
-    sortDataBySampleOrder(sortedSamples[0],geneData[0]),
-    sortDataBySampleOrder(sortedSamples[1],geneData[1]),
+    sortDataBySampleOrder(sortedSamples[0],geneData[0],filter),
+    sortDataBySampleOrder(sortedSamples[1],geneData[1],filter),
   ];
 }
 
