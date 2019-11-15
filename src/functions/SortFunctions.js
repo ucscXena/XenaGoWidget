@@ -414,3 +414,63 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
     data: renderedData.slice(0, data.length - 1),
   };
 }
+
+function sortDataBySampleOrder(sortedSample, geneDatum) {
+  console.log('sorted samples',sortedSample,geneDatum);
+
+  return geneDatum ;
+}
+
+export function sortGeneDataWithSamples(sortedSamples,geneData){
+  return [
+    sortDataBySampleOrder(sortedSamples[0],geneData[0]),
+    sortDataBySampleOrder(sortedSamples[1],geneData[1]),
+  ];
+}
+
+/**
+ * For each pathway,
+ * @param selectedPathway
+ * @param associatedData
+ * @param filter
+ * @returns {null|*}
+ */
+export function sortAssociatedData(selectedPathway,associatedData,filter){
+
+  // find the selected pathway and sor that sample based on the sample . .
+  console.log('input ass data',associatedData,selectedPathway,filter);
+  const realizedPathway = associatedData.filter( d => d[0].golabel === selectedPathway.golabel );
+
+
+  // create a sorted index
+  console.log('output realized data',realizedPathway);
+
+
+  // TODO: map based on sort order
+  return associatedData.map( pathwayEntry => {
+    pathwayEntry.sort( (a,b) => {
+      // TODO: switch filter
+      return a.paradigmPathwayActivity - b.paradigmPathwayActivity;
+    } );
+  });
+  // return  newAssociatedData;
+
+  // switch (filter) {
+  // case VIEW_ENUM.PARADIGM:
+  //
+  //   break;
+  // case VIEW_ENUM.CNV_MUTATION:
+  //   break;
+  // case VIEW_ENUM.MUTATION:
+  //   break;
+  // case VIEW_ENUM.COPY_NUMBER:
+  //   break;
+  // case VIEW_ENUM.GENE_EXPRESSION:
+  //   break;
+  // default:
+  //   log.error('How did I get here?');
+  //   return null ;
+  // }
+
+  // return associatedData;
+}
