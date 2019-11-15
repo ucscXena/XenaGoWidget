@@ -428,6 +428,33 @@ export function sortGeneDataWithSamples(sortedSamples,geneData){
   ];
 }
 
+// function sortWithIndeces(toSort) {
+//   for (var i = 0; i < toSort.length; i++) {
+//     toSort[i] = [toSort[i], i];
+//   }
+//   toSort.sort(function(left, right) {
+//     return left[0] < right[0] ? 1 : -1;
+//   });
+//   toSort.sortIndices = [];
+//   for (var j = 0; j < toSort.length; j++) {
+//     toSort.sortIndices.push(toSort[j][1]);
+//     toSort[j] = toSort[j][0];
+//   }
+//   return toSort;
+// }
+
+function sortByIndexOrder(associatedDatum, indexedPathway) {
+  let newAssociatedData = new Array(associatedDatum.length);
+  for(let index in associatedDatum){
+    newAssociatedData[index] = associatedDatum[indexedPathway[index].originalIndex] ;
+    // console.log('from',associatedDatum,index,associatedDatum[index]);
+    // console.log('to',newAssociatedData,indexedPathway,indexedPathway.originalIndex,newAssociatedData[indexedPathway.originalIndex]);
+  }
+  // console.log('ass data',associatedDatum,indexedPathway,newAssociatedData);
+  return newAssociatedData ;
+  // return associatedDatum.sort( (a,b) => a.originalIndex - b.originalIndex );
+}
+
 /**
  * For each pathway,
  * @param selectedPathway
@@ -438,39 +465,33 @@ export function sortGeneDataWithSamples(sortedSamples,geneData){
 export function sortAssociatedData(selectedPathway,associatedData,filter){
 
   // find the selected pathway and sor that sample based on the sample . .
-  console.log('input ass data',associatedData,selectedPathway,filter);
+  // console.log('input ass data',associatedData,selectedPathway,filter);
   const realizedPathway = associatedData.filter( d => d[0].golabel === selectedPathway.golabel );
-
-
-  // create a sorted index
-  console.log('output realized data',realizedPathway);
-
-
-  // TODO: map based on sort order
-  return associatedData.map( pathwayEntry => {
-    pathwayEntry.sort( (a,b) => {
-      // TODO: switch filter
-      return a.paradigmPathwayActivity - b.paradigmPathwayActivity;
-    } );
+  const indexedPathway = realizedPathway[0].map( (p,i) => {
+    p.originalIndex = i ;
+    return p ;
+  }).sort( (a,b) => {
+    // TODO: map for other filters
+    if(filter===VIEW_ENUM.PARADIGM){
+      return b.paradigmPathwayActivity - a.paradigmPathwayActivity;
+    }
+    else
+    if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity;
+    }
+    else{
+      console.error('verify this filter',filter);
+      return b.total - a.total;
+    }
+    // return  0 ;
   });
-  // return  newAssociatedData;
+  // create a sorted index
 
-  // switch (filter) {
-  // case VIEW_ENUM.PARADIGM:
-  //
-  //   break;
-  // case VIEW_ENUM.CNV_MUTATION:
-  //   break;
-  // case VIEW_ENUM.MUTATION:
-  //   break;
-  // case VIEW_ENUM.COPY_NUMBER:
-  //   break;
-  // case VIEW_ENUM.GENE_EXPRESSION:
-  //   break;
-  // default:
-  //   log.error('How did I get here?');
-  //   return null ;
-  // }
-
-  // return associatedData;
+  let newAssociatedData = new Array(associatedData.length);
+  for(let index in associatedData){
+    newAssociatedData[index] = sortByIndexOrder( associatedData[index] , indexedPathway );
+  }
+  // console.log('output realized data',realizedPathway[0],indexedPathway);
+  // console.log('newAssociatedData',associatedData,newAssociatedData);
+  return  newAssociatedData;
 }

@@ -278,7 +278,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
-      associatedData:[associatedDataA,associatedDataB],
+      associatedData:[sortedAssociatedDataA,sortedAssociatedDataB],
       pathwaySelection: selection,
       geneList,
       pathways,
@@ -397,7 +397,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
       const geneSetPathways = AppStorageHandler.getPathways();
 
-      const newAssociatedData = sortAssociatedData(associatedData,filter);
+      console.log('pathway selection',pathwaySelectionWrapper);
+
+      const newAssociatedData = [
+        sortAssociatedData(pathwaySelectionWrapper.pathway,associatedData[0],filter),
+        sortAssociatedData(pathwaySelectionWrapper.pathway,associatedData[1],filter),
+      ];
       // let sortedPathwayData = this.sortPathwaysBySample(selection.pathway,pathwayData,filter);
       // console.log('input',pathwayData,sortedPathwayData);
 
