@@ -260,6 +260,8 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedDataA,this.state.filter);
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedDataB,this.state.filter);
 
+    const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
+    const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
     pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB]);
     pathwayDataA.pathways = pathways ;
@@ -268,11 +270,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
-    let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort);
+    let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort,[sortedSamplesA,sortedSamplesB]);
     // console.log('input',[pathwayDataA,pathwayDataB],sortedPathwayData);
-    const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
-    const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
     const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
+
+    // console.log('sorted samples]',[sortedSamplesA,sortedSamplesB],'gene data',geneData,'vs sorted',sortedGeneData);
+    console.log('sorted samplesB',sortedSamplesB,'gene data',geneData[1],'vs sorted',sortedGeneData[1]);
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
@@ -403,10 +406,15 @@ export default class XenaGeneSetApp extends PureComponent {
       ];
       // let sortedPathwayData = this.sortPathwaysBySample(selection.pathway,pathwayData,filter);
       // console.log('input',pathwayData,sortedPathwayData);
+      const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedData[0],this.state.filter);
+      const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedData[1],this.state.filter);
+
+      const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
+      const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
       // let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort);
       // TODO: create gene data off of the sorted pathway data
-      let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort);
+      let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort,[sortedSamplesA,sortedSamplesB]);
 
       this.setState({
         geneData,

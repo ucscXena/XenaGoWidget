@@ -606,7 +606,7 @@ function sortGeneData(inputData,view){
   }
 }
 
-export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
+export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort,sortedAssociatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter);
@@ -631,12 +631,14 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
     sortedGeneDataA = diffSort(geneDataA,'SORT_BY_TYPE');
     sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
   }
-  geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+  // geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+  geneDataA.sortedSamples = sortedAssociatedData[0];
   geneDataA.samples = sortedGeneDataA.samples;
   geneDataA.pathways = sortedGeneDataA.pathways;
   geneDataA.data = sortedGeneDataA.data;
 
-  geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+  // geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+  geneDataB.sortedSamples = sortedAssociatedData[1];
   geneDataB.samples = sortedGeneDataB.samples;
   geneDataB.pathways = sortedGeneDataB.pathways;
   geneDataB.data = sortedGeneDataB.data;
