@@ -73,6 +73,28 @@ function sortGeneExpression(prunedColumns) {
   });
 }
 
+export function sortBySamples(renderedData,sampleOrder) {
+  // sort samples first based on what gene in position 1 has the highest value
+  // console.log('sorting by samples',renderedData,sampleOrder)
+  // proceed to each gene
+  return renderedData.sort((a, b) => {
+    // console.log('sorting',a,b);
+    return sampleOrder.indexOf(a[0].sample)-sampleOrder.indexOf(b[0].sample);
+    // // // a = sample of a.length -1 genes"paradigm": 0,
+    // for (let index = 0; index < a.length; ++index) {
+    //   if (b[index].paradigm !== a[index].paradigm) return b[index].paradigm - a[index].paradigm;
+    //   if (b[index].geneExpression !== a[index].geneExpression) return b[index].geneExpression - a[index].geneExpression;
+    //   if (b[index].cnvHigh !== a[index].cnvHigh) return b[index].cnvHigh - a[index].cnvHigh;
+    //   if (b[index].cnvLow !== a[index].cnvLow) return b[index].cnvLow - a[index].cnvLow;
+    //   if (b[index].mutation4 !== a[index].mutation4) return b[index].mutation4 - a[index].mutation4;
+    //   if (b[index].mutation3 !== a[index].mutation3) return b[index].mutation3 - a[index].mutation3;
+    //   if (b[index].mutation2 !== a[index].mutation2) return b[index].mutation2 - a[index].mutation2;
+    // }
+    // // sort by sample name
+    // return a[a.length - 1] - b[b.length - 1];
+  });
+}
+
 export function sortByType(renderedData) {
   // sort samples first based on what gene in position 1 has the highest value
   // proceed to each gene
@@ -191,7 +213,7 @@ function sortPathwaysDiffs(prunedColumns, reverse) {
  * @param prunedColumns
  * @param sortType
  */
-export function diffSort(prunedColumns,sortType) {
+export function diffSort(prunedColumns,sortType,sampleOrder) {
   // console.log('diffsort input',JSON.stringify(prunedColumns),prunedColumns)
   const sortedColumns = sortPathwaysDiffs(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
@@ -203,6 +225,11 @@ export function diffSort(prunedColumns,sortType) {
   if(sortType==='INVERSE'){
     // console.log('diff sort',sortType)
     renderedData = renderedData.reverse();
+  }
+  else
+  if(sortType==='PRESERVE_SAMPLES'){
+    // console.log('diff sort',sortType)
+    renderedData = sortBySamples(renderedData,sampleOrder);
   }
   // else, no transform
 

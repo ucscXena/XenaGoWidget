@@ -622,29 +622,36 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   geneDataA.data = scoredGeneDataA.data;
   geneDataB.data = scoredGeneDataB.data;
 
+  let sortedGeneDataA;
+  let sortedGeneDataB;
+  if(SORT_TYPE==='gene_set_sample') {
+    // geneDataA.sortedSamples = sortedAssociatedData[0];
+    // geneDataA.samples = scoredGeneDataA.samples;
+    // geneDataA.pathways = scoredGeneDataA.pathways;
+    //
+    // geneDataB.sortedSamples = sortedAssociatedData[1];
+    // geneDataB.samples = scoredGeneDataB.samples;
+    // geneDataB.pathways = scoredGeneDataB.pathways;
 
-  if(SORT_TYPE==='gene_set_sample'){
-    geneDataA.sortedSamples = sortedAssociatedData[0];
-    geneDataA.samples = scoredGeneDataA.samples;
-    geneDataA.pathways = scoredGeneDataA.pathways;
-
-    geneDataB.sortedSamples = sortedAssociatedData[1];
-    geneDataB.samples = scoredGeneDataB.samples;
-    geneDataB.pathways = scoredGeneDataB.pathways;
+    sortedGeneDataA = diffSort(geneDataA,'PRESERVE_SAMPLES',sortedAssociatedData[0]);
+    // sortedGeneDataB = diffSort(geneDataB,'PRESERVE_SAMPLES',sortedAssociatedData[1]);
+    sortedGeneDataB = diffSort(geneDataB,'PRESERVE_SAMPLES',sortedAssociatedData[1]);
+    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+    geneDataA.samples = sortedGeneDataA.sortedSamples;
+    // geneDataA.sortedSamples = sortedAssociatedData[0];
+    geneDataA.data = sortedGeneDataA.data;
+    // geneDataB.sortedSamples = sortedAssociatedData[1];
+    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+    geneDataB.sample = sortedGeneDataB.sortedSamples;
+    geneDataB.data = sortedGeneDataB.data;
   }
-  else{
-    let sortedGeneDataA;
-    let sortedGeneDataB;
-    if (showClusterSort) {
-      sortedGeneDataA = sortGeneData(geneDataA,filter);
-      const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-      sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter);
-    } else {
-      // sortedGeneDataA = diffSort(geneDataA,'INVERSE');
-      // sortedGeneDataB = diffSort(geneDataB);
-      sortedGeneDataA = diffSort(geneDataA,'SORT_BY_TYPE');
-      sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
-    }
+  else
+  if (showClusterSort) {
+    sortedGeneDataA = sortGeneData(geneDataA,filter);
+    const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
+    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter);
+
+    // TODO: do we need to do anything else with this?
     geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
     // geneDataA.samples = scoredGeneDataA.samples;
     // geneDataA.pathways = scoredGeneDataA.pathways;
@@ -655,6 +662,15 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
     // geneDataB.pathways = scoredGeneDataB.pathways;
     geneDataB.data = sortedGeneDataB.data;
 
+  } else {
+    // sortedGeneDataA = diffSort(geneDataA,'INVERSE');
+    // sortedGeneDataB = diffSort(geneDataB);
+    sortedGeneDataA = diffSort(geneDataA,'SORT_BY_TYPE');
+    sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
+    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+    geneDataA.data = sortedGeneDataA.data;
+    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+    geneDataB.data = sortedGeneDataB.data;
   }
   return [geneDataA, geneDataB];
 }
