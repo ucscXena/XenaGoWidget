@@ -36,7 +36,13 @@ export default class HoverGeneView extends PureComponent {
       case VIEW_ENUM.GENE_EXPRESSION:
         return cohortIndex === 0 ? Number.parseFloat(data.pathway.firstGeneExpressionPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondGeneExpressionPathwayActivity).toFixed(2) ;
       case VIEW_ENUM.PARADIGM:
-        return cohortIndex === 0 ? Number.parseFloat(data.pathway.firstParadigmPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondParadigmPathwayActivity).toFixed(2) ;
+        // shows individual samples if available
+        if(cohortIndex===0){
+          return data.pathway.firstSampleParadigmPathwayActivity!==undefined ? Number.parseFloat(data.pathway.firstSampleParadigmPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.firstParadigmPathwayActivity).toFixed(2);
+        }
+        else{
+          return data.pathway.secondSampleParadigmPathwayActivity!==undefined ? Number.parseFloat(data.pathway.secondSampleParadigmPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondParadigmPathwayActivity).toFixed(2);
+        }
       default:
         return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
       }

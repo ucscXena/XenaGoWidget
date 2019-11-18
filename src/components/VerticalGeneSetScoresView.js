@@ -52,16 +52,12 @@ function getPointData(event, props) {
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     // console.log('activity',activity,activity)
     if(cohortIndex===0){
-      pathway.firstParadigmPathwayActivity = activity ;
+      pathway.firstSampleParadigmPathwayActivity = activity ;
     }
     else{
-      pathway.secondParadigmPathwayActivity = activity ;
+      pathway.secondSampleParadigmPathwayActivity = activity ;
     }
   }
-  // return update( pathways[pathwayIndex],{
-  //   tissue: { $set: sampleIndex < 0 ? 'Header' : data.samples[sampleIndex]},
-  //   cohortIndex: { $set: cohortIndex},
-  // });
   return {
     pathway: pathway,
     tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
