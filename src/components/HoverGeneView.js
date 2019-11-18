@@ -31,40 +31,50 @@ export default class HoverGeneView extends PureComponent {
       return returnString;
 
     };
-    getScore = (data, cohortIndex,filter) => {
-      switch (filter) {
-      case VIEW_ENUM.GENE_EXPRESSION:
-        return cohortIndex === 0 ? Number.parseFloat(data.pathway.firstGeneExpressionPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondGeneExpressionPathwayActivity).toFixed(2) ;
-      case VIEW_ENUM.PARADIGM:
-        // shows individual samples if available
-        if(cohortIndex===0){
-          return data.pathway.firstSampleParadigmPathwayActivity!==undefined ? Number.parseFloat(data.pathway.firstSampleParadigmPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.firstParadigmPathwayActivity).toFixed(2);
-        }
-        else{
-          return data.pathway.secondSampleParadigmPathwayActivity!==undefined ? Number.parseFloat(data.pathway.secondSampleParadigmPathwayActivity).toFixed(2) : Number.parseFloat(data.pathway.secondParadigmPathwayActivity).toFixed(2);
-        }
-      default:
-        return Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
-      }
-    };
 
-    render() {
-      let {data, cohortIndex, filter} = this.props;
-      if (data.tissue) {
-        // console.log('hoping that we get activity for the data item,',data)
-        return (
-          <div>
-            {data.tissue !== 'Header' && data.source === 'GeneSet' &&
+  findScore = (data, cohortIndex,filter) => {
+    switch (filter) {
+    case VIEW_ENUM.GENE_EXPRESSION:
+      return cohortIndex === 0 ? data.pathway.firstGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+    case VIEW_ENUM.PARADIGM:
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleParadigmPathwayActivity!==undefined ? data.pathway.firstSampleParadigmPathwayActivity: data.pathway.firstParadigmPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleParadigmPathwayActivity!==undefined ? data.pathway.secondSampleParadigmPathwayActivity: data.pathway.secondParadigmPathwayActivity;
+      }
+    default:
+      return cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared;
+    }
+  };
+
+  render() {
+    let {data, cohortIndex, filter} = this.props;
+    if (data.tissue) {
+      const score =this.findScore(data, cohortIndex,filter);
+
+      // console.log('hoping that we get activity for the data item,',data)
+      return (
+        <div>
+          {data.tissue !== 'Header' && data.source === 'GeneSet' &&
             <div className={BaseStyle.pathwayChip}>
               <span><strong>Pathway</strong> {data.pathway.golabel}</span>
               <br/>
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
-              <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
-              {/*<span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>*/}
+              <br/>
+              <span
+                className={BaseStyle.scoreBox}
+                style={{
+                  color:interpolateGeneExpressionFont(score),
+                  backgroundColor:interpolateGeneExpression(score)
+                }}
+              >
+                <strong>Mean Score</strong> {score.toFixed(2)}</span>
             </div>
-            }
-            {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
+          }
+          {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
                     <div>
                       {data.pathway &&
                       <div className={BaseStyle.pathwayChip}>
@@ -77,9 +87,9 @@ export default class HoverGeneView extends PureComponent {
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
+                              className={BaseStyle.scoreBox}
                               style={{
-                                padding: 5, borderRadius: 5, marginLeft: 5,
-                                display: 'inline',color:interpolateGeneExpressionFont(data.expression.paradigm)
+                                color:interpolateGeneExpressionFont(data.expression.paradigm)
                                 ,backgroundColor:interpolateGeneExpression(data.expression.paradigm)
                               }}
                             >
@@ -91,9 +101,9 @@ export default class HoverGeneView extends PureComponent {
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
+                              className={BaseStyle.scoreBox}
                               style={{
-                                padding: 5, borderRadius: 5, marginLeft: 5,
-                                display: 'inline',color:interpolateGeneExpressionFont(data.expression.geneExpression),
+                                color:interpolateGeneExpressionFont(data.expression.geneExpression),
                                 backgroundColor:interpolateGeneExpression(data.expression.geneExpression)
                               }}
                             >
@@ -157,8 +167,8 @@ export default class HoverGeneView extends PureComponent {
                         </Chip>
                       }
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
               && data.expression.total > 0 && data.expression.allGeneAffected===undefined && filter !== VIEW_ENUM.GENE_EXPRESSION && filter !== VIEW_ENUM.PARADIGM &&
                     <div>
                       <div className={BaseStyle.pathwayChip}>
@@ -168,8 +178,8 @@ export default class HoverGeneView extends PureComponent {
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
             && ( isViewGeneExpression(filter))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
@@ -179,11 +189,8 @@ export default class HoverGeneView extends PureComponent {
                 <span><strong>Mean ZScore</strong>
                   {filter===VIEW_ENUM.PARADIGM &&
                   <div
+                    className={BaseStyle.scoreBox}
                     style={{
-                      padding: 5,
-                      borderRadius: 5,
-                      marginLeft: 5,
-                      display: 'inline',
                       color: interpolateGeneExpressionFont(data.pathway.paradigmMean),
                       backgroundColor: interpolateGeneExpression(data.pathway.paradigmMean)
                     }}
@@ -193,11 +200,8 @@ export default class HoverGeneView extends PureComponent {
                   }
                   {filter===VIEW_ENUM.GENE_EXPRESSION &&
                   <div
+                    className={BaseStyle.scoreBox}
                     style={{
-                      padding: 5,
-                      borderRadius: 5,
-                      marginLeft: 5,
-                      display: 'inline',
                       color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
                       backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                     }}
@@ -209,8 +213,8 @@ export default class HoverGeneView extends PureComponent {
                 </span>
               </div>
             </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
@@ -226,17 +230,25 @@ export default class HoverGeneView extends PureComponent {
                       </div>
                       }
                       <div>
-                        <span><strong>Mean Score</strong> {this.getScore(data, cohortIndex,filter)}</span>
+                        <br/>
+                        <span
+                          className={BaseStyle.scoreBox}
+                          style={{
+                            color:interpolateGeneExpressionFont(score),
+                            backgroundColor:interpolateGeneExpression(score)
+                          }}
+                        >
+                          <strong>Mean Score</strong> {score.toFixed(2)}</span>
                       </div>
                     </div>
-            }
-          </div>
-        );
-      }
-      else {
-        return <div/>;
-      }
+          }
+        </div>
+      );
     }
+    else {
+      return <div/>;
+    }
+  }
 }
 
 HoverGeneView.propTypes = {
