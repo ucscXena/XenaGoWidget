@@ -646,11 +646,13 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
       sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
     }
     geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+    // geneDataA.samples = scoredGeneDataA.samples;
+    // geneDataA.pathways = scoredGeneDataA.pathways;
     geneDataA.data = sortedGeneDataA.data;
 
     geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-    geneDataB.samples = scoredGeneDataB.samples;
-    geneDataB.pathways = scoredGeneDataB.pathways;
+    // geneDataB.samples = scoredGeneDataB.samples;
+    // geneDataB.pathways = scoredGeneDataB.pathways;
     geneDataB.data = sortedGeneDataB.data;
 
   }
