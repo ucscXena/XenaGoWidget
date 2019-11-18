@@ -30,6 +30,7 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
     return Math.trunc( x / (width / sampleLength) );
   }
   else{
+    // eslint-disable-next-line no-console
     console.error('how we get here?');
   }
 
@@ -46,10 +47,8 @@ function getPointData(event, props) {
   let pathway = pathways[pathwayIndex];
   if(VIEW_ENUM.PARADIGM){
     // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
-    console.log('look up ',cohortIndex,pathwayIndex,sampleIndex);
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
-    // console.log('activity',activity,activity)
     if(cohortIndex===0){
       pathway.firstSampleParadigmPathwayActivity = activity ;
     }
@@ -77,7 +76,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
     };
 
     handleHover = (event) => {
-      console.log('VGS',this.props.cohortIndex);
       this.props.onHover(getPointData(event, this.props));
     };
 

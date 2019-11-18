@@ -255,8 +255,6 @@ export default class XenaGeneSetApp extends PureComponent {
     let associatedDataA = calculateAssociatedData(pathwayDataA,this.state.filter);
     let associatedDataB = calculateAssociatedData(pathwayDataB,this.state.filter);
 
-    console.log('A/B',associatedDataA,associatedDataB);
-
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedDataA,this.state.filter);
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedDataB,this.state.filter);
 
@@ -271,11 +269,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort,[sortedSamplesA,sortedSamplesB]);
-    // console.log('input',[pathwayDataA,pathwayDataB],sortedPathwayData);
     const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
-
-    // console.log('sorted samples]',[sortedSamplesA,sortedSamplesB],'gene data',geneData,'vs sorted',sortedGeneData);
-    console.log('sorted samplesB',sortedSamplesB,'gene data',geneData[1],'vs sorted',sortedGeneData[1]);
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
@@ -331,14 +325,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handlePathwayHover = (hoveredPoint) => {
 
-      console.log('hovered point',hoveredPoint);
       if(!hoveredPoint) return ;
 
       const hoveredPathway = hoveredPoint.pathway;
 
       const sourceCohort = hoveredPoint.cohortIndex;
-
-      console.log('hovered pathway',hoveredPathway);
 
       const cohort0 = {
         tissue: sourceCohort===0 ? hoveredPoint.tissue : 'Header',
@@ -374,8 +365,6 @@ export default class XenaGeneSetApp extends PureComponent {
       ] : null ;
 
 
-      console.log('PRE HOVER GENE data ',geneHoverData);
-
       this.setState({
         hoveredPathway,
         geneHoverData
@@ -398,14 +387,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
       const geneSetPathways = AppStorageHandler.getPathways();
 
-      console.log('pathway selection',pathwaySelectionWrapper);
-
       const newAssociatedData = [
         sortAssociatedData(pathwaySelectionWrapper.pathway,associatedData[0],filter),
         sortAssociatedData(pathwaySelectionWrapper.pathway,associatedData[1],filter),
       ];
-      // let sortedPathwayData = this.sortPathwaysBySample(selection.pathway,pathwayData,filter);
-      // console.log('input',pathwayData,sortedPathwayData);
       const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedData[0],this.state.filter);
       const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedData[1],this.state.filter);
 
@@ -422,20 +407,6 @@ export default class XenaGeneSetApp extends PureComponent {
         associatedData: newAssociatedData,
       });
     };
-
-    sortPathwaysBySample(selectedPathway, pathwayData, filter) {
-      // TODO: make sorting happen
-      console.log('sort pathway by sample',selectedPathway,pathwayData,filter);
-      // let returnedValue = [
-      //   sortSampleActivity(filter[0],pathwayData[0],{ pathway: pathway,tissue: 'Header'}) ;
-      //   sortSampleActivity(filter[1],pathwayData[1],{ pathway: pathway,tissue: 'Header'}) ,
-      // ];
-      // console.log('returned value',returnedValue);
-      // TODO: implement
-      return pathwayData;
-      // return returnedValue;
-    }
-
 
     searchHandler = (geneQuery) => {
       this.queryGenes(geneQuery);

@@ -198,7 +198,6 @@ function sortPathwaysDiffs(prunedColumns, reverse) {
  * @param sortType
  */
 export function diffSort(prunedColumns,sortType,sampleOrder) {
-  // console.log('diffsort input',JSON.stringify(prunedColumns),prunedColumns)
   const sortedColumns = sortPathwaysDiffs(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
@@ -207,12 +206,10 @@ export function diffSort(prunedColumns,sortType,sampleOrder) {
   }
   else
   if(sortType==='INVERSE'){
-    // console.log('diff sort',sortType)
     renderedData = renderedData.reverse();
   }
   else
   if(sortType==='PRESERVE_SAMPLES'){
-    // console.log('diff sort',sortType)
     renderedData = sortBySamples(renderedData,sampleOrder);
   }
   // else, no transform
@@ -224,9 +221,6 @@ export function diffSort(prunedColumns,sortType,sampleOrder) {
   returnColumns.samples = sortedColumns.samples;
   returnColumns.pathways = sortedColumns.pathways;
   returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-
-  // console.log('diffsort output',JSON.stringify(prunedColumns),prunedColumns)
-
   return returnColumns;
 }
 
@@ -278,17 +272,16 @@ export function scorePathway(p,sortBy) {
   }
 }
 
-export function sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-  console.log('sorting sample activity',filter,prunedColumns,selectedGeneSet);
-  switch (filter) {
-  case VIEW_ENUM.GENE_EXPRESSION:
-    return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
-  case VIEW_ENUM.PARADIGM:
-    return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
-  default:
-    return clusterSampleSort(prunedColumns);
-  }
-}
+// export function sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
+//   switch (filter) {
+//   case VIEW_ENUM.GENE_EXPRESSION:
+//     return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
+//   case VIEW_ENUM.PARADIGM:
+//     return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
+//   default:
+//     return clusterSampleSort(prunedColumns);
+//   }
+// }
 
 /**
  * Sorts based on a selected sample
@@ -299,7 +292,6 @@ export function sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
 export function selectedSampleParadigmActivitySort(prunedColumns, selectedGeneSet) {
   let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
   if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
-  // console.log('data',prunedColumns);
   const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.paradigmPathwayActivity);
   sortWithIndeces( selectedData);
   const sortedIndices = selectedData.sortIndices;
@@ -426,33 +418,18 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   };
 }
 
-function sortDataBySampleOrder(sortedSample, geneDatum,filter) {
-  console.log('sorted samples for GENE',sortedSample,geneDatum,filter);
-
+function sortDataBySampleOrder(sortedSample, geneDatum) {
   // lookup the samples for both and create an index based on the first sample set
   const sampleIndices = geneDatum.samples.map( s => sortedSample.indexOf(s) );
-  console.log('gene data samples',geneDatum.samples,sampleIndices);
-
-  // swap element based on the filter for each pathway
-  // const newGeneData = update(geneDatum,)
-
   const transposedData = transpose(geneDatum.paradigm);
-  console.log('tp',transposedData);
   let sortedData = new Array(transposedData.length);
   for(let dataIndex in transposedData){
     sortedData[dataIndex] = transposedData[sampleIndices[dataIndex]];
   }
 
-  // if(filter===VIEW_ENUM.PARADIGM){
-  //   newGeneData.paradigm = sortByIndicies(geneDatum.paradigm,);
-  // }
-  let newGeneData = update(geneDatum,{
+  return update(geneDatum,{
     paradigm: {$set: transpose(sortedData)},
   });
-  console.log('new gene data',newGeneData,geneDatum);
-
-  // return geneDatum ;
-  return newGeneData ;
 }
 
 export function sortGeneDataWithSamples(sortedSamples,geneData,filter){
@@ -462,31 +439,13 @@ export function sortGeneDataWithSamples(sortedSamples,geneData,filter){
   ];
 }
 
-// function sortWithIndeces(toSort) {
-//   for (var i = 0; i < toSort.length; i++) {
-//     toSort[i] = [toSort[i], i];
-//   }
-//   toSort.sort(function(left, right) {
-//     return left[0] < right[0] ? 1 : -1;
-//   });
-//   toSort.sortIndices = [];
-//   for (var j = 0; j < toSort.length; j++) {
-//     toSort.sortIndices.push(toSort[j][1]);
-//     toSort[j] = toSort[j][0];
-//   }
-//   return toSort;
-// }
 
 function sortByIndexOrder(associatedDatum, indexedPathway) {
   let newAssociatedData = new Array(associatedDatum.length);
   for(let index in associatedDatum){
     newAssociatedData[index] = associatedDatum[indexedPathway[index].originalIndex] ;
-    // console.log('from',associatedDatum,index,associatedDatum[index]);
-    // console.log('to',newAssociatedData,indexedPathway,indexedPathway.originalIndex,newAssociatedData[indexedPathway.originalIndex]);
   }
-  // console.log('ass data',associatedDatum,indexedPathway,newAssociatedData);
   return newAssociatedData ;
-  // return associatedDatum.sort( (a,b) => a.originalIndex - b.originalIndex );
 }
 
 /**
@@ -499,7 +458,6 @@ function sortByIndexOrder(associatedDatum, indexedPathway) {
 export function sortAssociatedData(selectedPathway,associatedData,filter){
 
   // find the selected pathway and sor that sample based on the sample . .
-  // console.log('input ass data',associatedData,selectedPathway,filter);
   const realizedPathway = associatedData.filter( d => d[0].golabel === selectedPathway.golabel );
   const indexedPathway = realizedPathway[0].map( (p,i) => {
     p.originalIndex = i ;
@@ -514,7 +472,7 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
       return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity;
     }
     else{
-      console.error('verify this filter',filter);
+      // TODO: verify this filter
       return b.total - a.total;
     }
     // return  0 ;
@@ -525,7 +483,5 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
   for(let index in associatedData){
     newAssociatedData[index] = sortByIndexOrder( associatedData[index] , indexedPathway );
   }
-  // console.log('output realized data',realizedPathway[0],indexedPathway);
-  // console.log('newAssociatedData',associatedData,newAssociatedData);
   return  newAssociatedData;
 }
