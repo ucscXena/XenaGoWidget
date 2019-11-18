@@ -624,23 +624,13 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
 
   let sortedGeneDataA;
   let sortedGeneDataB;
+  // TODO: redo this so we can use the separate sort types or simply get rid of the other types
   if(SORT_TYPE==='gene_set_sample') {
-    // geneDataA.sortedSamples = sortedAssociatedData[0];
-    // geneDataA.samples = scoredGeneDataA.samples;
-    // geneDataA.pathways = scoredGeneDataA.pathways;
-    //
-    // geneDataB.sortedSamples = sortedAssociatedData[1];
-    // geneDataB.samples = scoredGeneDataB.samples;
-    // geneDataB.pathways = scoredGeneDataB.pathways;
-
     sortedGeneDataA = diffSort(geneDataA,'PRESERVE_SAMPLES',sortedAssociatedData[0]);
-    // sortedGeneDataB = diffSort(geneDataB,'PRESERVE_SAMPLES',sortedAssociatedData[1]);
     sortedGeneDataB = diffSort(geneDataB,'PRESERVE_SAMPLES',sortedAssociatedData[1]);
     geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
     geneDataA.samples = sortedGeneDataA.sortedSamples;
-    // geneDataA.sortedSamples = sortedAssociatedData[0];
     geneDataA.data = sortedGeneDataA.data;
-    // geneDataB.sortedSamples = sortedAssociatedData[1];
     geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
     geneDataB.sample = sortedGeneDataB.sortedSamples;
     geneDataB.data = sortedGeneDataB.data;
@@ -653,13 +643,8 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
 
     // TODO: do we need to do anything else with this?
     geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
-    // geneDataA.samples = scoredGeneDataA.samples;
-    // geneDataA.pathways = scoredGeneDataA.pathways;
     geneDataA.data = sortedGeneDataA.data;
-
     geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-    // geneDataB.samples = scoredGeneDataB.samples;
-    // geneDataB.pathways = scoredGeneDataB.pathways;
     geneDataB.data = sortedGeneDataB.data;
 
   } else {

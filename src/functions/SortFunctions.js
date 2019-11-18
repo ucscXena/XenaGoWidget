@@ -79,7 +79,7 @@ export function sortBySamples(renderedData,sampleOrder) {
   });
 }
 
-export function sortByType(renderedData) {
+export function sortByTypeScore(renderedData) {
   // sort samples first based on what gene in position 1 has the highest value
   // proceed to each gene
   return renderedData.sort((a, b) => {
@@ -114,7 +114,7 @@ export function geneExpressionSort(prunedColumns) {
   const sortedColumns = sortGeneExpression(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByType(renderedData);
+  renderedData = sortByTypeScore(renderedData);
   renderedData = transpose(renderedData);
   const returnColumns = {};
   returnColumns.sortedSamples = renderedData[renderedData.length - 1];
@@ -140,7 +140,7 @@ export function paradigmSort(prunedColumns) {
   const sortedColumns = sortParadigm(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByType(renderedData);
+  renderedData = sortByTypeScore(renderedData);
   renderedData = transpose(renderedData);
   const returnColumns = {};
   returnColumns.sortedSamples = renderedData[renderedData.length - 1];
@@ -167,7 +167,7 @@ export function clusterSort(prunedColumns) {
 
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByType(renderedData);
+  renderedData = sortByTypeScore(renderedData);
   renderedData = transpose(renderedData);
   const returnColumns = {};
   returnColumns.sortedSamples = renderedData[renderedData.length - 1];
@@ -203,7 +203,7 @@ export function diffSort(prunedColumns,sortType,sampleOrder) {
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
   if(sortType==='SORT_BY_TYPE'){
-    renderedData = sortByType(renderedData);
+    renderedData = sortByTypeScore(renderedData);
   }
   else
   if(sortType==='INVERSE'){
@@ -416,7 +416,7 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   });
   data.push(prunedColumns.samples);
   let renderedData = transpose(data);
-  renderedData = sortByType(renderedData);
+  renderedData = sortByTypeScore(renderedData);
   renderedData = transpose(renderedData);
   return {
     sortedSamples: renderedData[renderedData.length - 1],
