@@ -6,7 +6,6 @@ import DrawFunctions from '../functions/DrawFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {getLabelForIndex} from '../functions/CohortFunctions';
-import {pruneColumns} from '../functions/DataFunctions';
 
 const HEADER_HEIGHT = 15;
 
@@ -89,9 +88,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
     render() {
 
-      let {cohortIndex, labelHeight, pathways, width, selectedGeneSet,associatedData} = this.props;
-      console.log('VSGS selected',selectedGeneSet);
-      // const {expression } = data;
+      let {cohortIndex, labelHeight, pathways, width, associatedData} = this.props;
       if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
@@ -104,20 +101,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       if (associatedData.length === 0) {
         return <div>Loading...</div>;
       }
-      // let associatedDataKey = createAssociatedDataKey(hashAssociation);
-      // let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-      //
-      // let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      // console.log('Gene Set pruned columns',prunedColumns);
-      let prunedColumns = pruneColumns(associatedData,pathways);
-      console.log('pruned columns',prunedColumns,associatedData);
-      // prunedColumns.samples = samples;
-      // console.log('B input pruned columns',prunedColumns.samples,'vs',samples);
-      // let returnedValue = sortSampleActivity(filter,prunedColumns,selectedGeneSet) ;
-      // console.log('output returned value',returnedValue);
-      // sharedAssociatedData[cohortIndex] = prunedColumns.data;
-
-
       return (
         <div>
           <CanvasDrawing
@@ -149,6 +132,5 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-  selectedGeneSet: PropTypes.any,
   width: PropTypes.any.isRequired,
 };
