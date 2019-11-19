@@ -36,10 +36,12 @@ import {sumTotals} from '../../../src/functions/MathFunctions';
 describe('Data Integration Functions', () => {
 
   it('Associated Data', () => {
+    // console.log('ASS DATA out',JSON.stringify(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION)));
     expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION));
   });
 
   it('Calculate Associated Data', () => {
+    // console.log('CALC ASS DATA out',JSON.stringify(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)));
     expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
   });
 
@@ -64,7 +66,8 @@ describe('Data Integration Functions', () => {
   it('Generate Scored Data', () => {
     const Selection = {'pathway':{'goid':'GO:0006281','golabel':'Modulation of nucleotide pools','gene':['NUDT1','DUT','RRM2B'],'firstObserved':33,'firstTotal':33,'firstNumSamples':136,'firstExpected':20.22441477095158,'firstChiSquared':9.479983189100402,'secondObserved':43,'secondTotal':44,'secondNumSamples':492,'secondExpected':28.71748902704271,'secondChiSquared':7.5436558288678714},'tissue':'Header'};
     const Filters = [VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION];
-    expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters));
+    const sortedAssociatedData ={};
+    expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters,sortedAssociatedData));
 
   });
 
@@ -79,6 +82,7 @@ describe('Data Integration Functions', () => {
 
   // TODO: reactivate
   it('Find Associated Data', () => {
+    console.log(JSON.stringify(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1)));
     expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
   });
 

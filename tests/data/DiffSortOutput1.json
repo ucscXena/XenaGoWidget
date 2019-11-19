@@ -1,8 +1,5 @@
 {
   "sortedSamples": [
-    "TCGA-OR-A5JY-01",
-    "TCGA-OR-A5K6-01",
-    "TCGA-OR-A5JV-01",
     "TCGA-OR-A5J1-01",
     "TCGA-OR-A5J4-01",
     "TCGA-OR-A5J7-01",
@@ -12,6 +9,7 @@
     "TCGA-OR-A5JG-01",
     "TCGA-OR-A5JM-01",
     "TCGA-OR-A5JP-01",
+    "TCGA-OR-A5JY-01",
     "TCGA-OR-A5K0-01",
     "TCGA-OR-A5K2-01",
     "TCGA-OR-A5K5-01",
@@ -32,6 +30,7 @@
     "TCGA-OR-A5JS-01",
     "TCGA-OR-A5JW-01",
     "TCGA-OR-A5K3-01",
+    "TCGA-OR-A5K6-01",
     "TCGA-OR-A5K8-01",
     "TCGA-OR-A5KO-01",
     "TCGA-OR-A5KU-01",
@@ -55,6 +54,7 @@
     "TCGA-OR-A5JQ-01",
     "TCGA-OR-A5JR-01",
     "TCGA-OR-A5JT-01",
+    "TCGA-OR-A5JV-01",
     "TCGA-OR-A5JX-01",
     "TCGA-OR-A5JZ-01",
     "TCGA-OR-A5K1-01",
@@ -1984,6 +1984,96 @@
     ],
     [
       {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
         "total": 1,
         "mutation": 0,
         "cnv": 1,
@@ -1994,6 +2084,206 @@
         "cnvLow": 0
       },
       {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
         "total": 1,
         "mutation": 0,
         "cnv": 1,
@@ -2004,6 +2294,236 @@
         "cnvLow": 0
       },
       {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
+        "total": 0,
+        "mutation": 0,
+        "cnv": 0,
+        "mutation4": 0,
+        "mutation3": 0,
+        "mutation2": 0,
+        "cnvHigh": 0,
+        "cnvLow": 0
+      },
+      {
         "total": 1,
         "mutation": 0,
         "cnv": 1,
@@ -2011,526 +2531,6 @@
         "mutation3": 0,
         "mutation2": 0,
         "cnvHigh": 1,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
-        "cnvLow": 0
-      },
-      {
-        "total": 0,
-        "mutation": 0,
-        "cnv": 0,
-        "mutation4": 0,
-        "mutation3": 0,
-        "mutation2": 0,
-        "cnvHigh": 0,
         "cnvLow": 0
       },
       {
