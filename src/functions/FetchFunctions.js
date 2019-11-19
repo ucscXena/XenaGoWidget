@@ -10,9 +10,9 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 import { uniq} from 'underscore';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import LargePathways from '../data/genesets/geneExpressionGeneDataSet';
+import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet';
 import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
-import FlybasePathways from '../data/genesets/flyBase';
+import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets';
 
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 const REFERENCE = refGene['hg38'];
@@ -138,17 +138,19 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
-export const getGeneSetsForView= (name) => {
-  switch (name) {
+export const getGeneSetsForView= (view) => {
+
+  console.log('Looking up dgene sets for  ',view);
+  switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways;
   case VIEW_ENUM.GENE_EXPRESSION:
-    return LargePathways;
-  case 'Flybase':
+    return BpaPathways;
+  default:
+  // case 'Flybase':
     // return DefaultPathways;
     return FlybasePathways;
   }
-  return null ;
 };
 
 export const convertPathwaysToGeneSetLabel = (pathways) => {
