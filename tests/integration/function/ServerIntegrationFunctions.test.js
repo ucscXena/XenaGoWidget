@@ -3,7 +3,6 @@ import {
   doDataAssociations,
   findAssociatedData,
   calculateAssociatedData,
-  calculatePathwayScore,
   calculateAllPathways,
   calculateDiffs, generateScoredData,
 } from '../../../src/functions/DataFunctions';
@@ -26,12 +25,12 @@ import FindAssociatedDataInputHash1 from '../../data/FindAssociatedDataInputHash
 import FindAssociatedDataKey1 from '../../data/FindAssociatedDataKey';
 import FindAssociatedDataOutput1 from '../../data/FindAssociatedOutput1';
 
-import GenerateScoredDataPathwayDataA from '../../data/GenerateScoredDataPathwayDataA';
-import GenerateScoredDataPathwayDataB from '../../data/GenerateScoredDataPathwayDataB';
 import GenerateScoredDataPathways from '../../data/GenerateScoredDataPathways';
+import GenerateScoredDataPathwayDataAll from '../../data/GenerateScoredDataPathwayDataAll';
 import GenerateScoredDataOutput from '../../data/GenerateScoredDataOutput';
 
 import {VIEW_ENUM} from '../../../src/data/ViewEnum';
+import {sumTotals} from '../../../src/functions/MathFunctions';
 
 describe('Data Integration Functions', () => {
 
@@ -45,7 +44,7 @@ describe('Data Integration Functions', () => {
 
   it('Calculate PathwayScore', () => {
     const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
-    expect(calculatePathwayScore(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(pathwayScore);
+    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION).map( pathway => sumTotals(pathway))).toEqual(pathwayScore);
   });
 
   // TODO: note for some reason this triggers:
@@ -53,14 +52,17 @@ describe('Data Integration Functions', () => {
   // TODO: probably because its calculating based on the fetch
   // TODO: activate this again
   it('Calculate All Pathways', () => {
-    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB])).toEqual(CalculateAllPathwaysOutput);
+    let associatedDataA = calculateAssociatedData(CalculateAllPathwaysA,VIEW_ENUM.CNV_MUTATION);
+    let associatedDataB = calculateAssociatedData(CalculateAllPathwaysB,VIEW_ENUM.CNV_MUTATION);
+    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB],[associatedDataA,associatedDataB])).toEqual(CalculateAllPathwaysOutput);
   });
 
 
   it('Generate Scored Data', () => {
-    const Selection = {'pathway':{'goid':'GO:0006281','golabel':'Modulation of nucleotide pools','gene':['NUDT1','DUT','RRM2B'],'firstObserved':33,'firstTotal':33,'firstNumSamples':136,'firstExpected':20.22441477095158,'firstChiSquared':9.479983189100402,'secondObserved':43,'secondTotal':44,'secondNumSamples':492,'secondExpected':28.71748902704271,'secondChiSquared':7.5436558288678714},'tissue':'Header'};
-    const Filters = [VIEW_ENUM.CNV_MUTATION,VIEW_ENUM.CNV_MUTATION];
-    expect(GenerateScoredDataOutput,generateScoredData(Selection,[GenerateScoredDataPathwayDataA,GenerateScoredDataPathwayDataB],GenerateScoredDataPathways,Filters,false));
+    const Selection = {'pathway':{'golabel':'Cytosolic_Iron-sulfur_Cluster_Assembly','gene':['_Fe2S2_(2_)_(smallMolecule)','_Fe2(mu-S)2_(_)_(smallMolecule)','holo-RTEL1_(complex)','holo-ERRC1_(complex)','POLD1','Apoprotein_Lacking_4Fe-4S_Cluster_(family)','holo-POLD1_(complex)','NARFL_CIAO1_FAM96B_MMS19_(complex)','NARFL_4Fe-4S_(complex)','NUBP1','CIAPIN1','RTEL1','NUBP2','FAM96B','CIAO1','NARFL','MMS19','ABC7_dimer_(complex)','Fe___(smallMolecule)','NDOR1','Flavin_mononucleotide_(smallMolecule)','Triphosphopyridine_nucleotide_(smallMolecule)','azufre_(smallMolecule)','_Fe4S4__(smallMolecule)','NDOR1_CIAPIN1_oxidized_(complex)','CIAPIN1_4Fe-4S_2Fe-2S_oxidized_(complex)','NDOR1_FAD_FMN_(complex)','CIAPIN1_4Fe-4S_2Fe-2S_reduced_(complex)','NDOR1_CIAPIN1_reduced_(complex)','NUBP2_4Fe-4S_NUBP1_(complex)','NUBP1_4Fe-4S_(complex)','BRIP1','ABCB7','Flavin_adenine_dinucleotide_(smallMolecule)','holo-BRIP1_(holo-FANCJ)_(complex)','H__(smallMolecule)','TPNH_(smallMolecule)','ERCC2','Holoprotein_Containing_4Fe-4S_Cluster_(family)'],'firstGeneExpressionPathwayActivity':0.8016,'secondGeneExpressionPathwayActivity':-1.801},'tissue':'Header'};
+    const Filters = VIEW_ENUM.PARADIGM;
+    const sortedAssociatedData =[['TCGA-OR-A5JM-01','TCGA-OR-A5J7-01','TCGA-OR-A5LD-01','TCGA-OR-A5K9-01','TCGA-OR-A5JG-01','TCGA-OR-A5JE-01','TCGA-OR-A5JP-01','TCGA-OR-A5KX-01','TCGA-OR-A5K2-01','TCGA-OR-A5K0-01','TCGA-OR-A5J9-01','TCGA-OR-A5K5-01','TCGA-OR-A5JA-01','TCGA-OR-A5JY-01','TCGA-OR-A5LO-01','TCGA-OR-A5LE-01','TCGA-PK-A5HA-01','TCGA-PK-A5HB-01','TCGA-OR-A5J1-01'],['TCGA-CH-5772-01','TCGA-EJ-7125-01','TCGA-G9-7523-01']];
+    expect(GenerateScoredDataOutput,generateScoredData(Selection,GenerateScoredDataPathwayDataAll,GenerateScoredDataPathways,Filters,sortedAssociatedData));
 
   });
 

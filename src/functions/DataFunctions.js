@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort, paradigmSort,
+  diffSort, scoreColumns,
 } from './SortFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 
@@ -123,11 +123,12 @@ export function pruneColumns(data, pathways) {
 
 export function createAssociatedDataKey(inputHash) {
   const {
-    pathways, samples, filter, selectedCohort
+    pathways, samples, filter, selectedCohort, selectedGeneSet
   } = inputHash;
   return {
     filter,
     pathways,
+    selectedGeneSet,
     samples:samples.sort(),
     selectedCohort,
   };
@@ -421,6 +422,16 @@ export function isViewGeneExpression(filter){
   }
 }
 
+function labelArray(returnArray,pathways, samples) {
+  for(let pathwayIndex in pathways){
+    for(let sampleIndex in samples){
+      returnArray[pathwayIndex][sampleIndex].golabel = pathways[pathwayIndex].golabel;
+      returnArray[pathwayIndex][sampleIndex].sample = samples[sampleIndex];
+    }
+  }
+  return returnArray ;
+}
+
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
@@ -441,6 +452,7 @@ export function doDataAssociations(expression, copyNumber,
   paradigm, paradigmPathwayActivity,
   geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
+  returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
   if (filter === VIEW_ENUM.CNV_MUTATION || filter === VIEW_ENUM.MUTATION) {
     returnArray = filterMutations(expression,returnArray,samples,pathways);
@@ -520,14 +532,6 @@ export function calculateAssociatedData(pathwayData, filter) {
   return associatedData;
 }
 
-export function calculateObserved(pathwayData, filter) {
-  return calculateAssociatedData(pathwayData, filter).map((pathway) => sumInstances(pathway));
-}
-
-export function calculatePathwayScore(pathwayData, filter) {
-  return calculateAssociatedData(pathwayData, filter).map((pathway) => sumTotals(pathway));
-}
-
 function calculateParadigmPathwayActivity(pathwayData) {
   if(pathwayData.filter!==VIEW_ENUM.PARADIGM) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
@@ -541,23 +545,30 @@ function calculateGeneExpressionPathwayActivity(pathwayData) {
 /**
  * Note:
  * @param pathwayData
+ * @param associatedData
  */
-export function calculateAllPathways(pathwayData) {
+export function calculateAllPathways(pathwayData,associatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
+  const associatedDataA = associatedData[0];
+  const associatedDataB = associatedData[1];
 
   const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
   const paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
   // each pathway needs to have its own set BPA samples
-  const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
-  const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
+  // const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
+  const observationsA = associatedDataA.map( pathway => sumInstances(pathway));
+  // const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
+  const totalsA = associatedDataA.map( pathway => sumTotals(pathway));
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
   const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB);
   const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB, pathwayDataB);
-  const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
-  const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
+  // const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
+  const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
+  // const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
+  const totalsB = associatedDataB.map( pathway => sumTotals(pathway));
   const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
   const maxSamplesAffectedB = pathwayDataB.samples.length;
 
@@ -584,18 +595,7 @@ export function calculateAllPathways(pathwayData) {
   });
 }
 
-function sortGeneData(inputData,view){
-  switch(view){
-  case VIEW_ENUM.GENE_EXPRESSION:
-    return geneExpressionSort(inputData);
-  case VIEW_ENUM.PARADIGM:
-    return paradigmSort(inputData);
-  default:
-    return clusterSort(inputData);
-  }
-}
-
-export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort) {
+export function generateScoredData(selection, pathwayData, pathways, filter, sortedAssociatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter);
@@ -608,24 +608,14 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   geneDataB.pathways = scoredGenePathways[1];
   geneDataA.data = scoredGeneDataA.data;
   geneDataB.data = scoredGeneDataB.data;
-  let sortedGeneDataA;
-  let sortedGeneDataB;
-  if (showClusterSort) {
-    sortedGeneDataA = sortGeneData(geneDataA,filter);
-    const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter);
-  } else {
-    sortedGeneDataA = diffSort(geneDataA);
-    sortedGeneDataB = diffSort(geneDataB);
-  }
-  geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
-  geneDataA.samples = sortedGeneDataA.samples;
-  geneDataA.pathways = sortedGeneDataA.pathways;
-  geneDataA.data = sortedGeneDataA.data;
 
+  const sortedGeneDataA = diffSort(geneDataA,sortedAssociatedData[0]);
+  const sortedGeneDataB = diffSort(geneDataB,sortedAssociatedData[1]);
+  geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+  geneDataA.samples = sortedGeneDataA.sortedSamples;
+  geneDataA.data = sortedGeneDataA.data;
   geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-  geneDataB.samples = sortedGeneDataB.samples;
-  geneDataB.pathways = sortedGeneDataB.pathways;
+  geneDataB.sample = sortedGeneDataB.sortedSamples;
   geneDataB.data = sortedGeneDataB.data;
   return [geneDataA, geneDataB];
 }

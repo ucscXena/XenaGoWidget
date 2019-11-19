@@ -107,7 +107,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const d = rowData.slice(r.start, r.end + 1);
 
       if(filter===VIEW_ENUM.GENE_EXPRESSION){
-        const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        const geneExpressionScore = meanDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;
@@ -123,7 +123,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       }
       else
       if(filter===VIEW_ENUM.PARADIGM){
-        const geneExpressionScore = sumDataByType(d, 'paradigm');
+        const geneExpressionScore = meanDataByType(d, 'paradigm');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;

@@ -48,8 +48,7 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-      let {editGeneSetColors, showClusterSort,toggleShowClusterSort,
-        showDetailLayer, showDiffLayer,
+      let {editGeneSetColors, showDetailLayer, showDiffLayer,
         toggleShowDiffLayer,toggleShowDetailLayer } = this.props;
       return (
         <div>
@@ -86,17 +85,6 @@ export default class NavigationBar extends PureComponent {
                         <MenuItem
                           caption={`${showDetailLayer? '\u2713' : 'Show'} Detail Layer`}
                           onClick={() => toggleShowDetailLayer()}
-                        />
-                        <MenuDivider/>
-                        <MenuItem
-                          caption={`${showClusterSort? '\u2713' : 'Show'} Sort by Top Cohort`}
-                          disabled={showClusterSort}
-                          onClick={() => toggleShowClusterSort()}
-                        />
-                        <MenuItem
-                          caption={`${!showClusterSort? '\u2713' : 'Show'} Diff Sort`}
-                          disabled={!showClusterSort}
-                          onClick={() => toggleShowClusterSort()}
                         />
                       </IconMenu>
                     </td>
@@ -139,10 +127,8 @@ NavigationBar.propTypes = {
   editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
-  showClusterSort: PropTypes.any,
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
-  toggleShowClusterSort: PropTypes.any,
   toggleShowDetailLayer: PropTypes.any,
   toggleShowDiffLayer: PropTypes.any,
 };

@@ -79,7 +79,7 @@ export class GeneSetSelector extends PureComponent {
   }
 
     onClick = (geneSet) => {
-      this.props.onClick(geneSet);
+      this.props.onClick({ pathway: geneSet, tissue: 'Header'});
     };
 
     onMouseOut = () => {
@@ -87,7 +87,7 @@ export class GeneSetSelector extends PureComponent {
     };
 
     onHover = (geneSet) => {
-      this.props.onHover(geneSet ? geneSet : null);
+      this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null);
     };
 
 
