@@ -60,11 +60,9 @@ export default class HoverGeneView extends PureComponent {
     let {data, cohortIndex, filter} = this.props;
     if (data.tissue) {
       const score =this.findScore(data, cohortIndex,filter);
-
-      // console.log('hoping that we get activity for the data item,',data)
       return (
         <div>
-          {data.tissue !== 'Header' && data.source === 'GeneSet' &&
+          {data.tissue !== 'Header' && data.source === 'GeneSet' && score &&
             <div className={BaseStyle.pathwayChip}>
               <span><strong>Pathway</strong> {data.pathway.golabel}</span>
               <br/>
@@ -221,7 +219,7 @@ export default class HoverGeneView extends PureComponent {
               </div>
             </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined &&
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
