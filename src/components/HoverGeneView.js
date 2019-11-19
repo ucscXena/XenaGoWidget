@@ -35,7 +35,14 @@ export default class HoverGeneView extends PureComponent {
   findScore = (data, cohortIndex,filter) => {
     switch (filter) {
     case VIEW_ENUM.GENE_EXPRESSION:
-      return cohortIndex === 0 ? data.pathway.firstGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+      // return cohortIndex === 0 ? data.pathway.firstGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleGeneExpressionPathwayActivity!==undefined ? data.pathway.firstSampleGeneExpressionPathwayActivity: data.pathway.firstGeneExpressionPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+      }
     case VIEW_ENUM.PARADIGM:
       // shows individual samples if available
       if(cohortIndex===0){

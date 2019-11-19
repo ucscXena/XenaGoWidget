@@ -26,10 +26,7 @@ import {getCohortDetails, getSubCohortsOnlyForCohort } from '../functions/Cohort
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {
-  clusterSampleSort,
-  scorePathway,
-  selectedSampleGeneExpressionActivitySort,
-  selectedSampleParadigmActivitySort, sortAssociatedData, sortGeneDataWithSamples
+  scorePathway, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import QueryString from 'querystring';
@@ -40,14 +37,11 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
-import {VIEW_ENUM} from '../data/ViewEnum';
-// import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
 
 
 const VIEWER_HEIGHT = 500;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
-export const VERTICAL_GENESET_SUPPRESS_WIDTH = 20;
 const BORDER_OFFSET = 2;
 
 export const MIN_FILTER = 2;
@@ -159,17 +153,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     );
   };
-
-  sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-    switch (filter) {
-    case VIEW_ENUM.GENE_EXPRESSION:
-      return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
-    case VIEW_ENUM.PARADIGM:
-      return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
-    default:
-      return clusterSampleSort(prunedColumns);
-    }
-  }
 
   handleCombinedCohortData = (input) => {
     let {
@@ -504,9 +487,30 @@ export default class XenaGeneSetApp extends PureComponent {
         pathway: pathwaySelection.pathway
       };
 
-      let newPathways = calculateAllPathways(newPathwayData);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter);
-      this.setState({ filter:newFilter,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
+      let associatedDataA = calculateAssociatedData(newPathwayData[0],this.state.filter);
+      let associatedDataB = calculateAssociatedData(newPathwayData[1],this.state.filter);
+
+      const sortedAssociatedDataA = sortAssociatedData(pathwaySelection.pathway,associatedDataA,this.state.filter);
+      const sortedAssociatedDataB = sortAssociatedData(pathwaySelection.pathway,associatedDataB,this.state.filter);
+
+      const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
+      const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
+
+
+      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB]);
+      // newPathwayData[0].pathways = pathways ;
+      // newPathwayData[1].pathways = pathways ;
+
+      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter,[sortedSamplesA,sortedSamplesB]);
+      this.setState({
+        filter:newFilter,
+        geneData,
+        pathways:newPathways,
+        pathwayData:newPathwayData,
+        fetch:true,
+        currentLoadState: LOAD_STATE.LOADING,
+        reloadPathways:this.state.automaticallyReloadPathways
+      });
     };
 
 

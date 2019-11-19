@@ -45,6 +45,17 @@ function getPointData(event, props) {
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
 
   let pathway = pathways[pathwayIndex];
+  if(VIEW_ENUM.GENE_EXPRESSION){
+    // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
+    if(cohortIndex===0){
+      pathway.firstSampleGeneExpressionPathwayActivity = activity ;
+    }
+    else{
+      pathway.secondSampleGeneExpressionPathwayActivity = activity ;
+    }
+  }
   if(VIEW_ENUM.PARADIGM){
     // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
@@ -56,6 +67,7 @@ function getPointData(event, props) {
       pathway.secondSampleParadigmPathwayActivity = activity ;
     }
   }
+  // TODO: handle other types here?
   return {
     pathway: pathway,
     tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
