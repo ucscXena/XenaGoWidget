@@ -139,16 +139,12 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
 }
 
 export const getGeneSetsForView= (view) => {
-
-  console.log('Looking up dgene sets for  ',view);
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways;
   case VIEW_ENUM.GENE_EXPRESSION:
     return BpaPathways;
   default:
-  // case 'Flybase':
-    // return DefaultPathways;
     return FlybasePathways;
   }
 };
