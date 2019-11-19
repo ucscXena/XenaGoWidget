@@ -229,7 +229,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     AppStorageHandler.storePathways(pathways);
     let selection = AppStorageHandler.getPathwaySelection();
-    if(!selection.golabel){
+    if(!selection || !selection.pathway ||  !selection.pathway.golabel){
       selection.pathway = pathways[0];
     }
 
