@@ -72,8 +72,8 @@ export default class HoverGeneView extends PureComponent {
               <span
                 className={BaseStyle.scoreBox}
                 style={{
-                  color:interpolateGeneExpressionFont(score),
-                  backgroundColor:interpolateGeneExpression(score)
+                  color:isViewGeneExpression(filter) ? interpolateGeneExpressionFont(score) : 'black',
+                  backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
                 }}
               >
                 <strong>Mean Score</strong> {score.toFixed(2)}</span>
@@ -239,8 +239,8 @@ export default class HoverGeneView extends PureComponent {
                         <span
                           className={BaseStyle.scoreBox}
                           style={{
-                            color:interpolateGeneExpressionFont(score),
-                            backgroundColor:interpolateGeneExpression(score)
+                            color:isViewGeneExpression(filter) ? interpolateGeneExpressionFont(score) : 'black',
+                            backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
                           }}
                         >
                           <strong>Mean Score</strong> {score.toFixed(2)}</span>
