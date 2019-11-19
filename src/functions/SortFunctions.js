@@ -2,11 +2,6 @@ import update from 'immutability-helper';
 import {sumTotals, sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 
-export const SortType = {
-  DIFF: 'diff',
-  CLUSTER: 'cluster',
-};
-
 export function transpose(a) {
   // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
   // or in more modern dialect
@@ -49,30 +44,6 @@ function sortColumnDensities(prunedColumns) {
   });
 }
 
-/**
- * Populates density for each column
- * @param prunedColumns
- */
-function sortParadigm(prunedColumns) {
-  const pathways = scoreParadigmColumns(prunedColumns).sort((a, b) => b.paradigmMean - a.paradigmMean);
-  return update(prunedColumns, {
-    pathways: { $set: pathways },
-    data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
-  });
-}
-
-/**
- * Populates density for each column
- * @param prunedColumns
- */
-function sortGeneExpression(prunedColumns) {
-  const pathways = scoreGeneExpressionColumns(prunedColumns).sort((a, b) => b.geneExpressionMean - a.geneExpressionMean);
-  return update(prunedColumns, {
-    pathways: { $set: pathways },
-    data: { $set: pathways.map((el) => prunedColumns.data[el.index]) },
-  });
-}
-
 export function sortBySamples(renderedData,sampleOrder) {
   return renderedData.sort((a, b) => {
     return sampleOrder.indexOf(a[0].sample)-sampleOrder.indexOf(b[0].sample);
@@ -96,58 +67,6 @@ export function sortByTypeScore(renderedData) {
     // sort by sample name
     return a[a.length - 1] - b[b.length - 1];
   });
-}
-
-/**
- * Sort by column density followed by row.
- * https://github.com/nathandunn/XenaGoWidget/issues/67
- *
- * 1. find density for each column
- * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
- *
- * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
- *
- * @param prunedColumns
- * @returns {undefined}
- */
-export function geneExpressionSort(prunedColumns) {
-  const sortedColumns = sortGeneExpression(prunedColumns);
-  sortedColumns.data.push(prunedColumns.samples);
-  let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByTypeScore(renderedData);
-  renderedData = transpose(renderedData);
-  const returnColumns = {};
-  returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-  returnColumns.samples = sortedColumns.samples;
-  returnColumns.pathways = sortedColumns.pathways;
-  returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-  return returnColumns;
-}
-
-/**
- * Sort by column density followed by row.
- * https://github.com/nathandunn/XenaGoWidget/issues/67
- *
- * 1. find density for each column
- * 2. sort the tissues based on first, most dense column, ties, based on next most dense column
- *
- * 3. sort / re-order column based on density (*) <- re-ordering is going to be a pain, do last
- *
- * @param prunedColumns
- * @returns {undefined}
- */
-export function paradigmSort(prunedColumns) {
-  const sortedColumns = sortParadigm(prunedColumns);
-  sortedColumns.data.push(prunedColumns.samples);
-  let renderedData = transpose(sortedColumns.data);
-  renderedData = sortByTypeScore(renderedData);
-  renderedData = transpose(renderedData);
-  const returnColumns = {};
-  returnColumns.sortedSamples = renderedData[renderedData.length - 1];
-  returnColumns.samples = sortedColumns.samples;
-  returnColumns.pathways = sortedColumns.pathways;
-  returnColumns.data = renderedData.slice(0, sortedColumns.data.length - 1);
-  return returnColumns;
 }
 
 /**
@@ -195,27 +114,13 @@ function sortPathwaysDiffs(prunedColumns, reverse) {
 /**
  * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
  * @param prunedColumns
- * @param sortType
+ * @param sampleOrder
  */
-export function diffSort(prunedColumns,sortType,sampleOrder) {
+export function diffSort(prunedColumns,sampleOrder) {
   const sortedColumns = sortPathwaysDiffs(prunedColumns);
   sortedColumns.data.push(prunedColumns.samples);
   let renderedData = transpose(sortedColumns.data);
-  if(sortType==='SORT_BY_TYPE'){
-    renderedData = sortByTypeScore(renderedData);
-  }
-  else
-  if(sortType==='INVERSE'){
-    renderedData = renderedData.reverse();
-  }
-  else
-  if(sortType==='PRESERVE_SAMPLES'){
-    renderedData = sortBySamples(renderedData,sampleOrder);
-  }
-  // else, no transform
-
-
-  renderedData = transpose(renderedData);
+  renderedData = transpose(sortBySamples(renderedData,sampleOrder));
   const returnColumns = {};
   returnColumns.sortedSamples = renderedData[renderedData.length - 1];
   returnColumns.samples = sortedColumns.samples;
@@ -271,17 +176,6 @@ export function scorePathway(p,sortBy) {
     return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
   }
 }
-
-// export function sortSampleActivity(filter, prunedColumns, selectedGeneSet) {
-//   switch (filter) {
-//   case VIEW_ENUM.GENE_EXPRESSION:
-//     return selectedSampleGeneExpressionActivitySort(prunedColumns,selectedGeneSet);
-//   case VIEW_ENUM.PARADIGM:
-//     return selectedSampleParadigmActivitySort(prunedColumns,selectedGeneSet);
-//   default:
-//     return clusterSampleSort(prunedColumns);
-//   }
-// }
 
 /**
  * Sorts based on a selected sample

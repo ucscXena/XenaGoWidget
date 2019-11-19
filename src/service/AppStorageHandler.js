@@ -1,6 +1,5 @@
 import update from 'immutability-helper';
 import DefaultPathWays from '../data/genesets/tgac';
-import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import {exception} from 'react-ga';
@@ -172,17 +171,6 @@ export class AppStorageHandler {
       return appState.filterState;
     }
     return VIEW_ENUM.PARADIGM;
-  }
-
-  static getSortState() {
-    const appState = AppStorageHandler.getAppState();
-    // diff or cluster
-    if (!appState.sortState) {
-      appState.sortState = SortType.DIFF;
-      AppStorageHandler.storeAppState(appState);
-    }
-    // TODO: remove this hack
-    return appState.sortState;
   }
 
   static storeSortState(sortState) {

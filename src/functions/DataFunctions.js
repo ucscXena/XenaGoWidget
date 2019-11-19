@@ -9,7 +9,7 @@ import { sumInstances, sumTotals } from './MathFunctions';
 import { MIN_FILTER } from '../components/XenaGeneSetApp';
 import { getGenesForNamedPathways } from './CohortFunctions';
 import {
-  clusterSort, diffSort, scoreColumns, synchronizedSort, geneExpressionSort, paradigmSort,
+  diffSort, scoreColumns,
 } from './SortFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 
@@ -595,20 +595,7 @@ export function calculateAllPathways(pathwayData,associatedData) {
   });
 }
 
-function sortGeneData(inputData,view){
-  switch(view){
-  case VIEW_ENUM.GENE_EXPRESSION:
-    return geneExpressionSort(inputData);
-  case VIEW_ENUM.PARADIGM:
-    return paradigmSort(inputData);
-  default:
-    return clusterSort(inputData);
-  }
-}
-
-const SORT_TYPE='gene_set_sample';
-
-export function generateScoredData(selection, pathwayData, pathways, filter, showClusterSort,sortedAssociatedData) {
+export function generateScoredData(selection, pathwayData, pathways, filter, sortedAssociatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter);
@@ -622,41 +609,14 @@ export function generateScoredData(selection, pathwayData, pathways, filter, sho
   geneDataA.data = scoredGeneDataA.data;
   geneDataB.data = scoredGeneDataB.data;
 
-  let sortedGeneDataA;
-  let sortedGeneDataB;
-  // TODO: redo this so we can use the separate sort types or simply get rid of the other types
-  if(SORT_TYPE==='gene_set_sample') {
-    sortedGeneDataA = diffSort(geneDataA,'PRESERVE_SAMPLES',sortedAssociatedData[0]);
-    sortedGeneDataB = diffSort(geneDataB,'PRESERVE_SAMPLES',sortedAssociatedData[1]);
-    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
-    geneDataA.samples = sortedGeneDataA.sortedSamples;
-    geneDataA.data = sortedGeneDataA.data;
-    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-    geneDataB.sample = sortedGeneDataB.sortedSamples;
-    geneDataB.data = sortedGeneDataB.data;
-  }
-  else
-  if (showClusterSort) {
-    sortedGeneDataA = sortGeneData(geneDataA,filter);
-    const synchronizedGeneList = sortedGeneDataA.pathways.map((g) => g.gene[0]);
-    sortedGeneDataB = synchronizedSort(geneDataB, synchronizedGeneList,true,filter);
-
-    // TODO: do we need to do anything else with this?
-    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
-    geneDataA.data = sortedGeneDataA.data;
-    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-    geneDataB.data = sortedGeneDataB.data;
-
-  } else {
-    // sortedGeneDataA = diffSort(geneDataA,'INVERSE');
-    // sortedGeneDataB = diffSort(geneDataB);
-    sortedGeneDataA = diffSort(geneDataA,'SORT_BY_TYPE');
-    sortedGeneDataB = diffSort(geneDataB,'SORT_BY_TYPE');
-    geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
-    geneDataA.data = sortedGeneDataA.data;
-    geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
-    geneDataB.data = sortedGeneDataB.data;
-  }
+  const sortedGeneDataA = diffSort(geneDataA,sortedAssociatedData[0]);
+  const sortedGeneDataB = diffSort(geneDataB,sortedAssociatedData[1]);
+  geneDataA.sortedSamples = sortedGeneDataA.sortedSamples;
+  geneDataA.samples = sortedGeneDataA.sortedSamples;
+  geneDataA.data = sortedGeneDataA.data;
+  geneDataB.sortedSamples = sortedGeneDataB.sortedSamples;
+  geneDataB.sample = sortedGeneDataB.sortedSamples;
+  geneDataB.data = sortedGeneDataB.data;
   return [geneDataA, geneDataB];
 }
 

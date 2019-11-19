@@ -29,8 +29,7 @@ import {
   clusterSampleSort,
   scorePathway,
   selectedSampleGeneExpressionActivitySort,
-  selectedSampleParadigmActivitySort, sortAssociatedData, sortGeneDataWithSamples,
-  SortType
+  selectedSampleParadigmActivitySort, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
 import VerticalLegend from './VerticalLegend';
 import QueryString from 'querystring';
@@ -65,7 +64,6 @@ const LOAD_STATE = {
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
-let showClusterSort = AppStorageHandler.getSortState()===SortType.CLUSTER;
 
 /**
  * refactor that from index
@@ -268,7 +266,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
     // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
-    let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,showClusterSort,[sortedSamplesA,sortedSamplesB]);
+    let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
     const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
 
     currentLoadState = LOAD_STATE.LOADED;
@@ -397,9 +395,8 @@ export default class XenaGeneSetApp extends PureComponent {
       const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
       const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-      // let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort);
       // TODO: create gene data off of the sorted pathway data
-      let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,showClusterSort,[sortedSamplesA,sortedSamplesB]);
+      let geneData = generateScoredData(pathwaySelectionWrapper,pathwayData,geneSetPathways,filter,[sortedSamplesA,sortedSamplesB]);
 
       this.setState({
         geneData,
@@ -436,12 +433,6 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({
         showDetailLayer: !this.state.showDetailLayer
       });
-    };
-
-    toggleShowClusterSort = () => {
-      showClusterSort = !showClusterSort;
-      AppStorageHandler.storeSortState(showClusterSort ? SortType.CLUSTER : SortType.DIFF);
-      this.handlePathwaySelect(this.state.pathwaySelection.pathway);
     };
 
     handleSetCollapsed = (collapsed) => {
@@ -514,7 +505,7 @@ export default class XenaGeneSetApp extends PureComponent {
       };
 
       let newPathways = calculateAllPathways(newPathwayData);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter,showClusterSort);
+      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter);
       this.setState({ filter:newFilter,geneData,pathways:newPathways,pathwayData:newPathwayData,fetch:true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
@@ -645,10 +636,8 @@ export default class XenaGeneSetApp extends PureComponent {
           editGeneSetColors={this.editGeneSetColors}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
-          showClusterSort={showClusterSort}
           showDetailLayer={this.state.showDetailLayer}
           showDiffLayer={this.state.showDiffLayer}
-          toggleShowClusterSort={this.toggleShowClusterSort}
           toggleShowDetailLayer={this.toggleShowDetailLayer}
           toggleShowDiffLayer={this.toggleShowDiffLayer}
         />
@@ -832,7 +821,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                   const x = ev.clientX + 8;
                                   const y = ev.clientY + 8 + scrollDownBuffer ;
-                                  if(x>=530){
+                                  if(x>=860){
                                     this.setState({mousing: true, x, y});
                                   }
                                   else{
