@@ -283,7 +283,7 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
     handleGeneHover = (geneHover) => {
-      if(geneHover){
+      if(geneHover && geneHover.pathway){
         const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0 ;
         let geneHoverData = [];
         geneHoverData[geneHover.cohortIndex] = geneHover;

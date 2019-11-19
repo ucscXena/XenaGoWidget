@@ -46,8 +46,7 @@ function getPointData(event, props) {
 
   let pathway = pathways[pathwayIndex];
   if(VIEW_ENUM.GENE_EXPRESSION){
-    // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
     if(cohortIndex===0){
       pathway.firstSampleGeneExpressionPathwayActivity = activity ;
@@ -57,7 +56,6 @@ function getPointData(event, props) {
     }
   }
   if(VIEW_ENUM.PARADIGM){
-    // let activity = data.paradigmPathwayActivity[pathwayIndex][sampleIndex];
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     if(cohortIndex===0){
@@ -73,7 +71,6 @@ function getPointData(event, props) {
     tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
     cohortIndex,
   };
-  // return pathways[pathwayIndex];
 }
 
 
