@@ -52,7 +52,12 @@ export default class HoverGeneView extends PureComponent {
         return data.pathway.secondSampleParadigmPathwayActivity!==undefined ? data.pathway.secondSampleParadigmPathwayActivity: data.pathway.secondParadigmPathwayActivity;
       }
     default:
-      return cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared;
+      if(cohortIndex===0){
+        return data.pathway.firstSampleTotal!==undefined ? data.pathway.firstSampleTotal : data.pathway.firstChiSquared;
+      }
+      else{
+        return data.pathway.secondSampleTotal!==undefined ? data.pathway.secondSampleTotal : data.pathway.secondChiSquared;
+      }
     }
   };
 
@@ -62,7 +67,7 @@ export default class HoverGeneView extends PureComponent {
       const score =this.findScore(data, cohortIndex,filter);
       return (
         <div>
-          {data.tissue !== 'Header' && data.source === 'GeneSet' && score &&
+          {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
             <div className={BaseStyle.pathwayChip}>
               <span><strong>Pathway</strong> {data.pathway.golabel}</span>
               <br/>
@@ -77,6 +82,36 @@ export default class HoverGeneView extends PureComponent {
                 }}
               >
                 <strong>Score</strong> {score.toFixed(2)}</span>
+              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleCnvHigh > 0 &&
+              <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.firstSampleCnvHigh}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleCnvLow > 0 &&
+              <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.firstSampleCnvLow}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation2 > 0 &&
+              <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.firstSampleMutation2}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation3 > 0 &&
+              <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.firstSampleMutation3}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation4 > 0 &&
+              <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.firstSampleMutation4}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleCnvHigh > 0 &&
+              <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.secondSampleCnvHigh}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleCnvLow > 0 &&
+              <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.secondSampleCnvLow}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation2 > 0 &&
+              <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.secondSampleMutation2}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation3 > 0 &&
+              <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.secondSampleMutation3}/></span></Chip>
+              }
+              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation4 > 0 &&
+              <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.secondSampleMutation4}/></span></Chip>
+              }
             </div>
           }
           {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
