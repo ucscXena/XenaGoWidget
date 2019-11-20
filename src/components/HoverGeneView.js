@@ -67,7 +67,7 @@ export default class HoverGeneView extends PureComponent {
       const score =this.findScore(data, cohortIndex,filter);
       return (
         <div>
-          {data.tissue !== 'Header' && data.source === 'GeneSet' && score &&
+          {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
             <div className={BaseStyle.pathwayChip}>
               <span><strong>Pathway</strong> {data.pathway.golabel}</span>
               <br/>
