@@ -43,6 +43,7 @@ function getPointData(event, props) {
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
 
   let pathway = pathways[pathwayIndex];
+  console.log('hovered pathway ',associatedData[pathwayIndex][sampleIndex],JSON.stringify(associatedData[pathwayIndex][sampleIndex]));
   if(VIEW_ENUM.GENE_EXPRESSION){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
@@ -53,6 +54,7 @@ function getPointData(event, props) {
       pathway.secondSampleGeneExpressionPathwayActivity = activity ;
     }
   }
+  else
   if(VIEW_ENUM.PARADIGM){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
@@ -63,6 +65,28 @@ function getPointData(event, props) {
       pathway.secondSampleParadigmPathwayActivity = activity ;
     }
   }
+  else {
+    let activity = associatedData[pathwayIndex][sampleIndex];
+    // TODO: map activity to sample-based activity
+    if(cohortIndex===0){
+      pathway.firstSampleCnvHigh = activity.cnvHigh ;
+      pathway.firstSampleCnvLow = activity.cnvLow ;
+      pathway.firstSampleMutation2 = activity.mutation2;
+      pathway.firstSampleMutation3 = activity.mutation3;
+      pathway.firstSampleMutation4 = activity.mutation4;
+      pathway.firstSampleTotal = activity.total;
+    }
+    else{
+      pathway.secondSampleCnvHigh = activity.cnvHigh ;
+      pathway.secondSampleCnvLow = activity.cnvLow ;
+      pathway.secondSampleMutation2 = activity.mutation2;
+      pathway.secondSampleMutation3 = activity.mutation3;
+      pathway.secondSampleMutation4 = activity.mutation4;
+      pathway.secondSampleTotal = activity.total;
+    }
+
+  }
+
   // TODO: handle other types here?
   return {
     pathway: pathway,
