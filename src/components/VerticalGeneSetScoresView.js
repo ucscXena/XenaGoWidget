@@ -36,15 +36,14 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
 }
 
 function getPointData(event, props) {
-  let {labelHeight, pathways,cohortIndex, width,associatedData} = props;
+  let {filter,labelHeight, pathways,cohortIndex, width,associatedData} = props;
   // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event);
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
 
   let pathway = pathways[pathwayIndex];
-  console.log('hovered pathway ',associatedData[pathwayIndex][sampleIndex],JSON.stringify(associatedData[pathwayIndex][sampleIndex]));
-  if(VIEW_ENUM.GENE_EXPRESSION){
+  if(filter===VIEW_ENUM.GENE_EXPRESSION){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
     if(cohortIndex===0){
@@ -55,7 +54,7 @@ function getPointData(event, props) {
     }
   }
   else
-  if(VIEW_ENUM.PARADIGM){
+  if(filter===VIEW_ENUM.PARADIGM){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     if(cohortIndex===0){

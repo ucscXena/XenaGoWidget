@@ -52,7 +52,12 @@ export default class HoverGeneView extends PureComponent {
         return data.pathway.secondSampleParadigmPathwayActivity!==undefined ? data.pathway.secondSampleParadigmPathwayActivity: data.pathway.secondParadigmPathwayActivity;
       }
     default:
-      return cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared;
+      if(cohortIndex===0){
+        return data.pathway.firstSampleTotal!==undefined ? data.pathway.firstSampleTotal : data.pathway.firstChiSquared;
+      }
+      else{
+        return data.pathway.secondSampleTotal!==undefined ? data.pathway.secondSampleTotal : data.pathway.secondChiSquared;
+      }
     }
   };
 
