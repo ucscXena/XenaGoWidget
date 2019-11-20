@@ -336,11 +336,11 @@ export default class XenaGeneSetApp extends PureComponent {
         cohortIndex: 1,
         pathway: hoveredPathway,
         expression: {
-          affected: hoveredPathway.firstObserved,
-          samplesAffected: hoveredPathway.firstObserved,
-          geneExpressionMean: hoveredPathway.firstGeneExpressionMean,
-          allGeneAffected: hoveredPathway.firstTotal,
-          total: hoveredPathway.firstNumSamples,
+          affected: hoveredPathway.secondObserved,
+          samplesAffected: hoveredPathway.secondObserved,
+          geneExpressionMean: hoveredPathway.secondGeneExpressionMean,
+          allGeneAffected: hoveredPathway.secondTotal,
+          total: hoveredPathway.secondNumSamples,
         }
       };
 

@@ -76,7 +76,7 @@ export default class HoverGeneView extends PureComponent {
                   backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
                 }}
               >
-                <strong>Mean Score</strong> {score.toFixed(2)}</span>
+                <strong>Score</strong> {score.toFixed(2)}</span>
             </div>
           }
           {data.tissue !== 'Header' && data.source !== 'GeneSet' &&

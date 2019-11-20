@@ -7,10 +7,8 @@ import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {getLabelForIndex} from '../functions/CohortFunctions';
 
-const HEADER_HEIGHT = 15;
-
 function pathwayIndexFromY(y, labelHeight) {
-  return Math.round((y - HEADER_HEIGHT) / labelHeight);
+  return Math.round((y - 15) / labelHeight);
 }
 
 function getMousePos(evt) {
