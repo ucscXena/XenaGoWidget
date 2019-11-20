@@ -227,14 +227,18 @@ export default class XenaGeneSetApp extends PureComponent {
     };
 
 
-    AppStorageHandler.storePathways(pathways);
-    let selection = AppStorageHandler.getPathwaySelection();
-    if(!selection || !selection.pathway ||  !selection.pathway.golabel){
-      selection.pathway = pathways[0];
-    }
 
     let associatedDataA = calculateAssociatedData(pathwayDataA,this.state.filter);
     let associatedDataB = calculateAssociatedData(pathwayDataB,this.state.filter);
+
+    AppStorageHandler.storePathways(pathways);
+    let selection = AppStorageHandler.getPathwaySelection();
+    if(!selection
+      || !selection.pathway
+      ||  !selection.pathway.golabel
+      || associatedDataA.filter( d => d[0].golabel === selection.pathway.golabel ).length===0){
+      selection.pathway = pathways[0];
+    }
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedDataA,this.state.filter);
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedDataB,this.state.filter);

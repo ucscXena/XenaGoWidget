@@ -21,14 +21,27 @@ import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
 import {scorePathway} from '../functions/SortFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from '../functions/DataFunctions';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
 
 export default class GeneSetEditor extends PureComponent {
 
-  constructor(props){
+  constructor(props) {
     super(props);
+
+    let loadedPathways = [];
+    let cartPathways = [];
+    if (!isViewGeneExpression(props.view)) {
+      loadedPathways = getGeneSetsForView(this.props.view);
+      const pathwayLabels = this.props.pathways.map(p => p.golabel);
+      // included data from original pathways
+      let cartPathways = loadedPathways.filter(p => pathwayLabels.indexOf(p.golabel) >= 0);
+      const cartLabels = cartPathways.map(p => p.golabel);
+      cartPathways = [...cartPathways, ...this.props.pathways.filter(p => cartLabels.indexOf(p.golabel) < 0)];
+    }
+
     this.state = {
       editGeneSet: undefined,
       name: '',
@@ -39,11 +52,11 @@ export default class GeneSetEditor extends PureComponent {
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
-      loadedPathways: [],
+      loadedPathways,
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       filteredPathways : [],
-      cartPathways : [],
+      cartPathways,
       selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
       selectedCartPathways : [],
@@ -60,7 +73,12 @@ export default class GeneSetEditor extends PureComponent {
 
   componentDidMount() {
     let { selectedCohort, samples } = this.state;
-    fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData);
+    if(isViewGeneExpression(this.props.view)){
+      fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData);
+    }
+    else{
+      this.filterByName();
+    }
   }
 
 
@@ -84,7 +102,6 @@ export default class GeneSetEditor extends PureComponent {
     pathways.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
-
 
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];
