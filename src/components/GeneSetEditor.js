@@ -37,7 +37,7 @@ export default class GeneSetEditor extends PureComponent {
       loadedPathways = getGeneSetsForView(this.props.view);
       const pathwayLabels = this.props.pathways.map(p => p.golabel);
       // included data from original pathways
-      let cartPathways = loadedPathways.filter(p => pathwayLabels.indexOf(p.golabel) >= 0);
+      cartPathways = loadedPathways.filter(p => pathwayLabels.indexOf(p.golabel) >= 0);
       const cartLabels = cartPathways.map(p => p.golabel);
       cartPathways = [...cartPathways, ...this.props.pathways.filter(p => cartLabels.indexOf(p.golabel) < 0)];
     }
@@ -429,6 +429,7 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
+                ASDF {this.state.cartPathways.length}
                 <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>View</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
