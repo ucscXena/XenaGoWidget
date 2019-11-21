@@ -843,6 +843,10 @@
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "merge_merged_reals/LUAD_merge_merged_reals.txt"
+    },
+    "Regulon activity": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "regulon_activity_matrix_tcga_luad.tsv"
     }
   },
   "TCGA Ovarian Cancer (OV)": {
