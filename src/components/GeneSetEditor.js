@@ -152,6 +152,12 @@ export default class GeneSetEditor extends PureComponent {
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 );
+
+    const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0);
+    if(alreadyExists.length>0){
+      alert(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' );
+    }
+
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     });
@@ -304,6 +310,10 @@ export default class GeneSetEditor extends PureComponent {
     });
   }
 
+  isCartFull() {
+    return this.state.cartPathways.length === this.state.cartPathwayLimit;
+  }
+
   render() {
     return (
       <div className={BaseStyle.geneSetBox}>
@@ -392,7 +402,7 @@ export default class GeneSetEditor extends PureComponent {
                     <FaEdit/> Edit GeneSet
                   </Button>
                   <Button
-                    disabled={this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
+                    disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
                     onClick={() => this.handleAddSelectedToCart()}
                   >
                     <FaArrowCircleORight/> Add To View
@@ -429,13 +439,14 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
-                ASDF {this.state.cartPathways.length}
                 <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>View</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
                       <td>
-                        <Chip>{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
+                        <Chip
+                          style={{ backgroundColor: this.isCartFull() ? 'orange':'lightgray'}}
+                        >{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
                       {this.showScore() &&
                       <td>
