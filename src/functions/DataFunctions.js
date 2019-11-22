@@ -688,7 +688,7 @@ export function calculateDiffs(geneData0, geneData1,view) {
 }
 
 export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways, filter) {
-  const { expression, samples, copyNumber,geneExpression , paradigm, cohort} = pathwayData;
+  const { expression, samples, copyNumber, filterCounts, geneExpression , paradigm, cohort} = pathwayData;
   let { pathway: { goid, golabel } } = pathwaySelection;
   let geneList = getGenesForNamedPathways(golabel, geneSetPathways);
   if(geneList.length===0){
@@ -707,6 +707,7 @@ export function generateGeneData(pathwaySelection, pathwayData, geneSetPathways,
     paradigm,
     filter,
     geneList:pathwayData.geneList, // use the geneList form the
+    filterCounts,
     pathways,
     pathwaySelection,
   };
