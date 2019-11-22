@@ -13,6 +13,7 @@ import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet';
 import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
 import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets';
+import RegulonPathways from '../data/genesets/LuadRegulonGeneSets';
 
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 const REFERENCE = refGene['hg38'];
@@ -138,12 +139,14 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
   }
 }
 
-export const getGeneSetsForView= (view) => {
+export const getGeneSetsForView = (view) => {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways;
   case VIEW_ENUM.GENE_EXPRESSION:
     return BpaPathways;
+  case VIEW_ENUM.REGULON:
+    return RegulonPathways;
   default:
     return FlybasePathways;
   }
