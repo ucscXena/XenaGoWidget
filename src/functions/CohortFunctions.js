@@ -9,6 +9,7 @@ const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
 const PARADIGM_KEY = 'PARADIGM';
 const PARADIGM_PATHWAY_ACTIVITY_KEY = 'PARADIGM pathway activity';
+const REGULON_PATHWAY_ACTIVITY_KEY = 'Regulon activity'; // also a gene expression
 const GENE_EXPRESSION_KEY = 'gene expression';
 const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
 const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
@@ -107,6 +108,7 @@ export function fetchCohortData() {
         const geneExpressionPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY];
         const paradigm = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_KEY];
         const paradigmPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_PATHWAY_ACTIVITY_KEY];
+        const regulonPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][REGULON_PATHWAY_ACTIVITY_KEY];
         return {
           name: cohort,
           mutationDataSetId: mutation.dataset,
@@ -115,6 +117,7 @@ export function fetchCohortData() {
           geneExpressionPathwayActivity,
           paradigm,
           paradigmPathwayActivity,
+          regulonPathwayActivity,
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,
