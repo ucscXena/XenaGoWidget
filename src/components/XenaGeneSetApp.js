@@ -158,7 +158,6 @@ export default class XenaGeneSetApp extends PureComponent {
     let {
       pathways,
       geneList,
-      filterCounts,
       cohortData,
 
       samplesA,
@@ -194,7 +193,6 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortData,
       cohort: selectedCohorts[0],
       filter: this.state.filter,
-      filterCounts: filterCounts[0],
 
       copyNumber: copyNumberA,
       expression: mutationsA,
@@ -213,7 +211,6 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortData,
       cohort: selectedCohorts[1],
       filter: this.state.filter,
-      filterCounts: filterCounts[1],
 
       copyNumber: copyNumberB,
       expression: mutationsB,
@@ -500,11 +497,7 @@ export default class XenaGeneSetApp extends PureComponent {
       const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
       const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-
       let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB]);
-      // newPathwayData[0].pathways = pathways ;
-      // newPathwayData[1].pathways = pathways ;
-
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newFilter,[sortedSamplesA,sortedSamplesB]);
       this.setState({
         filter:newFilter,
