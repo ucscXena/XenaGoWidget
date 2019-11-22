@@ -537,6 +537,11 @@ function calculateParadigmPathwayActivity(pathwayData) {
   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
 
+function calculateRegulonPathwayActivity(pathwayData) {
+  if(pathwayData.filter!==VIEW_ENUM.REGULON) return 0 ;
+  return pathwayData.pathways.map( (p,index) => average(pathwayData.regulonPathwayActivity[index].filter( f => !isNaN(f)))  );
+}
+
 function calculateGeneExpressionPathwayActivity(pathwayData) {
   if(pathwayData.filter!==VIEW_ENUM.GENE_EXPRESSION) return 0 ;
   return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
@@ -555,6 +560,7 @@ export function calculateAllPathways(pathwayData,associatedData) {
 
   const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
   const paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
+  const regulonPathwayActivityA = calculateRegulonPathwayActivity(pathwayDataA);
   // each pathway needs to have its own set BPA samples
   // const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
   const observationsA = associatedDataA.map( pathway => sumInstances(pathway));
@@ -563,8 +569,9 @@ export function calculateAllPathways(pathwayData,associatedData) {
   const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
-  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB, pathwayDataB);
-  const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB, pathwayDataB);
+  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB);
+  const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB);
+  const regulonPathwayActivityB = calculateRegulonPathwayActivity(pathwayDataB);
   // const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
   const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
   // const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
@@ -578,6 +585,7 @@ export function calculateAllPathways(pathwayData,associatedData) {
   return setPathways.map((p, index) => {
     if(!isNaN(geneExpressionPathwayActivityA[index])) p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
     if(!isNaN(paradigmPathwayActivityA[index])) p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
+    if(!isNaN(regulonPathwayActivityA[index])) p.firstRegulonPathwayActivity = regulonPathwayActivityA[index];
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
@@ -586,6 +594,7 @@ export function calculateAllPathways(pathwayData,associatedData) {
 
     if(!isNaN(geneExpressionPathwayActivityB[index])) p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
     if(!isNaN(paradigmPathwayActivityB[index])) p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
+    if(!isNaN(regulonPathwayActivityB[index])) p.secondRegulonPathwayActivity = regulonPathwayActivityB[index];
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
@@ -656,7 +665,7 @@ export function calculateDiffs(geneData0, geneData1,view) {
       }
     }
     else
-    if(view===VIEW_ENUM.GENE_EXPRESSION){
+    if(view===VIEW_ENUM.GENE_EXPRESSION || view === VIEW_ENUM.REGULON){
       for (const geneIndex in geneData0) {
         let diffScore = tTestGeneExpression(geneData0[geneIndex],geneData1[geneIndex]);
         diffScore = isNaN(diffScore) ? 0 : diffScore;
