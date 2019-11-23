@@ -155,6 +155,7 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   handleCombinedCohortData = (input) => {
+    console.log('handling combined cohorts',input);
     let {
       pathways,
       geneList,

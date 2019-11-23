@@ -62,6 +62,7 @@ export default class XenaGoViewer extends PureComponent {
     hasDataForFilter(geneData,filter){
       if(!geneData) return false;
       switch (filter) {
+      case VIEW_ENUM.REGULON:
       case VIEW_ENUM.GENE_EXPRESSION:
         return geneData.geneExpression!==undefined;
       case VIEW_ENUM.COPY_NUMBER:
