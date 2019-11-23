@@ -148,12 +148,14 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
 }
 
 export const getGeneSetsForView = (view) => {
+  console.log('getting gene sets for',view);
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways;
   case VIEW_ENUM.GENE_EXPRESSION:
     return BpaPathways;
   case VIEW_ENUM.REGULON:
+    console.log('loaded regulon');
     return RegulonPathways;
   default:
     return FlybasePathways;
@@ -171,6 +173,19 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } );
 };
 
+function getHostData(cohort,view) {
+  switch (view) {
+  case VIEW_ENUM.PARADIGM:
+    return cohort.paradigmPathwayActivity;
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return cohort.paradigmPathwayActivity;
+  case VIEW_ENUM.REGULON:
+    return cohort.regulonPathwayActivity;
+  default:
+    console.error('can not get host data for ',cohort,view);
+  }
+}
+
 export function allFieldMean(cohort, samples,view) {
 
   const allFieldMeanQuery =
@@ -186,7 +201,7 @@ export function allFieldMean(cohort, samples,view) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))';
   const quote = x => '"' + x + '"';
-  const { dataset, host} = view===VIEW_ENUM.PARADIGM ?  cohort.paradigmPathwayActivity : cohort.geneExpressionPathwayActivity;
+  const { dataset, host} = getHostData(cohort,view) ;
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
 }
@@ -218,6 +233,7 @@ export function lookupGeneByName(geneQuery,callback){
 
 export function getCohortDataForView(selectedCohorts,view){
   switch(view){
+  case VIEW_ENUM.REGULON:
   case VIEW_ENUM.GENE_EXPRESSION:
     return [
       {
@@ -273,6 +289,7 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
     })
     .subscribe( (output ) => {
       // get the average activity for each
+      console.log('fetch best pathways',output);
       dataHandler(output);
     });
 }

@@ -604,6 +604,8 @@ export default class XenaGeneSetApp extends PureComponent {
       indexMap[p.golabel] = index ;
     });
 
+    console.log('loaded pathways',loadedPathways,output);
+
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];
       const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
@@ -624,19 +626,26 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
+    console.log('A');
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
+      console.log('B');
       // change gene sets here
 
       if(getCohortDataForView(this.state.selectedCohort,this.state.filter)!==null){
+        console.log('C');
         if(this.state.reloadPathways){
+          console.log('D');
           fetchBestPathways(this.state.selectedCohort,this.state.filter,this.handleMeanActivityData);
+          console.log('E');
         }
         else{
+          console.log('F');
           fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
         }
       }
       else{
+        console.log('G');
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
