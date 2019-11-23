@@ -174,13 +174,15 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
 };
 
 function getHostData(cohort,view) {
+  console.log('input host data',cohort,view);
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return cohort.paradigmPathwayActivity;
   case VIEW_ENUM.GENE_EXPRESSION:
     return cohort.paradigmPathwayActivity;
   case VIEW_ENUM.REGULON:
-    return cohort.regulonPathwayActivity;
+    console.log('returning regulon',cohort.regulonPathwayActivity);
+    return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : { dataset: undefined, host: undefined };
   default:
     console.error('can not get host data for ',cohort,view);
   }
