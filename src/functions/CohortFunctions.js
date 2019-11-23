@@ -4,6 +4,7 @@ import SUB_COHORT_LIST from '../data/Subtype_Selected';
 import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
@@ -27,6 +28,32 @@ function lowerCaseCompareName(a, b) {
     console.error('error evaluating name', a, b);
     return null;
   }
+}
+
+export function getViewsForCohort(cohortName){
+  let views =[];
+  const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
+  if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON);
+  if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION);
+  if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM);
+  if(cohortDetail[MUTATION_KEY]) views.push(VIEW_ENUM.MUTATION);
+  if(cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.COPY_NUMBER);
+  if(cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.CNV_MUTATION);
+  return views ;
+}
+
+export function getCohortsForView(view){
+  let cohorts = [];
+  for(let cohortName in Object.keys(DETAIL_DATASET_FOR_GENESET)){
+    const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
+    if(view===VIEW_ENUM.REGULON && cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) cohorts.push(VIEW_ENUM.REGULON);
+    if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) cohorts.push(VIEW_ENUM.GENE_EXPRESSION);
+    if(view===VIEW_ENUM.PARADIGM && cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) cohorts.push(VIEW_ENUM.PARADIGM);
+    if(view===VIEW_ENUM.MUTATION && cohortDetail[MUTATION_KEY]) cohorts.push(VIEW_ENUM.MUTATION);
+    if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(VIEW_ENUM.COPY_NUMBER);
+    if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(VIEW_ENUM.CNV_MUTATION);
+  }
+  return cohorts;
 }
 
 export function getSubCohortsForCohort(cohort) {
