@@ -22,7 +22,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
-import {getCohortDetails, getSubCohortsOnlyForCohort } from '../functions/CohortFunctions';
+import {getCohortDetails, getSubCohortsOnlyForCohort, getViewsForCohort} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {
@@ -37,6 +37,7 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+import {intersection} from '../functions/MathFunctions';
 
 
 const VIEWER_HEIGHT = 500;
@@ -623,6 +624,8 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
+    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name));
+
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
@@ -849,6 +852,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <CrossHairV height={VIEWER_HEIGHT * 2} mousing={this.state.mousing} x={this.state.x}/>
                                 <XenaGoViewer
                                   // reference
+                                  allowableViews={allowableViews}
                                   cohortIndex={0}
 
                                   // view
@@ -887,6 +891,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 />
                                 <XenaGoViewer
                                   // reference
+                                  allowableViews={allowableViews}
                                   cohortIndex={1}
                                   collapsed={this.state.collapsed}
                                   colorSettings={this.state.geneStateColors}

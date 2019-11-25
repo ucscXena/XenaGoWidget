@@ -83,7 +83,7 @@ export default class XenaGoViewer extends PureComponent {
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
-      let {renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
+      let {allowableViews, renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData, swapCohorts, copyCohorts, onVersusAll,
@@ -124,6 +124,7 @@ export default class XenaGoViewer extends PureComponent {
                             swapCohorts={swapCohorts}
                           />
                           <ViewSelector
+                            allowableViews={allowableViews}
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
@@ -180,6 +181,7 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
+  allowableViews: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,
