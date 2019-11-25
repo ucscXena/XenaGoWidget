@@ -613,6 +613,10 @@
   },
   {
     "name": "TCGA Lung Adenocarcinoma (LUAD)",
+    "regulonPathwayActivity": {
+      "dataset": "regulon_activity_matrix_tcga_luad.tsv",
+      "host": "https://xenago.xenahubs.net"
+    },
     "mutationDataSetId": "TCGA.LUAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LUAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
