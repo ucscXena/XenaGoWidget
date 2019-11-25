@@ -62,6 +62,7 @@ export default class XenaGoViewer extends PureComponent {
     hasDataForFilter(geneData,filter){
       if(!geneData) return false;
       switch (filter) {
+      case VIEW_ENUM.REGULON:
       case VIEW_ENUM.GENE_EXPRESSION:
         return geneData.geneExpression!==undefined;
       case VIEW_ENUM.COPY_NUMBER:
@@ -82,7 +83,7 @@ export default class XenaGoViewer extends PureComponent {
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
-      let {renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
+      let {allowableViews, renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData, swapCohorts, copyCohorts, onVersusAll,
@@ -123,10 +124,11 @@ export default class XenaGoViewer extends PureComponent {
                             swapCohorts={swapCohorts}
                           />
                           <ViewSelector
+                            allowableViews={allowableViews}
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
-                            selected={filter}
+                            view={filter}
                           />
                           <HoverGeneView
                             cohortIndex={cohortIndex}
@@ -179,6 +181,7 @@ export default class XenaGoViewer extends PureComponent {
 }
 
 XenaGoViewer.propTypes = {
+  allowableViews: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,

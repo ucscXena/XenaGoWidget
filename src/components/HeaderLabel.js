@@ -76,7 +76,7 @@ export class HeaderLabel extends PureComponent {
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
       else
-      if(filter===VIEW_ENUM.GENE_EXPRESSION) {
+      if(filter===VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.REGULON) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }

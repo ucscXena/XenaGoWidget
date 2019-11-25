@@ -362,6 +362,13 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
       return b.paradigmPathwayActivity - a.paradigmPathwayActivity;
     }
     else
+    if(filter===VIEW_ENUM.REGULON){
+      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity !== 'NaN') return -1 ;
+      if(b.regulonPathwayActivity !== 'NaN' && a.regulonPathwayActivity === 'NaN') return 1 ;
+      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression ;
+      return b.regulonPathwayActivity - a.regulonPathwayActivity;
+    }
+    else
     if(filter===VIEW_ENUM.GENE_EXPRESSION){
       return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity;
     }

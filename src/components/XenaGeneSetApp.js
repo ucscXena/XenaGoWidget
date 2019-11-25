@@ -22,7 +22,7 @@ let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
 let {sparseDataMatchPartialField, refGene} = xenaQuery;
 import CrossHairH from './CrossHairH';
 import CrossHairV from './CrossHairV';
-import {getCohortDetails, getSubCohortsOnlyForCohort } from '../functions/CohortFunctions';
+import {getCohortDetails, getSubCohortsOnlyForCohort, getViewsForCohort} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import update from 'immutability-helper';
 import {
@@ -37,6 +37,7 @@ import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
+import {intersection} from '../functions/MathFunctions';
 
 
 const VIEWER_HEIGHT = 500;
@@ -168,6 +169,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneExpressionPathwayActivityA,
       paradigmA,
       paradigmPathwayActivityA,
+      regulonPathwayActivityA,
       genomeBackgroundMutationA,
       genomeBackgroundCopyNumberA,
       samplesB,
@@ -177,6 +179,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneExpressionPathwayActivityB,
       paradigmB,
       paradigmPathwayActivityB,
+      regulonPathwayActivityB,
       genomeBackgroundMutationB,
       genomeBackgroundCopyNumberB,
       selectedCohorts,
@@ -202,6 +205,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
       paradigm: paradigmZScoreA,
       paradigmPathwayActivity: paradigmPathwayActivityA[1],
+      regulonPathwayActivity: regulonPathwayActivityA[1],
       samples: samplesA,
       genomeBackgroundMutation: genomeBackgroundMutationA,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -221,12 +225,11 @@ export default class XenaGeneSetApp extends PureComponent {
       geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
       paradigm: paradigmZScoreB,
       paradigmPathwayActivity: paradigmPathwayActivityB[1],
+      regulonPathwayActivity: regulonPathwayActivityB[1],
       samples: samplesB,
       genomeBackgroundMutation: genomeBackgroundMutationB,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
     };
-
-
 
     let associatedDataA = calculateAssociatedData(pathwayDataA,this.state.filter);
     let associatedDataB = calculateAssociatedData(pathwayDataB,this.state.filter);
@@ -250,9 +253,6 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 
-
-
-    // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
     const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
 
@@ -619,6 +619,8 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
+    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name));
+
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
@@ -845,6 +847,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <CrossHairV height={VIEWER_HEIGHT * 2} mousing={this.state.mousing} x={this.state.x}/>
                                 <XenaGoViewer
                                   // reference
+                                  allowableViews={allowableViews}
                                   cohortIndex={0}
 
                                   // view
@@ -883,6 +886,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 />
                                 <XenaGoViewer
                                   // reference
+                                  allowableViews={allowableViews}
                                   cohortIndex={1}
                                   collapsed={this.state.collapsed}
                                   colorSettings={this.state.geneStateColors}
