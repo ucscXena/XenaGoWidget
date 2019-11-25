@@ -145,7 +145,7 @@ export function fetchCohortData() {
           geneExpressionPathwayActivity,
           paradigm,
           paradigmPathwayActivity,
-          regulonPathwayActivity: regulonPathwayActivity ? regulonPathwayActivity : {} ,
+          regulonPathwayActivity: regulonPathwayActivity ? regulonPathwayActivity : undefined ,
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,
