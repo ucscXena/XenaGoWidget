@@ -1,6 +1,6 @@
 export default [
     {
-        "golabel": "ABL1",
+        "golabel": "ABL1_regulon_activity",
         "gene": [
             "PLEKHG2",
             "DCHS1",
@@ -44,7 +44,7 @@ export default [
         ]
     },
     {
-        "golabel": "ABTB1",
+        "golabel": "ABTB1_regulon_activity",
         "gene": [
             "CYP3A5",
             "VILL",
@@ -146,7 +146,7 @@ export default [
         ]
     },
     {
-        "golabel": "AES",
+        "golabel": "AES_regulon_activity",
         "gene": [
             "LIFR",
             "FUT3",
@@ -222,7 +222,7 @@ export default [
         ]
     },
     {
-        "golabel": "AFF1",
+        "golabel": "AFF1_regulon_activity",
         "gene": [
             "POLR2F",
             "COX6B1",
@@ -321,7 +321,7 @@ export default [
         ]
     },
     {
-        "golabel": "AFF4",
+        "golabel": "AFF4_regulon_activity",
         "gene": [
             "SPRY4",
             "ARHGAP26",
@@ -383,7 +383,7 @@ export default [
         ]
     },
     {
-        "golabel": "AGAP3",
+        "golabel": "AGAP3_regulon_activity",
         "gene": [
             "FRRS1",
             "KIFC2",
@@ -508,7 +508,7 @@ export default [
         ]
     },
     {
-        "golabel": "AHCTF1",
+        "golabel": "AHCTF1_regulon_activity",
         "gene": [
             "RARRES3",
             "HLA-J",
@@ -601,7 +601,7 @@ export default [
         ]
     },
     {
-        "golabel": "AHDC1",
+        "golabel": "AHDC1_regulon_activity",
         "gene": [
             "MUC21",
             "SCUBE3",
@@ -785,7 +785,7 @@ export default [
         ]
     },
     {
-        "golabel": "AHR",
+        "golabel": "AHR_regulon_activity",
         "gene": [
             "C1orf95",
             "SLC16A14",
@@ -837,7 +837,7 @@ export default [
         ]
     },
     {
-        "golabel": "AIP",
+        "golabel": "AIP_regulon_activity",
         "gene": [
             "KLHL35",
             "HIST1H4J",
@@ -1028,7 +1028,7 @@ export default [
         ]
     },
     {
-        "golabel": "AKAP8L",
+        "golabel": "AKAP8L_regulon_activity",
         "gene": [
             "RAPSN",
             "ARHGAP33",
@@ -1116,7 +1116,7 @@ export default [
         ]
     },
     {
-        "golabel": "AKNA",
+        "golabel": "AKNA_regulon_activity",
         "gene": [
             "FAM179A",
             "LRRC18",
@@ -1256,7 +1256,7 @@ export default [
         ]
     },
     {
-        "golabel": "ANKRD22",
+        "golabel": "ANKRD22_regulon_activity",
         "gene": [
             "COL25A1",
             "C1orf95",
@@ -1333,7 +1333,7 @@ export default [
         ]
     },
     {
-        "golabel": "ANKRD42",
+        "golabel": "ANKRD42_regulon_activity",
         "gene": [
             "DNAI1",
             "C10orf79",
@@ -1465,7 +1465,7 @@ export default [
         ]
     },
     {
-        "golabel": "ANKRD49",
+        "golabel": "ANKRD49_regulon_activity",
         "gene": [
             "TEX12",
             "MRPL21",
@@ -1587,7 +1587,7 @@ export default [
         ]
     },
     {
-        "golabel": "ANKS1A",
+        "golabel": "ANKS1A_regulon_activity",
         "gene": [
             "CDX1",
             "C14orf72",
@@ -1674,7 +1674,7 @@ export default [
         ]
     },
     {
-        "golabel": "ANKS3",
+        "golabel": "ANKS3_regulon_activity",
         "gene": [
             "CACNA1F",
             "TMEM89",
@@ -1919,7 +1919,7 @@ export default [
         ]
     },
     {
-        "golabel": "APC",
+        "golabel": "APC_regulon_activity",
         "gene": [
             "PREX2",
             "BIK",
@@ -2039,7 +2039,7 @@ export default [
         ]
     },
     {
-        "golabel": "ARID2",
+        "golabel": "ARID2_regulon_activity",
         "gene": [
             "HAGHL",
             "PLCB1",
@@ -2108,7 +2108,7 @@ export default [
         ]
     },
     {
-        "golabel": "ARID4A",
+        "golabel": "ARID4A_regulon_activity",
         "gene": [
             "PTPN13",
             "NRXN3",
@@ -2289,7 +2289,7 @@ export default [
         ]
     },
     {
-        "golabel": "ARNTL2",
+        "golabel": "ARNTL2_regulon_activity",
         "gene": [
             "SH2D5",
             "HMGA2",
@@ -2452,7 +2452,7 @@ export default [
         ]
     },
     {
-        "golabel": "ASCC1",
+        "golabel": "ASCC1_regulon_activity",
         "gene": [
             "C20orf199",
             "DDIT4",
@@ -2535,7 +2535,7 @@ export default [
         ]
     },
     {
-        "golabel": "ASCC3",
+        "golabel": "ASCC3_regulon_activity",
         "gene": [
             "GUCY2D",
             "FLJ45244",
@@ -2598,7 +2598,7 @@ export default [
         ]
     },
     {
-        "golabel": "ASH1L",
+        "golabel": "ASH1L_regulon_activity",
         "gene": [
             "LGALS1",
             "CDX1",
@@ -2734,7 +2734,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATF1",
+        "golabel": "ATF1_regulon_activity",
         "gene": [
             "HAL",
             "CPE",
@@ -2855,7 +2855,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATF2",
+        "golabel": "ATF2_regulon_activity",
         "gene": [
             "DCST2",
             "LMTK2",
@@ -2959,7 +2959,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATF4",
+        "golabel": "ATF4_regulon_activity",
         "gene": [
             "FAM83F",
             "PHGDH",
@@ -3066,7 +3066,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATF7",
+        "golabel": "ATF7_regulon_activity",
         "gene": [
             "SECISBP2L",
             "RLN2",
@@ -3131,7 +3131,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATF7IP",
+        "golabel": "ATF7IP_regulon_activity",
         "gene": [
             "C17orf61",
             "DPM3",
@@ -3176,7 +3176,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATMIN",
+        "golabel": "ATMIN_regulon_activity",
         "gene": [
             "GCSH",
             "ZGLP1",
@@ -3229,7 +3229,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATOH8",
+        "golabel": "ATOH8_regulon_activity",
         "gene": [
             "PLA2G10",
             "AQP7",
@@ -3302,7 +3302,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATRX",
+        "golabel": "ATRX_regulon_activity",
         "gene": [
             "C10orf125",
             "SORL1",
@@ -3413,7 +3413,7 @@ export default [
         ]
     },
     {
-        "golabel": "ATXN7",
+        "golabel": "ATXN7_regulon_activity",
         "gene": [
             "QPCT",
             "LOC728875",
@@ -3549,7 +3549,7 @@ export default [
         ]
     },
     {
-        "golabel": "BACH1",
+        "golabel": "BACH1_regulon_activity",
         "gene": [
             "NCRNA00189",
             "VGLL3",
@@ -3685,7 +3685,7 @@ export default [
         ]
     },
     {
-        "golabel": "BACH2",
+        "golabel": "BACH2_regulon_activity",
         "gene": [
             "ZNF521",
             "TSHZ2",
@@ -3735,7 +3735,7 @@ export default [
         ]
     },
     {
-        "golabel": "BAG1",
+        "golabel": "BAG1_regulon_activity",
         "gene": [
             "ASPG",
             "CBR1",
@@ -3866,7 +3866,7 @@ export default [
         ]
     },
     {
-        "golabel": "BATF",
+        "golabel": "BATF_regulon_activity",
         "gene": [
             "IFI27L2",
             "EBI3",
@@ -3916,7 +3916,7 @@ export default [
         ]
     },
     {
-        "golabel": "BATF3",
+        "golabel": "BATF3_regulon_activity",
         "gene": [
             "THEG",
             "S100A5",
@@ -4000,7 +4000,7 @@ export default [
         ]
     },
     {
-        "golabel": "BAZ2A",
+        "golabel": "BAZ2A_regulon_activity",
         "gene": [
             "DENND5B",
             "C1QTNF2",
@@ -4067,7 +4067,7 @@ export default [
         ]
     },
     {
-        "golabel": "BBX",
+        "golabel": "BBX_regulon_activity",
         "gene": [
             "SLC16A1",
             "ITGA6",
@@ -4190,7 +4190,7 @@ export default [
         ]
     },
     {
-        "golabel": "BCLAF1",
+        "golabel": "BCLAF1_regulon_activity",
         "gene": [
             "A1BG",
             "C4orf48",
@@ -4291,7 +4291,7 @@ export default [
         ]
     },
     {
-        "golabel": "BCOR",
+        "golabel": "BCOR_regulon_activity",
         "gene": [
             "GPR87",
             "MT2A",
@@ -4347,7 +4347,7 @@ export default [
         ]
     },
     {
-        "golabel": "BDP1",
+        "golabel": "BDP1_regulon_activity",
         "gene": [
             "WDR17",
             "ANKRD31",
@@ -4410,7 +4410,7 @@ export default [
         ]
     },
     {
-        "golabel": "BHLHE41",
+        "golabel": "BHLHE41_regulon_activity",
         "gene": [
             "KRT79",
             "LYZ",
@@ -4485,7 +4485,7 @@ export default [
         ]
     },
     {
-        "golabel": "BOLA3",
+        "golabel": "BOLA3_regulon_activity",
         "gene": [
             "GAL",
             "MT1G",
@@ -4700,7 +4700,7 @@ export default [
         ]
     },
     {
-        "golabel": "BPTF",
+        "golabel": "BPTF_regulon_activity",
         "gene": [
             "TAS2R3",
             "CDX1",
@@ -4840,7 +4840,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRCA1",
+        "golabel": "BRCA1_regulon_activity",
         "gene": [
             "RIMS2",
             "E2F7",
@@ -4928,7 +4928,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRCA2",
+        "golabel": "BRCA2_regulon_activity",
         "gene": [
             "PRDM13",
             "HOXA1",
@@ -5001,7 +5001,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRD1",
+        "golabel": "BRD1_regulon_activity",
         "gene": [
             "LONRF2",
             "POM121L10P",
@@ -5083,7 +5083,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRF1",
+        "golabel": "BRF1_regulon_activity",
         "gene": [
             "CKB",
             "PLBD1",
@@ -5168,7 +5168,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRIP1",
+        "golabel": "BRIP1_regulon_activity",
         "gene": [
             "GREB1L",
             "PLA2G10",
@@ -5251,7 +5251,7 @@ export default [
         ]
     },
     {
-        "golabel": "BRPF1",
+        "golabel": "BRPF1_regulon_activity",
         "gene": [
             "NUP210",
             "TMEM99",
@@ -5318,7 +5318,7 @@ export default [
         ]
     },
     {
-        "golabel": "BTF3",
+        "golabel": "BTF3_regulon_activity",
         "gene": [
             "RPL9",
             "RSL24D1",
@@ -5461,7 +5461,7 @@ export default [
         ]
     },
     {
-        "golabel": "BTG1",
+        "golabel": "BTG1_regulon_activity",
         "gene": [
             "GKN2",
             "SLC14A2",
@@ -5589,7 +5589,7 @@ export default [
         ]
     },
     {
-        "golabel": "BTG2",
+        "golabel": "BTG2_regulon_activity",
         "gene": [
             "GRIA1",
             "SFTPA2",
@@ -5639,7 +5639,7 @@ export default [
         ]
     },
     {
-        "golabel": "BUD31",
+        "golabel": "BUD31_regulon_activity",
         "gene": [
             "CAPZA2",
             "C7orf68",
@@ -5808,7 +5808,7 @@ export default [
         ]
     },
     {
-        "golabel": "BZW1",
+        "golabel": "BZW1_regulon_activity",
         "gene": [
             "KLRC2",
             "CYP24A1",
@@ -5935,7 +5935,7 @@ export default [
         ]
     },
     {
-        "golabel": "C1D",
+        "golabel": "C1D_regulon_activity",
         "gene": [
             "TMEM14A",
             "RSL24D1",
@@ -6098,7 +6098,7 @@ export default [
         ]
     },
     {
-        "golabel": "C20orf194",
+        "golabel": "C20orf194_regulon_activity",
         "gene": [
             "OVCH2",
             "FLJ34503",
@@ -6226,7 +6226,7 @@ export default [
         ]
     },
     {
-        "golabel": "CALCOCO1",
+        "golabel": "CALCOCO1_regulon_activity",
         "gene": [
             "DLEC1",
             "OVCH2",
@@ -6327,7 +6327,7 @@ export default [
         ]
     },
     {
-        "golabel": "CAMTA2",
+        "golabel": "CAMTA2_regulon_activity",
         "gene": [
             "FUNDC2P2",
             "MYO15B",
@@ -6455,7 +6455,7 @@ export default [
         ]
     },
     {
-        "golabel": "CASZ1",
+        "golabel": "CASZ1_regulon_activity",
         "gene": [
             "TTLL10",
             "VWA3A",
@@ -6616,7 +6616,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBFA2T2",
+        "golabel": "CBFA2T2_regulon_activity",
         "gene": [
             "SEZ6",
             "NPPA",
@@ -6719,7 +6719,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBFB",
+        "golabel": "CBFB_regulon_activity",
         "gene": [
             "FN3K",
             "CMTM1",
@@ -6778,7 +6778,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBL",
+        "golabel": "CBL_regulon_activity",
         "gene": [
             "ODZ3",
             "FXYD3",
@@ -6980,7 +6980,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX2",
+        "golabel": "CBX2_regulon_activity",
         "gene": [
             "UGT1A3",
             "UGT1A4",
@@ -7075,7 +7075,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX3",
+        "golabel": "CBX3_regulon_activity",
         "gene": [
             "TNXB",
             "CKS2",
@@ -7212,7 +7212,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX4",
+        "golabel": "CBX4_regulon_activity",
         "gene": [
             "GRIN1",
             "NECAB1",
@@ -7289,7 +7289,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX6",
+        "golabel": "CBX6_regulon_activity",
         "gene": [
             "TTLL7",
             "NPTXR",
@@ -7348,7 +7348,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX7",
+        "golabel": "CBX7_regulon_activity",
         "gene": [
             "SEC14L3",
             "SCGB1A1",
@@ -7660,7 +7660,7 @@ export default [
         ]
     },
     {
-        "golabel": "CBX8",
+        "golabel": "CBX8_regulon_activity",
         "gene": [
             "C19orf45",
             "SLC29A4",
@@ -7788,7 +7788,7 @@ export default [
         ]
     },
     {
-        "golabel": "CCDC71",
+        "golabel": "CCDC71_regulon_activity",
         "gene": [
             "RPS10",
             "CENPF",
@@ -7939,7 +7939,7 @@ export default [
         ]
     },
     {
-        "golabel": "CCNT1",
+        "golabel": "CCNT1_regulon_activity",
         "gene": [
             "ASAH2B",
             "SGK196",
@@ -8015,7 +8015,7 @@ export default [
         ]
     },
     {
-        "golabel": "CDC6",
+        "golabel": "CDC6_regulon_activity",
         "gene": [
             "GBX2",
             "RIMS2",
@@ -8150,7 +8150,7 @@ export default [
         ]
     },
     {
-        "golabel": "CDK9",
+        "golabel": "CDK9_regulon_activity",
         "gene": [
             "INE2",
             "C17orf55",
@@ -8240,7 +8240,7 @@ export default [
         ]
     },
     {
-        "golabel": "CDX1",
+        "golabel": "CDX1_regulon_activity",
         "gene": [
             "ENTHD1",
             "DIRC1",
@@ -8332,7 +8332,7 @@ export default [
         ]
     },
     {
-        "golabel": "CEBPB",
+        "golabel": "CEBPB_regulon_activity",
         "gene": [
             "C21orf84",
             "RHOV",
@@ -8415,7 +8415,7 @@ export default [
         ]
     },
     {
-        "golabel": "CEBPD",
+        "golabel": "CEBPD_regulon_activity",
         "gene": [
             "RLN3",
             "KCNG2",
@@ -8481,7 +8481,7 @@ export default [
         ]
     },
     {
-        "golabel": "CENPK",
+        "golabel": "CENPK_regulon_activity",
         "gene": [
             "ATOH8",
             "E2F7",
@@ -8563,7 +8563,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHAF1A",
+        "golabel": "CHAF1A_regulon_activity",
         "gene": [
             "CAMK2N2",
             "MAST1",
@@ -8664,7 +8664,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHD1",
+        "golabel": "CHD1_regulon_activity",
         "gene": [
             "ANKRD31",
             "METRN",
@@ -8711,7 +8711,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHD2",
+        "golabel": "CHD2_regulon_activity",
         "gene": [
             "SORCS2",
             "LOC148696",
@@ -8804,7 +8804,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHD6",
+        "golabel": "CHD6_regulon_activity",
         "gene": [
             "CDA",
             "LEMD1",
@@ -8944,7 +8944,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHD7",
+        "golabel": "CHD7_regulon_activity",
         "gene": [
             "HMGB3",
             "LST1",
@@ -9001,7 +9001,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHD9",
+        "golabel": "CHD9_regulon_activity",
         "gene": [
             "C1orf182",
             "LOC148696",
@@ -9120,7 +9120,7 @@ export default [
         ]
     },
     {
-        "golabel": "CHURC1",
+        "golabel": "CHURC1_regulon_activity",
         "gene": [
             "IGJ",
             "THEMIS",
@@ -9185,7 +9185,7 @@ export default [
         ]
     },
     {
-        "golabel": "CIC",
+        "golabel": "CIC_regulon_activity",
         "gene": [
             "LIPE",
             "GGN",
@@ -9286,7 +9286,7 @@ export default [
         ]
     },
     {
-        "golabel": "CIITA",
+        "golabel": "CIITA_regulon_activity",
         "gene": [
             "TMEM90A",
             "CHRNA5",
@@ -9435,7 +9435,7 @@ export default [
         ]
     },
     {
-        "golabel": "CNBP",
+        "golabel": "CNBP_regulon_activity",
         "gene": [
             "KLRC1",
             "XCL2",
@@ -9570,7 +9570,7 @@ export default [
         ]
     },
     {
-        "golabel": "CNOT3",
+        "golabel": "CNOT3_regulon_activity",
         "gene": [
             "LAMA5",
             "CLIC2",
@@ -9625,7 +9625,7 @@ export default [
         ]
     },
     {
-        "golabel": "CNOT7",
+        "golabel": "CNOT7_regulon_activity",
         "gene": [
             "SLC7A2",
             "SEC11C",
@@ -9719,7 +9719,7 @@ export default [
         ]
     },
     {
-        "golabel": "COPS2",
+        "golabel": "COPS2_regulon_activity",
         "gene": [
             "FLJ44635",
             "RPL31P11",
@@ -9880,7 +9880,7 @@ export default [
         ]
     },
     {
-        "golabel": "COPS3",
+        "golabel": "COPS3_regulon_activity",
         "gene": [
             "NCRNA00188",
             "RSL24D1",
@@ -9994,7 +9994,7 @@ export default [
         ]
     },
     {
-        "golabel": "COPS4",
+        "golabel": "COPS4_regulon_activity",
         "gene": [
             "FUNDC2P2",
             "CETN4P",
@@ -10188,7 +10188,7 @@ export default [
         ]
     },
     {
-        "golabel": "CRAMP1L",
+        "golabel": "CRAMP1L_regulon_activity",
         "gene": [
             "USP49",
             "LOC100132247",
@@ -10247,7 +10247,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREB1",
+        "golabel": "CREB1_regulon_activity",
         "gene": [
             "LOC100271831",
             "COMTD1",
@@ -10327,7 +10327,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREB3L2",
+        "golabel": "CREB3L2_regulon_activity",
         "gene": [
             "ALDH1L2",
             "VCAN",
@@ -10415,7 +10415,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREB3L4",
+        "golabel": "CREB3L4_regulon_activity",
         "gene": [
             "KIT",
             "C2CD4D",
@@ -10517,7 +10517,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREBBP",
+        "golabel": "CREBBP_regulon_activity",
         "gene": [
             "CKS2",
             "RPL27",
@@ -10627,7 +10627,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREBL2",
+        "golabel": "CREBL2_regulon_activity",
         "gene": [
             "F13A1",
             "P2RY12",
@@ -10706,7 +10706,7 @@ export default [
         ]
     },
     {
-        "golabel": "CREM",
+        "golabel": "CREM_regulon_activity",
         "gene": [
             "HBD",
             "CLEC4D",
@@ -10859,7 +10859,7 @@ export default [
         ]
     },
     {
-        "golabel": "CRTC1",
+        "golabel": "CRTC1_regulon_activity",
         "gene": [
             "RET",
             "GRK1",
@@ -10993,7 +10993,7 @@ export default [
         ]
     },
     {
-        "golabel": "CTBP2",
+        "golabel": "CTBP2_regulon_activity",
         "gene": [
             "TSPAN32",
             "RASGRP2",
@@ -11078,7 +11078,7 @@ export default [
         ]
     },
     {
-        "golabel": "CTCF",
+        "golabel": "CTCF_regulon_activity",
         "gene": [
             "CST6",
             "DHDH",
@@ -11149,7 +11149,7 @@ export default [
         ]
     },
     {
-        "golabel": "CTDSPL",
+        "golabel": "CTDSPL_regulon_activity",
         "gene": [
             "SLC6A20",
             "PVRL3",
@@ -11202,7 +11202,7 @@ export default [
         ]
     },
     {
-        "golabel": "CTNNBIP1",
+        "golabel": "CTNNBIP1_regulon_activity",
         "gene": [
             "C6orf176",
             "LOC441177",
@@ -11354,7 +11354,7 @@ export default [
         ]
     },
     {
-        "golabel": "CUL5",
+        "golabel": "CUL5_regulon_activity",
         "gene": [
             "AGL",
             "C11orf65",
@@ -11430,7 +11430,7 @@ export default [
         ]
     },
     {
-        "golabel": "DAB2",
+        "golabel": "DAB2_regulon_activity",
         "gene": [
             "TIMD4",
             "CLEC4G",
@@ -11510,7 +11510,7 @@ export default [
         ]
     },
     {
-        "golabel": "DAZAP2",
+        "golabel": "DAZAP2_regulon_activity",
         "gene": [
             "KIFC2",
             "C12orf57",
@@ -11566,7 +11566,7 @@ export default [
         ]
     },
     {
-        "golabel": "DCP1A",
+        "golabel": "DCP1A_regulon_activity",
         "gene": [
             "BATF",
             "MTCP1NB",
@@ -11626,7 +11626,7 @@ export default [
         ]
     },
     {
-        "golabel": "DDX54",
+        "golabel": "DDX54_regulon_activity",
         "gene": [
             "RGS13",
             "CLUL1",
@@ -11763,7 +11763,7 @@ export default [
         ]
     },
     {
-        "golabel": "DEK",
+        "golabel": "DEK_regulon_activity",
         "gene": [
             "C11orf35",
             "FBXL8",
@@ -11857,7 +11857,7 @@ export default [
         ]
     },
     {
-        "golabel": "DENND4A",
+        "golabel": "DENND4A_regulon_activity",
         "gene": [
             "CLDN18",
             "ACER2",
@@ -12033,7 +12033,7 @@ export default [
         ]
     },
     {
-        "golabel": "DEPDC1",
+        "golabel": "DEPDC1_regulon_activity",
         "gene": [
             "CDH18",
             "SLC6A15",
@@ -12418,7 +12418,7 @@ export default [
         ]
     },
     {
-        "golabel": "DEPDC1B",
+        "golabel": "DEPDC1B_regulon_activity",
         "gene": [
             "RIPPLY2",
             "TEX15",
@@ -12502,7 +12502,7 @@ export default [
         ]
     },
     {
-        "golabel": "DHX34",
+        "golabel": "DHX34_regulon_activity",
         "gene": [
             "KCNJ14",
             "PPFIA3",
@@ -12568,7 +12568,7 @@ export default [
         ]
     },
     {
-        "golabel": "DHX38",
+        "golabel": "DHX38_regulon_activity",
         "gene": [
             "GPR160",
             "PLEC",
@@ -12667,7 +12667,7 @@ export default [
         ]
     },
     {
-        "golabel": "DMAP1",
+        "golabel": "DMAP1_regulon_activity",
         "gene": [
             "C1orf223",
             "RAB27B",
@@ -12715,7 +12715,7 @@ export default [
         ]
     },
     {
-        "golabel": "DNAJC1",
+        "golabel": "DNAJC1_regulon_activity",
         "gene": [
             "C8orf75",
             "BFSP2",
@@ -12774,7 +12774,7 @@ export default [
         ]
     },
     {
-        "golabel": "DNMT1",
+        "golabel": "DNMT1_regulon_activity",
         "gene": [
             "PACSIN1",
             "SLC16A4",
@@ -12903,7 +12903,7 @@ export default [
         ]
     },
     {
-        "golabel": "DNMT3A",
+        "golabel": "DNMT3A_regulon_activity",
         "gene": [
             "MYCN",
             "MYCNOS",
@@ -13027,7 +13027,7 @@ export default [
         ]
     },
     {
-        "golabel": "DOT1L",
+        "golabel": "DOT1L_regulon_activity",
         "gene": [
             "ATP2A1",
             "HIC2",
@@ -13109,7 +13109,7 @@ export default [
         ]
     },
     {
-        "golabel": "DR1",
+        "golabel": "DR1_regulon_activity",
         "gene": [
             "INE2",
             "C17orf55",
@@ -13299,7 +13299,7 @@ export default [
         ]
     },
     {
-        "golabel": "DRAP1",
+        "golabel": "DRAP1_regulon_activity",
         "gene": [
             "CCDC28B",
             "CD70",
@@ -13548,7 +13548,7 @@ export default [
         ]
     },
     {
-        "golabel": "DSP",
+        "golabel": "DSP_regulon_activity",
         "gene": [
             "PKP2",
             "CTSH",
@@ -13596,7 +13596,7 @@ export default [
         ]
     },
     {
-        "golabel": "DVL1",
+        "golabel": "DVL1_regulon_activity",
         "gene": [
             "FBXO2",
             "HAGHL",
@@ -13725,7 +13725,7 @@ export default [
         ]
     },
     {
-        "golabel": "DVL3",
+        "golabel": "DVL3_regulon_activity",
         "gene": [
             "SHOX2",
             "CACNA1B",
@@ -13830,7 +13830,7 @@ export default [
         ]
     },
     {
-        "golabel": "E2F5",
+        "golabel": "E2F5_regulon_activity",
         "gene": [
             "PITX2",
             "SEC11C",
@@ -13937,7 +13937,7 @@ export default [
         ]
     },
     {
-        "golabel": "E2F7",
+        "golabel": "E2F7_regulon_activity",
         "gene": [
             "LINGO2",
             "SH2D5",
@@ -13988,7 +13988,7 @@ export default [
         ]
     },
     {
-        "golabel": "E4F1",
+        "golabel": "E4F1_regulon_activity",
         "gene": [
             "RAB26",
             "CASKIN1",
@@ -14071,7 +14071,7 @@ export default [
         ]
     },
     {
-        "golabel": "EBF4",
+        "golabel": "EBF4_regulon_activity",
         "gene": [
             "FGFR3",
             "OXER1",
@@ -14127,7 +14127,7 @@ export default [
         ]
     },
     {
-        "golabel": "EDF1",
+        "golabel": "EDF1_regulon_activity",
         "gene": [
             "HIST2H2AA3",
             "GADD45G",
@@ -14261,7 +14261,7 @@ export default [
         ]
     },
     {
-        "golabel": "EEA1",
+        "golabel": "EEA1_regulon_activity",
         "gene": [
             "PRKG1",
             "SESN3",
@@ -14359,7 +14359,7 @@ export default [
         ]
     },
     {
-        "golabel": "EEF1A1",
+        "golabel": "EEF1A1_regulon_activity",
         "gene": [
             "RGS13",
             "S100B",
@@ -14505,7 +14505,7 @@ export default [
         ]
     },
     {
-        "golabel": "EHMT1",
+        "golabel": "EHMT1_regulon_activity",
         "gene": [
             "WNK2",
             "LEMD1",
@@ -14582,7 +14582,7 @@ export default [
         ]
     },
     {
-        "golabel": "EHMT2",
+        "golabel": "EHMT2_regulon_activity",
         "gene": [
             "MYCNOS",
             "MOSC1",
@@ -14706,7 +14706,7 @@ export default [
         ]
     },
     {
-        "golabel": "EID1",
+        "golabel": "EID1_regulon_activity",
         "gene": [
             "OMD",
             "TSLP",
@@ -14836,7 +14836,7 @@ export default [
         ]
     },
     {
-        "golabel": "EIF5B",
+        "golabel": "EIF5B_regulon_activity",
         "gene": [
             "LCNL1",
             "SIGLECP3",
@@ -14937,7 +14937,7 @@ export default [
         ]
     },
     {
-        "golabel": "ELF1",
+        "golabel": "ELF1_regulon_activity",
         "gene": [
             "POF1B",
             "NRTN",
@@ -15059,7 +15059,7 @@ export default [
         ]
     },
     {
-        "golabel": "ELF3",
+        "golabel": "ELF3_regulon_activity",
         "gene": [
             "FAM3D",
             "FA2H",
@@ -15135,7 +15135,7 @@ export default [
         ]
     },
     {
-        "golabel": "ELF4",
+        "golabel": "ELF4_regulon_activity",
         "gene": [
             "CBR1",
             "ENO3",
@@ -15222,7 +15222,7 @@ export default [
         ]
     },
     {
-        "golabel": "ELK3",
+        "golabel": "ELK3_regulon_activity",
         "gene": [
             "BLID",
             "HMGA2",
@@ -15488,7 +15488,7 @@ export default [
         ]
     },
     {
-        "golabel": "ELL3",
+        "golabel": "ELL3_regulon_activity",
         "gene": [
             "PLA2G10",
             "HGD",
@@ -15578,7 +15578,7 @@ export default [
         ]
     },
     {
-        "golabel": "ENO1",
+        "golabel": "ENO1_regulon_activity",
         "gene": [
             "BTNL9",
             "FOSL1",
@@ -15751,7 +15751,7 @@ export default [
         ]
     },
     {
-        "golabel": "EP300",
+        "golabel": "EP300_regulon_activity",
         "gene": [
             "SORL1",
             "PFDN5",
@@ -15825,7 +15825,7 @@ export default [
         ]
     },
     {
-        "golabel": "EP400",
+        "golabel": "EP400_regulon_activity",
         "gene": [
             "NUP210",
             "HSD17B8",
@@ -15909,7 +15909,7 @@ export default [
         ]
     },
     {
-        "golabel": "EPAS1",
+        "golabel": "EPAS1_regulon_activity",
         "gene": [
             "KCNK3",
             "CACNA2D2",
@@ -15997,7 +15997,7 @@ export default [
         ]
     },
     {
-        "golabel": "ESPL1",
+        "golabel": "ESPL1_regulon_activity",
         "gene": [
             "LOC100132354",
             "CDH18",
@@ -16224,7 +16224,7 @@ export default [
         ]
     },
     {
-        "golabel": "ESRRA",
+        "golabel": "ESRRA_regulon_activity",
         "gene": [
             "RAB26",
             "RHBDL1",
@@ -16359,7 +16359,7 @@ export default [
         ]
     },
     {
-        "golabel": "ETS1",
+        "golabel": "ETS1_regulon_activity",
         "gene": [
             "TNFRSF8",
             "AFAP1L2",
@@ -16431,7 +16431,7 @@ export default [
         ]
     },
     {
-        "golabel": "EZH1",
+        "golabel": "EZH1_regulon_activity",
         "gene": [
             "AGBL2",
             "CCDC114",
@@ -16560,7 +16560,7 @@ export default [
         ]
     },
     {
-        "golabel": "FBXL19",
+        "golabel": "FBXL19_regulon_activity",
         "gene": [
             "LOC388242",
             "C19orf23",
@@ -16627,7 +16627,7 @@ export default [
         ]
     },
     {
-        "golabel": "FHL2",
+        "golabel": "FHL2_regulon_activity",
         "gene": [
             "CALHM3",
             "GJB5",
@@ -16753,7 +16753,7 @@ export default [
         ]
     },
     {
-        "golabel": "FLI1",
+        "golabel": "FLI1_regulon_activity",
         "gene": [
             "HS3ST2",
             "DCC",
@@ -16852,7 +16852,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOSL1",
+        "golabel": "FOSL1_regulon_activity",
         "gene": [
             "FGF5",
             "LOC100216001",
@@ -16997,7 +16997,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOSL2",
+        "golabel": "FOSL2_regulon_activity",
         "gene": [
             "NR4A3",
             "LOC100131726",
@@ -17072,7 +17072,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXA1",
+        "golabel": "FOXA1_regulon_activity",
         "gene": [
             "ZMAT4",
             "FOXI3",
@@ -17131,7 +17131,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXA2",
+        "golabel": "FOXA2_regulon_activity",
         "gene": [
             "GKN2",
             "PRMT8",
@@ -17215,7 +17215,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXJ2",
+        "golabel": "FOXJ2_regulon_activity",
         "gene": [
             "AHNAK",
             "FAM66C",
@@ -17261,7 +17261,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXK2",
+        "golabel": "FOXK2_regulon_activity",
         "gene": [
             "DDN",
             "GCNT4",
@@ -17369,7 +17369,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXM1",
+        "golabel": "FOXM1_regulon_activity",
         "gene": [
             "C2orf78",
             "HOXD11",
@@ -17574,7 +17574,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXN2",
+        "golabel": "FOXN2_regulon_activity",
         "gene": [
             "CLEC6A",
             "KLRC4",
@@ -17687,7 +17687,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXO1",
+        "golabel": "FOXO1_regulon_activity",
         "gene": [
             "SECISBP2L",
             "CNTN3",
@@ -17745,7 +17745,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXO3",
+        "golabel": "FOXO3_regulon_activity",
         "gene": [
             "SNORA76",
             "AR",
@@ -17838,7 +17838,7 @@ export default [
         ]
     },
     {
-        "golabel": "FOXP1",
+        "golabel": "FOXP1_regulon_activity",
         "gene": [
             "LPL",
             "SPC24",
@@ -17889,7 +17889,7 @@ export default [
         ]
     },
     {
-        "golabel": "FUBP1",
+        "golabel": "FUBP1_regulon_activity",
         "gene": [
             "C5orf38",
             "LOC113230",
@@ -17949,7 +17949,7 @@ export default [
         ]
     },
     {
-        "golabel": "FUBP3",
+        "golabel": "FUBP3_regulon_activity",
         "gene": [
             "GPR172B",
             "SPNS3",
@@ -18016,7 +18016,7 @@ export default [
         ]
     },
     {
-        "golabel": "FXR2",
+        "golabel": "FXR2_regulon_activity",
         "gene": [
             "ENO3",
             "ODC1",
@@ -18169,7 +18169,7 @@ export default [
         ]
     },
     {
-        "golabel": "GABPA",
+        "golabel": "GABPA_regulon_activity",
         "gene": [
             "STX1A",
             "CXADR",
@@ -18246,7 +18246,7 @@ export default [
         ]
     },
     {
-        "golabel": "GABPB1",
+        "golabel": "GABPB1_regulon_activity",
         "gene": [
             "ACSM1",
             "GGT3P",
@@ -18312,7 +18312,7 @@ export default [
         ]
     },
     {
-        "golabel": "GAS7",
+        "golabel": "GAS7_regulon_activity",
         "gene": [
             "RSPO1",
             "OGN",
@@ -18462,7 +18462,7 @@ export default [
         ]
     },
     {
-        "golabel": "GATAD2A",
+        "golabel": "GATAD2A_regulon_activity",
         "gene": [
             "RNFT1",
             "PLEKHG3",
@@ -18513,7 +18513,7 @@ export default [
         ]
     },
     {
-        "golabel": "GLI4",
+        "golabel": "GLI4_regulon_activity",
         "gene": [
             "LRRC24",
             "POLR2J3",
@@ -18617,7 +18617,7 @@ export default [
         ]
     },
     {
-        "golabel": "GLYR1",
+        "golabel": "GLYR1_regulon_activity",
         "gene": [
             "PIGR",
             "FAM64A",
@@ -18671,7 +18671,7 @@ export default [
         ]
     },
     {
-        "golabel": "GMEB2",
+        "golabel": "GMEB2_regulon_activity",
         "gene": [
             "CASKIN1",
             "CPA3",
@@ -18735,7 +18735,7 @@ export default [
         ]
     },
     {
-        "golabel": "GPATCH8",
+        "golabel": "GPATCH8_regulon_activity",
         "gene": [
             "HSN2",
             "NNMT",
@@ -18798,7 +18798,7 @@ export default [
         ]
     },
     {
-        "golabel": "GPN1",
+        "golabel": "GPN1_regulon_activity",
         "gene": [
             "CAPZA2",
             "RGS20",
@@ -19016,7 +19016,7 @@ export default [
         ]
     },
     {
-        "golabel": "GRHL2",
+        "golabel": "GRHL2_regulon_activity",
         "gene": [
             "GFPT2",
             "LST1",
@@ -19114,7 +19114,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2A1",
+        "golabel": "GTF2A1_regulon_activity",
         "gene": [
             "RAB39",
             "UCN",
@@ -19258,7 +19258,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2A2",
+        "golabel": "GTF2A2_regulon_activity",
         "gene": [
             "RSL24D1",
             "RPLP1",
@@ -19485,7 +19485,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2E2",
+        "golabel": "GTF2E2_regulon_activity",
         "gene": [
             "DUSP4",
             "ATP13A4",
@@ -19565,7 +19565,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2H3",
+        "golabel": "GTF2H3_regulon_activity",
         "gene": [
             "B4GALT6",
             "FRRS1",
@@ -19687,7 +19687,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2IRD2",
+        "golabel": "GTF2IRD2_regulon_activity",
         "gene": [
             "DLEC1",
             "NWD1",
@@ -19811,7 +19811,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF2IRD2B",
+        "golabel": "GTF2IRD2B_regulon_activity",
         "gene": [
             "FAM81B",
             "ANKFN1",
@@ -19865,7 +19865,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF3C1",
+        "golabel": "GTF3C1_regulon_activity",
         "gene": [
             "CD48",
             "MAP1A",
@@ -19917,7 +19917,7 @@ export default [
         ]
     },
     {
-        "golabel": "GTF3C2",
+        "golabel": "GTF3C2_regulon_activity",
         "gene": [
             "OTX1",
             "PLAC9",
@@ -19985,7 +19985,7 @@ export default [
         ]
     },
     {
-        "golabel": "HAX1",
+        "golabel": "HAX1_regulon_activity",
         "gene": [
             "C1orf182",
             "GAS5",
@@ -20157,7 +20157,7 @@ export default [
         ]
     },
     {
-        "golabel": "HBP1",
+        "golabel": "HBP1_regulon_activity",
         "gene": [
             "CYB5A",
             "KIF18B",
@@ -20240,7 +20240,7 @@ export default [
         ]
     },
     {
-        "golabel": "HCFC1",
+        "golabel": "HCFC1_regulon_activity",
         "gene": [
             "NTN3",
             "LEMD1",
@@ -20385,7 +20385,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDAC10",
+        "golabel": "HDAC10_regulon_activity",
         "gene": [
             "SLC16A11",
             "C1orf127",
@@ -20512,7 +20512,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDAC11",
+        "golabel": "HDAC11_regulon_activity",
         "gene": [
             "GREM1",
             "C17orf50",
@@ -20686,7 +20686,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDAC5",
+        "golabel": "HDAC5_regulon_activity",
         "gene": [
             "SLC7A10",
             "SMOX",
@@ -20773,7 +20773,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDAC7",
+        "golabel": "HDAC7_regulon_activity",
         "gene": [
             "C1orf175",
             "LOC91450",
@@ -20874,7 +20874,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDGF",
+        "golabel": "HDGF_regulon_activity",
         "gene": [
             "LRRC31",
             "FAM83A",
@@ -20971,7 +20971,7 @@ export default [
         ]
     },
     {
-        "golabel": "HDX",
+        "golabel": "HDX_regulon_activity",
         "gene": [
             "NDST3",
             "AMN",
@@ -21082,7 +21082,7 @@ export default [
         ]
     },
     {
-        "golabel": "HELZ",
+        "golabel": "HELZ_regulon_activity",
         "gene": [
             "FXYD3",
             "C14orf72",
@@ -21155,7 +21155,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIC1",
+        "golabel": "HIC1_regulon_activity",
         "gene": [
             "CCL21",
             "HS3ST3A1",
@@ -21255,7 +21255,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIF1A",
+        "golabel": "HIF1A_regulon_activity",
         "gene": [
             "XDH",
             "SNAI2",
@@ -21442,7 +21442,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIPK2",
+        "golabel": "HIPK2_regulon_activity",
         "gene": [
             "IFIT1",
             "ISG15",
@@ -21516,7 +21516,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIST1H2BN",
+        "golabel": "HIST1H2BN_regulon_activity",
         "gene": [
             "HIST1H3J",
             "HIST1H4K",
@@ -21558,7 +21558,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIVEP1",
+        "golabel": "HIVEP1_regulon_activity",
         "gene": [
             "ROMO1",
             "C7orf59",
@@ -21626,7 +21626,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIVEP2",
+        "golabel": "HIVEP2_regulon_activity",
         "gene": [
             "GAS5",
             "TSHZ2",
@@ -21698,7 +21698,7 @@ export default [
         ]
     },
     {
-        "golabel": "HIVEP3",
+        "golabel": "HIVEP3_regulon_activity",
         "gene": [
             "IDO1",
             "PLA2G4A",
@@ -21842,7 +21842,7 @@ export default [
         ]
     },
     {
-        "golabel": "HLF",
+        "golabel": "HLF_regulon_activity",
         "gene": [
             "CPB2",
             "APOBEC2",
@@ -22000,7 +22000,7 @@ export default [
         ]
     },
     {
-        "golabel": "HLTF",
+        "golabel": "HLTF_regulon_activity",
         "gene": [
             "GABRQ",
             "C17orf104",
@@ -22082,7 +22082,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGA1",
+        "golabel": "HMGA1_regulon_activity",
         "gene": [
             "MYH16",
             "TH",
@@ -22172,7 +22172,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGB1",
+        "golabel": "HMGB1_regulon_activity",
         "gene": [
             "DLEU2",
             "ZNF519",
@@ -22215,7 +22215,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGB3",
+        "golabel": "HMGB3_regulon_activity",
         "gene": [
             "CALCA",
             "CALCB",
@@ -22368,7 +22368,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGN2",
+        "golabel": "HMGN2_regulon_activity",
         "gene": [
             "ZBTB8B",
             "LOC400759",
@@ -22472,7 +22472,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGN3",
+        "golabel": "HMGN3_regulon_activity",
         "gene": [
             "FLJ42875",
             "SCTR",
@@ -22573,7 +22573,7 @@ export default [
         ]
     },
     {
-        "golabel": "HMGN4",
+        "golabel": "HMGN4_regulon_activity",
         "gene": [
             "XCL2",
             "CXCL10",
@@ -22657,7 +22657,7 @@ export default [
         ]
     },
     {
-        "golabel": "HNF1A",
+        "golabel": "HNF1A_regulon_activity",
         "gene": [
             "F2",
             "ANXA13",
@@ -22795,7 +22795,7 @@ export default [
         ]
     },
     {
-        "golabel": "HNF1B",
+        "golabel": "HNF1B_regulon_activity",
         "gene": [
             "IL1F7",
             "MAP3K15",
@@ -22930,7 +22930,7 @@ export default [
         ]
     },
     {
-        "golabel": "HNRNPK",
+        "golabel": "HNRNPK_regulon_activity",
         "gene": [
             "LOC728392",
             "SPNS3",
@@ -23021,7 +23021,7 @@ export default [
         ]
     },
     {
-        "golabel": "HNRNPR",
+        "golabel": "HNRNPR_regulon_activity",
         "gene": [
             "GUCY2D",
             "WBSCR26",
@@ -23121,7 +23121,7 @@ export default [
         ]
     },
     {
-        "golabel": "HNRNPU",
+        "golabel": "HNRNPU_regulon_activity",
         "gene": [
             "LOC653786",
             "RGS13",
@@ -23195,7 +23195,7 @@ export default [
         ]
     },
     {
-        "golabel": "HOPX",
+        "golabel": "HOPX_regulon_activity",
         "gene": [
             "GKN2",
             "CHIA",
@@ -23322,7 +23322,7 @@ export default [
         ]
     },
     {
-        "golabel": "HSBP1",
+        "golabel": "HSBP1_regulon_activity",
         "gene": [
             "SEC11C",
             "QPCT",
@@ -23477,7 +23477,7 @@ export default [
         ]
     },
     {
-        "golabel": "HSF1",
+        "golabel": "HSF1_regulon_activity",
         "gene": [
             "CPA3",
             "MS4A2",
@@ -23552,7 +23552,7 @@ export default [
         ]
     },
     {
-        "golabel": "HSF2BP",
+        "golabel": "HSF2BP_regulon_activity",
         "gene": [
             "PTGES",
             "RPL39L",
@@ -23620,7 +23620,7 @@ export default [
         ]
     },
     {
-        "golabel": "HSF4",
+        "golabel": "HSF4_regulon_activity",
         "gene": [
             "TMEM89",
             "CALML6",
@@ -23827,7 +23827,7 @@ export default [
         ]
     },
     {
-        "golabel": "HSFX2",
+        "golabel": "HSFX2_regulon_activity",
         "gene": [
             "LOC158696",
             "LOC285593",
@@ -23875,7 +23875,7 @@ export default [
         ]
     },
     {
-        "golabel": "HTATIP2",
+        "golabel": "HTATIP2_regulon_activity",
         "gene": [
             "AKR1B10",
             "ABCC2",
@@ -24007,7 +24007,7 @@ export default [
         ]
     },
     {
-        "golabel": "HTATSF1",
+        "golabel": "HTATSF1_regulon_activity",
         "gene": [
             "SEPT3",
             "FGF13",
@@ -24064,7 +24064,7 @@ export default [
         ]
     },
     {
-        "golabel": "HTT",
+        "golabel": "HTT_regulon_activity",
         "gene": [
             "RPL13AP6",
             "RPS21",
@@ -24125,7 +24125,7 @@ export default [
         ]
     },
     {
-        "golabel": "IKBKG",
+        "golabel": "IKBKG_regulon_activity",
         "gene": [
             "G6PD",
             "RENBP",
@@ -24232,7 +24232,7 @@ export default [
         ]
     },
     {
-        "golabel": "IKZF4",
+        "golabel": "IKZF4_regulon_activity",
         "gene": [
             "C1orf95",
             "KLK11",
@@ -24310,7 +24310,7 @@ export default [
         ]
     },
     {
-        "golabel": "IKZF5",
+        "golabel": "IKZF5_regulon_activity",
         "gene": [
             "RGS13",
             "NCRNA00188",
@@ -24518,7 +24518,7 @@ export default [
         ]
     },
     {
-        "golabel": "ILF2",
+        "golabel": "ILF2_regulon_activity",
         "gene": [
             "C1orf182",
             "GALNT5",
@@ -24661,7 +24661,7 @@ export default [
         ]
     },
     {
-        "golabel": "ILF3",
+        "golabel": "ILF3_regulon_activity",
         "gene": [
             "DLX1",
             "GPC2",
@@ -24743,7 +24743,7 @@ export default [
         ]
     },
     {
-        "golabel": "INF2",
+        "golabel": "INF2_regulon_activity",
         "gene": [
             "PSCA",
             "LOC100216001",
@@ -24853,7 +24853,7 @@ export default [
         ]
     },
     {
-        "golabel": "ING4",
+        "golabel": "ING4_regulon_activity",
         "gene": [
             "SEPP1",
             "LOC374443",
@@ -24963,7 +24963,7 @@ export default [
         ]
     },
     {
-        "golabel": "ING5",
+        "golabel": "ING5_regulon_activity",
         "gene": [
             "KIAA1984",
             "LENEP",
@@ -25033,7 +25033,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRF2",
+        "golabel": "IRF2_regulon_activity",
         "gene": [
             "VILL",
             "SLC29A4",
@@ -25099,7 +25099,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRF2BP1",
+        "golabel": "IRF2BP1_regulon_activity",
         "gene": [
             "ZNF703",
             "C2CD4D",
@@ -25160,7 +25160,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRF5",
+        "golabel": "IRF5_regulon_activity",
         "gene": [
             "COL25A1",
             "KCP",
@@ -25253,7 +25253,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRF7",
+        "golabel": "IRF7_regulon_activity",
         "gene": [
             "IFI6",
             "IFIT1",
@@ -25352,7 +25352,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRX3",
+        "golabel": "IRX3_regulon_activity",
         "gene": [
             "SLC14A2",
             "TMED6",
@@ -25457,7 +25457,7 @@ export default [
         ]
     },
     {
-        "golabel": "IRX5",
+        "golabel": "IRX5_regulon_activity",
         "gene": [
             "SLC14A2",
             "ENO3",
@@ -25512,7 +25512,7 @@ export default [
         ]
     },
     {
-        "golabel": "ITGB3BP",
+        "golabel": "ITGB3BP_regulon_activity",
         "gene": [
             "CETN4P",
             "MT1F",
@@ -25625,7 +25625,7 @@ export default [
         ]
     },
     {
-        "golabel": "JARID2",
+        "golabel": "JARID2_regulon_activity",
         "gene": [
             "TET1",
             "PON3",
@@ -25705,7 +25705,7 @@ export default [
         ]
     },
     {
-        "golabel": "JMJD1C",
+        "golabel": "JMJD1C_regulon_activity",
         "gene": [
             "SPAG4",
             "PTPRB",
@@ -25782,7 +25782,7 @@ export default [
         ]
     },
     {
-        "golabel": "KAT2A",
+        "golabel": "KAT2A_regulon_activity",
         "gene": [
             "RHBG",
             "UCN",
@@ -25899,7 +25899,7 @@ export default [
         ]
     },
     {
-        "golabel": "KAT2B",
+        "golabel": "KAT2B_regulon_activity",
         "gene": [
             "MACROD2",
             "HPDL",
@@ -26063,7 +26063,7 @@ export default [
         ]
     },
     {
-        "golabel": "KDM2A",
+        "golabel": "KDM2A_regulon_activity",
         "gene": [
             "NCRNA00188",
             "RSL24D1",
@@ -26143,7 +26143,7 @@ export default [
         ]
     },
     {
-        "golabel": "KDM2B",
+        "golabel": "KDM2B_regulon_activity",
         "gene": [
             "ZIC1",
             "MSI1",
@@ -26200,7 +26200,7 @@ export default [
         ]
     },
     {
-        "golabel": "KDM4B",
+        "golabel": "KDM4B_regulon_activity",
         "gene": [
             "GULP1",
             "ACTR3C",
@@ -26254,7 +26254,7 @@ export default [
         ]
     },
     {
-        "golabel": "KDM5B",
+        "golabel": "KDM5B_regulon_activity",
         "gene": [
             "APOC1",
             "CD48",
@@ -26339,7 +26339,7 @@ export default [
         ]
     },
     {
-        "golabel": "KHSRP",
+        "golabel": "KHSRP_regulon_activity",
         "gene": [
             "SEPT3",
             "CYP39A1",
@@ -26381,7 +26381,7 @@ export default [
         ]
     },
     {
-        "golabel": "KIAA1549",
+        "golabel": "KIAA1549_regulon_activity",
         "gene": [
             "C6orf176",
             "LOC441177",
@@ -26571,7 +26571,7 @@ export default [
         ]
     },
     {
-        "golabel": "KIAA2018",
+        "golabel": "KIAA2018_regulon_activity",
         "gene": [
             "TAS2R3",
             "NCRNA00152",
@@ -26668,7 +26668,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF11",
+        "golabel": "KLF11_regulon_activity",
         "gene": [
             "TCAM1P",
             "SGEF",
@@ -26730,7 +26730,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF12",
+        "golabel": "KLF12_regulon_activity",
         "gene": [
             "BEND4",
             "ADAMTS15",
@@ -26775,7 +26775,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF13",
+        "golabel": "KLF13_regulon_activity",
         "gene": [
             "MGAT3",
             "DDIT3",
@@ -26849,7 +26849,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF15",
+        "golabel": "KLF15_regulon_activity",
         "gene": [
             "PCSK2",
             "GKN2",
@@ -27008,7 +27008,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF16",
+        "golabel": "KLF16_regulon_activity",
         "gene": [
             "ANGPTL4",
             "SLC7A5P1",
@@ -27093,7 +27093,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF3",
+        "golabel": "KLF3_regulon_activity",
         "gene": [
             "FER1L6",
             "ONECUT3",
@@ -27226,7 +27226,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF5",
+        "golabel": "KLF5_regulon_activity",
         "gene": [
             "ANXA10",
             "TFF1",
@@ -27377,7 +27377,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF7",
+        "golabel": "KLF7_regulon_activity",
         "gene": [
             "SPRED3",
             "C5orf4",
@@ -27433,7 +27433,7 @@ export default [
         ]
     },
     {
-        "golabel": "KLF8",
+        "golabel": "KLF8_regulon_activity",
         "gene": [
             "SLC16A14",
             "DUSP4",
@@ -27470,7 +27470,7 @@ export default [
         ]
     },
     {
-        "golabel": "KNTC1",
+        "golabel": "KNTC1_regulon_activity",
         "gene": [
             "FAM57B",
             "ALX1",
@@ -27598,7 +27598,7 @@ export default [
         ]
     },
     {
-        "golabel": "KRBA1",
+        "golabel": "KRBA1_regulon_activity",
         "gene": [
             "PLEKHG4B",
             "B4GALNT4",
@@ -27672,7 +27672,7 @@ export default [
         ]
     },
     {
-        "golabel": "LARP1",
+        "golabel": "LARP1_regulon_activity",
         "gene": [
             "RGS13",
             "CLUL1",
@@ -27721,7 +27721,7 @@ export default [
         ]
     },
     {
-        "golabel": "LARP4",
+        "golabel": "LARP4_regulon_activity",
         "gene": [
             "FGA",
             "CPS1",
@@ -27835,7 +27835,7 @@ export default [
         ]
     },
     {
-        "golabel": "LARP4B",
+        "golabel": "LARP4B_regulon_activity",
         "gene": [
             "TGFBI",
             "CNIH3",
@@ -27939,7 +27939,7 @@ export default [
         ]
     },
     {
-        "golabel": "LARP6",
+        "golabel": "LARP6_regulon_activity",
         "gene": [
             "EYA2",
             "ELOVL4",
@@ -27992,7 +27992,7 @@ export default [
         ]
     },
     {
-        "golabel": "LCOR",
+        "golabel": "LCOR_regulon_activity",
         "gene": [
             "NUPR1",
             "SLC12A2",
@@ -28114,7 +28114,7 @@ export default [
         ]
     },
     {
-        "golabel": "LDB1",
+        "golabel": "LDB1_regulon_activity",
         "gene": [
             "MST1P9",
             "PKIB",
@@ -28217,7 +28217,7 @@ export default [
         ]
     },
     {
-        "golabel": "LIMD1",
+        "golabel": "LIMD1_regulon_activity",
         "gene": [
             "RS1",
             "CYP4B1",
@@ -28366,7 +28366,7 @@ export default [
         ]
     },
     {
-        "golabel": "LMO3",
+        "golabel": "LMO3_regulon_activity",
         "gene": [
             "SPRYD5",
             "MMP28",
@@ -28433,7 +28433,7 @@ export default [
         ]
     },
     {
-        "golabel": "LRRFIP1",
+        "golabel": "LRRFIP1_regulon_activity",
         "gene": [
             "COL17A1",
             "ITGA6",
@@ -28549,7 +28549,7 @@ export default [
         ]
     },
     {
-        "golabel": "LYL1",
+        "golabel": "LYL1_regulon_activity",
         "gene": [
             "RAB33A",
             "TPSB2",
@@ -28713,7 +28713,7 @@ export default [
         ]
     },
     {
-        "golabel": "LZTFL1",
+        "golabel": "LZTFL1_regulon_activity",
         "gene": [
             "LRRC67",
             "ABHD12B",
@@ -28901,7 +28901,7 @@ export default [
         ]
     },
     {
-        "golabel": "MACF1",
+        "golabel": "MACF1_regulon_activity",
         "gene": [
             "SVEP1",
             "FAM38B",
@@ -29227,7 +29227,7 @@ export default [
         ]
     },
     {
-        "golabel": "MAFB",
+        "golabel": "MAFB_regulon_activity",
         "gene": [
             "DIRC1",
             "AIM2",
@@ -29341,7 +29341,7 @@ export default [
         ]
     },
     {
-        "golabel": "MAML3",
+        "golabel": "MAML3_regulon_activity",
         "gene": [
             "CACNA1H",
             "MUC5B",
@@ -29458,7 +29458,7 @@ export default [
         ]
     },
     {
-        "golabel": "MATR3",
+        "golabel": "MATR3_regulon_activity",
         "gene": [
             "SLC17A9",
             "WDR17",
@@ -29611,7 +29611,7 @@ export default [
         ]
     },
     {
-        "golabel": "MAZ",
+        "golabel": "MAZ_regulon_activity",
         "gene": [
             "HES6",
             "SIX2",
@@ -29687,7 +29687,7 @@ export default [
         ]
     },
     {
-        "golabel": "MBD3",
+        "golabel": "MBD3_regulon_activity",
         "gene": [
             "PSPN",
             "PRSS53",
@@ -29785,7 +29785,7 @@ export default [
         ]
     },
     {
-        "golabel": "MBNL1",
+        "golabel": "MBNL1_regulon_activity",
         "gene": [
             "TMEM14E",
             "RCOR2",
@@ -29829,7 +29829,7 @@ export default [
         ]
     },
     {
-        "golabel": "MBNL2",
+        "golabel": "MBNL2_regulon_activity",
         "gene": [
             "C1QTNF7",
             "TROAP",
@@ -29892,7 +29892,7 @@ export default [
         ]
     },
     {
-        "golabel": "MCM2",
+        "golabel": "MCM2_regulon_activity",
         "gene": [
             "SLC6A15",
             "GABRQ",
@@ -29996,7 +29996,7 @@ export default [
         ]
     },
     {
-        "golabel": "MCM6",
+        "golabel": "MCM6_regulon_activity",
         "gene": [
             "ISM2",
             "RIPPLY2",
@@ -30109,7 +30109,7 @@ export default [
         ]
     },
     {
-        "golabel": "MCM8",
+        "golabel": "MCM8_regulon_activity",
         "gene": [
             "SELV",
             "DLX2",
@@ -30176,7 +30176,7 @@ export default [
         ]
     },
     {
-        "golabel": "MDM4",
+        "golabel": "MDM4_regulon_activity",
         "gene": [
             "C12orf27",
             "SLC26A5",
@@ -30330,7 +30330,7 @@ export default [
         ]
     },
     {
-        "golabel": "MECOM",
+        "golabel": "MECOM_regulon_activity",
         "gene": [
             "PGC",
             "GKN2",
@@ -30404,7 +30404,7 @@ export default [
         ]
     },
     {
-        "golabel": "MECP2",
+        "golabel": "MECP2_regulon_activity",
         "gene": [
             "LOC158696",
             "LOC285593",
@@ -30461,7 +30461,7 @@ export default [
         ]
     },
     {
-        "golabel": "MED1",
+        "golabel": "MED1_regulon_activity",
         "gene": [
             "ADAM22",
             "LMTK2",
@@ -30566,7 +30566,7 @@ export default [
         ]
     },
     {
-        "golabel": "MED13",
+        "golabel": "MED13_regulon_activity",
         "gene": [
             "FIGNL2",
             "ANKRD31",
@@ -30637,7 +30637,7 @@ export default [
         ]
     },
     {
-        "golabel": "MED15",
+        "golabel": "MED15_regulon_activity",
         "gene": [
             "LHB",
             "TBX1",
@@ -30771,7 +30771,7 @@ export default [
         ]
     },
     {
-        "golabel": "MED26",
+        "golabel": "MED26_regulon_activity",
         "gene": [
             "CPAMD8",
             "DLX3",
@@ -30842,7 +30842,7 @@ export default [
         ]
     },
     {
-        "golabel": "MEF2A",
+        "golabel": "MEF2A_regulon_activity",
         "gene": [
             "SCN7A",
             "ITGA8",
@@ -30910,7 +30910,7 @@ export default [
         ]
     },
     {
-        "golabel": "MEF2C",
+        "golabel": "MEF2C_regulon_activity",
         "gene": [
             "HTR4",
             "AKR1C2",
@@ -31025,7 +31025,7 @@ export default [
         ]
     },
     {
-        "golabel": "MEF2D",
+        "golabel": "MEF2D_regulon_activity",
         "gene": [
             "MSLN",
             "KLHL30",
@@ -31096,7 +31096,7 @@ export default [
         ]
     },
     {
-        "golabel": "MEN1",
+        "golabel": "MEN1_regulon_activity",
         "gene": [
             "RTN4RL2",
             "FHL5",
@@ -31217,7 +31217,7 @@ export default [
         ]
     },
     {
-        "golabel": "MGA",
+        "golabel": "MGA_regulon_activity",
         "gene": [
             "NR6A1",
             "SNORD116-4",
@@ -31274,7 +31274,7 @@ export default [
         ]
     },
     {
-        "golabel": "MIER1",
+        "golabel": "MIER1_regulon_activity",
         "gene": [
             "P2RY12",
             "CLEC4A",
@@ -31385,7 +31385,7 @@ export default [
         ]
     },
     {
-        "golabel": "MIER2",
+        "golabel": "MIER2_regulon_activity",
         "gene": [
             "KISS1R",
             "C2CD4C",
@@ -31497,7 +31497,7 @@ export default [
         ]
     },
     {
-        "golabel": "MINK1",
+        "golabel": "MINK1_regulon_activity",
         "gene": [
             "CYP2C19",
             "C14orf73",
@@ -31642,7 +31642,7 @@ export default [
         ]
     },
     {
-        "golabel": "MITF",
+        "golabel": "MITF_regulon_activity",
         "gene": [
             "FOXL1",
             "DHRS9",
@@ -31700,7 +31700,7 @@ export default [
         ]
     },
     {
-        "golabel": "MKL1",
+        "golabel": "MKL1_regulon_activity",
         "gene": [
             "TBX3",
             "COL5A1",
@@ -31762,7 +31762,7 @@ export default [
         ]
     },
     {
-        "golabel": "MKL2",
+        "golabel": "MKL2_regulon_activity",
         "gene": [
             "TMEM63C",
             "DNAH5",
@@ -31816,7 +31816,7 @@ export default [
         ]
     },
     {
-        "golabel": "MLLT1",
+        "golabel": "MLLT1_regulon_activity",
         "gene": [
             "NRGN",
             "IGSF9B",
@@ -31902,7 +31902,7 @@ export default [
         ]
     },
     {
-        "golabel": "MLLT6",
+        "golabel": "MLLT6_regulon_activity",
         "gene": [
             "GPR179",
             "TAS2R4",
@@ -31971,7 +31971,7 @@ export default [
         ]
     },
     {
-        "golabel": "MLX",
+        "golabel": "MLX_regulon_activity",
         "gene": [
             "HOPX",
             "WBSCR26",
@@ -32054,7 +32054,7 @@ export default [
         ]
     },
     {
-        "golabel": "MLXIP",
+        "golabel": "MLXIP_regulon_activity",
         "gene": [
             "SFMBT2",
             "TLR9",
@@ -32125,7 +32125,7 @@ export default [
         ]
     },
     {
-        "golabel": "MNAT1",
+        "golabel": "MNAT1_regulon_activity",
         "gene": [
             "TMEM14A",
             "ARG2",
@@ -32203,7 +32203,7 @@ export default [
         ]
     },
     {
-        "golabel": "MNDA",
+        "golabel": "MNDA_regulon_activity",
         "gene": [
             "CLC",
             "RXFP2",
@@ -32469,7 +32469,7 @@ export default [
         ]
     },
     {
-        "golabel": "MNT",
+        "golabel": "MNT_regulon_activity",
         "gene": [
             "LOC400759",
             "RLN2",
@@ -32528,7 +32528,7 @@ export default [
         ]
     },
     {
-        "golabel": "MPHOSPH8",
+        "golabel": "MPHOSPH8_regulon_activity",
         "gene": [
             "CNFN",
             "RPL21P44",
@@ -32600,7 +32600,7 @@ export default [
         ]
     },
     {
-        "golabel": "MRPL28",
+        "golabel": "MRPL28_regulon_activity",
         "gene": [
             "LOC388242",
             "WBSCR27",
@@ -32701,7 +32701,7 @@ export default [
         ]
     },
     {
-        "golabel": "MRRF",
+        "golabel": "MRRF_regulon_activity",
         "gene": [
             "C9orf43",
             "NALCN",
@@ -32783,7 +32783,7 @@ export default [
         ]
     },
     {
-        "golabel": "MSL3",
+        "golabel": "MSL3_regulon_activity",
         "gene": [
             "RGS13",
             "ASB2",
@@ -32878,7 +32878,7 @@ export default [
         ]
     },
     {
-        "golabel": "MSRB2",
+        "golabel": "MSRB2_regulon_activity",
         "gene": [
             "CBR3",
             "KIAA0754",
@@ -32987,7 +32987,7 @@ export default [
         ]
     },
     {
-        "golabel": "MST1R",
+        "golabel": "MST1R_regulon_activity",
         "gene": [
             "DUOX2",
             "CDHR2",
@@ -33136,7 +33136,7 @@ export default [
         ]
     },
     {
-        "golabel": "MTA1",
+        "golabel": "MTA1_regulon_activity",
         "gene": [
             "ITGB6",
             "SLC40A1",
@@ -33197,7 +33197,7 @@ export default [
         ]
     },
     {
-        "golabel": "MTA3",
+        "golabel": "MTA3_regulon_activity",
         "gene": [
             "MAGEA4",
             "BCAR4",
@@ -33278,7 +33278,7 @@ export default [
         ]
     },
     {
-        "golabel": "MTF1",
+        "golabel": "MTF1_regulon_activity",
         "gene": [
             "C14orf72",
             "CNTF",
@@ -33356,7 +33356,7 @@ export default [
         ]
     },
     {
-        "golabel": "MXD3",
+        "golabel": "MXD3_regulon_activity",
         "gene": [
             "C2orf48",
             "CDKN2A",
@@ -33525,7 +33525,7 @@ export default [
         ]
     },
     {
-        "golabel": "MXD4",
+        "golabel": "MXD4_regulon_activity",
         "gene": [
             "DEPDC1",
             "CASC5",
@@ -33592,7 +33592,7 @@ export default [
         ]
     },
     {
-        "golabel": "MYBBP1A",
+        "golabel": "MYBBP1A_regulon_activity",
         "gene": [
             "CD48",
             "SNHG4",
@@ -33648,7 +33648,7 @@ export default [
         ]
     },
     {
-        "golabel": "MYBL2",
+        "golabel": "MYBL2_regulon_activity",
         "gene": [
             "GDF1",
             "DLX6",
@@ -33871,7 +33871,7 @@ export default [
         ]
     },
     {
-        "golabel": "MYEF2",
+        "golabel": "MYEF2_regulon_activity",
         "gene": [
             "NKAIN2",
             "CTXN2",
@@ -33934,7 +33934,7 @@ export default [
         ]
     },
     {
-        "golabel": "MYNN",
+        "golabel": "MYNN_regulon_activity",
         "gene": [
             "RPL21",
             "ZFAND1",
@@ -34043,7 +34043,7 @@ export default [
         ]
     },
     {
-        "golabel": "NAA15",
+        "golabel": "NAA15_regulon_activity",
         "gene": [
             "KIF12",
             "GGT3P",
@@ -34183,7 +34183,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOA1",
+        "golabel": "NCOA1_regulon_activity",
         "gene": [
             "HRC",
             "MARK1",
@@ -34256,7 +34256,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOA2",
+        "golabel": "NCOA2_regulon_activity",
         "gene": [
             "BTBD8",
             "FMN1",
@@ -34329,7 +34329,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOA4",
+        "golabel": "NCOA4_regulon_activity",
         "gene": [
             "KCNJ5",
             "TNFSF18",
@@ -34449,7 +34449,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOA6",
+        "golabel": "NCOA6_regulon_activity",
         "gene": [
             "TET1",
             "OTX1",
@@ -34536,7 +34536,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOR1",
+        "golabel": "NCOR1_regulon_activity",
         "gene": [
             "PFN4",
             "CDKL5",
@@ -34627,7 +34627,7 @@ export default [
         ]
     },
     {
-        "golabel": "NCOR2",
+        "golabel": "NCOR2_regulon_activity",
         "gene": [
             "NSMCE2",
             "PLEC",
@@ -34702,7 +34702,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFAT5",
+        "golabel": "NFAT5_regulon_activity",
         "gene": [
             "SKINTL",
             "DNAH1",
@@ -34801,7 +34801,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFATC2",
+        "golabel": "NFATC2_regulon_activity",
         "gene": [
             "GP5",
             "TNIK",
@@ -34908,7 +34908,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFATC3",
+        "golabel": "NFATC3_regulon_activity",
         "gene": [
             "CACNA2D2",
             "FBXO32",
@@ -34968,7 +34968,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFE2L1",
+        "golabel": "NFE2L1_regulon_activity",
         "gene": [
             "GAS5",
             "CYB5A",
@@ -35064,7 +35064,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFIC",
+        "golabel": "NFIC_regulon_activity",
         "gene": [
             "XCL1",
             "FMN1",
@@ -35197,7 +35197,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFIX",
+        "golabel": "NFIX_regulon_activity",
         "gene": [
             "LOC342346",
             "DMBT1",
@@ -35410,7 +35410,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFKB1",
+        "golabel": "NFKB1_regulon_activity",
         "gene": [
             "C1orf182",
             "AKR1E2",
@@ -35516,7 +35516,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFKB2",
+        "golabel": "NFKB2_regulon_activity",
         "gene": [
             "SLC12A3",
             "KLRC3",
@@ -35604,7 +35604,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFKBIB",
+        "golabel": "NFKBIB_regulon_activity",
         "gene": [
             "CCDC64",
             "CBLC",
@@ -35673,7 +35673,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFXL1",
+        "golabel": "NFXL1_regulon_activity",
         "gene": [
             "FXYD1",
             "RNASE1",
@@ -35755,7 +35755,7 @@ export default [
         ]
     },
     {
-        "golabel": "NFYB",
+        "golabel": "NFYB_regulon_activity",
         "gene": [
             "OBP2B",
             "ZMAT4",
@@ -35815,7 +35815,7 @@ export default [
         ]
     },
     {
-        "golabel": "NKX2-1",
+        "golabel": "NKX2-1_regulon_activity",
         "gene": [
             "GDA",
             "ANXA8",
@@ -36245,7 +36245,7 @@ export default [
         ]
     },
     {
-        "golabel": "NME2",
+        "golabel": "NME2_regulon_activity",
         "gene": [
             "GAS5",
             "XCR1",
@@ -36455,7 +36455,7 @@ export default [
         ]
     },
     {
-        "golabel": "NMI",
+        "golabel": "NMI_regulon_activity",
         "gene": [
             "CARD17",
             "CXCL11",
@@ -36577,7 +36577,7 @@ export default [
         ]
     },
     {
-        "golabel": "NOC4L",
+        "golabel": "NOC4L_regulon_activity",
         "gene": [
             "SCN7A",
             "ANGPT1",
@@ -36724,7 +36724,7 @@ export default [
         ]
     },
     {
-        "golabel": "NOTCH1",
+        "golabel": "NOTCH1_regulon_activity",
         "gene": [
             "HMCN1",
             "COL27A1",
@@ -36860,7 +36860,7 @@ export default [
         ]
     },
     {
-        "golabel": "NOTCH2",
+        "golabel": "NOTCH2_regulon_activity",
         "gene": [
             "FXYD3",
             "KDR",
@@ -37019,7 +37019,7 @@ export default [
         ]
     },
     {
-        "golabel": "NOTCH3",
+        "golabel": "NOTCH3_regulon_activity",
         "gene": [
             "CYP24A1",
             "CTSH",
@@ -37101,7 +37101,7 @@ export default [
         ]
     },
     {
-        "golabel": "NOTCH4",
+        "golabel": "NOTCH4_regulon_activity",
         "gene": [
             "SLC5A9",
             "LOXHD1",
@@ -37191,7 +37191,7 @@ export default [
         ]
     },
     {
-        "golabel": "NPAT",
+        "golabel": "NPAT_regulon_activity",
         "gene": [
             "ADAM22",
             "EGFL7",
@@ -37274,7 +37274,7 @@ export default [
         ]
     },
     {
-        "golabel": "NR2C2",
+        "golabel": "NR2C2_regulon_activity",
         "gene": [
             "TAS2R3",
             "C9orf144B",
@@ -37346,7 +37346,7 @@ export default [
         ]
     },
     {
-        "golabel": "NR2F6",
+        "golabel": "NR2F6_regulon_activity",
         "gene": [
             "IER5L",
             "CYSLTR2",
@@ -37488,7 +37488,7 @@ export default [
         ]
     },
     {
-        "golabel": "NR3C2",
+        "golabel": "NR3C2_regulon_activity",
         "gene": [
             "MACROD2",
             "KIAA0408",
@@ -37640,7 +37640,7 @@ export default [
         ]
     },
     {
-        "golabel": "NRBF2",
+        "golabel": "NRBF2_regulon_activity",
         "gene": [
             "C5orf46",
             "ESYT3",
@@ -37736,7 +37736,7 @@ export default [
         ]
     },
     {
-        "golabel": "NRIP1",
+        "golabel": "NRIP1_regulon_activity",
         "gene": [
             "EREG",
             "CATSPER1",
@@ -37837,7 +37837,7 @@ export default [
         ]
     },
     {
-        "golabel": "NRL",
+        "golabel": "NRL_regulon_activity",
         "gene": [
             "LOC100129066",
             "CD109",
@@ -38019,7 +38019,7 @@ export default [
         ]
     },
     {
-        "golabel": "OVOL2",
+        "golabel": "OVOL2_regulon_activity",
         "gene": [
             "AKR1C2",
             "AKR1C1",
@@ -38133,7 +38133,7 @@ export default [
         ]
     },
     {
-        "golabel": "PA2G4",
+        "golabel": "PA2G4_regulon_activity",
         "gene": [
             "NEIL3",
             "PGR",
@@ -38314,7 +38314,7 @@ export default [
         ]
     },
     {
-        "golabel": "PABPN1",
+        "golabel": "PABPN1_regulon_activity",
         "gene": [
             "RNF183",
             "TUBB8",
@@ -38441,7 +38441,7 @@ export default [
         ]
     },
     {
-        "golabel": "PAPOLA",
+        "golabel": "PAPOLA_regulon_activity",
         "gene": [
             "SLC38A8",
             "C10orf71",
@@ -38587,7 +38587,7 @@ export default [
         ]
     },
     {
-        "golabel": "PAPOLG",
+        "golabel": "PAPOLG_regulon_activity",
         "gene": [
             "ZFPM1",
             "PTK6",
@@ -38657,7 +38657,7 @@ export default [
         ]
     },
     {
-        "golabel": "PARN",
+        "golabel": "PARN_regulon_activity",
         "gene": [
             "SYBU",
             "PLA2G10",
@@ -38769,7 +38769,7 @@ export default [
         ]
     },
     {
-        "golabel": "PARP12",
+        "golabel": "PARP12_regulon_activity",
         "gene": [
             "CXCL11",
             "C12orf70",
@@ -38864,7 +38864,7 @@ export default [
         ]
     },
     {
-        "golabel": "PATZ1",
+        "golabel": "PATZ1_regulon_activity",
         "gene": [
             "LOC84931",
             "CDA",
@@ -38982,7 +38982,7 @@ export default [
         ]
     },
     {
-        "golabel": "PAWR",
+        "golabel": "PAWR_regulon_activity",
         "gene": [
             "TRIM16L",
             "ALOX15B",
@@ -39061,7 +39061,7 @@ export default [
         ]
     },
     {
-        "golabel": "PAXIP1",
+        "golabel": "PAXIP1_regulon_activity",
         "gene": [
             "FOXP2",
             "CD48",
@@ -39145,7 +39145,7 @@ export default [
         ]
     },
     {
-        "golabel": "PBRM1",
+        "golabel": "PBRM1_regulon_activity",
         "gene": [
             "SOCS1",
             "COMTD1",
@@ -39222,7 +39222,7 @@ export default [
         ]
     },
     {
-        "golabel": "PBX4",
+        "golabel": "PBX4_regulon_activity",
         "gene": [
             "KRT72",
             "CCDC28B",
@@ -39347,7 +39347,7 @@ export default [
         ]
     },
     {
-        "golabel": "PBXIP1",
+        "golabel": "PBXIP1_regulon_activity",
         "gene": [
             "PGC",
             "TMEM59L",
@@ -39462,7 +39462,7 @@ export default [
         ]
     },
     {
-        "golabel": "PCBD1",
+        "golabel": "PCBD1_regulon_activity",
         "gene": [
             "ORM2",
             "CBR1",
@@ -39678,7 +39678,7 @@ export default [
         ]
     },
     {
-        "golabel": "PCBD2",
+        "golabel": "PCBD2_regulon_activity",
         "gene": [
             "SLC26A9",
             "C16orf89",
@@ -39812,7 +39812,7 @@ export default [
         ]
     },
     {
-        "golabel": "PCBP1",
+        "golabel": "PCBP1_regulon_activity",
         "gene": [
             "LOC100133985",
             "C2CD4D",
@@ -39867,7 +39867,7 @@ export default [
         ]
     },
     {
-        "golabel": "PCGF6",
+        "golabel": "PCGF6_regulon_activity",
         "gene": [
             "POLE2",
             "C12orf48",
@@ -39939,7 +39939,7 @@ export default [
         ]
     },
     {
-        "golabel": "PDCD11",
+        "golabel": "PDCD11_regulon_activity",
         "gene": [
             "CTSH",
             "SLC7A5",
@@ -40040,7 +40040,7 @@ export default [
         ]
     },
     {
-        "golabel": "PDLIM4",
+        "golabel": "PDLIM4_regulon_activity",
         "gene": [
             "RPSAP52",
             "EREG",
@@ -40163,7 +40163,7 @@ export default [
         ]
     },
     {
-        "golabel": "PDS5B",
+        "golabel": "PDS5B_regulon_activity",
         "gene": [
             "ATP7B",
             "C4orf44",
@@ -40258,7 +40258,7 @@ export default [
         ]
     },
     {
-        "golabel": "PER2",
+        "golabel": "PER2_regulon_activity",
         "gene": [
             "NR4A2",
             "LGALS1",
@@ -40351,7 +40351,7 @@ export default [
         ]
     },
     {
-        "golabel": "PER3",
+        "golabel": "PER3_regulon_activity",
         "gene": [
             "CPS1",
             "S100P",
@@ -40441,7 +40441,7 @@ export default [
         ]
     },
     {
-        "golabel": "PFDN1",
+        "golabel": "PFDN1_regulon_activity",
         "gene": [
             "KIAA1244",
             "RPS14",
@@ -40527,7 +40527,7 @@ export default [
         ]
     },
     {
-        "golabel": "PGBD1",
+        "golabel": "PGBD1_regulon_activity",
         "gene": [
             "UGT3A1",
             "SCN3A",
@@ -40632,7 +40632,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF1",
+        "golabel": "PHF1_regulon_activity",
         "gene": [
             "MST1P2",
             "HLA-J",
@@ -40690,7 +40690,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF12",
+        "golabel": "PHF12_regulon_activity",
         "gene": [
             "RSL24D1",
             "GPR179",
@@ -40756,7 +40756,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF13",
+        "golabel": "PHF13_regulon_activity",
         "gene": [
             "ZBTB8B",
             "PLA2G10",
@@ -40874,7 +40874,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF15",
+        "golabel": "PHF15_regulon_activity",
         "gene": [
             "XKRX",
             "PCDHGB2",
@@ -40935,7 +40935,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF17",
+        "golabel": "PHF17_regulon_activity",
         "gene": [
             "PGC",
             "KCNU1",
@@ -41041,7 +41041,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF19",
+        "golabel": "PHF19_regulon_activity",
         "gene": [
             "MGAT5B",
             "MSLN",
@@ -41109,7 +41109,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF2",
+        "golabel": "PHF2_regulon_activity",
         "gene": [
             "NCRNA00092",
             "PROCR",
@@ -41220,7 +41220,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHF5A",
+        "golabel": "PHF5A_regulon_activity",
         "gene": [
             "RSL24D1",
             "OIP5",
@@ -41418,7 +41418,7 @@ export default [
         ]
     },
     {
-        "golabel": "PHTF2",
+        "golabel": "PHTF2_regulon_activity",
         "gene": [
             "CAPN9",
             "ERN2",
@@ -41547,7 +41547,7 @@ export default [
         ]
     },
     {
-        "golabel": "PIKFYVE",
+        "golabel": "PIKFYVE_regulon_activity",
         "gene": [
             "ASB1",
             "RPLP1",
@@ -41757,7 +41757,7 @@ export default [
         ]
     },
     {
-        "golabel": "PIN1",
+        "golabel": "PIN1_regulon_activity",
         "gene": [
             "SLC27A5",
             "LIN7B",
@@ -41889,7 +41889,7 @@ export default [
         ]
     },
     {
-        "golabel": "PIR",
+        "golabel": "PIR_regulon_activity",
         "gene": [
             "NECAB2",
             "GSTA1",
@@ -42015,7 +42015,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLEK2",
+        "golabel": "PLEK2_regulon_activity",
         "gene": [
             "ARL14",
             "LOC100216001",
@@ -42119,7 +42119,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNA1",
+        "golabel": "PLXNA1_regulon_activity",
         "gene": [
             "MFI2",
             "LAMC2",
@@ -42282,7 +42282,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNA3",
+        "golabel": "PLXNA3_regulon_activity",
         "gene": [
             "DMBX1",
             "FER1L4",
@@ -42421,7 +42421,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNB1",
+        "golabel": "PLXNB1_regulon_activity",
         "gene": [
             "C9orf117",
             "DLEC1",
@@ -42538,7 +42538,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNB2",
+        "golabel": "PLXNB2_regulon_activity",
         "gene": [
             "C11orf9",
             "TRPV4",
@@ -42637,7 +42637,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNB3",
+        "golabel": "PLXNB3_regulon_activity",
         "gene": [
             "KISS1R",
             "TMEM88B",
@@ -42713,7 +42713,7 @@ export default [
         ]
     },
     {
-        "golabel": "PLXNC1",
+        "golabel": "PLXNC1_regulon_activity",
         "gene": [
             "ADAMTS12",
             "ROR1",
@@ -42843,7 +42843,7 @@ export default [
         ]
     },
     {
-        "golabel": "PML",
+        "golabel": "PML_regulon_activity",
         "gene": [
             "C1orf95",
             "COL17A1",
@@ -43040,7 +43040,7 @@ export default [
         ]
     },
     {
-        "golabel": "PNRC2",
+        "golabel": "PNRC2_regulon_activity",
         "gene": [
             "KIAA0408",
             "CLUL1",
@@ -43117,7 +43117,7 @@ export default [
         ]
     },
     {
-        "golabel": "POGZ",
+        "golabel": "POGZ_regulon_activity",
         "gene": [
             "LGSN",
             "VSIG4",
@@ -43196,7 +43196,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLE3",
+        "golabel": "POLE3_regulon_activity",
         "gene": [
             "MYO15B",
             "CKS2",
@@ -43335,7 +43335,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLR1A",
+        "golabel": "POLR1A_regulon_activity",
         "gene": [
             "CLSPN",
             "ARHGAP11B",
@@ -43425,7 +43425,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLR2H",
+        "golabel": "POLR2H_regulon_activity",
         "gene": [
             "SVEP1",
             "PGR",
@@ -43542,7 +43542,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLR2J",
+        "golabel": "POLR2J_regulon_activity",
         "gene": [
             "C7orf68",
             "RPS21",
@@ -43682,7 +43682,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLR3A",
+        "golabel": "POLR3A_regulon_activity",
         "gene": [
             "TET1",
             "SPNS3",
@@ -43783,7 +43783,7 @@ export default [
         ]
     },
     {
-        "golabel": "POLR3E",
+        "golabel": "POLR3E_regulon_activity",
         "gene": [
             "FCGR1A",
             "FCGR1B",
@@ -43833,7 +43833,7 @@ export default [
         ]
     },
     {
-        "golabel": "POU6F1",
+        "golabel": "POU6F1_regulon_activity",
         "gene": [
             "CCDC114",
             "NTN5",
@@ -43911,7 +43911,7 @@ export default [
         ]
     },
     {
-        "golabel": "PPAN",
+        "golabel": "PPAN_regulon_activity",
         "gene": [
             "EPO",
             "C19orf23",
@@ -44033,7 +44033,7 @@ export default [
         ]
     },
     {
-        "golabel": "PPARD",
+        "golabel": "PPARD_regulon_activity",
         "gene": [
             "OR10H1",
             "LOC100126784",
@@ -44137,7 +44137,7 @@ export default [
         ]
     },
     {
-        "golabel": "PPP1R10",
+        "golabel": "PPP1R10_regulon_activity",
         "gene": [
             "KIAA1683",
             "RPS3A",
@@ -44189,7 +44189,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRDM1",
+        "golabel": "PRDM1_regulon_activity",
         "gene": [
             "LOC96610",
             "MGC29506",
@@ -44240,7 +44240,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRDM2",
+        "golabel": "PRDM2_regulon_activity",
         "gene": [
             "CNKSR2",
             "KIAA1529",
@@ -44346,7 +44346,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRDM4",
+        "golabel": "PRDM4_regulon_activity",
         "gene": [
             "FOXP2",
             "LOC388588",
@@ -44426,7 +44426,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRKRIR",
+        "golabel": "PRKRIR_regulon_activity",
         "gene": [
             "TMEM74",
             "SEMA3B",
@@ -44540,7 +44540,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRR12",
+        "golabel": "PRR12_regulon_activity",
         "gene": [
             "GPR153",
             "PSMA6",
@@ -44616,7 +44616,7 @@ export default [
         ]
     },
     {
-        "golabel": "PRR3",
+        "golabel": "PRR3_regulon_activity",
         "gene": [
             "GPC2",
             "IL1RN",
@@ -44671,7 +44671,7 @@ export default [
         ]
     },
     {
-        "golabel": "PSIP1",
+        "golabel": "PSIP1_regulon_activity",
         "gene": [
             "KIF5C",
             "CDH2",
@@ -44785,7 +44785,7 @@ export default [
         ]
     },
     {
-        "golabel": "PSMC5",
+        "golabel": "PSMC5_regulon_activity",
         "gene": [
             "KCNS2",
             "ANGPT1",
@@ -44875,7 +44875,7 @@ export default [
         ]
     },
     {
-        "golabel": "PSMD12",
+        "golabel": "PSMD12_regulon_activity",
         "gene": [
             "ERN2",
             "VSIG2",
@@ -44955,7 +44955,7 @@ export default [
         ]
     },
     {
-        "golabel": "PTCH1",
+        "golabel": "PTCH1_regulon_activity",
         "gene": [
             "GLT25D2",
             "PCDH11X",
@@ -45017,7 +45017,7 @@ export default [
         ]
     },
     {
-        "golabel": "PTMA",
+        "golabel": "PTMA_regulon_activity",
         "gene": [
             "C20orf199",
             "RPS18",
@@ -45114,7 +45114,7 @@ export default [
         ]
     },
     {
-        "golabel": "PTRF",
+        "golabel": "PTRF_regulon_activity",
         "gene": [
             "MFAP5",
             "SRPX",
@@ -45240,7 +45240,7 @@ export default [
         ]
     },
     {
-        "golabel": "PTTG1",
+        "golabel": "PTTG1_regulon_activity",
         "gene": [
             "DSCR6",
             "MYOCD",
@@ -45314,7 +45314,7 @@ export default [
         ]
     },
     {
-        "golabel": "PWP1",
+        "golabel": "PWP1_regulon_activity",
         "gene": [
             "POPDC3",
             "UCHL1",
@@ -45468,7 +45468,7 @@ export default [
         ]
     },
     {
-        "golabel": "PYGO2",
+        "golabel": "PYGO2_regulon_activity",
         "gene": [
             "DCST2",
             "PLBD1",
@@ -45534,7 +45534,7 @@ export default [
         ]
     },
     {
-        "golabel": "RAD51",
+        "golabel": "RAD51_regulon_activity",
         "gene": [
             "SLC1A6",
             "VAX1",
@@ -45726,7 +45726,7 @@ export default [
         ]
     },
     {
-        "golabel": "RAD54B",
+        "golabel": "RAD54B_regulon_activity",
         "gene": [
             "RIPPLY2",
             "TAL2",
@@ -45803,7 +45803,7 @@ export default [
         ]
     },
     {
-        "golabel": "RAI1",
+        "golabel": "RAI1_regulon_activity",
         "gene": [
             "SMCR5",
             "DNAH2",
@@ -45900,7 +45900,7 @@ export default [
         ]
     },
     {
-        "golabel": "RAPGEF3",
+        "golabel": "RAPGEF3_regulon_activity",
         "gene": [
             "AQP5",
             "VSIG2",
@@ -45984,7 +45984,7 @@ export default [
         ]
     },
     {
-        "golabel": "RAPGEF5",
+        "golabel": "RAPGEF5_regulon_activity",
         "gene": [
             "LYPD3",
             "GGH",
@@ -46077,7 +46077,7 @@ export default [
         ]
     },
     {
-        "golabel": "RARA",
+        "golabel": "RARA_regulon_activity",
         "gene": [
             "FAM83B",
             "CX3CL1",
@@ -46139,7 +46139,7 @@ export default [
         ]
     },
     {
-        "golabel": "RB1",
+        "golabel": "RB1_regulon_activity",
         "gene": [
             "FGL2",
             "SRGN",
@@ -46204,7 +46204,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBBP4",
+        "golabel": "RBBP4_regulon_activity",
         "gene": [
             "ZBTB8B",
             "RIMKLA",
@@ -46351,7 +46351,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBL1",
+        "golabel": "RBL1_regulon_activity",
         "gene": [
             "DLX2",
             "CACNA2D1",
@@ -46543,7 +46543,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBL2",
+        "golabel": "RBL2_regulon_activity",
         "gene": [
             "GRIA1",
             "MUSK",
@@ -46626,7 +46626,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBM10",
+        "golabel": "RBM10_regulon_activity",
         "gene": [
             "CPA3",
             "GPR34",
@@ -46671,7 +46671,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBM27",
+        "golabel": "RBM27_regulon_activity",
         "gene": [
             "CSNK1A1L",
             "GGTLC2",
@@ -46793,7 +46793,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBM6",
+        "golabel": "RBM6_regulon_activity",
         "gene": [
             "TMEM89",
             "TBC1D3G",
@@ -47052,7 +47052,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBM7",
+        "golabel": "RBM7_regulon_activity",
         "gene": [
             "IL8",
             "INE2",
@@ -47166,7 +47166,7 @@ export default [
         ]
     },
     {
-        "golabel": "RBMX",
+        "golabel": "RBMX_regulon_activity",
         "gene": [
             "KCNIP4",
             "LOC728819",
@@ -47274,7 +47274,7 @@ export default [
         ]
     },
     {
-        "golabel": "RC3H2",
+        "golabel": "RC3H2_regulon_activity",
         "gene": [
             "ADAM22",
             "RHBDL1",
@@ -47412,7 +47412,7 @@ export default [
         ]
     },
     {
-        "golabel": "RCOR3",
+        "golabel": "RCOR3_regulon_activity",
         "gene": [
             "SLC26A9",
             "FOSL1",
@@ -47586,7 +47586,7 @@ export default [
         ]
     },
     {
-        "golabel": "REL",
+        "golabel": "REL_regulon_activity",
         "gene": [
             "MICALCL",
             "FMN1",
@@ -47651,7 +47651,7 @@ export default [
         ]
     },
     {
-        "golabel": "RELB",
+        "golabel": "RELB_regulon_activity",
         "gene": [
             "LYPD3",
             "UBD",
@@ -47751,7 +47751,7 @@ export default [
         ]
     },
     {
-        "golabel": "RERE",
+        "golabel": "RERE_regulon_activity",
         "gene": [
             "CECR2",
             "USP2",
@@ -47834,7 +47834,7 @@ export default [
         ]
     },
     {
-        "golabel": "REST",
+        "golabel": "REST_regulon_activity",
         "gene": [
             "TNFSF15",
             "BTBD8",
@@ -48012,7 +48012,7 @@ export default [
         ]
     },
     {
-        "golabel": "RFX1",
+        "golabel": "RFX1_regulon_activity",
         "gene": [
             "ANKRD24",
             "ICAM5",
@@ -48125,7 +48125,7 @@ export default [
         ]
     },
     {
-        "golabel": "RFX2",
+        "golabel": "RFX2_regulon_activity",
         "gene": [
             "SOX10",
             "FAM74A4",
@@ -48357,7 +48357,7 @@ export default [
         ]
     },
     {
-        "golabel": "RFXANK",
+        "golabel": "RFXANK_regulon_activity",
         "gene": [
             "ETV2",
             "RPL35",
@@ -48474,7 +48474,7 @@ export default [
         ]
     },
     {
-        "golabel": "RGS14",
+        "golabel": "RGS14_regulon_activity",
         "gene": [
             "SLC34A1",
             "F12",
@@ -48521,7 +48521,7 @@ export default [
         ]
     },
     {
-        "golabel": "RNF141",
+        "golabel": "RNF141_regulon_activity",
         "gene": [
             "TROAP",
             "PIF1",
@@ -48585,7 +48585,7 @@ export default [
         ]
     },
     {
-        "golabel": "RNF166",
+        "golabel": "RNF166_regulon_activity",
         "gene": [
             "CLEC4GP1",
             "MYBPC3",
@@ -48696,7 +48696,7 @@ export default [
         ]
     },
     {
-        "golabel": "RORA",
+        "golabel": "RORA_regulon_activity",
         "gene": [
             "GFRA1",
             "SLC18A2",
@@ -48816,7 +48816,7 @@ export default [
         ]
     },
     {
-        "golabel": "RORC",
+        "golabel": "RORC_regulon_activity",
         "gene": [
             "PGC",
             "ORM2",
@@ -48981,7 +48981,7 @@ export default [
         ]
     },
     {
-        "golabel": "RPL7A",
+        "golabel": "RPL7A_regulon_activity",
         "gene": [
             "RPL9",
             "NCRNA00188",
@@ -49179,7 +49179,7 @@ export default [
         ]
     },
     {
-        "golabel": "RREB1",
+        "golabel": "RREB1_regulon_activity",
         "gene": [
             "C21orf125",
             "FURIN",
@@ -49317,7 +49317,7 @@ export default [
         ]
     },
     {
-        "golabel": "RSF1",
+        "golabel": "RSF1_regulon_activity",
         "gene": [
             "HSN2",
             "C12orf57",
@@ -49425,7 +49425,7 @@ export default [
         ]
     },
     {
-        "golabel": "RUNX1",
+        "golabel": "RUNX1_regulon_activity",
         "gene": [
             "MUC21",
             "IPCEF1",
@@ -49548,7 +49548,7 @@ export default [
         ]
     },
     {
-        "golabel": "RXRA",
+        "golabel": "RXRA_regulon_activity",
         "gene": [
             "QPCT",
             "PRX",
@@ -49623,7 +49623,7 @@ export default [
         ]
     },
     {
-        "golabel": "SAFB",
+        "golabel": "SAFB_regulon_activity",
         "gene": [
             "FUNDC2P2",
             "ZNF702P",
@@ -49699,7 +49699,7 @@ export default [
         ]
     },
     {
-        "golabel": "SAFB2",
+        "golabel": "SAFB2_regulon_activity",
         "gene": [
             "FUNDC2P2",
             "C19orf23",
@@ -49774,7 +49774,7 @@ export default [
         ]
     },
     {
-        "golabel": "SALL2",
+        "golabel": "SALL2_regulon_activity",
         "gene": [
             "FAM171A2",
             "CACNA1F",
@@ -49854,7 +49854,7 @@ export default [
         ]
     },
     {
-        "golabel": "SAP30BP",
+        "golabel": "SAP30BP_regulon_activity",
         "gene": [
             "KLC3",
             "C17orf67",
@@ -49956,7 +49956,7 @@ export default [
         ]
     },
     {
-        "golabel": "SCAND1",
+        "golabel": "SCAND1_regulon_activity",
         "gene": [
             "HSPB9",
             "HIST1H4J",
@@ -50166,7 +50166,7 @@ export default [
         ]
     },
     {
-        "golabel": "SERTAD1",
+        "golabel": "SERTAD1_regulon_activity",
         "gene": [
             "IL8",
             "C19orf33",
@@ -50252,7 +50252,7 @@ export default [
         ]
     },
     {
-        "golabel": "SETBP1",
+        "golabel": "SETBP1_regulon_activity",
         "gene": [
             "ODZ1",
             "TMEM59L",
@@ -50390,7 +50390,7 @@ export default [
         ]
     },
     {
-        "golabel": "SETDB2",
+        "golabel": "SETDB2_regulon_activity",
         "gene": [
             "ADH1B",
             "ANGPTL4",
@@ -50460,7 +50460,7 @@ export default [
         ]
     },
     {
-        "golabel": "SF3A2",
+        "golabel": "SF3A2_regulon_activity",
         "gene": [
             "ESPN",
             "MEGF9",
@@ -50530,7 +50530,7 @@ export default [
         ]
     },
     {
-        "golabel": "SHPRH",
+        "golabel": "SHPRH_regulon_activity",
         "gene": [
             "PROX1",
             "RAB39",
@@ -50641,7 +50641,7 @@ export default [
         ]
     },
     {
-        "golabel": "SIN3B",
+        "golabel": "SIN3B_regulon_activity",
         "gene": [
             "DOCK3",
             "EME2",
@@ -50737,7 +50737,7 @@ export default [
         ]
     },
     {
-        "golabel": "SIRT1",
+        "golabel": "SIRT1_regulon_activity",
         "gene": [
             "C1orf95",
             "DNAJC12",
@@ -50837,7 +50837,7 @@ export default [
         ]
     },
     {
-        "golabel": "SIRT3",
+        "golabel": "SIRT3_regulon_activity",
         "gene": [
             "SLC16A11",
             "C16orf89",
@@ -50981,7 +50981,7 @@ export default [
         ]
     },
     {
-        "golabel": "SIRT4",
+        "golabel": "SIRT4_regulon_activity",
         "gene": [
             "ENO3",
             "FOSL1",
@@ -51064,7 +51064,7 @@ export default [
         ]
     },
     {
-        "golabel": "SIRT7",
+        "golabel": "SIRT7_regulon_activity",
         "gene": [
             "C9orf169",
             "KCP",
@@ -51194,7 +51194,7 @@ export default [
         ]
     },
     {
-        "golabel": "SKI",
+        "golabel": "SKI_regulon_activity",
         "gene": [
             "LOC100129066",
             "NACAD",
@@ -51301,7 +51301,7 @@ export default [
         ]
     },
     {
-        "golabel": "SKIL",
+        "golabel": "SKIL_regulon_activity",
         "gene": [
             "BICC1",
             "INHBA",
@@ -51428,7 +51428,7 @@ export default [
         ]
     },
     {
-        "golabel": "SLC30A9",
+        "golabel": "SLC30A9_regulon_activity",
         "gene": [
             "APOE",
             "CTRL",
@@ -51486,7 +51486,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMAD6",
+        "golabel": "SMAD6_regulon_activity",
         "gene": [
             "CLDN18",
             "RSPO2",
@@ -51536,7 +51536,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMARCA2",
+        "golabel": "SMARCA2_regulon_activity",
         "gene": [
             "DUSP13",
             "TNNI3",
@@ -51647,7 +51647,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMARCA4",
+        "golabel": "SMARCA4_regulon_activity",
         "gene": [
             "FAM171A2",
             "C14orf72",
@@ -51695,7 +51695,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMARCAL1",
+        "golabel": "SMARCAL1_regulon_activity",
         "gene": [
             "C6orf195",
             "ACOXL",
@@ -51748,7 +51748,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMARCC1",
+        "golabel": "SMARCC1_regulon_activity",
         "gene": [
             "MEX3A",
             "TAF4B",
@@ -51809,7 +51809,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMARCD3",
+        "golabel": "SMARCD3_regulon_activity",
         "gene": [
             "C16orf89",
             "CTSH",
@@ -51883,7 +51883,7 @@ export default [
         ]
     },
     {
-        "golabel": "SMURF2",
+        "golabel": "SMURF2_regulon_activity",
         "gene": [
             "CSF2",
             "GPX2",
@@ -52015,7 +52015,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNAI1",
+        "golabel": "SNAI1_regulon_activity",
         "gene": [
             "IL1A",
             "CCL21",
@@ -52145,7 +52145,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNAPC1",
+        "golabel": "SNAPC1_regulon_activity",
         "gene": [
             "IL8",
             "LGALS1",
@@ -52251,7 +52251,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNAPC2",
+        "golabel": "SNAPC2_regulon_activity",
         "gene": [
             "PRRX2",
             "ASPHD1",
@@ -52379,7 +52379,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNAPC4",
+        "golabel": "SNAPC4_regulon_activity",
         "gene": [
             "LRGUK",
             "FAM58B",
@@ -52489,7 +52489,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNRPB",
+        "golabel": "SNRPB_regulon_activity",
         "gene": [
             "HIST1H3C",
             "PTPN13",
@@ -52655,7 +52655,7 @@ export default [
         ]
     },
     {
-        "golabel": "SNRPD1",
+        "golabel": "SNRPD1_regulon_activity",
         "gene": [
             "SLC25A21",
             "TMEM74",
@@ -52825,7 +52825,7 @@ export default [
         ]
     },
     {
-        "golabel": "SORBS2",
+        "golabel": "SORBS2_regulon_activity",
         "gene": [
             "WIF1",
             "ASPG",
@@ -52957,7 +52957,7 @@ export default [
         ]
     },
     {
-        "golabel": "SOX12",
+        "golabel": "SOX12_regulon_activity",
         "gene": [
             "FAM171A2",
             "CASKIN1",
@@ -53036,7 +53036,7 @@ export default [
         ]
     },
     {
-        "golabel": "SOX13",
+        "golabel": "SOX13_regulon_activity",
         "gene": [
             "BTNL9",
             "FGFR3",
@@ -53092,7 +53092,7 @@ export default [
         ]
     },
     {
-        "golabel": "SOX18",
+        "golabel": "SOX18_regulon_activity",
         "gene": [
             "CLDN5",
             "C20orf160",
@@ -53175,7 +53175,7 @@ export default [
         ]
     },
     {
-        "golabel": "SP1",
+        "golabel": "SP1_regulon_activity",
         "gene": [
             "CYP2C19",
             "PDX1",
@@ -53241,7 +53241,7 @@ export default [
         ]
     },
     {
-        "golabel": "SP100",
+        "golabel": "SP100_regulon_activity",
         "gene": [
             "ENO3",
             "C19orf45",
@@ -53345,7 +53345,7 @@ export default [
         ]
     },
     {
-        "golabel": "SP3",
+        "golabel": "SP3_regulon_activity",
         "gene": [
             "ODF3B",
             "BARD1",
@@ -53454,7 +53454,7 @@ export default [
         ]
     },
     {
-        "golabel": "SP4",
+        "golabel": "SP4_regulon_activity",
         "gene": [
             "HGD",
             "SDCBP2",
@@ -53556,7 +53556,7 @@ export default [
         ]
     },
     {
-        "golabel": "SPEN",
+        "golabel": "SPEN_regulon_activity",
         "gene": [
             "C11orf42",
             "TP73",
@@ -53684,7 +53684,7 @@ export default [
         ]
     },
     {
-        "golabel": "SPI1",
+        "golabel": "SPI1_regulon_activity",
         "gene": [
             "RETN",
             "PDYN",
@@ -53970,7 +53970,7 @@ export default [
         ]
     },
     {
-        "golabel": "SSBP2",
+        "golabel": "SSBP2_regulon_activity",
         "gene": [
             "SLITRK6",
             "S100B",
@@ -54016,7 +54016,7 @@ export default [
         ]
     },
     {
-        "golabel": "SSBP4",
+        "golabel": "SSBP4_regulon_activity",
         "gene": [
             "TEKT2",
             "GPR162",
@@ -54106,7 +54106,7 @@ export default [
         ]
     },
     {
-        "golabel": "SSH1",
+        "golabel": "SSH1_regulon_activity",
         "gene": [
             "CYB5A",
             "KIAA0754",
@@ -54251,7 +54251,7 @@ export default [
         ]
     },
     {
-        "golabel": "SSH2",
+        "golabel": "SSH2_regulon_activity",
         "gene": [
             "TXK",
             "CYSLTR2",
@@ -54341,7 +54341,7 @@ export default [
         ]
     },
     {
-        "golabel": "SSH3",
+        "golabel": "SSH3_regulon_activity",
         "gene": [
             "TUBB2B",
             "AMN",
@@ -54618,7 +54618,7 @@ export default [
         ]
     },
     {
-        "golabel": "STAT1",
+        "golabel": "STAT1_regulon_activity",
         "gene": [
             "CLEC6A",
             "IL21",
@@ -54711,7 +54711,7 @@ export default [
         ]
     },
     {
-        "golabel": "STAT6",
+        "golabel": "STAT6_regulon_activity",
         "gene": [
             "KCND2",
             "ADAM12",
@@ -54759,7 +54759,7 @@ export default [
         ]
     },
     {
-        "golabel": "STRN",
+        "golabel": "STRN_regulon_activity",
         "gene": [
             "NR6A1",
             "NIPAL1",
@@ -54943,7 +54943,7 @@ export default [
         ]
     },
     {
-        "golabel": "SUB1",
+        "golabel": "SUB1_regulon_activity",
         "gene": [
             "LOC728819",
             "RPL39",
@@ -55096,7 +55096,7 @@ export default [
         ]
     },
     {
-        "golabel": "SUPT4H1",
+        "golabel": "SUPT4H1_regulon_activity",
         "gene": [
             "C3orf55",
             "RLN2",
@@ -55201,7 +55201,7 @@ export default [
         ]
     },
     {
-        "golabel": "SUV39H2",
+        "golabel": "SUV39H2_regulon_activity",
         "gene": [
             "FCGBP",
             "FAM64A",
@@ -55309,7 +55309,7 @@ export default [
         ]
     },
     {
-        "golabel": "SUZ12",
+        "golabel": "SUZ12_regulon_activity",
         "gene": [
             "C17orf104",
             "DLX6",
@@ -55384,7 +55384,7 @@ export default [
         ]
     },
     {
-        "golabel": "TADA2B",
+        "golabel": "TADA2B_regulon_activity",
         "gene": [
             "CDKN3",
             "SLC22A3",
@@ -55436,7 +55436,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF11",
+        "golabel": "TAF11_regulon_activity",
         "gene": [
             "COL2A1",
             "GSTM3",
@@ -55539,7 +55539,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF13",
+        "golabel": "TAF13_regulon_activity",
         "gene": [
             "FRRS1",
             "C3orf47",
@@ -55623,7 +55623,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF1C",
+        "golabel": "TAF1C_regulon_activity",
         "gene": [
             "IZUMO1",
             "FGF17",
@@ -55806,7 +55806,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF6",
+        "golabel": "TAF6_regulon_activity",
         "gene": [
             "C7orf61",
             "LOC100133985",
@@ -55875,7 +55875,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF9",
+        "golabel": "TAF9_regulon_activity",
         "gene": [
             "CKS2",
             "CENPK",
@@ -56016,7 +56016,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAF9B",
+        "golabel": "TAF9B_regulon_activity",
         "gene": [
             "RHOF",
             "C19orf21",
@@ -56068,7 +56068,7 @@ export default [
         ]
     },
     {
-        "golabel": "TARBP2",
+        "golabel": "TARBP2_regulon_activity",
         "gene": [
             "POLR2F",
             "SCARNA12",
@@ -56186,7 +56186,7 @@ export default [
         ]
     },
     {
-        "golabel": "TARDBP",
+        "golabel": "TARDBP_regulon_activity",
         "gene": [
             "AGRP",
             "CCL23",
@@ -56288,7 +56288,7 @@ export default [
         ]
     },
     {
-        "golabel": "TAX1BP3",
+        "golabel": "TAX1BP3_regulon_activity",
         "gene": [
             "SDCBP2",
             "C19orf33",
@@ -56393,7 +56393,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBC1D22A",
+        "golabel": "TBC1D22A_regulon_activity",
         "gene": [
             "MATK",
             "OSCAR",
@@ -56466,7 +56466,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBC1D2B",
+        "golabel": "TBC1D2B_regulon_activity",
         "gene": [
             "PRG4",
             "C3",
@@ -56573,7 +56573,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBL1X",
+        "golabel": "TBL1X_regulon_activity",
         "gene": [
             "FSTL4",
             "SLC16A14",
@@ -56617,7 +56617,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBPL1",
+        "golabel": "TBPL1_regulon_activity",
         "gene": [
             "RIPPLY2",
             "NUDT11",
@@ -56823,7 +56823,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBX2",
+        "golabel": "TBX2_regulon_activity",
         "gene": [
             "SLC6A13",
             "AGAP11",
@@ -56896,7 +56896,7 @@ export default [
         ]
     },
     {
-        "golabel": "TBX4",
+        "golabel": "TBX4_regulon_activity",
         "gene": [
             "HPSE2",
             "CYP4Z2P",
@@ -56979,7 +56979,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEA1",
+        "golabel": "TCEA1_regulon_activity",
         "gene": [
             "TPD52",
             "PRAM1",
@@ -57053,7 +57053,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEA3",
+        "golabel": "TCEA3_regulon_activity",
         "gene": [
             "SPRYD5",
             "MYBPHL",
@@ -57241,7 +57241,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEAL1",
+        "golabel": "TCEAL1_regulon_activity",
         "gene": [
             "HOPX",
             "BEX5",
@@ -57317,7 +57317,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEAL8",
+        "golabel": "TCEAL8_regulon_activity",
         "gene": [
             "FGF13",
             "BEX5",
@@ -57415,7 +57415,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEANC",
+        "golabel": "TCEANC_regulon_activity",
         "gene": [
             "GPR143",
             "SGCG",
@@ -57510,7 +57510,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEB1",
+        "golabel": "TCEB1_regulon_activity",
         "gene": [
             "FAM66A",
             "PVT1",
@@ -57665,7 +57665,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCEB2",
+        "golabel": "TCEB2_regulon_activity",
         "gene": [
             "CBR3",
             "FBXO2",
@@ -57806,7 +57806,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCF12",
+        "golabel": "TCF12_regulon_activity",
         "gene": [
             "C14orf37",
             "UNC5C",
@@ -57879,7 +57879,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCF25",
+        "golabel": "TCF25_regulon_activity",
         "gene": [
             "SLC16A4",
             "OTUD7A",
@@ -57975,7 +57975,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCF3",
+        "golabel": "TCF3_regulon_activity",
         "gene": [
             "MAST1",
             "B4GALNT4",
@@ -58065,7 +58065,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCF4",
+        "golabel": "TCF4_regulon_activity",
         "gene": [
             "C11orf87",
             "GLI3",
@@ -58180,7 +58180,7 @@ export default [
         ]
     },
     {
-        "golabel": "TCOF1",
+        "golabel": "TCOF1_regulon_activity",
         "gene": [
             "IGJ",
             "PDE1A",
@@ -58226,7 +58226,7 @@ export default [
         ]
     },
     {
-        "golabel": "TDG",
+        "golabel": "TDG_regulon_activity",
         "gene": [
             "CA5A",
             "SELV",
@@ -58382,7 +58382,7 @@ export default [
         ]
     },
     {
-        "golabel": "TEAD1",
+        "golabel": "TEAD1_regulon_activity",
         "gene": [
             "VGLL3",
             "SLC2A14",
@@ -58452,7 +58452,7 @@ export default [
         ]
     },
     {
-        "golabel": "TEAD3",
+        "golabel": "TEAD3_regulon_activity",
         "gene": [
             "TRIM17",
             "TULP1",
@@ -58533,7 +58533,7 @@ export default [
         ]
     },
     {
-        "golabel": "TERF2IP",
+        "golabel": "TERF2IP_regulon_activity",
         "gene": [
             "CD207",
             "CCNB2",
@@ -58590,7 +58590,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFAM",
+        "golabel": "TFAM_regulon_activity",
         "gene": [
             "UBE2NL",
             "LOC728392",
@@ -58800,7 +58800,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFAP4",
+        "golabel": "TFAP4_regulon_activity",
         "gene": [
             "MSR1",
             "MS4A4A",
@@ -58844,7 +58844,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFCP2",
+        "golabel": "TFCP2_regulon_activity",
         "gene": [
             "NEB",
             "HAL",
@@ -58909,7 +58909,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFCP2L1",
+        "golabel": "TFCP2L1_regulon_activity",
         "gene": [
             "SLC38A8",
             "TMEM229A",
@@ -59106,7 +59106,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFEC",
+        "golabel": "TFEC_regulon_activity",
         "gene": [
             "CLEC4E",
             "PKD2L1",
@@ -59255,7 +59255,7 @@ export default [
         ]
     },
     {
-        "golabel": "TFPT",
+        "golabel": "TFPT_regulon_activity",
         "gene": [
             "C10orf125",
             "RARRES2",
@@ -59333,7 +59333,7 @@ export default [
         ]
     },
     {
-        "golabel": "TGIF1",
+        "golabel": "TGIF1_regulon_activity",
         "gene": [
             "VAX1",
             "AKR1C2",
@@ -59402,7 +59402,7 @@ export default [
         ]
     },
     {
-        "golabel": "THAP1",
+        "golabel": "THAP1_regulon_activity",
         "gene": [
             "POLB",
             "LOC100133161",
@@ -59467,7 +59467,7 @@ export default [
         ]
     },
     {
-        "golabel": "THAP3",
+        "golabel": "THAP3_regulon_activity",
         "gene": [
             "A1BG",
             "LOC388588",
@@ -59615,7 +59615,7 @@ export default [
         ]
     },
     {
-        "golabel": "THAP4",
+        "golabel": "THAP4_regulon_activity",
         "gene": [
             "AKR1C1",
             "OSGIN1",
@@ -59728,7 +59728,7 @@ export default [
         ]
     },
     {
-        "golabel": "THAP5",
+        "golabel": "THAP5_regulon_activity",
         "gene": [
             "CAPZA2",
             "ADAMTS7",
@@ -59831,7 +59831,7 @@ export default [
         ]
     },
     {
-        "golabel": "THAP9",
+        "golabel": "THAP9_regulon_activity",
         "gene": [
             "COL1A1",
             "SPHK1",
@@ -59917,7 +59917,7 @@ export default [
         ]
     },
     {
-        "golabel": "THRA",
+        "golabel": "THRA_regulon_activity",
         "gene": [
             "RGS20",
             "IFNG",
@@ -60006,7 +60006,7 @@ export default [
         ]
     },
     {
-        "golabel": "THRB",
+        "golabel": "THRB_regulon_activity",
         "gene": [
             "VILL",
             "UMODL1",
@@ -60101,7 +60101,7 @@ export default [
         ]
     },
     {
-        "golabel": "TIGD3",
+        "golabel": "TIGD3_regulon_activity",
         "gene": [
             "LRRC14B",
             "GNAT1",
@@ -60188,7 +60188,7 @@ export default [
         ]
     },
     {
-        "golabel": "TIMELESS",
+        "golabel": "TIMELESS_regulon_activity",
         "gene": [
             "NBPF4",
             "LOC100132354",
@@ -60317,7 +60317,7 @@ export default [
         ]
     },
     {
-        "golabel": "TLE2",
+        "golabel": "TLE2_regulon_activity",
         "gene": [
             "CPAMD8",
             "BZRAP1",
@@ -60379,7 +60379,7 @@ export default [
         ]
     },
     {
-        "golabel": "TLE4",
+        "golabel": "TLE4_regulon_activity",
         "gene": [
             "TRIM16L",
             "PTPN13",
@@ -60431,7 +60431,7 @@ export default [
         ]
     },
     {
-        "golabel": "TMF1",
+        "golabel": "TMF1_regulon_activity",
         "gene": [
             "IL6ST",
             "ASPSCR1",
@@ -60492,7 +60492,7 @@ export default [
         ]
     },
     {
-        "golabel": "TOB1",
+        "golabel": "TOB1_regulon_activity",
         "gene": [
             "PLA2G10",
             "MSLN",
@@ -60551,7 +60551,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRERF1",
+        "golabel": "TRERF1_regulon_activity",
         "gene": [
             "CXCL9",
             "GBP5",
@@ -60631,7 +60631,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM22",
+        "golabel": "TRIM22_regulon_activity",
         "gene": [
             "UCHL1",
             "OR56B1",
@@ -60738,7 +60738,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM23",
+        "golabel": "TRIM23_regulon_activity",
         "gene": [
             "GPR35",
             "NRARP",
@@ -60880,7 +60880,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM24",
+        "golabel": "TRIM24_regulon_activity",
         "gene": [
             "KLRG2",
             "GJB3",
@@ -60950,7 +60950,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM27",
+        "golabel": "TRIM27_regulon_activity",
         "gene": [
             "FCGR2B",
             "NLRP3",
@@ -61016,7 +61016,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM3",
+        "golabel": "TRIM3_regulon_activity",
         "gene": [
             "USHBP1",
             "LRRC56",
@@ -61065,7 +61065,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIM5",
+        "golabel": "TRIM5_regulon_activity",
         "gene": [
             "EDA2R",
             "MYBL2",
@@ -61105,7 +61105,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIP11",
+        "golabel": "TRIP11_regulon_activity",
         "gene": [
             "PFDN5",
             "NDUFA11",
@@ -61169,7 +61169,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIP13",
+        "golabel": "TRIP13_regulon_activity",
         "gene": [
             "SLC6A15",
             "SLC26A9",
@@ -61256,7 +61256,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRIP6",
+        "golabel": "TRIP6_regulon_activity",
         "gene": [
             "C14orf37",
             "PDE3B",
@@ -61323,7 +61323,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRMT1",
+        "golabel": "TRMT1_regulon_activity",
         "gene": [
             "C3orf45",
             "DAND5",
@@ -61407,7 +61407,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRPS1",
+        "golabel": "TRPS1_regulon_activity",
         "gene": [
             "ADAMTS12",
             "MXRA5",
@@ -61461,7 +61461,7 @@ export default [
         ]
     },
     {
-        "golabel": "TRRAP",
+        "golabel": "TRRAP_regulon_activity",
         "gene": [
             "LMTK2",
             "PCLO",
@@ -61538,7 +61538,7 @@ export default [
         ]
     },
     {
-        "golabel": "TSC2",
+        "golabel": "TSC2_regulon_activity",
         "gene": [
             "CXCL10",
             "RSL24D1",
@@ -61670,7 +61670,7 @@ export default [
         ]
     },
     {
-        "golabel": "TSC22D1",
+        "golabel": "TSC22D1_regulon_activity",
         "gene": [
             "GKN2",
             "SERP2",
@@ -61713,7 +61713,7 @@ export default [
         ]
     },
     {
-        "golabel": "TSC22D4",
+        "golabel": "TSC22D4_regulon_activity",
         "gene": [
             "C7orf61",
             "FBXO24",
@@ -61811,7 +61811,7 @@ export default [
         ]
     },
     {
-        "golabel": "TULP4",
+        "golabel": "TULP4_regulon_activity",
         "gene": [
             "NR6A1",
             "RSL24D1",
@@ -61887,7 +61887,7 @@ export default [
         ]
     },
     {
-        "golabel": "U2AF1",
+        "golabel": "U2AF1_regulon_activity",
         "gene": [
             "C21orf58",
             "KHDC1",
@@ -61971,7 +61971,7 @@ export default [
         ]
     },
     {
-        "golabel": "U2AF1L4",
+        "golabel": "U2AF1L4_regulon_activity",
         "gene": [
             "DUSP15",
             "LOC643719",
@@ -62030,7 +62030,7 @@ export default [
         ]
     },
     {
-        "golabel": "UBE2K",
+        "golabel": "UBE2K_regulon_activity",
         "gene": [
             "UGDH",
             "LOC115110",
@@ -62113,7 +62113,7 @@ export default [
         ]
     },
     {
-        "golabel": "UBN1",
+        "golabel": "UBN1_regulon_activity",
         "gene": [
             "GAS5",
             "RPLP1",
@@ -62176,7 +62176,7 @@ export default [
         ]
     },
     {
-        "golabel": "UBR4",
+        "golabel": "UBR4_regulon_activity",
         "gene": [
             "RPS18",
             "RPL27",
@@ -62291,7 +62291,7 @@ export default [
         ]
     },
     {
-        "golabel": "UBTF",
+        "golabel": "UBTF_regulon_activity",
         "gene": [
             "FAM171A2",
             "HOXB4",
@@ -62344,7 +62344,7 @@ export default [
         ]
     },
     {
-        "golabel": "UPF1",
+        "golabel": "UPF1_regulon_activity",
         "gene": [
             "SRGN",
             "FCGR2B",
@@ -62391,7 +62391,7 @@ export default [
         ]
     },
     {
-        "golabel": "USF1",
+        "golabel": "USF1_regulon_activity",
         "gene": [
             "KIAA0754",
             "DPM3",
@@ -62461,7 +62461,7 @@ export default [
         ]
     },
     {
-        "golabel": "VAX2",
+        "golabel": "VAX2_regulon_activity",
         "gene": [
             "KLK12",
             "SLC38A8",
@@ -62580,7 +62580,7 @@ export default [
         ]
     },
     {
-        "golabel": "VDR",
+        "golabel": "VDR_regulon_activity",
         "gene": [
             "ADORA1",
             "C5orf4",
@@ -62653,7 +62653,7 @@ export default [
         ]
     },
     {
-        "golabel": "VEZF1",
+        "golabel": "VEZF1_regulon_activity",
         "gene": [
             "C6orf176",
             "LCN12",
@@ -62738,7 +62738,7 @@ export default [
         ]
     },
     {
-        "golabel": "WDHD1",
+        "golabel": "WDHD1_regulon_activity",
         "gene": [
             "DLX2",
             "TMEFF1",
@@ -62826,7 +62826,7 @@ export default [
         ]
     },
     {
-        "golabel": "WHSC1",
+        "golabel": "WHSC1_regulon_activity",
         "gene": [
             "IGJ",
             "RNF157",
@@ -62872,7 +62872,7 @@ export default [
         ]
     },
     {
-        "golabel": "WIZ",
+        "golabel": "WIZ_regulon_activity",
         "gene": [
             "ANKRD13B",
             "SEP15",
@@ -62917,7 +62917,7 @@ export default [
         ]
     },
     {
-        "golabel": "XBP1",
+        "golabel": "XBP1_regulon_activity",
         "gene": [
             "LOC145837",
             "BMP6",
@@ -63072,7 +63072,7 @@ export default [
         ]
     },
     {
-        "golabel": "XPC",
+        "golabel": "XPC_regulon_activity",
         "gene": [
             "MACROD2",
             "C6orf138",
@@ -63156,7 +63156,7 @@ export default [
         ]
     },
     {
-        "golabel": "XRCC5",
+        "golabel": "XRCC5_regulon_activity",
         "gene": [
             "WDR72",
             "FAM183B",
@@ -63236,7 +63236,7 @@ export default [
         ]
     },
     {
-        "golabel": "XRCC6",
+        "golabel": "XRCC6_regulon_activity",
         "gene": [
             "PTPLA",
             "AGA",
@@ -63327,7 +63327,7 @@ export default [
         ]
     },
     {
-        "golabel": "YAF2",
+        "golabel": "YAF2_regulon_activity",
         "gene": [
             "RPL39",
             "RAP1B",
@@ -63411,7 +63411,7 @@ export default [
         ]
     },
     {
-        "golabel": "YBX1",
+        "golabel": "YBX1_regulon_activity",
         "gene": [
             "LRP8",
             "CDKN3",
@@ -63528,7 +63528,7 @@ export default [
         ]
     },
     {
-        "golabel": "YEATS2",
+        "golabel": "YEATS2_regulon_activity",
         "gene": [
             "FAM171A2",
             "MED12L",
@@ -63642,7 +63642,7 @@ export default [
         ]
     },
     {
-        "golabel": "YWHAE",
+        "golabel": "YWHAE_regulon_activity",
         "gene": [
             "TRIM16L",
             "NCRNA00188",
@@ -63799,7 +63799,7 @@ export default [
         ]
     },
     {
-        "golabel": "YWHAZ",
+        "golabel": "YWHAZ_regulon_activity",
         "gene": [
             "PLIN5",
             "FBXO32",
@@ -63875,7 +63875,7 @@ export default [
         ]
     },
     {
-        "golabel": "YY1",
+        "golabel": "YY1_regulon_activity",
         "gene": [
             "MBL1P",
             "DNAH1",
@@ -63924,7 +63924,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBED3",
+        "golabel": "ZBED3_regulon_activity",
         "gene": [
             "RGS20",
             "CATSPER1",
@@ -64013,7 +64013,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB1",
+        "golabel": "ZBTB1_regulon_activity",
         "gene": [
             "GPR174",
             "AKAP5",
@@ -64089,7 +64089,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB10",
+        "golabel": "ZBTB10_regulon_activity",
         "gene": [
             "NDRG1",
             "IDUA",
@@ -64134,7 +64134,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB12",
+        "golabel": "ZBTB12_regulon_activity",
         "gene": [
             "MYCNOS",
             "FBN3",
@@ -64190,7 +64190,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB16",
+        "golabel": "ZBTB16_regulon_activity",
         "gene": [
             "SYBU",
             "ZNF385B",
@@ -64254,7 +64254,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB17",
+        "golabel": "ZBTB17_regulon_activity",
         "gene": [
             "GPC2",
             "CNIH2",
@@ -64378,7 +64378,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB2",
+        "golabel": "ZBTB2_regulon_activity",
         "gene": [
             "SACS",
             "KLHDC9",
@@ -64418,7 +64418,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB26",
+        "golabel": "ZBTB26_regulon_activity",
         "gene": [
             "ASFMR1",
             "FSD1L",
@@ -64480,7 +64480,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB3",
+        "golabel": "ZBTB3_regulon_activity",
         "gene": [
             "RGS20",
             "XIRP1",
@@ -64539,7 +64539,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB38",
+        "golabel": "ZBTB38_regulon_activity",
         "gene": [
             "DNAJB4",
             "DGCR6",
@@ -64612,7 +64612,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB4",
+        "golabel": "ZBTB4_regulon_activity",
         "gene": [
             "RS1",
             "SLC16A12",
@@ -64741,7 +64741,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB40",
+        "golabel": "ZBTB40_regulon_activity",
         "gene": [
             "MYH3",
             "SNORD116-4",
@@ -64855,7 +64855,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB41",
+        "golabel": "ZBTB41_regulon_activity",
         "gene": [
             "FITM1",
             "TBC1D10C",
@@ -64999,7 +64999,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB43",
+        "golabel": "ZBTB43_regulon_activity",
         "gene": [
             "CMYA5",
             "SNX30",
@@ -65060,7 +65060,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB46",
+        "golabel": "ZBTB46_regulon_activity",
         "gene": [
             "SCARF1",
             "VASN",
@@ -65114,7 +65114,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB47",
+        "golabel": "ZBTB47_regulon_activity",
         "gene": [
             "CABYR",
             "ANKRD24",
@@ -65215,7 +65215,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB48",
+        "golabel": "ZBTB48_regulon_activity",
         "gene": [
             "TRPC2",
             "CACNA1F",
@@ -65336,7 +65336,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB5",
+        "golabel": "ZBTB5_regulon_activity",
         "gene": [
             "SCML2",
             "WNK2",
@@ -65398,7 +65398,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB6",
+        "golabel": "ZBTB6_regulon_activity",
         "gene": [
             "RFK",
             "CEMP1",
@@ -65482,7 +65482,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB7A",
+        "golabel": "ZBTB7A_regulon_activity",
         "gene": [
             "ONECUT3",
             "GJB4",
@@ -65610,7 +65610,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZBTB7B",
+        "golabel": "ZBTB7B_regulon_activity",
         "gene": [
             "DCST2",
             "LAYN",
@@ -65714,7 +65714,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H11A",
+        "golabel": "ZC3H11A_regulon_activity",
         "gene": [
             "TIMP4",
             "TEDDM1",
@@ -65799,7 +65799,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H13",
+        "golabel": "ZC3H13_regulon_activity",
         "gene": [
             "SELM",
             "ST20",
@@ -65871,7 +65871,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H15",
+        "golabel": "ZC3H15_regulon_activity",
         "gene": [
             "SRXN1",
             "GGT3P",
@@ -66116,7 +66116,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H3",
+        "golabel": "ZC3H3_regulon_activity",
         "gene": [
             "GPT2",
             "CPA3",
@@ -66190,7 +66190,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H4",
+        "golabel": "ZC3H4_regulon_activity",
         "gene": [
             "ANKRD37",
             "STON2",
@@ -66240,7 +66240,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H6",
+        "golabel": "ZC3H6_regulon_activity",
         "gene": [
             "EIF4EBP1",
             "ZMAT1",
@@ -66282,7 +66282,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H7A",
+        "golabel": "ZC3H7A_regulon_activity",
         "gene": [
             "C15orf50",
             "PRMT8",
@@ -66400,7 +66400,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3H7B",
+        "golabel": "ZC3H7B_regulon_activity",
         "gene": [
             "ELFN2",
             "POM121L10P",
@@ -66469,7 +66469,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZC3HAV1",
+        "golabel": "ZC3HAV1_regulon_activity",
         "gene": [
             "MRPL54",
             "NDUFA13",
@@ -66519,7 +66519,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZCCHC6",
+        "golabel": "ZCCHC6_regulon_activity",
         "gene": [
             "NCR1",
             "MRPS28",
@@ -66654,7 +66654,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC1",
+        "golabel": "ZDHHC1_regulon_activity",
         "gene": [
             "SEC14L3",
             "C13orf26",
@@ -66789,7 +66789,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC16",
+        "golabel": "ZDHHC16_regulon_activity",
         "gene": [
             "UMODL1",
             "C15orf50",
@@ -66934,7 +66934,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC2",
+        "golabel": "ZDHHC2_regulon_activity",
         "gene": [
             "PKMYT1",
             "CHTF18",
@@ -66989,7 +66989,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC21",
+        "golabel": "ZDHHC21_regulon_activity",
         "gene": [
             "TNS4",
             "STK32A",
@@ -67052,7 +67052,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC6",
+        "golabel": "ZDHHC6_regulon_activity",
         "gene": [
             "RSL24D1",
             "RPL27",
@@ -67135,7 +67135,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZDHHC7",
+        "golabel": "ZDHHC7_regulon_activity",
         "gene": [
             "VILL",
             "COL17A1",
@@ -67286,7 +67286,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZEB1",
+        "golabel": "ZEB1_regulon_activity",
         "gene": [
             "FLG",
             "HAS2",
@@ -67398,7 +67398,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZEB2",
+        "golabel": "ZEB2_regulon_activity",
         "gene": [
             "TIMD4",
             "CD300E",
@@ -67594,7 +67594,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFHX3",
+        "golabel": "ZFHX3_regulon_activity",
         "gene": [
             "C15orf48",
             "C10orf125",
@@ -67673,7 +67673,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFP1",
+        "golabel": "ZFP1_regulon_activity",
         "gene": [
             "ZBTB8B",
             "TSPYL3",
@@ -67738,7 +67738,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFP36L1",
+        "golabel": "ZFP36L1_regulon_activity",
         "gene": [
             "EGR4",
             "ABCA4",
@@ -67855,7 +67855,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFP64",
+        "golabel": "ZFP64_regulon_activity",
         "gene": [
             "TREML1",
             "HPGDS",
@@ -67907,7 +67907,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFP91",
+        "golabel": "ZFP91_regulon_activity",
         "gene": [
             "DKFZp686O24166",
             "INE2",
@@ -67989,7 +67989,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFPL1",
+        "golabel": "ZFPL1_regulon_activity",
         "gene": [
             "IL6ST",
             "GLI4",
@@ -68112,7 +68112,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFPM1",
+        "golabel": "ZFPM1_regulon_activity",
         "gene": [
             "A4GNT",
             "DPCR1",
@@ -68229,7 +68229,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFR",
+        "golabel": "ZFR_regulon_activity",
         "gene": [
             "SKP2",
             "NOXA1",
@@ -68319,7 +68319,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFYVE20",
+        "golabel": "ZFYVE20_regulon_activity",
         "gene": [
             "LOC648740",
             "LOC283174",
@@ -68442,7 +68442,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZFYVE26",
+        "golabel": "ZFYVE26_regulon_activity",
         "gene": [
             "RTKN2",
             "NCRNA00188",
@@ -68571,7 +68571,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZGLP1",
+        "golabel": "ZGLP1_regulon_activity",
         "gene": [
             "FAM166A",
             "AMH",
@@ -68743,7 +68743,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZGPAT",
+        "golabel": "ZGPAT_regulon_activity",
         "gene": [
             "SLC17A9",
             "C20orf151",
@@ -68824,7 +68824,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZKSCAN1",
+        "golabel": "ZKSCAN1_regulon_activity",
         "gene": [
             "C7orf51",
             "HOPX",
@@ -68889,7 +68889,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZKSCAN3",
+        "golabel": "ZKSCAN3_regulon_activity",
         "gene": [
             "C1orf95",
             "KIT",
@@ -68947,7 +68947,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZMAT1",
+        "golabel": "ZMAT1_regulon_activity",
         "gene": [
             "SERPINI2",
             "MST1P9",
@@ -69153,7 +69153,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZMAT5",
+        "golabel": "ZMAT5_regulon_activity",
         "gene": [
             "TMEM191A",
             "LOC388588",
@@ -69287,7 +69287,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZMYM2",
+        "golabel": "ZMYM2_regulon_activity",
         "gene": [
             "HLA-DRB1",
             "TYROBP",
@@ -69344,7 +69344,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZMYM3",
+        "golabel": "ZMYM3_regulon_activity",
         "gene": [
             "C5orf46",
             "S100A3",
@@ -69399,7 +69399,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF136",
+        "golabel": "ZNF136_regulon_activity",
         "gene": [
             "CARD14",
             "OSGIN1",
@@ -69474,7 +69474,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF142",
+        "golabel": "ZNF142_regulon_activity",
         "gene": [
             "MRPS6",
             "HIGD1A",
@@ -69538,7 +69538,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF146",
+        "golabel": "ZNF146_regulon_activity",
         "gene": [
             "TET1",
             "CLSPN",
@@ -69594,7 +69594,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF148",
+        "golabel": "ZNF148_regulon_activity",
         "gene": [
             "HAGHL",
             "ACAP2",
@@ -69699,7 +69699,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF19",
+        "golabel": "ZNF19_regulon_activity",
         "gene": [
             "SNTN",
             "LRRC48",
@@ -69785,7 +69785,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF205",
+        "golabel": "ZNF205_regulon_activity",
         "gene": [
             "LOC643719",
             "C1orf170",
@@ -69853,7 +69853,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF211",
+        "golabel": "ZNF211_regulon_activity",
         "gene": [
             "ZSCAN4",
             "ATP13A4",
@@ -69903,7 +69903,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF219",
+        "golabel": "ZNF219_regulon_activity",
         "gene": [
             "AIM2",
             "C14orf176",
@@ -69972,7 +69972,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF22",
+        "golabel": "ZNF22_regulon_activity",
         "gene": [
             "SLC38A8",
             "TMEM229A",
@@ -70093,7 +70093,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF236",
+        "golabel": "ZNF236_regulon_activity",
         "gene": [
             "ENO3",
             "C1orf95",
@@ -70169,7 +70169,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF25",
+        "golabel": "ZNF25_regulon_activity",
         "gene": [
             "RANBP3L",
             "LOC100133985",
@@ -70229,7 +70229,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF267",
+        "golabel": "ZNF267_regulon_activity",
         "gene": [
             "CLEC6A",
             "ENTHD1",
@@ -70373,7 +70373,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF275",
+        "golabel": "ZNF275_regulon_activity",
         "gene": [
             "PNMA6A",
             "FLJ40330",
@@ -70442,7 +70442,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF276",
+        "golabel": "ZNF276_regulon_activity",
         "gene": [
             "CCDC78",
             "KRT73",
@@ -70633,7 +70633,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF280D",
+        "golabel": "ZNF280D_regulon_activity",
         "gene": [
             "RSL24D1",
             "C15orf33",
@@ -70735,7 +70735,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF281",
+        "golabel": "ZNF281_regulon_activity",
         "gene": [
             "SECISBP2L",
             "PLA2G4A",
@@ -70803,7 +70803,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF282",
+        "golabel": "ZNF282_regulon_activity",
         "gene": [
             "PLEKHN1",
             "MGC12982",
@@ -70914,7 +70914,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF286A",
+        "golabel": "ZNF286A_regulon_activity",
         "gene": [
             "GPC2",
             "ODZ3",
@@ -71004,7 +71004,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF317",
+        "golabel": "ZNF317_regulon_activity",
         "gene": [
             "ACCN2",
             "VAMP5",
@@ -71056,7 +71056,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF318",
+        "golabel": "ZNF318_regulon_activity",
         "gene": [
             "DDIT4",
             "PDZK1IP1",
@@ -71110,7 +71110,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF32",
+        "golabel": "ZNF32_regulon_activity",
         "gene": [
             "SMAD5OS",
             "PFDN5",
@@ -71196,7 +71196,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF335",
+        "golabel": "ZNF335_regulon_activity",
         "gene": [
             "ANXA2P3",
             "SALL4",
@@ -71308,7 +71308,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF33A",
+        "golabel": "ZNF33A_regulon_activity",
         "gene": [
             "TGFBI",
             "SPP1",
@@ -71372,7 +71372,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF33B",
+        "golabel": "ZNF33B_regulon_activity",
         "gene": [
             "PLA2G10",
             "AQP7",
@@ -71477,7 +71477,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF341",
+        "golabel": "ZNF341_regulon_activity",
         "gene": [
             "DUSP5P",
             "CACNG4",
@@ -71577,7 +71577,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF35",
+        "golabel": "ZNF35_regulon_activity",
         "gene": [
             "RPSA",
             "RPSAP58",
@@ -71660,7 +71660,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF358",
+        "golabel": "ZNF358_regulon_activity",
         "gene": [
             "NRTN",
             "CTXN1",
@@ -71729,7 +71729,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF362",
+        "golabel": "ZNF362_regulon_activity",
         "gene": [
             "GALNTL1",
             "C15orf48",
@@ -71830,7 +71830,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF366",
+        "golabel": "ZNF366_regulon_activity",
         "gene": [
             "MAS1L",
             "ADCYAP1R1",
@@ -71945,7 +71945,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF37A",
+        "golabel": "ZNF37A_regulon_activity",
         "gene": [
             "PAR5",
             "DERA",
@@ -71992,7 +71992,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF385A",
+        "golabel": "ZNF385A_regulon_activity",
         "gene": [
             "SLC2A5",
             "ITGAX",
@@ -72030,7 +72030,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF385B",
+        "golabel": "ZNF385B_regulon_activity",
         "gene": [
             "CPB2",
             "CHIA",
@@ -72121,7 +72121,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF407",
+        "golabel": "ZNF407_regulon_activity",
         "gene": [
             "IFI27",
             "SETBP1",
@@ -72183,7 +72183,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF410",
+        "golabel": "ZNF410_regulon_activity",
         "gene": [
             "CAPZA2",
             "ENTHD1",
@@ -72313,7 +72313,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF414",
+        "golabel": "ZNF414_regulon_activity",
         "gene": [
             "FITM1",
             "PCSK4",
@@ -72394,7 +72394,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF428",
+        "golabel": "ZNF428_regulon_activity",
         "gene": [
             "PHGDH",
             "VAX2",
@@ -72436,7 +72436,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF430",
+        "golabel": "ZNF430_regulon_activity",
         "gene": [
             "S100P",
             "HGD",
@@ -72491,7 +72491,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF441",
+        "golabel": "ZNF441_regulon_activity",
         "gene": [
             "RGS13",
             "ATP13A4",
@@ -72542,7 +72542,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF444",
+        "golabel": "ZNF444_regulon_activity",
         "gene": [
             "SLC16A11",
             "KIAA1984",
@@ -72643,7 +72643,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF446",
+        "golabel": "ZNF446_regulon_activity",
         "gene": [
             "CCDC37",
             "CCDC42B",
@@ -72725,7 +72725,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF462",
+        "golabel": "ZNF462_regulon_activity",
         "gene": [
             "S100P",
             "NMB",
@@ -72788,7 +72788,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF468",
+        "golabel": "ZNF468_regulon_activity",
         "gene": [
             "SEC31B",
             "ZNF702P",
@@ -72833,7 +72833,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF500",
+        "golabel": "ZNF500_regulon_activity",
         "gene": [
             "IGSF9B",
             "LOC148696",
@@ -72923,7 +72923,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF511",
+        "golabel": "ZNF511_regulon_activity",
         "gene": [
             "BARX1",
             "SNORA76",
@@ -73053,7 +73053,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF518B",
+        "golabel": "ZNF518B_regulon_activity",
         "gene": [
             "ZYG11A",
             "ZNF280B",
@@ -73123,7 +73123,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF530",
+        "golabel": "ZNF530_regulon_activity",
         "gene": [
             "PLA2G10",
             "CXCL11",
@@ -73202,7 +73202,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF532",
+        "golabel": "ZNF532_regulon_activity",
         "gene": [
             "ADAMTS12",
             "ADAM12",
@@ -73287,7 +73287,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF561",
+        "golabel": "ZNF561_regulon_activity",
         "gene": [
             "LOC100133985",
             "C22orf27",
@@ -73325,7 +73325,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF563",
+        "golabel": "ZNF563_regulon_activity",
         "gene": [
             "CDH20",
             "LCT",
@@ -73396,7 +73396,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF592",
+        "golabel": "ZNF592_regulon_activity",
         "gene": [
             "WFDC3",
             "CRABP2",
@@ -73480,7 +73480,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF593",
+        "golabel": "ZNF593_regulon_activity",
         "gene": [
             "SCARNA2",
             "FBXO2",
@@ -73670,7 +73670,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF598",
+        "golabel": "ZNF598_regulon_activity",
         "gene": [
             "NOXO1",
             "MAFK",
@@ -73780,7 +73780,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF608",
+        "golabel": "ZNF608_regulon_activity",
         "gene": [
             "CDH20",
             "SRXN1",
@@ -73844,7 +73844,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF618",
+        "golabel": "ZNF618_regulon_activity",
         "gene": [
             "CATSPER1",
             "CST6",
@@ -73909,7 +73909,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF620",
+        "golabel": "ZNF620_regulon_activity",
         "gene": [
             "OPRD1",
             "PPM1E",
@@ -74017,7 +74017,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF622",
+        "golabel": "ZNF622_regulon_activity",
         "gene": [
             "LOC728613",
             "SRD5A1",
@@ -74085,7 +74085,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF627",
+        "golabel": "ZNF627_regulon_activity",
         "gene": [
             "RPS3A",
             "SNURF",
@@ -74174,7 +74174,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF638",
+        "golabel": "ZNF638_regulon_activity",
         "gene": [
             "TIMP4",
             "TEDDM1",
@@ -74254,7 +74254,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF652",
+        "golabel": "ZNF652_regulon_activity",
         "gene": [
             "CD70",
             "FOSL1",
@@ -74317,7 +74317,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF664",
+        "golabel": "ZNF664_regulon_activity",
         "gene": [
             "ASCL1",
             "RET",
@@ -74399,7 +74399,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF668",
+        "golabel": "ZNF668_regulon_activity",
         "gene": [
             "NKX3-2",
             "SCT",
@@ -74480,7 +74480,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF688",
+        "golabel": "ZNF688_regulon_activity",
         "gene": [
             "TCTEX1D4",
             "C17orf72",
@@ -74691,7 +74691,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF69",
+        "golabel": "ZNF69_regulon_activity",
         "gene": [
             "ZDHHC8P1",
             "PLOD2",
@@ -74752,7 +74752,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF691",
+        "golabel": "ZNF691_regulon_activity",
         "gene": [
             "CHODL",
             "FLJ36777",
@@ -74884,7 +74884,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF692",
+        "golabel": "ZNF692_regulon_activity",
         "gene": [
             "FAM166A",
             "MSLNL",
@@ -75170,7 +75170,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF696",
+        "golabel": "ZNF696_regulon_activity",
         "gene": [
             "BAI1",
             "SRGN",
@@ -75222,7 +75222,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF697",
+        "golabel": "ZNF697_regulon_activity",
         "gene": [
             "FLJ22536",
             "CDK6",
@@ -75320,7 +75320,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF699",
+        "golabel": "ZNF699_regulon_activity",
         "gene": [
             "KLHL4",
             "C2CD4D",
@@ -75407,7 +75407,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF704",
+        "golabel": "ZNF704_regulon_activity",
         "gene": [
             "IGSF10",
             "FOSL1",
@@ -75476,7 +75476,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF709",
+        "golabel": "ZNF709_regulon_activity",
         "gene": [
             "ABCC2",
             "RHOV",
@@ -75572,7 +75572,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF76",
+        "golabel": "ZNF76_regulon_activity",
         "gene": [
             "GLTPD2",
             "CBR1",
@@ -75689,7 +75689,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF763",
+        "golabel": "ZNF763_regulon_activity",
         "gene": [
             "EPX",
             "AMY2B",
@@ -75752,7 +75752,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF765",
+        "golabel": "ZNF765_regulon_activity",
         "gene": [
             "PCSK4",
             "C11orf35",
@@ -75813,7 +75813,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF768",
+        "golabel": "ZNF768_regulon_activity",
         "gene": [
             "CPLX1",
             "PRSS53",
@@ -75861,7 +75861,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF770",
+        "golabel": "ZNF770_regulon_activity",
         "gene": [
             "FAM83B",
             "A1BG",
@@ -75982,7 +75982,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF777",
+        "golabel": "ZNF777_regulon_activity",
         "gene": [
             "ARRDC3",
             "RNFT1",
@@ -76018,7 +76018,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF778",
+        "golabel": "ZNF778_regulon_activity",
         "gene": [
             "C16orf89",
             "TNNI3K",
@@ -76089,7 +76089,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF791",
+        "golabel": "ZNF791_regulon_activity",
         "gene": [
             "PKD1L2",
             "LOC100133985",
@@ -76169,7 +76169,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF799",
+        "golabel": "ZNF799_regulon_activity",
         "gene": [
             "IL7",
             "HIPK2",
@@ -76209,7 +76209,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF800",
+        "golabel": "ZNF800_regulon_activity",
         "gene": [
             "MDFIC",
             "IPMK",
@@ -76257,7 +76257,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF821",
+        "golabel": "ZNF821_regulon_activity",
         "gene": [
             "BIRC3",
             "PAQR5",
@@ -76369,7 +76369,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNF846",
+        "golabel": "ZNF846_regulon_activity",
         "gene": [
             "LOC285419",
             "MAPK10",
@@ -76413,7 +76413,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNFX1",
+        "golabel": "ZNFX1_regulon_activity",
         "gene": [
             "SEC11C",
             "C19orf45",
@@ -76538,7 +76538,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZNHIT3",
+        "golabel": "ZNHIT3_regulon_activity",
         "gene": [
             "RPL27",
             "CACNA1C",
@@ -76669,7 +76669,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZRANB2",
+        "golabel": "ZRANB2_regulon_activity",
         "gene": [
             "C2orf58",
             "RNPC3",
@@ -76793,7 +76793,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZRSR2",
+        "golabel": "ZRSR2_regulon_activity",
         "gene": [
             "EIF1AY",
             "XIST",
@@ -76861,7 +76861,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZSCAN16",
+        "golabel": "ZSCAN16_regulon_activity",
         "gene": [
             "MFI2",
             "ITGA5",
@@ -76952,7 +76952,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZSCAN2",
+        "golabel": "ZSCAN2_regulon_activity",
         "gene": [
             "BHLHA15",
             "RRAD",
@@ -77000,7 +77000,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZSCAN29",
+        "golabel": "ZSCAN29_regulon_activity",
         "gene": [
             "CATSPER1",
             "PLEKHH1",
@@ -77094,7 +77094,7 @@ export default [
         ]
     },
     {
-        "golabel": "ZSWIM4",
+        "golabel": "ZSWIM4_regulon_activity",
         "gene": [
             "PODNL1",
             "INHBB",
