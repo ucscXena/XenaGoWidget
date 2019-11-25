@@ -138,7 +138,7 @@ export function findAssociatedData(inputHash, associatedDataKey) {
   const {
     expression, copyNumber, geneList, pathways, samples, filter,
     geneExpression, geneExpressionPathwayActivity,
-    paradigm, paradigmPathwayActivity,
+    paradigm, paradigmPathwayActivity, regulonPathwayActivity
   } = inputHash;
 
   const key = JSON.stringify(associatedDataKey);
@@ -146,7 +146,7 @@ export function findAssociatedData(inputHash, associatedDataKey) {
   if (ignoreCache || !data) {
     data = doDataAssociations(expression, copyNumber,
       geneExpression,geneExpressionPathwayActivity,
-      paradigm,paradigmPathwayActivity,
+      paradigm,paradigmPathwayActivity, regulonPathwayActivity,
       geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
@@ -317,6 +317,22 @@ export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivit
   return {score: scored, returnArray};
 }
 
+export function filterRegulonPathwayActivity(regulonPathwayActivity, returnArray) {
+  let scored = 0 ;
+  for(const pathwayIndex in returnArray){
+    for(const sampleIndex in returnArray[pathwayIndex]){
+      if(regulonPathwayActivity[pathwayIndex]){
+        returnArray[pathwayIndex][sampleIndex].regulonPathwayActivity = regulonPathwayActivity[pathwayIndex][sampleIndex];
+      }
+      else{
+        returnArray[pathwayIndex][sampleIndex].regulonPathwayActivity = 0;
+      }
+      ++scored;
+    }
+  }
+  return {score: scored, returnArray};
+}
+
 export function filterParadigmPathwayActivity(paradigmPathwayActivity, returnArray) {
   let scored = 0 ;
   for(const pathwayIndex in returnArray){
@@ -441,6 +457,7 @@ function labelArray(returnArray,pathways, samples) {
  * @param geneExpressionPathwayActivity
  * @param paradigm
  * @param paradigmPathwayActivity
+ * @param regulonPathwayActivity
  * @param geneList
  * @param pathways
  * @param samples
@@ -449,7 +466,7 @@ function labelArray(returnArray,pathways, samples) {
  */
 export function doDataAssociations(expression, copyNumber,
   geneExpression, geneExpressionPathwayActivity,
-  paradigm, paradigmPathwayActivity,
+  paradigm, paradigmPathwayActivity, regulonPathwayActivity,
   geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
@@ -475,6 +492,14 @@ export function doDataAssociations(expression, copyNumber,
     returnArray = filterParadigm(paradigm,returnArray,geneList,pathways).returnArray;
     if(paradigmPathwayActivity){
       returnArray = filterParadigmPathwayActivity(paradigmPathwayActivity,returnArray,geneList,pathways).returnArray;
+    }
+    // get list of genes in identified pathways
+  }
+
+  if (filter === VIEW_ENUM.REGULON) {
+    returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
+    if(regulonPathwayActivity){
+      returnArray = filterRegulonPathwayActivity(regulonPathwayActivity,returnArray,geneList,pathways).returnArray;
     }
     // get list of genes in identified pathways
   }

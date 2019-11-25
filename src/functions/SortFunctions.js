@@ -362,6 +362,10 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
       return b.paradigmPathwayActivity - a.paradigmPathwayActivity;
     }
     else
+    if(filter===VIEW_ENUM.REGULON){
+      return b.regulonPathwayActivity - a.regulonPathwayActivity;
+    }
+    else
     if(filter===VIEW_ENUM.GENE_EXPRESSION){
       return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity;
     }

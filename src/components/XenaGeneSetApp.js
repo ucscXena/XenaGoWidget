@@ -231,8 +231,6 @@ export default class XenaGeneSetApp extends PureComponent {
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
     };
 
-
-
     let associatedDataA = calculateAssociatedData(pathwayDataA,this.state.filter);
     let associatedDataB = calculateAssociatedData(pathwayDataB,this.state.filter);
 
@@ -255,9 +253,6 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 
-
-
-    // let geneData = generateScoredData(selection,[sortedPathwayData[0],sortedPathwayData[1]],pathways,this.state.filter,showClusterSort);
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
     const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
 
