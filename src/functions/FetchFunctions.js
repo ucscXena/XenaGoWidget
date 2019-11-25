@@ -148,14 +148,12 @@ function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSa
 }
 
 export const getGeneSetsForView = (view) => {
-  console.log('getting gene sets for',view);
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways;
   case VIEW_ENUM.GENE_EXPRESSION:
     return BpaPathways;
   case VIEW_ENUM.REGULON:
-    console.log('loaded regulon');
     return RegulonPathways;
   default:
     return FlybasePathways;
@@ -174,14 +172,12 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
 };
 
 function getHostData(cohort,view) {
-  console.log('input host data',cohort,view);
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return cohort.paradigmPathwayActivity;
   case VIEW_ENUM.GENE_EXPRESSION:
     return cohort.paradigmPathwayActivity;
   case VIEW_ENUM.REGULON:
-    console.log('returning regulon',cohort.regulonPathwayActivity);
     return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : { dataset: undefined, host: undefined };
   default:
     console.error('can not get host data for ',cohort,view);
@@ -291,7 +287,6 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
     })
     .subscribe( (output ) => {
       // get the average activity for each
-      console.log('fetch best pathways',output);
       dataHandler(output);
     });
 }
@@ -368,7 +363,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
 
     function getRegulonFetch(selectedCohort,samples,geneSetLabels){
       if(selectedCohort.regulonPathwayActivity){
-        console.log('returning a regulon ');
         return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels) ;
       }
       else{
@@ -378,8 +372,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinati
 
     // TODO: make this a testable function
     // TODO: minimize fetches based on the filter
-    console.log('selected cohorts',selectedCohorts);
-    console.log('available samples',availableSamples);
     return Rx.Observable.zip(
       sparseData(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, samplesA, geneList),
       datasetFetch(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, samplesA, geneList),

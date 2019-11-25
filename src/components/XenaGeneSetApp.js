@@ -155,7 +155,6 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   handleCombinedCohortData = (input) => {
-    console.log('handling combined cohorts',input);
     let {
       pathways,
       geneList,
@@ -603,8 +602,6 @@ export default class XenaGeneSetApp extends PureComponent {
     geneSets.forEach( (p,index) => {
       indexMap[p.golabel] = index ;
     });
-
-    console.log('loaded pathways',loadedPathways,output);
 
     for(let index in output.geneExpressionPathwayActivityA.field){
       const field = output.geneExpressionPathwayActivityA.field[index];
