@@ -20,7 +20,6 @@ import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
 import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
 import {scorePathway} from '../functions/SortFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
 import {isViewGeneExpression} from '../functions/DataFunctions';
 
 const VIEW_LIMIT = 200;
@@ -46,9 +45,9 @@ export default class GeneSetEditor extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder:'asc',
-      sortBy: props.view===VIEW_ENUM.GENE_EXPRESSION || props.view===VIEW_ENUM.PARADIGM  ? 'AbsDiff' : 'Alpha',
+      sortBy: isViewGeneExpression(props.view)  ? 'AbsDiff' : 'Alpha',
       sortCartOrder:'asc',
-      sortCartBy: props.view===VIEW_ENUM.GENE_EXPRESSION || props.view===VIEW_ENUM.PARADIGM ? 'Diff' : 'Alpha',
+      sortCartBy: isViewGeneExpression(props.view) ? 'Diff' : 'Alpha',
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -87,7 +86,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   showScore(){
-    return this.props.view === VIEW_ENUM.GENE_EXPRESSION || this.props.view === VIEW_ENUM.PARADIGM;
+    return isViewGeneExpression(this.props.view);
   }
 
   handleMeanActivityData = (output) => {
@@ -155,7 +154,8 @@ export default class GeneSetEditor extends PureComponent {
 
     const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0);
     if(alreadyExists.length>0){
-      alert(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' );
+      // eslint-disable-next-line no-console
+      console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' );
     }
 
     const selectedCartData = update(this.state.cartPathways, {
