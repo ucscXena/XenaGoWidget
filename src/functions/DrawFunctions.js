@@ -314,6 +314,7 @@ export default {
     } = props;
     const totalHeight = labelHeight * layout.length;
     clearScreen(vg, width, totalHeight);
+    if(associatedData.length!==layout.length) return ;
     drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter);
   },
 
