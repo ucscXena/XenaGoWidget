@@ -55,7 +55,7 @@ function getPointData(event, props) {
   }
   else
   if(filter===VIEW_ENUM.PARADIGM){
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 ) return null ;
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
     if(cohortIndex===0){
       pathway.firstSampleParadigmPathwayActivity = activity ;

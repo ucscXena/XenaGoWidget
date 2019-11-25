@@ -2,6 +2,8 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from 'react-toolbox';
+import {getViewsForCohort} from '../functions/CohortFunctions';
+import {intersection} from '../functions/MathFunctions';
 
 function lowerCaseCompare(a, b) {
   // put gene expression at the bottom
@@ -23,7 +25,8 @@ export class ViewSelector extends PureComponent {
         return <div>Loading...</div>;
       }
       let labels = Object.keys(filterCounts).sort(lowerCaseCompare);
-      const labelValues = labels.map(label => {
+      const views = intersection(getViewsForCohort(pathwayData.selectedCohort.name),labels);
+      const labelValues = views.map(label => {
         if(filterCounts[label].current!==filterCounts[label].available){
           return ({label: label + ' (' + filterCounts[label].current + '/' + filterCounts[label].available+ ')', value: label});
         }
