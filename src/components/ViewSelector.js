@@ -17,7 +17,7 @@ export class ViewSelector extends PureComponent {
     };
 
     render() {
-      const {pathwayData, selected} = this.props;
+      const {pathwayData, view} = this.props;
       const filterCounts = pathwayData.filterCounts;
       if(pathwayData.expression.length === 0){
         return <div>Loading...</div>;
@@ -32,7 +32,7 @@ export class ViewSelector extends PureComponent {
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>
           <Dropdown
-            onChange={this.handleSetSelected} source={labelValues} style={{marginTop:0}} value={selected}
+            onChange={this.handleSetSelected} source={labelValues} style={{marginTop:0}} value={view}
           />
         </div>
       );
@@ -43,5 +43,5 @@ ViewSelector.propTypes = {
   geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
-  selected: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

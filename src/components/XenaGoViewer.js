@@ -127,7 +127,7 @@ export default class XenaGoViewer extends PureComponent {
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
                             pathwayData={geneDataStats}
-                            selected={filter}
+                            view={filter}
                           />
                           <HoverGeneView
                             cohortIndex={cohortIndex}
