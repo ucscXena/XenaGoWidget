@@ -6,7 +6,7 @@ import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
 import {
-  fetchCohortData, getLabelForIndex, getSubCohortsForCohort,
+  fetchCohortData, getCohortsForView, getLabelForIndex, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
 } from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
@@ -95,6 +95,9 @@ export class CohortSelector extends PureComponent {
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
+      const cohorts = getCohortsForView(filter);
+      const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+
       return (
         <div>
           {this.hasSubCohorts() &&
@@ -132,7 +135,7 @@ export class CohortSelector extends PureComponent {
             value={this.props.selectedCohort.name}
           >
             {
-              fetchCohortData().map(c => {
+              availableCohorts.map(c => {
                 return (
                   <option key={c.name} value={c.name}>
                     {c.name}
