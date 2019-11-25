@@ -35,7 +35,7 @@ import {sumTotals} from '../../../src/functions/MathFunctions';
 describe('Data Integration Functions', () => {
 
   it('Associated Data', () => {
-    expect(AssociatedDataOutput1).toEqual(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION));
+    expect(doDataAssociations(AssociatedDataExpression1, AssociatedDataCopyNumber1, [[]],[[]],[[]],[[]],[[]],AssociatedDataGeneList1, AssociatedDataPathways1, AssociatedDataSamples1, VIEW_ENUM.CNV_MUTATION)).toEqual(AssociatedDataOutput1);
   });
 
   it('Calculate Associated Data', () => {
