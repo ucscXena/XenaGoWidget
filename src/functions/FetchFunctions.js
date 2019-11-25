@@ -180,6 +180,7 @@ function getHostData(cohort,view) {
   case VIEW_ENUM.REGULON:
     return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : { dataset: undefined, host: undefined };
   default:
+    // eslint-disable-next-line no-console
     console.error('can not get host data for ',cohort,view);
   }
 }
