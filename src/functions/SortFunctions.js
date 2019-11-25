@@ -363,6 +363,9 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
     }
     else
     if(filter===VIEW_ENUM.REGULON){
+      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity !== 'NaN') return -1 ;
+      if(b.regulonPathwayActivity !== 'NaN' && a.regulonPathwayActivity === 'NaN') return 1 ;
+      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression ;
       return b.regulonPathwayActivity - a.regulonPathwayActivity;
     }
     else
