@@ -1,6 +1,7 @@
 [
   {
     "name": "TCGA Acute Myeloid Leukemia (LAML)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.LAML.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.LAML.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -37,6 +38,7 @@
   },
   {
     "name": "TCGA Adrenocortical Cancer (ACC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.ACC.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.ACC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -73,6 +75,7 @@
   },
   {
     "name": "TCGA Bile Duct Cancer (CHOL)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.CHOL.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.CHOL.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -109,6 +112,7 @@
   },
   {
     "name": "TCGA Bladder Cancer (BLCA)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.BLCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.BLCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -145,6 +149,7 @@
   },
   {
     "name": "TCGA Breast Cancer (BRCA)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.BRCA.sampleMap/mutation_curated_wustl",
     "copyNumberDataSetId": "TCGA.BRCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -181,6 +186,7 @@
   },
   {
     "name": "TCGA Cervical Cancer (CESC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.CESC.sampleMap/mutation_curated_wustl",
     "copyNumberDataSetId": "TCGA.CESC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -217,6 +223,7 @@
   },
   {
     "name": "TCGA Colon Cancer (COAD)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.COAD.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.COAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -253,6 +260,7 @@
   },
   {
     "name": "TCGA Endometrioid Cancer (UCEC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.UCEC.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.UCEC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -289,6 +297,7 @@
   },
   {
     "name": "TCGA Esophageal Cancer (ESCA)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.ESCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.ESCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -325,6 +334,7 @@
   },
   {
     "name": "TCGA Glioblastoma (GBM)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.GBM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.GBM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -361,6 +371,7 @@
   },
   {
     "name": "TCGA Head and Neck Cancer (HNSC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.HNSC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.HNSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -397,6 +408,7 @@
   },
   {
     "name": "TCGA Kidney Chromophobe (KICH)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.KICH.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.KICH.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -433,6 +445,7 @@
   },
   {
     "name": "TCGA Kidney Clear Cell Carcinoma (KIRC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.KIRC.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.KIRC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -469,6 +482,7 @@
   },
   {
     "name": "TCGA Kidney Papillary Cell Carcinoma (KIRP)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.KIRP.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.KIRP.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -505,6 +519,7 @@
   },
   {
     "name": "TCGA Large B-cell Lymphoma (DLBC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.DLBC.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.DLBC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -541,6 +556,7 @@
   },
   {
     "name": "TCGA Liver Cancer (LIHC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.LIHC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LIHC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -577,6 +593,7 @@
   },
   {
     "name": "TCGA Lower Grade Glioma (LGG)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.LGG.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LGG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -613,6 +630,10 @@
   },
   {
     "name": "TCGA Lung Adenocarcinoma (LUAD)",
+    "regulonPathwayActivity": {
+      "dataset": "regulon_activity_matrix_tcga_luad.tsv",
+      "host": "https://xenago.xenahubs.net"
+    },
     "mutationDataSetId": "TCGA.LUAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LUAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -649,6 +670,7 @@
   },
   {
     "name": "TCGA Lung Squamous Cell Carcinoma (LUSC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.LUSC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.LUSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -685,6 +707,7 @@
   },
   {
     "name": "TCGA Melanoma (SKCM)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.SKCM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.SKCM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -721,6 +744,7 @@
   },
   {
     "name": "TCGA Mesothelioma (MESO)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.MESO.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.MESO.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -757,6 +781,7 @@
   },
   {
     "name": "TCGA Ocular melanomas (UVM)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.UVM.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.UVM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -793,6 +818,7 @@
   },
   {
     "name": "TCGA Ovarian Cancer (OV)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.OV.sampleMap/mutation_wustl",
     "copyNumberDataSetId": "TCGA.OV.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -829,6 +855,7 @@
   },
   {
     "name": "TCGA Pancreatic Cancer (PAAD)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.PAAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PAAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -865,6 +892,7 @@
   },
   {
     "name": "TCGA Pheochromocytoma & Paraganglioma (PCPG)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.PCPG.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PCPG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -901,6 +929,7 @@
   },
   {
     "name": "TCGA Prostate Cancer (PRAD)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.PRAD.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.PRAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -937,6 +966,7 @@
   },
   {
     "name": "TCGA Rectal Cancer (READ)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.READ.sampleMap/mutation_bcm",
     "copyNumberDataSetId": "TCGA.READ.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -973,6 +1003,7 @@
   },
   {
     "name": "TCGA Sarcoma (SARC)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.SARC.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.SARC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -1009,6 +1040,7 @@
   },
   {
     "name": "TCGA Stomach Cancer (STAD)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.STAD.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.STAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -1045,6 +1077,7 @@
   },
   {
     "name": "TCGA Testicular Cancer (TGCT)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.TGCT.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.TGCT.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -1081,6 +1114,7 @@
   },
   {
     "name": "TCGA Thymoma (THYM)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.THYM.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.THYM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -1117,6 +1151,7 @@
   },
   {
     "name": "TCGA Thyroid Cancer (THCA)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.THCA.sampleMap/mutation_broad",
     "copyNumberDataSetId": "TCGA.THCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
@@ -1153,6 +1188,7 @@
   },
   {
     "name": "TCGA Uterine Carcinosarcoma (UCS)",
+    "regulonPathwayActivity":{},
     "mutationDataSetId": "TCGA.UCS.sampleMap/mutation_curated_broad",
     "copyNumberDataSetId": "TCGA.UCS.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {

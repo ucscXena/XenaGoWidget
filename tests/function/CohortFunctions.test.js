@@ -92,7 +92,7 @@ describe('Test Cohorts', () => {
   });
 
   it('Get Cohort Data',() => {
-    expect(TestDefaultCohortData).toEqual(fetchCohortData());
+    expect(fetchCohortData()).toEqual(TestDefaultCohortData);
   });
 
   it('Get Genes for Pathways',() => {
@@ -130,34 +130,35 @@ describe('Test Cohorts', () => {
   });
 
   it('Get Views for Cohorts', () => {
-    expect(getViewsForCohort('TCGA Ovarian Cancer (OV)').toEqual(
+    expect(getViewsForCohort('TCGA Ovarian Cancer (OV)')).toEqual(
       [
-        VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.PARADIGM,
-        VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.CNV_MUTATION,
         VIEW_ENUM.COPY_NUMBER,
+        VIEW_ENUM.CNV_MUTATION,
+        VIEW_ENUM.GENE_EXPRESSION,
         VIEW_ENUM.MUTATION,
+        VIEW_ENUM.PARADIGM,
       ]
-    ));
-    expect(getViewsForCohort('TCGA Lung Adenocarcinoma (LUAD)').toEqual(
+    );
+    expect(getViewsForCohort('TCGA Lung Adenocarcinoma (LUAD)')).toEqual(
       [
-        VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.PARADIGM,
-        VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.CNV_MUTATION,
         VIEW_ENUM.COPY_NUMBER,
+        VIEW_ENUM.CNV_MUTATION,
+        VIEW_ENUM.GENE_EXPRESSION,
         VIEW_ENUM.MUTATION,
+        VIEW_ENUM.PARADIGM,
         VIEW_ENUM.REGULON,
       ]
-    ));
+    );
   });
 
   it('Get Cohorts for View', () => {
-    let cohorts = getCohortsForView(VIEW_ENUM.GENE_EXPRESSION);
-    expect(cohorts.length).toEqual(44);
+    let cohorts ;
     cohorts = getCohortsForView(VIEW_ENUM.REGULON);
     expect(cohorts.length).toEqual(1);
+    cohorts = getCohortsForView(VIEW_ENUM.GENE_EXPRESSION);
+    expect(cohorts.length).toEqual(33);
+    cohorts = getCohortsForView(VIEW_ENUM.COPY_NUMBER);
+    expect(cohorts.length).toEqual(34);
 
   });
 
