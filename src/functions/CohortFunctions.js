@@ -137,7 +137,7 @@ export function fetchCohortData() {
         const paradigm = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_KEY];
         const paradigmPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_PATHWAY_ACTIVITY_KEY];
         const regulonPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][REGULON_PATHWAY_ACTIVITY_KEY];
-        return {
+        let returnObject = {
           name: cohort,
           mutationDataSetId: mutation.dataset,
           copyNumberDataSetId: copyNumberView.dataset,
@@ -145,13 +145,16 @@ export function fetchCohortData() {
           geneExpressionPathwayActivity,
           paradigm,
           paradigmPathwayActivity,
-          regulonPathwayActivity: regulonPathwayActivity ? regulonPathwayActivity : undefined ,
           genomeBackgroundCopyNumber: genomeBackground[GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY],
           genomeBackgroundMutation: genomeBackground[GENOME_BACKGROUND_MUTATION_VIEW_KEY],
           amplificationThreshold: copyNumberView.amplificationThreshold,
           deletionThreshold: copyNumberView.deletionThreshold,
           host: mutation.host,
         };
+        if(regulonPathwayActivity){
+          returnObject.regulonPathwayActivity = regulonPathwayActivity;
+        }
+        return returnObject ;
       })
       .sort(lowerCaseCompareName);
   }
