@@ -106,7 +106,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      if(filter===VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.REGULON){
         const geneExpressionScore = meanDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
@@ -223,6 +223,22 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       if(filter===VIEW_ENUM.GENE_EXPRESSION){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
+        for (let xPos = 0; xPos < r.width; ++xPos) {
+          const buffStart = pxRow + (xPos + r.x) * 4;
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+            let colorArray = isNaN(geneExpressionScore) ? [0,0,0] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            img.data[l] = colorArray[0];
+            img.data[l + 1] = colorArray[1];
+            img.data[l + 2] = colorArray[2];
+            img.data[l + 3] = 255 ;
+          }
+        }
+      }
+      else
+      if(filter===VIEW_ENUM.REGULON){
+        // const geneExpressionScore = sumDataByType(d, 'geneExpression');
+        const geneExpressionScore = meanDataByType(d, 'regulonPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
