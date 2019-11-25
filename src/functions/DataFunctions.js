@@ -799,7 +799,7 @@ export function scoreGeneData(inputGeneData) {
 
   for (const d in returnedValue.data) {
     returnedValue.pathways[d].total = samplesLength;
-    if(filter===VIEW_ENUM.GENE_EXPRESSION){
+    if(filter===VIEW_ENUM.GENE_EXPRESSION || filter===VIEW_ENUM.REGULON){
       returnedValue.pathways[d].geneExpressionMean = calculateMeanGeneExpression(returnedValue.data[d]);
       returnedValue.pathways[d].geneExpressionVariance = calculateVarianceGeneExpression(returnedValue.data[d],returnedValue.pathways[d].geneExpressionMean);
     }
