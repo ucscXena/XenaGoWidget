@@ -97,7 +97,7 @@ function getPointData(event, layout, associatedData, sortedSamples, pathways, he
 }
 
 
-export default class PathwayScoresView extends PureComponent {
+export default class GeneDetailView extends PureComponent {
 
     handleLabelHoverOut = () => {
       let {onHover} = this.props;
@@ -158,7 +158,7 @@ export default class PathwayScoresView extends PureComponent {
     }
 }
 
-PathwayScoresView.propTypes = {
+GeneDetailView.propTypes = {
   calculatedWidth: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   colorSettings: PropTypes.any,

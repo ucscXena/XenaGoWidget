@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
 import {CohortSelector} from './CohortSelector';
-import PathwayScoresView from './PathwayScoresView';
+import GeneDetailView from './GeneDetailView';
 import '../css/base.css';
-import HoverGeneView from './HoverGeneView';
+import HoverView from './HoverView';
 import {VIEW_ENUM} from '../data/ViewEnum';
 
 import {Card,Button} from 'react-toolbox';
@@ -36,7 +36,7 @@ const style = {
 };
 
 
-export default class XenaGoViewer extends PureComponent {
+export default class GeneDetailOverview extends PureComponent {
 
     handleGeneHover = (geneHoverProps) => {
       if (geneHoverProps && geneHoverProps.expression) {
@@ -130,7 +130,7 @@ export default class XenaGoViewer extends PureComponent {
                             pathwayData={geneDataStats}
                             view={filter}
                           />
-                          <HoverGeneView
+                          <HoverView
                             cohortIndex={cohortIndex}
                             data={geneHoverData}
                             filter={filter}
@@ -154,7 +154,7 @@ export default class XenaGoViewer extends PureComponent {
                         }
                       </td>
                       <td style={{padding: 0}}>
-                        <PathwayScoresView
+                        <GeneDetailView
                           calculatedWidth={calculatedWidth}
                           cohortIndex={cohortIndex}
                           collapsed={collapsed}
@@ -180,7 +180,7 @@ export default class XenaGoViewer extends PureComponent {
     }
 }
 
-XenaGoViewer.propTypes = {
+GeneDetailOverview.propTypes = {
   allowableViews: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   collapsed: PropTypes.any,

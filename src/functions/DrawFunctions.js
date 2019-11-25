@@ -8,7 +8,7 @@ import {
   getMutation3ColorMask,
   getMutation4ColorMask,
 } from './ColorFunctions';
-import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
+import { GENE_LABEL_HEIGHT } from '../components/GeneDetailView';
 import * as d3 from 'd3';
 import {VIEW_ENUM} from '../data/ViewEnum';
 

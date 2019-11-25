@@ -1,6 +1,6 @@
 import React from 'react';
 import PureComponent from './PureComponent';
-import XenaGoViewer from './XenaGoViewer';
+import GeneDetailOverview from './GeneDetailOverview';
 import {AppStorageHandler} from '../service/AppStorageHandler';
 import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
@@ -845,7 +845,7 @@ export default class XenaGeneSetApp extends PureComponent {
                               >
                                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                                 <CrossHairV height={VIEWER_HEIGHT * 2} mousing={this.state.mousing} x={this.state.x}/>
-                                <XenaGoViewer
+                                <GeneDetailOverview
                                   // reference
                                   allowableViews={allowableViews}
                                   cohortIndex={0}
@@ -884,7 +884,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   showDiffLayer={this.state.showDiffLayer}
                                   swapCohorts={this.swapCohorts}
                                 />
-                                <XenaGoViewer
+                                <GeneDetailOverview
                                   // reference
                                   allowableViews={allowableViews}
                                   cohortIndex={1}

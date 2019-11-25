@@ -8,7 +8,7 @@ import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../funct
 import {VIEW_ENUM} from '../data/ViewEnum';
 import {isViewGeneExpression} from '../functions/DataFunctions';
 
-export default class HoverGeneView extends PureComponent {
+export default class HoverView extends PureComponent {
 
     /**
      * This returns the number of affected versus the total number versus a single gene
@@ -299,7 +299,7 @@ export default class HoverGeneView extends PureComponent {
   }
 }
 
-HoverGeneView.propTypes = {
+HoverView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,

@@ -4,7 +4,7 @@ import { omit, isEqual } from 'underscore';
 import PureComponent from './PureComponent';
 import { HeaderLabel } from './HeaderLabel';
 import { DiffLabel } from './DiffLabel';
-import { GENE_LABEL_HEIGHT } from './PathwayScoresView';
+import { GENE_LABEL_HEIGHT } from './GeneDetailView';
 import BaseStyle from '../css/base.css';
 
 const CHI_SQUARE_MAX = 100.0;
