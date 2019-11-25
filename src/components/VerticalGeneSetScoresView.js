@@ -54,6 +54,17 @@ function getPointData(event, props) {
     }
   }
   else
+  if(filter===VIEW_ENUM.REGULON){
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex].regulonPathwayActivity;
+    if(cohortIndex===0){
+      pathway.firstSampleRegulonPathwayActivity = activity ;
+    }
+    else{
+      pathway.secondSampleRegulonPathwayActivity = activity ;
+    }
+  }
+  else
   if(filter===VIEW_ENUM.PARADIGM){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;

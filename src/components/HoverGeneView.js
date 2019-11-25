@@ -43,6 +43,14 @@ export default class HoverGeneView extends PureComponent {
       else{
         return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
       }
+    case VIEW_ENUM.REGULON:
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleRegulonPathwayActivity!==undefined ? data.pathway.firstSampleRegulonPathwayActivity: data.pathway.firstRegulonPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleRegulonPathwayActivity!==undefined ? data.pathway.secondSampleRegulonPathwayActivity: data.pathway.secondRegulonPathwayActivity;
+      }
     case VIEW_ENUM.PARADIGM:
       // shows individual samples if available
       if(cohortIndex===0){
