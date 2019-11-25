@@ -89,7 +89,7 @@ export default class HoverGeneView extends PureComponent {
                   backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
                 }}
               >
-                <strong>Score</strong> {score.toFixed(2)}</span>
+                <strong>Score</strong> {score ==='NaN' ? 'Not Available' :score.toFixed(2)}</span>
               {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleCnvHigh > 0 &&
               <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.firstSampleCnvHigh}/></span></Chip>
               }
@@ -286,7 +286,7 @@ export default class HoverGeneView extends PureComponent {
                             backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
                           }}
                         >
-                          <strong>Mean Score</strong> {score.toFixed(2)}</span>
+                          <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
                       </div>
                     </div>
           }
