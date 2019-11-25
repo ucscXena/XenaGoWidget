@@ -432,6 +432,7 @@ export function isViewGeneExpression(filter){
   switch (filter) {
   case VIEW_ENUM.GENE_EXPRESSION:
   case VIEW_ENUM.PARADIGM:
+  case VIEW_ENUM.REGULON:
     return true;
   default:
     return false;
