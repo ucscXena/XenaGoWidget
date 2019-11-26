@@ -12,6 +12,14 @@ module.exports = {
   },
   karma:{
     browsers: ['Chrome'],
+    config(config) {
+      // Change config as you wish
+      config.browserNoActivityTimeout= 30000;
+
+
+      // You MUST return the edited config object
+      return config;
+    }
   },
   webpack: {
     styles: {
