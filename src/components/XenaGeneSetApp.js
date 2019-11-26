@@ -15,7 +15,7 @@ import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
   fetchBestPathways,
-  fetchCombinedCohorts, getCohortDataForView, getGeneSetsForView,
+  fetchCombinedCohorts, getCohortDataForGeneExpressionView, getGeneSetsForView,
 } from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -618,7 +618,8 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
 
-      if(getCohortDataForView(this.state.selectedCohort,this.state.filter)!==null){
+      // if gene Expressions
+      if(getCohortDataForGeneExpressionView(this.state.selectedCohort,this.state.filter)!==null){
         if(this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.state.filter,this.handleMeanActivityData);
         }
@@ -627,6 +628,11 @@ export default class XenaGeneSetApp extends PureComponent {
         }
       }
       else{
+        // if its not gene expression just use the canned data
+        if(!isViewGeneExpression(this.state.filter)){
+          pathways = getGeneSetsForView(this.state.filter);
+        }
+
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
