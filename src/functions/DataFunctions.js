@@ -68,6 +68,7 @@ export function generateZScore( data,stats){
 }
 
 export function generateZScoreForBoth(inputA, inputB){
+  if(!inputA || !inputB) return [0,0];
   const geneExpressionStats = generateStats(inputA,inputB);
   const zScoreA = generateZScore(inputA,geneExpressionStats);
   const zScoreB = generateZScore(inputB,geneExpressionStats);
