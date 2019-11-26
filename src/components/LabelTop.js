@@ -1,8 +1,7 @@
 import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {LABEL_A, LABEL_B} from './XenaGeneSetApp';
-
+import {getLabelForIndex} from '../functions/CohortFunctions';
 
 export class LabelTop extends PureComponent {
 
@@ -17,12 +16,12 @@ export class LabelTop extends PureComponent {
         <text
           fill={color} fontFamily='Arial' fontSize={fontSize} fontWeight={bolder} x={x} y={y}
         >
-                    Cohort {LABEL_A}
+                    Cohort {getLabelForIndex(0)}
         </text>
         <text
           fill={color} fontFamily='Arial' fontSize={fontSize} fontWeight={bolder} x={x+this.props.width/2} y={y}
         >
-                    Cohort {LABEL_B}
+          Cohort {getLabelForIndex(1)}
         </text>
       </svg>
     );

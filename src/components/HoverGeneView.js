@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
+import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from '../functions/DataFunctions';
 
 export default class HoverGeneView extends PureComponent {
 
@@ -29,25 +32,133 @@ export default class HoverGeneView extends PureComponent {
 
     };
 
-    getScore = (data, cohortIndex) => Number.parseFloat(cohortIndex === 0 ? data.pathway.firstChiSquared : data.pathway.secondChiSquared).toFixed(1);
+  findScore = (data, cohortIndex,filter) => {
+    switch (filter) {
+    case VIEW_ENUM.GENE_EXPRESSION:
+      // return cohortIndex === 0 ? data.pathway.firstGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleGeneExpressionPathwayActivity!==undefined  && data.tissue !=='Header' ? data.pathway.firstSampleGeneExpressionPathwayActivity: data.pathway.firstGeneExpressionPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined && data.tissue !=='Header' ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+      }
+    case VIEW_ENUM.REGULON:
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleRegulonPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleRegulonPathwayActivity: data.pathway.firstRegulonPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleRegulonPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleRegulonPathwayActivity: data.pathway.secondRegulonPathwayActivity;
+      }
+    case VIEW_ENUM.PARADIGM:
+      // shows individual samples if available
+      if(cohortIndex===0){
+        return data.pathway.firstSampleParadigmPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleParadigmPathwayActivity: data.pathway.firstParadigmPathwayActivity;
+      }
+      else{
+        return data.pathway.secondSampleParadigmPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleParadigmPathwayActivity: data.pathway.secondParadigmPathwayActivity;
+      }
+    default:
+      if(cohortIndex===0){
+        return data.pathway.firstSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleTotal : data.pathway.firstChiSquared;
+      }
+      else{
+        return data.pathway.secondSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleTotal : data.pathway.secondChiSquared;
+      }
+    }
+  };
 
-    render() {
-      let {data, title, cohortIndex} = this.props;
-      if (data.tissue) {
-        return (
-          <div>
-            {data.tissue !== 'Header' &&
+  render() {
+    let {data, cohortIndex, view} = this.props;
+    if (data.tissue) {
+      const score =this.findScore(data, cohortIndex,view);
+      return (
+        <div>
+          {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
+            <div className={BaseStyle.pathwayChip}>
+              <span><strong>Pathway</strong> {data.pathway.golabel}</span>
+              <br/>
+              <span><strong>Sample</strong> {data.tissue}</span>
+              <br/>
+              <br/>
+              <span
+                className={BaseStyle.scoreBox}
+                style={{
+                  color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+                  backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
+                }}
+              >
+                <strong>Score</strong> {score ==='NaN' ? 'Not Available' :score.toFixed(2)}</span>
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleCnvHigh > 0 &&
+              <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.firstSampleCnvHigh}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleCnvLow > 0 &&
+              <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.firstSampleCnvLow}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation2 > 0 &&
+              <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.firstSampleMutation2}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation3 > 0 &&
+              <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.firstSampleMutation3}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation4 > 0 &&
+              <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.firstSampleMutation4}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleCnvHigh > 0 &&
+              <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.secondSampleCnvHigh}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleCnvLow > 0 &&
+              <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.secondSampleCnvLow}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation2 > 0 &&
+              <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.secondSampleMutation2}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation3 > 0 &&
+              <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.secondSampleMutation3}/></span></Chip>
+              }
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation4 > 0 &&
+              <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.secondSampleMutation4}/></span></Chip>
+              }
+            </div>
+          }
+          {data.tissue !== 'Header' && data.source !== 'GeneSet' &&
                     <div>
-                      {title &&
-                        <h3>{title}</h3>
-                      }
                       {data.pathway &&
-                        <Chip>
-                          <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
-                        </Chip>
+                      <div className={BaseStyle.pathwayChip}>
+                        <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
+                      </div>
                       }
                       {data.expression != null &&
                         <div>
+                          {view===VIEW_ENUM.PARADIGM &&
+                          <div className={BaseStyle.pathwayChip}>
+                            <strong>ZScore</strong>
+                            <div
+                              className={BaseStyle.scoreBox}
+                              style={{
+                                color:interpolateGeneExpressionFont(data.expression.paradigm)
+                                ,backgroundColor:interpolateGeneExpression(data.expression.paradigm)
+                              }}
+                            >
+                              {data.expression.paradigm.toPrecision(2)}
+                            </div>
+                          </div>
+                          }
+                          { ( view===VIEW_ENUM.GENE_EXPRESSION  || view === VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                          <div className={BaseStyle.pathwayChip}>
+                            <strong>ZScore</strong>
+                            <div
+                              className={BaseStyle.scoreBox}
+                              style={{
+                                color:interpolateGeneExpressionFont(data.expression.geneExpression),
+                                backgroundColor:interpolateGeneExpression(data.expression.geneExpression)
+                              }}
+                            >
+                              {data.expression.geneExpression.toPrecision(2)}
+                            </div>
+                          </div>
+                          }
                           {data.selectCnv && data.expression.cnvHigh > 0 &&
                             <Chip>
                               <span
@@ -104,47 +215,92 @@ export default class HoverGeneView extends PureComponent {
                         </Chip>
                       }
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&
                     <div>
-                      <Chip>
-                        <span><strong>Gene</strong> {data.pathway.gene[0]}</span>
-                      </Chip>
+                      <div className={BaseStyle.pathwayChip}>
+                        <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
+                      </div>
                       <div className={BaseStyle.pathwayChip}>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                     </div>
-            }
-            {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression.allGeneAffected &&
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
+            && ( isViewGeneExpression(view))  &&
+            <div>
+              <div className={BaseStyle.pathwayChip}>
+                <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
+              </div>
+              <div className={BaseStyle.pathwayChip}>
+                <span><strong>Mean ZScore</strong>
+                  {view===VIEW_ENUM.PARADIGM &&
+                  <div
+                    className={BaseStyle.scoreBox}
+                    style={{
+                      color: interpolateGeneExpressionFont(data.pathway.paradigmMean),
+                      backgroundColor: interpolateGeneExpression(data.pathway.paradigmMean)
+                    }}
+                  >
+                    {data.pathway.paradigmMean.toPrecision(2)}
+                  </div>
+                  }
+                  { (view===VIEW_ENUM.GENE_EXPRESSION || view===VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                  <div
+                    className={BaseStyle.scoreBox}
+                    style={{
+                      color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
+                      backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
+                    }}
+                  >
+                    {data.pathway.geneExpressionMean.toPrecision(2)}
+                  </div>
+                  }
+                  <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
+                </span>
+              </div>
+            </div>
+          }
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
                     <div className={BaseStyle.pathwayChip}>
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
-                        {data.pathway.golabel}
+                        {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
+                      {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
+                      }
+                      {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
+                      }
                       <div>
-                        <span><strong>Score</strong> {this.getScore(data, cohortIndex)}</span>
+                        <br/>
+                        <span
+                          className={BaseStyle.scoreBox}
+                          style={{
+                            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+                            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
+                          }}
+                        >
+                          <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
                       </div>
-
                     </div>
-            }
-          </div>
-        );
-      }
-      else {
-        return <div/>;
-      }
+          }
+        </div>
+      );
     }
-
+    else {
+      return <div/>;
+    }
+  }
 }
 
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  title: PropTypes.any,
+  view: PropTypes.any.isRequired,
 };

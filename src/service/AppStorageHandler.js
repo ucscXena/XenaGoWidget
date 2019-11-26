@@ -1,9 +1,8 @@
 import update from 'immutability-helper';
-import PureComponent from '../components/PureComponent';
 import DefaultPathWays from '../data/genesets/tgac';
-import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {FILTER_ENUM} from '../components/FilterSelector';
+import {VIEW_ENUM} from '../data/ViewEnum';
+import {exception} from 'react-ga';
 
 
 // synchronizing gene sorts between pathways
@@ -14,15 +13,14 @@ const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways';
 const DefaultAppA = {
   renderOffset: 5,
   pathwayData: {
-    cohort: 'TCGA Ovarian Cancer (OV)',
+    cohort: 'TCGA Breast Cancer (BRCA)',
     copyNumber: [],
     expression: [],
     samples: [],
   },
   loadState: 'loading',
-  selectedCohort: 'TCGA Ovarian Cancer (OV)',
+  selectedCohort: 'TCGA Breast Cancer (BRCA)',
   cohortData: {},
-  tissueExpressionFilter: 'All',
   minFilter: 2,
   filterPercentage: 0.005,
   geneData: {
@@ -54,23 +52,31 @@ const DefaultAppA = {
 };
 
 const DefaultAppB = update(DefaultAppA, {
-  selectedCohort: { $set: 'TCGA Prostate Cancer (PRAD)' },
-  pathwayData: { cohort: { $set: 'TCGA Prostate Cancer (PRAD)' } },
+  selectedCohort: { $set: 'TCGA Lung Adenocarcinoma (LUAD)' },
+  pathwayData: { cohort: { $set: 'TCGA Lung Adenocarcinoma (LUAD)' } },
 });
 
 
 /**
  * This is just for handling memory.
  */
-export class AppStorageHandler extends PureComponent {
-  static storePathways(pathway) {
-    if (pathway) {
-      localStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathway));
+export class AppStorageHandler {
+
+
+  static resetSessionStorage() {
+    sessionStorage.removeItem(LOCAL_APP_STORAGE);
+    sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE);
+    sessionStorage.removeItem(LOCAL_STATE_STORAGE);
+  }
+
+  static storePathways(pathways) {
+    if (pathways) {
+      sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways));
     }
   }
 
   static getPathways() {
-    const storedPathway = JSON.parse(localStorage.getItem(LOCAL_PATHWAY_STORAGE));
+    const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_PATHWAY_STORAGE));
     return storedPathway || DefaultPathWays;
   }
 
@@ -79,7 +85,7 @@ export class AppStorageHandler extends PureComponent {
   }
 
   static getAppState() {
-    const storedPathwaySelection = JSON.parse(localStorage.getItem(LOCAL_STATE_STORAGE));
+    const storedPathwaySelection = JSON.parse(sessionStorage.getItem(LOCAL_STATE_STORAGE));
     return storedPathwaySelection || AppStorageHandler.getDefaultSelectionPathway();
   }
 
@@ -89,7 +95,7 @@ export class AppStorageHandler extends PureComponent {
 
   static storeAppState(selection) {
     if (selection) {
-      localStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
+      sessionStorage.setItem(LOCAL_STATE_STORAGE, JSON.stringify(selection));
     } else {
       // eslint-disable-next-line no-console
       console.warn('storing empty pathway');
@@ -119,8 +125,6 @@ export class AppStorageHandler extends PureComponent {
       return appState.cohortState[cohortIndex];
     }
 
-    // TODO: is this correct, or should return a json with {name:xxx} ?
-    // return cohortIndex === 0 ? 'TCGA Ovarian Cancer (OV)' : 'TCGA Prostate Cancer (PRAD)'
     const defaultCohortState = cohortIndex === 0 ? this.generateCohortState('TCGA Ovarian Cancer (OV)') : this.generateCohortState('TCGA Prostate Cancer (PRAD)');
     AppStorageHandler.storeCohortState(defaultCohortState,cohortIndex);
 
@@ -128,59 +132,60 @@ export class AppStorageHandler extends PureComponent {
   }
 
   static isValidCohortState(cohortState) {
-    return cohortState && cohortState.host
+    return cohortState
+      && cohortState.host
       && cohortState.mutationDataSetId
       && cohortState.copyNumberDataSetId
       && cohortState.genomeBackgroundMutation
       && cohortState.genomeBackgroundCopyNumber
+      && cohortState.geneExpression
+      && cohortState.geneExpressionPathwayActivity
     ;
   }
 
-  static storeFilterState(selected, cohortIndex) {
-    if (!selected) return;
-    const appState = AppStorageHandler.getAppState();
-    if (!appState.filterState) {
-      appState.filterState = [];
-    }
-    // TODO: remove this hack
-    appState.filterState[cohortIndex] = selected;
-    AppStorageHandler.storeAppState(appState);
-  }
-
-
   static isValidFilterState(filterState) {
     switch (filterState) {
-    case FILTER_ENUM.COPY_NUMBER:
-    case FILTER_ENUM.MUTATION:
-    case FILTER_ENUM.CNV_MUTATION:
+    case VIEW_ENUM.COPY_NUMBER:
+    case VIEW_ENUM.MUTATION:
+    case VIEW_ENUM.CNV_MUTATION:
+    case VIEW_ENUM.GENE_EXPRESSION:
+    case VIEW_ENUM.REGULON:
       return true;
     }
     return false ;
   }
 
-  static getFilterState(cohortIndex) {
+  static storeFilterState(selected) {
+    if (!selected) return;
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
-      return appState.filterState[cohortIndex];
-    }
-    return FILTER_ENUM.CNV_MUTATION;
-  }
-
-  static getSortState() {
-    const appState = AppStorageHandler.getAppState();
-    // diff or cluster
-    if (!appState.sortState) {
-      appState.sortState = SortType.DIFF;
-      AppStorageHandler.storeAppState(appState);
+    if (!appState.filterState) {
+      appState.filterState = undefined ;
     }
     // TODO: remove this hack
-    return appState.sortState;
+    appState.filterState = selected;
+    AppStorageHandler.storeAppState(appState);
+  }
+
+  static getFilterState() {
+    const appState = AppStorageHandler.getAppState();
+    if (appState && appState.filterState  && this.isValidFilterState(appState.filterState)) {
+      return appState.filterState;
+    }
+    return VIEW_ENUM.PARADIGM;
   }
 
   static storeSortState(sortState) {
     const appState = AppStorageHandler.getAppState();
     appState.sortState = sortState;
     AppStorageHandler.storeAppState(appState);
+  }
+
+  static storeCohortStateArray(array){
+    if(array.length!==2) {
+      throw new exception('Must be an array of size two');
+    }
+    this.storeCohortState(array[0],0);
+    this.storeCohortState(array[1],1);
   }
 
   static storeCohortState(selected, cohortIndex) {
@@ -197,13 +202,13 @@ export class AppStorageHandler extends PureComponent {
 
   static storeAppData(pathway) {
     if (pathway) {
-      localStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
+      sessionStorage.setItem(LOCAL_APP_STORAGE, JSON.stringify(pathway));
     }
   }
 
 
   static getAppData(pathways) {
-    const storedPathway = JSON.parse(localStorage.getItem(LOCAL_APP_STORAGE));
+    const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_APP_STORAGE));
     if (storedPathway) {
       return storedPathway;
     }

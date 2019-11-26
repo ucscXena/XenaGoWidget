@@ -18,7 +18,7 @@ export class SubCohortSelector extends PureComponent {
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
-      allSelected:isEqual(props.selectedSubCohorts.sort(),props.subCohortsForSelected.sort())
+      allSelected:isEqual(props.selectedSubCohorts.sort(),props.filterCounts.subCohortCounts.map( f => f.name).sort())
     };
   }
 
@@ -28,19 +28,25 @@ export class SubCohortSelector extends PureComponent {
       this.setState({
         selectedSubCohorts:this.props.selectedSubCohorts,
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
-        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.subCohortsForSelected.sort()),
+        allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.filterCounts.subCohortCounts.map( f => f.name).sort())
       });
     }
   }
 
+
   handleSelectOnly = (field) => {
     const newSelected = [field];
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
     });
+  };
+
+  handleCompareVersus = (field) => {
+    this.props.onSelectVsAll(field,this.props.cohortIndex);
+    this.props.onToggle();
   };
 
   handleChange = (event) => {
@@ -54,7 +60,7 @@ export class SubCohortSelector extends PureComponent {
       let indexValue = newSelected.indexOf(field);
       newSelected.splice(indexValue,1);
     }
-    let allSelected = isEqual(this.props.subCohortsForSelected.sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -63,7 +69,7 @@ export class SubCohortSelector extends PureComponent {
 
   selectAll(){
     this.setState({
-      selectedSubCohorts:this.props.subCohortsForSelected,
+      selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
       allSelected:true,
     });
   }
@@ -73,69 +79,83 @@ export class SubCohortSelector extends PureComponent {
   }
 
   cancelUpdate(){
+    this.props.onToggle();
     this.setState({
-      selectedSubCohorts:this.state.originalSelectedSubCohorts,
+      selectedSubCohorts: this.props.selectedSubCohorts
     });
-    this.props.handleSubCohortChange(this.state.originalSelectedSubCohorts);
   }
 
   render() {
 
-    let {active, onToggle,subCohortsForSelected,cohortLabel,selectedCohort} = this.props;
+    let {active,selectedCohort,filterCounts} = this.props;
     let {allSelected,selectedSubCohorts} = this.state ;
 
     return (
       <Dialog
         active={active}
-        onEscKeyDown={onToggle}
-        onOverlayClick={onToggle}
+        onEscKeyDown={() => this.cancelUpdate()}
+        onOverlayClick={() => this.cancelUpdate()}
         title='Edit Sub-Cohorts'
       >
         <table style={{ width:'100%'}}>
           <tbody>
             <tr>
               <td>
-                  ({cohortLabel}) Select Sub Cohorts for {selectedCohort.name}
+                Select Sub Cohorts for <br/>{selectedCohort.name}
               </td>
             </tr>
             <tr>
               <td>
                 <Grid style={{marginTop: 20,width:900}}>
                   {
-                    subCohortsForSelected.sort().map( cs =>{
+                    filterCounts.subCohortCounts.sort( (a,b) => a.name.localeCompare(b.name)).map( cs =>{
                       return (
-                        <Row key={cs}>
+                        <Row key={cs.name}>
                           <Col md={12}>
                             <input
-                              checked={selectedSubCohorts.indexOf(cs)>=0}
-                              disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs)>=0} key={cs}
-                              name={cs}
+                              checked={cs.count === 0 || selectedSubCohorts.indexOf(cs.name)>=0}
+                              disabled={cs.count === 0 || selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(cs.name)>=0} key={cs.name}
+                              name={cs.name}
                               onChange={this.handleChange}
                               style={{display:'inline', marginRight:10}}
                               type='checkbox'
                             />
-                            <div  style={{display: 'inline'}}>{cs}</div>
-                            <Link href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs); }} style={{display:'inline', marginLeft: 20,fontSize: 'small'}}/>
+                            <div  style={{display: 'inline'}}>
+                              {`${cs.name} (${cs.count})`}
+                            </div>
+                            <Link
+                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name); }}
+                              style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                            />
+                            <Link
+                              href='#' label={'(Vs All)'} onClick={() => { this.handleCompareVersus(cs.name); }}
+                              style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                            />
                           </Col>
                         </Row>
                       );
                     })
                   }
-                  {/*<Row>*/}
-                  {/*  <Col md={12}>*/}
-                  {/*    <input*/}
-                  {/*      checked={selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
-                  {/*      disabled={selectedSubCohorts.length<2 && selectedSubCohorts.indexOf(UNASSIGNED_SUBTYPE.key)>=0}*/}
-                  {/*      name={UNASSIGNED_SUBTYPE.label}*/}
-                  {/*      onChange={this.handleChange}*/}
-                  {/*      style={{display:'inline', marginRight:10}}*/}
-                  {/*      type='checkbox'*/}
-                  {/*    />*/}
-                  {/*    <div  style={{display: 'inline'}}>{UNASSIGNED_SUBTYPE.label}</div>*/}
-                  {/*    <Link href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(UNASSIGNED_SUBTYPE.key); }} style={{display:'inline', marginLeft: 20,fontSize: 'small'}}/>*/}
-                  {/*  </Col>*/}
-                  {/*</Row>*/}
                 </Grid>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {!allSelected &&
+                <Link
+                  href='#'
+                  label={`(Select All ${filterCounts.available})`}
+                  onClick={() => this.selectAll()}
+                  style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                />
+                }
+                {allSelected &&
+                <Link
+                  disabled
+                  label={`All ${filterCounts.available} Selected`}
+                  style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                />
+                }
               </td>
             </tr>
             <tr>
@@ -144,18 +164,6 @@ export class SubCohortSelector extends PureComponent {
                   icon='save' label='View' onClick={() => this.updateSubCategories()} primary
                   raised
                 />
-                {!allSelected &&
-                            <Button
-                              label={'Select All'} onClick={() => this.selectAll()} primary
-                              raised
-                            />
-                }
-                {allSelected &&
-                            <Button
-                              disabled label={'Select All'} primary
-                              raised
-                            />
-                }
                 <Button
                   icon='cancel' label='Cancel' onClick={() => this.cancelUpdate()}
                   raised
@@ -171,10 +179,11 @@ export class SubCohortSelector extends PureComponent {
 
 SubCohortSelector.propTypes = {
   active: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.any.isRequired,
+  cohortIndex: PropTypes.any.isRequired,
+  filterCounts: PropTypes.any.isRequired,
   handleSubCohortChange: PropTypes.any.isRequired,
+  onSelectVsAll: PropTypes.any.isRequired,
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
-  subCohortsForSelected: PropTypes.any,
 };

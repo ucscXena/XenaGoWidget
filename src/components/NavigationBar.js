@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, AppBar,  Navigation } from 'react-toolbox';
 import {IconMenu, MenuItem, MenuDivider} from 'react-toolbox';
 
-import {XENA_VIEW, PATHWAYS_VIEW} from '../../src/components/XenaGeneSetApp';
 import PureComponent from '../../src/components/PureComponent';
 import BaseStyle from '../css/base.css';
 import * as PropTypes from 'underscore';
@@ -49,8 +48,7 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-      let {editGeneSetColors, onShowPathways, onShowXena, view, showClusterSort,toggleShowClusterSort,
-        showDetailLayer, showDiffLayer,
+      let {editGeneSetColors, showDetailLayer, showDiffLayer,
         toggleShowDiffLayer,toggleShowDetailLayer } = this.props;
       return (
         <div>
@@ -79,18 +77,6 @@ export default class NavigationBar extends PureComponent {
                           caption='Edit Colors' icon='color_lens' onClick={() => editGeneSetColors()}
                           value='download'
                         />
-                        {view === XENA_VIEW &&
-                                        <MenuItem
-                                          caption='Edit Pathways' icon='border_color' onClick={() => onShowPathways()}
-                                          value='settings'
-                                        />
-                        }
-                        {view === PATHWAYS_VIEW &&
-                                        <MenuItem
-                                          caption='Show GeneSet Viewer' icon='pageview' onClick={() => onShowXena()}
-                                          value='favorite'
-                                        />
-                        }
                         <MenuDivider/>
                         <MenuItem
                           caption={`${showDiffLayer? '\u2713' : 'Show'} Diff Layer`}
@@ -99,15 +85,6 @@ export default class NavigationBar extends PureComponent {
                         <MenuItem
                           caption={`${showDetailLayer? '\u2713' : 'Show'} Detail Layer`}
                           onClick={() => toggleShowDetailLayer()}
-                        />
-                        <MenuDivider/>
-                        <MenuItem
-                          caption={`${showClusterSort? '\u2713' : 'Show'} Sort by Top Cohort`}
-                          onClick={() => toggleShowClusterSort()}
-                        />
-                        <MenuItem
-                          caption={`${!showClusterSort? '\u2713' : 'Show'} Diff Sort`}
-                          onClick={() => toggleShowClusterSort()}
                         />
                       </IconMenu>
                     </td>
@@ -149,14 +126,9 @@ NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
   editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
-  onShowPathways: PropTypes.any,
-  onShowXena: PropTypes.any,
   searchHandler: PropTypes.any,
-  showClusterSort: PropTypes.any,
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
-  toggleShowClusterSort: PropTypes.any,
   toggleShowDetailLayer: PropTypes.any,
   toggleShowDiffLayer: PropTypes.any,
-  view: PropTypes.any,
 };

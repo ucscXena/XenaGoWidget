@@ -79,7 +79,7 @@ export class GeneSetSelector extends PureComponent {
   }
 
     onClick = (geneSet) => {
-      this.props.onClick(geneSet);
+      this.props.onClick({ pathway: geneSet, tissue: 'Header'});
     };
 
     onMouseOut = () => {
@@ -87,7 +87,7 @@ export class GeneSetSelector extends PureComponent {
     };
 
     onHover = (geneSet) => {
-      this.props.onHover(geneSet ? geneSet : null);
+      this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null);
     };
 
 
@@ -102,6 +102,7 @@ export class GeneSetSelector extends PureComponent {
 
       return pathways.map((p) => {
         let labelString = '(' + p.gene.length + ') ' + p.golabel;
+        labelString = labelString.replace(/_/g,' ');
         let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false ;
         let selected = selectedPathway.pathway.golabel === p.golabel;
         let highlighted = p.gene.indexOf(highlightedGene) >= 0;
@@ -114,11 +115,35 @@ export class GeneSetSelector extends PureComponent {
             onMouseOver={this.onHover.bind(this, p)}
             style={GeneSetSelector.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered,  width, labelHeight, highlighted)}
           >
+            {p.firstGeneExpressionPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.firstGeneExpressionPathwayActivity)} width={width / 2 - 1}
+              x={0}
+            />
+            }
+            {p.firstParadigmPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.firstParadigmPathwayActivity)} width={width / 2 - 1}
+              x={0}
+            />
+            }
             {p.firstObserved &&
                     <rect
                       height={labelHeight} style={this.pillStyle(p.firstChiSquared)} width={width / 2 - 1}
                       x={0}
                     />
+            }
+            {p.secondGeneExpressionPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.secondGeneExpressionPathwayActivity)} width={width / 2}
+              x={width / 2 + 1}
+            />
+            }
+            {p.secondParadigmPathwayActivity &&
+            <rect
+              height={labelHeight} style={this.pillStyle(100*p.secondParadigmPathwayActivity)} width={width / 2}
+              x={width / 2 + 1}
+            />
             }
             {p.secondObserved &&
                     <rect

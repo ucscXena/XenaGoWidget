@@ -3,16 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
-import { VERTICAL_GENESET_DETAIL_WIDTH ,VERTICAL_GENESET_SUPPRESS_WIDTH } from '../components/XenaGeneSetApp';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
-import {createAssociatedDataKey, findAssociatedData, findPruneData} from '../functions/DataFunctions';
-import {clusterSampleSort} from '../functions/SortFunctions';
-import {getGenesForPathways} from '../functions/CohortFunctions';
-
-const HEADER_HEIGHT = 15;
+import {getLabelForIndex} from '../functions/CohortFunctions';
 
 function pathwayIndexFromY(y, labelHeight) {
-  return Math.round((y - HEADER_HEIGHT) / labelHeight);
+  return Math.round((y - 15) / labelHeight);
 }
 
 function getMousePos(evt) {
@@ -23,18 +19,99 @@ function getMousePos(evt) {
   };
 }
 
+function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
+  if(cohortIndex===0){
+    return Math.trunc( x / (width / sampleLength) );
+  }
+  else
+  if(cohortIndex===1){
+    return Math.trunc( x / (width / sampleLength) );
+  }
+  else{
+    // eslint-disable-next-line no-console
+    console.error('how we get here?');
+  }
+
+  return undefined;
+}
+
 function getPointData(event, props) {
-  let {labelHeight, pathways} = props;
+  let {filter,labelHeight, pathways,cohortIndex, width,associatedData} = props;
   // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event);
   let pathwayIndex = pathwayIndexFromY(y, labelHeight);
-  return pathways[pathwayIndex];
+  let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
+
+  let pathway = pathways[pathwayIndex];
+  if(filter===VIEW_ENUM.GENE_EXPRESSION){
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
+    if(cohortIndex===0){
+      pathway.firstSampleGeneExpressionPathwayActivity = activity ;
+    }
+    else{
+      pathway.secondSampleGeneExpressionPathwayActivity = activity ;
+    }
+  }
+  else
+  if(filter===VIEW_ENUM.REGULON){
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex].regulonPathwayActivity;
+    if(cohortIndex===0){
+      pathway.firstSampleRegulonPathwayActivity = activity ;
+    }
+    else{
+      pathway.secondSampleRegulonPathwayActivity = activity ;
+    }
+  }
+  else
+  if(filter===VIEW_ENUM.PARADIGM){
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
+    if(cohortIndex===0){
+      pathway.firstSampleParadigmPathwayActivity = activity ;
+    }
+    else{
+      pathway.secondSampleParadigmPathwayActivity = activity ;
+    }
+  }
+  else {
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+    let activity = associatedData[pathwayIndex][sampleIndex];
+    // TODO: map activity to sample-based activity
+    if(cohortIndex===0){
+      pathway.firstSampleCnvHigh = activity.cnvHigh ;
+      pathway.firstSampleCnvLow = activity.cnvLow ;
+      pathway.firstSampleMutation2 = activity.mutation2;
+      pathway.firstSampleMutation3 = activity.mutation3;
+      pathway.firstSampleMutation4 = activity.mutation4;
+      pathway.firstSampleTotal = activity.total;
+    }
+    else{
+      pathway.secondSampleCnvHigh = activity.cnvHigh ;
+      pathway.secondSampleCnvLow = activity.cnvLow ;
+      pathway.secondSampleMutation2 = activity.mutation2;
+      pathway.secondSampleMutation3 = activity.mutation3;
+      pathway.secondSampleMutation4 = activity.mutation4;
+      pathway.secondSampleTotal = activity.total;
+    }
+
+  }
+
+  // TODO: handle other types here?
+  return {
+    pathway: pathway,
+    tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
+    cohortIndex,
+  };
 }
+
 
 /**
  * Extends PathwaysScoreView (but the old one)
  */
 export default class VerticalGeneSetScoresView extends PureComponent {
+
 
     handleHoverOut = () => {
       this.props.onHover(null);
@@ -48,12 +125,12 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       this.props.onClick(getPointData(event, this.props));
     };
 
+
     render() {
 
-      let {data, cohortIndex, filter, labelHeight, selectedCohort, cohortLabel,pathways,showDetails} = this.props;
-      const {expression, samples, copyNumber} = data;
-      if (!data) {
-        return <div>Loading Cohort {cohortLabel}</div>;
+      let {cohortIndex, labelHeight, pathways, width, associatedData} = this.props;
+      if (!associatedData) {
+        return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
       // need a size and vertical start for each
       let layout = pathways.map((p, index) => {
@@ -61,40 +138,15 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       });
 
       const totalHeight = layout.length * labelHeight;
-      let geneList = getGenesForPathways(pathways);
-
-      // need to get an associatedData
-      let hashAssociation = {
-        expression,
-        copyNumber,
-        geneList,
-        pathways,
-        samples,
-        filter,
-        selectedCohort
-      };
-      if (expression === undefined || expression.length === 0) {
+      if (associatedData.length === 0) {
         return <div>Loading...</div>;
       }
-      let associatedDataKey = createAssociatedDataKey(hashAssociation);
-      let associatedData = findAssociatedData(hashAssociation,associatedDataKey);
-
-      let prunedColumns = findPruneData(associatedData,associatedDataKey);
-      prunedColumns.samples = samples;
-      let returnedValue = clusterSampleSort(prunedColumns);
-
       return (
         <div>
           <CanvasDrawing
             {...this.props}
-            associatedData={returnedValue.data}
+            associatedData={associatedData}
             cohortIndex={cohortIndex}
-            data={{
-              expression,
-              pathways: returnedValue.pathways,
-              samples,
-              sortedSamples: returnedValue.sortedSamples
-            }}
             draw={DrawFunctions.drawGeneSetView}
             height={totalHeight}
             labelHeight={labelHeight}
@@ -102,17 +154,17 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             onClick={this.handleClick}
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
-            width={showDetails ? VERTICAL_GENESET_DETAIL_WIDTH : VERTICAL_GENESET_SUPPRESS_WIDTH}
+            width={width}
           />
         </div>
       );
     }
+
 }
 
 VerticalGeneSetScoresView.propTypes = {
+  associatedData: PropTypes.any,
   cohortIndex: PropTypes.any.isRequired,
-  cohortLabel: PropTypes.any.isRequired,
-  data: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
@@ -120,5 +172,5 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
-  showDetails: PropTypes.any.isRequired,
+  width: PropTypes.any.isRequired,
 };

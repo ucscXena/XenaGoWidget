@@ -8,6 +8,8 @@ import {
 } from '../functions/ColorFunctions';
 import * as d3 from 'd3';
 import {scoreData} from '../functions/DataFunctions';
+import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -54,7 +56,8 @@ export class HeaderLabel extends PureComponent {
         top: labelOffset,
         left: left,
         height: labelHeight,
-        width: width, backgroundColor: colorString,
+        width: width,
+        backgroundColor: colorString,
         strokeWidth: 1,
         cursor: 'crosshair',
       };
@@ -66,18 +69,34 @@ export class HeaderLabel extends PureComponent {
     };
 
     render() {
-      let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
-      let colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
-      interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
+      let {width, filter, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
+      let colorDensity ;
+      if(filter===VIEW_ENUM.PARADIGM) {
+        colorDensity = item.paradigmMean;
+        interpolate = (score) => interpolateGeneExpressionFunction(score);
+      }
+      else
+      if(filter===VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.REGULON) {
+        colorDensity = item.geneExpressionMean;
+        interpolate = (score) => interpolateGeneExpressionFunction(score);
+      }
+      else {
+        colorDensity = scoreData(item.samplesAffected, numSamples, geneLength) * colorSettings.shadingValue;
+        interpolate = d3.scaleLinear().domain([0,1]).range([lowColor,highColor]).interpolate(d3.interpolateRgb.gamma(colorSettings.geneGamma));
+      }
       return (
         <svg
           style={this.style(colorDensity)}
         >
           <text
-            fill={this.fontColor(colorDensity)} fontFamily='Arial' fontSize={10} transform='rotate(-90)' x={-labelHeight + 4}
+            fill={this.fontColor(colorDensity)}
+            fontFamily='Arial'
+            fontSize={10}
+            transform='rotate(-90)'
+            x={-labelHeight + 4}
             y={10}
           >
-            {width < 10 ? '' : labelString}
+            {width < 10 ? '' : labelString.replace(/_/g,' ')}
           </text>
         </svg>
       );
@@ -86,6 +105,7 @@ export class HeaderLabel extends PureComponent {
 
 HeaderLabel.propTypes = {
   colorSettings: PropTypes.any.isRequired,
+  filter: PropTypes.any.isRequired,
   geneLength: PropTypes.any.isRequired,
   highlighted: PropTypes.any.isRequired,
   item: PropTypes.any.isRequired,

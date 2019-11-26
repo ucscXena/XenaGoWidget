@@ -62,6 +62,7 @@ body {
     font-weight: bolder;
 }
 
+
 .cnvcolor{
     color: firebrick;
     font-weight: bolder;
@@ -113,6 +114,34 @@ body {
     margin-top: 3px;
     margin-bottom: 3px;
 }
+
+
+.geneSetBox{
+  border-radius:15px;
+}
+
+.geneSetFilterBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  height: 80px;
+  overflow: auto;
+}
+
+.autoSortBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  /*height: 80px;*/
+  overflow: auto;
+}
+
 
 .verticalLegendBox{
   margin: 5px;
@@ -237,4 +266,11 @@ div[data-react-toolbox=dialog] > section{
     cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
+}
+
+.scoreBox{
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: inline;
 }

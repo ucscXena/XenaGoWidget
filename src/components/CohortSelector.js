@@ -5,10 +5,14 @@ import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox/lib/button';
 import FaFilter from 'react-icons/lib/fa/filter';
 import {SubCohortSelector} from './SubCohortSelector';
-import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
+import {
+  fetchCohortData, getCohortsForView, getLabelForIndex, getSubCohortsForCohort,
+  getSubCohortsOnlyForCohort,
+} from '../functions/CohortFunctions';
 import {isEqual} from 'underscore';
 import {Tooltip} from 'react-toolbox/lib';
 import update from 'immutability-helper';
+import {ButtonGroup} from 'react-bootstrap';
 const TooltipButton = Tooltip(Button);
 
 
@@ -25,16 +29,6 @@ export class CohortSelector extends PureComponent {
   }
 
     handleChange = (event) => {
-      // populate selected sub cohorts for the cohorts
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(event.target.value);
-      this.setState( {
-        selectedCohort: {
-          name: event.target.value,
-          subCohorts : subCohortsForSelected,
-          selectedSubCohorts:subCohortsForSelected,
-        },
-      }
-      );
       this.props.onChange(event.target.value);
     };
 
@@ -44,26 +38,27 @@ export class CohortSelector extends PureComponent {
 
 
     generateSubCohortDetails(){
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts;
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts;
+      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.props.selectedCohort.name);
       if(subCohortsForSelected === undefined) return '';
       return Object.values(selectedSubCohorts).map( s => {
         let splits = s.split('.');
-        if(splits.length>0) {
+        if(splits.length>1) {
           return splits[1];
-        } else {
-          return s;
+        }
+        else {
+          return splits[0];
         }
       }).join(', ');
     }
 
     generateSubCohortLabels(){
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.props.selectedCohort.name);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
-      let selectedSubCohorts = this.state.selectedCohort.selectedSubCohorts ? this.state.selectedCohort.selectedSubCohorts: subCohortsForSelected;
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts ? this.props.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
 
-      const availableSubtypes = Object.keys(subCohortsForSelected).length;
+      const availableSubtypes = Object.keys(subCohortsForSelected).length+1;
       const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
         return `All ${availableSubtypes} Subtypes`;
@@ -72,7 +67,7 @@ export class CohortSelector extends PureComponent {
     }
 
     onChangeSubCohort = (newSelected) => {
-      const changes = !isEqual(this.state.selectedSubCohorts,newSelected);
+      const changes = !isEqual(this.props.selectedSubCohorts,newSelected);
       this.setState({showSubCohortSelector:false});
       if(!changes){
         return ;
@@ -81,13 +76,6 @@ export class CohortSelector extends PureComponent {
       let selectionObject = update(this.state.selectedCohort,{
         selectedSubCohorts: { $set: newSelected },
       });
-
-      this.setState(
-        {
-          selectedCohort: selectionObject,
-        }
-      );
-
       this.props.onChangeSubCohort(selectionObject);
     };
 
@@ -95,39 +83,58 @@ export class CohortSelector extends PureComponent {
       this.setState({showSubCohortSelector: true});
     };
 
+    hasSubCohorts(){
+      let {filterCounts, filter} = this.props ;
+      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[filter] && filterCounts[filter].subCohortCounts && filterCounts[filter].subCohortCounts.length > 1;
+    }
+
     render() {
 
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.state.selectedCohort.name);
+      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex,onVersusAll} = this.props ;
+      // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
       let subCohortLabel = this.generateSubCohortLabels();
       let subCohortDetails = this.generateSubCohortDetails();
+      const cohorts = getCohortsForView(filter);
+      const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+
       return (
         <div>
+          {this.hasSubCohorts() &&
           <SubCohortSelector
             active={this.state.showSubCohortSelector}
-            cohortLabel={subCohortLabel}
+            cohortIndex={cohortIndex}
+            filterCounts={filterCounts[filter]}
             handleSubCohortChange={this.onChangeSubCohort}
+            onSelectVsAll={onVersusAll}
             onToggle={this.handleSubCohortToggle}
-            selectedCohort={this.state.selectedCohort}
-            selectedSubCohorts={this.state.selectedCohort.selectedSubCohorts}
-            subCohortsForSelected={subCohortsForSelected}
+            selectedCohort={this.props.selectedCohort}
+            selectedSubCohorts={this.props.selectedCohort.selectedSubCohorts}
           />
+          }
           <div style={{
             marginTop: 10,
             marginLeft: 10,
             marginBottom: 3,
-            fontSize: 'large',
+            // fontSize: 'large',
             color: 'gray',
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            display: 'inline',
           }}
-          >Cohort {this.props.cohortLabel}</div>
+          >Cohort {getLabelForIndex(cohortIndex)}
+          &nbsp; &nbsp;
+          </div>
+          <ButtonGroup style={{display: 'inline'}}>
+            <Button flat floating icon='swap_vert' mini onClick={() => swapCohorts()}/>
+            <Button flat floating icon='file_copy' mini onClick={() => copyCohorts(cohortIndex)}/>
+          </ButtonGroup>
           <select
             className={BaseStyle.softflow}
             onChange={this.handleChange}
             style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-            value={this.state.selectedCohort.name}
+            value={this.props.selectedCohort.name}
           >
             {
-              fetchCohortData().map(c => {
+              availableCohorts.map(c => {
                 return (
                   <option key={c.name} value={c.name}>
                     {c.name}
@@ -136,7 +143,7 @@ export class CohortSelector extends PureComponent {
               })
             }
           </select>
-          {subCohortsForSelected.length>0 &&
+          {this.hasSubCohorts() &&
                    <TooltipButton label={subCohortLabel} onClick={this.handleCohortSelection} raised style={{marginLeft:20}} tooltip={subCohortDetails}>
                      <FaFilter/>
                    </TooltipButton>
@@ -148,9 +155,14 @@ export class CohortSelector extends PureComponent {
 }
 
 CohortSelector.propTypes = {
-  cohortLabel: PropTypes.string.isRequired,
+  cohortIndex: PropTypes.any.isRequired,
+  copyCohorts: PropTypes.any.isRequired,
+  filter: PropTypes.string.isRequired,
+  filterCounts: PropTypes.object.isRequired,
   onChange: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
+  onVersusAll: PropTypes.func.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
+  swapCohorts: PropTypes.any.isRequired,
 };
