@@ -630,15 +630,15 @@ export function calculateAllPathways(pathwayData,associatedData) {
   });
 }
 
-export function generateScoredData(selection, pathwayData, pathways, filter, sortedAssociatedData) {
+export function generateScoredData(selection, pathwayData, pathways, view, sortedAssociatedData) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
-  const geneDataA = generateGeneData(selection, pathwayDataA, pathways, filter);
-  const geneDataB = generateGeneData(selection, pathwayDataB, pathways, filter);
+  const geneDataA = generateGeneData(selection, pathwayDataA, pathways, view);
+  const geneDataB = generateGeneData(selection, pathwayDataB, pathways, view);
 
   const scoredGeneDataA = scoreGeneData(geneDataA);
   const scoredGeneDataB = scoreGeneData(geneDataB);
-  const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways,filter);
+  const scoredGenePathways = calculateDiffs(scoredGeneDataA.pathways, scoredGeneDataB.pathways,view);
   geneDataA.pathways = scoredGenePathways[0];
   geneDataB.pathways = scoredGenePathways[1];
   geneDataA.data = scoredGeneDataA.data;
