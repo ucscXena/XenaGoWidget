@@ -210,9 +210,6 @@ export function getCohortDataForGeneExpressionView(selectedCohorts, view){
 
 export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
-
-  console.log('fetching best pathways for ',selectedCohorts,view);
-
   const cohortData = getCohortDataForGeneExpressionView(selectedCohorts,view);
   Rx.Observable.zip(
     datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
