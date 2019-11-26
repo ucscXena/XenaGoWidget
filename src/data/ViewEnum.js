@@ -4,5 +4,5 @@ export const VIEW_ENUM = {
   COPY_NUMBER:'Copy Number',
   GENE_EXPRESSION:'BPA Gene Expression',
   PARADIGM:'Paradigm IPL',
-  REGULON:'Regulon Gene Expression',
+  REGULON:'Regulon Activity',
 };
