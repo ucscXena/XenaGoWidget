@@ -14,7 +14,6 @@ export class ViewSelector extends PureComponent {
       const labelValues = allowableViews.map(label => {
         return ({label: label , value: label});
       });
-
       return (
         <div style={{marginLeft: 10,marginTop:0,height:65}}>
           <Dropdown
