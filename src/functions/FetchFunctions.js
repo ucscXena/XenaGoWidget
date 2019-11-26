@@ -84,54 +84,6 @@ export function createFilterCountForView(samples, cohort,view){
   return filterCounts;
 }
 
-// export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,paradigmSamples, cohort){
-//   const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
-//   const intersectedCnvMutationSubCohortSamples = calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort);
-//   const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
-//   const copyNumberSubCohortSamples = calculateSelectedSubCohortSamples(copyNumberSamples,cohort);
-//   const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
-//   const paradigmSubCohortSamples = calculateSelectedSubCohortSamples(paradigmSamples,cohort);
-//   let filterCounts = {};
-//   // calculate mutations per subfilter
-//   filterCounts[VIEW_ENUM.MUTATION] =  {
-//     available: mutationSamples.length,
-//     current:mutationSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
-//     unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.COPY_NUMBER] =  {
-//     available: copyNumberSamples.length,
-//     current: copyNumberSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
-//     unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.CNV_MUTATION] =  {
-//     available: intersectedCnvMutation.length,
-//     current: intersectedCnvMutationSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
-//     unassigned: copyNumberSamples.filter( s => intersectedCnvMutationSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.GENE_EXPRESSION] =  {
-//     available: geneExpressionSamples.length,
-//     current: geneExpressionSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
-//     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.PARADIGM] =  {
-//     available: paradigmSamples.length,
-//     current: paradigmSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(paradigmSamples,cohort),
-//     unassigned: paradigmSamples.filter( s => paradigmSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.REGULON] =  {
-//     available: geneExpressionSamples.length,
-//     current: geneExpressionSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
-//     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   return filterCounts;
-// }
-
 
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   // if UNASSIGNED is the only available sub cohort, then there are none really
@@ -142,27 +94,6 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
     return availableSamples;
   }
 }
-
-// function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, paradigmSamples, filter){
-//   switch (filter) {
-//   case VIEW_ENUM.CNV_MUTATION:
-//     return uniq(intersection(mutationSamples, copyNumberSamples));
-//   case VIEW_ENUM.MUTATION:
-//     return mutationSamples;
-//   case VIEW_ENUM.COPY_NUMBER:
-//     return copyNumberSamples;
-//   case VIEW_ENUM.GENE_EXPRESSION:
-//     return geneExpressionSamples;
-//   case VIEW_ENUM.PARADIGM:
-//     return paradigmSamples;
-//   case VIEW_ENUM.REGULON:
-//     return geneExpressionSamples;
-//   default:
-//     // eslint-disable-next-line no-console
-//     console.error('invalid filter', filter);
-//     return [];
-//   }
-// }
 
 export const getGeneSetsForView = (view) => {
   switch (view) {
