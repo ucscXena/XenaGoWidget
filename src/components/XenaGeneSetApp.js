@@ -700,23 +700,28 @@ export default class XenaGeneSetApp extends PureComponent {
                           { isViewGeneExpression(this.state.filter) && <GeneExpressionLegend/>}
                         </td>
                       </tr>
+                      {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td colSpan={3}>
-                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch:true})} raised>
+                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
                             Edit Gene Sets&nbsp;
                             {this.state.pathways &&
-                            <div style={{display:'inline'}}>
+                            <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
                             </div>
                             }
 
                           </Button>
-                          <Button onClick={() => {AppStorageHandler.resetSessionStorage() ; location.reload(); }} raised>
+                          <Button onClick={() => {
+                            AppStorageHandler.resetSessionStorage();
+                            location.reload();
+                          }} raised>
                             <FaRefresh/>
-                              Reset
+                            Reset
                           </Button>
                         </td>
                       </tr>
+                      }
                       {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td className={BaseStyle.autoSortBox} colSpan={2}>
