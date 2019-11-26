@@ -18,10 +18,10 @@ import RegulonPathways from '../data/genesets/LuadRegulonGeneSets';
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 const REFERENCE = refGene['hg38'];
 
-export function getSamplesForCohort(cohort,filter) {
+export function getSamplesForCohortAndView(cohort, view) {
   // scrunches the two
   // TODO: will have to handle multiple lists at some point
-  switch (filter) {
+  switch (view) {
   case VIEW_ENUM.CNV_MUTATION:
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
@@ -36,7 +36,7 @@ export function getSamplesForCohort(cohort,filter) {
     return datasetSamples(cohort.paradigm.host, cohort.paradigm.dataset, null);
   default:
     // eslint-disable-next-line no-console
-    console.error('filter is not defined',filter);
+    console.error('filter is not defined',view);
   }
 }
 
@@ -65,6 +65,22 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       }
     ];
   }
+}
+export function createFilterCountForView(samples, cohort,view){
+
+  let filterCounts = {};
+  for( let viewEnum in VIEW_ENUM){
+    filterCounts[viewEnum] = {};
+  }
+
+  const subCohortSamples = calculateSelectedSubCohortSamples(samples,cohort);
+  filterCounts[view] = {
+    available: samples.length,
+    current:subCohortSamples.length,
+    subCohortCounts : calculateSubCohortCounts(samples,cohort),
+    unassigned: samples.filter( s => subCohortSamples.indexOf(s)<0).length,
+  };
+
 }
 
 export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,paradigmSamples, cohort){
@@ -126,26 +142,26 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   }
 }
 
-function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, paradigmSamples, filter){
-  switch (filter) {
-  case VIEW_ENUM.CNV_MUTATION:
-    return uniq(intersection(mutationSamples, copyNumberSamples));
-  case VIEW_ENUM.MUTATION:
-    return mutationSamples;
-  case VIEW_ENUM.COPY_NUMBER:
-    return copyNumberSamples;
-  case VIEW_ENUM.GENE_EXPRESSION:
-    return geneExpressionSamples;
-  case VIEW_ENUM.PARADIGM:
-    return paradigmSamples;
-  case VIEW_ENUM.REGULON:
-    return geneExpressionSamples;
-  default:
-    // eslint-disable-next-line no-console
-    console.error('invalid filter', filter);
-    return [];
-  }
-}
+// function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, paradigmSamples, filter){
+//   switch (filter) {
+//   case VIEW_ENUM.CNV_MUTATION:
+//     return uniq(intersection(mutationSamples, copyNumberSamples));
+//   case VIEW_ENUM.MUTATION:
+//     return mutationSamples;
+//   case VIEW_ENUM.COPY_NUMBER:
+//     return copyNumberSamples;
+//   case VIEW_ENUM.GENE_EXPRESSION:
+//     return geneExpressionSamples;
+//   case VIEW_ENUM.PARADIGM:
+//     return paradigmSamples;
+//   case VIEW_ENUM.REGULON:
+//     return geneExpressionSamples;
+//   default:
+//     // eslint-disable-next-line no-console
+//     console.error('invalid filter', filter);
+//     return [];
+//   }
+// }
 
 export const getGeneSetsForView = (view) => {
   switch (view) {
@@ -311,65 +327,31 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
 }
 
 // TODO: move into a service as an async method
-export function fetchCombinedCohorts(selectedCohorts, pathways,filter, combinationHandler) {
+export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
   let filterCounts ;
 
   Rx.Observable.zip(
-    datasetSamples(selectedCohorts[0].host, selectedCohorts[0].mutationDataSetId, null),
-    datasetSamples(selectedCohorts[0].host, selectedCohorts[0].copyNumberDataSetId, null),
-    datasetSamples(selectedCohorts[0].geneExpression.host, selectedCohorts[0].geneExpression.dataset, null),
-    datasetSamples(selectedCohorts[0].paradigm.host, selectedCohorts[0].paradigm.dataset, null),
-    // TODO: add gene expression 0
-    datasetSamples(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, null),
-    datasetSamples(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, null),
-    datasetSamples(selectedCohorts[1].geneExpression.host, selectedCohorts[1].geneExpression.dataset, null),
-    datasetSamples(selectedCohorts[1].paradigm.host, selectedCohorts[1].paradigm.dataset, null),
-    // TODO: add gene expression 1
-  ).flatMap((unfilteredSamples) => {
-
-    // TODO: add gene expression with the second one
-    filterCounts = [createFilterCounts(unfilteredSamples[0],
-      unfilteredSamples[1],
-      unfilteredSamples[2],
-      unfilteredSamples[3],
-      selectedCohorts[0]),
-    createFilterCounts(unfilteredSamples[4],
-      unfilteredSamples[5],
-      unfilteredSamples[6],
-      unfilteredSamples[7],
-      selectedCohorts[1])];
-    // with all of the samples, we can now provide accurate numbers, maybe better to store on the server, though
-    // merge based on filter
-    const availableSamples = [
-      calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[0]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[2],selectedCohorts[0]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[3],selectedCohorts[0]),
-      // TODO: add gene expression 0
-
-      calculateSelectedSubCohortSamples(unfilteredSamples[4],selectedCohorts[1]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[5],selectedCohorts[1]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[6],selectedCohorts[1]),
-      calculateSelectedSubCohortSamples(unfilteredSamples[7],selectedCohorts[1]),
-      // TODO: add gene expression 1
+    getSamplesForCohortAndView(selectedCohorts[0],view),
+    getSamplesForCohortAndView(selectedCohorts[1],view),
+  ).flatMap( (unfilteredSamples) => {
+    filterCounts = [
+      createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
+      createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),
     ];
 
-    // calculate samples for what samples we will actually fetch
-    const samplesA = getSamplesForFilter(availableSamples[0],availableSamples[1],availableSamples[2],availableSamples[3],filter);
-    const samplesB = getSamplesForFilter(availableSamples[4],availableSamples[5],availableSamples[6],availableSamples[7],filter);
-
-    // const geneSetLabels = convertPathwaysToGeneSetLabel(DefaultPathWays);
+    const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohorts[0]);
+    const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1]);
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
-    function getRegulonFetch(selectedCohort,samples,geneSetLabels){
-      if(selectedCohort.regulonPathwayActivity){
-        return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels) ;
-      }
-      else{
+    function getRegulonFetch(selectedCohort, samples, geneSetLabels) {
+      if (selectedCohort.regulonPathwayActivity) {
+        return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels);
+      } else {
         return datasetProbeValues(selectedCohort.geneExpressionPathwayActivity.host, selectedCohort.geneExpressionPathwayActivity.dataset, samples, geneSetLabels);
       }
     }
+
 
     // TODO: make this a testable function
     // TODO: minimize fetches based on the filter
