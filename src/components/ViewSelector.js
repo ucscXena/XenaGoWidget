@@ -2,14 +2,6 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import {Dropdown} from 'react-toolbox';
-import {intersection} from '../functions/MathFunctions';
-
-function lowerCaseCompare(a, b) {
-  // put gene expression at the bottom
-  if(a==='Gene Expression') return 1 ;
-  if(b==='Gene Expression') return 1 ;
-  return a.toLowerCase().localeCompare(b.toLowerCase());
-}
 
 export class ViewSelector extends PureComponent {
 
@@ -18,18 +10,9 @@ export class ViewSelector extends PureComponent {
     };
 
     render() {
-      const {allowableViews,pathwayData, view} = this.props;
-      const filterCounts = pathwayData.filterCounts;
-      if(pathwayData.expression.length === 0){
-        return <div>Loading...</div>;
-      }
-      let labels = Object.keys(filterCounts).sort(lowerCaseCompare);
-      const views = intersection(labels,allowableViews);
-      const labelValues = views.map(label => {
-        if(filterCounts[label].current!==filterCounts[label].available){
-          return ({label: label + ' (' + filterCounts[label].current + '/' + filterCounts[label].available+ ')', value: label});
-        }
-        return ({label: label + ' (' + filterCounts[label].current +')', value: label});
+      const {allowableViews,view} = this.props;
+      const labelValues = allowableViews.map(label => {
+        return ({label: label , value: label});
       });
 
       return (
@@ -46,6 +29,5 @@ ViewSelector.propTypes = {
   allowableViews: PropTypes.any.isRequired,
   geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
-  pathwayData: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 };

@@ -127,7 +127,6 @@ export default class XenaGoViewer extends PureComponent {
                             allowableViews={allowableViews}
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
-                            pathwayData={geneDataStats}
                             view={filter}
                           />
                           <HoverGeneView
