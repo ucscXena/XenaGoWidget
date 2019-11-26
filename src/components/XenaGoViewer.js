@@ -127,13 +127,12 @@ export default class XenaGoViewer extends PureComponent {
                             allowableViews={allowableViews}
                             geneList={geneList}
                             onChange={this.handleChangeFilter}
-                            pathwayData={geneDataStats}
                             view={filter}
                           />
                           <HoverGeneView
                             cohortIndex={cohortIndex}
                             data={geneHoverData}
-                            filter={filter}
+                            view={filter}
                           />
                         </Card>
                         {geneDataStats.pathways.length > MAX_GENE_WIDTH &&

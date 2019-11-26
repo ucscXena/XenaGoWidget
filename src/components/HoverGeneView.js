@@ -70,9 +70,9 @@ export default class HoverGeneView extends PureComponent {
   };
 
   render() {
-    let {data, cohortIndex, filter} = this.props;
+    let {data, cohortIndex, view} = this.props;
     if (data.tissue) {
-      const score =this.findScore(data, cohortIndex,filter);
+      const score =this.findScore(data, cohortIndex,view);
       return (
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
@@ -85,39 +85,39 @@ export default class HoverGeneView extends PureComponent {
               <span
                 className={BaseStyle.scoreBox}
                 style={{
-                  color:isViewGeneExpression(filter) ? interpolateGeneExpressionFont(score) : 'black',
-                  backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
+                  color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+                  backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
                 }}
               >
                 <strong>Score</strong> {score ==='NaN' ? 'Not Available' :score.toFixed(2)}</span>
-              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleCnvHigh > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleCnvHigh > 0 &&
               <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.firstSampleCnvHigh}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleCnvLow > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleCnvLow > 0 &&
               <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.firstSampleCnvLow}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation2 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation2 > 0 &&
               <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.firstSampleMutation2}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation3 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation3 > 0 &&
               <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.firstSampleMutation3}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===0 && data.pathway.firstSampleMutation4 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===0 && data.pathway.firstSampleMutation4 > 0 &&
               <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.firstSampleMutation4}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleCnvHigh > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleCnvHigh > 0 &&
               <Chip><span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong><ScoreBadge score={data.pathway.secondSampleCnvHigh}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleCnvLow > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleCnvLow > 0 &&
               <Chip><span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong><ScoreBadge score={data.pathway.secondSampleCnvLow}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation2 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation2 > 0 &&
               <Chip><span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong><ScoreBadge score={data.pathway.secondSampleMutation2}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation3 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation3 > 0 &&
               <Chip><span className={BaseStyle.mutation3Color}><strong>Splice</strong><ScoreBadge score={data.pathway.secondSampleMutation3}/></span></Chip>
               }
-              {!isViewGeneExpression(filter) && cohortIndex ===1 && data.pathway.secondSampleMutation4 > 0 &&
+              {!isViewGeneExpression(view) && cohortIndex ===1 && data.pathway.secondSampleMutation4 > 0 &&
               <Chip><span className={BaseStyle.mutation4Color}><strong>Deleterious</strong><ScoreBadge score={data.pathway.secondSampleMutation4}/></span></Chip>
               }
             </div>
@@ -131,7 +131,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          {filter===VIEW_ENUM.PARADIGM &&
+                          {view===VIEW_ENUM.PARADIGM &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -145,7 +145,7 @@ export default class HoverGeneView extends PureComponent {
                             </div>
                           </div>
                           }
-                          { ( filter===VIEW_ENUM.GENE_EXPRESSION  || filter === VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                          { ( view===VIEW_ENUM.GENE_EXPRESSION  || view === VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -217,7 +217,7 @@ export default class HoverGeneView extends PureComponent {
                     </div>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(filter) &&
+              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&
                     <div>
                       <div className={BaseStyle.pathwayChip}>
                         <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
@@ -228,14 +228,14 @@ export default class HoverGeneView extends PureComponent {
                     </div>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && ( isViewGeneExpression(filter))  &&
+            && ( isViewGeneExpression(view))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
                 <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
-                  {filter===VIEW_ENUM.PARADIGM &&
+                  {view===VIEW_ENUM.PARADIGM &&
                   <div
                     className={BaseStyle.scoreBox}
                     style={{
@@ -246,7 +246,7 @@ export default class HoverGeneView extends PureComponent {
                     {data.pathway.paradigmMean.toPrecision(2)}
                   </div>
                   }
-                  { (filter===VIEW_ENUM.GENE_EXPRESSION || filter===VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                  { (view===VIEW_ENUM.GENE_EXPRESSION || view===VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
                   <div
                     className={BaseStyle.scoreBox}
                     style={{
@@ -267,12 +267,12 @@ export default class HoverGeneView extends PureComponent {
                       <span><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
                       </span>
-                      {!isViewGeneExpression(filter) &&
+                      {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
                       </div>
                       }
-                      {!isViewGeneExpression(filter) &&
+                      {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
@@ -282,8 +282,8 @@ export default class HoverGeneView extends PureComponent {
                         <span
                           className={BaseStyle.scoreBox}
                           style={{
-                            color:isViewGeneExpression(filter) ? interpolateGeneExpressionFont(score) : 'black',
-                            backgroundColor: isViewGeneExpression(filter) ? interpolateGeneExpression(score) : 'white'
+                            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+                            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
                           }}
                         >
                           <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
@@ -302,5 +302,5 @@ export default class HoverGeneView extends PureComponent {
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };
