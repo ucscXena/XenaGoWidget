@@ -11,7 +11,7 @@ module.exports = {
     runtime: 'polyfill'
   },
   karma:{
-    browsers: ['Chrome'],
+    // browsers: ['Chrome'],
     config(config) {
       // Change config as you wish
       config.browserNoActivityTimeout= 30000;
