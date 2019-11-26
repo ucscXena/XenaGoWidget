@@ -76,6 +76,7 @@ function getPointData(event, props) {
     }
   }
   else {
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex];
     // TODO: map activity to sample-based activity
     if(cohortIndex===0){

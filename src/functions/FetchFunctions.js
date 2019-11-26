@@ -7,7 +7,6 @@ import { intersection} from './MathFunctions';
 
 const Rx = require('ucsc-xena-client/dist/rx');
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-import { uniq} from 'underscore';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet';
@@ -44,11 +43,11 @@ export function getSamplesForCohortAndView(cohort, view) {
 export function calculateSubCohortCounts(availableSamples, cohort) {
   const subCohorts = getSubCohortsForCohort(cohort.name);
   if(subCohorts && Object.keys(subCohorts).length > 0){
-    const allSubCohortSamples = uniq(intersection(Object.values(subCohorts).flat(),availableSamples));
+    const allSubCohortSamples = intersection(Object.values(subCohorts).flat(),availableSamples);
     let returnObject = Object.entries(subCohorts).map( c => {
       return {
         name: c[0],
-        count: uniq(intersection(c[1],availableSamples)).length
+        count: intersection(c[1],availableSamples).length
       };
     });
     // if it contains a final object, then great . . .
@@ -136,33 +135,12 @@ export function createFilterCountForView(samples, cohort,view){
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   // if UNASSIGNED is the only available sub cohort, then there are none really
   if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
-    return uniq(intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples)));
+    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples));
   }
   else{
     return availableSamples;
   }
 }
-
-// function getSamplesForFilter( mutationSamples,copyNumberSamples,geneExpressionSamples, paradigmSamples, filter){
-//   switch (filter) {
-//   case VIEW_ENUM.CNV_MUTATION:
-//     return uniq(intersection(mutationSamples, copyNumberSamples));
-//   case VIEW_ENUM.MUTATION:
-//     return mutationSamples;
-//   case VIEW_ENUM.COPY_NUMBER:
-//     return copyNumberSamples;
-//   case VIEW_ENUM.GENE_EXPRESSION:
-//     return geneExpressionSamples;
-//   case VIEW_ENUM.PARADIGM:
-//     return paradigmSamples;
-//   case VIEW_ENUM.REGULON:
-//     return geneExpressionSamples;
-//   default:
-//     // eslint-disable-next-line no-console
-//     console.error('invalid filter', filter);
-//     return [];
-//   }
-// }
 
 export const getGeneSetsForView = (view) => {
   switch (view) {
