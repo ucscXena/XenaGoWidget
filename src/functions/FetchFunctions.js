@@ -176,7 +176,7 @@ function getHostData(cohort,view) {
   case VIEW_ENUM.PARADIGM:
     return cohort.paradigmPathwayActivity;
   case VIEW_ENUM.GENE_EXPRESSION:
-    return cohort.paradigmPathwayActivity;
+    return cohort.geneExpressionPathwayActivity;
   case VIEW_ENUM.REGULON:
     return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : undefined;
   default:
