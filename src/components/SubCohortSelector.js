@@ -15,7 +15,6 @@ export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
     super(props);
-    console.log('props',props,props.filterCounts.subCohortCounts);
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
