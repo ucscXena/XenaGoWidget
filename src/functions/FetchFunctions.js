@@ -30,6 +30,7 @@ export function getSamplesForCohortAndView(cohort, view) {
     return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
   case VIEW_ENUM.MUTATION:
     return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
+  case VIEW_ENUM.REGULON:
   case VIEW_ENUM.GENE_EXPRESSION:
     return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null);
   case VIEW_ENUM.PARADIGM:
