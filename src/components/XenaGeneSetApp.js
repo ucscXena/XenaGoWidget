@@ -246,7 +246,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
     const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB]);
+    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB],this.state.filter);
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 
@@ -497,7 +497,7 @@ export default class XenaGeneSetApp extends PureComponent {
       const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
       const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB]);
+      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB],newView);
       let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newView,[sortedSamplesA,sortedSamplesB]);
       this.setState({
         filter:newView,

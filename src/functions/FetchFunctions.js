@@ -14,6 +14,7 @@ import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
 import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets';
 import RegulonPathways from '../data/genesets/LuadRegulonGeneSets';
 
+// eslint-disable-next-line no-unused-vars
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
 const REFERENCE = refGene['hg38'];
 
@@ -322,6 +323,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1]);
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
+    // eslint-disable-next-line no-unused-vars
     function getRegulonFetch(selectedCohort, samples, geneSetLabels) {
       if (selectedCohort.regulonPathwayActivity) {
         return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels);
@@ -370,9 +372,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       geneExpressionB, geneExpressionPathwayActivityB,
       samplesA,samplesB,
     }) => {
-      console.log('usbscribed data A',geneExpressionA,geneExpressionPathwayActivityA);
-      console.log('usbscribed data B',geneExpressionB,geneExpressionPathwayActivityB);
-      console.log('samples',samplesA,samplesB);
       combinationHandler({
         geneList,
         pathways,

@@ -312,10 +312,28 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   };
 }
 
-function sortDataBySampleOrder(sortedSample, geneDatum) {
-  // lookup the samples for both and create an index based on the first sample set
+/**
+ * Lookup the samples for both and create an index based on the first sample set
+ * @param sortedSample
+ * @param geneDatum
+ * @param view
+ * @returns {*}
+ */
+function sortDataBySampleOrder(sortedSample, geneDatum,view) {
   const sampleIndices = geneDatum.samples.map( s => sortedSample.indexOf(s) );
-  const transposedData = transpose(geneDatum.paradigm);
+  let transposedData ;
+  switch(view){
+  case VIEW_ENUM.PARADIGM:
+    transposedData = transpose(geneDatum.paradigm);
+    break ;
+  case VIEW_ENUM.REGULON:
+  case VIEW_ENUM.GENE_EXPRESSION:
+    transposedData = transpose(geneDatum.geneExpression);
+    break;
+  default:
+    // eslint-disable-next-line no-console
+    console.error('not sure what to do here',view,geneDatum,sortedSample);
+  }
   let sortedData = new Array(transposedData.length);
   for(let dataIndex in transposedData){
     sortedData[dataIndex] = transposedData[sampleIndices[dataIndex]];

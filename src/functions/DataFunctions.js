@@ -578,55 +578,76 @@ function calculateGeneExpressionPathwayActivity(pathwayData) {
  * Note:
  * @param pathwayData
  * @param associatedData
+ * @param view
  */
-export function calculateAllPathways(pathwayData,associatedData) {
+export function calculateAllPathways(pathwayData,associatedData,view) {
   const pathwayDataA = pathwayData[0];
   const pathwayDataB = pathwayData[1];
   const associatedDataA = associatedData[0];
   const associatedDataB = associatedData[1];
 
-  const geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
-  const paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
-  const regulonPathwayActivityA = calculateRegulonPathwayActivity(pathwayDataA);
-  // each pathway needs to have its own set BPA samples
-  // const observationsA = calculateObserved(pathwayDataA, pathwayDataA.filter);
+  let geneExpressionPathwayActivityA, geneExpressionPathwayActivityB ;
+  let regulonPathwayActivityA, regulonPathwayActivityB ;
+  let paradigmPathwayActivityA, paradigmPathwayActivityB ;
+  let expectedA, expectedB;
+  switch (view) {
+  case VIEW_ENUM.GENE_EXPRESSION:
+    geneExpressionPathwayActivityA = calculateGeneExpressionPathwayActivity(pathwayDataA);
+    geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB);
+    break;
+  case VIEW_ENUM.REGULON:
+    regulonPathwayActivityA = calculateRegulonPathwayActivity(pathwayDataA);
+    regulonPathwayActivityB = calculateRegulonPathwayActivity(pathwayDataB);
+    break;
+  case VIEW_ENUM.PARADIGM:
+    paradigmPathwayActivityA = calculateParadigmPathwayActivity(pathwayDataA);
+    paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB);
+    break;
+  default:
+    expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
+    expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
+    // eslint-disable-next-line no-console
+    console.error('not sure how this got calculated');
+    break;
+
+  }
   const observationsA = associatedDataA.map( pathway => sumInstances(pathway));
-  // const totalsA = calculatePathwayScore(pathwayDataA, pathwayDataA.filter);
+  const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
   const totalsA = associatedDataA.map( pathway => sumTotals(pathway));
-  const expectedA = calculateGeneSetExpected(pathwayDataA, pathwayDataA.filter);
   const maxSamplesAffectedA = pathwayDataA.samples.length;
 
-  const geneExpressionPathwayActivityB = calculateGeneExpressionPathwayActivity(pathwayDataB);
-  const paradigmPathwayActivityB = calculateParadigmPathwayActivity(pathwayDataB);
-  const regulonPathwayActivityB = calculateRegulonPathwayActivity(pathwayDataB);
-  // const observationsB = calculateObserved(pathwayDataB, pathwayDataB.filter);
-  const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
-  // const totalsB = calculatePathwayScore(pathwayDataB, pathwayDataB.filter);
   const totalsB = associatedDataB.map( pathway => sumTotals(pathway));
-  const expectedB = calculateGeneSetExpected(pathwayDataB, pathwayDataB.filter);
   const maxSamplesAffectedB = pathwayDataB.samples.length;
 
 
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
-    if(!isNaN(geneExpressionPathwayActivityA[index])) p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
-    if(!isNaN(paradigmPathwayActivityA[index])) p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
-    if(!isNaN(regulonPathwayActivityA[index])) p.firstRegulonPathwayActivity = regulonPathwayActivityA[index];
+    if(geneExpressionPathwayActivityA && !isNaN(geneExpressionPathwayActivityA[index])) p.firstGeneExpressionPathwayActivity = geneExpressionPathwayActivityA[index];
+    if(paradigmPathwayActivityA && !isNaN(paradigmPathwayActivityA[index])) p.firstParadigmPathwayActivity = paradigmPathwayActivityA[index];
+    if(regulonPathwayActivityA && !isNaN(regulonPathwayActivityA[index])) p.firstRegulonPathwayActivity = regulonPathwayActivityA[index];
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
-    p.firstExpected = expectedA[p.golabel];
-    p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+    if(expectedA && !isNaN(expectedA[index])){
+      p.firstExpected = expectedA[p.golabel];
+      // p.firstExpected = expectedA[p.golabel];
+      p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+    }
 
-    if(!isNaN(geneExpressionPathwayActivityB[index])) p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
-    if(!isNaN(paradigmPathwayActivityB[index])) p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
-    if(!isNaN(regulonPathwayActivityB[index])) p.secondRegulonPathwayActivity = regulonPathwayActivityB[index];
+    if(geneExpressionPathwayActivityB && !isNaN(geneExpressionPathwayActivityB[index])) p.secondGeneExpressionPathwayActivity = geneExpressionPathwayActivityB[index];
+    if(paradigmPathwayActivityB && !isNaN(paradigmPathwayActivityB[index])) p.secondParadigmPathwayActivity = paradigmPathwayActivityB[index];
+    if(regulonPathwayActivityB && !isNaN(regulonPathwayActivityB[index])) p.secondRegulonPathwayActivity = regulonPathwayActivityB[index];
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
-    p.secondExpected = expectedB[p.golabel];
-    p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
+    // p.secondExpected = expectedB[p.golabel];
+    if(expectedB && !isNaN(expectedB[index])){
+      p.secondExpected = expectedB[p.golabel];
+      // p.firstExpected = expectedA[p.golabel];
+      // p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+      p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
+    }
     return p;
   });
 }

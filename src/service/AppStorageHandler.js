@@ -171,7 +171,7 @@ export class AppStorageHandler {
     if (appState && appState.filterState  && this.isValidFilterState(appState.filterState)) {
       return appState.filterState;
     }
-    return VIEW_ENUM.PARADIGM;
+    return VIEW_ENUM.GENE_EXPRESSION;
   }
 
   static storeSortState(sortState) {
