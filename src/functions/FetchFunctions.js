@@ -225,7 +225,7 @@ export function lookupGeneByName(geneQuery,callback){
   });
 }
 
-export function getCohortDataForView(selectedCohorts,view){
+export function getCohortDataForGeneExpressionView(selectedCohorts, view){
   switch(view){
   case VIEW_ENUM.REGULON:
   case VIEW_ENUM.GENE_EXPRESSION:
@@ -258,8 +258,7 @@ export function getCohortDataForView(selectedCohorts,view){
 
 export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
-  const cohortData = getCohortDataForView(selectedCohorts,view);
-
+  const cohortData = getCohortDataForGeneExpressionView(selectedCohorts,view);
   Rx.Observable.zip(
     datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
     datasetSamples(cohortData[1].host, cohortData[1].dataset, null),

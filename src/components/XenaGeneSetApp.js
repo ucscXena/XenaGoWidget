@@ -15,7 +15,7 @@ import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
   fetchBestPathways,
-  fetchCombinedCohorts, getCohortDataForView, getGeneSetsForView,
+  fetchCombinedCohorts, getCohortDataForGeneExpressionView, getGeneSetsForView,
 } from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -618,7 +618,8 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
 
-      if(getCohortDataForView(this.state.selectedCohort,this.state.filter)!==null){
+      // if gene Expressions
+      if(getCohortDataForGeneExpressionView(this.state.selectedCohort,this.state.filter)!==null){
         if(this.state.reloadPathways){
           fetchBestPathways(this.state.selectedCohort,this.state.filter,this.handleMeanActivityData);
         }
@@ -627,6 +628,11 @@ export default class XenaGeneSetApp extends PureComponent {
         }
       }
       else{
+        // if its not gene expression just use the canned data
+        if(!isViewGeneExpression(this.state.filter)){
+          pathways = getGeneSetsForView(this.state.filter);
+        }
+
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
@@ -694,34 +700,50 @@ export default class XenaGeneSetApp extends PureComponent {
                           { isViewGeneExpression(this.state.filter) && <GeneExpressionLegend/>}
                         </td>
                       </tr>
+                      {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td colSpan={3}>
-                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch:true})} raised>
+                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
                             Edit Gene Sets&nbsp;
                             {this.state.pathways &&
-                            <div style={{display:'inline'}}>
+                            <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
                             </div>
                             }
 
                           </Button>
-                          <Button onClick={() => {AppStorageHandler.resetSessionStorage() ; location.reload(); }} raised>
+                          <Button
+                            onClick={() => {
+                              AppStorageHandler.resetSessionStorage();
+                              location.reload();
+                            }} raised
+                          >
                             <FaRefresh/>
-                              Reset
+                            Reset
                           </Button>
                         </td>
                       </tr>
+                      }
+                      {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td className={BaseStyle.autoSortBox} colSpan={2}>
                           Sort on Cohort Change
                           <input
-                            checked={this.state.automaticallyReloadPathways} onChange={() => this.setState({ automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
+                            checked={this.state.automaticallyReloadPathways}
+                            onChange={() => this.setState({automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
                             type='checkbox'
                           />
                           <br/>
-                          Limit <input onChange={(event) => this.setState({geneSetLimit:event.target.value} )} size={3} value={this.state.geneSetLimit}/>
+                          Limit
+                          <input
+                            onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
+                            value={this.state.geneSetLimit}
+                          />
                           Filter Gene Sets by
-                          <select onChange={(event) => this.setState({filterBy:event.target.value})} value={this.state.filterBy}>
+                          <select
+                            onChange={(event) => this.setState({filterBy: event.target.value})}
+                            value={this.state.filterBy}
+                          >
                             <option value='AbsDiff'>Abs Diff</option>
                             <option value='Diff'>Cohort Diff</option>
                             <option value='Total'>Total</option>
@@ -734,28 +756,34 @@ export default class XenaGeneSetApp extends PureComponent {
                           }
                           <br/>
                           Sort Visible Gene Sets by
-                          <select onChange={(event) => this.setState({sortViewBy:event.target.value})} value={this.state.sortViewBy}>
-                            <option  value='AbsDiff'>Abs Diff</option>
-                            <option  value='Diff'>Cohort Diff</option>
+                          <select
+                            onChange={(event) => this.setState({sortViewBy: event.target.value})}
+                            value={this.state.sortViewBy}
+                          >
+                            <option value='AbsDiff'>Abs Diff</option>
+                            <option value='Diff'>Cohort Diff</option>
                             <option value='Total'>Total</option>
                           </select>
                           {this.state.sortViewOrder === 'asc' &&
                           <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
                           }
-                          {this.state.sortViewOrder  === 'desc' &&
+                          {this.state.sortViewOrder === 'desc' &&
                           <FaSortDesc onClick={() => this.setState({sortViewOrder: 'asc'})}/>
                           }
                           <br/>
                           <br/>
                           <Button
-                            onClick={() => { this.setState( {
-                              fetch: true,
-                              currentLoadState: LOAD_STATE.LOADING,
-                              reloadPathways: true,
-                            });}} primary raised
+                            onClick={() => {
+                              this.setState({
+                                fetch: true,
+                                currentLoadState: LOAD_STATE.LOADING,
+                                reloadPathways: true,
+                              });
+                            }} primary raised
                           >Sort Gene Sets Now</Button>
                         </td>
                       </tr>
+                      }
                       <tr>
                         <td width={VERTICAL_GENESET_DETAIL_WIDTH} />
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>

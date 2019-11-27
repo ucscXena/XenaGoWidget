@@ -1,3 +1,4 @@
+
 language: node_js
 
 git:
@@ -5,13 +6,13 @@ git:
 
 node_js:
   - 8
-  - 10
-  - 12
- 
+#   - 10
+#   - 12
+
 script:
   - npm run-script lint
-  - npm run build
   - npm test
+#  - npm run build
 
 cache:
   directories:
