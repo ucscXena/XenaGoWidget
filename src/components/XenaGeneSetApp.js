@@ -477,37 +477,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handleChangeFilter = (newView, cohortIndex) => {
       AppStorageHandler.storeFilterState(newView, cohortIndex);
-      let {pathwayData,pathwaySelection} = this.state;
-      let newPathwayData = update(pathwayData,{
-        [cohortIndex]: {
-          filter: { $set: newView},
-        }
-      });
 
-      let pathwayClickData = {
-        pathway: pathwaySelection.pathway
-      };
-
-      let associatedDataA = calculateAssociatedData(newPathwayData[0],this.state.filter);
-      let associatedDataB = calculateAssociatedData(newPathwayData[1],this.state.filter);
-
-      const sortedAssociatedDataA = sortAssociatedData(pathwaySelection.pathway,associatedDataA,this.state.filter);
-      const sortedAssociatedDataB = sortAssociatedData(pathwaySelection.pathway,associatedDataB,this.state.filter);
-
-      const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
-      const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
-
-      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB],newView);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newView,[sortedSamplesA,sortedSamplesB]);
-      this.setState({
+      this.setState( {
         filter:newView,
-        geneData,
-        pathways:newPathways,
-        pathwayData:newPathwayData,
-        fetch:true,
+        fetch: true,
         currentLoadState: LOAD_STATE.LOADING,
-        reloadPathways:this.state.automaticallyReloadPathways
-      });
+        reloadPathways:this.state.automaticallyReloadPathways}
+      );
+
     };
 
 

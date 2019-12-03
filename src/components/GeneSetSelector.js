@@ -107,8 +107,6 @@ export class GeneSetSelector extends PureComponent {
         let selected = selectedPathway.pathway.golabel === p.golabel;
         let highlighted = p.gene.indexOf(highlightedGene) >= 0;
 
-        console.log('p value',p);
-
         return (
           <svg
             key={p.golabel}

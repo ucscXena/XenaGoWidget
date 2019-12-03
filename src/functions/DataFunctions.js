@@ -400,7 +400,6 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
-  console.log('output',returnArray);
   return returnArray;
 }
 
@@ -428,8 +427,6 @@ function labelArray(returnArray,pathways, samples) {
 /**
  * For each expression result, for each gene listed, for each column represented in the pathways, populate the appropriate samples
  *
- * @param expression
- * @param copyNumber
  * @param geneExpression
  * @param geneExpressionPathwayActivity
  * @param geneList
@@ -443,8 +440,6 @@ export function doDataAssociations(geneExpression, geneExpressionPathwayActivity
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
-
-  console.log('input data',geneExpression,geneExpressionPathwayActivity);
 
   if(isViewGeneExpression(filter)){
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
@@ -580,7 +575,6 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
     expectedA = calculateGeneSetExpected(pathwayData[0], view);
     expectedB = calculateGeneSetExpected(pathwayData[1], view);
   }
-  console.log('expected calc',expectedA,expectedB);
 
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
