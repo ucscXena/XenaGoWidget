@@ -14,7 +14,7 @@ import AssociatedDataPathways1 from '../../data/AssociatedDataPathways1';
 import AssociatedDataSamples1 from '../../data/AssociatedDataSamples1';
 import AssociatedDataOutput1 from '../../data/AssociatedDataOutput1';
 
-import CalculateAssociatedDataPathwayData1 from '../../data/CalculateAssociatedDataPathwayData1';
+import CalculateAssociatedDataPathwayData1 from '../../data/CalculateAssociatedDataPathwayDataCnvMutation';
 import CalculateAssociateDataOutput1 from '../../data/CalculateAssociateDataOutput1';
 
 import CalculateAllPathwaysA from '../../data/CalculateAllPathwaysA';
