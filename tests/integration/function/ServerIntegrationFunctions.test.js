@@ -17,8 +17,8 @@ import AssociatedDataOutputGeneExpression from '../../data/AssociatedDataOutputG
 import CalculateAssociatedDataPathwayData1 from '../../data/CalculateAssociatedDataPathwayDataCnvMutation';
 import CalculateAssociateDataOutput1 from '../../data/CalculateAssociateDataOutput1';
 
-import CalculateAllPathwaysA from '../../data/CalculateAllPathwaysA';
-import CalculateAllPathwaysB from '../../data/CalculateAllPathwaysB';
+import CalculateAllPathwaysPathwayData from '../../data/CalculateAllPathwaysPathwayData';
+import CalculateAllPathwaysAssociatedData from '../../data/CalculateAllPathwaysAssociatedData';
 import CalculateAllPathwaysOutput from '../../data/CalculateAllPathwaysOutput';
 
 import FindAssociatedDataInputHash1 from '../../data/FindAssociatedDataInputHash1';
@@ -70,9 +70,7 @@ describe('Data Integration Functions', () => {
   // TODO: probably because its calculating based on the fetch
   // TODO: activate this again
   it('Calculate All Pathways', () => {
-    let associatedDataA = calculateAssociatedData(CalculateAllPathwaysA,VIEW_ENUM.CNV_MUTATION);
-    let associatedDataB = calculateAssociatedData(CalculateAllPathwaysB,VIEW_ENUM.CNV_MUTATION);
-    expect(calculateAllPathways([CalculateAllPathwaysA,CalculateAllPathwaysB],[associatedDataA,associatedDataB])).toEqual(CalculateAllPathwaysOutput);
+    expect(calculateAllPathways(CalculateAllPathwaysPathwayData,CalculateAllPathwaysAssociatedData,VIEW_ENUM.CNV_MUTATION)).toEqual(CalculateAllPathwaysOutput);
   });
 
 
