@@ -137,15 +137,15 @@ export function createAssociatedDataKey(inputHash) {
 
 export function findAssociatedData(inputHash, associatedDataKey) {
   const {
-    expression, copyNumber, geneList, pathways, samples, filter,
+    geneList, pathways, samples, filter,
     geneExpression, geneExpressionPathwayActivity
   } = inputHash;
+
 
   const key = JSON.stringify(associatedDataKey);
   let data = associateCache.get(key);
   if (ignoreCache || !data) {
-    data = doDataAssociations(expression, copyNumber,
-      geneExpression,geneExpressionPathwayActivity,
+    data = doDataAssociations(geneExpression,geneExpressionPathwayActivity,
       geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
@@ -173,37 +173,68 @@ export function createEmptyArray(pathwayLength, sampleLength) {
  * @param view
  */
 export function calculateGeneSetExpected(pathwayData, view) {
-  const { genomeBackgroundCopyNumber, genomeBackgroundMutation } = pathwayData;
+  const { geneExpressionPathwayActivity } = pathwayData;
   // // initiate to 0
   const pathwayExpected = {};
   // init data
   for (const pathway of pathwayData.pathways) {
     pathwayExpected[pathway.golabel] = 0;
   }
-  for (const sampleIndex in pathwayData.samples) {
-    // TODO: if filter is all or copy number, or SNV . . etc.
-    const copyNumberBackgroundExpected = genomeBackgroundCopyNumber[0][sampleIndex];
-    const copyNumberBackgroundTotal = genomeBackgroundCopyNumber[1][sampleIndex];
-    const mutationBackgroundExpected = genomeBackgroundMutation[0][sampleIndex];
-    const mutationBackgroundTotal = genomeBackgroundMutation[1][sampleIndex];
 
-    // TODO: add the combined filter: https://github.com/jingchunzhu/wrangle/blob/master/xenaGo/mergeExpectedHypergeometric.py#L17
-    for (const pathway of pathwayData.pathways) {
-      const sample_probs = [];
-
-      if (view === VIEW_ENUM.COPY_NUMBER || view === VIEW_ENUM.CNV_MUTATION) {
+  if(view===VIEW_ENUM.COPY_NUMBER){
+    for (const sampleIndex in pathwayData.samples) {
+      const copyNumberBackgroundExpected = geneExpressionPathwayActivity[0][sampleIndex];
+      const copyNumberBackgroundTotal = geneExpressionPathwayActivity[1][sampleIndex];
+      for (const pathway of pathwayData.pathways) {
+        const sample_probs = [];
         if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
           sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
         }
+        let total_prob = addIndepProb(sample_probs.filter(Number));
+        // const total_prob = addIndepProb(sample_probs);
+        pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
       }
-      if (view === VIEW_ENUM.MUTATION || view === VIEW_ENUM.CNV_MUTATION) {
-        sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
-      }
-      // TODO: we should not filter out numbers
-      let total_prob = addIndepProb(sample_probs.filter(Number));
-      // const total_prob = addIndepProb(sample_probs);
-      pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
     }
+  }
+  else
+  if(view===VIEW_ENUM.MUTATION){
+    for (const sampleIndex in pathwayData.samples) {
+      const mutationBackgroundExpected = geneExpressionPathwayActivity[0][sampleIndex];
+      const mutationBackgroundTotal = geneExpressionPathwayActivity[1][sampleIndex];
+      for (const pathway of pathwayData.pathways) {
+        const sample_probs = [];
+        sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+        // TODO: we should not filter out numbers
+        let total_prob = addIndepProb(sample_probs.filter(Number));
+        // const total_prob = addIndepProb(sample_probs);
+        pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
+      }
+    }
+  }
+  else
+  if(view===VIEW_ENUM.CNV_MUTATION){
+    for (const sampleIndex in pathwayData.samples) {
+      // TODO: if filter is all or copy number, or SNV . . etc.
+      const mutationBackgroundExpected = geneExpressionPathwayActivity[0][sampleIndex];
+      const mutationBackgroundTotal = geneExpressionPathwayActivity[1][sampleIndex];
+      const copyNumberBackgroundExpected = geneExpressionPathwayActivity[2][sampleIndex];
+      const copyNumberBackgroundTotal = geneExpressionPathwayActivity[3][sampleIndex];
+      for (const pathway of pathwayData.pathways) {
+        const sample_probs = [];
+        if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
+          sample_probs.push(calculateExpectedProb(pathway, copyNumberBackgroundExpected, copyNumberBackgroundTotal));
+        }
+        sample_probs.push(calculateExpectedProb(pathway, mutationBackgroundExpected, mutationBackgroundTotal));
+        // TODO: we should not filter out numbers
+        let total_prob = addIndepProb(sample_probs.filter(Number));
+        // const total_prob = addIndepProb(sample_probs);
+        pathwayExpected[pathway.golabel] = pathwayExpected[pathway.golabel] + total_prob;
+      }
+    }
+  }
+  else{
+    // eslint-disable-next-line no-console
+    console.error('invalid view',view);
   }
 
   // TODO we have an expected for the sample
@@ -369,6 +400,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
       }
     }
   }
+  console.log('output',returnArray);
   return returnArray;
 }
 
@@ -406,12 +438,13 @@ function labelArray(returnArray,pathways, samples) {
  * @param filter
  * @returns {any[]}
  */
-export function doDataAssociations(expression, copyNumber,
-  geneExpression, geneExpressionPathwayActivity,
+export function doDataAssociations(geneExpression, geneExpressionPathwayActivity,
   geneList, pathways, samples, filter) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
+
+  console.log('input data',geneExpression,geneExpressionPathwayActivity);
 
   if(isViewGeneExpression(filter)){
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
@@ -420,12 +453,17 @@ export function doDataAssociations(expression, copyNumber,
     }
   }
   else
-  if (filter === VIEW_ENUM.CNV_MUTATION || filter === VIEW_ENUM.MUTATION) {
-    returnArray = filterMutations(expression,returnArray,samples,pathways);
+  if (filter === VIEW_ENUM.COPY_NUMBER) {
+    returnArray = filterCopyNumbers(geneExpression,returnArray,geneList,pathways);
   }
   else
-  if (filter === VIEW_ENUM.CNV_MUTATION|| filter === VIEW_ENUM.COPY_NUMBER) {
-    returnArray = filterCopyNumbers(copyNumber,returnArray,geneList,pathways);
+  if (filter === VIEW_ENUM.MUTATION) {
+    returnArray = filterMutations(geneExpression,returnArray,samples,pathways);
+  }
+  else
+  if (filter === VIEW_ENUM.CNV_MUTATION) {
+    returnArray = filterMutations(geneExpression[0],returnArray,samples,pathways);
+    returnArray = filterCopyNumbers(geneExpression[1],returnArray,geneList,pathways);
     // get list of genes in identified pathways
   }
 
@@ -546,7 +584,9 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
   return setPathways.map((p, index) => {
-    p.firstPathwayActivity = pathwayActivityA[index];
+    if(isViewGeneExpression(view)){
+      p.firstPathwayActivity = pathwayActivityA[index];
+    }
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
@@ -555,7 +595,9 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
       p.firstPathwayActivity = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
     }
 
-    p.secondPathwayActivity = pathwayActivityB[index];
+    if(isViewGeneExpression(view)) {
+      p.secondPathwayActivity = pathwayActivityB[index];
+    }
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;

@@ -380,15 +380,15 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       sparseData(selectedCohorts[1].host, selectedCohorts[1].mutationDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].genomeBackgroundMutation.host, selectedCohorts[1].genomeBackgroundMutation.dataset, samplesB, [selectedCohorts[1].genomeBackgroundMutation.feature_event_K, selectedCohorts[1].genomeBackgroundMutation.feature_total_pop_N]),
       (
-        geneExpressionA, geneExpressionPathwayActivityA,
-        geneExpressionB, geneExpressionPathwayActivityB,
+        mutationA, genomeBackgroundMutationA,
+        mutationB, genomeBackgroundMutationB,
       ) => ({
         samplesA,
-        geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionA: mutationA,
+        geneExpressionPathwayActivityA: genomeBackgroundMutationA,
         samplesB,
-        geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionB: mutationB,
+        geneExpressionPathwayActivityB: genomeBackgroundMutationB,
       }),
     );
 
@@ -401,15 +401,15 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       datasetFetch(selectedCohorts[1].host, selectedCohorts[1].copyNumberDataSetId, samplesB, geneList),
       datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
       (
-        geneExpressionA, geneExpressionPathwayActivityA,
-        geneExpressionB, geneExpressionPathwayActivityB,
+        copyNumberA, genomeBackgroundCopyNumberA,
+        copyNumberB, genomeBackgroundCopyNumberB,
       ) => ({
         samplesA,
-        geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionA: copyNumberA,
+        geneExpressionPathwayActivityA: genomeBackgroundCopyNumberA,
         samplesB,
-        geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionB: copyNumberB,
+        geneExpressionPathwayActivityB: genomeBackgroundCopyNumberB,
       }),
     );
 
@@ -427,15 +427,15 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       datasetFetch(selectedCohorts[1].genomeBackgroundCopyNumber.host, selectedCohorts[1].genomeBackgroundCopyNumber.dataset, samplesB, [selectedCohorts[1].genomeBackgroundCopyNumber.feature_event_K, selectedCohorts[1].genomeBackgroundCopyNumber.feature_total_pop_N]),
       (
         // TODO: we actually get two sets of data here
-        geneExpressionA, geneExpressionPathwayActivityA,
-        geneExpressionB, geneExpressionPathwayActivityB,
+        mutationA,copyNumberA,  genomeBackgroundMutationA, genomeBackgroundCopyNumberA ,
+        mutationB,copyNumberB,  genomeBackgroundMutationB, genomeBackgroundCopyNumberB ,
       ) => ({
         samplesA,
-        geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionA: [mutationA,copyNumberB],
+        geneExpressionPathwayActivityA: [genomeBackgroundMutationA,genomeBackgroundCopyNumberA],
         samplesB,
-        geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionB: [mutationB,copyNumberB],
+        geneExpressionPathwayActivityB: [genomeBackgroundMutationB,genomeBackgroundCopyNumberB],
       }),
     );
 

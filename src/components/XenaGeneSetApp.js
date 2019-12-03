@@ -251,7 +251,7 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayDataB.pathways = pathways ;
 
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
-    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
+    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData);
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({

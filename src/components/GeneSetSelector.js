@@ -21,6 +21,7 @@ export class GeneSetSelector extends PureComponent {
      * @returns {*}
      */
   static labelStyle(score, selected, hovered, width, labelHeight, highlighted) {
+    console.log('label style', score);
 
     if (selected) {
       return {
@@ -106,6 +107,8 @@ export class GeneSetSelector extends PureComponent {
         let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false ;
         let selected = selectedPathway.pathway.golabel === p.golabel;
         let highlighted = p.gene.indexOf(highlightedGene) >= 0;
+
+        console.log('p value',p);
 
         return (
           <svg
