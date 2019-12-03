@@ -213,12 +213,13 @@ export function calculateGeneSetExpected(pathwayData, view) {
   }
   else
   if(view===VIEW_ENUM.CNV_MUTATION){
+    console.log('gnee exprespesion pathway activity',pathwayData.samples.length,geneExpressionPathwayActivity);
     for (const sampleIndex in pathwayData.samples) {
       // TODO: if filter is all or copy number, or SNV . . etc.
-      const mutationBackgroundExpected = geneExpressionPathwayActivity[0][sampleIndex];
-      const mutationBackgroundTotal = geneExpressionPathwayActivity[1][sampleIndex];
-      const copyNumberBackgroundExpected = geneExpressionPathwayActivity[2][sampleIndex];
-      const copyNumberBackgroundTotal = geneExpressionPathwayActivity[3][sampleIndex];
+      const mutationBackgroundExpected = geneExpressionPathwayActivity[0][0][sampleIndex];
+      const mutationBackgroundTotal = geneExpressionPathwayActivity[0][1][sampleIndex];
+      const copyNumberBackgroundExpected = geneExpressionPathwayActivity[1][0][sampleIndex];
+      const copyNumberBackgroundTotal = geneExpressionPathwayActivity[1][1][sampleIndex];
       for (const pathway of pathwayData.pathways) {
         const sample_probs = [];
         if(!isNaN(copyNumberBackgroundExpected) && !isNaN(copyNumberBackgroundTotal)){
@@ -375,7 +376,7 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
-
+  console.log('in method filtering copy number',copyNumber,returnArray,geneList,pathways);
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
@@ -392,10 +393,14 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
           DEFAULT_AMPLIFICATION_THRESHOLD,
           DEFAULT_DELETION_THRESHOLD);
         if (returnValue > 0) {
-          returnArray[index][sampleEntryIndex].total += returnValue;
-          returnArray[index][sampleEntryIndex].cnv += returnValue;
-          returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
-          returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+          try {
+            returnArray[index][sampleEntryIndex].total += returnValue;
+            returnArray[index][sampleEntryIndex].cnv += returnValue;
+            returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
+            returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
+          } catch (e) {
+            console.error('index',index,sampleEntryIndex,sampleEntries,pathwayIndices);
+          }
         }
       }
     }
@@ -432,31 +437,32 @@ function labelArray(returnArray,pathways, samples) {
  * @param geneList
  * @param pathways
  * @param samples
- * @param filter
+ * @param view
  * @returns {any[]}
  */
 export function doDataAssociations(geneExpression, geneExpressionPathwayActivity,
-  geneList, pathways, samples, filter) {
+  geneList, pathways, samples, view) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
+  console.log('sample ass',samples,pathways,geneList);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
 
-  if(isViewGeneExpression(filter)){
+  if(isViewGeneExpression(view)){
     returnArray = filterGeneExpression(geneExpression,returnArray,geneList,pathways).returnArray;
     if(geneExpressionPathwayActivity){
       returnArray = filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity,returnArray,geneList,pathways).returnArray;
     }
   }
   else
-  if (filter === VIEW_ENUM.COPY_NUMBER) {
+  if (view === VIEW_ENUM.COPY_NUMBER) {
     returnArray = filterCopyNumbers(geneExpression,returnArray,geneList,pathways);
   }
   else
-  if (filter === VIEW_ENUM.MUTATION) {
+  if (view === VIEW_ENUM.MUTATION) {
     returnArray = filterMutations(geneExpression,returnArray,samples,pathways);
   }
   else
-  if (filter === VIEW_ENUM.CNV_MUTATION) {
+  if (view === VIEW_ENUM.CNV_MUTATION) {
     returnArray = filterMutations(geneExpression[0],returnArray,samples,pathways);
     returnArray = filterCopyNumbers(geneExpression[1],returnArray,geneList,pathways);
     // get list of genes in identified pathways
