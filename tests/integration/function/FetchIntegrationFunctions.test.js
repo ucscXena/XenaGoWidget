@@ -12,7 +12,6 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.CNV_MUTATION).do( (a) => {
-      console.log(a.length,'vs',136);
       expect(a.length).toEqual(136);
     }).subscribe( () => done(),e => done(logError(e)));
   });
@@ -23,7 +22,6 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.MUTATION).do( (a) => {
-      console.log(a.length,'vs',136);
       expect(a.length).toEqual(142);
     }).subscribe( () => done(),e => done(logError(e)));
   });

@@ -23,7 +23,7 @@ const pruneDataCache = lru(500);
 const ignoreCache = true ;
 
 export const DEFAULT_DATA_VALUE = {
-  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0, paradigm: 0
+  total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
 };
 
 
@@ -504,6 +504,8 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
 }
 
 export function calculateAssociatedData(pathwayData, filter) {
+  // console.log('input')
+  // console.log(JSON.stringify(pathwayData));
   const hashAssociation = update(pathwayData, {
     filter: { $set: filter },
     selectedCohort: { $set: pathwayData.cohort },
@@ -514,6 +516,9 @@ export function calculateAssociatedData(pathwayData, filter) {
   const associatedData = findAssociatedData(hashAssociation, associatedDataKey);
   const prunedColumns = findPruneData(associatedData, associatedDataKey);
   prunedColumns.samples = pathwayData.samples;
+
+  // console.log('output')
+  // console.log(JSON.stringify(associatedData));
   return associatedData;
 }
 

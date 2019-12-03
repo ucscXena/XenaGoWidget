@@ -57,7 +57,7 @@ describe('Data Integration Functions', () => {
   });
 
   it('Calculate Associated Data', () => {
-    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION,2)).toEqual(CalculateAssociateDataOutput1);
+    expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION)).toEqual(CalculateAssociateDataOutput1);
   });
 
   it('Calculate PathwayScore', () => {
