@@ -61,7 +61,7 @@ describe('Data Integration Functions', () => {
   });
 
   it('Calculate PathwayScore', () => {
-    const pathwayScore = [68,98,74,20,19,16,18,56,126,179,74,35,33,83,73,105,10,80,46,214,301,189,411,1099,886,575,1665,823,1553,586,762,180,356,141,656,19,302,24,673,148,446];
+    const pathwayScore = [ 9, 10, 4, 2, 4, 0, 2, 2, 9, 11, 8, 4, 3, 4, 10, 7, 1, 4, 5, 28, 44, 23, 42, 132, 97, 45, 183, 72, 166, 64, 99, 26, 47, 8, 62, 4, 31, 4, 88, 17, 41, 364, 48, 20, 45, 24, 6 ] ;
     expect(calculateAssociatedData(CalculateAssociatedDataPathwayData1,VIEW_ENUM.CNV_MUTATION).map( pathway => sumTotals(pathway))).toEqual(pathwayScore);
   });
 
@@ -95,7 +95,7 @@ describe('Data Integration Functions', () => {
 
   // TODO: reactivate
   it('Find Associated Data', () => {
-    expect(FindAssociatedDataOutput1).toEqual(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1));
+    expect(findAssociatedData(FindAssociatedDataInputHash1,FindAssociatedDataKey1)).toEqual(FindAssociatedDataOutput1);
   });
 
 });

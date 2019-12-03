@@ -504,8 +504,6 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
 }
 
 export function calculateAssociatedData(pathwayData, filter) {
-  // console.log('input')
-  // console.log(JSON.stringify(pathwayData));
   const hashAssociation = update(pathwayData, {
     filter: { $set: filter },
     selectedCohort: { $set: pathwayData.cohort },
@@ -516,9 +514,6 @@ export function calculateAssociatedData(pathwayData, filter) {
   const associatedData = findAssociatedData(hashAssociation, associatedDataKey);
   const prunedColumns = findPruneData(associatedData, associatedDataKey);
   prunedColumns.samples = pathwayData.samples;
-
-  // console.log('output')
-  // console.log(JSON.stringify(associatedData));
   return associatedData;
 }
 
