@@ -438,6 +438,13 @@ function labelArray(returnArray,pathways, samples) {
  */
 export function doDataAssociations(geneExpression, geneExpressionPathwayActivity,
   geneList, pathways, samples, view) {
+  // console.log('DA');
+  // console.log(JSON.stringify(geneExpression))
+  // console.log(JSON.stringify(geneExpressionPathwayActivity))
+  // console.log(JSON.stringify(geneList))
+  // console.log(JSON.stringify(pathways))
+  // console.log(JSON.stringify(samples))
+  // console.log(JSON.stringify(view))
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
@@ -463,6 +470,8 @@ export function doDataAssociations(geneExpression, geneExpressionPathwayActivity
     // get list of genes in identified pathways
   }
 
+  // console.log('output');
+  // console.log(JSON.stringify(returnArray));
   return returnArray;
 }
 
