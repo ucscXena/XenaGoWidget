@@ -166,9 +166,6 @@ export default class XenaGeneSetApp extends PureComponent {
       copyNumberA,
       geneExpressionA,
       geneExpressionPathwayActivityA,
-      // paradigmA,
-      // paradigmPathwayActivityA,
-      // regulonPathwayActivityA,
       genomeBackgroundMutationA,
       genomeBackgroundCopyNumberA,
       samplesB,
@@ -176,19 +173,12 @@ export default class XenaGeneSetApp extends PureComponent {
       copyNumberB,
       geneExpressionB,
       geneExpressionPathwayActivityB,
-      // paradigmB,
-      // paradigmPathwayActivityB,
-      // regulonPathwayActivityB,
       genomeBackgroundMutationB,
       genomeBackgroundCopyNumberB,
       selectedCohorts,
     } = input;
 
-    // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-    const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
-    // const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
-    // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
-
+    const [geneExpressionZScoreA,geneExpressionZScoreB]  = isViewGeneExpression(this.state.filter) ? generateZScoreForBoth(geneExpressionA,geneExpressionB) : [geneExpressionA,geneExpressionB];
 
     let pathwayDataA = {
       geneList,
@@ -201,9 +191,6 @@ export default class XenaGeneSetApp extends PureComponent {
       expression: mutationsA,
       geneExpression: geneExpressionZScoreA,
       geneExpressionPathwayActivity: geneExpressionPathwayActivityA,
-      // paradigm: paradigmZScoreA,
-      // paradigmPathwayActivity: paradigmPathwayActivityA[1],
-      // regulonPathwayActivity: regulonPathwayActivityA[1],
       samples: samplesA,
       genomeBackgroundMutation: genomeBackgroundMutationA,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -220,9 +207,6 @@ export default class XenaGeneSetApp extends PureComponent {
       expression: mutationsB,
       geneExpression: geneExpressionZScoreB,
       geneExpressionPathwayActivity: geneExpressionPathwayActivityB,
-      // paradigm: paradigmZScoreB,
-      // paradigmPathwayActivity: paradigmPathwayActivityB[1],
-      // regulonPathwayActivity: regulonPathwayActivityB[1],
       samples: samplesB,
       genomeBackgroundMutation: genomeBackgroundMutationB,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
@@ -251,7 +235,7 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayDataB.pathways = pathways ;
 
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
-    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData);
+    const sortedGeneData = isViewGeneExpression(this.state.filter) ? sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData) : geneData;
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
