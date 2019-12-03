@@ -149,7 +149,6 @@ export function findAssociatedData(inputHash, associatedDataKey) {
       geneList, pathways, samples, filter);
     associateCache.set(key, data);
   }
-
   return data;
 }
 
