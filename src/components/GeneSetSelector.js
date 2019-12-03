@@ -21,7 +21,6 @@ export class GeneSetSelector extends PureComponent {
      * @returns {*}
      */
   static labelStyle(score, selected, hovered, width, labelHeight, highlighted) {
-    console.log('label style', score);
 
     if (selected) {
       return {

@@ -580,6 +580,7 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
     expectedA = calculateGeneSetExpected(pathwayData[0], view);
     expectedB = calculateGeneSetExpected(pathwayData[1], view);
   }
+  console.log('expected calc',expectedA,expectedB);
 
   // TODO: Note, this has to be a clone of pathways, otherwise any shared references will causes problems
   const setPathways = JSON.parse(JSON.stringify(pathwayDataA.pathways));
@@ -590,9 +591,9 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
     p.firstObserved = observationsA[index];
     p.firstTotal = totalsA[index];
     p.firstNumSamples = maxSamplesAffectedA;
-    if(expectedA && !isNaN(expectedA[index])){
+    if(expectedA && !isNaN(expectedA[p.golabel])){
       p.firstExpected = expectedA[p.golabel];
-      p.firstPathwayActivity = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
+      p.firstChiSquared = scoreChiSquaredData(p.firstObserved, p.firstExpected, p.firstNumSamples);
     }
 
     if(isViewGeneExpression(view)) {
@@ -601,9 +602,9 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
     p.secondObserved = observationsB[index];
     p.secondTotal = totalsB[index];
     p.secondNumSamples = maxSamplesAffectedB;
-    if(expectedB && !isNaN(expectedB[index])){
+    if(expectedB && !isNaN(expectedB[p.golabel])){
       p.secondExpected = expectedB[p.golabel];
-      p.secondPathwayActivity = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
+      p.secondChiSquared = scoreChiSquaredData(p.secondObserved, p.secondExpected, p.secondNumSamples);
     }
     return p;
   });
