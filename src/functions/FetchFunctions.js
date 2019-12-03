@@ -431,7 +431,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         mutationB,copyNumberB,  genomeBackgroundMutationB, genomeBackgroundCopyNumberB ,
       ) => ({
         samplesA,
-        geneExpressionA: [mutationA,copyNumberB],
+        geneExpressionA: [mutationA,copyNumberA],
         geneExpressionPathwayActivityA: [genomeBackgroundMutationA,genomeBackgroundCopyNumberA],
         samplesB,
         geneExpressionB: [mutationB,copyNumberB],

@@ -213,9 +213,7 @@ export function calculateGeneSetExpected(pathwayData, view) {
   }
   else
   if(view===VIEW_ENUM.CNV_MUTATION){
-    console.log('gnee exprespesion pathway activity',pathwayData.samples.length,geneExpressionPathwayActivity);
     for (const sampleIndex in pathwayData.samples) {
-      // TODO: if filter is all or copy number, or SNV . . etc.
       const mutationBackgroundExpected = geneExpressionPathwayActivity[0][0][sampleIndex];
       const mutationBackgroundTotal = geneExpressionPathwayActivity[0][1][sampleIndex];
       const copyNumberBackgroundExpected = geneExpressionPathwayActivity[1][0][sampleIndex];
@@ -376,15 +374,12 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
 
 export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways);
-  console.log('in method filtering copy number',copyNumber,returnArray,geneList,pathways);
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene);
 
     const pathwayIndices = genePathwayLookup(gene);
     const sampleEntries = copyNumber[geneIndex]; // set of samples for this gene
-    // we retrieve proper indices from the pathway to put back in the right place
-
     // get pathways this gene is involved in
     for (const index of pathwayIndices) {
       // process all samples
@@ -399,6 +394,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
             returnArray[index][sampleEntryIndex].cnvHigh += getCopyNumberHigh(sampleEntries[sampleEntryIndex], DEFAULT_AMPLIFICATION_THRESHOLD);
             returnArray[index][sampleEntryIndex].cnvLow += getCopyNumberLow(sampleEntries[sampleEntryIndex], DEFAULT_DELETION_THRESHOLD);
           } catch (e) {
+            // eslint-disable-next-line no-console
             console.error('index',index,sampleEntryIndex,sampleEntries,pathwayIndices);
           }
         }
@@ -444,7 +440,6 @@ export function doDataAssociations(geneExpression, geneExpressionPathwayActivity
   geneList, pathways, samples, view) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
   returnArray = labelArray(returnArray,pathways,samples);
-  console.log('sample ass',samples,pathways,geneList);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
 
   if(isViewGeneExpression(view)){
@@ -525,30 +520,6 @@ export function calculateAssociatedData(pathwayData, filter) {
 function calculateGeneExpressionActivity(pathwayData) {
   return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
 }
-
-// function calculateExpectedActivity(pathwayData,view) {
-//   let expectedA = calculateGeneSetExpected(pathwayData[0], view);
-//   let expectedB = calculateGeneSetExpected(pathwayData[1], view);
-//   // const observationsA = associatedDataA.map( pathway => sumInstances(pathway));
-//   // const observationsB = associatedDataB.map( pathway => sumInstances(pathway));
-//
-//   // return pathwayData.pathways.map( (p,index) => average(pathwayData.pathwayActivity[index].filter( f => !isNaN(f)))  );
-// }
-
-// function calculateParadigmPathwayActivity(pathwayData) {
-//   if(pathwayData.filter!==VIEW_ENUM.PARADIGM) return 0 ;
-//   return pathwayData.pathways.map( (p,index) => average(pathwayData.paradigmPathwayActivity[index].filter( f => !isNaN(f)))  );
-// }
-//
-// function calculateRegulonPathwayActivity(pathwayData) {
-//   if(pathwayData.filter!==VIEW_ENUM.REGULON) return 0 ;
-//   return pathwayData.pathways.map( (p,index) => average(pathwayData.regulonPathwayActivity[index].filter( f => !isNaN(f)))  );
-// }
-//
-// function calculateGeneExpressionPathwayActivity(pathwayData) {
-//   if(pathwayData.filter!==VIEW_ENUM.GENE_EXPRESSION) return 0 ;
-//   return pathwayData.pathways.map( (p,index) => average(pathwayData.geneExpressionPathwayActivity[index].filter( f => !isNaN(f)))  );
-// }
 
 /**
  * Note:
