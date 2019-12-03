@@ -11,6 +11,7 @@ import {
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from './DataFunctions';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -80,7 +81,7 @@ export let interpolateGeneExpressionFont = (score) => {
 };
 
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
-  labelHeight, cohortIndex,filter) {
+  labelHeight, cohortIndex,view) {
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -109,24 +110,8 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      if(filter===VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.REGULON){
+      if(isViewGeneExpression(view)){
         const geneExpressionScore = meanDataByType(d, 'geneExpression');
-        for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-          const pxRow = y * width;
-          const buffStart = (pxRow + el.start) * 4;
-          const buffEnd = (pxRow + el.start + el.size) * 4;
-          for (let l = buffStart; l < buffEnd ; l += 4) {
-            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
-            img.data[l] = colorArray[0];
-            img.data[l + 1] = colorArray[1];
-            img.data[l + 2] = colorArray[2];
-            img.data[l + 3] = 255 ;
-          }
-        }
-      }
-      else
-      if(filter===VIEW_ENUM.PARADIGM){
-        const geneExpressionScore = meanDataByType(d, 'paradigm');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;
@@ -202,12 +187,12 @@ function findPathwayData(pathwayWidth, count) {
 }
 
 
-function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
+function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,view) {
 
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
-  const colorFilter = filter === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
+  const colorFilter = view === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
 
 
   layout.forEach((el, i) => {
@@ -223,41 +208,9 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const d = rowData.slice(r.start, r.end + 1);
       //
       const pxRow = el.start * 4 * img.width; // first column and row in the block
-      if(filter===VIEW_ENUM.GENE_EXPRESSION){
+      if(isViewGeneExpression(view)){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
-        for (let xPos = 0; xPos < r.width; ++xPos) {
-          const buffStart = pxRow + (xPos + r.x) * 4;
-          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
-          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
-            img.data[l] = colorArray[0];
-            img.data[l + 1] = colorArray[1];
-            img.data[l + 2] = colorArray[2];
-            img.data[l + 3] = 255 ;
-          }
-        }
-      }
-      else
-      if(filter===VIEW_ENUM.REGULON){
-        // const geneExpressionScore = sumDataByType(d, 'geneExpression');
-        const geneExpressionScore = meanDataByType(d, 'regulonPathwayActivity');
-        for (let xPos = 0; xPos < r.width; ++xPos) {
-          const buffStart = pxRow + (xPos + r.x) * 4;
-          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
-          for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
-            img.data[l] = colorArray[0];
-            img.data[l + 1] = colorArray[1];
-            img.data[l + 2] = colorArray[2];
-            img.data[l + 3] = 255 ;
-          }
-        }
-      }
-      else
-      if(filter===VIEW_ENUM.PARADIGM){
-        // const geneExpressionScore = sumDataByType(d, 'geneExpression');
-        const geneExpressionScore = meanDataByType(d, 'paradigmPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);

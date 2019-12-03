@@ -322,10 +322,10 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       ) => ({
         samplesA,
         geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionPathwayActivityA:geneExpressionPathwayActivityA[1],
         samplesB,
         geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
     );
 
@@ -342,11 +342,11 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB, geneExpressionPathwayActivityB,
       ) => ({
         samplesA,
-        geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionA: geneExpressionA[1],
+        geneExpressionPathwayActivityA:geneExpressionPathwayActivityA[1],
         samplesB,
-        geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionB: geneExpressionB[1],
+        geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
     );
 
@@ -364,10 +364,10 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       ) => ({
         samplesA,
         geneExpressionA,
-        geneExpressionPathwayActivityA,
+        geneExpressionPathwayActivityA:geneExpressionPathwayActivityA[1],
         samplesB,
         geneExpressionB,
-        geneExpressionPathwayActivityB,
+        geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
     );
 
@@ -455,13 +455,13 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
     // eslint-disable-next-line no-unused-vars
-    function getRegulonFetch(selectedCohort, samples, geneSetLabels) {
-      if (selectedCohort.regulonPathwayActivity) {
-        return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels);
-      } else {
-        return datasetProbeValues(selectedCohort.geneExpressionPathwayActivity.host, selectedCohort.geneExpressionPathwayActivity.dataset, samples, geneSetLabels);
-      }
-    }
+    // function getRegulonFetch(selectedCohort, samples, geneSetLabels) {
+    //   if (selectedCohort.regulonPathwayActivity) {
+    //     return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels);
+    //   } else {
+    //     return datasetProbeValues(selectedCohort.geneExpressionPathwayActivity.host, selectedCohort.geneExpressionPathwayActivity.dataset, samples, geneSetLabels);
+    //   }
+    // }
 
     switch (view) {
     case VIEW_ENUM.GENE_EXPRESSION:
@@ -500,9 +500,9 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         copyNumberA:[],
         geneExpressionA,
         geneExpressionPathwayActivityA,
-        paradigmA:[],
-        paradigmPathwayActivityA:[],
-        regulonPathwayActivityA:[],
+        // paradigmA:[],
+        // paradigmPathwayActivityA:[],
+        // regulonPathwayActivityA:[],
         genomeBackgroundMutationA:[],
         genomeBackgroundCopyNumberA:[],
         samplesB,
@@ -510,9 +510,9 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         copyNumberB:[],
         geneExpressionB,
         geneExpressionPathwayActivityB,
-        paradigmB:[],
-        paradigmPathwayActivityB:[],
-        regulonPathwayActivityB:[],
+        // paradigmB:[],
+        // paradigmPathwayActivityB:[],
+        // regulonPathwayActivityB:[],
         genomeBackgroundMutationB:[],
         genomeBackgroundCopyNumberB:[],
         selectedCohorts,

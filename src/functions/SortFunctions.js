@@ -324,8 +324,6 @@ function sortDataBySampleOrder(sortedSample, geneDatum,view) {
   let transposedData ;
   switch(view){
   case VIEW_ENUM.PARADIGM:
-    transposedData = transpose(geneDatum.paradigm);
-    break ;
   case VIEW_ENUM.REGULON:
   case VIEW_ENUM.GENE_EXPRESSION:
     transposedData = transpose(geneDatum.geneExpression);
