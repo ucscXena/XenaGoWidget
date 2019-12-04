@@ -162,33 +162,19 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortData,
       filterCounts,
       samplesA,
-      mutationsA,
-      copyNumberA,
       geneExpressionA,
       geneExpressionPathwayActivityA,
-      paradigmA,
-      paradigmPathwayActivityA,
-      regulonPathwayActivityA,
       genomeBackgroundMutationA,
       genomeBackgroundCopyNumberA,
       samplesB,
-      mutationsB,
-      copyNumberB,
       geneExpressionB,
       geneExpressionPathwayActivityB,
-      paradigmB,
-      paradigmPathwayActivityB,
-      regulonPathwayActivityB,
       genomeBackgroundMutationB,
       genomeBackgroundCopyNumberB,
       selectedCohorts,
     } = input;
 
-    // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-    const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
-    const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
-    // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
-
+    const [geneExpressionZScoreA,geneExpressionZScoreB]  = isViewGeneExpression(this.state.filter) ? generateZScoreForBoth(geneExpressionA,geneExpressionB) : [geneExpressionA,geneExpressionB];
 
     let pathwayDataA = {
       geneList,
@@ -197,13 +183,8 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[0],
       filter: this.state.filter,
       filterCounts: filterCounts[0],
-      copyNumber: copyNumberA,
-      expression: mutationsA,
       geneExpression: geneExpressionZScoreA,
-      geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
-      paradigm: paradigmZScoreA,
-      paradigmPathwayActivity: paradigmPathwayActivityA[1],
-      regulonPathwayActivity: regulonPathwayActivityA[1],
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityA,
       samples: samplesA,
       genomeBackgroundMutation: genomeBackgroundMutationA,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -216,13 +197,8 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[1],
       filter: this.state.filter,
       filterCounts: filterCounts[1],
-      copyNumber: copyNumberB,
-      expression: mutationsB,
       geneExpression: geneExpressionZScoreB,
-      geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
-      paradigm: paradigmZScoreB,
-      paradigmPathwayActivity: paradigmPathwayActivityB[1],
-      regulonPathwayActivity: regulonPathwayActivityB[1],
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityB,
       samples: samplesB,
       genomeBackgroundMutation: genomeBackgroundMutationB,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
@@ -246,12 +222,12 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
     const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB]);
+    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB],this.state.filter);
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
-    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
+    const sortedGeneData = isViewGeneExpression(this.state.filter) ? sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData) : geneData;
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
@@ -477,37 +453,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handleChangeFilter = (newView, cohortIndex) => {
       AppStorageHandler.storeFilterState(newView, cohortIndex);
-      let {pathwayData,pathwaySelection} = this.state;
-      let newPathwayData = update(pathwayData,{
-        [cohortIndex]: {
-          filter: { $set: newView},
-        }
-      });
 
-      let pathwayClickData = {
-        pathway: pathwaySelection.pathway
-      };
-
-      let associatedDataA = calculateAssociatedData(newPathwayData[0],this.state.filter);
-      let associatedDataB = calculateAssociatedData(newPathwayData[1],this.state.filter);
-
-      const sortedAssociatedDataA = sortAssociatedData(pathwaySelection.pathway,associatedDataA,this.state.filter);
-      const sortedAssociatedDataB = sortAssociatedData(pathwaySelection.pathway,associatedDataB,this.state.filter);
-
-      const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
-      const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
-
-      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB]);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newView,[sortedSamplesA,sortedSamplesB]);
-      this.setState({
+      this.setState( {
         filter:newView,
-        geneData,
-        pathways:newPathways,
-        pathwayData:newPathwayData,
-        fetch:true,
+        fetch: true,
         currentLoadState: LOAD_STATE.LOADING,
-        reloadPathways:this.state.automaticallyReloadPathways
-      });
+        reloadPathways:this.state.automaticallyReloadPathways}
+      );
+
     };
 
 

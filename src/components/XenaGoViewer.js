@@ -5,8 +5,6 @@ import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
-import {VIEW_ENUM} from '../data/ViewEnum';
-
 import {Card,Button} from 'react-toolbox';
 
 import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp';
@@ -59,27 +57,6 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
     };
 
-    hasDataForFilter(geneData,filter){
-      if(!geneData) return false;
-      switch (filter) {
-      case VIEW_ENUM.REGULON:
-      case VIEW_ENUM.GENE_EXPRESSION:
-        return geneData.geneExpression!==undefined;
-      case VIEW_ENUM.COPY_NUMBER:
-        return geneData.copyNumber!==undefined;
-      case VIEW_ENUM.MUTATION:
-        return geneData.expression && geneData.expression.rows && geneData.expression.rows.length>0;
-      case VIEW_ENUM.CNV_MUTATION:
-        return this.hasDataForFilter(geneData,VIEW_ENUM.COPY_NUMBER) && this.hasDataForFilter(geneData,VIEW_ENUM.MUTATION);
-      case VIEW_ENUM.PARADIGM:
-        return geneData.paradigm!==undefined;
-      default:
-        // eslint-disable-next-line no-console
-        console.error('Error for gene data and filter',geneData,filter);
-        return false;
-      }
-    }
-
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
@@ -105,7 +82,7 @@ export default class XenaGoViewer extends PureComponent {
         return (
           <table>
             <tbody>
-              {this.hasDataForFilter(geneDataStats,filter) &&
+              {geneDataStats && geneDataStats.geneExpression!==undefined &&
                     <tr>
                       <td
                         style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
