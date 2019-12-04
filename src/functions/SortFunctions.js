@@ -374,18 +374,6 @@ export function sortAssociatedData(selectedPathway,associatedData,view){
     p.originalIndex = i ;
     return p ;
   }).sort( (a,b) => {
-    // // TODO: map for other filters
-    // if(filter===VIEW_ENUM.PARADIGM){
-    //   return b.paradigmPathwayActivity - a.paradigmPathwayActivity;
-    // }
-    // else
-    // if(filter===VIEW_ENUM.REGULON){
-    //   if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity !== 'NaN') return -1 ;
-    //   if(b.regulonPathwayActivity !== 'NaN' && a.regulonPathwayActivity === 'NaN') return 1 ;
-    //   if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression ;
-    //   return b.regulonPathwayActivity - a.regulonPathwayActivity;
-    // }
-    // else
     if(isViewGeneExpression(view)){
       if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity !== 'NaN') return -1 ;
       if(b.geneExpressionPathwayActivity !== 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return 1 ;
