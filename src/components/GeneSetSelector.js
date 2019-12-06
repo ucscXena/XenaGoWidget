@@ -169,6 +169,7 @@ GeneSetSelector.propTypes = {
   highlightedGene: PropTypes.any,
   hoveredPathway: PropTypes.any,
   labelHeight: PropTypes.any.isRequired,
+  maxValue: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
   onHover: PropTypes.any.isRequired,
   onMouseOut: PropTypes.any.isRequired,

@@ -590,9 +590,9 @@ export default class XenaGeneSetApp extends PureComponent {
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
-    
+
     if (this.state.pathways) {
-      let maxValues = this.state.pathways.map(p => 
+      let maxValues = this.state.pathways.map(p =>
         Math.max(Math.abs(p.firstGeneExpressionPathwayActivity), Math.abs(p.secondGeneExpressionPathwayActivity)));
       maxValue = Math.max(...maxValues);
     }
@@ -759,13 +759,13 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={0}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[0]}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
-                            maxValue={maxValue}
                           />
                         </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
@@ -775,6 +775,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 highlightedGene={this.state.highlightedGene}
                                 hoveredPathway={this.state.hoveredPathway}
                                 labelHeight={18}
+                                maxValue={maxValue}
                                 onClick={this.handlePathwaySelect}
                                 onHover={this.handlePathwayHover}
                                 onMouseOut={this.handlePathwayHover}
@@ -782,7 +783,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 selectedPathway={this.state.pathwaySelection}
                                 topOffset={14}
                                 width={VERTICAL_SELECTOR_WIDTH}
-                                maxValue={maxValue}
                               />
                           }
                         </td>
@@ -792,13 +792,13 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={1}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[1]}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
-                            maxValue={maxValue}
                           />
                         </td>
                       </tr>

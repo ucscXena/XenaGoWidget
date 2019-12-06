@@ -166,6 +166,7 @@ VerticalGeneSetScoresView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
+  maxValue: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
   onHover: PropTypes.any.isRequired,
   onMouseOut: PropTypes.any.isRequired,
