@@ -92,7 +92,7 @@ export default class XenaGeneSetApp extends PureComponent {
       sortViewOrder:SORT_ORDER_ENUM.DESC,
       sortViewBy:SORT_ENUM.DIFF,
       filterOrder:SORT_ORDER_ENUM.DESC,
-      filterBy:SORT_ENUM.ABS_DIFF,
+      filterBy:SORT_ENUM.CONTRAST_DIFF,
       filter:filter,
       hoveredPathway: undefined,
       geneData: [{}, {}],
@@ -706,6 +706,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({filterBy: event.target.value})}
                             value={this.state.filterBy}
                           >
+                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
                             <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
                             <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
                             <option value={SORT_ENUM.TOTAL}>Total</option>
@@ -722,6 +723,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({sortViewBy: event.target.value})}
                             value={this.state.sortViewBy}
                           >
+                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
                             <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
                             <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
                             <option value={SORT_ENUM.TOTAL}>Total</option>

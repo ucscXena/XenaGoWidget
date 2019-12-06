@@ -46,7 +46,7 @@ export default class GeneSetEditor extends PureComponent {
       editGeneSet: undefined,
       name: '',
       sortOrder: SORT_ORDER_ENUM.ASC,
-      sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.ABS_DIFF : SORT_ENUM.ALPHA,
+      sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.CONTRAST_DIFF: SORT_ENUM.ALPHA,
       sortCartOrder:SORT_ORDER_ENUM.ASC,
       sortCartBy: isViewGeneExpression(props.view) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
       geneSet: '8K',

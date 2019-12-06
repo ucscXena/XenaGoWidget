@@ -1,11 +1,12 @@
 export const SORT_ENUM = {
+  CONTRAST_DIFF:'Contrast Diff',
   TOTAL:'Total',
-  ABS_DIFF:'AbsDiff',
-  DIFF:'Diff',
+  ABS_DIFF:'Absolute Diff',
+  DIFF:'Cohort Diff',
   ALPHA:'Alpha',
 };
 
 export const SORT_ORDER_ENUM = {
-  ASC:'Asc',
-  DESC:'Desc',
+  ASC:'asc',
+  DESC:'desc',
 };
