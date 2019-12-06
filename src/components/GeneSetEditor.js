@@ -135,9 +135,9 @@ export default class GeneSetEditor extends PureComponent {
           if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
           if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
           if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
-          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (scoreB-scoreA) ;
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA) ;
         case SORT_ENUM.ALPHA:
-          return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
         }
       }) ;
 
@@ -360,10 +360,10 @@ export default class GeneSetEditor extends PureComponent {
 
                       <td>
                         {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
-                      <FaSortAsc onClick={() => this.setState({sortOrder: 'desc'})}/>
+                      <FaSortAsc onClick={() => this.setState({sortOrder: SORT_ORDER_ENUM.DESC })}/>
                         }
                         {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
-                      <FaSortDesc onClick={() => this.setState({sortOrder: 'asc'})}/>
+                      <FaSortDesc onClick={() => this.setState({sortOrder: SORT_ORDER_ENUM.ASC})}/>
                         }
                       </td>
                     </tr>
@@ -427,7 +427,7 @@ export default class GeneSetEditor extends PureComponent {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.showScore() &&
-                        `${scorePathway(p, 'Diff')}, `
+                        `${scorePathway(p, SORT_ENUM.DIFF)}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
                     })
@@ -512,12 +512,12 @@ export default class GeneSetEditor extends PureComponent {
                       const scoreB = scorePathway(b,this.state.sortCartBy);
                       switch (this.state.sortCartBy) {
                       case SORT_ENUM.ALPHA:
-                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
+                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       default:
                         if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
                         if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
                         if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
-                        return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (scoreB-scoreA);
+                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA);
                       }
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
