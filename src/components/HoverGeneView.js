@@ -211,7 +211,7 @@ export default class HoverGeneView extends PureComponent {
                       backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                     }}
                   >
-                    {data.pathway.geneExpressionMean.toPrecision(2)}
+                    {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
                   }
                   <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
