@@ -149,11 +149,11 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             height={totalHeight}
             labelHeight={labelHeight}
             layout={layout}
+            maxValue={maxValue}
             onClick={this.handleClick}
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
             width={width}
-            maxValue={maxValue}
           />
         </div>
       );
