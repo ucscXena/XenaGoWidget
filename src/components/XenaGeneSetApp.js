@@ -566,6 +566,7 @@ export default class XenaGeneSetApp extends PureComponent {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name));
+    let maxValue = 0;
 
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
@@ -589,6 +590,13 @@ export default class XenaGeneSetApp extends PureComponent {
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
+    
+    if (this.state.pathways) {
+      let maxValues = this.state.pathways.map(p => 
+        Math.max(Math.abs(p.firstGeneExpressionPathwayActivity), Math.abs(p.secondGeneExpressionPathwayActivity)));
+      maxValue = Math.max(...maxValues);
+    }
+
 
     return (
       <div>
@@ -757,6 +765,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[0]}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
+                            maxValue={maxValue}
                           />
                         </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
@@ -773,6 +782,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 selectedPathway={this.state.pathwaySelection}
                                 topOffset={14}
                                 width={VERTICAL_SELECTOR_WIDTH}
+                                maxValue={maxValue}
                               />
                           }
                         </td>
@@ -788,6 +798,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[1]}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
+                            maxValue={maxValue}
                           />
                         </td>
                       </tr>

@@ -112,7 +112,6 @@ function getPointData(event, props) {
  */
 export default class VerticalGeneSetScoresView extends PureComponent {
 
-
     handleHoverOut = () => {
       this.props.onHover(null);
     };
@@ -127,8 +126,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 
     render() {
-
-      let {cohortIndex, labelHeight, pathways, width, associatedData} = this.props;
+      let {cohortIndex, labelHeight, pathways, width, associatedData, maxValue} = this.props;
       if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
@@ -155,6 +153,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
             width={width}
+            maxValue={maxValue}
           />
         </div>
       );
