@@ -20,7 +20,7 @@ const associateCache = lru(500);
 const pruneDataCache = lru(500);
 
 // NOTE: this should be false for production.
-const ignoreCache = true ;
+const ignoreCache = false ;
 
 export const DEFAULT_DATA_VALUE = {
   total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
