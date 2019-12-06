@@ -21,6 +21,7 @@ import {ButtonGroup} from 'react-bootstrap';
 import Dialog from 'react-toolbox/lib/dialog';
 import {scorePathway} from '../functions/SortFunctions';
 import {isViewGeneExpression} from '../functions/DataFunctions';
+import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 
 const VIEW_LIMIT = 200;
 const CART_LIMIT = 45;
@@ -44,10 +45,10 @@ export default class GeneSetEditor extends PureComponent {
     this.state = {
       editGeneSet: undefined,
       name: '',
-      sortOrder:'asc',
-      sortBy: isViewGeneExpression(props.view)  ? 'AbsDiff' : 'Alpha',
-      sortCartOrder:'asc',
-      sortCartBy: isViewGeneExpression(props.view) ? 'Diff' : 'Alpha',
+      sortOrder: SORT_ORDER_ENUM.ASC,
+      sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.ABS_DIFF : SORT_ENUM.ALPHA,
+      sortCartOrder:SORT_ORDER_ENUM.ASC,
+      sortCartBy: isViewGeneExpression(props.view) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -135,7 +136,7 @@ export default class GeneSetEditor extends PureComponent {
           if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
           if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * (scoreB-scoreA) ;
-        case 'Alpha':
+        case SORT_ENUM.ALPHA:
           return (this.state.sortOrder === 'asc' ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
         }
       }) ;
@@ -349,19 +350,19 @@ export default class GeneSetEditor extends PureComponent {
                         onChange={(event) => this.setState({sortBy: event.target.value})}
                         value={this.state.sortBy}
                       >
-                        <option  value='AbsDiff'>Abs Diff</option>
-                        <option  value='Diff'>Cohort Diff</option>
-                        <option  value='Total'>Total</option>
-                        <option  value='Alpha'>Alphabetically</option>
+                        {Object.entries(SORT_ENUM).map(s => {
+                          return <option key={s[0]} value={s[0]}>{s[1]}</option>;
+                        })
+                        }
                       </select>
                     </td>
                       }
 
                       <td>
-                        {this.state.sortOrder === 'asc' &&
+                        {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
                       <FaSortAsc onClick={() => this.setState({sortOrder: 'desc'})}/>
                         }
-                        {this.state.sortOrder === 'desc' &&
+                        {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
                       <FaSortDesc onClick={() => this.setState({sortOrder: 'asc'})}/>
                         }
                       </td>
@@ -456,19 +457,18 @@ export default class GeneSetEditor extends PureComponent {
                           onChange={(event) => this.setState({sortCartBy: event.target.value})}
                           value={this.state.sortCartBy}
                         >
-                          <option  value='AbsDiff'>Abs Diff</option>
-                          <option  value='Diff'>Cohort Diff</option>
-                          <option  value='Total'>Total</option>
-                          <option  value='Alpha'>Alphabetically</option>
+                          {Object.entries(SORT_ENUM).map(s => {
+                            return <option key={s[0]} value={s[0]}>{s[1]}</option>;
+                          })}
                         </select>
                       </td>
                       }
                       <td>
-                        {this.state.sortCartOrder === 'asc' &&
-                        <FaSortAsc onClick={() => this.setState({sortCartOrder: 'desc'})}/>
+                        {this.state.sortCartOrder === SORT_ORDER_ENUM.ASC &&
+                        <FaSortAsc onClick={() => this.setState({sortCartOrder: SORT_ORDER_ENUM.DESC})}/>
                         }
-                        {this.state.sortCartOrder === 'desc' &&
-                        <FaSortDesc onClick={() => this.setState({sortCartOrder: 'asc'})}/>
+                        {this.state.sortCartOrder === SORT_ORDER_ENUM.DESC  &&
+                        <FaSortDesc onClick={() => this.setState({sortCartOrder: SORT_ORDER_ENUM.ASC})}/>
                         }
                       </td>
                     </tr>
@@ -511,7 +511,7 @@ export default class GeneSetEditor extends PureComponent {
                       const scoreA = scorePathway(a,this.state.sortCartBy);
                       const scoreB = scorePathway(b,this.state.sortCartBy);
                       switch (this.state.sortCartBy) {
-                      case 'Alpha':
+                      case SORT_ENUM.ALPHA:
                         return (this.state.sortCartOrder === 'asc' ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
                       default:
                         if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
@@ -522,7 +522,7 @@ export default class GeneSetEditor extends PureComponent {
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.showScore() &&
-                        `${scorePathway(p,'Diff')}, `
+                        `${scorePathway(p,SORT_ENUM.DIFF)}, `
                         }
                         N: {p.gene.length}) {p.golabel}</option>);
                     })

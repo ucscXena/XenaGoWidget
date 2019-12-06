@@ -38,6 +38,7 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
 import {intersection} from '../functions/MathFunctions';
+import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 
 
 const VIEWER_HEIGHT = 500;
@@ -88,10 +89,10 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
-      sortViewOrder:'desc',
-      sortViewBy:'Diff',
-      filterOrder:'desc',
-      filterBy:'AbsDiff',
+      sortViewOrder:SORT_ORDER_ENUM.DESC,
+      sortViewBy:SORT_ENUM.DIFF,
+      filterOrder:SORT_ORDER_ENUM.DESC,
+      filterBy:SORT_ENUM.ABS_DIFF,
       filter:filter,
       hoveredPathway: undefined,
       geneData: [{}, {}],
@@ -705,14 +706,14 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({filterBy: event.target.value})}
                             value={this.state.filterBy}
                           >
-                            <option value='AbsDiff'>Abs Diff</option>
-                            <option value='Diff'>Cohort Diff</option>
-                            <option value='Total'>Total</option>
+                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                            <option value={SORT_ENUM.TOTAL}>Total</option>
                           </select>
-                          {this.state.filterOrder === 'asc' &&
+                          {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
                           }
-                          {this.state.filterOrder === 'desc' &&
+                          {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
                           }
                           <br/>
@@ -721,15 +722,15 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({sortViewBy: event.target.value})}
                             value={this.state.sortViewBy}
                           >
-                            <option value='AbsDiff'>Abs Diff</option>
-                            <option value='Diff'>Cohort Diff</option>
-                            <option value='Total'>Total</option>
+                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                            <option value={SORT_ENUM.TOTAL}>Total</option>
                           </select>
-                          {this.state.sortViewOrder === 'asc' &&
-                          <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
+                          {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
+                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC})}/>
                           }
-                          {this.state.sortViewOrder === 'desc' &&
-                          <FaSortDesc onClick={() => this.setState({sortViewOrder: 'asc'})}/>
+                          {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
+                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC})}/>
                           }
                           <br/>
                           <br/>

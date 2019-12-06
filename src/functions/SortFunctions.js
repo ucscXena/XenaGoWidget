@@ -1,7 +1,8 @@
 import update from 'immutability-helper';
-import {sumTotals, sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
+import { sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
 import {isViewGeneExpression} from './DataFunctions';
+import {SORT_ENUM} from '../data/SortEnum';
 
 export function transpose(a) {
   // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
@@ -130,116 +131,18 @@ export function diffSort(prunedColumns,sampleOrder) {
   return returnColumns;
 }
 
-/**
- * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
- * @param prunedColumns
- */
-export function clusterSampleSort(prunedColumns) {
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-  const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  summedSamples.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d.index];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
-
-function sortWithIndeces(toSort) {
-  for (var i = 0; i < toSort.length; i++) {
-    toSort[i] = [toSort[i], i];
-  }
-  toSort.sort(function(left, right) {
-    return left[0] < right[0] ? 1 : -1;
-  });
-  toSort.sortIndices = [];
-  for (var j = 0; j < toSort.length; j++) {
-    toSort.sortIndices.push(toSort[j][1]);
-    toSort[j] = toSort[j][0];
-  }
-  return toSort;
-}
-
 export function scorePathway(p,sortBy) {
   switch (sortBy) {
-  case 'Total':
+  case SORT_ENUM.TOTAL:
     return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
-  case 'AbsDiff':
+  case SORT_ENUM.ABS_DIFF:
     return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
-  case 'Diff':
+  case SORT_ENUM.DIFF:
   default:
     return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
   }
 }
 
-/**
- * Sorts based on a selected sample
- * @param prunedColumns
- * @param selectedGeneSet
- * @returns {*}
- */
-export function selectedSampleParadigmActivitySort(prunedColumns, selectedGeneSet) {
-  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
-  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
-  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.paradigmPathwayActivity);
-  sortWithIndeces( selectedData);
-  const sortedIndices = selectedData.sortIndices;
-
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-
-  // for the transposed data sort by sortedIndexes
-  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  sortedIndices.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
-
-/**
- * Sorts based on a selected sample
- * @param prunedColumns
- * @param selectedGeneSet
- * @returns {*}
- */
-export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
-
-  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
-  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
-  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.geneExpressionPathwayActivity);
-  sortWithIndeces( selectedData);
-  const sortedIndices = selectedData.sortIndices;
-
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-
-  // for the transposed data sort by sortedIndexes
-  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  sortedIndices.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
 
 function generateMissingColumns(pathways, geneList) {
   const pathwayGenes = pathways.map((p) => p.gene[0]);
