@@ -1377,7 +1377,7 @@
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
-      "dataset": "mc3/LAML_mc3.txt"
+      "dataset": "TCGA.LAML.sampleMap/mutation_wustl"
     },
     "copy number": {
       "host": "https://tcga.xenahubs.net",
