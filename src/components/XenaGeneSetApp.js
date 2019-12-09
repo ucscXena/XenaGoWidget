@@ -38,6 +38,7 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {DetailedLegend} from './DetailedLegend';
 import {GeneExpressionLegend} from './GeneExpressionLegend';
 import {intersection} from '../functions/MathFunctions';
+import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 
 
 const VIEWER_HEIGHT = 500;
@@ -88,10 +89,10 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
-      sortViewOrder:'desc',
-      sortViewBy:'Diff',
-      filterOrder:'desc',
-      filterBy:'AbsDiff',
+      sortViewOrder:SORT_ORDER_ENUM.DESC,
+      sortViewBy:SORT_ENUM.DIFF,
+      filterOrder:SORT_ORDER_ENUM.DESC,
+      filterBy:SORT_ENUM.CONTRAST_DIFF,
       filter:filter,
       hoveredPathway: undefined,
       geneData: [{}, {}],
@@ -162,33 +163,19 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortData,
       filterCounts,
       samplesA,
-      mutationsA,
-      copyNumberA,
       geneExpressionA,
       geneExpressionPathwayActivityA,
-      paradigmA,
-      paradigmPathwayActivityA,
-      regulonPathwayActivityA,
       genomeBackgroundMutationA,
       genomeBackgroundCopyNumberA,
       samplesB,
-      mutationsB,
-      copyNumberB,
       geneExpressionB,
       geneExpressionPathwayActivityB,
-      paradigmB,
-      paradigmPathwayActivityB,
-      regulonPathwayActivityB,
       genomeBackgroundMutationB,
       genomeBackgroundCopyNumberB,
       selectedCohorts,
     } = input;
 
-    // get mean and stdev over both geneExpression arrays over each gene, we would assume they are for the same gene order
-    const [geneExpressionZScoreA,geneExpressionZScoreB]  = generateZScoreForBoth(geneExpressionA,geneExpressionB);
-    const [paradigmZScoreA,paradigmZScoreB]  = generateZScoreForBoth(paradigmA[1],paradigmB[1]);
-    // const [paradigmZScoreA,paradigmZScoreB]  = [paradigmA,paradigmB];
-
+    const [geneExpressionZScoreA,geneExpressionZScoreB]  = isViewGeneExpression(this.state.filter) ? generateZScoreForBoth(geneExpressionA,geneExpressionB) : [geneExpressionA,geneExpressionB];
 
     let pathwayDataA = {
       geneList,
@@ -197,13 +184,8 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[0],
       filter: this.state.filter,
       filterCounts: filterCounts[0],
-      copyNumber: copyNumberA,
-      expression: mutationsA,
       geneExpression: geneExpressionZScoreA,
-      geneExpressionPathwayActivity: geneExpressionPathwayActivityA[1],
-      paradigm: paradigmZScoreA,
-      paradigmPathwayActivity: paradigmPathwayActivityA[1],
-      regulonPathwayActivity: regulonPathwayActivityA[1],
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityA,
       samples: samplesA,
       genomeBackgroundMutation: genomeBackgroundMutationA,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberA,
@@ -216,13 +198,8 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[1],
       filter: this.state.filter,
       filterCounts: filterCounts[1],
-      copyNumber: copyNumberB,
-      expression: mutationsB,
       geneExpression: geneExpressionZScoreB,
-      geneExpressionPathwayActivity: geneExpressionPathwayActivityB[1],
-      paradigm: paradigmZScoreB,
-      paradigmPathwayActivity: paradigmPathwayActivityB[1],
-      regulonPathwayActivity: regulonPathwayActivityB[1],
+      geneExpressionPathwayActivity: geneExpressionPathwayActivityB,
       samples: samplesB,
       genomeBackgroundMutation: genomeBackgroundMutationB,
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
@@ -246,12 +223,12 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
     const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
 
-    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB]);
+    pathways = calculateAllPathways([pathwayDataA,pathwayDataB],[sortedAssociatedDataA,sortedAssociatedDataB],this.state.filter);
     pathwayDataA.pathways = pathways ;
     pathwayDataB.pathways = pathways ;
 
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
-    const sortedGeneData = sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData,this.state.filter);
+    const sortedGeneData = isViewGeneExpression(this.state.filter) ? sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData) : geneData;
 
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
@@ -477,37 +454,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
     handleChangeFilter = (newView, cohortIndex) => {
       AppStorageHandler.storeFilterState(newView, cohortIndex);
-      let {pathwayData,pathwaySelection} = this.state;
-      let newPathwayData = update(pathwayData,{
-        [cohortIndex]: {
-          filter: { $set: newView},
-        }
-      });
 
-      let pathwayClickData = {
-        pathway: pathwaySelection.pathway
-      };
-
-      let associatedDataA = calculateAssociatedData(newPathwayData[0],this.state.filter);
-      let associatedDataB = calculateAssociatedData(newPathwayData[1],this.state.filter);
-
-      const sortedAssociatedDataA = sortAssociatedData(pathwaySelection.pathway,associatedDataA,this.state.filter);
-      const sortedAssociatedDataB = sortAssociatedData(pathwaySelection.pathway,associatedDataB,this.state.filter);
-
-      const sortedSamplesA = sortedAssociatedDataA[0].map( d => d.sample );
-      const sortedSamplesB = sortedAssociatedDataB[0].map( d => d.sample );
-
-      let newPathways = calculateAllPathways(newPathwayData,[sortedAssociatedDataA,sortedAssociatedDataB]);
-      let geneData = generateScoredData(pathwayClickData,newPathwayData,newPathways,newView,[sortedSamplesA,sortedSamplesB]);
-      this.setState({
+      this.setState( {
         filter:newView,
-        geneData,
-        pathways:newPathways,
-        pathwayData:newPathwayData,
-        fetch:true,
+        fetch: true,
         currentLoadState: LOAD_STATE.LOADING,
-        reloadPathways:this.state.automaticallyReloadPathways
-      });
+        reloadPathways:this.state.automaticallyReloadPathways}
+      );
+
     };
 
 
@@ -602,9 +556,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const sortedPathways = loadedPathways
       .filter( a => a.firstGeneExpressionPathwayActivity && a.secondGeneExpressionPathwayActivity )
-      .sort( (a,b) => (this.state.filterOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
+      .sort( (a,b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scorePathway(a,this.state.filterBy)-scorePathway(b,this.state.filterBy)) )
       .slice(0,this.state.geneSetLimit)
-      .sort( (a,b) => (this.state.sortViewOrder === 'asc' ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
+      .sort( (a,b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scorePathway(a,this.state.sortViewBy)-scorePathway(b,this.state.sortViewBy)) );
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
   };
@@ -613,6 +567,7 @@ export default class XenaGeneSetApp extends PureComponent {
     let storedPathways = AppStorageHandler.getPathways();
     let pathways = this.state.pathways ? this.state.pathways : storedPathways;
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name));
+    let maxValue = 0;
 
     if(this.doRefetch()){
       currentLoadState = LOAD_STATE.LOADING;
@@ -636,6 +591,13 @@ export default class XenaGeneSetApp extends PureComponent {
         fetchCombinedCohorts(this.state.selectedCohort,pathways,this.state.filter,this.handleCombinedCohortData);
       }
     }
+
+    if (this.state.pathways) {
+      let maxValues = this.state.pathways.map(p =>
+        Math.max(Math.abs(p.firstGeneExpressionPathwayActivity), Math.abs(p.secondGeneExpressionPathwayActivity)));
+      maxValue = Math.max(...maxValues);
+    }
+
 
     return (
       <div>
@@ -744,14 +706,15 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({filterBy: event.target.value})}
                             value={this.state.filterBy}
                           >
-                            <option value='AbsDiff'>Abs Diff</option>
-                            <option value='Diff'>Cohort Diff</option>
-                            <option value='Total'>Total</option>
+                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                            <option value={SORT_ENUM.TOTAL}>Total</option>
                           </select>
-                          {this.state.filterOrder === 'asc' &&
+                          {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
                           }
-                          {this.state.filterOrder === 'desc' &&
+                          {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
                           }
                           <br/>
@@ -760,15 +723,16 @@ export default class XenaGeneSetApp extends PureComponent {
                             onChange={(event) => this.setState({sortViewBy: event.target.value})}
                             value={this.state.sortViewBy}
                           >
-                            <option value='AbsDiff'>Abs Diff</option>
-                            <option value='Diff'>Cohort Diff</option>
-                            <option value='Total'>Total</option>
+                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                            <option value={SORT_ENUM.TOTAL}>Total</option>
                           </select>
-                          {this.state.sortViewOrder === 'asc' &&
-                          <FaSortAsc onClick={() => this.setState({sortViewOrder: 'desc'})}/>
+                          {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
+                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC})}/>
                           }
-                          {this.state.sortViewOrder === 'desc' &&
-                          <FaSortDesc onClick={() => this.setState({sortViewOrder: 'asc'})}/>
+                          {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
+                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC})}/>
                           }
                           <br/>
                           <br/>
@@ -798,6 +762,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={0}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}
@@ -813,6 +778,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 highlightedGene={this.state.highlightedGene}
                                 hoveredPathway={this.state.hoveredPathway}
                                 labelHeight={18}
+                                maxValue={maxValue}
                                 onClick={this.handlePathwaySelect}
                                 onHover={this.handlePathwayHover}
                                 onMouseOut={this.handlePathwayHover}
@@ -829,6 +795,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={1}
                             filter={this.state.filter}
                             labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}

@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import DrawFunctions from '../functions/DrawFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
 import CanvasDrawing from './CanvasDrawing';
 import {getLabelForIndex} from '../functions/CohortFunctions';
+import {isViewGeneExpression} from '../functions/DataFunctions';
 
 function pathwayIndexFromY(y, labelHeight) {
   return Math.round((y - 15) / labelHeight);
@@ -43,7 +43,7 @@ function getPointData(event, props) {
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length);
 
   let pathway = pathways[pathwayIndex];
-  if(filter===VIEW_ENUM.GENE_EXPRESSION){
+  if(isViewGeneExpression(filter)){
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity;
     if(cohortIndex===0){
@@ -53,28 +53,28 @@ function getPointData(event, props) {
       pathway.secondSampleGeneExpressionPathwayActivity = activity ;
     }
   }
-  else
-  if(filter===VIEW_ENUM.REGULON){
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
-    let activity = associatedData[pathwayIndex][sampleIndex].regulonPathwayActivity;
-    if(cohortIndex===0){
-      pathway.firstSampleRegulonPathwayActivity = activity ;
-    }
-    else{
-      pathway.secondSampleRegulonPathwayActivity = activity ;
-    }
-  }
-  else
-  if(filter===VIEW_ENUM.PARADIGM){
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
-    let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
-    if(cohortIndex===0){
-      pathway.firstSampleParadigmPathwayActivity = activity ;
-    }
-    else{
-      pathway.secondSampleParadigmPathwayActivity = activity ;
-    }
-  }
+  // else
+  // if(filter===VIEW_ENUM.REGULON){
+  //   if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+  //   let activity = associatedData[pathwayIndex][sampleIndex].regulonPathwayActivity;
+  //   if(cohortIndex===0){
+  //     pathway.firstSampleRegulonPathwayActivity = activity ;
+  //   }
+  //   else{
+  //     pathway.secondSampleRegulonPathwayActivity = activity ;
+  //   }
+  // }
+  // else
+  // if(filter===VIEW_ENUM.PARADIGM){
+  //   if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
+  //   let activity = associatedData[pathwayIndex][sampleIndex].paradigmPathwayActivity;
+  //   if(cohortIndex===0){
+  //     pathway.firstSampleParadigmPathwayActivity = activity ;
+  //   }
+  //   else{
+  //     pathway.secondSampleParadigmPathwayActivity = activity ;
+  //   }
+  // }
   else {
     if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null ;
     let activity = associatedData[pathwayIndex][sampleIndex];
@@ -112,7 +112,6 @@ function getPointData(event, props) {
  */
 export default class VerticalGeneSetScoresView extends PureComponent {
 
-
     handleHoverOut = () => {
       this.props.onHover(null);
     };
@@ -127,8 +126,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 
     render() {
-
-      let {cohortIndex, labelHeight, pathways, width, associatedData} = this.props;
+      let {cohortIndex, labelHeight, pathways, width, associatedData, maxValue} = this.props;
       if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>;
       }
@@ -151,6 +149,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
             height={totalHeight}
             labelHeight={labelHeight}
             layout={layout}
+            maxValue={maxValue}
             onClick={this.handleClick}
             onHover={this.handleHover}
             onMouseOut={this.handleHoverOut}
@@ -167,6 +166,7 @@ VerticalGeneSetScoresView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
+  maxValue: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
   onHover: PropTypes.any.isRequired,
   onMouseOut: PropTypes.any.isRequired,

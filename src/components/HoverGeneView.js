@@ -5,7 +5,6 @@ import {Chip} from 'react-toolbox';
 import BaseStyle from '../css/base.css';
 import {ScoreBadge} from './ScoreBadge';
 import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
 import {isViewGeneExpression} from '../functions/DataFunctions';
 
 export default class HoverGeneView extends PureComponent {
@@ -33,39 +32,22 @@ export default class HoverGeneView extends PureComponent {
     };
 
   findScore = (data, cohortIndex,filter) => {
-    switch (filter) {
-    case VIEW_ENUM.GENE_EXPRESSION:
-      // return cohortIndex === 0 ? data.pathway.firstGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
-      // shows individual samples if available
+    if(isViewGeneExpression(filter)){
       if(cohortIndex===0){
         return data.pathway.firstSampleGeneExpressionPathwayActivity!==undefined  && data.tissue !=='Header' ? data.pathway.firstSampleGeneExpressionPathwayActivity: data.pathway.firstGeneExpressionPathwayActivity;
       }
       else{
         return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined && data.tissue !=='Header' ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
       }
-    case VIEW_ENUM.REGULON:
-      // shows individual samples if available
-      if(cohortIndex===0){
-        return data.pathway.firstSampleRegulonPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleRegulonPathwayActivity: data.pathway.firstRegulonPathwayActivity;
-      }
-      else{
-        return data.pathway.secondSampleRegulonPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleRegulonPathwayActivity: data.pathway.secondRegulonPathwayActivity;
-      }
-    case VIEW_ENUM.PARADIGM:
-      // shows individual samples if available
-      if(cohortIndex===0){
-        return data.pathway.firstSampleParadigmPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleParadigmPathwayActivity: data.pathway.firstParadigmPathwayActivity;
-      }
-      else{
-        return data.pathway.secondSampleParadigmPathwayActivity!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleParadigmPathwayActivity: data.pathway.secondParadigmPathwayActivity;
-      }
-    default:
+    }
+    else{
       if(cohortIndex===0){
         return data.pathway.firstSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleTotal : data.pathway.firstChiSquared;
       }
       else{
         return data.pathway.secondSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleTotal : data.pathway.secondChiSquared;
       }
+
     }
   };
 
@@ -131,21 +113,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          {view===VIEW_ENUM.PARADIGM &&
-                          <div className={BaseStyle.pathwayChip}>
-                            <strong>ZScore</strong>
-                            <div
-                              className={BaseStyle.scoreBox}
-                              style={{
-                                color:interpolateGeneExpressionFont(data.expression.paradigm)
-                                ,backgroundColor:interpolateGeneExpression(data.expression.paradigm)
-                              }}
-                            >
-                              {data.expression.paradigm.toPrecision(2)}
-                            </div>
-                          </div>
-                          }
-                          { ( view===VIEW_ENUM.GENE_EXPRESSION  || view === VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                          { isViewGeneExpression(view) &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -235,18 +203,7 @@ export default class HoverGeneView extends PureComponent {
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
-                  {view===VIEW_ENUM.PARADIGM &&
-                  <div
-                    className={BaseStyle.scoreBox}
-                    style={{
-                      color: interpolateGeneExpressionFont(data.pathway.paradigmMean),
-                      backgroundColor: interpolateGeneExpression(data.pathway.paradigmMean)
-                    }}
-                  >
-                    {data.pathway.paradigmMean.toPrecision(2)}
-                  </div>
-                  }
-                  { (view===VIEW_ENUM.GENE_EXPRESSION || view===VIEW_ENUM.REGULON) && data.pathway.geneExpressionMean &&
+                  { isViewGeneExpression(view) &&
                   <div
                     className={BaseStyle.scoreBox}
                     style={{
@@ -254,7 +211,7 @@ export default class HoverGeneView extends PureComponent {
                       backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                     }}
                   >
-                    {data.pathway.geneExpressionMean.toPrecision(2)}
+                    {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
                   }
                   <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>

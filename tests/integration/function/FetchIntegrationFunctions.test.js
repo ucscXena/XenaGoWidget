@@ -12,8 +12,13 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.CNV_MUTATION).do( (a) => {
-      expect(a.length).toEqual(136);
-    }).subscribe( () => done(),e => done(logError(e)));
+      return a;
+    }).subscribe( (result) => {
+      expect(result.length).toEqual(136);
+      done();
+    },
+    e => done(logError(e))
+    );
   });
 
   it('Fetch mutation samples for cohort', (done) => {
@@ -22,8 +27,11 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.MUTATION).do( (a) => {
-      expect(a.length).toEqual(142);
-    }).subscribe( () => done(),e => done(logError(e)));
+      return a;
+    }).subscribe( (result) => {
+      expect(result.length).toEqual(142);
+      done();
+    },e => done(logError(e)));
   });
 
   it('Fetch CN samples for cohort', (done) => {
@@ -32,8 +40,11 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.COPY_NUMBER).do( (a) => {
-      expect(a.length).toEqual(579);
-    }).subscribe( () => done(),e => done(logError(e)));
+      return a;
+    }).subscribe( (result) => {
+      expect(result.length).toEqual(579);
+      done();
+    },e => done(logError(e)));
   });
 
   it('Fetch Gene Expression samples for cohort', (done) => {
@@ -42,9 +53,11 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.GENE_EXPRESSION).do( (a) => {
-      // expect(a.length).toEqual(576); // note, this used to be more but sub cohort definitions somehow lessened this
-      expect(a.length).toEqual(574);
-    }).subscribe( () => done(),e => done(logError(e)));
+      return a ;
+    }).subscribe( (result) => {
+      expect(result.length).toEqual(574);
+      done();
+    },e => done(logError(e)));
   });
 
   it('Fetch Paradigm IPL samples for cohort', (done) => {
@@ -53,7 +66,10 @@ describe('Fetch Functions', () => {
     };
     const cohortDetails = getCohortDetails(cohort);
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.PARADIGM).do( (a) => {
-      expect(a.length).toEqual(507);
-    }).subscribe( () => done(),e => done(logError(e)));
+      return a;
+    }).subscribe( (result) => {
+      expect(result.length).toEqual(507);
+      done();
+    },e => done(logError(e)));
   });
 });

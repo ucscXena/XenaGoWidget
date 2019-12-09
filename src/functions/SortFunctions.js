@@ -1,6 +1,8 @@
 import update from 'immutability-helper';
-import {sumTotals, sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
+import { sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from './DataFunctions';
+import {SORT_ENUM} from '../data/SortEnum';
 
 export function transpose(a) {
   // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });
@@ -129,116 +131,21 @@ export function diffSort(prunedColumns,sampleOrder) {
   return returnColumns;
 }
 
-/**
- * Same as the cluster sort, but we don't sort by pathways at all, we just re-order samples
- * @param prunedColumns
- */
-export function clusterSampleSort(prunedColumns) {
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-  const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  summedSamples.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d.index];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
-
-function sortWithIndeces(toSort) {
-  for (var i = 0; i < toSort.length; i++) {
-    toSort[i] = [toSort[i], i];
-  }
-  toSort.sort(function(left, right) {
-    return left[0] < right[0] ? 1 : -1;
-  });
-  toSort.sortIndices = [];
-  for (var j = 0; j < toSort.length; j++) {
-    toSort.sortIndices.push(toSort[j][1]);
-    toSort[j] = toSort[j][0];
-  }
-  return toSort;
-}
-
 export function scorePathway(p,sortBy) {
   switch (sortBy) {
-  case 'Total':
+  case SORT_ENUM.TOTAL:
     return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2);
-  case 'AbsDiff':
+  case SORT_ENUM.CONTRAST_DIFF:
+    // if it a positive, then there is no contrast so multiple by 0.5 to emphasize contrast
+    return ((p.firstGeneExpressionPathwayActivity * p.secondGeneExpressionPathwayActivity) < 0 ? 1 : 0.5) * Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
+  case SORT_ENUM.ABS_DIFF:
     return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
-  case 'Diff':
+  case SORT_ENUM.DIFF:
   default:
     return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2);
   }
 }
 
-/**
- * Sorts based on a selected sample
- * @param prunedColumns
- * @param selectedGeneSet
- * @returns {*}
- */
-export function selectedSampleParadigmActivitySort(prunedColumns, selectedGeneSet) {
-  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
-  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
-  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.paradigmPathwayActivity);
-  sortWithIndeces( selectedData);
-  const sortedIndices = selectedData.sortIndices;
-
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-
-  // for the transposed data sort by sortedIndexes
-  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  sortedIndices.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
-
-/**
- * Sorts based on a selected sample
- * @param prunedColumns
- * @param selectedGeneSet
- * @returns {*}
- */
-export function selectedSampleGeneExpressionActivitySort(prunedColumns, selectedGeneSet) {
-
-  let selectedPathwayIndex = prunedColumns.pathways.findIndex( p => selectedGeneSet.pathway.golabel === p.golabel);
-  if(selectedPathwayIndex<0) selectedPathwayIndex = 0 ;
-  const selectedData = prunedColumns.data[selectedPathwayIndex].map( p => p.geneExpressionPathwayActivity);
-  sortWithIndeces( selectedData);
-  const sortedIndices = selectedData.sortIndices;
-
-  // prunedColumns =
-  // - data = 41 gene sets times N samples
-  // - pathways = 41 gene set descriptions
-  // - samples = N sample descriptions
-  const transposedData = transpose(prunedColumns.data);
-
-  // for the transposed data sort by sortedIndexes
-  // const summedSamples = transposedData.map((d, index) => ({ index, score: sumTotals(d) })).sort((a, b) => b.score - a.score);
-  const sortedTransposedData = [];
-  sortedIndices.forEach((d, i) => {
-    sortedTransposedData[i] = transposedData[d];
-  });
-  const unTransposedData = transpose(sortedTransposedData);
-  const returnColumns = prunedColumns;
-  returnColumns.data = unTransposedData;
-  return returnColumns;
-}
 
 function generateMissingColumns(pathways, geneList) {
   const pathwayGenes = pathways.map((p) => p.gene[0]);
@@ -312,10 +219,26 @@ export function synchronizedSort(prunedColumns, geneList, rescore,view) {
   };
 }
 
+/**
+ * Lookup the samples for both and create an index based on the first sample set
+ * @param sortedSample
+ * @param geneDatum
+ * @returns {*}
+ */
 function sortDataBySampleOrder(sortedSample, geneDatum) {
-  // lookup the samples for both and create an index based on the first sample set
   const sampleIndices = geneDatum.samples.map( s => sortedSample.indexOf(s) );
-  const transposedData = transpose(geneDatum.paradigm);
+  let transposedData  = transpose(geneDatum.geneExpression);
+  // transposedData =
+  // switch(view){
+  // case VIEW_ENUM.PARADIGM:
+  // case VIEW_ENUM.REGULON:
+  // case VIEW_ENUM.GENE_EXPRESSION:
+  //   transposedData = transpose(geneDatum.geneExpression);
+  //   break;
+  // default:
+  //   // eslint-disable-next-line no-console
+  //   console.error('not sure what to do here',view,geneDatum,sortedSample);
+  // }
   let sortedData = new Array(transposedData.length);
   for(let dataIndex in transposedData){
     sortedData[dataIndex] = transposedData[sampleIndices[dataIndex]];
@@ -326,10 +249,10 @@ function sortDataBySampleOrder(sortedSample, geneDatum) {
   });
 }
 
-export function sortGeneDataWithSamples(sortedSamples,geneData,filter){
+export function sortGeneDataWithSamples(sortedSamples,geneData){
   return [
-    sortDataBySampleOrder(sortedSamples[0],geneData[0],filter),
-    sortDataBySampleOrder(sortedSamples[1],geneData[1],filter),
+    sortDataBySampleOrder(sortedSamples[0],geneData[0]),
+    sortDataBySampleOrder(sortedSamples[1],geneData[1]),
   ];
 }
 
@@ -346,10 +269,10 @@ function sortByIndexOrder(associatedDatum, indexedPathway) {
  * For each pathway,
  * @param selectedPathway
  * @param associatedData
- * @param filter
+ * @param view
  * @returns {null|*}
  */
-export function sortAssociatedData(selectedPathway,associatedData,filter){
+export function sortAssociatedData(selectedPathway,associatedData,view){
 
   // find the selected pathway and sor that sample based on the sample . .
   const realizedPathway = associatedData.filter( d => d[0].golabel === selectedPathway.golabel );
@@ -357,19 +280,10 @@ export function sortAssociatedData(selectedPathway,associatedData,filter){
     p.originalIndex = i ;
     return p ;
   }).sort( (a,b) => {
-    // TODO: map for other filters
-    if(filter===VIEW_ENUM.PARADIGM){
-      return b.paradigmPathwayActivity - a.paradigmPathwayActivity;
-    }
-    else
-    if(filter===VIEW_ENUM.REGULON){
-      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity !== 'NaN') return -1 ;
-      if(b.regulonPathwayActivity !== 'NaN' && a.regulonPathwayActivity === 'NaN') return 1 ;
-      if(b.regulonPathwayActivity === 'NaN' && a.regulonPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression ;
-      return b.regulonPathwayActivity - a.regulonPathwayActivity;
-    }
-    else
-    if(filter===VIEW_ENUM.GENE_EXPRESSION){
+    if(isViewGeneExpression(view)){
+      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity !== 'NaN') return -1 ;
+      if(b.geneExpressionPathwayActivity !== 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return 1 ;
+      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression ;
       return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity;
     }
     else{

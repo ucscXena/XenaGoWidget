@@ -7,9 +7,8 @@ import {
   getHighlightedColor
 } from '../functions/ColorFunctions';
 import * as d3 from 'd3';
-import {scoreData} from '../functions/DataFunctions';
+import {isViewGeneExpression, scoreData} from '../functions/DataFunctions';
 import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
 
 let interpolate ;
 const highColor = '#1A535C';
@@ -71,12 +70,7 @@ export class HeaderLabel extends PureComponent {
     render() {
       let {width, filter, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(filter===VIEW_ENUM.PARADIGM) {
-        colorDensity = item.paradigmMean;
-        interpolate = (score) => interpolateGeneExpressionFunction(score);
-      }
-      else
-      if(filter===VIEW_ENUM.GENE_EXPRESSION || filter === VIEW_ENUM.REGULON) {
+      if(isViewGeneExpression(filter)) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
