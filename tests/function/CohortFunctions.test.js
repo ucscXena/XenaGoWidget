@@ -92,7 +92,11 @@ describe('Test Cohorts', () => {
   });
 
   it('Get Cohort Data',() => {
-    expect(fetchCohortData()).toEqual(TestDefaultCohortData);
+    const testData = fetchCohortData();
+    // NOTE: only some of the data pints are fixed, which is what we are testing for
+    expect(testData['TCGA Adrenocortical Cancer (ACC)']).toEqual(TestDefaultCohortData['TCGA Adrenocortical Cancer (ACC)']);
+    expect(testData['TCGA Lung Adenocarcinoma (LUAD)']).toEqual(TestDefaultCohortData['TCGA Lung Adenocarcinoma (LUAD)']);
+    expect(testData['TCGA Ovarian Cancer (OV)']).toEqual(TestDefaultCohortData['TCGA Ovarian Cancer (OV)']);
   });
 
   it('Get Genes for Pathways',() => {

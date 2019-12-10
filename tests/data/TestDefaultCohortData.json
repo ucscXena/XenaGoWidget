@@ -37,7 +37,7 @@
   },
   {
     "name": "TCGA Adrenocortical Cancer (ACC)",
-    "mutationDataSetId": "TCGA.ACC.sampleMap/mutation_curated_broad",
+    "mutationDataSetId": "mc3/ACC_mc3.txt",
     "copyNumberDataSetId": "TCGA.ACC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -73,7 +73,7 @@
   },
   {
     "name": "TCGA Bile Duct Cancer (CHOL)",
-    "mutationDataSetId": "TCGA.CHOL.sampleMap/mutation_broad",
+    "mutationDataSetId": "mc3/CHOL_mc3.txt",
     "copyNumberDataSetId": "TCGA.CHOL.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -109,7 +109,7 @@
   },
   {
     "name": "TCGA Bladder Cancer (BLCA)",
-    "mutationDataSetId": "TCGA.BLCA.sampleMap/mutation_broad",
+    "mutationDataSetId": "mc3/BLCA_mc3.txt",
     "copyNumberDataSetId": "TCGA.BLCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -145,7 +145,7 @@
   },
   {
     "name": "TCGA Breast Cancer (BRCA)",
-    "mutationDataSetId": "TCGA.BRCA.sampleMap/mutation_curated_wustl",
+    "mutationDataSetId": "mc3/BRCA_mc3.txt",
     "copyNumberDataSetId": "TCGA.BRCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -181,7 +181,7 @@
   },
   {
     "name": "TCGA Cervical Cancer (CESC)",
-    "mutationDataSetId": "TCGA.CESC.sampleMap/mutation_curated_wustl",
+    "mutationDataSetId": "mc3/CESC_mc3.txt",
     "copyNumberDataSetId": "TCGA.CESC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -217,7 +217,7 @@
   },
   {
     "name": "TCGA Colon Cancer (COAD)",
-    "mutationDataSetId": "TCGA.COAD.sampleMap/mutation_bcm",
+    "mutationDataSetId": "mc3/COAD_mc3.txt",
     "copyNumberDataSetId": "TCGA.COAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -253,7 +253,7 @@
   },
   {
     "name": "TCGA Endometrioid Cancer (UCEC)",
-    "mutationDataSetId": "TCGA.UCEC.sampleMap/mutation_wustl",
+    "mutationDataSetId": "mc3/UCEC_mc3.txt",
     "copyNumberDataSetId": "TCGA.UCEC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -617,7 +617,7 @@
       "dataset": "regulon_activity_matrix_tcga_luad.tsv",
       "host": "https://xenago.xenahubs.net"
     },
-    "mutationDataSetId": "TCGA.LUAD.sampleMap/mutation_broad",
+    "mutationDataSetId": "mc3/LUAD_mc3.txt",
     "copyNumberDataSetId": "TCGA.LUAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
@@ -797,7 +797,7 @@
   },
   {
     "name": "TCGA Ovarian Cancer (OV)",
-    "mutationDataSetId": "TCGA.OV.sampleMap/mutation_wustl",
+    "mutationDataSetId": "mc3/OV_mc3.txt",
     "copyNumberDataSetId": "TCGA.OV.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
