@@ -5,6 +5,11 @@ import {VIEW_ENUM} from '../../../src/data/ViewEnum';
 import {logError} from '../../ErrorLogger';
 
 describe('Fetch Functions', () => {
+  beforeEach(function(done) {
+    window.setTimeout(function() {
+      done();
+    }, 0);
+  });
 
   it('Fetch all samples for cohort', (done) => {
     const cohort = {
@@ -14,7 +19,7 @@ describe('Fetch Functions', () => {
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.CNV_MUTATION).do( (a) => {
       return a;
     }).subscribe( (result) => {
-      expect(result.length).toEqual(136);
+      expect(result.length).toEqual(62);
       done();
     },
     e => done(logError(e))
@@ -29,7 +34,7 @@ describe('Fetch Functions', () => {
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.MUTATION).do( (a) => {
       return a;
     }).subscribe( (result) => {
-      expect(result.length).toEqual(142);
+      expect(result.length).toEqual(65);
       done();
     },e => done(logError(e)));
   });
