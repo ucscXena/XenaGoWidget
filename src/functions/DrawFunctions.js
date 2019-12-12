@@ -10,7 +10,8 @@ import {
 } from './ColorFunctions';
 import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
 import * as d3 from 'd3';
-import {FILTER_ENUM} from '../functions/FilterFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
+import {isViewGeneExpression} from './DataFunctions';
 
 function clearScreen(vg, width, height) {
   vg.save();
@@ -65,19 +66,24 @@ function regionColor(data, type) {
 }
 
 export function getColorArray(colorString){
-  return colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim()));
+  return colorString ? colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim())) : null;
 }
 
 export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
+export const interpolateGenesetScoreFunction = max => d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
 
-export let interpolateGeneExpression = (score) => interpolateGeneExpressionFunction(score);
+
+export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score);
 export let interpolateGeneExpressionFont = (score) => {
+  if(score==='NaN'){
+    return 'black';
+  }
   let colorArray = getColorArray(interpolateGeneExpressionFunction(score));
-  return colorArray[0]+colorArray[2]>255 ? 'black' : 'white';
+  return colorArray && colorArray[0]+colorArray[2]>255 ? 'black' : 'white';
 };
 
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
-  labelHeight, cohortIndex,filter) {
+  labelHeight, cohortIndex,view) {
   const height = totalHeight - labelHeight;
   const tissueCount = data[0].length;
   const regions = findRegions(height, tissueCount);
@@ -106,8 +112,8 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
-      if(filter===FILTER_ENUM.GENE_EXPRESSION){
-        const geneExpressionScore = sumDataByType(d, 'geneExpression');
+      if(isViewGeneExpression(view)){
+        const geneExpressionScore = meanDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;
@@ -182,14 +188,11 @@ function findPathwayData(pathwayWidth, count) {
   return regions;
 }
 
-
-function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex,filter) {
-
+function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex, view, maxValue) {
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
-  const colorFilter = filter === FILTER_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
-
+  const colorFilter = view === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
 
   layout.forEach((el, i) => {
     //     // TODO: may be faster to transform the whole data cohort at once
@@ -204,14 +207,14 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       const d = rowData.slice(r.start, r.end + 1);
       //
       const pxRow = el.start * 4 * img.width; // first column and row in the block
-      if(filter===FILTER_ENUM.GENE_EXPRESSION){
+      if(isViewGeneExpression(view)){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
         const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
         for (let xPos = 0; xPos < r.width; ++xPos) {
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [0,0,0] : getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
+            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue * 1.5)(geneExpressionScore));
             img.data[l] = colorArray[0];
             img.data[l + 1] = colorArray[1];
             img.data[l + 2] = colorArray[2];
@@ -249,7 +252,6 @@ export default {
       width, height, layout, cohortIndex, associatedData, filter
     } = props;
 
-
     clearScreen(vg, width, height);
     if (associatedData.length === 0) {
       return;
@@ -259,11 +261,12 @@ export default {
 
   drawGeneSetView(vg, props) {
     const {
-      width, layout, labelHeight, cohortIndex, associatedData,filter
+      width, layout, labelHeight, cohortIndex, associatedData, filter, maxValue
     } = props;
     const totalHeight = labelHeight * layout.length;
     clearScreen(vg, width, totalHeight);
-    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter);
+    if(associatedData.length!==layout.length) return ;
+    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter, maxValue);
   },
 
 };

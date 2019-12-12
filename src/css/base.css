@@ -282,3 +282,10 @@ div[data-react-toolbox=dialog] > section{
     -webkit-touch-callout: none;
     user-select: none;
 }
+
+.scoreBox{
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: inline;
+}

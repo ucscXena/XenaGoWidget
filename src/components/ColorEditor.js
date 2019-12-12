@@ -42,8 +42,9 @@ export class ColorEditor extends PureComponent {
           onEscKeyDown={onColorToggle}
           onOverlayClick={onColorToggle}
           title='Edit Colors'
+          type='small'
         >
-          <table width="100%">
+          <table width="400px">
             <tbody>
               <tr>
                 <td>

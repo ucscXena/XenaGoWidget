@@ -20,6 +20,7 @@ export default class LabelSet extends PureComponent {
     const {
       pathways,
       layout,
+      filter,
       highlightedGene,
       labelHeight,
       height,
@@ -86,6 +87,7 @@ export default class LabelSet extends PureComponent {
                         )}
             <HeaderLabel
               colorSettings={colorSettings}
+              filter={filter}
               geneLength={geneLength}
               highlighted={highlighted}
               item={d}
@@ -107,6 +109,7 @@ export default class LabelSet extends PureComponent {
 LabelSet.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   colorSettings: PropTypes.any.isRequired,
+  filter: PropTypes.any.isRequired,
   height: PropTypes.any.isRequired,
   highlightedGene: PropTypes.any,
   labelHeight: PropTypes.any.isRequired,

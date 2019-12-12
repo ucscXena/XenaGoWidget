@@ -49,6 +49,14 @@ export function partition(n, m) {
   }));
 }
 
+export function sumParadigm(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; ++i) {
+    total += arr[i].paradigm  ? arr[i].paradigm : 0;
+  }
+  return total;
+}
+
 export function sumGeneExpression(arr) {
   let total = 0;
   for (let i = 0; i < arr.length; ++i) {
@@ -77,35 +85,4 @@ export function sumTotals(arr) {
 export function intersection(a, b) {
   const sa = new Set(a);
   return b.filter((x) => sa.has(x));
-}
-
-// TODO: remove
-export function intersectLists(lists) {
-  const result = [];
-
-  if (arguments.length === 1) {
-    lists = arguments[0];
-  } else {
-    lists = arguments;
-  }
-
-  for (let i = 0; i < lists.length; i++) {
-    const currentList = lists[i];
-    for (let y = 0; y < currentList.length; y++) {
-      const currentValue = currentList[y];
-      if (result.indexOf(currentValue) === -1) {
-        let existsInAll = true;
-        for (let x = 0; x < lists.length; x++) {
-          if (lists[x].indexOf(currentValue) === -1) {
-            existsInAll = false;
-            break;
-          }
-        }
-        if (existsInAll) {
-          result.push(currentValue);
-        }
-      }
-    }
-  }
-  return result;
 }

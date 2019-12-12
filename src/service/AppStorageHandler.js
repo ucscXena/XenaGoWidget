@@ -1,8 +1,7 @@
 import update from 'immutability-helper';
 import DefaultPathWays from '../data/genesets/tgac';
-import { SortType } from '../functions/SortFunctions';
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions';
-import {FILTER_ENUM} from '../functions/FilterFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 import {exception} from 'react-ga';
 
 
@@ -146,51 +145,33 @@ export class AppStorageHandler {
 
   static isValidFilterState(filterState) {
     switch (filterState) {
-    case FILTER_ENUM.COPY_NUMBER:
-    case FILTER_ENUM.MUTATION:
-    case FILTER_ENUM.CNV_MUTATION:
-    case FILTER_ENUM.GENE_EXPRESSION:
+    case VIEW_ENUM.COPY_NUMBER:
+    case VIEW_ENUM.MUTATION:
+    case VIEW_ENUM.CNV_MUTATION:
+    case VIEW_ENUM.GENE_EXPRESSION:
+    case VIEW_ENUM.REGULON:
       return true;
     }
     return false ;
   }
 
-  static storeFilterState(selected, cohortIndex) {
+  static storeFilterState(selected) {
     if (!selected) return;
     const appState = AppStorageHandler.getAppState();
     if (!appState.filterState) {
-      appState.filterState = [];
+      appState.filterState = undefined ;
     }
     // TODO: remove this hack
-    appState.filterState[cohortIndex] = selected;
+    appState.filterState = selected;
     AppStorageHandler.storeAppState(appState);
   }
 
-  static storeFilterStateArray(array){
-    if(array.length!==2) {
-      throw new exception('Must be an array of size two');
-    }
-    this.storeFilterState(array[0],0);
-    this.storeFilterState(array[1],1);
-  }
-
-  static getFilterState(cohortIndex) {
+  static getFilterState() {
     const appState = AppStorageHandler.getAppState();
-    if (appState && appState.filterState && appState.filterState[cohortIndex] && this.isValidFilterState(appState.filterState[cohortIndex])) {
-      return appState.filterState[cohortIndex];
+    if (appState && appState.filterState  && this.isValidFilterState(appState.filterState)) {
+      return appState.filterState;
     }
-    return FILTER_ENUM.GENE_EXPRESSION;
-  }
-
-  static getSortState() {
-    const appState = AppStorageHandler.getAppState();
-    // diff or cluster
-    if (!appState.sortState) {
-      appState.sortState = SortType.DIFF;
-      AppStorageHandler.storeAppState(appState);
-    }
-    // TODO: remove this hack
-    return appState.sortState;
+    return VIEW_ENUM.GENE_EXPRESSION;
   }
 
   static storeSortState(sortState) {

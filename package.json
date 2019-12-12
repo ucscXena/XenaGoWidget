@@ -1,6 +1,6 @@
 {
   "name": "ucsc-xena-geneset",
-  "version": "0.3.0-SNAPSHOT",
+  "version": "0.3.3-SNAPSHOT",
   "description": "Xena Gene Set Viewer",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -18,11 +18,14 @@
     "build": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo",
-    "test": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react",
-    "lint": "eslint --ignore-pattern src/data src tests/components tests/function ",
+    "test": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --timeout 20000",
+    "lint": "eslint --ignore-pattern src/data src tests/integration/render tests/integration/function tests/function ",
     "test:coverage": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --coverage",
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --server"
   },
+   "pre-commit": [
+    "lint"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
@@ -36,6 +39,7 @@
     "material-responsive-grid": "^1.1.1",
     "postcss": "^6.0.21",
     "postcss-cssnext": "^3.1.0",
+    "pre-commit": "^1.2.2",
     "prop-types": "latest",
     "query-string": "^6.8.3",
     "react-bootstrap": "^0.32.1",

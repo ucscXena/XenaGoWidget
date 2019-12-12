@@ -7,7 +7,7 @@ import {
   getHighlightedColor
 } from '../functions/ColorFunctions';
 import * as d3 from 'd3';
-import {scoreData} from '../functions/DataFunctions';
+import {isViewGeneExpression, scoreData} from '../functions/DataFunctions';
 import {interpolateGeneExpressionFunction} from '../functions/DrawFunctions';
 
 let interpolate ;
@@ -55,7 +55,8 @@ export class HeaderLabel extends PureComponent {
         top: labelOffset,
         left: left,
         height: labelHeight,
-        width: width, backgroundColor: colorString,
+        width: width,
+        backgroundColor: colorString,
         strokeWidth: 1,
         cursor: 'crosshair',
       };
@@ -67,9 +68,9 @@ export class HeaderLabel extends PureComponent {
     };
 
     render() {
-      let {width, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
+      let {width, filter, labelString, labelHeight, item, geneLength, numSamples, colorSettings} = this.props;
       let colorDensity ;
-      if(item.geneExpressionMean) {
+      if(isViewGeneExpression(filter)) {
         colorDensity = item.geneExpressionMean;
         interpolate = (score) => interpolateGeneExpressionFunction(score);
       }
@@ -82,10 +83,14 @@ export class HeaderLabel extends PureComponent {
           style={this.style(colorDensity)}
         >
           <text
-            fill={this.fontColor(colorDensity)} fontFamily='Arial' fontSize={10} transform='rotate(-90)' x={-labelHeight + 4}
+            fill={this.fontColor(colorDensity)}
+            fontFamily='Arial'
+            fontSize={10}
+            transform='rotate(-90)'
+            x={-labelHeight + 4}
             y={10}
           >
-            {width < 10 ? '' : labelString}
+            {width < 10 ? '' : labelString.replace(/_/g,' ')}
           </text>
         </svg>
       );
@@ -94,6 +99,7 @@ export class HeaderLabel extends PureComponent {
 
 HeaderLabel.propTypes = {
   colorSettings: PropTypes.any.isRequired,
+  filter: PropTypes.any.isRequired,
   geneLength: PropTypes.any.isRequired,
   highlighted: PropTypes.any.isRequired,
   item: PropTypes.any.isRequired,
