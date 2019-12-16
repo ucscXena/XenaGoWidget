@@ -102,7 +102,6 @@ export default class XenaGoViewer extends PureComponent {
                           />
                           <ViewSelector
                             allowableViews={allowableViews}
-                            geneList={geneList}
                             onChange={this.handleChangeFilter}
                             view={filter}
                           />

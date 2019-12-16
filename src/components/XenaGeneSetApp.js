@@ -37,6 +37,7 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
+import {ViewSelector} from './ViewSelector';
 
 
 const VIEWER_HEIGHT = 500;
@@ -668,11 +669,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td>
                   <table>
                     <tbody>
-                      {isViewGeneExpression(this.state.filter) &&
                       <tr>
-                        <td colSpan={3}>
+                        <td colSpan={2}>
                           <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
-                            Edit Gene Sets&nbsp;
+                            Gene Sets&nbsp;
                             {this.state.pathways &&
                             <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
@@ -680,7 +680,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                           </Button>
                           <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
-                            Edit Cohorts&nbsp;
+                            Cohorts&nbsp;
                             {this.state.pathways &&
                             <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
@@ -697,67 +697,63 @@ export default class XenaGeneSetApp extends PureComponent {
                             Reset
                           </Button>
                         </td>
+                        <td>
+                          <ViewSelector
+                            allowableViews={allowableViews}
+                            onChange={this.handleChangeFilter}
+                            view={this.state.filter}
+                          />
+                        </td>
                       </tr>
-                      }
                       {isViewGeneExpression(this.state.filter) &&
                       <tr>
-                        <td className={BaseStyle.autoSortBox} colSpan={2}>
-                          Sort on Cohort Change
-                          <input
-                            checked={this.state.automaticallyReloadPathways}
-                            onChange={() => this.setState({automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
-                            type='checkbox'
-                          />
-                          <br/>
+                        <td className={BaseStyle.autoSortBox} colSpan={3}>
+                          <div className={BaseStyle.headerBox}>
+                            Gene Sets
+                          </div>
+                          <div className={BaseStyle.containerBox}>
                           Limit
-                          <input
-                            onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
-                            value={this.state.geneSetLimit}
-                          />
-                          Filter Gene Sets by
-                          <select
-                            onChange={(event) => this.setState({filterBy: event.target.value})}
-                            value={this.state.filterBy}
-                          >
-                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                            <option value={SORT_ENUM.TOTAL}>Total</option>
-                          </select>
-                          {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
+                            <input
+                              onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
+                              value={this.state.geneSetLimit}
+                            />
+                          </div>
+                          <div className={BaseStyle.containerBox}>
+                          Filter by
+                            <select
+                              onChange={(event) => this.setState({filterBy: event.target.value})}
+                              value={this.state.filterBy}
+                            >
+                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                              <option value={SORT_ENUM.TOTAL}>Total</option>
+                            </select>
+                            {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
-                          }
-                          {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
+                            }
+                            {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
-                          }
-                          <br/>
-                          Sort Visible Gene Sets by
-                          <select
-                            onChange={(event) => this.setState({sortViewBy: event.target.value})}
-                            value={this.state.sortViewBy}
-                          >
-                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                            <option value={SORT_ENUM.TOTAL}>Total</option>
-                          </select>
-                          {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
+                            }
+                          </div>
+                          <div className={BaseStyle.containerBox}>
+                          Sort by
+                            <select
+                              onChange={(event) => this.setState({sortViewBy: event.target.value})}
+                              value={this.state.sortViewBy}
+                            >
+                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                              <option value={SORT_ENUM.TOTAL}>Total</option>
+                            </select>
+                            {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
                           <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC})}/>
-                          }
-                          {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
+                            }
+                            {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC})}/>
-                          }
-                          <br/>
-                          <br/>
-                          <Button
-                            onClick={() => {
-                              this.setState({
-                                fetch: true,
-                                currentLoadState: LOAD_STATE.LOADING,
-                                reloadPathways: true,
-                              });
-                            }} primary raised
-                          >Sort Gene Sets Now</Button>
+                            }
+                          </div>
                         </td>
                       </tr>
                       }

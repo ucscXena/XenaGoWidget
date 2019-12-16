@@ -34,7 +34,7 @@ export class CohortEditorSelector extends PureComponent {
               View:
               <select
                 onChange={(event) => this.setState({filter: [event.target.value,event.target.value]})}
-                value={this.props.filter}
+                value={this.props.view}
               >
                 {
                   Object.entries(VIEW_ENUM).map( f => {
