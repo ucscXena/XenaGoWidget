@@ -721,7 +721,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           <div className={BaseStyle.containerBox}>
                           Filter by
                             <select
-                              onChange={(event) => this.setState({filterBy: event.target.value})}
+                              onChange={(event) => this.setState({filterBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
                               value={this.state.filterBy}
                             >
                               <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
@@ -730,16 +730,16 @@ export default class XenaGeneSetApp extends PureComponent {
                               <option value={SORT_ENUM.TOTAL}>Total</option>
                             </select>
                             {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
-                          <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
+                          <FaSortAsc onClick={() => this.setState({filterOrder: 'desc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                             {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
-                          <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
+                          <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                           </div>
                           <div className={BaseStyle.containerBox}>
                           Sort by
                             <select
-                              onChange={(event) => this.setState({sortViewBy: event.target.value})}
+                              onChange={(event) => this.setState({sortViewBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
                               value={this.state.sortViewBy}
                             >
                               <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
@@ -748,10 +748,10 @@ export default class XenaGeneSetApp extends PureComponent {
                               <option value={SORT_ENUM.TOTAL}>Total</option>
                             </select>
                             {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
-                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC})}/>
+                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                             {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
-                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC})}/>
+                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                           </div>
                         </td>
