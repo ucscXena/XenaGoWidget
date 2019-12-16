@@ -4,7 +4,7 @@ import {Col, Grid, Row} from 'react-bootstrap';
 import React from 'react';
 import BaseStyle from '../css/base.css';
 import Button from 'react-toolbox/lib/button';
-import {FILTER_ENUM} from '../functions/FilterFunctions';
+import {VIEW_ENUM} from '../data/ViewEnum';
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -31,23 +31,19 @@ export class CohortEditorSelector extends PureComponent {
               <Button primary raised>Edit Cohorts</Button>
             </Col>
             <Col className={BaseStyle.inlineButton} md={2}>
-              Filter:
+              View:
               <select
                 onChange={(event) => this.setState({filter: [event.target.value,event.target.value]})}
                 value={this.props.filter}
               >
                 {
-                  Object.entries(FILTER_ENUM).map( f => {
+                  Object.entries(VIEW_ENUM).map( f => {
                     return (
                       <option key={f[0]} value={f[1]}>{f[0]}</option>
                     );
                   })
                 }
               </select>
-              {/*<Dropdown className={BaseStyle.inlineButton}*/}
-              {/*  label={this.state.filter[0]}*/}
-              {/*  onChange={this.handleChangeFilter} source={getLabelValues()} style={{marginTop:0}} value={this.state.filter[0]}*/}
-              {/*/>*/}
             </Col>
           </Row>
         </Grid>
@@ -57,7 +53,7 @@ export class CohortEditorSelector extends PureComponent {
 }
 CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   onChangeCohorts: PropTypes.any.isRequired,
-  onChangeFilter: PropTypes.any.isRequired,
+  onChangeView: PropTypes.any.isRequired,
+  view: PropTypes.any.isRequired,
 };

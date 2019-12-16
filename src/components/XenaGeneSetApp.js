@@ -28,17 +28,15 @@ import update from 'immutability-helper';
 import {
   scorePathway, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
-import VerticalLegend from './VerticalLegend';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
-import {DetailedLegend} from './DetailedLegend';
-import {GeneExpressionLegend} from './GeneExpressionLegend';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
+import {CohortEditorSelector} from './CohortEditorSelector';
 
 
 const VIEWER_HEIGHT = 500;
@@ -87,6 +85,7 @@ export default class XenaGeneSetApp extends PureComponent {
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
+      showCohortEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
       sortViewOrder:SORT_ORDER_ENUM.DESC,
@@ -631,6 +630,22 @@ export default class XenaGeneSetApp extends PureComponent {
             onColorChange={this.handleColorChange}
             onColorToggle={this.handleColorToggle}
           />
+          {this.state.pathways && this.state.selectedCohort &&
+          <Dialog
+            active={this.state.showCohortEditor}
+            onEscKeyDown={() => this.setState({showCohortEditor:false})}
+            onOverlayClick={() => this.setState({showCohortEditor:false})}
+            title="Gene Set Editor"
+          >
+            <CohortEditorSelector
+              cohort={this.state.selectedCohort}
+              onCancelCohortEdit={() => this.setState({showCohortEditor:false})}
+              onChangeCohorts={() => console.log('cohorts changed')}
+              onChangeView={() => console.log('views changed')}
+              view={this.state.filter}
+            />
+          </Dialog>
+          }
           {this.state.pathways && this.state.associatedData &&
             <Dialog
               active={this.state.showGeneSetSearch}
@@ -653,15 +668,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td>
                   <table>
                     <tbody>
-                      <tr>
-                        <td colSpan={1}>
-                          <VerticalLegend/>
-                        </td>
-                        <td colSpan={1}>
-                          { !isViewGeneExpression(this.state.filter) && <DetailedLegend/>}
-                          { isViewGeneExpression(this.state.filter) && <GeneExpressionLegend/>}
-                        </td>
-                      </tr>
                       {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td colSpan={3}>
@@ -672,7 +678,14 @@ export default class XenaGeneSetApp extends PureComponent {
                               ({this.state.pathways.length})
                             </div>
                             }
-
+                          </Button>
+                          <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
+                            Edit Cohorts&nbsp;
+                            {this.state.pathways &&
+                            <div style={{display: 'inline'}}>
+                              ({this.state.pathways.length})
+                            </div>
+                            }
                           </Button>
                           <Button
                             onClick={() => {
