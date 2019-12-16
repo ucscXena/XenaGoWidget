@@ -37,7 +37,6 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
-import {ViewSelector} from './ViewSelector';
 
 
 const VIEWER_HEIGHT = 500;
@@ -155,6 +154,8 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     );
   };
+
+
 
   handleCombinedCohortData = (input) => {
     let {
@@ -452,8 +453,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
-    handleChangeFilter = (newView, cohortIndex) => {
-      AppStorageHandler.storeFilterState(newView, cohortIndex);
+    handleChangeFilter = (newView) => {
+      AppStorageHandler.storeFilterState(newView);
 
       this.setState( {
         filter:newView,
@@ -463,6 +464,10 @@ export default class XenaGeneSetApp extends PureComponent {
       );
 
     };
+
+  handleChangeTopFilter = (event) =>  {
+    this.handleChangeFilter(event.target.value);
+  };
 
 
   handleVersusAll = (selectedSubCohort,cohortSourceIndex) => {
@@ -666,7 +671,7 @@ export default class XenaGeneSetApp extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td>
+                <td  valign='top'>
                   <table>
                     <tbody>
                       <tr>
@@ -680,12 +685,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                           </Button>
                           <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
-                            Cohorts&nbsp;
-                            {this.state.pathways &&
-                            <div style={{display: 'inline'}}>
-                              ({this.state.pathways.length})
-                            </div>
-                            }
+                            Cohorts
                           </Button>
                           <Button
                             onClick={() => {
@@ -698,11 +698,28 @@ export default class XenaGeneSetApp extends PureComponent {
                           </Button>
                         </td>
                         <td>
-                          <ViewSelector
-                            allowableViews={allowableViews}
-                            onChange={this.handleChangeFilter}
-                            view={this.state.filter}
-                          />
+                          <select
+                            className={BaseStyle.softflow}
+                            onChange={this.handleChangeTopFilter}
+                            style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                            value={this.state.filter}
+                          >
+                            {
+                              allowableViews.map(c => {
+                                console.log(c);
+                                return (
+                                  <option key={c} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })
+                            }
+                          </select>
+                          {/*<ViewSelector*/}
+                          {/*  allowableViews={allowableViews}*/}
+                          {/*  onChange={this.handleChangeFilter}*/}
+                          {/*  view={this.state.filter}*/}
+                          {/*/>*/}
                         </td>
                       </tr>
                       {isViewGeneExpression(this.state.filter) &&
@@ -737,7 +754,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                           </div>
                           <div className={BaseStyle.containerBox}>
-                          Sort by
+                          Sort View by
                             <select
                               onChange={(event) => this.setState({sortViewBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
                               value={this.state.sortViewBy}
