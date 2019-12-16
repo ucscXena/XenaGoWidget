@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
-import {CohortSelector} from './CohortSelector';
+// import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
@@ -12,7 +12,6 @@ import {
   getGenesForPathways,
 } from '../functions/CohortFunctions';
 import {partition} from '../functions/MathFunctions';
-import {ViewSelector} from './ViewSelector';
 const MIN_WIDTH = 400;
 const MIN_COL_WIDTH = 12;
 
@@ -44,26 +43,26 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onGeneHover(geneHoverProps);
 
     };
-
-    handleChangeFilter = (filter) => {
-      this.props.onChangeFilter(filter,this.props.cohortIndex);
-    };
-
-    handleSelectCohort = (selected) => {
-      this.props.onChangeCohort(selected,this.props.cohortIndex);
-    };
-
-    handleSelectSubCohort = (subCohortSelected) => {
-      this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
-    };
+    //
+    // handleChangeFilter = (filter) => {
+    //   this.props.onChangeFilter(filter,this.props.cohortIndex);
+    // };
+    //
+    // handleSelectCohort = (selected) => {
+    //   this.props.onChangeCohort(selected,this.props.cohortIndex);
+    // };
+    //
+    // handleSelectSubCohort = (subCohortSelected) => {
+    //   this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
+    // };
 
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
-      let {allowableViews, renderHeight, renderOffset, cohortIndex,selectedCohort,filter,
+      let {renderHeight, renderOffset, cohortIndex,filter,
         geneDataStats, geneHoverData, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData, swapCohorts, copyCohorts, onVersusAll,
+        pathwayData,
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -85,26 +84,26 @@ export default class XenaGoViewer extends PureComponent {
               {geneDataStats && geneDataStats.geneExpression!==undefined &&
                     <tr>
                       <td
-                        style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
+                        style={{paddingRight: 20, paddingLeft: 20, paddingTop: cohortIndex===0 ? 0 : 100, paddingBottom: 0}}
                         valign="top"
                       >
-                        <Card style={{height: 400, width: style.gene.columnWidth, marginTop: 5}}>
-                          <CohortSelector
-                            cohortIndex={cohortIndex}
-                            copyCohorts={copyCohorts}
-                            filter={filter}
-                            filterCounts={geneDataStats.filterCounts}
-                            onChange={this.handleSelectCohort}
-                            onChangeSubCohort={this.handleSelectSubCohort}
-                            onVersusAll={onVersusAll}
-                            selectedCohort={selectedCohort}
-                            swapCohorts={swapCohorts}
-                          />
-                          <ViewSelector
-                            allowableViews={allowableViews}
-                            onChange={this.handleChangeFilter}
-                            view={filter}
-                          />
+                        <Card style={{height: 200, width: style.gene.columnWidth, marginTop: 5}}>
+                          {/*<CohortSelector*/}
+                          {/*  cohortIndex={cohortIndex}*/}
+                          {/*  copyCohorts={copyCohorts}*/}
+                          {/*  filter={filter}*/}
+                          {/*  filterCounts={geneDataStats.filterCounts}*/}
+                          {/*  onChange={this.handleSelectCohort}*/}
+                          {/*  onChangeSubCohort={this.handleSelectSubCohort}*/}
+                          {/*  onVersusAll={onVersusAll}*/}
+                          {/*  selectedCohort={selectedCohort}*/}
+                          {/*  swapCohorts={swapCohorts}*/}
+                          {/*/>*/}
+                          {/*<ViewSelector*/}
+                          {/*  allowableViews={allowableViews}*/}
+                          {/*  onChange={this.handleChangeFilter}*/}
+                          {/*  view={filter}*/}
+                          {/*/>*/}
                           <HoverGeneView
                             cohortIndex={cohortIndex}
                             data={geneHoverData}
