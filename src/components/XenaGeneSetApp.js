@@ -706,7 +706,6 @@ export default class XenaGeneSetApp extends PureComponent {
                           >
                             {
                               allowableViews.map(c => {
-                                console.log(c);
                                 return (
                                   <option key={c} value={c}>
                                     {c}
@@ -715,11 +714,6 @@ export default class XenaGeneSetApp extends PureComponent {
                               })
                             }
                           </select>
-                          {/*<ViewSelector*/}
-                          {/*  allowableViews={allowableViews}*/}
-                          {/*  onChange={this.handleChangeFilter}*/}
-                          {/*  view={this.state.filter}*/}
-                          {/*/>*/}
                         </td>
                       </tr>
                       {isViewGeneExpression(this.state.filter) &&
