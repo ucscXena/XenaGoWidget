@@ -30,6 +30,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 170px;
+  display: inline;
 }
 
 .soflow {

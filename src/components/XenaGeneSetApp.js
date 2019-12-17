@@ -675,7 +675,7 @@ export default class XenaGeneSetApp extends PureComponent {
                   <table>
                     <tbody>
                       <tr>
-                        <td colSpan={2}>
+                        <td className={BaseStyle.autoSortBox} colSpan={3}>
                           <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
                             Gene Sets&nbsp;
                             {this.state.pathways &&
@@ -696,8 +696,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             <FaRefresh/>
                             Reset
                           </Button>
-                        </td>
-                        <td>
+                          &nbsp;&nbsp;&nbsp;View:
                           <select
                             className={BaseStyle.softflow}
                             onChange={this.handleChangeTopFilter}
