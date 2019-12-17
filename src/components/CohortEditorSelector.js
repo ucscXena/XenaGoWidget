@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox';
-import {fetchCohortData, getCohortsForView, getViewsForCohort} from '../functions/CohortFunctions';
+import {fetchCohortData, getCohortDetails, getCohortsForView, getViewsForCohort} from '../functions/CohortFunctions';
 import {intersection} from '../functions/MathFunctions';
+import update from 'immutability-helper';
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -12,14 +13,21 @@ export class CohortEditorSelector extends PureComponent {
     super(props);
     this.state = {
       view: props.view,
+      cohort: props.cohort,
       // cohort : props.cohort,
       // filter: props.filter,
     };
   }
 
-  handleChangeCohort = (event) => {
-    console.log('handling cohort change',event.target.value);
-    // this.props.onChange(event.target.value);
+  handleCohortChange = (event,cohortIndex) => {
+    const selectedCohortName = event.target.value ;
+    let cohortDetails = getCohortDetails({name: selectedCohortName});
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { $set:cohortDetails}
+    });
+    this.setState({
+      cohort: newCohortState
+    });
   };
 
   handleChangeSubCohort = (event) => {
@@ -27,9 +35,8 @@ export class CohortEditorSelector extends PureComponent {
     // this.props.onChange(event.target.value);
   };
 
-  handleChangeView = (event) => {
-    console.log('handling change view',event.target.value);
-    // this.props.onChange(event.target.value);
+  handleViewChange = (event) => {
+    this.setState({view: [event.target.value,event.target.value]});
   };
 
   render(){
@@ -42,35 +49,38 @@ export class CohortEditorSelector extends PureComponent {
     return (
       <div>
         <div className={BaseStyle.cohortEditorBox}>
-        View:
-          <select
-            onChange={(event) => this.setState({view: [event.target.value,event.target.value]})}
-            value={this.state.view}
-          >
-            {
-              Object.entries(allowableViews).map( f => {
-                return (
-                  <option key={f[1]} value={f[1]}>{f[1]}</option>
-                );
-              })
-            }
-          </select>
-          &nbsp;
-          &nbsp;
-          &nbsp;
           <Button icon='save' label='Save' onClick={onChangeView} primary raised/>
           <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
         </div>
         <table className={BaseStyle.cohortEditorBox}>
-          <thead>
+          <tbody>
+            <tr>
+              <td colSpan={2}>
+              View:
+                <select
+                  onChange={this.handleViewChange}
+                  value={this.state.view}
+                >
+                  {
+                    Object.entries(allowableViews).map( f => {
+                      return (
+                        <option key={f[1]} value={f[1]}>{f[1]}</option>
+                      );
+                    })
+                  }
+                </select>
+              </td>
+            </tr>
             <tr>
               <th>
-              Cohort A: {cohort[0].name}
+                <u>Cohort A</u>
+                <br/>
+                {this.state.cohort[0].name}
                 <select
                   className={BaseStyle.softflow}
-                  // onChange={this.handleChange}
+                  onChange={(event) => this.handleCohortChange(event,0)}
                   style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                  value={cohort[0].name}
+                  value={this.state.cohort[0].name}
                 >
                   {
                     availableCohorts.map(c => {
@@ -84,10 +94,12 @@ export class CohortEditorSelector extends PureComponent {
                 </select>
               </th>
               <th>
-              Cohort B: {cohort[1].name}
+                <u>Cohort B</u>
+                <br/>
+                {cohort[1].name}
                 <select
                   className={BaseStyle.softflow}
-                  onChange={this.handleChange}
+                  onChange={(event) => this.handleCohortChange(event,1)}
                   style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                   value={cohort[1].name}
                 >
@@ -103,8 +115,6 @@ export class CohortEditorSelector extends PureComponent {
                 </select>
               </th>
             </tr>
-          </thead>
-          <tbody>
             <tr className={BaseStyle.cohortEditorRow}>
               <td>
               Copy Right
