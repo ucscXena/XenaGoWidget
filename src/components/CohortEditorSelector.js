@@ -38,6 +38,25 @@ export class CohortEditorSelector extends PureComponent {
     });
   };
 
+  swapCohorts() {
+    const newCohortState = update(this.state.cohort,{
+      [0]: { $set:this.state.cohort[1]},
+      [1]: { $set:this.state.cohort[0]}
+    });
+    this.setState({
+      cohort: newCohortState
+    });
+  }
+
+  copyCohorts(fromCohortIndex,toCohortIndex) {
+    const newCohortState = update(this.state.cohort,{
+      [toCohortIndex]: { $set:this.state.cohort[fromCohortIndex]},
+    });
+    this.setState({
+      cohort: newCohortState
+    });
+  }
+
   // handleChangeSubCohort = (event) => {
   //   // this.props.onChange(event.target.value);
   // };
@@ -45,6 +64,8 @@ export class CohortEditorSelector extends PureComponent {
   handleViewChange = (event) => {
     this.setState({view: event.target.value});
   };
+
+
 
   render(){
 
@@ -127,15 +148,13 @@ export class CohortEditorSelector extends PureComponent {
             </tr>
             <tr className={BaseStyle.cohortEditorRow}>
               <td>
-              Copy Right
-              Vs All
+                <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)}/>
               </td>
               <td>
-              Swap
+                <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()}/>
               </td>
               <td>
-              Copy Left
-              Vs All
+                <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)}/>
               </td>
             </tr>
             <tr className={BaseStyle.cohortEditorRow}>
