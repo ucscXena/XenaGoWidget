@@ -93,7 +93,9 @@ export class CohortEditorSelector extends PureComponent {
     return (
       <div>
         <div className={BaseStyle.cohortEditorBox}>
-          <Button icon='save' label='Save' onClick={onChangeView} primary raised/>
+          <Button icon='save' label='Save' onClick={() => {
+            onChangeView(cohort,view);
+          }} primary raised/>
           <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
         </div>
         <table className={BaseStyle.cohortEditorBox}>
@@ -166,7 +168,7 @@ export class CohortEditorSelector extends PureComponent {
             </tr>
             <tr className={BaseStyle.cohortEditorRow}>
               <td valign='top'>
-                { cohort[0].subCohorts &&
+                { cohort[0].subCohorts && cohort[0].subCohorts.length>1 &&
                 <ul className={BaseStyle.subCohortList}>
                   {cohort[0].subCohorts.map( sc => {
                     return (
@@ -184,7 +186,7 @@ export class CohortEditorSelector extends PureComponent {
                 }
               </td>
               <td valign='top'>
-                {cohort[1].subCohorts &&
+                {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
                 <ul className={BaseStyle.subCohortList}>
                   {cohort[1].subCohorts.map(sc => {
                     return (
@@ -211,7 +213,6 @@ export class CohortEditorSelector extends PureComponent {
 CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,
   onCancelCohortEdit: PropTypes.any.isRequired,
-  onChangeCohorts: PropTypes.any.isRequired,
   onChangeView: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 };

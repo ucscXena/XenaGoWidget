@@ -443,6 +443,19 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
+    handleChangeView = (updateCohortState,newView) => {
+      AppStorageHandler.storeCohortState(updateCohortState[0], 0);
+      AppStorageHandler.storeCohortState(updateCohortState[1], 1);
+      this.setState( {
+        selectedCohort: updateCohortState,
+        filter:newView,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
+        reloadPathways:this.state.automaticallyReloadPathways
+      });
+
+    };
+
     handleChangeSubCohort = (selectedCohort, cohortIndex) => {
       let updateCohortState = update(this.state.selectedCohort,{
         [cohortIndex]: {
@@ -647,8 +660,7 @@ export default class XenaGeneSetApp extends PureComponent {
             <CohortEditorSelector
               cohort={this.state.selectedCohort}
               onCancelCohortEdit={() => this.setState({showCohortEditor:false})}
-              onChangeCohorts={() => console.log('cohorts changed')}
-              onChangeView={() => console.log('views changed')}
+              onChangeView={this.handleChangeView}
               view={this.state.filter}
             />
           </Dialog>
