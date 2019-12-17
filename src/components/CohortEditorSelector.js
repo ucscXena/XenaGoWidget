@@ -12,6 +12,7 @@ import {
 } from '../functions/CohortFunctions';
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
+import Link from 'react-toolbox/lib/link';
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -93,9 +94,11 @@ export class CohortEditorSelector extends PureComponent {
     return (
       <div>
         <div className={BaseStyle.cohortEditorBox}>
-          <Button icon='save' label='Save' onClick={() => {
-            onChangeView(cohort,view);
-          }} primary raised/>
+          <Button
+            icon='save' label='Save' onClick={() => {
+              onChangeView(cohort,view);
+            }} primary raised
+          />
           <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
         </div>
         <table className={BaseStyle.cohortEditorBox}>
@@ -169,38 +172,54 @@ export class CohortEditorSelector extends PureComponent {
             <tr className={BaseStyle.cohortEditorRow}>
               <td valign='top'>
                 { cohort[0].subCohorts && cohort[0].subCohorts.length>1 &&
-                <ul className={BaseStyle.subCohortList}>
-                  {cohort[0].subCohorts.map( sc => {
-                    return (
-                      <li key={sc}>
-                        <input
-                          checked={cohort[0].selectedSubCohorts.find( s => sc===s )}
-                          onChange={(event) => this.handleSubCohortChange(event,0)}
-                          type='checkbox'
-                          value={sc}
-                        />
-                        {sc}</li>
-                    );
-                  })  }
-                </ul>
+                  <div>
+                    <Link
+                      href='#'
+                      label={`(Select All ${cohort[0].subCohorts.length})`}
+                      onClick={() => this.selectAll(0)}
+                      style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                    />
+                    <ul className={BaseStyle.subCohortList}>
+                      {cohort[0].subCohorts.map( sc => {
+                        return (
+                          <li key={sc}>
+                            <input
+                              checked={cohort[0].selectedSubCohorts.find( s => sc===s )}
+                              onChange={(event) => this.handleSubCohortChange(event,0)}
+                              type='checkbox'
+                              value={sc}
+                            />
+                            {sc}</li>
+                        );
+                      })  }
+                    </ul>
+                  </div>
                 }
               </td>
               <td valign='top'>
                 {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
-                <ul className={BaseStyle.subCohortList}>
-                  {cohort[1].subCohorts.map(sc => {
-                    return (
-                      <li key={sc}>
-                        <input
-                          checked={cohort[1].selectedSubCohorts.find( s => sc===s )}
-                          onChange={(event) => this.handleSubCohortChange(event,1)}
-                          type='checkbox'
-                          value={sc}
-                        />
-                        {sc}</li>
-                    );
-                  })}
-                </ul>
+                <div>
+                  <Link
+                    href='#'
+                    label={`(Select All ${cohort[1].subCohorts.length})`}
+                    onClick={() => this.selectAll(1)}
+                    style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                  />
+                  <ul className={BaseStyle.subCohortList}>
+                    {cohort[1].subCohorts.map(sc => {
+                      return (
+                        <li key={sc}>
+                          <input
+                            checked={cohort[1].selectedSubCohorts.find( s => sc===s )}
+                            onChange={(event) => this.handleSubCohortChange(event,1)}
+                            type='checkbox'
+                            value={sc}
+                          />
+                          {sc}</li>
+                      );
+                    })}
+                  </ul>
+                </div>
                 }
               </td>
             </tr>

@@ -81,6 +81,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
+      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: process.env.NODE_ENV!=='test' ,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
@@ -451,7 +452,8 @@ export default class XenaGeneSetApp extends PureComponent {
         filter:newView,
         fetch: true,
         currentLoadState: LOAD_STATE.LOADING,
-        reloadPathways:this.state.automaticallyReloadPathways
+        reloadPathways:this.state.automaticallyReloadPathways,
+        showCohortEditor: false,
       });
 
     };
@@ -654,7 +656,7 @@ export default class XenaGeneSetApp extends PureComponent {
             active={this.state.showCohortEditor}
             onEscKeyDown={() => this.setState({showCohortEditor:false})}
             onOverlayClick={() => this.setState({showCohortEditor:false})}
-            title="Gene Set Editor"
+            title="Cohort Editor"
             type='small'
           >
             <CohortEditorSelector
