@@ -58,7 +58,7 @@ export class CohortEditorSelector extends PureComponent {
   }
 
   handleSubCohortChange = (event,cohortIndex) => {
-    console.log('handling sub cohort change',event.target.value,cohortIndex);
+    console.log('handling sub cohort change',event.target,event.target.value,cohortIndex);
     // this.props.onChange(event.target.value);
   };
 
@@ -87,7 +87,7 @@ export class CohortEditorSelector extends PureComponent {
         <table className={BaseStyle.cohortEditorBox}>
           <tbody>
             <tr>
-              <td colSpan={2}>
+              <td>
               View:
                 <select
                   onChange={this.handleViewChange}
@@ -101,6 +101,11 @@ export class CohortEditorSelector extends PureComponent {
                     })
                   }
                 </select>
+              </td>
+              <td>
+                <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
+                <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
+                <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
               </td>
             </tr>
             <tr>
@@ -146,17 +151,6 @@ export class CohortEditorSelector extends PureComponent {
                   }
                 </select>
               </th>
-            </tr>
-            <tr className={BaseStyle.cohortEditorRow}>
-              <td>
-                <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)}/>
-              </td>
-              <td>
-                <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()}/>
-              </td>
-              <td>
-                <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)}/>
-              </td>
             </tr>
             <tr className={BaseStyle.cohortEditorRow}>
               <td valign='top'>
