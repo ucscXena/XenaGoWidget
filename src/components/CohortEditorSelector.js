@@ -1,58 +1,155 @@
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
-import {Col, Grid, Row} from 'react-bootstrap';
 import React from 'react';
 import BaseStyle from '../css/base.css';
-import Button from 'react-toolbox/lib/button';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {Button} from 'react-toolbox';
+import {fetchCohortData, getCohortsForView} from '../functions/CohortFunctions';
 
 export class CohortEditorSelector extends PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
+      view: props.view,
       // cohort : props.cohort,
       // filter: props.filter,
     };
   }
 
+  handleChangeCohort = (event) => {
+    console.log('handling cohort change',event.target.value);
+    // this.props.onChange(event.target.value);
+  };
+
+  handleChangeSubCohort = (event) => {
+    console.log('handling sub cohorrt ',event.target.value);
+    // this.props.onChange(event.target.value);
+  };
+
+  handleChangeView = (event) => {
+    console.log('handling change view',event.target.value);
+    // this.props.onChange(event.target.value);
+  };
+
   render(){
 
+    const { cohort , onCancelCohortEdit, onChangeView, view} = this.props;
+    const cohorts = getCohortsForView(view);
+    const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+
     return (
-      <div className={BaseStyle.cohortEditorBox}>
-        <Grid  className={BaseStyle.inlineButton}>
-          <Row>
-            <Col className={BaseStyle.inlineButton} md={6}>
-              Cohort A: {this.props.cohort[0].name}
-              <br/>
-              Cohort B: {this.props.cohort[1].name}
-            </Col>
-            <Col className={BaseStyle.inlineButton} md={2}>
-              <Button primary raised>Edit Cohorts</Button>
-            </Col>
-            <Col className={BaseStyle.inlineButton} md={2}>
-              View:
-              <select
-                onChange={(event) => this.setState({filter: [event.target.value,event.target.value]})}
-                value={this.props.view}
-              >
-                {
-                  Object.entries(VIEW_ENUM).map( f => {
+      <div>
+        <div className={BaseStyle.cohortEditorBox}>
+        View:
+          <select
+            onChange={(event) => this.setState({view: [event.target.value,event.target.value]})}
+            value={this.state.view}
+          >
+            {
+              Object.entries(VIEW_ENUM).map( f => {
+                return (
+                  <option key={f[0]} value={f[1]}>{f[0]}</option>
+                );
+              })
+            }
+          </select>
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <Button icon='save' label='Save' onClick={onChangeView} primary raised/>
+          <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
+        </div>
+        <table className={BaseStyle.cohortEditorBox}>
+          <thead>
+            <tr>
+              <th>
+              Cohort A: {cohort[0].name}
+                <select
+                  className={BaseStyle.softflow}
+                  // onChange={this.handleChange}
+                  style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                  value={cohort[0].name}
+                >
+                  {
+                    availableCohorts.map(c => {
+                      return (
+                        <option key={c.name} value={c.name}>
+                          {c.name}
+                        </option>
+                      );
+                    })
+                  }
+                </select>
+              </th>
+              <th>
+              Cohort B: {cohort[1].name}
+                <select
+                  className={BaseStyle.softflow}
+                  onChange={this.handleChange}
+                  style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                  value={cohort[1].name}
+                >
+                  {
+                    availableCohorts.map(c => {
+                      return (
+                        <option key={c.name} value={c.name}>
+                          {c.name}
+                        </option>
+                      );
+                    })
+                  }
+                </select>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className={BaseStyle.cohortEditorRow}>
+              <td>
+              Copy Right
+              Vs All
+              </td>
+              <td>
+              Swap
+              </td>
+              <td>
+              Copy Left
+              Vs All
+              </td>
+            </tr>
+            <tr className={BaseStyle.cohortEditorRow}>
+              <td valign='top'>
+                <ul className={BaseStyle.subCohortList}>
+                  {cohort[0].subCohorts.map( sc => {
                     return (
-                      <option key={f[0]} value={f[1]}>{f[0]}</option>
+                      <li key={sc}>
+                        <input type='checkbox' value={sc}/>
+                        {sc}</li>
                     );
-                  })
-                }
-              </select>
-            </Col>
-          </Row>
-        </Grid>
+                  })  }
+                </ul>
+              </td>
+              <td valign='top'>
+                <ul className={BaseStyle.subCohortList}>
+                  {cohort[1].subCohorts.map( sc => {
+                    return (
+                      <li key={sc}>
+                        <input type='checkbox' value={sc}/>
+                        {sc}</li>
+                    );
+                  })  }
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }
 }
 CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,
+  onCancelCohortEdit: PropTypes.any.isRequired,
   onChangeCohorts: PropTypes.any.isRequired,
   onChangeView: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,

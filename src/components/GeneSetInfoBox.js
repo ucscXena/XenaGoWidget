@@ -2,6 +2,9 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
+import FaInfo from 'react-icons/lib/fa/info';
+import FaEdit from 'react-icons/lib/fa/edit';
+import {Button} from 'react-bootstrap';
 
 
 export class GeneSetInfoBox extends PureComponent {
@@ -20,6 +23,14 @@ export class GeneSetInfoBox extends PureComponent {
         <button className={BaseStyle.samplesBox} onClick={() => alert('show info')} type='button'>
           { selectedCohort.selectedSubCohorts.length } / {selectedCohort.subCohorts.length } cohorts selected
         </button>
+
+
+        <Button variant="info">
+          <FaInfo/>
+        </Button>
+        <Button variant="info">
+          <FaEdit/>
+        </Button>
 
         <br/>
         <div className={BaseStyle.samplesBox}>

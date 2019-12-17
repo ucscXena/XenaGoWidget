@@ -128,8 +128,38 @@ body {
   font-size:small;
   box-shadow: 1px 1px 1px 1px gray;
   border-radius:5px;
+  width: 95%;
   /*height: 80px;*/
-  overflow: auto;
+  /*overflow: auto;*/
+  border: 2px solid black;
+}
+
+
+.cohortEditorGrid{
+  /*margin: 5px;*/
+  /*padding: 5px;*/
+  /*font-family: sans-serif;*/
+  /*font-size:small;*/
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  /*border-radius:5px;*/
+  width: 95%;
+  /*overflow: auto;*/
+}
+
+.cohortEditorRow{
+  /*margin: 5px;*/
+  /*padding: 5px;*/
+  /*font-family: sans-serif;*/
+  /*font-size:small;*/
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  /*border-radius:5px;*/
+  width: 100%;
+  /*overflow: auto;*/
+  border: 2px solid black;
+}
+
+.subCohortList{
+  list-style-type:  none;
 }
 
 .geneSetFilterBox{
