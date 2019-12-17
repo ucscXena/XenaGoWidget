@@ -58,8 +58,22 @@ export class CohortEditorSelector extends PureComponent {
   }
 
   handleSubCohortChange = (event,cohortIndex) => {
-    console.log('handling sub cohort change',event.target,event.target.value,cohortIndex);
-    // this.props.onChange(event.target.value);
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+
+    if(event.target.checked && !newCohort.selectedSubCohorts.find( s => s===event.target.value )  ){
+      newCohort.selectedSubCohorts.push(event.target.value);
+    }
+    else
+    if(!event.target.checked ){
+      newCohort.selectedSubCohorts =   newCohort.selectedSubCohorts.filter( s => s!==event.target.value);
+    }
+
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { $set:newCohort},
+    });
+    this.setState({
+      cohort: newCohortState
+    });
   };
 
   handleViewChange = (event) => {
@@ -73,9 +87,7 @@ export class CohortEditorSelector extends PureComponent {
     const { onCancelCohortEdit, onChangeView} = this.props;
     const { view, cohort } = this.state ;
     const cohorts = getCohortsForView(view);
-    console.log('getting cohorts for view',view,cohorts);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
-    console.log('local cohort B',cohort,view);
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
 
     return (
