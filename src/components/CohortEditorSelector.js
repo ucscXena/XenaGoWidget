@@ -57,9 +57,10 @@ export class CohortEditorSelector extends PureComponent {
     });
   }
 
-  // handleChangeSubCohort = (event) => {
-  //   // this.props.onChange(event.target.value);
-  // };
+  handleSubCohortChange = (event,cohortIndex) => {
+    console.log('handling sub cohort change',event.target.value,cohortIndex);
+    // this.props.onChange(event.target.value);
+  };
 
   handleViewChange = (event) => {
     this.setState({view: event.target.value});
@@ -164,7 +165,12 @@ export class CohortEditorSelector extends PureComponent {
                   {cohort[0].subCohorts.map( sc => {
                     return (
                       <li key={sc}>
-                        <input type='checkbox' value={sc}/>
+                        <input
+                          checked={cohort[0].selectedSubCohorts.find( s => sc===s )}
+                          onChange={(event) => this.handleSubCohortChange(event,0)}
+                          type='checkbox'
+                          value={sc}
+                        />
                         {sc}</li>
                     );
                   })  }
@@ -177,7 +183,12 @@ export class CohortEditorSelector extends PureComponent {
                   {cohort[1].subCohorts.map(sc => {
                     return (
                       <li key={sc}>
-                        <input type='checkbox' value={sc}/>
+                        <input
+                          checked={cohort[1].selectedSubCohorts.find( s => sc===s )}
+                          onChange={(event) => this.handleSubCohortChange(event,1)}
+                          type='checkbox'
+                          value={sc}
+                        />
                         {sc}</li>
                     );
                   })}
