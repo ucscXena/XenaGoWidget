@@ -81,6 +81,16 @@ export class CohortEditorSelector extends PureComponent {
     this.setState({view: event.target.value});
   };
 
+  selectAll(cohortIndex){
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    newCohort.selectedSubCohorts = newCohort.subCohorts ;
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { $set:newCohort},
+    });
+    this.setState({
+      cohort: newCohortState
+    });
+  }
 
 
   render(){
