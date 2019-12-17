@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox';
-import {fetchCohortData, getCohortDetails, getCohortsForView, getViewsForCohort} from '../functions/CohortFunctions';
+import {
+  fetchCohortData,
+  getCohortDetails,
+  getCohortsForView,
+  getSubCohortsOnlyForCohort,
+  getViewsForCohort
+} from '../functions/CohortFunctions';
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
 
@@ -22,6 +28,8 @@ export class CohortEditorSelector extends PureComponent {
   handleCohortChange = (event,cohortIndex) => {
     const selectedCohortName = event.target.value ;
     let cohortDetails = getCohortDetails({name: selectedCohortName});
+    cohortDetails.subCohorts = getSubCohortsOnlyForCohort(selectedCohortName);
+    cohortDetails.selectedSubCohorts =  cohortDetails.subCohorts ;
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:cohortDetails}
     });
@@ -30,20 +38,22 @@ export class CohortEditorSelector extends PureComponent {
     });
   };
 
-  handleChangeSubCohort = (event) => {
-    console.log('handling sub cohorrt ',event.target.value);
-    // this.props.onChange(event.target.value);
-  };
+  // handleChangeSubCohort = (event) => {
+  //   // this.props.onChange(event.target.value);
+  // };
 
   handleViewChange = (event) => {
-    this.setState({view: [event.target.value,event.target.value]});
+    this.setState({view: event.target.value});
   };
 
   render(){
 
-    const { cohort , onCancelCohortEdit, onChangeView, view} = this.props;
+    const { onCancelCohortEdit, onChangeView} = this.props;
+    const { view, cohort } = this.state ;
     const cohorts = getCohortsForView(view);
+    console.log('getting cohorts for view',view,cohorts);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+    console.log('local cohort B',cohort,view);
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
 
     return (
@@ -59,7 +69,7 @@ export class CohortEditorSelector extends PureComponent {
               View:
                 <select
                   onChange={this.handleViewChange}
-                  value={this.state.view}
+                  value={view}
                 >
                   {
                     Object.entries(allowableViews).map( f => {
@@ -75,12 +85,12 @@ export class CohortEditorSelector extends PureComponent {
               <th>
                 <u>Cohort A</u>
                 <br/>
-                {this.state.cohort[0].name}
+                {cohort[0].name}
                 <select
                   className={BaseStyle.softflow}
                   onChange={(event) => this.handleCohortChange(event,0)}
                   style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                  value={this.state.cohort[0].name}
+                  value={cohort[0].name}
                 >
                   {
                     availableCohorts.map(c => {
@@ -130,6 +140,7 @@ export class CohortEditorSelector extends PureComponent {
             </tr>
             <tr className={BaseStyle.cohortEditorRow}>
               <td valign='top'>
+                { cohort[0].subCohorts &&
                 <ul className={BaseStyle.subCohortList}>
                   {cohort[0].subCohorts.map( sc => {
                     return (
@@ -139,17 +150,20 @@ export class CohortEditorSelector extends PureComponent {
                     );
                   })  }
                 </ul>
+                }
               </td>
               <td valign='top'>
+                {cohort[1].subCohorts &&
                 <ul className={BaseStyle.subCohortList}>
-                  {cohort[1].subCohorts.map( sc => {
+                  {cohort[1].subCohorts.map(sc => {
                     return (
                       <li key={sc}>
                         <input type='checkbox' value={sc}/>
                         {sc}</li>
                     );
-                  })  }
+                  })}
                 </ul>
+                }
               </td>
             </tr>
           </tbody>
