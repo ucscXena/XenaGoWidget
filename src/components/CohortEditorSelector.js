@@ -2,9 +2,9 @@ import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import React from 'react';
 import BaseStyle from '../css/base.css';
-import {VIEW_ENUM} from '../data/ViewEnum';
 import {Button} from 'react-toolbox';
-import {fetchCohortData, getCohortsForView} from '../functions/CohortFunctions';
+import {fetchCohortData, getCohortsForView, getViewsForCohort} from '../functions/CohortFunctions';
+import {intersection} from '../functions/MathFunctions';
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -37,6 +37,7 @@ export class CohortEditorSelector extends PureComponent {
     const { cohort , onCancelCohortEdit, onChangeView, view} = this.props;
     const cohorts = getCohortsForView(view);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+    const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
 
     return (
       <div>
@@ -47,9 +48,9 @@ export class CohortEditorSelector extends PureComponent {
             value={this.state.view}
           >
             {
-              Object.entries(VIEW_ENUM).map( f => {
+              Object.entries(allowableViews).map( f => {
                 return (
-                  <option key={f[0]} value={f[1]}>{f[0]}</option>
+                  <option key={f[1]} value={f[1]}>{f[1]}</option>
                 );
               })
             }
