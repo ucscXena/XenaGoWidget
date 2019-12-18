@@ -5,9 +5,7 @@ import Dialog from 'react-toolbox/lib/dialog';
 import {isEqual} from 'underscore';
 import {Button} from 'react-toolbox/lib/button';
 import Link from 'react-toolbox/lib/link';
-import Col from 'react-bootstrap/lib/Col';
-import Row from 'react-bootstrap/lib/Row';
-import Grid from 'react-bootstrap/lib/Grid';
+import { Col, Row, Grid } from 'react-bootstrap';
 
 export const UNASSIGNED_SUBTYPE = { key: 'UNASSIGNED',label:'unassigned'};
 

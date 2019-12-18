@@ -30,6 +30,7 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 170px;
+  display: inline;
 }
 
 .soflow {
@@ -120,6 +121,48 @@ body {
   border-radius:15px;
 }
 
+.cohortEditorBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  width: 400px;
+  /*height: 80px;*/
+  /*overflow: auto;*/
+  border: 2px solid black;
+}
+
+
+.cohortEditorGrid{
+  /*margin: 5px;*/
+  /*padding: 5px;*/
+  /*font-family: sans-serif;*/
+  /*font-size:small;*/
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  /*border-radius:5px;*/
+  width: 95%;
+  /*overflow: auto;*/
+}
+
+.cohortEditorRow{
+  /*margin: 5px;*/
+  /*padding: 5px;*/
+  /*font-family: sans-serif;*/
+  /*font-size:small;*/
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  /*border-radius:5px;*/
+  width: 100%;
+  /*overflow: auto;*/
+  border: 2px solid black;
+}
+
+.subCohortList{
+  list-style-type:  none;
+  padding-left: 0;
+}
+
 .geneSetFilterBox{
   margin: 5px;
   padding: 5px;
@@ -129,6 +172,10 @@ body {
   border-radius:5px;
   height: 80px;
   overflow: auto;
+}
+
+.inlineButton {
+  display: inline;
 }
 
 .autoSortBox{
@@ -142,6 +189,34 @@ body {
   overflow: auto;
 }
 
+.shortRow{
+  height: 40px;
+}
+
+.headerBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size: medium;
+  font-weight: bolder;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  border-radius:1px;
+  /*height: 80px;*/
+  overflow: auto;
+  display: inline;
+}
+
+.containerBox{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  border-radius:1px;
+  /*height: 80px;*/
+  overflow: auto;
+  display: inline;
+}
 
 .verticalLegendBox{
   margin: 5px;
@@ -165,6 +240,8 @@ body {
 .mouseHover :hover{
     cursor: pointer;
 }
+
+
 
 .hoverScore{
     color: white;
@@ -273,4 +350,40 @@ div[data-react-toolbox=dialog] > section{
   border-radius: 5px;
   margin-left: 5px;
   display: inline;
+}
+
+.samplesBox{
+  padding: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline;
+  border-radius:5px;
+  border: solid 1px;
+}
+
+.bottomInfoBox{
+  height: 80px;
+  margin: -10px 5px 5px 5px;
+  padding: 5px 0 5px 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  /*height: 80px;*/
+  overflow: auto;
+  text-wrap: normal;
+}
+
+.topInfoBox{
+  height: 80px;
+  /*top: 250px;*/
+  margin: 200px 5px 5px 5px;
+  padding: 5px 5px 5px 5px;
+  font-family: sans-serif;
+  font-size:small;
+  box-shadow: 1px 1px 1px 1px gray;
+  border-radius:5px;
+  /*height: 80px;*/
+  overflow: auto;
+  text-wrap: normal;
 }

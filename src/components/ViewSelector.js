@@ -26,7 +26,6 @@ export class ViewSelector extends PureComponent {
 
 ViewSelector.propTypes = {
   allowableViews: PropTypes.any.isRequired,
-  geneList: PropTypes.any.isRequired,
   onChange: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 };

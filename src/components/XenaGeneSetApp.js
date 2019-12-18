@@ -28,17 +28,15 @@ import update from 'immutability-helper';
 import {
   scorePathway, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
-import VerticalLegend from './VerticalLegend';
 import QueryString from 'querystring';
 import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
-import {DetailedLegend} from './DetailedLegend';
-import {GeneExpressionLegend} from './GeneExpressionLegend';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
+import {CohortEditorSelector} from './CohortEditorSelector';
 
 
 const VIEWER_HEIGHT = 500;
@@ -83,10 +81,12 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       fetch: false,
       automaticallyReloadPathways: true,
+      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: process.env.NODE_ENV!=='test' ,
       loading:LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
+      showCohortEditor: false,
       showDetailLayer: true,
       showDiffLayer: true,
       sortViewOrder:SORT_ORDER_ENUM.DESC,
@@ -155,6 +155,8 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     );
   };
+
+
 
   handleCombinedCohortData = (input) => {
     let {
@@ -442,6 +444,20 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: newCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
+    handleChangeView = (updateCohortState,newView) => {
+      AppStorageHandler.storeCohortState(updateCohortState[0], 0);
+      AppStorageHandler.storeCohortState(updateCohortState[1], 1);
+      this.setState( {
+        selectedCohort: updateCohortState,
+        filter:newView,
+        fetch: true,
+        currentLoadState: LOAD_STATE.LOADING,
+        reloadPathways:this.state.automaticallyReloadPathways,
+        showCohortEditor: false,
+      });
+
+    };
+
     handleChangeSubCohort = (selectedCohort, cohortIndex) => {
       let updateCohortState = update(this.state.selectedCohort,{
         [cohortIndex]: {
@@ -452,8 +468,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState( {selectedCohort: updateCohortState,fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways});
     };
 
-    handleChangeFilter = (newView, cohortIndex) => {
-      AppStorageHandler.storeFilterState(newView, cohortIndex);
+    handleChangeFilter = (newView) => {
+      AppStorageHandler.storeFilterState(newView);
 
       this.setState( {
         filter:newView,
@@ -463,6 +479,10 @@ export default class XenaGeneSetApp extends PureComponent {
       );
 
     };
+
+  handleChangeTopFilter = (event) =>  {
+    this.handleChangeFilter(event.target.value);
+  };
 
 
   handleVersusAll = (selectedSubCohort,cohortSourceIndex) => {
@@ -631,6 +651,22 @@ export default class XenaGeneSetApp extends PureComponent {
             onColorChange={this.handleColorChange}
             onColorToggle={this.handleColorToggle}
           />
+          {this.state.pathways && this.state.selectedCohort &&
+          <Dialog
+            active={this.state.showCohortEditor}
+            onEscKeyDown={() => this.setState({showCohortEditor:false})}
+            onOverlayClick={() => this.setState({showCohortEditor:false})}
+            title="Cohort Editor"
+            type='small'
+          >
+            <CohortEditorSelector
+              cohort={this.state.selectedCohort}
+              onCancelCohortEdit={() => this.setState({showCohortEditor:false})}
+              onChangeView={this.handleChangeView}
+              view={this.state.filter}
+            />
+          </Dialog>
+          }
           {this.state.pathways && this.state.associatedData &&
             <Dialog
               active={this.state.showGeneSetSearch}
@@ -650,29 +686,21 @@ export default class XenaGeneSetApp extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td>
+                <td  valign='top'>
                   <table>
                     <tbody>
                       <tr>
-                        <td colSpan={1}>
-                          <VerticalLegend/>
-                        </td>
-                        <td colSpan={1}>
-                          { !isViewGeneExpression(this.state.filter) && <DetailedLegend/>}
-                          { isViewGeneExpression(this.state.filter) && <GeneExpressionLegend/>}
-                        </td>
-                      </tr>
-                      {isViewGeneExpression(this.state.filter) &&
-                      <tr>
-                        <td colSpan={3}>
+                        <td className={BaseStyle.autoSortBox} colSpan={3}>
                           <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
-                            Edit Gene Sets&nbsp;
+                            Gene Sets&nbsp;
                             {this.state.pathways &&
                             <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
                             </div>
                             }
-
+                          </Button>
+                          <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
+                            Cohorts
                           </Button>
                           <Button
                             onClick={() => {
@@ -683,68 +711,74 @@ export default class XenaGeneSetApp extends PureComponent {
                             <FaRefresh/>
                             Reset
                           </Button>
+                          &nbsp;&nbsp;&nbsp;View:
+                          <select
+                            className={BaseStyle.softflow}
+                            onChange={this.handleChangeTopFilter}
+                            style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                            value={this.state.filter}
+                          >
+                            {
+                              allowableViews.map(c => {
+                                return (
+                                  <option key={c} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })
+                            }
+                          </select>
                         </td>
                       </tr>
-                      }
                       {isViewGeneExpression(this.state.filter) &&
                       <tr>
-                        <td className={BaseStyle.autoSortBox} colSpan={2}>
-                          Sort on Cohort Change
-                          <input
-                            checked={this.state.automaticallyReloadPathways}
-                            onChange={() => this.setState({automaticallyReloadPathways: !this.state.automaticallyReloadPathways})}
-                            type='checkbox'
-                          />
-                          <br/>
+                        <td className={BaseStyle.autoSortBox} colSpan={3}>
+                          <div className={BaseStyle.headerBox}>
+                            Gene Sets
+                          </div>
+                          <div className={BaseStyle.containerBox}>
                           Limit
-                          <input
-                            onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
-                            value={this.state.geneSetLimit}
-                          />
-                          Filter Gene Sets by
-                          <select
-                            onChange={(event) => this.setState({filterBy: event.target.value})}
-                            value={this.state.filterBy}
-                          >
-                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                            <option value={SORT_ENUM.TOTAL}>Total</option>
-                          </select>
-                          {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
-                          <FaSortAsc onClick={() => this.setState({filterOrder: 'desc'})}/>
-                          }
-                          {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
-                          <FaSortDesc onClick={() => this.setState({filterOrder: 'asc'})}/>
-                          }
-                          <br/>
-                          Sort Visible Gene Sets by
-                          <select
-                            onChange={(event) => this.setState({sortViewBy: event.target.value})}
-                            value={this.state.sortViewBy}
-                          >
-                            <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                            <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                            <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                            <option value={SORT_ENUM.TOTAL}>Total</option>
-                          </select>
-                          {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
-                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC})}/>
-                          }
-                          {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
-                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC})}/>
-                          }
-                          <br/>
-                          <br/>
-                          <Button
-                            onClick={() => {
-                              this.setState({
-                                fetch: true,
-                                currentLoadState: LOAD_STATE.LOADING,
-                                reloadPathways: true,
-                              });
-                            }} primary raised
-                          >Sort Gene Sets Now</Button>
+                            <input
+                              onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
+                              value={this.state.geneSetLimit}
+                            />
+                          </div>
+                          <div className={BaseStyle.containerBox}>
+                          Filter by
+                            <select
+                              onChange={(event) => this.setState({filterBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
+                              value={this.state.filterBy}
+                            >
+                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                              <option value={SORT_ENUM.TOTAL}>Total</option>
+                            </select>
+                            {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
+                          <FaSortAsc onClick={() => this.setState({filterOrder: 'desc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
+                            }
+                            {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
+                          <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
+                            }
+                          </div>
+                          <div className={BaseStyle.containerBox}>
+                          Sort View by
+                            <select
+                              onChange={(event) => this.setState({sortViewBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
+                              value={this.state.sortViewBy}
+                            >
+                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                              <option value={SORT_ENUM.TOTAL}>Total</option>
+                            </select>
+                            {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
+                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
+                            }
+                            {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
+                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
+                            }
+                          </div>
                         </td>
                       </tr>
                       }
