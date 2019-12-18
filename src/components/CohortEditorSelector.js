@@ -92,6 +92,19 @@ export class CohortEditorSelector extends PureComponent {
     });
   }
 
+  handleSelectOnly = (value,cohortIndex) => {
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    newCohort.selectedSubCohorts = JSON.parse(JSON.stringify([value])) ;
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { selectedSubCohorts: { $set : [value]}},
+    });
+    console.log('handling select only 2',JSON.stringify(this.state.cohort[cohortIndex].selectedSubCohorts),JSON.stringify(newCohortState[cohortIndex].selectedSubCohorts));
+    console.log('handling select only 3',JSON.stringify(newCohortState),newCohortState);
+    this.setState({
+      cohort: newCohortState
+    });
+  };
+
 
   render(){
 
@@ -199,7 +212,12 @@ export class CohortEditorSelector extends PureComponent {
                               type='checkbox'
                               value={sc}
                             />
-                            {sc}</li>
+                            {sc}
+                            {/*<Link*/}
+                            {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,0); }}*/}
+                            {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
+                            {/*/>*/}
+                          </li>
                         );
                       })  }
                     </ul>
@@ -225,7 +243,12 @@ export class CohortEditorSelector extends PureComponent {
                             type='checkbox'
                             value={sc}
                           />
-                          {sc}</li>
+                          {sc}
+                          {/*<Link*/}
+                          {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,1); }}*/}
+                          {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
+                          {/*/>*/}
+                        </li>
                       );
                     })}
                   </ul>
