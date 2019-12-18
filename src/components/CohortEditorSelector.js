@@ -21,8 +21,6 @@ export class CohortEditorSelector extends PureComponent {
     this.state = {
       view: props.view,
       cohort: props.cohort,
-      // cohort : props.cohort,
-      // filter: props.filter,
     };
   }
 
@@ -92,18 +90,16 @@ export class CohortEditorSelector extends PureComponent {
     });
   }
 
-  handleSelectOnly = (value,cohortIndex) => {
-    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
-    newCohort.selectedSubCohorts = JSON.parse(JSON.stringify([value])) ;
-    const newCohortState = update(this.state.cohort,{
-      [cohortIndex]: { selectedSubCohorts: { $set : [value]}},
-    });
-    console.log('handling select only 2',JSON.stringify(this.state.cohort[cohortIndex].selectedSubCohorts),JSON.stringify(newCohortState[cohortIndex].selectedSubCohorts));
-    console.log('handling select only 3',JSON.stringify(newCohortState),newCohortState);
-    this.setState({
-      cohort: newCohortState
-    });
-  };
+  // handleSelectOnly = (value,cohortIndex) => {
+  //   let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+  //   newCohort.selectedSubCohorts = JSON.parse(JSON.stringify([value])) ;
+  //   const newCohortState = update(this.state.cohort,{
+  //     [cohortIndex]: { selectedSubCohorts: { $set : [value]}},
+  //   });
+  //   this.setState({
+  //     cohort: newCohortState
+  //   });
+  // };
 
 
   render(){
