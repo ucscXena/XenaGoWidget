@@ -4,9 +4,9 @@ import React from 'react';
 import BaseStyle from '../css/base.css';
 import {Button} from 'react-toolbox';
 import {
-  fetchCohortData,
+  fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
-  getCohortsForView, getSubCohortsForCohort,
+  getCohortsForView, getSamplesFromSelectedSubCohorts, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
   getViewsForCohort
 } from '../functions/CohortFunctions';
@@ -18,9 +18,13 @@ export class CohortEditorSelector extends PureComponent {
 
   constructor(props) {
     super(props);
+    const availableSamples = [getAllSubCohortPossibleSamples(props.cohort[0].name),getAllSubCohortPossibleSamples(props.cohort[1].name)];
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(props.cohort[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(props.cohort[1],availableSamples[1])];
     this.state = {
       view: props.view,
       cohort: props.cohort,
+      availableSamples,
+      selectedSamples,
     };
   }
 
@@ -32,8 +36,12 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:cohortDetails}
     });
+    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
     this.setState({
-      cohort: newCohortState
+      cohort: newCohortState,
+      availableSamples,
+      selectedSamples,
     });
   };
 
@@ -105,17 +113,11 @@ export class CohortEditorSelector extends PureComponent {
   render(){
 
     const { onCancelCohortEdit, onChangeView} = this.props;
-    const { view, cohort } = this.state ;
+    const { view, cohort , selectedSamples, availableSamples } = this.state ;
     const cohorts = getCohortsForView(view);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
-
-    console.log('avaialble cohorts',availableCohorts);
-    console.log('current cohort',cohort);
-
     const subCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
-    console.log('sub cohorts',subCohorts);
-    console.log('sub cohorts filtered',subCohorts[0]['OVCA.Immunoreactive'].length);
 
     return (
       <div>
@@ -154,8 +156,6 @@ export class CohortEditorSelector extends PureComponent {
             <tr>
               <th>
                 <u>Cohort A</u>
-                <br/>
-                {cohort[0].name}
                 <select
                   className={BaseStyle.softflow}
                   onChange={(event) => this.handleCohortChange(event,0)}
@@ -175,8 +175,6 @@ export class CohortEditorSelector extends PureComponent {
               </th>
               <th>
                 <u>Cohort B</u>
-                <br/>
-                {cohort[1].name}
                 <select
                   className={BaseStyle.softflow}
                   onChange={(event) => this.handleCohortChange(event,1)}
@@ -201,10 +199,12 @@ export class CohortEditorSelector extends PureComponent {
                   <div>
                     <Link
                       href='#'
-                      label={`(Select All ${cohort[0].subCohorts.length})`}
+                      label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
                       onClick={() => this.selectAll(0)}
                       style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                     />
+                    <br/>
+                    Selected { selectedSamples[0].length } / { availableSamples[0].length }
                     <ul className={BaseStyle.subCohortList}>
                       {cohort[0].subCohorts.map( sc => {
                         return (
@@ -233,10 +233,12 @@ export class CohortEditorSelector extends PureComponent {
                 <div>
                   <Link
                     href='#'
-                    label={`(Select All ${cohort[1].subCohorts.length})`}
+                    label={`(Select All ${cohort[1].subCohorts.length} subcohorts)`}
                     onClick={() => this.selectAll(1)}
                     style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                   />
+                  <br/>
+                  Selected { selectedSamples[1].length } / { availableSamples[1].length }
                   <ul className={BaseStyle.subCohortList}>
                     {cohort[1].subCohorts.map(sc => {
                       return (
