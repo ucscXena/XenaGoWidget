@@ -212,7 +212,6 @@ export class CohortEditorSelector extends PureComponent {
                     />
                     <Link
                       href='#'
-                      // label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
                       label={'(Clear)'}
                       onClick={() => this.selectNone(0)}
                       style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
@@ -224,7 +223,7 @@ export class CohortEditorSelector extends PureComponent {
                         return (
                           <li key={sc}>
                             <input
-                              checked={cohort[0].selectedSubCohorts.find( s => sc===s )}
+                              checked={cohort[0].selectedSubCohorts.find( s => sc===s ) !==undefined}
                               disabled={!subCohorts[0][sc]}
                               onChange={(event) => this.handleSubCohortChange(event,0)}
                               type='checkbox'
@@ -252,6 +251,12 @@ export class CohortEditorSelector extends PureComponent {
                     onClick={() => this.selectAll(1)}
                     style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                   />
+                  <Link
+                    href='#'
+                    label={'(Clear)'}
+                    onClick={() => this.selectNone(1)}
+                    style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                  />
                   <hr/>
                   Selected { selectedSamples[1].length } / { availableSamples[1].length }
                   <ul className={BaseStyle.subCohortList}>
@@ -259,7 +264,7 @@ export class CohortEditorSelector extends PureComponent {
                       return (
                         <li key={sc}>
                           <input
-                            checked={cohort[1].selectedSubCohorts.find( s => sc===s )}
+                            checked={cohort[1].selectedSubCohorts.find( s => sc===s ) !== undefined}
                             disabled={!subCohorts[1][sc]}
                             onChange={(event) => this.handleSubCohortChange(event,1)}
                             type='checkbox'
