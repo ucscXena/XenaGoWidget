@@ -211,11 +211,12 @@ export class CohortEditorSelector extends PureComponent {
                   <div>
                     <Link
                       href='#'
-                      label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
+                      // label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
+                      label={'(Select All)'}
                       onClick={() => this.selectAll(0)}
                       style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                     />
-                    <br/>
+                    <hr/>
                     Selected { selectedSamples[0].length } / { availableSamples[0].length }
                     <ul className={BaseStyle.subCohortList}>
                       {cohort[0].subCohorts.map( sc => {
@@ -245,11 +246,12 @@ export class CohortEditorSelector extends PureComponent {
                 <div>
                   <Link
                     href='#'
-                    label={`(Select All ${cohort[1].subCohorts.length} subcohorts)`}
+                    // label={`(Select All ${cohort[1].subCohorts.length} subcohorts)`}
+                    label={'(Select All)'}
                     onClick={() => this.selectAll(1)}
                     style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                   />
-                  <br/>
+                  <hr/>
                   Selected { selectedSamples[1].length } / { availableSamples[1].length }
                   <ul className={BaseStyle.subCohortList}>
                     {cohort[1].subCohorts.map(sc => {
