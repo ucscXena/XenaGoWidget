@@ -783,11 +783,27 @@ export default class XenaGeneSetApp extends PureComponent {
                       </tr>
                       }
                       <tr>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH} />
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
+                          <div className={BaseStyle.geneSetHeaderLabel}>
+                            {this.state.selectedCohort[0].name}
+                            {this.state.pathwayData[0].samples &&
+                              <div className={BaseStyle.inlinePathwayChip}>
+                                {this.state.pathwayData[0].samples.length}
+                              </div>
+                            }
+                          </div>
+                        </td>
                         <td width={VERTICAL_SELECTOR_WIDTH - 20}>
                           <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
                         </td>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH} />
+                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
+                          <div className={BaseStyle.geneSetHeaderLabel}>
+                            {this.state.selectedCohort[1].name}
+                            <div className={BaseStyle.inlinePathwayChip}>
+                              {this.state.pathwayData[1].samples.length}
+                            </div>
+                          </div>
+                        </td>
                       </tr>
                       <tr>
                         <td>
