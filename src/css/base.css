@@ -387,3 +387,7 @@ div[data-react-toolbox=dialog] > section{
   overflow: auto;
   text-wrap: normal;
 }
+
+.infoLink{
+  height: 20px;
+}
