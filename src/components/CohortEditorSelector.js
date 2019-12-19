@@ -6,7 +6,7 @@ import {Button} from 'react-toolbox';
 import {
   fetchCohortData,
   getCohortDetails,
-  getCohortsForView,
+  getCohortsForView, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
   getViewsForCohort
 } from '../functions/CohortFunctions';
@@ -110,6 +110,13 @@ export class CohortEditorSelector extends PureComponent {
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
 
+    console.log('avaialble cohorts',availableCohorts);
+    console.log('current cohort',cohort);
+
+    const subCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
+    console.log('sub cohorts',subCohorts);
+    console.log('sub cohorts filtered',subCohorts[0]['OVCA.Immunoreactive'].length);
+
     return (
       <div>
         <div className={BaseStyle.cohortEditorBox}>
@@ -204,11 +211,12 @@ export class CohortEditorSelector extends PureComponent {
                           <li key={sc}>
                             <input
                               checked={cohort[0].selectedSubCohorts.find( s => sc===s )}
+                              disabled={!subCohorts[0][sc]}
                               onChange={(event) => this.handleSubCohortChange(event,0)}
                               type='checkbox'
                               value={sc}
                             />
-                            {sc}
+                            {sc} ({subCohorts[0][sc] ? subCohorts[0][sc].length : 0})
                             {/*<Link*/}
                             {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,0); }}*/}
                             {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
@@ -235,11 +243,12 @@ export class CohortEditorSelector extends PureComponent {
                         <li key={sc}>
                           <input
                             checked={cohort[1].selectedSubCohorts.find( s => sc===s )}
+                            disabled={!subCohorts[1][sc]}
                             onChange={(event) => this.handleSubCohortChange(event,1)}
                             type='checkbox'
                             value={sc}
                           />
-                          {sc}
+                          {sc} ({subCohorts[1][sc] ? subCohorts[1][sc].length : 0})
                           {/*<Link*/}
                           {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,1); }}*/}
                           {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
