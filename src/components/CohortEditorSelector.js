@@ -36,13 +36,7 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:cohortDetails}
     });
-    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
-    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
-    this.setState({
-      cohort: newCohortState,
-      availableSamples,
-      selectedSamples,
-    });
+    this.updateSampleState(newCohortState);
   };
 
   swapCohorts() {
@@ -50,26 +44,14 @@ export class CohortEditorSelector extends PureComponent {
       [0]: { $set:this.state.cohort[1]},
       [1]: { $set:this.state.cohort[0]}
     });
-    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
-    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
-    this.setState({
-      cohort: newCohortState,
-      availableSamples,
-      selectedSamples,
-    });
+    this.updateSampleState(newCohortState);
   }
 
   copyCohorts(fromCohortIndex,toCohortIndex) {
     const newCohortState = update(this.state.cohort,{
       [toCohortIndex]: { $set:this.state.cohort[fromCohortIndex]},
     });
-    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
-    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
-    this.setState({
-      cohort: newCohortState,
-      availableSamples,
-      selectedSamples,
-    });
+    this.updateSampleState(newCohortState);
   }
 
   handleSubCohortChange = (event,cohortIndex) => {
@@ -86,6 +68,24 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     });
+    this.updateSampleState(newCohortState);
+  };
+
+  handleViewChange = (event) => {
+    this.setState({view: event.target.value});
+  };
+
+  selectNone(cohortIndex){
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    // newCohort.selectedSubCohorts = newCohort.subCohorts ;
+    newCohort.selectedSubCohorts = [] ;
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { $set:newCohort},
+    });
+    this.updateSampleState(newCohortState);
+  }
+
+  updateSampleState(newCohortState) {
     const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
     const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
     this.setState({
@@ -93,11 +93,7 @@ export class CohortEditorSelector extends PureComponent {
       availableSamples,
       selectedSamples,
     });
-  };
-
-  handleViewChange = (event) => {
-    this.setState({view: event.target.value});
-  };
+  }
 
   selectAll(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
@@ -105,9 +101,7 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     });
-    this.setState({
-      cohort: newCohortState
-    });
+    this.updateSampleState(newCohortState);
   }
 
   // handleSelectOnly = (value,cohortIndex) => {
@@ -214,6 +208,13 @@ export class CohortEditorSelector extends PureComponent {
                       // label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
                       label={'(Select All)'}
                       onClick={() => this.selectAll(0)}
+                      style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
+                    />
+                    <Link
+                      href='#'
+                      // label={`(Select All ${cohort[0].subCohorts.length} subcohorts)`}
+                      label={'(Clear)'}
+                      onClick={() => this.selectNone(0)}
                       style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                     />
                     <hr/>
