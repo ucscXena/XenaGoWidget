@@ -50,8 +50,12 @@ export class CohortEditorSelector extends PureComponent {
       [0]: { $set:this.state.cohort[1]},
       [1]: { $set:this.state.cohort[0]}
     });
+    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
     this.setState({
-      cohort: newCohortState
+      cohort: newCohortState,
+      availableSamples,
+      selectedSamples,
     });
   }
 
@@ -59,8 +63,12 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [toCohortIndex]: { $set:this.state.cohort[fromCohortIndex]},
     });
+    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
     this.setState({
-      cohort: newCohortState
+      cohort: newCohortState,
+      availableSamples,
+      selectedSamples,
     });
   }
 
@@ -78,8 +86,12 @@ export class CohortEditorSelector extends PureComponent {
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     });
+    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
     this.setState({
-      cohort: newCohortState
+      cohort: newCohortState,
+      availableSamples,
+      selectedSamples,
     });
   };
 
