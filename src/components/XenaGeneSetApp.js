@@ -711,14 +711,14 @@ export default class XenaGeneSetApp extends PureComponent {
                   </select>
                 </td>
                 <td>
-                  {this.state.pathwaySelection &&
-                  <div className={BaseStyle.geneSetInfoBox}>
-                    <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>
-                    {this.state.pathwaySelection.pathway.golabel}
-                        &nbsp;
-                        ({this.state.pathwaySelection.pathway.gene.length} genes)
-                  </div>
-                  }
+                  {/*{this.state.pathwaySelection &&*/}
+                  {/*<div className={BaseStyle.geneSetInfoBox}>*/}
+                  {/*  <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>*/}
+                  {/*  {this.state.pathwaySelection.pathway.golabel}*/}
+                  {/*      &nbsp;*/}
+                  {/*      ({this.state.pathwaySelection.pathway.gene.length} genes)*/}
+                  {/*</div>*/}
+                  {/*}*/}
                 </td>
               </tr>
               {isViewGeneExpression(this.state.filter) &&
@@ -756,6 +756,16 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                           </div>
                         </td>
+                        <td>
+                          {/*{this.state.pathwaySelection &&*/}
+                          {/*<div className={BaseStyle.geneSetInfoBox}>*/}
+                          {/*  <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>*/}
+                          {/*  {this.state.pathwaySelection.pathway.golabel}*/}
+                          {/*  &nbsp;*/}
+                          {/*  ({this.state.pathwaySelection.pathway.gene.length} genes)*/}
+                          {/*</div>*/}
+                          {/*}*/}
+                        </td>
                       </tr>
               }
 
@@ -767,6 +777,20 @@ export default class XenaGeneSetApp extends PureComponent {
                     width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH - 20}
                   />
                 </td>
+                <td>
+
+                  {this.state.pathwaySelection &&
+                  <div className={BaseStyle.geneSetInfoBox}>
+                    <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>
+                    {this.state.pathwaySelection.pathway.golabel}
+                    &nbsp;
+                    ({this.state.pathwaySelection.pathway.gene.length} genes)
+                  </div>
+                  }
+
+
+                </td>
+
 
               </tr>
               <tr>
