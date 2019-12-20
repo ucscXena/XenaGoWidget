@@ -7,7 +7,6 @@ import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, calculateAssociatedData, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
 } from '../functions/DataFunctions';
-import FaRefresh from 'react-icons/lib/fa/refresh';
 import BaseStyle from '../css/base.css';
 import {LabelTop} from './LabelTop';
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
@@ -702,16 +701,16 @@ export default class XenaGeneSetApp extends PureComponent {
                           <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
                             Cohorts
                           </Button>
-                          <Button
-                            onClick={() => {
-                              AppStorageHandler.resetSessionStorage();
-                              location.reload();
-                            }} raised
-                          >
-                            <FaRefresh/>
-                            Reset
-                          </Button>
-                          &nbsp;&nbsp;&nbsp;View:
+                          {/*<Button*/}
+                          {/*  onClick={() => {*/}
+                          {/*    AppStorageHandler.resetSessionStorage();*/}
+                          {/*    location.reload();*/}
+                          {/*  }} raised*/}
+                          {/*>*/}
+                          {/*  <FaRefresh/>*/}
+                          {/*  Reset*/}
+                          {/*</Button>*/}
+                          &nbsp;&nbsp;&nbsp;Analysis:
                           <select
                             className={BaseStyle.softflow}
                             onChange={this.handleChangeTopFilter}
@@ -759,24 +758,6 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                             {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
-                            }
-                          </div>
-                          <div className={BaseStyle.containerBox}>
-                          Sort View by
-                            <select
-                              onChange={(event) => this.setState({sortViewBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
-                              value={this.state.sortViewBy}
-                            >
-                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                              <option value={SORT_ENUM.TOTAL}>Total</option>
-                            </select>
-                            {this.state.sortViewOrder === SORT_ORDER_ENUM.ASC &&
-                          <FaSortAsc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.DESC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
-                            }
-                            {this.state.sortViewOrder === SORT_ORDER_ENUM.DESC &&
-                          <FaSortDesc onClick={() => this.setState({sortViewOrder: SORT_ORDER_ENUM.ASC, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                           </div>
                         </td>

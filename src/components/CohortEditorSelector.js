@@ -139,7 +139,7 @@ export class CohortEditorSelector extends PureComponent {
           <tbody>
             <tr>
               <td>
-              View:
+              Analysis:
                 <select
                   onChange={this.handleViewChange}
                   value={view}
