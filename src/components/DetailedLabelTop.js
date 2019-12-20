@@ -12,28 +12,30 @@ export class DetailedLabelTop extends PureComponent {
     const {cohort,pathwayData,width} = this.props;
     return (
       <table>
-        <tr>
-          <td className={BaseStyle.cohortAGeneSetViewer} width={width/2 +30}>
-            <div className={BaseStyle.geneSetHeaderLabel}>
-              {cohort[0].name}
-              {pathwayData[0].samples &&
+        <tbody>
+          <tr>
+            <td className={BaseStyle.cohortAGeneSetViewer} width={width/2 +30}>
+              <div className={BaseStyle.geneSetHeaderLabel}>
+                {cohort[0].name}
+                {pathwayData[0].samples &&
               <div className={BaseStyle.inlinePathwayChip}>
                 {pathwayData[0].samples.length}
               </div>
-              }
-            </div>
-          </td>
-          <td className={BaseStyle.cohortBGeneSetViewer} width={width/2 +30}>
-            <div className={BaseStyle.geneSetHeaderLabel}>
-              {cohort[1].name}
-              {pathwayData[1].samples &&
+                }
+              </div>
+            </td>
+            <td className={BaseStyle.cohortBGeneSetViewer} width={width/2 +30}>
+              <div className={BaseStyle.geneSetHeaderLabel}>
+                {cohort[1].name}
+                {pathwayData[1].samples &&
               <div className={BaseStyle.inlinePathwayChip}>
                 {pathwayData[1].samples.length}
               </div>
-              }
-            </div>
-          </td>
-        </tr>
+                }
+              </div>
+            </td>
+          </tr>
+        </tbody>
       </table>
     );
   }
