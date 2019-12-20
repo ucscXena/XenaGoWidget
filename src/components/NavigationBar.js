@@ -1,7 +1,5 @@
 import React from 'react';
 import { Button, AppBar,  Navigation } from 'react-toolbox';
-import {IconMenu, MenuItem, MenuDivider} from 'react-toolbox';
-
 import PureComponent from '../../src/components/PureComponent';
 import BaseStyle from '../css/base.css';
 import * as PropTypes from 'underscore';
@@ -48,8 +46,6 @@ export default class NavigationBar extends PureComponent {
     };
 
     render() {
-      let {editGeneSetColors, showDetailLayer, showDiffLayer,
-        toggleShowDiffLayer,toggleShowDetailLayer } = this.props;
       return (
         <div>
           <link
@@ -61,33 +57,6 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    <td width="5%">
-                      <Button
-                        floating icon='help' mini onClick={() => this.showHelp()}
-                        primary
-                      />
-                    </td>
-                    <td width="8%">
-                      <IconMenu
-                        className={BaseStyle.menuStyle} icon='more_vert'
-                        position='topLeft'
-                      >
-
-                        <MenuItem
-                          caption='Edit Colors' icon='color_lens' onClick={() => editGeneSetColors()}
-                          value='download'
-                        />
-                        <MenuDivider/>
-                        <MenuItem
-                          caption={`${showDiffLayer? '\u2713' : 'Show'} Diff Layer`}
-                          onClick={() => toggleShowDiffLayer()}
-                        />
-                        <MenuItem
-                          caption={`${showDetailLayer? '\u2713' : 'Show'} Detail Layer`}
-                          onClick={() => toggleShowDetailLayer()}
-                        />
-                      </IconMenu>
-                    </td>
                     <td width="30%">
                       <Autocomplete
                         label='Find Gene'
@@ -110,6 +79,12 @@ export default class NavigationBar extends PureComponent {
                         <GithubIcon/>
                       </a>
                     </td>
+                    <td width="5%">
+                      <Button
+                        floating icon='help' mini onClick={() => this.showHelp()}
+                        primary
+                      />
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -124,11 +99,6 @@ export default class NavigationBar extends PureComponent {
 
 NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
-  editGeneSetColors: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
-  showDetailLayer: PropTypes.any,
-  showDiffLayer: PropTypes.any,
-  toggleShowDetailLayer: PropTypes.any,
-  toggleShowDiffLayer: PropTypes.any,
 };

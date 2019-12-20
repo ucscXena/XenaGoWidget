@@ -1,8 +1,3 @@
-.input autocomplete {
-    color: white;
-    background-color: white;
-    font-family: Courier;
-}
 
 .input svg {
     width: 3.4rem;
@@ -22,6 +17,16 @@
 }
 
 .autocomplete .suggestions :hover{
-    color: whitesmoke;
+    color: white;
     background-color: darkgray;
+}
+
+.autocomplete .active{
+  color: black;
+  background-color: darkgray;
+}
+
+.autocomplete .focus{
+  color: white;
+  background-color: darkgray;
 }

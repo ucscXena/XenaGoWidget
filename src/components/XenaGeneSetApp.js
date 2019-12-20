@@ -623,13 +623,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <NavigationBar
           acceptGeneHandler={this.geneHighlight}
-          editGeneSetColors={this.editGeneSetColors}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
-          showDetailLayer={this.state.showDetailLayer}
-          showDiffLayer={this.state.showDiffLayer}
-          toggleShowDetailLayer={this.toggleShowDetailLayer}
-          toggleShowDiffLayer={this.toggleShowDiffLayer}
         />
 
         <div>
