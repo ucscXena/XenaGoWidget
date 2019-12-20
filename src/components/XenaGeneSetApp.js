@@ -710,8 +710,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     }
                   </select>
                 </td>
-                <td>
-                </td>
+                <td />
               </tr>
               {isViewGeneExpression(this.state.filter) &&
                       <tr>
@@ -748,8 +747,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             }
                           </div>
                         </td>
-                        <td>
-                        </td>
+                        <td />
                       </tr>
               }
 
