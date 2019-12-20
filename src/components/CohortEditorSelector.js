@@ -85,6 +85,16 @@ export class CohortEditorSelector extends PureComponent {
     this.updateSampleState(newCohortState);
   }
 
+  selectOnly(cohortIndex,item){
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    // newCohort.selectedSubCohorts = newCohort.subCohorts ;
+    newCohort.selectedSubCohorts = [item] ;
+    const newCohortState = update(this.state.cohort,{
+      [cohortIndex]: { $set:newCohort},
+    });
+    this.updateSampleState(newCohortState);
+  }
+
   updateSampleState(newCohortState) {
     const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
     const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
@@ -229,11 +239,11 @@ export class CohortEditorSelector extends PureComponent {
                               type='checkbox'
                               value={sc}
                             />
-                            {sc} ({subCohorts[0][sc] ? subCohorts[0][sc].length : 0})
-                            {/*<Link*/}
-                            {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,0); }}*/}
-                            {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
-                            {/*/>*/}
+                            {sc} (
+                            <a href='#' onClick={() => this.selectOnly(0,sc)}>
+                              {subCohorts[0][sc] ? subCohorts[0][sc].length : 0}
+                            </a>
+                            )
                           </li>
                         );
                       })  }
@@ -270,7 +280,11 @@ export class CohortEditorSelector extends PureComponent {
                             type='checkbox'
                             value={sc}
                           />
-                          {sc} ({subCohorts[1][sc] ? subCohorts[1][sc].length : 0})
+                          {sc} (
+                          <a href='#' onClick={() => this.selectOnly(1,sc)}>
+                            {subCohorts[1][sc] ? subCohorts[1][sc].length : 0}
+                          </a>
+                          )
                           {/*<Link*/}
                           {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,1); }}*/}
                           {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
