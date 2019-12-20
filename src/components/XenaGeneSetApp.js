@@ -39,6 +39,7 @@ import {DetailedLabelTop} from './DetailedLabelTop';
 
 
 const VIEWER_HEIGHT = 500;
+const TOP_HEIGHT = 112;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const BORDER_OFFSET = 2;
@@ -882,7 +883,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   renderHeight={VIEWER_HEIGHT}
 
                                   // state
-                                  renderOffset={0}
+                                  renderOffset={TOP_HEIGHT}
                                   selectedCohort={this.state.selectedCohort[0]}
                                   showDetailLayer={this.state.showDetailLayer}
                                   showDiffLayer={this.state.showDiffLayer}
@@ -919,7 +920,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   renderHeight={VIEWER_HEIGHT}
 
                                   // state
-                                  renderOffset={VIEWER_HEIGHT - 3}
+                                  renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}
                                   selectedCohort={this.state.selectedCohort[1]}
                                   showDetailLayer={this.state.showDetailLayer}
                                   showDiffLayer={this.state.showDiffLayer}
