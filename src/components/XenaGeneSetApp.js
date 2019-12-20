@@ -810,7 +810,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                         <td className={BaseStyle.autoSortBox} >
                           {this.state.pathwaySelection &&
-                          <div className={BaseStyle.geneSetInfoBox}>
+                          <div>
                             <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>
                             {this.state.pathwaySelection.pathway.golabel}
                             &nbsp;
