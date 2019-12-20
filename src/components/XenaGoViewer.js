@@ -88,7 +88,7 @@ export default class XenaGoViewer extends PureComponent {
               {geneDataStats && geneDataStats.geneExpression!==undefined &&
                     <tr>
                       <td
-                        style={{paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0}}
+                        style={{ borderRadius: 5,backgroundColor: cohortIndex === 0 ? 'darkolivegreen' : 'tan', paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0  }}
                         valign="top"
                       >
                         { cohortIndex===1 &&
@@ -98,7 +98,7 @@ export default class XenaGoViewer extends PureComponent {
                             selectedCohort={geneDataStats.selectedCohort}
                           />
                         }
-                        <Card style={{height: 200, width: style.gene.columnWidth, marginTop: 5}}>
+                        <Card style={{height: 200, width: style.gene.columnWidth, padding: 5,marginTop: 5, borderRadius:10}}>
                           <HoverGeneView
                             cohortIndex={cohortIndex}
                             data={geneHoverData}

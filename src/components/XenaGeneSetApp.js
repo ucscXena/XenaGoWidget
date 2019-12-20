@@ -8,7 +8,6 @@ import {
   calculateAllPathways, calculateAssociatedData, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
 } from '../functions/DataFunctions';
 import BaseStyle from '../css/base.css';
-import {LabelTop} from './LabelTop';
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView';
 import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
@@ -36,6 +35,7 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
+import {DetailedLabelTop} from './DetailedLabelTop';
 
 
 const VIEWER_HEIGHT = 500;
@@ -758,30 +758,16 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
               }
+
               <tr>
-                <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                  <div className={BaseStyle.geneSetHeaderLabel}>
-                    {this.state.selectedCohort[0].name}
-                    {this.state.pathwayData[0].samples &&
-                              <div className={BaseStyle.inlinePathwayChip}>
-                                {this.state.pathwayData[0].samples.length}
-                              </div>
-                    }
-                  </div>
+                <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
+                  <DetailedLabelTop
+                    cohort={this.state.selectedCohort}
+                    pathwayData={this.state.pathwayData}
+                    width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH - 20}
+                  />
                 </td>
-                <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                  <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
-                </td>
-                <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                  <div className={BaseStyle.geneSetHeaderLabel}>
-                    {this.state.selectedCohort[1].name}
-                    {this.state.pathwayData[1].samples &&
-                            <div className={BaseStyle.inlinePathwayChip}>
-                              {this.state.pathwayData[1].samples.length}
-                            </div>
-                    }
-                  </div>
-                </td>
+
               </tr>
               <tr>
                 <td>
