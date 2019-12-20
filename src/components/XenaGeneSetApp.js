@@ -2,7 +2,7 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import XenaGoViewer from './XenaGoViewer';
 import {AppStorageHandler} from '../service/AppStorageHandler';
-import NavigationBar from './NavigationBar';
+// import NavigationBar from './NavigationBar';
 import {GeneSetSelector} from './GeneSetSelector';
 import {
   calculateAllPathways, calculateAssociatedData, generateScoredData, generateZScoreForBoth, isViewGeneExpression,
@@ -36,6 +36,9 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
+import {GithubIcon} from './GithubIcon';
+import Autocomplete from 'react-toolbox/lib/autocomplete';
+import AutocompleteTheme from '../css/autocomplete.css';
 
 
 const VIEWER_HEIGHT = 500;
@@ -79,6 +82,7 @@ export default class XenaGeneSetApp extends PureComponent {
       associatedData:[],
       selectedCohort: cohorts,
       fetch: false,
+      geneNameSearch:'',
       automaticallyReloadPathways: true,
       currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: process.env.NODE_ENV!=='test' ,
@@ -137,6 +141,9 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
+  showHelp = () => {
+    window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about');
+  };
 
   queryGenes = (geneQuery) => {
     let {reference: {host, name}, limit} = this.state;
@@ -581,6 +588,13 @@ export default class XenaGeneSetApp extends PureComponent {
     fetchCombinedCohorts(this.state.selectedCohort,sortedPathways,this.state.filter,this.handleCombinedCohortData);
 
   };
+  // handleSearch = (text) => {
+  //   this.props.searchHandler(text);
+  // };
+  //
+  // acceptGeneHandler = (text) => {
+  //   this.props.acceptGeneHandler(text);
+  // };
 
   render() {
     let storedPathways = AppStorageHandler.getPathways();
@@ -621,16 +635,16 @@ export default class XenaGeneSetApp extends PureComponent {
     return (
       <div>
 
-        <NavigationBar
-          acceptGeneHandler={this.geneHighlight}
-          editGeneSetColors={this.editGeneSetColors}
-          geneOptions={this.state.geneHits}
-          searchHandler={this.searchHandler}
-          showDetailLayer={this.state.showDetailLayer}
-          showDiffLayer={this.state.showDiffLayer}
-          toggleShowDetailLayer={this.toggleShowDetailLayer}
-          toggleShowDiffLayer={this.toggleShowDiffLayer}
-        />
+        {/*<NavigationBar*/}
+        {/*  acceptGeneHandler={this.geneHighlight}*/}
+        {/*  editGeneSetColors={this.editGeneSetColors}*/}
+        {/*  geneOptions={this.state.geneHits}*/}
+        {/*  searchHandler={this.searchHandler}*/}
+        {/*  showDetailLayer={this.state.showDetailLayer}*/}
+        {/*  showDiffLayer={this.state.showDiffLayer}*/}
+        {/*  toggleShowDetailLayer={this.toggleShowDetailLayer}*/}
+        {/*  toggleShowDiffLayer={this.toggleShowDiffLayer}*/}
+        {/*/>*/}
 
         <div>
           <Dialog
@@ -715,15 +729,35 @@ export default class XenaGeneSetApp extends PureComponent {
                     }
                   </select>
                 </td>
-                <td>
-                  {this.state.pathwaySelection &&
-                  <div className={BaseStyle.geneSetInfoBox}>
-                    <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>
-                    {this.state.pathwaySelection.pathway.golabel}
-                        &nbsp;
-                        ({this.state.pathwaySelection.pathway.gene.length} genes)
-                  </div>
-                  }
+                <td className={BaseStyle.autoSortBox} colSpan={1}>
+                  <Autocomplete
+                    className={BaseStyle.inlineButton}
+                    label='Find Gene'
+                    multiple={false}
+                    onChange={(searchText) => {
+                      this.geneHighlight(searchText);
+                      this.setState({geneNameSearch: searchText});
+                    }}
+                    onQueryChange={(geneQuery) => {
+                      this.searchHandler(geneQuery);
+                      this.setState({geneNameSearch: geneQuery});
+                    }}
+                    source={this.state.geneHits}
+                    theme={AutocompleteTheme}
+                    value={this.state.geneNameSearch}
+                  />
+                  <Button
+                    className={BaseStyle.inlineButton}
+                    floating icon='help' mini
+                    onClick={() => this.showHelp()}
+                    primary
+                  />
+                  <a
+                    className={BaseStyle.inlineButton} href='https://github.com/ucscXena/XenaGoWidget'
+                    style={{marginLeft: 20}}
+                  >
+                    <GithubIcon/>
+                  </a>
                 </td>
               </tr>
               {isViewGeneExpression(this.state.filter) &&
@@ -760,6 +794,16 @@ export default class XenaGeneSetApp extends PureComponent {
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                           </div>
+                        </td>
+                        <td className={BaseStyle.autoSortBox} >
+                          {this.state.pathwaySelection &&
+                          <div className={BaseStyle.geneSetInfoBox}>
+                            <div className={BaseStyle.geneSetBoxLabel}>Gene Set</div>
+                            {this.state.pathwaySelection.pathway.golabel}
+                            &nbsp;
+                            ({this.state.pathwaySelection.pathway.gene.length} genes)
+                          </div>
+                          }
                         </td>
                       </tr>
               }

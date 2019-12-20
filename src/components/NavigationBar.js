@@ -9,8 +9,7 @@ import Autocomplete from 'react-toolbox/lib/autocomplete';
 import AutocompleteTheme from '../css/autocomplete.css';
 
 
-// eslint-disable-next-line react/no-multi-comp
-const GithubIcon = () => (
+export const GithubIcon = () => (
   <svg style={{height: 30}} viewBox="0 0 284 277">
     <g fill='white' stroke='black' strokeWidth='4'>
       <path

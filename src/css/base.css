@@ -425,3 +425,11 @@ div[data-react-toolbox=dialog] > section{
   font-family: sans-serif;
   font-size: small;
 }
+
+.leftBackgroundColor{
+  background-color: seagreen;
+}
+
+.leftBackgroundColor{
+  background-color: tan;
+}
