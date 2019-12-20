@@ -32,11 +32,12 @@ import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunctio
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
+import FaInfoCircle from 'react-icons/lib/fa/info-circle';
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
+import FaGithub from 'react-icons/lib/fa/github';
 import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
-import {GithubIcon} from './GithubIcon';
 import Autocomplete from 'react-toolbox/lib/autocomplete';
 import AutocompleteTheme from '../css/autocomplete.css';
 
@@ -730,34 +731,46 @@ export default class XenaGeneSetApp extends PureComponent {
                   </select>
                 </td>
                 <td className={BaseStyle.autoSortBox} colSpan={1}>
-                  <Autocomplete
-                    className={BaseStyle.inlineButton}
-                    label='Find Gene'
-                    multiple={false}
-                    onChange={(searchText) => {
-                      this.geneHighlight(searchText);
-                      this.setState({geneNameSearch: searchText});
-                    }}
-                    onQueryChange={(geneQuery) => {
-                      this.searchHandler(geneQuery);
-                      this.setState({geneNameSearch: geneQuery});
-                    }}
-                    source={this.state.geneHits}
-                    theme={AutocompleteTheme}
-                    value={this.state.geneNameSearch}
-                  />
-                  <Button
-                    className={BaseStyle.inlineButton}
-                    floating icon='help' mini
-                    onClick={() => this.showHelp()}
-                    primary
-                  />
-                  <a
-                    className={BaseStyle.inlineButton} href='https://github.com/ucscXena/XenaGoWidget'
-                    style={{marginLeft: 20}}
-                  >
-                    <GithubIcon/>
-                  </a>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td width='250px'>
+                          <Autocomplete
+                            className={BaseStyle.searchButton}
+                            label='Find Gene'
+                            multiple={false}
+                            onChange={(searchText) => {
+                              this.geneHighlight(searchText);
+                              this.setState({geneNameSearch: searchText});
+                            }}
+                            onQueryChange={(geneQuery) => {
+                              this.queryGenes(geneQuery);
+                              this.setState({geneNameSearch: geneQuery});
+                            }}
+                            source={this.state.geneHits}
+                            theme={AutocompleteTheme}
+                            value={this.state.geneNameSearch}
+                          />
+                        </td>
+                        <td>
+                          <Button
+                            className={BaseStyle.helpButton} floating mini
+                            onClick={() => window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')}
+                            primary
+                          >
+                            <FaInfoCircle/>
+                          </Button>
+                          <Button
+                            className={BaseStyle.helpButton} floating mini
+                            onClick={() => window.open('https://github.com/ucscXena/XenaGoWidget')}
+                            primary
+                          >
+                            <FaGithub/>
+                          </Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </td>
               </tr>
               {isViewGeneExpression(this.state.filter) &&

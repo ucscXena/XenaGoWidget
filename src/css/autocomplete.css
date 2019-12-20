@@ -1,9 +1,3 @@
-.input autocomplete {
-    color: white;
-    background-color: white;
-    font-family: Courier;
-}
-
 .input svg {
     width: 3.4rem;
     height: 3.4rem;
@@ -11,17 +5,37 @@
     fill: #fff;
 }
 
+/*.autocomplete{*/
+/*  padding: 0;*/
+/*  margin: 0;*/
+/*}*/
+
+.autocomplete {
+  color: black;
+  background-color: white;
+  padding: 0;
+  font-size: small;
+  margin: 0;
+}
+
 .autocomplete input {
     color: black;
     background-color: white;
+  padding: 0px 0px 20px 20px;
+  font-size: small;
+  margin: 0;
 }
 
 .autocomplete .suggestion {
     color: black;
     background-color: lightgray;
+  font-size: small;
+  margin: 0;
 }
 
 .autocomplete .suggestions :hover{
     color: whitesmoke;
     background-color: darkgray;
+  font-size: small;
+  margin: 0;
 }
