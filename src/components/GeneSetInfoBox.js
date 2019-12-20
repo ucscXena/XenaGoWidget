@@ -60,9 +60,16 @@ export class GeneSetInfoBox extends PureComponent {
         </Dialog>
 
         <br/>
-        <div className={BaseStyle.samplesBox}>
+        { selectedCohort.selectedSubCohorts.length === 1 &&
+        <div>
+          { selectedCohort.selectedSubCohorts[0]}
+        </div>
+        }
+        { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 1 &&
+        <div>
           { selectedCohort.selectedSubCohorts.length } / {selectedCohort.subCohorts.length } cohorts selected
         </div>
+        }
         <br/>
 
         <br/>
