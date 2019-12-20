@@ -738,6 +738,9 @@ export default class XenaGeneSetApp extends PureComponent {
                           <div className={BaseStyle.containerBox}>
                           Limit
                             <input
+                              onBlur={ () => this.setState({
+                                fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways
+                              })}
                               onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
                               value={this.state.geneSetLimit}
                             />
