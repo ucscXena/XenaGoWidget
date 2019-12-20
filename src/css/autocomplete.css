@@ -6,6 +6,12 @@
     fill: #fff;
 }
 
+.autocomplete label{
+  color: blue;
+  font-weight: bold;
+  background-color: white;
+}
+
 .autocomplete input {
     color: black;
     background-color: white;
