@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
-// import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
 import '../css/base.css';
 import HoverGeneView from './HoverGeneView';
@@ -44,18 +43,6 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onGeneHover(geneHoverProps);
 
     };
-    //
-    // handleChangeFilter = (filter) => {
-    //   this.props.onChangeFilter(filter,this.props.cohortIndex);
-    // };
-    //
-    // handleSelectCohort = (selected) => {
-    //   this.props.onChangeCohort(selected,this.props.cohortIndex);
-    // };
-    //
-    // handleSelectSubCohort = (subCohortSelected) => {
-    //   this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
-    // };
 
     render() {
       let geneList = getGenesForPathways(this.props.pathways);

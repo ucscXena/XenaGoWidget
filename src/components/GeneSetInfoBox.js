@@ -12,7 +12,7 @@ import {
 
 const TooltipLink = Tooltip(Link);
 
-const MAGIC_LENGTH = 20 ;
+const MAGIC_LENGTH = 25 ;
 
 export class GeneSetInfoBox extends PureComponent {
 
@@ -36,7 +36,7 @@ export class GeneSetInfoBox extends PureComponent {
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
-          className={BaseStyle.infoLink} href="#" icon='info' label={label}
+          className={BaseStyle.infoLink} href="#" label={label}
           onClick={()=>this.setState({showInfo: true})}
           tooltip={selectedCohort.name}
         />
