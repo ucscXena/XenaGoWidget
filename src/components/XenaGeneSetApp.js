@@ -685,51 +685,40 @@ export default class XenaGeneSetApp extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td  valign='top'>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td className={BaseStyle.autoSortBox} colSpan={3}>
-                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
+                <td className={BaseStyle.autoSortBox} colSpan={3}>
+                  <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
                             Gene Sets&nbsp;
-                            {this.state.pathways &&
+                    {this.state.pathways &&
                             <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
                             </div>
-                            }
-                          </Button>
-                          <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
+                    }
+                  </Button>
+                  <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
                             Cohorts
-                          </Button>
-                          {/*<Button*/}
-                          {/*  onClick={() => {*/}
-                          {/*    AppStorageHandler.resetSessionStorage();*/}
-                          {/*    location.reload();*/}
-                          {/*  }} raised*/}
-                          {/*>*/}
-                          {/*  <FaRefresh/>*/}
-                          {/*  Reset*/}
-                          {/*</Button>*/}
+                  </Button>
                           &nbsp;&nbsp;&nbsp;Analysis:
-                          <select
-                            className={BaseStyle.softflow}
-                            onChange={this.handleChangeTopFilter}
-                            style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                            value={this.state.filter}
-                          >
-                            {
-                              allowableViews.map(c => {
-                                return (
-                                  <option key={c} value={c}>
-                                    {c}
-                                  </option>
-                                );
-                              })
-                            }
-                          </select>
-                        </td>
-                      </tr>
-                      {isViewGeneExpression(this.state.filter) &&
+                  <select
+                    className={BaseStyle.softflow}
+                    onChange={this.handleChangeTopFilter}
+                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                    value={this.state.filter}
+                  >
+                    {
+                      allowableViews.map(c => {
+                        return (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        );
+                      })
+                    }
+                  </select>
+                </td>
+                <td>
+                </td>
+              </tr>
+              {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td className={BaseStyle.autoSortBox} colSpan={3}>
                           <div className={BaseStyle.headerBox}>
@@ -765,50 +754,50 @@ export default class XenaGeneSetApp extends PureComponent {
                           </div>
                         </td>
                       </tr>
-                      }
-                      <tr>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                          <div className={BaseStyle.geneSetHeaderLabel}>
-                            {this.state.selectedCohort[0].name}
-                            {this.state.pathwayData[0].samples &&
+              }
+              <tr>
+                <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
+                  <div className={BaseStyle.geneSetHeaderLabel}>
+                    {this.state.selectedCohort[0].name}
+                    {this.state.pathwayData[0].samples &&
                               <div className={BaseStyle.inlinePathwayChip}>
                                 {this.state.pathwayData[0].samples.length}
                               </div>
-                            }
-                          </div>
-                        </td>
-                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                          <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
-                        </td>
-                        <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
-                          <div className={BaseStyle.geneSetHeaderLabel}>
-                            {this.state.selectedCohort[1].name}
-                            {this.state.pathwayData[1].samples &&
+                    }
+                  </div>
+                </td>
+                <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                  <LabelTop width={VERTICAL_SELECTOR_WIDTH - 20}/>
+                </td>
+                <td width={VERTICAL_GENESET_DETAIL_WIDTH}>
+                  <div className={BaseStyle.geneSetHeaderLabel}>
+                    {this.state.selectedCohort[1].name}
+                    {this.state.pathwayData[1].samples &&
                             <div className={BaseStyle.inlinePathwayChip}>
                               {this.state.pathwayData[1].samples.length}
                             </div>
-                            }
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <VerticalGeneSetScoresView
-                            associatedData={this.state.associatedData[0]}
-                            cohortIndex={0}
-                            filter={this.state.filter}
-                            labelHeight={18 + 2 * BORDER_OFFSET}
-                            maxValue={maxValue}
-                            onClick={this.handlePathwaySelect}
-                            onHover={this.handlePathwayHover}
-                            onMouseOut={this.handlePathwayHover}
-                            pathways={pathways}
-                            selectedCohort={this.state.selectedCohort[0]}
-                            width={VERTICAL_GENESET_DETAIL_WIDTH}
-                          />
-                        </td>
-                        <td width={VERTICAL_SELECTOR_WIDTH - 20}>
-                          {this.state.pathways &&
+                    }
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <VerticalGeneSetScoresView
+                    associatedData={this.state.associatedData[0]}
+                    cohortIndex={0}
+                    filter={this.state.filter}
+                    labelHeight={18 + 2 * BORDER_OFFSET}
+                    maxValue={maxValue}
+                    onClick={this.handlePathwaySelect}
+                    onHover={this.handlePathwayHover}
+                    onMouseOut={this.handlePathwayHover}
+                    pathways={pathways}
+                    selectedCohort={this.state.selectedCohort[0]}
+                    width={VERTICAL_GENESET_DETAIL_WIDTH}
+                  />
+                </td>
+                <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                  {this.state.pathways &&
                               <GeneSetSelector
                                 geneStateColors={this.state.geneStateColors}
                                 highlightedGene={this.state.highlightedGene}
@@ -823,26 +812,22 @@ export default class XenaGeneSetApp extends PureComponent {
                                 topOffset={14}
                                 width={VERTICAL_SELECTOR_WIDTH}
                               />
-                          }
-                        </td>
-                        <td>
-                          <VerticalGeneSetScoresView
-                            associatedData={this.state.associatedData[1]}
-                            cohortIndex={1}
-                            filter={this.state.filter}
-                            labelHeight={18 + 2 * BORDER_OFFSET}
-                            maxValue={maxValue}
-                            onClick={this.handlePathwaySelect}
-                            onHover={this.handlePathwayHover}
-                            onMouseOut={this.handlePathwayHover}
-                            pathways={pathways}
-                            selectedCohort={this.state.selectedCohort[1]}
-                            width={VERTICAL_GENESET_DETAIL_WIDTH}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  }
+                </td>
+                <td>
+                  <VerticalGeneSetScoresView
+                    associatedData={this.state.associatedData[1]}
+                    cohortIndex={1}
+                    filter={this.state.filter}
+                    labelHeight={18 + 2 * BORDER_OFFSET}
+                    maxValue={maxValue}
+                    onClick={this.handlePathwaySelect}
+                    onHover={this.handlePathwayHover}
+                    onMouseOut={this.handlePathwayHover}
+                    pathways={pathways}
+                    selectedCohort={this.state.selectedCohort[1]}
+                    width={VERTICAL_GENESET_DETAIL_WIDTH}
+                  />
                 </td>
                 {this.state.loading===LOAD_STATE.LOADED &&
                               <td
