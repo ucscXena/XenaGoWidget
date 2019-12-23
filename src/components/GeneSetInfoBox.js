@@ -13,7 +13,7 @@ import {Button} from 'react-toolbox';
 
 const TooltipLink = Tooltip(Link);
 
-const MAGIC_LENGTH = 25 ;
+const MAGIC_LENGTH = 28 ;
 
 export class GeneSetInfoBox extends PureComponent {
 
