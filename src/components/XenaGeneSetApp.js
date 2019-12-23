@@ -233,6 +233,7 @@ export default class XenaGeneSetApp extends PureComponent {
     let geneData = generateScoredData(selection,[pathwayDataA,pathwayDataB],pathways,this.state.filter,[sortedSamplesA,sortedSamplesB]);
     const sortedGeneData = isViewGeneExpression(this.state.filter) ? sortGeneDataWithSamples([sortedSamplesA,sortedSamplesB],geneData) : geneData;
 
+
     currentLoadState = LOAD_STATE.LOADED;
     this.setState({
       associatedData:[sortedAssociatedDataA,sortedAssociatedDataB],
@@ -248,6 +249,7 @@ export default class XenaGeneSetApp extends PureComponent {
       fetch: false,
     });
 
+    fetchSampleData(this.state.selectedCohort,this.state.filter,this.handleSampleDataCounts);
 
   };
 
@@ -591,7 +593,6 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
 
-      fetchSampleData(this.state.selectedCohort,this.state.filter,this.handleSampleDataCounts);
       // if gene Expressions
       if(getCohortDataForGeneExpressionView(this.state.selectedCohort,this.state.filter)!==null){
         if(this.state.reloadPathways){

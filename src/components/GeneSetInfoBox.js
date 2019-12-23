@@ -31,6 +31,7 @@ export class GeneSetInfoBox extends PureComponent {
   render(){
     const {cohortIndex,samplesLength,selectedCohort, onEditCohorts, subCohortCounts} = this.props;
     const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
+    if(!subCohortCounts) return <div>Calculating</div>;
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
