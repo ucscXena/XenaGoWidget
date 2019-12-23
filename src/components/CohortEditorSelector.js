@@ -13,6 +13,10 @@ import {
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
 import Link from 'react-toolbox/lib/link';
+import {
+  fetchSampleData,
+} from '../functions/FetchFunctions';
+
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -25,6 +29,8 @@ export class CohortEditorSelector extends PureComponent {
       cohort: props.cohort,
       availableSamples,
       selectedSamples,
+      fetchSamples: true,
+      subCohortCounts: undefined,
     };
   }
 
@@ -114,104 +120,144 @@ export class CohortEditorSelector extends PureComponent {
     this.updateSampleState(newCohortState);
   }
 
-  // handleSelectOnly = (value,cohortIndex) => {
-  //   let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
-  //   newCohort.selectedSubCohorts = JSON.parse(JSON.stringify([value])) ;
-  //   const newCohortState = update(this.state.cohort,{
-  //     [cohortIndex]: { selectedSubCohorts: { $set : [value]}},
-  //   });
-  //   this.setState({
-  //     cohort: newCohortState
-  //   });
-  // };
+  handleSampleDataCounts = (cohortA,cohortB) => {
+    console.log('input counts A',cohortA);
+    console.log('input counts B',cohortB);
 
+    const newSubCohortCounts =  [
+      cohortA.subCohortCounts.map( s => {
+        let returnOjb = { };
+        returnOjb[s.name] = s.count ;
+        return returnOjb;
+      })
+      ,
+      cohortB.subCohortCounts.map( s => {
+        let returnOjb = { };
+        returnOjb[s.name] = s.count ;
+        return returnOjb;
+      })
+    ];
+
+
+    console.log('new sub counts',newSubCohortCounts);
+
+    this.setState({
+      fetchSamples: false,
+      subCohortCounts: newSubCohortCounts,
+    });
+  };
+
+  getCountForKey(input,key){
+    const returnValue = input.filter( s => {
+      return Object.keys(s)[0]===key;
+    });
+    return returnValue && returnValue.length>0 ? returnValue[0]: undefined;
+  }
 
   render(){
 
     const { onCancelCohortEdit, onChangeView} = this.props;
-    const { view, cohort , selectedSamples, availableSamples } = this.state ;
+    const { fetchSamples, view, cohort , selectedSamples, availableSamples , subCohortCounts} = this.state ;
     const cohorts = getCohortsForView(view);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
     const subCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
 
-    return (
-      <div>
-        <div className={BaseStyle.cohortEditorBox}>
-          <Button
-            icon='save' label='Save' onClick={() => {
-              onChangeView(cohort,view);
-            }} primary raised
-          />
-          <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
-        </div>
-        <table className={BaseStyle.cohortEditorBox}>
-          <tbody>
-            <tr>
-              <td>
+
+    console.log('fetching samples',fetchSamples);
+    console.log('input sub cohorts',subCohorts);
+    if(fetchSamples){
+      fetchSampleData(cohort,view,this.handleSampleDataCounts);
+    }
+
+    if(!subCohortCounts){
+      return (<div>Loading</div>) ;
+    }
+    else
+    if(subCohortCounts){
+
+      console.log('sub cohort counts',subCohortCounts);
+      // console.log('find one',subCohortCounts[1].filter( s => {
+      //   console.log('s',Object.keys(s)[0])
+      //   return Object.keys(s)[0]==='PRAD.3-ETV4';
+      // }));
+      return (
+        <div>
+          <div className={BaseStyle.cohortEditorBox}>
+            <Button
+              icon='save' label='Save' onClick={() => {
+                onChangeView(cohort,view);
+              }} primary raised
+            />
+            <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
+          </div>
+          <table className={BaseStyle.cohortEditorBox}>
+            <tbody>
+              <tr>
+                <td>
               Analysis:
-                <select
-                  onChange={this.handleViewChange}
-                  value={view}
-                >
-                  {
-                    Object.entries(allowableViews).map( f => {
-                      return (
-                        <option key={f[1]} value={f[1]}>{f[1]}</option>
-                      );
-                    })
-                  }
-                </select>
-              </td>
-              <td>
-                <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
-                <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
-                <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
-              </td>
-            </tr>
-            <tr>
-              <th>
-                <u>Cohort A</u>
-                <select
-                  className={BaseStyle.softflow}
-                  onChange={(event) => this.handleCohortChange(event,0)}
-                  style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                  value={cohort[0].name}
-                >
-                  {
-                    availableCohorts.map(c => {
-                      return (
-                        <option key={c.name} value={c.name}>
-                          {c.name}
-                        </option>
-                      );
-                    })
-                  }
-                </select>
-              </th>
-              <th>
-                <u>Cohort B</u>
-                <select
-                  className={BaseStyle.softflow}
-                  onChange={(event) => this.handleCohortChange(event,1)}
-                  style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                  value={cohort[1].name}
-                >
-                  {
-                    availableCohorts.map(c => {
-                      return (
-                        <option key={c.name} value={c.name}>
-                          {c.name}
-                        </option>
-                      );
-                    })
-                  }
-                </select>
-              </th>
-            </tr>
-            <tr className={BaseStyle.cohortEditorRow}>
-              <td valign='top'>
-                { cohort[0].subCohorts && cohort[0].subCohorts.length>1 &&
+                  <select
+                    onChange={this.handleViewChange}
+                    value={view}
+                  >
+                    {
+                      Object.entries(allowableViews).map( f => {
+                        return (
+                          <option key={f[1]} value={f[1]}>{f[1]}</option>
+                        );
+                      })
+                    }
+                  </select>
+                </td>
+                <td>
+                  <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
+                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
+                  <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <u>Cohort A</u>
+                  <select
+                    className={BaseStyle.softflow}
+                    onChange={(event) => this.handleCohortChange(event,0)}
+                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                    value={cohort[0].name}
+                  >
+                    {
+                      availableCohorts.map(c => {
+                        return (
+                          <option key={c.name} value={c.name}>
+                            {c.name}
+                          </option>
+                        );
+                      })
+                    }
+                  </select>
+                </th>
+                <th>
+                  <u>Cohort B</u>
+                  <select
+                    className={BaseStyle.softflow}
+                    onChange={(event) => this.handleCohortChange(event,1)}
+                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                    value={cohort[1].name}
+                  >
+                    {
+                      availableCohorts.map(c => {
+                        return (
+                          <option key={c.name} value={c.name}>
+                            {c.name}
+                          </option>
+                        );
+                      })
+                    }
+                  </select>
+                </th>
+              </tr>
+              <tr className={BaseStyle.cohortEditorRow}>
+                <td valign='top'>
+                  { cohort[0].subCohorts && cohort[0].subCohorts.length>1 &&
                   <div>
                     <Link
                       href='#'
@@ -249,14 +295,13 @@ export class CohortEditorSelector extends PureComponent {
                       })  }
                     </ul>
                   </div>
-                }
-              </td>
-              <td valign='top'>
-                {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
+                  }
+                </td>
+                <td valign='top'>
+                  {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
                 <div>
                   <Link
                     href='#'
-                    // label={`(Select All ${cohort[1].subCohorts.length} subcohorts)`}
                     label={'(Select All)'}
                     onClick={() => this.selectAll(1)}
                     style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
@@ -285,22 +330,19 @@ export class CohortEditorSelector extends PureComponent {
                             {subCohorts[1][sc] ? subCohorts[1][sc].length : 0}
                           </a>
                           )
-                          {/*<Link*/}
-                          {/*  href='#' label={'(Only)'} onClick={() => { this.handleSelectOnly(sc,1); }}*/}
-                          {/*  style={{display:'inline', marginLeft: 4,fontSize: 'small'}}*/}
-                          {/*/>*/}
                         </li>
                       );
                     })}
                   </ul>
                 </div>
-                }
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    );
+                  }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+    }
   }
 }
 CohortEditorSelector.propTypes = {
