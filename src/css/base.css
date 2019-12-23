@@ -383,19 +383,22 @@ div[data-react-toolbox=dialog] > section{
 }
 
 .samplesBox{
-  padding: 2px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  display: inline;
+  padding-left: 5px;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
   border-radius:5px;
-  border: solid 1px;
+  background-color: lightgray;
+  /*border: solid 1px;*/
 }
 
 .bottomInfoBox{
   height: 220px;
   width: 190px;
   margin: 5px 0 5px 0;
-  padding: 5px 0 5px 5px;
+  padding: 5px 5px 5px 5px;
   font-family: sans-serif;
   font-size:small;
   box-shadow: 1px 1px 1px 1px gray;
@@ -408,7 +411,7 @@ div[data-react-toolbox=dialog] > section{
 
 .topInfoBox{
   background-color: white;
-  height: 220px;
+  height: 210px;
   width: 190px;
   margin: 60px 0 5px 0;
   padding: 5px 5px 5px 5px;
@@ -423,6 +426,8 @@ div[data-react-toolbox=dialog] > section{
 
 .infoLink{
   height: 20px;
+  margin: 0;
+  padding: 0;
 }
 
 .cohortAGeneSetViewer{
@@ -441,5 +446,11 @@ div[data-react-toolbox=dialog] > section{
 .geneSetHeaderLabel{
   font-family: sans-serif;
   font-size: small;
+}
+
+.noBullets{
+  list-style-type: none;
+  padding: 5px 0 0 0 ;
+  margin: 0;
 }
 

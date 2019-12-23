@@ -48,13 +48,10 @@ export default class XenaGoViewer extends PureComponent {
       let geneList = getGenesForPathways(this.props.pathways);
 
       let {renderHeight, renderOffset, cohortIndex,filter,
-        geneDataStats, geneHoverData, onSetCollapsed , collapsed,
+        geneDataStats, geneHoverData, onEditCohorts, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData,
       } = this.props;
-
-      // console.log('pathway data',pathwayData)
-      // console.log('gene data stats',geneDataStats)
 
       // let { processing, pathwayData } = this.state ;
       let genesInGeneSet = geneDataStats.data.length;
@@ -81,6 +78,7 @@ export default class XenaGoViewer extends PureComponent {
                         { cohortIndex===1 &&
                           <GeneSetInfoBox
                             cohortIndex={cohortIndex}
+                            onEditCohorts={onEditCohorts}
                             samplesLength={geneDataStats.samples.length}
                             selectedCohort={geneDataStats.selectedCohort}
                           />
@@ -107,6 +105,7 @@ export default class XenaGoViewer extends PureComponent {
                         { cohortIndex===0 &&
                         <GeneSetInfoBox
                           cohortIndex={cohortIndex}
+                          onEditCohorts={onEditCohorts}
                           samplesLength={geneDataStats.samples.length}
                           selectedCohort={geneDataStats.selectedCohort}
                         />
@@ -152,6 +151,7 @@ XenaGoViewer.propTypes = {
   onChangeCohort: PropTypes.any.isRequired,
   onChangeFilter: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
+  onEditCohorts: PropTypes.any.isRequired,
   onGeneHover: PropTypes.any.isRequired, // optional
   onSetCollapsed: PropTypes.any,
   onVersusAll: PropTypes.func.isRequired,
