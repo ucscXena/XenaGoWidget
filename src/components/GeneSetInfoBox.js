@@ -9,10 +9,11 @@ import Link from 'react-toolbox/lib/link';
 import {
   getSamplesFromSubCohort
 } from '../functions/CohortFunctions';
+import {Button} from 'react-toolbox';
 
 const TooltipLink = Tooltip(Link);
 
-const MAGIC_LENGTH = 20 ;
+const MAGIC_LENGTH = 28 ;
 
 export class GeneSetInfoBox extends PureComponent {
 
@@ -30,13 +31,13 @@ export class GeneSetInfoBox extends PureComponent {
 
   render(){
 
-    const {cohortIndex,samplesLength,selectedCohort} = this.props;
+    const {cohortIndex,samplesLength,selectedCohort, onEditCohorts} = this.props;
 
     const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
-          className={BaseStyle.infoLink} href="#" icon='info' label={label}
+          className={BaseStyle.infoLink} href="#" label={label}
           onClick={()=>this.setState({showInfo: true})}
           tooltip={selectedCohort.name}
         />
@@ -58,17 +59,20 @@ export class GeneSetInfoBox extends PureComponent {
             </ul>
           </div>
         </Dialog>
-
-        <br/>
-        <div className={BaseStyle.samplesBox}>
-          { selectedCohort.selectedSubCohorts.length } / {selectedCohort.subCohorts.length } cohorts selected
-        </div>
-        <br/>
-
-        <br/>
         <div className={BaseStyle.samplesBox}>
           {samplesLength} samples
+          <Button icon='edit' mini onClick={() => onEditCohorts()} />
         </div>
+        { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 &&
+          <ul className={BaseStyle.noBullets}>
+            {selectedCohort.selectedSubCohorts.sort().map( s => {
+              return (
+                <li key={s}>{s} ({getSamplesFromSubCohort(selectedCohort.name,s).length})</li>
+              );
+            }
+            )}
+          </ul>
+        }
       </div>
     );
   }
@@ -77,6 +81,7 @@ export class GeneSetInfoBox extends PureComponent {
 
 GeneSetInfoBox.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
+  onEditCohorts: PropTypes.any.isRequired,
   samplesLength: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
 };

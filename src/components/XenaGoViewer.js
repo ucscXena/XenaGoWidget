@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PureComponent from './PureComponent';
-// import {CohortSelector} from './CohortSelector';
 import PathwayScoresView from './PathwayScoresView';
-import '../css/base.css';
+import BaseStyle from '../css/base.css';
 import HoverGeneView from './HoverGeneView';
 import {Card,Button} from 'react-toolbox';
 
@@ -44,30 +43,15 @@ export default class XenaGoViewer extends PureComponent {
       this.props.onGeneHover(geneHoverProps);
 
     };
-    //
-    // handleChangeFilter = (filter) => {
-    //   this.props.onChangeFilter(filter,this.props.cohortIndex);
-    // };
-    //
-    // handleSelectCohort = (selected) => {
-    //   this.props.onChangeCohort(selected,this.props.cohortIndex);
-    // };
-    //
-    // handleSelectSubCohort = (subCohortSelected) => {
-    //   this.props.onChangeSubCohort(subCohortSelected,this.props.cohortIndex);
-    // };
 
     render() {
       let geneList = getGenesForPathways(this.props.pathways);
 
       let {renderHeight, renderOffset, cohortIndex,filter,
-        geneDataStats, geneHoverData, onSetCollapsed , collapsed,
+        geneDataStats, geneHoverData, onEditCohorts, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
         pathwayData,
       } = this.props;
-
-      // console.log('pathway data',pathwayData)
-      // console.log('gene data stats',geneDataStats)
 
       // let { processing, pathwayData } = this.state ;
       let genesInGeneSet = geneDataStats.data.length;
@@ -88,42 +72,45 @@ export default class XenaGoViewer extends PureComponent {
               {geneDataStats && geneDataStats.geneExpression!==undefined &&
                     <tr>
                       <td
-                        style={{ borderRadius: 5,backgroundColor: cohortIndex === 0 ? 'darkolivegreen' : 'tan', paddingRight: 20, paddingLeft: 20, paddingTop: 0, paddingBottom: 0  }}
                         valign="top"
                       >
-                        { cohortIndex===1 &&
+                        <div className={cohortIndex === 0 ? BaseStyle.topGeneDetailBox : BaseStyle.bottomGeneDetailBox}>
+                          { cohortIndex===1 &&
                           <GeneSetInfoBox
                             cohortIndex={cohortIndex}
+                            onEditCohorts={onEditCohorts}
                             samplesLength={geneDataStats.samples.length}
                             selectedCohort={geneDataStats.selectedCohort}
                           />
-                        }
-                        <Card style={{height: 200, width: style.gene.columnWidth, padding: 5,marginTop: 5, borderRadius:10}}>
-                          <HoverGeneView
-                            cohortIndex={cohortIndex}
-                            data={geneHoverData}
-                            view={filter}
-                          />
-                          {geneDataStats.pathways.length > MAX_GENE_WIDTH && collapsed &&
+                          }
+                          <Card style={{height: 180, width: style.gene.columnWidth, padding: 5,marginTop: 5, borderRadius:10}}>
+                            <HoverGeneView
+                              cohortIndex={cohortIndex}
+                              data={geneHoverData}
+                              view={filter}
+                            />
+                            {geneDataStats.pathways.length > MAX_GENE_WIDTH && collapsed &&
                           <Button
                             flat icon='chevron_right' onClick={() => onSetCollapsed(false)}
                             primary
                           >Expand</Button>
-                          }
-                          {geneDataStats.pathways.length > MAX_GENE_WIDTH && !collapsed &&
+                            }
+                            {geneDataStats.pathways.length > MAX_GENE_WIDTH && !collapsed &&
                             <Button
                               icon='chevron_left'
                               onClick={() => onSetCollapsed(true)}
                             >Collapse</Button>
-                          }
-                        </Card>
-                        { cohortIndex===0 &&
+                            }
+                          </Card>
+                          { cohortIndex===0 &&
                         <GeneSetInfoBox
                           cohortIndex={cohortIndex}
+                          onEditCohorts={onEditCohorts}
                           samplesLength={geneDataStats.samples.length}
                           selectedCohort={geneDataStats.selectedCohort}
                         />
-                        }
+                          }
+                        </div>
                       </td>
                       <td style={{padding: 0}}>
                         <PathwayScoresView
@@ -165,6 +152,7 @@ XenaGoViewer.propTypes = {
   onChangeCohort: PropTypes.any.isRequired,
   onChangeFilter: PropTypes.any.isRequired,
   onChangeSubCohort: PropTypes.any.isRequired,
+  onEditCohorts: PropTypes.any.isRequired,
   onGeneHover: PropTypes.any.isRequired, // optional
   onSetCollapsed: PropTypes.any,
   onVersusAll: PropTypes.func.isRequired,

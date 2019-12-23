@@ -39,7 +39,7 @@ import {DetailedLabelTop} from './DetailedLabelTop';
 
 
 const VIEWER_HEIGHT = 500;
-const TOP_HEIGHT = 112;
+const TOP_HEIGHT = 81;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const BORDER_OFFSET = 2;
@@ -250,10 +250,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
   };
 
-    editGeneSetColors = () => {
-      this.handleColorToggle();
-    };
-
     geneHighlight = (geneName) => {
       this.setState(
         {
@@ -383,19 +379,6 @@ export default class XenaGeneSetApp extends PureComponent {
         geneStateColors: newArray
       });
 
-    };
-
-
-    toggleShowDiffLayer = () => {
-      this.setState({
-        showDiffLayer: !this.state.showDiffLayer
-      });
-    };
-
-    toggleShowDetailLayer = () => {
-      this.setState({
-        showDetailLayer: !this.state.showDetailLayer
-      });
     };
 
     handleSetCollapsed = (collapsed) => {
@@ -553,6 +536,10 @@ export default class XenaGeneSetApp extends PureComponent {
       });
     };
 
+  handleEditCohorts = () => {
+    this.setState({showCohortEditor: true});
+  };
+
   handleMeanActivityData = (output) => {
     // 1. fetch activity
     const geneSets = getGeneSetsForView(this.state.filter);
@@ -680,39 +667,6 @@ export default class XenaGeneSetApp extends PureComponent {
           }
           <table>
             <tbody>
-              <tr>
-                <td className={BaseStyle.autoSortBox} colSpan={3}>
-                  <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
-                            Gene Sets&nbsp;
-                    {this.state.pathways &&
-                            <div style={{display: 'inline'}}>
-                              ({this.state.pathways.length})
-                            </div>
-                    }
-                  </Button>
-                  <Button icon='edit' onClick={() => this.setState({showCohortEditor: true})} raised>
-                            Cohorts
-                  </Button>
-                          &nbsp;&nbsp;&nbsp;Analysis:
-                  <select
-                    className={BaseStyle.softflow}
-                    onChange={this.handleChangeTopFilter}
-                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                    value={this.state.filter}
-                  >
-                    {
-                      allowableViews.map(c => {
-                        return (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        );
-                      })
-                    }
-                  </select>
-                </td>
-                <td />
-              </tr>
               {isViewGeneExpression(this.state.filter) &&
                       <tr>
                         <td className={BaseStyle.autoSortBox} colSpan={3}>
@@ -733,6 +687,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           Filter by
                             <select
                               onChange={(event) => this.setState({filterBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
+                              style={{marginLeft:5}}
                               value={this.state.filterBy}
                             >
                               <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
@@ -747,8 +702,37 @@ export default class XenaGeneSetApp extends PureComponent {
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
                             }
                           </div>
+                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
+                            Gene Sets&nbsp;
+                            {this.state.pathways &&
+                            <div style={{display: 'inline'}}>
+                              ({this.state.pathways.length})
+                            </div>
+                            }
+                          </Button>
                         </td>
-                        <td />
+                        <td className={BaseStyle.autoSortBox}>
+                          <Button icon='edit' onClick={() => this.handleEditCohorts()} raised>
+                            Cohorts
+                          </Button>
+                          &nbsp;&nbsp;&nbsp;Analysis:
+                          <select
+                            className={BaseStyle.softflow}
+                            onChange={this.handleChangeTopFilter}
+                            style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                            value={this.state.filter}
+                          >
+                            {
+                              allowableViews.map(c => {
+                                return (
+                                  <option key={c} value={c}>
+                                    {c}
+                                  </option>
+                                );
+                              })
+                            }
+                          </select>
+                        </td>
                       </tr>
               }
 
@@ -870,6 +854,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   onChangeCohort={this.handleChangeCohort}
                                   onChangeFilter={this.handleChangeFilter}
                                   onChangeSubCohort={this.handleChangeSubCohort}
+                                  onEditCohorts={this.handleEditCohorts}
 
                                   // new pathway data
                                   onGeneHover={this.handleGeneHover}
@@ -907,6 +892,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   onChangeCohort={this.handleChangeCohort}
                                   onChangeFilter={this.handleChangeFilter}
                                   onChangeSubCohort={this.handleChangeSubCohort}
+                                  onEditCohorts={this.handleEditCohorts}
 
                                   // new pathway data
                                   onGeneHover={this.handleGeneHover}
