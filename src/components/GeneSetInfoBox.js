@@ -14,6 +14,8 @@ import {Button} from 'react-toolbox';
 const TooltipLink = Tooltip(Link);
 
 const MAGIC_LENGTH = 28 ;
+const MAX_SUB_COHORTS = 7 ;
+
 
 export class GeneSetInfoBox extends PureComponent {
 
@@ -25,8 +27,8 @@ export class GeneSetInfoBox extends PureComponent {
     };
   }
 
-  showInfo() {
-
+  allSubCohortsStatement(selectedSubCohorts) {
+    return `View All ${selectedSubCohorts.length} sub cohorts`;
   }
 
   render(){
@@ -63,7 +65,7 @@ export class GeneSetInfoBox extends PureComponent {
           {samplesLength} samples
           <Button icon='edit' mini onClick={() => onEditCohorts()} />
         </div>
-        { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 &&
+        { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length <= MAX_SUB_COHORTS &&
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
               return (
@@ -72,6 +74,19 @@ export class GeneSetInfoBox extends PureComponent {
             }
             )}
           </ul>
+        }
+        { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length > MAX_SUB_COHORTS &&
+        <ul className={BaseStyle.noBullets}>
+          {selectedCohort.selectedSubCohorts.sort().slice(0,MAX_SUB_COHORTS).map( s => {
+            return (
+              <li key={s}>{s} ({getSamplesFromSubCohort(selectedCohort.name,s).length})</li>
+            );
+          }
+          )}
+          <li>
+            <Link  label={this.allSubCohortsStatement(selectedCohort.selectedSubCohorts)} onClick={()=>this.setState({showInfo: true})}/>
+          </li>
+        </ul>
         }
       </div>
     );
