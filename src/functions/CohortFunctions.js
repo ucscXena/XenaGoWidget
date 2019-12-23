@@ -111,7 +111,10 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  return uniq(SUB_COHORT_LIST[cohort][subCohort]);
+  if(SUB_COHORT_LIST[cohort] ){
+    return uniq(SUB_COHORT_LIST[cohort][subCohort]);
+  }
+  return [];
 }
 
 export function getCohortDetails(selected) {
