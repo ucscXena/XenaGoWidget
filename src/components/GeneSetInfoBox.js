@@ -6,9 +6,6 @@ import BaseStyle from '../css/base.css';
 import {Dialog} from 'react-toolbox/lib';
 import Tooltip from 'react-toolbox/lib/tooltip';
 import Link from 'react-toolbox/lib/link';
-import {
-  getSamplesFromSubCohort
-} from '../functions/CohortFunctions';
 import {Button} from 'react-toolbox';
 
 const TooltipLink = Tooltip(Link);
@@ -32,10 +29,9 @@ export class GeneSetInfoBox extends PureComponent {
   }
 
   render(){
-
-    const {cohortIndex,samplesLength,selectedCohort, onEditCohorts} = this.props;
-
+    const {cohortIndex,samplesLength,selectedCohort, onEditCohorts, subCohortCounts} = this.props;
     const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
+    if(!subCohortCounts) return <div>Calculating</div>;
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
@@ -54,7 +50,7 @@ export class GeneSetInfoBox extends PureComponent {
             <ul>
               {selectedCohort.selectedSubCohorts.sort().map( s => {
                 return (
-                  <li key={s}>{s} ({getSamplesFromSubCohort(selectedCohort.name,s).length})</li>
+                  <li key={s}>{s} ({subCohortCounts[s]})</li>
                 );
               }
               )}
@@ -69,7 +65,7 @@ export class GeneSetInfoBox extends PureComponent {
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
               return (
-                <li key={s}>{s} ({getSamplesFromSubCohort(selectedCohort.name,s).length})</li>
+                <li key={s}>{s} ({subCohortCounts[s]})</li>
               );
             }
             )}
@@ -79,7 +75,7 @@ export class GeneSetInfoBox extends PureComponent {
         <ul className={BaseStyle.noBullets}>
           {selectedCohort.selectedSubCohorts.sort().slice(0,MAX_SUB_COHORTS).map( s => {
             return (
-              <li key={s}>{s} ({getSamplesFromSubCohort(selectedCohort.name,s).length})</li>
+              <li key={s}>{s}({subCohortCounts[s]})</li>
             );
           }
           )}
@@ -99,4 +95,5 @@ GeneSetInfoBox.propTypes = {
   onEditCohorts: PropTypes.any.isRequired,
   samplesLength: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
+  subCohortCounts: PropTypes.any,
 };

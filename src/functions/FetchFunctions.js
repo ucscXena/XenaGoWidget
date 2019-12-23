@@ -305,6 +305,21 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
     });
 }
 
+export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
+  return Rx.Observable.zip(
+    getSamplesForCohortAndView(selectedCohorts[0],view),
+    getSamplesForCohortAndView(selectedCohorts[1],view),
+    ( cohortASamples,cohortBSamples ) => ( {
+      cohortACounts: createFilterCountForView(cohortASamples, selectedCohorts[0], view),
+      cohortBCounts: createFilterCountForView(cohortBSamples, selectedCohorts[1], view),
+    })
+  )
+    .subscribe( (output) => {
+      // console.log('cohorts',JSON.stringify(cohortACounts),JSON.stringify(cohortBCounts),view);
+      handleSampleDataCounts(output.cohortACounts[view],output.cohortBCounts[view]);
+    });
+}
+
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
   const geneList = getGenesForPathways(pathways);
@@ -413,19 +428,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       }),
     );
 
-  }
-
-  // eslint-disable-next-line no-unused-vars
-  function fetchSampleData(selectedCohorts,view){
-    return Rx.Observable.zip(
-      getSamplesForCohortAndView(selectedCohorts[0],view),
-      getSamplesForCohortAndView(selectedCohorts[1],view),
-    ).flatMap( (unfilteredSamples) => {
-      filterCounts = [
-        createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
-        createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),
-      ];
-    });
   }
 
   function fetchDataForCnvMutation(selectedCohorts, samplesA,samplesB, geneList) {
