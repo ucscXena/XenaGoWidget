@@ -39,7 +39,7 @@ import {DetailedLabelTop} from './DetailedLabelTop';
 
 
 const VIEWER_HEIGHT = 500;
-const TOP_HEIGHT = 112;
+const TOP_HEIGHT = 90;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const BORDER_OFFSET = 2;
