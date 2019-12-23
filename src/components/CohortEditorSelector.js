@@ -6,16 +6,13 @@ import {Button} from 'react-toolbox';
 import {
   fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
-  getCohortsForView, getSamplesFromSelectedSubCohorts, getSubCohortsForCohort,
+  getCohortsForView, getSamplesFromSelectedSubCohorts,
   getSubCohortsOnlyForCohort,
   getViewsForCohort
 } from '../functions/CohortFunctions';
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
 import Link from 'react-toolbox/lib/link';
-import {
-  fetchSampleData,
-} from '../functions/FetchFunctions';
 
 
 export class CohortEditorSelector extends PureComponent {
@@ -29,8 +26,7 @@ export class CohortEditorSelector extends PureComponent {
       cohort: props.cohort,
       availableSamples,
       selectedSamples,
-      fetchSamples: true,
-      subCohortCounts: undefined,
+      fetchSamples: false,
     };
   }
 
@@ -120,67 +116,19 @@ export class CohortEditorSelector extends PureComponent {
     this.updateSampleState(newCohortState);
   }
 
-  handleSampleDataCounts = (cohortA,cohortB) => {
-    console.log('input counts A',cohortA);
-    console.log('input counts B',cohortB);
-
-    const newSubCohortCounts =  [
-      cohortA.subCohortCounts.map( s => {
-        let returnOjb = { };
-        returnOjb[s.name] = s.count ;
-        return returnOjb;
-      })
-      ,
-      cohortB.subCohortCounts.map( s => {
-        let returnOjb = { };
-        returnOjb[s.name] = s.count ;
-        return returnOjb;
-      })
-    ];
-
-
-    console.log('new sub counts',newSubCohortCounts);
-
-    this.setState({
-      fetchSamples: false,
-      subCohortCounts: newSubCohortCounts,
-    });
-  };
-
-  getCountForKey(input,key){
-    const returnValue = input.filter( s => {
-      return Object.keys(s)[0]===key;
-    });
-    return returnValue && returnValue.length>0 ? returnValue[0]: undefined;
-  }
-
   render(){
 
-    const { onCancelCohortEdit, onChangeView} = this.props;
-    const { fetchSamples, view, cohort , selectedSamples, availableSamples , subCohortCounts} = this.state ;
+    const { onCancelCohortEdit, onChangeView, subCohortCounts } = this.props;
+    const {  view, cohort , selectedSamples, availableSamples } = this.state ;
     const cohorts = getCohortsForView(view);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
-    const subCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
-
-
-    console.log('fetching samples',fetchSamples);
-    console.log('input sub cohorts',subCohorts);
-    if(fetchSamples){
-      fetchSampleData(cohort,view,this.handleSampleDataCounts);
-    }
 
     if(!subCohortCounts){
       return (<div>Loading</div>) ;
     }
     else
     if(subCohortCounts){
-
-      console.log('sub cohort counts',subCohortCounts);
-      // console.log('find one',subCohortCounts[1].filter( s => {
-      //   console.log('s',Object.keys(s)[0])
-      //   return Object.keys(s)[0]==='PRAD.3-ETV4';
-      // }));
       return (
         <div>
           <div className={BaseStyle.cohortEditorBox}>
@@ -280,14 +228,14 @@ export class CohortEditorSelector extends PureComponent {
                           <li key={sc}>
                             <input
                               checked={cohort[0].selectedSubCohorts.find( s => sc===s ) !==undefined}
-                              disabled={!subCohorts[0][sc]}
+                              disabled={!subCohortCounts[0][sc]}
                               onChange={(event) => this.handleSubCohortChange(event,0)}
                               type='checkbox'
                               value={sc}
                             />
                             {sc} (
                             <a href='#' onClick={() => this.selectOnly(0,sc)}>
-                              {subCohorts[0][sc] ? subCohorts[0][sc].length : 0}
+                              {subCohortCounts[0][sc]}
                             </a>
                             )
                           </li>
@@ -320,14 +268,14 @@ export class CohortEditorSelector extends PureComponent {
                         <li key={sc}>
                           <input
                             checked={cohort[1].selectedSubCohorts.find( s => sc===s ) !== undefined}
-                            disabled={!subCohorts[1][sc]}
+                            disabled={!subCohortCounts[1][sc]}
                             onChange={(event) => this.handleSubCohortChange(event,1)}
                             type='checkbox'
                             value={sc}
                           />
                           {sc} (
                           <a href='#' onClick={() => this.selectOnly(1,sc)}>
-                            {subCohorts[1][sc] ? subCohorts[1][sc].length : 0}
+                            {subCohortCounts[1][sc]}
                           </a>
                           )
                         </li>
@@ -349,5 +297,6 @@ CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,
   onCancelCohortEdit: PropTypes.any.isRequired,
   onChangeView: PropTypes.any.isRequired,
+  subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 };

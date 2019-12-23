@@ -305,32 +305,13 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
     });
 }
 
-
-// export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
-//   return Rx.Observable.zip(
-//     getSamplesForCohortAndView(selectedCohorts[0],view),
-//     getSamplesForCohortAndView(selectedCohorts[1],view),
-//   ).flatMap( (unfilteredSamples) => {
-//     console.log('unfilted samples',unfilteredSamples)
-//     return  [
-//       createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
-//       createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),
-//     ];
-//   })
-//     .subscribe( (cohortA,cohortB) => {
-//       console.log('cohorts',cohortA,cohortB,view)
-//       handleSampleDataCounts(cohortA[view],cohortB[view]);
-//     });
-// }
-
 export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
-  console.log('fetching data');
   return Rx.Observable.zip(
     getSamplesForCohortAndView(selectedCohorts[0],view),
     getSamplesForCohortAndView(selectedCohorts[1],view),
     ( cohortASamples,cohortBSamples ) => ( {
       cohortACounts: createFilterCountForView(cohortASamples, selectedCohorts[0], view),
-      cohortBCounts:createFilterCountForView(cohortBSamples, selectedCohorts[1], view),
+      cohortBCounts: createFilterCountForView(cohortBSamples, selectedCohorts[1], view),
     })
   )
     .subscribe( (output) => {

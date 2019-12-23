@@ -50,7 +50,7 @@ export default class XenaGoViewer extends PureComponent {
       let {renderHeight, renderOffset, cohortIndex,filter,
         geneDataStats, geneHoverData, onEditCohorts, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
-        pathwayData,
+        pathwayData, subCohortCounts,
       } = this.props;
 
       // let { processing, pathwayData } = this.state ;
@@ -81,6 +81,7 @@ export default class XenaGoViewer extends PureComponent {
                             onEditCohorts={onEditCohorts}
                             samplesLength={geneDataStats.samples.length}
                             selectedCohort={geneDataStats.selectedCohort}
+                            subCohortCounts={subCohortCounts}
                           />
                           }
                           <Card style={{height: 180, width: style.gene.columnWidth, padding: 5,marginTop: 5, borderRadius:10}}>
@@ -108,6 +109,7 @@ export default class XenaGoViewer extends PureComponent {
                           onEditCohorts={onEditCohorts}
                           samplesLength={geneDataStats.samples.length}
                           selectedCohort={geneDataStats.selectedCohort}
+                          subCohortCounts={subCohortCounts}
                         />
                           }
                         </div>
@@ -167,5 +169,6 @@ XenaGoViewer.propTypes = {
 
   showDetailLayer: PropTypes.any,
   showDiffLayer: PropTypes.any,
+  subCohortCounts: PropTypes.any,
   swapCohorts: PropTypes.any.isRequired,
 };

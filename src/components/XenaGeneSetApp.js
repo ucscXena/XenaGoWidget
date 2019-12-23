@@ -13,7 +13,7 @@ import {ColorEditor} from './ColorEditor';
 import {Dialog} from 'react-toolbox';
 import {
   fetchBestPathways,
-  fetchCombinedCohorts, getCohortDataForGeneExpressionView, getGeneSetsForView,
+  fetchCombinedCohorts, fetchSampleData, getCohortDataForGeneExpressionView, getGeneSetsForView,
 } from '../functions/FetchFunctions';
 
 let xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
@@ -79,6 +79,7 @@ export default class XenaGeneSetApp extends PureComponent {
       // TODO: this should use the full cohort Data, not just the top-level
       associatedData:[],
       selectedCohort: cohorts,
+      subCohortCounts: [],
       fetch: false,
       automaticallyReloadPathways: true,
       currentLoadState: LOAD_STATE.LOADING,
@@ -540,6 +541,16 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({showCohortEditor: true});
   };
 
+  handleSampleDataCounts = (cohortA, cohortB) => {
+    let returnA = Object.assign({},...cohortA.subCohortCounts.map( s => ( { [s.name] : s.count} )));
+    let returnB = Object.assign({},...cohortB.subCohortCounts.map( s => ( { [s.name] : s.count} )));
+    this.setState({
+      fetchSamples: false,
+      subCohortCounts: [returnA,returnB],
+    });
+
+  };
+
   handleMeanActivityData = (output) => {
     // 1. fetch activity
     const geneSets = getGeneSetsForView(this.state.filter);
@@ -580,6 +591,7 @@ export default class XenaGeneSetApp extends PureComponent {
       currentLoadState = LOAD_STATE.LOADING;
       // change gene sets here
 
+      fetchSampleData(this.state.selectedCohort,this.state.filter,this.handleSampleDataCounts);
       // if gene Expressions
       if(getCohortDataForGeneExpressionView(this.state.selectedCohort,this.state.filter)!==null){
         if(this.state.reloadPathways){
@@ -645,6 +657,7 @@ export default class XenaGeneSetApp extends PureComponent {
               cohort={this.state.selectedCohort}
               onCancelCohortEdit={() => this.setState({showCohortEditor:false})}
               onChangeView={this.handleChangeView}
+              subCohortCounts={this.state.subCohortCounts}
               view={this.state.filter}
             />
           </Dialog>
@@ -872,6 +885,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   selectedCohort={this.state.selectedCohort[0]}
                                   showDetailLayer={this.state.showDetailLayer}
                                   showDiffLayer={this.state.showDiffLayer}
+                                  subCohortCounts={this.state.subCohortCounts[0]}
                                   swapCohorts={this.swapCohorts}
                                 />
                                 <XenaGoViewer
@@ -910,6 +924,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                   selectedCohort={this.state.selectedCohort[1]}
                                   showDetailLayer={this.state.showDetailLayer}
                                   showDiffLayer={this.state.showDiffLayer}
+                                  subCohortCounts={this.state.subCohortCounts[1]}
                                   swapCohorts={this.swapCohorts}
                                 />
                               </td>
