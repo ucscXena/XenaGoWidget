@@ -6,7 +6,7 @@ import {Button} from 'react-toolbox';
 import {
   fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
-  getCohortsForView, getSamplesFromSelectedSubCohorts,
+  getCohortsForView, getSamplesFromSelectedSubCohorts, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
   getViewsForCohort
 } from '../functions/CohortFunctions';
@@ -123,6 +123,7 @@ export class CohortEditorSelector extends PureComponent {
     const cohorts = getCohortsForView(view);
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
+    const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
 
     if(!subCohortCounts){
       return (<div>Loading</div>) ;
@@ -228,14 +229,14 @@ export class CohortEditorSelector extends PureComponent {
                           <li key={sc}>
                             <input
                               checked={cohort[0].selectedSubCohorts.find( s => sc===s ) !==undefined}
-                              disabled={!subCohortCounts[0][sc]}
+                              disabled={!subCohortCounts[0][sc] && !maximumSubCohorts[0][sc]}
                               onChange={(event) => this.handleSubCohortChange(event,0)}
                               type='checkbox'
                               value={sc}
                             />
                             {sc} (
                             <a href='#' onClick={() => this.selectOnly(0,sc)}>
-                              {subCohortCounts[0][sc]}
+                              {subCohortCounts[0][sc] ? subCohortCounts[0][sc] : `< ${maximumSubCohorts[0][sc] ? maximumSubCohorts[0][sc].length: 0} `}
                             </a>
                             )
                           </li>
@@ -268,14 +269,14 @@ export class CohortEditorSelector extends PureComponent {
                         <li key={sc}>
                           <input
                             checked={cohort[1].selectedSubCohorts.find( s => sc===s ) !== undefined}
-                            disabled={!subCohortCounts[1][sc]}
+                            disabled={!subCohortCounts[1][sc] && !maximumSubCohorts[1][sc]}
                             onChange={(event) => this.handleSubCohortChange(event,1)}
                             type='checkbox'
                             value={sc}
                           />
                           {sc} (
                           <a href='#' onClick={() => this.selectOnly(1,sc)}>
-                            {subCohortCounts[1][sc]}
+                            {subCohortCounts[1][sc] ? subCohortCounts[1][sc] : `< ${maximumSubCohorts[1][sc] ? maximumSubCohorts[1][sc].length: 0} `}
                           </a>
                           )
                         </li>
