@@ -27,7 +27,13 @@ import {
   scorePathway, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
 import QueryString from 'querystring';
-import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
+import {
+  calculateCohorts,
+  calculateFilter,
+  calculateGeneSet,
+  calculateSubCohortSamples,
+  generatedUrlFunction
+} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
@@ -74,12 +80,14 @@ export default class XenaGeneSetApp extends PureComponent {
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
     const cohorts = calculateCohorts(urlVariables);
+    const addedSubCohorts = calculateSubCohortSamples(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
       associatedData:[],
       selectedCohort: cohorts,
       subCohortCounts: [],
+      addedSubCohorts,
       fetch: false,
       automaticallyReloadPathways: true,
       currentLoadState: LOAD_STATE.LOADING,

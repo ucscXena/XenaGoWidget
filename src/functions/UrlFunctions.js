@@ -25,6 +25,52 @@ export function calculateGeneSet(urlVariables,pathways){
   return selectedGeneSet;
 }
 
+/**
+ * For should be:
+ * urlVariables = {
+ *   subCohort1: ['abc-123','def-567']
+ *   subCohort_name: 'Data from Xena',
+ *   },
+ *   {
+ *    subCohort2: ['abc-789','def-567']
+ *    }
+ * }
+ * @param urlVariables
+ * @returns {*[]}
+ */
+export function calculateSubCohortSamples(urlVariables){
+
+
+  let addedSubCohorts = [];
+
+  if(urlVariables.subCohort1) {
+    const subCohort1Name = urlVariables.subCohort1_name ?urlVariables.subCohort1_name : 'Sub Cohort 1 from URL' ;
+    const subCohort1Samples = urlVariables.subCohort1;
+    console.log(subCohort1Name,subCohort1Samples);
+    // cohort1Details.subCohorts. // add next sub cohorts
+    addedSubCohorts[0] = {
+      name: subCohort1Name,
+      samples: subCohort1Samples,
+    };
+  }
+
+  if(urlVariables.subCohort2) {
+    const subCohort2Name = urlVariables.subCohort2_name ?urlVariables.subCohort2_name : 'Sub Cohort 2 from URL' ;
+    const subCohort2Samples = urlVariables.subCohort2;
+    console.log(subCohort2Name,subCohort2Samples);
+    // cohort2Details.subCohorts. // add next sub cohorts
+    // TODO: add to state
+    addedSubCohorts[1] = {
+      name: subCohort2Name,
+      samples: subCohort2Samples,
+    };
+  }
+  console.log('added sub cohorts',addedSubCohorts);
+
+  return addedSubCohorts;
+
+}
+
 export function calculateCohorts(urlVariables){
   // // handle selected cohorts
   if(urlVariables.cohort1){
