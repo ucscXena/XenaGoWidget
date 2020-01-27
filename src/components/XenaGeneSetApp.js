@@ -31,7 +31,6 @@ import {
   calculateCohorts,
   calculateFilter,
   calculateGeneSet,
-  calculateSubCohortSamples,
   generatedUrlFunction
 } from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
@@ -80,7 +79,9 @@ export default class XenaGeneSetApp extends PureComponent {
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
     const cohorts = calculateCohorts(urlVariables);
-    const addedSubCohorts = calculateSubCohortSamples(urlVariables);
+    const addedSubCohorts = this.calculateSubCohortSamples(urlVariables);
+    console.log('added sub cohorts',addedSubCohorts);
+
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
@@ -165,6 +166,49 @@ export default class XenaGeneSetApp extends PureComponent {
     );
   };
 
+  /**
+   * For should be one or more inputs:
+   *
+   * urlVariables = {
+   *   subCohortSamples: <Cohort>:<SubCohortName>:<Samples>
+   *   subCohortSamples: TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&
+   * subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort2:TCGA-D7-6822-01,TCGA-BR-8485-01&
+   * }
+   *
+   * @param urlVariables
+   * @returns {*[]}
+   */
+  calculateSubCohortSamples(urlVariables){
+
+    let addedSubCohorts = [];
+
+    // TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&
+    if(urlVariables.subCohortSamples) {
+
+      if(Array.isArray(urlVariables.subCohortSamples)){
+        for(const url of urlVariables.subCohortSamples){
+          addedSubCohorts.push(this.addSubCohortSample(url));
+        }
+      }
+      else{
+        addedSubCohorts.push(this.addSubCohortSample(urlVariables.subCohortSamples));
+      }
+      console.log('input variables',urlVariables.subCohortSamples);
+      console.log('variables',addedSubCohorts);
+    }
+
+    console.log('added sub cohorts',addedSubCohorts);
+    return addedSubCohorts;
+  }
+
+  addSubCohortSample(url) {
+    const parsed = url.split(':');
+    return {
+      cohort: parsed[0],
+      subCohortName: parsed[1],
+      samples: parsed[2],
+    };
+  }
 
 
   handleCombinedCohortData = (input) => {
