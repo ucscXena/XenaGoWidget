@@ -28,11 +28,11 @@ export function calculateGeneSet(urlVariables,pathways){
 /**
  * For should be:
  * urlVariables = {
- *   subCohort1: ['abc-123','def-567']
- *   subCohort_name: 'Data from Xena',
+ *   subCohort1Samples: ['abc-123','def-567']
+ *   subCohort1Name: 'Data from Xena',
  *   },
  *   {
- *    subCohort2: ['abc-789','def-567']
+ *    subCohort2Samples: ['abc-789','def-567']
  *    }
  * }
  * @param urlVariables
@@ -43,9 +43,9 @@ export function calculateSubCohortSamples(urlVariables){
 
   let addedSubCohorts = [];
 
-  if(urlVariables.subCohort1) {
-    const subCohort1Name = urlVariables.subCohort1_name ?urlVariables.subCohort1_name : 'Sub Cohort 1 from URL' ;
-    const subCohort1Samples = urlVariables.subCohort1;
+  if(urlVariables.subCohort1Samples) {
+    const subCohort1Name = urlVariables.subCohort1Name ?urlVariables.subCohort1Name : 'Sub Cohort 1 from URL' ;
+    const subCohort1Samples = urlVariables.subCohort1Samples;
     console.log(subCohort1Name,subCohort1Samples);
     // cohort1Details.subCohorts. // add next sub cohorts
     addedSubCohorts[0] = {
@@ -54,9 +54,9 @@ export function calculateSubCohortSamples(urlVariables){
     };
   }
 
-  if(urlVariables.subCohort2) {
-    const subCohort2Name = urlVariables.subCohort2_name ?urlVariables.subCohort2_name : 'Sub Cohort 2 from URL' ;
-    const subCohort2Samples = urlVariables.subCohort2;
+  if(urlVariables.subCohort2Samples) {
+    const subCohort2Name = urlVariables.subCohort2Name ?urlVariables.subCohort2Name : 'Sub Cohort 2 from URL' ;
+    const subCohort2Samples = urlVariables.subCohort2Samples;
     console.log(subCohort2Name,subCohort2Samples);
     // cohort2Details.subCohorts. // add next sub cohorts
     // TODO: add to state
