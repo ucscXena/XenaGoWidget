@@ -63,6 +63,11 @@ const LOAD_STATE = {
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
+let addedSubCohorts = [];
+
+export function getAddedSubCohortsForCohort(cohort) {
+  return  addedSubCohorts.filter( sc => sc.cohort === cohort);
+}
 
 /**
  * refactor that from index
@@ -79,16 +84,13 @@ export default class XenaGeneSetApp extends PureComponent {
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
     const cohorts = calculateCohorts(urlVariables);
-    const addedSubCohorts = this.calculateSubCohortSamples(urlVariables);
-    console.log('added sub cohorts',addedSubCohorts);
-
+    addedSubCohorts = this.calculateSubCohortSamples(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
       associatedData:[],
       selectedCohort: cohorts,
       subCohortCounts: [],
-      addedSubCohorts,
       fetch: false,
       automaticallyReloadPathways: true,
       currentLoadState: LOAD_STATE.LOADING,
@@ -179,12 +181,9 @@ export default class XenaGeneSetApp extends PureComponent {
    * @returns {*[]}
    */
   calculateSubCohortSamples(urlVariables){
-
     let addedSubCohorts = [];
-
     // TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&
     if(urlVariables.subCohortSamples) {
-
       if(Array.isArray(urlVariables.subCohortSamples)){
         for(const url of urlVariables.subCohortSamples){
           addedSubCohorts.push(this.addSubCohortSample(url));
@@ -193,11 +192,7 @@ export default class XenaGeneSetApp extends PureComponent {
       else{
         addedSubCohorts.push(this.addSubCohortSample(urlVariables.subCohortSamples));
       }
-      console.log('input variables',urlVariables.subCohortSamples);
-      console.log('variables',addedSubCohorts);
     }
-
-    console.log('added sub cohorts',addedSubCohorts);
     return addedSubCohorts;
   }
 

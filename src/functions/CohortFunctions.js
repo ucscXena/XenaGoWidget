@@ -5,6 +5,7 @@ import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {getAddedSubCohortsForCohort} from '../components/XenaGeneSetApp';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
@@ -58,8 +59,17 @@ export function getCohortsForView(view){
 }
 
 export function getSubCohortsForCohort(cohort) {
+  // TODO: do an update mapping?
+  let finalList = JSON.parse(JSON.stringify([...SUB_COHORT_LIST[cohort]]));
+  const addedSubCohorts = getAddedSubCohortsForCohort(cohort);
+  if(addedSubCohorts){
+    for( const as of addedSubCohorts){
+      finalList[0][as.subCohortName] = as.samples.split(',');
+    }
+  }
+
   return {
-    ...SUB_COHORT_LIST[cohort]
+    finalList
   };
 }
 
