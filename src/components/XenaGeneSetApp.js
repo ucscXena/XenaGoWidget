@@ -63,11 +63,6 @@ const LOAD_STATE = {
 };
 
 let currentLoadState = LOAD_STATE.UNLOADED ;
-let addedSubCohorts = [];
-
-export function getAddedSubCohortsForCohort(cohort) {
-  return  addedSubCohorts.filter( sc => sc.cohort === cohort);
-}
 
 /**
  * refactor that from index
@@ -84,7 +79,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
     const cohorts = calculateCohorts(urlVariables);
-    addedSubCohorts = this.calculateSubCohortSamples(urlVariables);
+    AppStorageHandler.storeSubCohorts(this.calculateSubCohortSamples(urlVariables));
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level

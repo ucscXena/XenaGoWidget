@@ -111,16 +111,26 @@ export class AppStorageHandler {
 
 
   static storeSubCohorts(addedSubCohorts){
+    console.log('storing sub cohort',addedSubCohorts);
     // TODO: add
-    sessionStorage.setItem(LOCAL_SUBCOHORT_STORAGE,addedSubCohorts);
+    localStorage.setItem(LOCAL_SUBCOHORT_STORAGE,JSON.stringify(addedSubCohorts));
+    return this.getSubCohorts();
   }
 
   static getSubCohorts(){
-    sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE);
+    console.log('getting all sub cohorts',localStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
+    return JSON.parse(localStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
   }
 
   static getSubCohortsForCohort(cohort){
-    return sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE)[cohort];
+    // return  addedSubCohorts.filter( sc => sc.cohort === cohort);
+    const subCohorts = this.getSubCohorts();
+    if( subCohorts && subCohorts.length>0){
+      return subCohorts.filter( sc => sc.cohort === cohort);
+    }
+    else{
+      return [];
+    }
   }
 
   static generateCohortState(name) {
