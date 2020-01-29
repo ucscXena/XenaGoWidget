@@ -113,13 +113,13 @@ export class AppStorageHandler {
   static storeSubCohorts(addedSubCohorts){
     console.log('storing sub cohort',addedSubCohorts);
     // TODO: add
-    localStorage.setItem(LOCAL_SUBCOHORT_STORAGE,JSON.stringify(addedSubCohorts));
+    sessionStorage.setItem(LOCAL_SUBCOHORT_STORAGE,JSON.stringify(addedSubCohorts));
     return this.getSubCohorts();
   }
 
   static getSubCohorts(){
-    console.log('getting all sub cohorts',localStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
-    return JSON.parse(localStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
+    console.log('getting all sub cohorts',sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
+    return JSON.parse(sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
   }
 
   static getSubCohortsForCohort(cohort){
