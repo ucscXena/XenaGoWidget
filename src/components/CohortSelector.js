@@ -54,6 +54,7 @@ export class CohortSelector extends PureComponent {
 
     generateSubCohortLabels(){
       let subCohortsForSelected = getSubCohortsForCohort(this.props.selectedCohort.name);
+      console.log('getting sub cohort for selected',subCohortsForSelected);
       // no sub cohorts exist
       if(!subCohortsForSelected) return '';
       let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts ? this.props.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);

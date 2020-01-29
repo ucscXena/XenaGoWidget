@@ -124,6 +124,7 @@ export class CohortEditorSelector extends PureComponent {
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
     const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
+    console.log('maxumimum sub cohorts',maximumSubCohorts);
 
     if(!subCohortCounts){
       return (<div>Loading</div>) ;

@@ -68,9 +68,7 @@ export function getSubCohortsForCohort(cohort) {
     }
   }
 
-  return {
-    finalList
-  };
+  return  finalList[0] ;
 }
 
 export function getLabelForIndex(index){

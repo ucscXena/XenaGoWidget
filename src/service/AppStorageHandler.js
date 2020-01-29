@@ -9,6 +9,7 @@ import {exception} from 'react-ga';
 const LOCAL_APP_STORAGE = 'xena-app-storage';
 const LOCAL_STATE_STORAGE = 'xena-selection-storage';
 const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways';
+const LOCAL_SUBCOHORT_STORAGE = 'default-subcohort-storage';
 
 const DefaultAppA = {
   renderOffset: 5,
@@ -106,6 +107,20 @@ export class AppStorageHandler {
     const appState = AppStorageHandler.getAppState();
     appState.selection = pathway;
     AppStorageHandler.storeAppState(appState);
+  }
+
+
+  static storeSubCohorts(addedSubCohorts){
+    // TODO: add
+    sessionStorage.setItem(LOCAL_SUBCOHORT_STORAGE,addedSubCohorts);
+  }
+
+  static getSubCohorts(){
+    sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE);
+  }
+
+  static getSubCohortsForCohort(cohort){
+    return sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE)[cohort];
   }
 
   static generateCohortState(name) {
