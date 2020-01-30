@@ -16,10 +16,23 @@ export function calculateGeneSet(urlVariables,pathways){
   if(urlVariables.geneset){
     // find a geneset for the name
     const geneset = pathways.find( p => p.golabel === urlVariables.geneset );
-    selectedGeneSet = {
-      pathway: geneset,
-      tissue: 'Header'
-    };
+    if(geneset){
+      selectedGeneSet = {
+        pathway: geneset,
+        tissue: 'Header'
+      };
+    }
+    else{
+      // if specified before calculated, we get this
+      selectedGeneSet = {
+        pathway: {
+          goid: undefined,
+          golabel:urlVariables.geneset,
+          gene: [],
+        },
+        tissue: 'Header'
+      };
+    }
     AppStorageHandler.storePathwaySelection(selectedGeneSet);
   }
   return selectedGeneSet;

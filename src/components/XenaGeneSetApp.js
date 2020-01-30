@@ -261,6 +261,7 @@ export default class XenaGeneSetApp extends PureComponent {
       || associatedDataA.filter( d => d[0].golabel === selection.pathway.golabel ).length===0){
       selection.pathway = pathways[0];
     }
+    console.log('getting pathway selection',selection);
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,associatedDataA,this.state.filter);
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,associatedDataB,this.state.filter);
