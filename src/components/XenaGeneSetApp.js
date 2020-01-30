@@ -78,8 +78,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
-    const cohorts = calculateCohorts(urlVariables);
+    // we have to load the sub cohorts before we load the cohorrts
     AppStorageHandler.storeSubCohorts(this.calculateSubCohortSamples(urlVariables));
+    const cohorts = calculateCohorts(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
