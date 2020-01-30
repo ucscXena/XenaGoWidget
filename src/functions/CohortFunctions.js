@@ -47,7 +47,6 @@ export function getCohortsForView(view){
   let cohorts = [];
   for(let cohortName of Object.keys(DETAIL_DATASET_FOR_GENESET)){
     const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
-    // console.log('cohort details', cohortDetail,view,cohortName)
     if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_KEY]) cohorts.push(cohortName);
@@ -62,14 +61,11 @@ export function getSubCohortsForCohort(cohort) {
   // TODO: do an update mapping?
   let finalList = JSON.parse(JSON.stringify([...SUB_COHORT_LIST[cohort]]));
   const addedSubCohorts = AppStorageHandler.getSubCohortsForCohort(cohort);
-  console.log('AAA adding to defaultsub cohorts',addedSubCohorts);
   if(addedSubCohorts){
     for( const as of addedSubCohorts){
       finalList[0][as.subCohortName] = as.samples.split(',');
     }
   }
-  console.log('BBB final adding to defaultsub cohorts',finalList[0]);
-
   return  finalList[0] ;
 }
 
@@ -121,8 +117,9 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  if(SUB_COHORT_LIST[cohort] ){
-    return uniq(SUB_COHORT_LIST[cohort][subCohort]);
+  let subCohortsForCohort = getSubCohortsForCohort(cohort);
+  if(subCohortsForCohort && Object.keys(subCohortsForCohort).length>0){
+    return uniq(subCohortsForCohort[subCohort]);
   }
   return [];
 }
