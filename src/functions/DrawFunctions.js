@@ -214,7 +214,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffStart = pxRow + (xPos + r.x) * 4;
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue * 1.5)(geneExpressionScore));
+            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore));
             img.data[l] = colorArray[0];
             img.data[l + 1] = colorArray[1];
             img.data[l + 2] = colorArray[2];
