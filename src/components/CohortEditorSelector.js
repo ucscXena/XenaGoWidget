@@ -13,6 +13,7 @@ import {
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
 import Link from 'react-toolbox/lib/link';
+import {AppStorageHandler} from '../service/AppStorageHandler';
 
 
 export class CohortEditorSelector extends PureComponent {
@@ -28,6 +29,13 @@ export class CohortEditorSelector extends PureComponent {
       selectedSamples,
       fetchSamples: false,
     };
+  }
+
+  clearTemporarySubCohorts() {
+    if(confirm('Remove all added cohorts and reset interface?')){
+      AppStorageHandler.clearSubCohorts();
+      window.location.href= '/';
+    }
   }
 
   handleCohortChange = (event,cohortIndex) => {
@@ -290,10 +298,15 @@ export class CohortEditorSelector extends PureComponent {
               </tr>
             </tbody>
           </table>
+          <hr/>
+          <button onClick={() => this.clearTemporarySubCohorts()}>
+            Clear temporary sub cohorts
+          </button>
         </div>
       );
     }
   }
+
 }
 CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,

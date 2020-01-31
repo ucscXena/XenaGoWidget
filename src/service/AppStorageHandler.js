@@ -68,6 +68,7 @@ export class AppStorageHandler {
     sessionStorage.removeItem(LOCAL_APP_STORAGE);
     sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE);
     sessionStorage.removeItem(LOCAL_STATE_STORAGE);
+    sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE);
   }
 
   static storePathways(pathways) {
@@ -120,6 +121,10 @@ export class AppStorageHandler {
   static getSubCohorts(){
     console.log('getting all sub cohorts',sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
     return JSON.parse(sessionStorage.getItem(LOCAL_SUBCOHORT_STORAGE));
+  }
+
+  static clearSubCohorts(){
+    sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE);
   }
 
   static getSubCohortsForCohort(cohort){
