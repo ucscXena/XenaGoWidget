@@ -31,13 +31,6 @@ export class CohortEditorSelector extends PureComponent {
     };
   }
 
-  clearTemporarySubCohorts() {
-    if(confirm('Remove all added cohorts and reset interface?')){
-      AppStorageHandler.clearSubCohorts();
-      window.location.href= '/';
-    }
-  }
-
   handleCohortChange = (event,cohortIndex) => {
     const selectedCohortName = event.target.value ;
     let cohortDetails = getCohortDetails({name: selectedCohortName});
@@ -114,6 +107,32 @@ export class CohortEditorSelector extends PureComponent {
       selectedSamples,
     });
   }
+
+  clearTemporarySubCohorts() {
+
+
+    if(confirm('Remove added sub cohorts?')){
+      AppStorageHandler.clearSubCohorts();
+
+      // get sub cohorts from list
+      // TODO: reset the list
+      let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]));
+      let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]));
+      console.log('new cohort A/B',newCohortA,newCohortB);
+
+      // select all of the existing sub cohorts
+      newCohortA.selectedSubCohorts = newCohortA.subCohorts ;
+      newCohortB.selectedSubCohorts = newCohortB.subCohorts ;
+
+      // update state
+      const newCohortState = update(this.state.cohort,{
+        [0]: { $set:newCohortA},
+        [1]: { $set:newCohortB},
+      });
+      this.updateSampleState(newCohortState);
+    }
+  }
+
 
   selectAll(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
