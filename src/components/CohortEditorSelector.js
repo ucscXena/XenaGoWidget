@@ -110,18 +110,18 @@ export class CohortEditorSelector extends PureComponent {
 
   clearTemporarySubCohorts() {
 
-
     if(confirm('Remove added sub cohorts?')){
       AppStorageHandler.clearSubCohorts();
-
-      // get sub cohorts from list
       // TODO: reset the list
       let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]));
       let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]));
 
-      // select all of the existing sub cohorts
-      newCohortA.selectedSubCohorts = newCohortA.subCohorts ;
-      newCohortB.selectedSubCohorts = newCohortB.subCohorts ;
+      let subCohortsA = getSubCohortsForCohort(this.state.cohort[0].name);
+      let subCohortsB = getSubCohortsForCohort(this.state.cohort[1].name);
+      newCohortA.subCohorts = Object.keys(subCohortsA);
+      newCohortB.subCohorts = Object.keys(subCohortsB);
+      newCohortA.selectedSubCohorts = Object.keys(subCohortsA);
+      newCohortB.selectedSubCohorts = Object.keys(subCohortsB);
 
       // update state
       const newCohortState = update(this.state.cohort,{
