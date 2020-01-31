@@ -438,7 +438,6 @@ function labelArray(returnArray,pathways, samples) {
 export function doDataAssociations(geneExpression, geneExpressionPathwayActivity,
   geneList, pathways, samples, view) {
   let returnArray = createEmptyArray(pathways.length, samples.length);
-  console.log('return array',returnArray,pathways,samples);
   returnArray = labelArray(returnArray,pathways,samples);
   // TODO: we should lookup the pathways and THEN the data, as opposed to looking up and then filtering
 
