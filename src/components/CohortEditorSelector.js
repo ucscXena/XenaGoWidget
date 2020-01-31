@@ -118,7 +118,6 @@ export class CohortEditorSelector extends PureComponent {
       // TODO: reset the list
       let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]));
       let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]));
-      console.log('new cohort A/B',newCohortA,newCohortB);
 
       // select all of the existing sub cohorts
       newCohortA.selectedSubCohorts = newCohortA.subCohorts ;
@@ -151,7 +150,6 @@ export class CohortEditorSelector extends PureComponent {
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
     const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
-    console.log('maxumimum sub cohorts',maximumSubCohorts);
 
     if(!subCohortCounts){
       return (<div>Loading</div>) ;

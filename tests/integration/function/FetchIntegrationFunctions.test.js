@@ -20,7 +20,6 @@ describe('Fetch Functions', () => {
       return a;
     }).subscribe( (result) => {
       expect(JSON.stringify(result.length)).toEqual(JSON.stringify(62));
-      console.log('result',result.length);
       done();
     },
     e => done(logError(e))
