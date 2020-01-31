@@ -164,6 +164,17 @@ export default class XenaGeneSetApp extends PureComponent {
     );
   };
 
+  handleSubCohortValue(inputSubCohortUrl,addedSubCohorts){
+    let addedSubCohort = this.addSubCohortSample(inputSubCohortUrl);
+    if(addedSubCohort.samples){
+      addedSubCohorts.push(addedSubCohort);
+    }
+    else{
+      addedSubCohorts = addedSubCohorts.filter( as => as.subCohortName!==addedSubCohort.subCohortName && as.cohort!==addedSubCohort.cohort);
+    }
+    return addedSubCohorts;
+
+  }
   /**
    * For should be one or more inputs:
    *
@@ -182,11 +193,11 @@ export default class XenaGeneSetApp extends PureComponent {
     if(urlVariables.subCohortSamples) {
       if(Array.isArray(urlVariables.subCohortSamples)){
         for(const url of urlVariables.subCohortSamples){
-          addedSubCohorts.push(this.addSubCohortSample(url));
+          this.handleSubCohortValue(url,addedSubCohorts);
         }
       }
       else{
-        addedSubCohorts.push(this.addSubCohortSample(urlVariables.subCohortSamples));
+        this.handleSubCohortValue(urlVariables.subCohortSamples,addedSubCohorts);
       }
     }
     return addedSubCohorts;
