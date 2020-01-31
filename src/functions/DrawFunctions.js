@@ -189,7 +189,6 @@ function findPathwayData(pathwayWidth, count) {
 }
 
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex, view, maxValue) {
-  console.log('max value ',maxValue);
   const tissueCount = data[0].length;
   const img = ctx.createImageData(width, totalHeight);
   const sampleRegions = findPathwayData(width, tissueCount);
