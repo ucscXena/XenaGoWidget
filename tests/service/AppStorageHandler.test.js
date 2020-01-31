@@ -4,7 +4,7 @@ import {AppStorageHandler} from '../../src/service/AppStorageHandler';
 const addedCohort1 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort1','samples':'TCGA-BR-8384-01,TCGA-BR-4371-01'},{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01'}];
 const addedCohort2 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01,TCGA-BR-4371-01'}];
 
-const summedCohort1And2 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort1','samples':'TCGA-BR-8384-01,TCGA-BR-4371-01'},{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01'}];
+const updatedCohort2 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort1','samples':'TCGA-BR-8384-01,TCGA-BR-4371-01'},{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01,TCGA-BR-4371-01'}];
 
 const COHORT_1 = 'TCGA Stomach Cancer (STAD)';
 const COHORT_2 = 'some other cohort';
@@ -19,18 +19,27 @@ describe('App Storage Handler', () => {
   });
 
   it('Adding a stored returns a stored', () => {
-    expect([]).toEqual(AppStorageHandler.getSubCohorts());
+    console.log('0')
+    expect(null).toEqual(AppStorageHandler.getSubCohorts());
     expect([]).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_1));
 
+    console.log('1')
     // store one and confirm that it works
     expect(addedCohort1).toEqual(AppStorageHandler.storeSubCohorts(addedCohort1));
-    expect(addedCohort1).toEqual(AppStorageHandler.getSubCohortsForCohort(addedCohort1,COHORT_1));
+    console.log('2')
+    expect(addedCohort1).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_1));
 
     // should overwrite
-    expect(summedCohort1And2).toEqual(AppStorageHandler.storeSubCohorts(addedCohort2));
+    console.log('A')
+    AppStorageHandler.storeSubCohorts(addedCohort2)
+    expect(addedCohort1).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_1));
+    console.log('A.1')
+    expect(updatedCohort2).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_1));
+    console.log('B')
 
     // retrieving a null one
-    expect([]).toEqual(AppStorageHandler.getSubCohortsForCohort(addedCohort1,COHORT_2));
+    expect([]).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_2));
+    console.log('C')
 
 
   });
