@@ -5,6 +5,7 @@ import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
 import {intersection} from './MathFunctions';
 import {VIEW_ENUM} from '../data/ViewEnum';
+import {AppStorageHandler} from '../service/AppStorageHandler';
 
 const MUTATION_KEY = 'simple somatic mutation';
 const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
@@ -46,7 +47,6 @@ export function getCohortsForView(view){
   let cohorts = [];
   for(let cohortName of Object.keys(DETAIL_DATASET_FOR_GENESET)){
     const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
-    // console.log('cohort details', cohortDetail,view,cohortName)
     if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_KEY]) cohorts.push(cohortName);
@@ -58,9 +58,15 @@ export function getCohortsForView(view){
 }
 
 export function getSubCohortsForCohort(cohort) {
-  return {
-    ...SUB_COHORT_LIST[cohort]
-  };
+  // TODO: do an update mapping?
+  let finalList = JSON.parse(JSON.stringify([...SUB_COHORT_LIST[cohort]]));
+  const addedSubCohorts = AppStorageHandler.getSubCohortsForCohort(cohort);
+  if(addedSubCohorts){
+    for( const as of addedSubCohorts){
+      finalList[0][as.subCohortName] = as.samples.split(',');
+    }
+  }
+  return  finalList[0] ;
 }
 
 export function getLabelForIndex(index){
@@ -111,8 +117,9 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  if(SUB_COHORT_LIST[cohort] ){
-    return uniq(SUB_COHORT_LIST[cohort][subCohort]);
+  let subCohortsForCohort = getSubCohortsForCohort(cohort);
+  if(subCohortsForCohort && Object.keys(subCohortsForCohort).length>0){
+    return uniq(subCohortsForCohort[subCohort]);
   }
   return [];
 }

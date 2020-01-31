@@ -16,14 +16,28 @@ export function calculateGeneSet(urlVariables,pathways){
   if(urlVariables.geneset){
     // find a geneset for the name
     const geneset = pathways.find( p => p.golabel === urlVariables.geneset );
-    selectedGeneSet = {
-      pathway: geneset,
-      tissue: 'Header'
-    };
+    if(geneset){
+      selectedGeneSet = {
+        pathway: geneset,
+        tissue: 'Header'
+      };
+    }
+    else{
+      // if specified before calculated, we get this
+      selectedGeneSet = {
+        pathway: {
+          goid: undefined,
+          golabel:urlVariables.geneset,
+          gene: [],
+        },
+        tissue: 'Header'
+      };
+    }
     AppStorageHandler.storePathwaySelection(selectedGeneSet);
   }
   return selectedGeneSet;
 }
+
 
 export function calculateCohorts(urlVariables){
   // // handle selected cohorts
@@ -39,10 +53,10 @@ export function calculateCohorts(urlVariables){
     cohort2Details.selectedSubCohorts = urlVariables.selectedSubCohorts2 ? urlVariables.selectedSubCohorts2.split(',') : cohort2Details.subCohorts ;
     AppStorageHandler.storeCohortState(cohort2Details,1);
   }
-
   // handle selected subCohorts
   return [ AppStorageHandler.getCohortState(0), AppStorageHandler.getCohortState(1)];
 }
+
 export const generateUrl = (filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
   let generatedUrl = `cohort1=${cohort1}`;
   generatedUrl += `&cohort2=${cohort2}`;

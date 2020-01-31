@@ -469,15 +469,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1]);
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
 
-    // eslint-disable-next-line no-unused-vars
-    // function getRegulonFetch(selectedCohort, samples, geneSetLabels) {
-    //   if (selectedCohort.regulonPathwayActivity) {
-    //     return datasetProbeValues(selectedCohort.regulonPathwayActivity.host, selectedCohort.regulonPathwayActivity.dataset, samples, geneSetLabels);
-    //   } else {
-    //     return datasetProbeValues(selectedCohort.geneExpressionPathwayActivity.host, selectedCohort.geneExpressionPathwayActivity.dataset, samples, geneSetLabels);
-    //   }
-    // }
-
     switch (view) {
     case VIEW_ENUM.GENE_EXPRESSION:
       return fetchDataForGeneExpression(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);

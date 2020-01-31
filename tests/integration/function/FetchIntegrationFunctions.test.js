@@ -19,7 +19,7 @@ describe('Fetch Functions', () => {
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.CNV_MUTATION).do( (a) => {
       return a;
     }).subscribe( (result) => {
-      expect(result.length).toEqual(62);
+      expect(JSON.stringify(result.length)).toEqual(JSON.stringify(62));
       done();
     },
     e => done(logError(e))

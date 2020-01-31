@@ -27,7 +27,12 @@ import {
   scorePathway, sortAssociatedData, sortGeneDataWithSamples
 } from '../functions/SortFunctions';
 import QueryString from 'querystring';
-import {calculateCohorts, calculateFilter, calculateGeneSet, generatedUrlFunction} from '../functions/UrlFunctions';
+import {
+  calculateCohorts,
+  calculateFilter,
+  calculateGeneSet,
+  generatedUrlFunction
+} from '../functions/UrlFunctions';
 import GeneSetEditor from './GeneSetEditor';
 import Button from 'react-toolbox/lib/button';
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
@@ -73,6 +78,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const filter = calculateFilter(urlVariables);
     const selectedGeneSet = calculateGeneSet(urlVariables,pathways);
+    // we have to load the sub cohorts before we load the cohorrts
+    AppStorageHandler.storeSubCohorts(this.calculateSubCohortSamples(urlVariables));
     const cohorts = calculateCohorts(urlVariables);
 
     this.state = {
@@ -157,6 +164,53 @@ export default class XenaGeneSetApp extends PureComponent {
     );
   };
 
+  handleSubCohortValue(inputSubCohortUrl,addedSubCohorts){
+    let addedSubCohort = this.addSubCohortSample(inputSubCohortUrl);
+    if(addedSubCohort.samples){
+      addedSubCohorts.push(addedSubCohort);
+    }
+    else{
+      addedSubCohorts = addedSubCohorts.filter( as => as.subCohortName!==addedSubCohort.subCohortName && as.cohort!==addedSubCohort.cohort);
+    }
+    return addedSubCohorts;
+
+  }
+  /**
+   * For should be one or more inputs:
+   *
+   * urlVariables = {
+   *   subCohortSamples: <Cohort>:<SubCohortName>:<Samples>
+   *   subCohortSamples: TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&
+   * subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort2:TCGA-D7-6822-01,TCGA-BR-8485-01&
+   * }
+   *
+   * @param urlVariables
+   * @returns {*[]}
+   */
+  calculateSubCohortSamples(urlVariables){
+    let addedSubCohorts = [];
+    // TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&
+    if(urlVariables.subCohortSamples) {
+      if(Array.isArray(urlVariables.subCohortSamples)){
+        for(const url of urlVariables.subCohortSamples){
+          this.handleSubCohortValue(url,addedSubCohorts);
+        }
+      }
+      else{
+        this.handleSubCohortValue(urlVariables.subCohortSamples,addedSubCohorts);
+      }
+    }
+    return addedSubCohorts;
+  }
+
+  addSubCohortSample(url) {
+    const parsed = url.split(':');
+    return {
+      cohort: parsed[0],
+      subCohortName: parsed[1],
+      samples: parsed[2],
+    };
+  }
 
 
   handleCombinedCohortData = (input) => {

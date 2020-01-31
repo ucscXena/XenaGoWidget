@@ -13,6 +13,7 @@ import {
 import {intersection} from '../functions/MathFunctions';
 import update from 'immutability-helper';
 import Link from 'react-toolbox/lib/link';
+import {AppStorageHandler} from '../service/AppStorageHandler';
 
 
 export class CohortEditorSelector extends PureComponent {
@@ -106,6 +107,31 @@ export class CohortEditorSelector extends PureComponent {
       selectedSamples,
     });
   }
+
+  clearTemporarySubCohorts() {
+
+    if(confirm('Remove added sub cohorts?')){
+      AppStorageHandler.clearSubCohorts();
+      // TODO: reset the list
+      let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]));
+      let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]));
+
+      let subCohortsA = getSubCohortsForCohort(this.state.cohort[0].name);
+      let subCohortsB = getSubCohortsForCohort(this.state.cohort[1].name);
+      newCohortA.subCohorts = Object.keys(subCohortsA);
+      newCohortB.subCohorts = Object.keys(subCohortsB);
+      newCohortA.selectedSubCohorts = Object.keys(subCohortsA);
+      newCohortB.selectedSubCohorts = Object.keys(subCohortsB);
+
+      // update state
+      const newCohortState = update(this.state.cohort,{
+        [0]: { $set:newCohortA},
+        [1]: { $set:newCohortB},
+      });
+      this.updateSampleState(newCohortState);
+    }
+  }
+
 
   selectAll(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
@@ -289,10 +315,15 @@ export class CohortEditorSelector extends PureComponent {
               </tr>
             </tbody>
           </table>
+          <hr/>
+          <button onClick={() => this.clearTemporarySubCohorts()}>
+            Clear temporary sub cohorts
+          </button>
         </div>
       );
     }
   }
+
 }
 CohortEditorSelector.propTypes = {
   cohort: PropTypes.any.isRequired,
