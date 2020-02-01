@@ -13,8 +13,8 @@ React widget for analyzing expression of tissue samples within a pathway or set 
 - Selected subcohorts: e.g., selectedSubCohorts1=From_Xena_Cohort1&selectedSubCohorts2=From_Xena_Cohort2&
 - Analysis type: e.g., filter=BPA%20Gene%20Expression
 - Selected geneset: e.g., geneset=IFI6_tf_targets
-- Add sub cohorts with samples:   <cohort>:<subcohort name>:<samples>   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01
-- Remove sub cohorts with samples:   <cohort>:<subcohort name>:   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:
+- Add sub cohorts with samples:   subCohortSamples=<cohort>:<subcohort name>:<samples>   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01
+- Remove sub cohorts with samples:   subCohortSamples=<cohort>:<subcohort name>:   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:
 
 Example link:
 
