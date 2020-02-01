@@ -806,14 +806,11 @@ export default class XenaGeneSetApp extends PureComponent {
               }
 
               <tr>
-                <td colSpan={1}>
-                  <GeneSetLegend maxScore={1.5}/>
+                <td colSpan={3}>
+                  <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
                 </td>
-                <td colSpan={1}>
-                  &nbsp;
-                </td>
-                <td colSpan={1}>
-                  <GeneSetLegend maxScore={1.5}/>
+                <td colSpan={2}>
+                  <GeneSetLegend maxScore={2} minScore={-2}/>
                 </td>
               </tr>
               <tr>

@@ -6,7 +6,7 @@ export class GeneSetLegend extends PureComponent {
 
   render() {
     return (
-      <svg height="20" width="100%">
+      <svg height="40" width="100%">
         <defs>
           <linearGradient id="grad1">
             <stop offset="0%" stopColor="red" />
@@ -18,6 +18,12 @@ export class GeneSetLegend extends PureComponent {
           fill="url(#grad1)" height={20} width={300} x={0}
           y={0}
         />
+        <text height={20} width={300} x={10} y={25}>
+          {this.props.maxScore}
+        </text>
+        <text height={20} width={300} x={80} y={25}>
+          {this.props.minScore}
+        </text>
       </svg>
     );
   }
@@ -26,4 +32,5 @@ export class GeneSetLegend extends PureComponent {
 
 GeneSetLegend.propTypes = {
   maxScore: PropTypes.any.isRequired,
+  minScore: PropTypes.any.isRequired,
 };
