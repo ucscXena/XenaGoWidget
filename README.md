@@ -7,73 +7,46 @@ React widget for analyzing expression of tissue samples within a pathway or set 
 
 [Further documentation](docs/index.md)
 
+## API / Entry points:
 
+- Cohort selection: cohort1=<name>   cohort2=<name>, eg. cohort1=TCGA%20Stomach%20Cancer%20(STAD)
+- Selected subcohorts: e.g., selectedSubCohorts1=From_Xena_Cohort1&selectedSubCohorts2=From_Xena_Cohort2&
+- Analysis type: e.g., filter=BPA%20Gene%20Expression
+- Selected geneset: e.g., geneset=IFI6_tf_targets
+- Add sub cohorts with samples:   <cohort>:<subcohort name>:<samples>   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01
+- Remove sub cohorts with samples:   <cohort>:<subcohort name>:   . e.g., subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:
 
-## To Run
+Example link:
 
-   npm install
+http://xenademo.berkeleybop.io/xena/#cohort1=TCGA%20Stomach%20Cancer%20(STAD)&cohort2=TCGA%20Stomach%20Cancer%20(STAD)&filter=BPA%20Gene%20Expression&geneset=IFI6_tf_targets&selectedSubCohorts1=From_Xena_Cohort1&selectedSubCohorts2=From_Xena_Cohort2&subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort2:TCGA-D7-6822-01,TCGA-BR-8485-01
 
-   npm start
+## Where its running
 
-## To Build
-
-   npm run build
-
-## Examples
-
-Demo: http://xenademo.berkeleybop.io/xena/
+- Production: https://xenageneset.berkeleybop.io/xena/
+- Demo / New Features: http://xenademo.berkeleybop.io/xena/  
 
 <a href="docs/images/bladder1.png">
-  <img src="docs/images/bladder1.png" alt="Bladder example" height="400">
+  <img src="docs/images/screenshot1.png" alt="Default Example" height="400">
 </a>
 
-<a href="docs/images/brca1.png">
-  <img src="docs/images/brca1.png" alt="BRCA example" height="400">
-</a>
+## Instructions
 
-<a href="docs/images/meso1.png">
-  <img src="docs/images/meso1.png" alt="Meso example" height="400">
-</a>
+    npm install
 
+Running locally:
 
+    npm start
 
-## TODO
+Build for production:
 
-- add a view in Xena to new Tab #1
-- put gene selection below pathway selection (and then only show the tissue view for genes) #2
-- side-by-side comparison of different analysis #4 
-   - provide statistics for comparisons
+    npm run build
 
-## Data TODO
+Run tests:
 
-- add cell-lines 
-- add expression data 
-- integration with Viper functional analysis 
-- add outlier pathways 
+    npm test
 
+Lint:
+  
+    npm run-script lint
 
-## Possible TODO
-
-- allow multiple selection of genes / pathways with statistics (gene enrichment)
-   - provide combined statistics matches
-   - (allow visible selection of fields)
-   - put a control / display canvas on top of another one? 
-- allow selection of multiple cohorts (displayed vertically)
-- allow selection of different criteria for scoring 
-- add different (drill-down) filters for scores, etc. 
-- allow different ways to shade, including z-score, only percentage, etc. etc. 
-- allow creation of custom pathways sets by selecting available genes (with lookup)
-- allow hiding pathways
-- show camplot
-- show annotations for hovered / selected (are these the functional annotations?)
-- integrate as new Xena page 
-
-
-
-
-
-## Important biological questions
-
-- what genes are involved / dominant in these pathways for 'X' affects 
-- what is the combined affect of these genes on various pathways for this set of selected genes 
 
