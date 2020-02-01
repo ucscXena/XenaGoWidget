@@ -41,6 +41,7 @@ import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
 import {DetailedLabelTop} from './DetailedLabelTop';
+import {GeneSetLegend} from './GeneSetLegend';
 
 
 const VIEWER_HEIGHT = 500;
@@ -733,7 +734,7 @@ export default class XenaGeneSetApp extends PureComponent {
               />
             </Dialog>
           }
-          <table>
+          <table border="solid 2px black">
             <tbody>
               {isViewGeneExpression(this.state.filter) &&
                       <tr>
@@ -804,6 +805,17 @@ export default class XenaGeneSetApp extends PureComponent {
                       </tr>
               }
 
+              <tr>
+                <td colSpan={1}>
+                  <GeneSetLegend maxScore={1.5}/>
+                </td>
+                <td colSpan={1}>
+                  &nbsp;
+                </td>
+                <td colSpan={1}>
+                  <GeneSetLegend maxScore={1.5}/>
+                </td>
+              </tr>
               <tr>
                 <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
                   <DetailedLabelTop
