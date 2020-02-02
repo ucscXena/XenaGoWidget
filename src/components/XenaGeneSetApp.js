@@ -41,6 +41,7 @@ import {intersection} from '../functions/MathFunctions';
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
 import {DetailedLabelTop} from './DetailedLabelTop';
+import {GeneSetLegend} from './GeneSetLegend';
 
 
 const VIEWER_HEIGHT = 500;
@@ -803,7 +804,6 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
               }
-
               <tr>
                 <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
                   <DetailedLabelTop
@@ -813,7 +813,6 @@ export default class XenaGeneSetApp extends PureComponent {
                   />
                 </td>
                 <td>
-
                   {this.state.pathwaySelection &&
                   <div className={BaseStyle.geneSetInfoBox}>
                     <div className={BaseStyle.geneSetBoxLabel}>Viewing Gene Set Details</div>
@@ -822,11 +821,19 @@ export default class XenaGeneSetApp extends PureComponent {
                     ({this.state.pathwaySelection.pathway.gene.length} genes)
                   </div>
                   }
-
-
                 </td>
-
-
+              </tr>
+              <tr>
+                <td colSpan={3}>
+                  <div style={{marginLeft:230}}>
+                    <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
+                  </div>
+                </td>
+                <td colSpan={1}>
+                  <div  style={{marginLeft:250}}>
+                    <GeneSetLegend maxScore={2} minScore={-2}/>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>
