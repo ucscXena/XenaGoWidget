@@ -734,7 +734,7 @@ export default class XenaGeneSetApp extends PureComponent {
               />
             </Dialog>
           }
-          <table border="solid 2px black">
+          <table>
             <tbody>
               {isViewGeneExpression(this.state.filter) &&
                       <tr>
@@ -804,15 +804,6 @@ export default class XenaGeneSetApp extends PureComponent {
                         </td>
                       </tr>
               }
-
-              <tr>
-                <td colSpan={3}>
-                  <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
-                </td>
-                <td colSpan={2}>
-                  <GeneSetLegend maxScore={2} minScore={-2}/>
-                </td>
-              </tr>
               <tr>
                 <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
                   <DetailedLabelTop
@@ -822,7 +813,6 @@ export default class XenaGeneSetApp extends PureComponent {
                   />
                 </td>
                 <td>
-
                   {this.state.pathwaySelection &&
                   <div className={BaseStyle.geneSetInfoBox}>
                     <div className={BaseStyle.geneSetBoxLabel}>Viewing Gene Set Details</div>
@@ -831,11 +821,19 @@ export default class XenaGeneSetApp extends PureComponent {
                     ({this.state.pathwaySelection.pathway.gene.length} genes)
                   </div>
                   }
-
-
                 </td>
-
-
+              </tr>
+              <tr>
+                <td colSpan={3}>
+                  <div style={{marginLeft:230}}>
+                    <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
+                  </div>
+                </td>
+                <td colSpan={1}>
+                  <div  style={{marginLeft:250}}>
+                    <GeneSetLegend maxScore={2} minScore={-2}/>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <td>
