@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const TEXT_Y_OFFSET = 15;
 const IMAGE_HEIGHT = 10 ;
-// const IMAGE_WIDTH = 15;
 
 export class GeneSetLegend extends PureComponent {
 
