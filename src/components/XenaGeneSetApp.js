@@ -28,6 +28,7 @@ import {
 } from '../functions/SortFunctions';
 import QueryString from 'querystring';
 import {
+  calculateCohortColors,
   calculateCohorts,
   calculateFilter,
   calculateGeneSet,
@@ -82,12 +83,14 @@ export default class XenaGeneSetApp extends PureComponent {
     // we have to load the sub cohorts before we load the cohorrts
     AppStorageHandler.storeSubCohorts(this.calculateSubCohortSamples(urlVariables));
     const cohorts = calculateCohorts(urlVariables);
+    const cohortColors = calculateCohortColors(urlVariables);
 
     this.state = {
       // TODO: this should use the full cohort Data, not just the top-level
       associatedData:[],
       selectedCohort: cohorts,
       subCohortCounts: [],
+      cohortColors,
       fetch: false,
       automaticallyReloadPathways: true,
       currentLoadState: LOAD_STATE.LOADING,
@@ -808,6 +811,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
                   <DetailedLabelTop
                     cohort={this.state.selectedCohort}
+                    colors={this.state.cohortColors}
                     pathwayData={this.state.pathwayData}
                     width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH - 20}
                   />
@@ -912,6 +916,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <XenaGoViewer
                                   // reference
                                   allowableViews={allowableViews}
+                                  cohortColor={this.state.cohortColors[0]}
                                   cohortIndex={0}
 
                                   // view
@@ -938,8 +943,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                   // functions
                                   onVersusAll={this.handleVersusAll}
                                   pathwayData={this.state.pathwayData[0]}
-                                  pathwaySelection={this.state.pathwaySelection}
                                   pathways={pathways}
+                                  pathwaySelection={this.state.pathwaySelection}
                                   renderHeight={VIEWER_HEIGHT}
 
                                   // state
@@ -953,6 +958,7 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <XenaGoViewer
                                   // reference
                                   allowableViews={allowableViews}
+                                  cohortColor={this.state.cohortColors[1]}
                                   cohortIndex={1}
                                   collapsed={this.state.collapsed}
                                   colorSettings={this.state.geneStateColors}
@@ -977,8 +983,8 @@ export default class XenaGeneSetApp extends PureComponent {
                                   // functions
                                   onVersusAll={this.handleVersusAll}
                                   pathwayData={this.state.pathwayData[1]}
-                                  pathwaySelection={this.state.pathwaySelection}
                                   pathways={pathways}
+                                  pathwaySelection={this.state.pathwaySelection}
                                   renderHeight={VIEWER_HEIGHT}
 
                                   // state

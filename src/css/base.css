@@ -431,14 +431,12 @@ div[data-react-toolbox=dialog] > section{
 }
 
 .cohortAGeneSetViewer{
-  background-color: darkolivegreen;
   padding: 8px 2px 8px 2px;
   border-radius: 3px;
   color: white;
 }
 
 .cohortBGeneSetViewer{
-  background-color: tan;
   padding: 8px 2px 8px 2px;
   border-radius: 3px;
 }
@@ -456,7 +454,6 @@ div[data-react-toolbox=dialog] > section{
 
 .topGeneDetailBox{
 border-radius: 5px;
-background-color: darkolivegreen;
  padding-right: 20px;
  padding-left: 20px;
  padding-top: 5px;
@@ -466,7 +463,6 @@ background-color: darkolivegreen;
 
 .bottomGeneDetailBox{
   border-radius: 5px;
-  background-color: tan;
   padding-right: 20px;
   padding-left: 20px;
   padding-top: 5px;

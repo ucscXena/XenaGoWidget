@@ -49,7 +49,7 @@ export default class XenaGoViewer extends PureComponent {
 
       let {renderHeight, renderOffset, cohortIndex,filter,
         geneDataStats, geneHoverData, onEditCohorts, onSetCollapsed , collapsed,
-        highlightedGene, colorSettings, showDiffLayer, showDetailLayer,
+        highlightedGene, colorSettings, showDiffLayer, showDetailLayer,cohortColor,
         pathwayData, subCohortCounts,
       } = this.props;
 
@@ -74,7 +74,10 @@ export default class XenaGoViewer extends PureComponent {
                       <td
                         valign="top"
                       >
-                        <div className={cohortIndex === 0 ? BaseStyle.topGeneDetailBox : BaseStyle.bottomGeneDetailBox}>
+                        <div
+                          className={cohortIndex === 0 ? BaseStyle.topGeneDetailBox : BaseStyle.bottomGeneDetailBox}
+                          style={{backgroundColor:cohortColor}}
+                        >
                           { cohortIndex===1 &&
                           <GeneSetInfoBox
                             cohortIndex={cohortIndex}
@@ -143,6 +146,7 @@ export default class XenaGoViewer extends PureComponent {
 
 XenaGoViewer.propTypes = {
   allowableViews: PropTypes.any.isRequired,
+  cohortColor: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
   collapsed: PropTypes.any,
   colorSettings: PropTypes.any,

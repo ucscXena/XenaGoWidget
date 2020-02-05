@@ -38,6 +38,14 @@ export function calculateGeneSet(urlVariables,pathways){
   return selectedGeneSet;
 }
 
+export function calculateCohortColors(urlVariables){
+
+  if(urlVariables.cohort1Color && urlVariables.cohort2Color){
+    return [urlVariables.cohort1Color,urlVariables.cohort2Color];
+  }
+  return ['darkolivegreen','tan'];
+
+}
 
 export function calculateCohorts(urlVariables){
   // // handle selected cohorts

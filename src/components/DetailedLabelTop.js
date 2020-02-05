@@ -9,12 +9,12 @@ export class DetailedLabelTop extends PureComponent {
   // }
 
   render() {
-    const {cohort,pathwayData,width} = this.props;
+    const {cohort,colors,pathwayData,width} = this.props;
     return (
       <table>
         <tbody>
           <tr>
-            <td className={BaseStyle.cohortAGeneSetViewer} width={width/2 +30}>
+            <td className={BaseStyle.cohortAGeneSetViewer} style={{backgroundColor:colors[0]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
                 {cohort[0].name}
                 {pathwayData[0].samples &&
@@ -24,7 +24,7 @@ export class DetailedLabelTop extends PureComponent {
                 }
               </div>
             </td>
-            <td className={BaseStyle.cohortBGeneSetViewer} width={width/2 +30}>
+            <td className={BaseStyle.cohortBGeneSetViewer} style={{backgroundColor:colors[1]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
                 {cohort[1].name}
                 {pathwayData[1].samples &&
@@ -43,6 +43,7 @@ export class DetailedLabelTop extends PureComponent {
 
 DetailedLabelTop.propTypes = {
   cohort: PropTypes.any.isRequired,
+  colors: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
 };
