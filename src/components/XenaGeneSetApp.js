@@ -42,6 +42,7 @@ import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
 import {DetailedLabelTop} from './DetailedLabelTop';
 import {GeneSetLegend} from './GeneSetLegend';
+import {DetailedLegend} from './DetailedLegend';
 
 
 const VIEWER_HEIGHT = 500;
@@ -825,13 +826,16 @@ export default class XenaGeneSetApp extends PureComponent {
               </tr>
               <tr>
                 <td colSpan={3}>
-                  <div style={{marginLeft:230}}>
-                    <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
+                  <div style={{marginLeft:50}}>
+                    <GeneSetLegend label={this.state.filter + ' score'} maxScore={maxValue} minScore={-maxValue}/>
                   </div>
                 </td>
                 <td colSpan={1}>
-                  <div  style={{marginLeft:250}}>
-                    <GeneSetLegend maxScore={2} minScore={-2}/>
+                  <div  style={{marginLeft:50}}>
+                    <DetailedLegend/>
+                    {isViewGeneExpression(this.state.filter) &&
+                    <GeneSetLegend label={'Gene expression z-score'} maxScore={2} minScore={-2}/>
+                    }
                   </div>
                 </td>
               </tr>
