@@ -428,6 +428,7 @@ div[data-react-toolbox=dialog] > section{
   height: 20px;
   margin: 0;
   padding: 0;
+  display: inline;
 }
 
 .cohortAGeneSetViewer{
@@ -444,6 +445,7 @@ div[data-react-toolbox=dialog] > section{
 .geneSetHeaderLabel{
   font-family: sans-serif;
   font-size: small;
+  display: inline;
 }
 
 .noBullets{

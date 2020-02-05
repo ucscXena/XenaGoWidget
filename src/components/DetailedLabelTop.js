@@ -2,21 +2,66 @@ import React from 'react';
 import PureComponent from './PureComponent';
 import PropTypes from 'prop-types';
 import BaseStyle from '../css/base.css';
+import Tooltip from 'react-toolbox/lib/tooltip';
+import Link from 'react-toolbox/lib/link';
+import {Dialog} from 'react-toolbox/lib';
+
+const TooltipLink = Tooltip(Link);
+
+const MAGIC_LENGTH = 28;
+// let getShortName = (name) => (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
+
+function getShortName(name){
+  return (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
+}
 
 export class DetailedLabelTop extends PureComponent {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showInfoA: false,
+      showInfoB: false,
+    };
+  }
 
   render() {
     const {cohort,colors,pathwayData,width} = this.props;
+
+    // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
+    const cohortAName = getShortName(cohort[0].name);
+    const cohortBName = getShortName(cohort[1].name);
+    // let getShortName = (name) => (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
+
     return (
       <table>
         <tbody>
           <tr>
             <td className={BaseStyle.cohortAGeneSetViewer} style={{backgroundColor:colors[0]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
-                {cohort[0].name}
+                <TooltipLink
+                  className={BaseStyle.infoLink} href="#" label={cohortAName}
+                  onClick={()=>this.setState({showInfoA: true})}
+                  tooltip={cohort[0].name}
+                />
+                <Dialog
+                  active={this.state.showInfoA}
+                  onEscKeyDown={() => this.setState({showInfoA:false})}
+                  onOverlayClick={() => this.setState({showInfoA:false})}
+                  title={cohort[0].name}
+                  type='normal'
+                >
+                  <div>
+                    <ul>
+                      {cohort[0].selectedSubCohorts.sort().map( s => {
+                        return (
+                          <li key={s}>{s} (7)</li>
+                        );
+                      }
+                      )}
+                    </ul>
+                  </div>
+                </Dialog>
                 {pathwayData[0].samples &&
               <div className={BaseStyle.inlinePathwayChip}>
                 {pathwayData[0].samples.length}
@@ -26,7 +71,29 @@ export class DetailedLabelTop extends PureComponent {
             </td>
             <td className={BaseStyle.cohortBGeneSetViewer} style={{backgroundColor:colors[1]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
-                {cohort[1].name}
+                <TooltipLink
+                  className={BaseStyle.infoLink} href="#" label={cohortBName}
+                  onClick={()=>this.setState({showInfoB: true})}
+                  tooltip={cohort[1].name}
+                />
+                <Dialog
+                  active={this.state.showInfoB}
+                  onEscKeyDown={() => this.setState({showInfoB:false})}
+                  onOverlayClick={() => this.setState({showInfoB:false})}
+                  title={cohort[1].name}
+                  type='normal'
+                >
+                  <div>
+                    <ul>
+                      {cohort[1].selectedSubCohorts.sort().map( s => {
+                        return (
+                          <li key={s}>{s} (9)</li>
+                        );
+                      }
+                      )}
+                    </ul>
+                  </div>
+                </Dialog>
                 {pathwayData[1].samples &&
               <div className={BaseStyle.inlinePathwayChip}>
                 {pathwayData[1].samples.length}
