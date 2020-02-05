@@ -832,9 +832,11 @@ export default class XenaGeneSetApp extends PureComponent {
                 </td>
                 <td colSpan={1}>
                   <div  style={{marginLeft:50}}>
-                    <DetailedLegend/>
                     {isViewGeneExpression(this.state.filter) &&
                     <GeneSetLegend label={'Gene expression z-score'} maxScore={2} minScore={-2}/>
+                    }
+                    {!isViewGeneExpression(this.state.filter) &&
+                    <DetailedLegend/>
                     }
                   </div>
                 </td>
