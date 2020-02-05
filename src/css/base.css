@@ -332,15 +332,19 @@ body {
 }
 
 .labelDefaultTop :hover{
-    background-color: #efefef;
-    stroke-width: 1;
+    /*background-color: #efefef;*/
+  background-color: hotpink;
+  z-index: 1000;
+  stroke-width: 1;
     color: black;
     border-radius: 15px;
     box-shadow: 0 0 1px 1px gray inset;
 }
 
 .labelDefaultBottom :hover{
-    background-color: #efefef;
+    /*background-color: #efefef;*/
+  background-color: aqua;
+  z-index: 1000;
     stroke-width: 1;
     color: black;
     border-radius: 15px;

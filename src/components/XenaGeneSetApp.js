@@ -46,7 +46,7 @@ import {CnvMutationLegend} from './CnvMutationLegend';
 
 
 const VIEWER_HEIGHT = 500;
-const TOP_HEIGHT = 81;
+const TOP_HEIGHT = 112;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const BORDER_OFFSET = 2;
