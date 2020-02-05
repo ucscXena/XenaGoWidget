@@ -14,18 +14,15 @@ export class CnvMutationLegend extends PureComponent {
               <tr>
                 <td>
                   <span className={BaseStyle.cnvHighColor}><strong>CNV Amplification</strong></span>
-                  {/*<br/>*/}
                   &nbsp;
                   <span className={BaseStyle.cnvLowColor}><strong>CNV Deletion</strong></span>
                 </td>
-                <td style={{borderLeft:'2px solid'}}>
-                </td>
+                <td style={{borderLeft:'2px solid'}}/>
                 <td>
                   <span className={BaseStyle.mutation4Color}><strong>Deleterious</strong></span>
                   &nbsp;
                   <span className={BaseStyle.mutation3Color}><strong>Splice</strong></span>
                   &nbsp;
-                  {/*<br/>*/}
                   <span className={BaseStyle.mutation2Color}><strong>Missense / Inframe</strong></span>
                 </td>
               </tr>
