@@ -317,7 +317,7 @@ body {
 }
 
 .labelDefaultTop :hover{
-    background-color: #efefef;
+    background-color: red;
     stroke-width: 1;
     color: black;
     border-radius: 15px;
@@ -325,7 +325,7 @@ body {
 }
 
 .labelDefaultBottom :hover{
-    background-color: #efefef;
+    background-color: blue;
     stroke-width: 1;
     color: black;
     border-radius: 15px;

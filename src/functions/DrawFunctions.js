@@ -95,7 +95,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   const mutation3ColorMask = getMutation3ColorMask();
   const mutation2ColorMask = getMutation2ColorMask();
 
-  const offsetHeight = cohortIndex === 0 ? 0 : labelHeight - 39;
+  const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 ;
 
   // for each row / geneSet
   layout.forEach((el, i) => {

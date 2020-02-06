@@ -4,7 +4,7 @@ import { omit, isEqual } from 'underscore';
 import PureComponent from './PureComponent';
 import { HeaderLabel } from './HeaderLabel';
 import { DiffLabel } from './DiffLabel';
-import { GENE_LABEL_HEIGHT } from './PathwayScoresView';
+import {GENE_LABEL_HEIGHT, GENE_LEGEND_HEIGHT} from './PathwayScoresView';
 import BaseStyle from '../css/base.css';
 
 const CHI_SQUARE_MAX = 100.0;
@@ -29,7 +29,7 @@ export default class LabelSet extends PureComponent {
       numSamples,
     } = this.props;
     if (pathways.length === layout.length) {
-      const possibleHeight = height - GENE_LABEL_HEIGHT;
+      const possibleHeight = height - GENE_LABEL_HEIGHT + GENE_LEGEND_HEIGHT;
       const offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
 
       return layout.map((el, i) => {
@@ -39,7 +39,7 @@ export default class LabelSet extends PureComponent {
         const highlighted = highlightedGene === labelKey;
         const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight;
         const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-        const actualOffset = cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight;
+        const actualOffset = (cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight)+25;
         return (
           <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
             { ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
@@ -50,8 +50,8 @@ export default class LabelSet extends PureComponent {
                             geneLength={geneLength}
                             item={d}
                             key={`${labelKey}-${cohortIndex}diff`}
-                            labelHeight={diffHeight}
-                            labelOffset={actualOffset}
+                            labelHeight={diffHeight+40}
+                            labelOffset={actualOffset-20}
                             labelString={labelKey}
                             left={el.start}
                             numSamples={numSamples}
@@ -63,7 +63,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 0,
+                            top: 35,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -76,7 +76,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 0,
+                            top: 45,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -92,7 +92,7 @@ export default class LabelSet extends PureComponent {
               item={d}
               key={`${labelKey}-${cohortIndex}`}
               labelHeight={labelHeight}
-              labelOffset={offset}
+              labelOffset={offset+42}
               labelString={labelKey}
               left={el.start}
               numSamples={numSamples}

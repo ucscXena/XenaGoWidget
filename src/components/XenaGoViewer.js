@@ -88,11 +88,13 @@ export default class XenaGoViewer extends PureComponent {
                           />
                           }
                           <Card style={{height: 180, width: style.gene.columnWidth, padding: 5,marginTop: 5, borderRadius:10}}>
+                            {geneHoverData &&
                             <HoverGeneView
                               cohortIndex={cohortIndex}
                               data={geneHoverData}
                               view={filter}
                             />
+                            }
                             {geneDataStats.pathways.length > MAX_GENE_WIDTH && collapsed &&
                           <Button
                             flat icon='chevron_right' onClick={() => onSetCollapsed(false)}

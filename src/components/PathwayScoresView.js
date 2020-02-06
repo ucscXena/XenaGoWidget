@@ -8,6 +8,7 @@ import LabelWrapper from './LabelWrapper';
 
 
 export const GENE_LABEL_HEIGHT = 50;
+export const GENE_LEGEND_HEIGHT = 30;
 const UP_BUFFER = -3;
 const DOWN_BUFFER = 1;
 
