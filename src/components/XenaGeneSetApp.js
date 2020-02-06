@@ -897,7 +897,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
                                   const x = ev.clientX + 8;
                                   const y = ev.clientY + 8 + scrollDownBuffer ;
-                                  if(x>=860){
+                                  if(x>=860 && y>=200){
                                     this.setState({mousing: true, x, y});
                                   }
                                   else{

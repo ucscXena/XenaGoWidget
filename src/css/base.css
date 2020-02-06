@@ -358,6 +358,7 @@ div[data-react-toolbox=dialog] > section{
     cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
+  z-index: 10;
 }
 
 .crosshairV{
@@ -373,6 +374,7 @@ div[data-react-toolbox=dialog] > section{
     cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
+  z-index: 10;
 }
 
 .scoreBox{
