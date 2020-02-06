@@ -9,8 +9,6 @@ import LabelWrapper from './LabelWrapper';
 
 export const GENE_LABEL_HEIGHT = 50;
 export const GENE_LEGEND_HEIGHT = 30;
-const UP_BUFFER = -3;
-const DOWN_BUFFER = 1;
 
 const style = {
   xenaGoView: {
@@ -58,16 +56,21 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, assoc
 
 let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
   let index = 0;
+  const COHORT_0_TOP_Y=44;
+  const COHORT_0_BOTTOM_Y=492;
+  const COHORT_1_TOP_Y=93;
+  const COHORT_1_BOTTOM_Y=539;
   switch (cohortIndex) {
   case 0:
-    index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc((height - labelHeight - y) * count / (height - (labelHeight + UP_BUFFER))) : -1;
+    index = y <= (COHORT_0_BOTTOM_Y) ? Math.trunc(count - (count * ( y - COHORT_0_TOP_Y ) / (COHORT_0_BOTTOM_Y - COHORT_0_TOP_Y ))) : -1;
     break;
   case 1:
-    index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
+    index = y >= (COHORT_1_TOP_Y) ? Math.trunc( (count * ( y - COHORT_1_TOP_Y ) / (COHORT_1_BOTTOM_Y - COHORT_1_TOP_Y ))) : -1;
     break;
   default:
     // eslint-disable-next-line no-console
-    console.error('error', y, height, labelHeight, count, cohortIndex, UP_BUFFER);
+    console.error('error', y, height, labelHeight, count, cohortIndex);
+    return -1 ;
 
   }
   return index;
