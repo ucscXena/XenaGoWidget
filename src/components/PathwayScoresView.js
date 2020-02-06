@@ -118,25 +118,23 @@ export default class PathwayScoresView extends PureComponent {
       const {
         height, offset, cohortIndex,
         colorSettings, highlightedGene,
-        showDetailLayer, calculatedWidth,
-        showDiffLayer, layoutData,filter
+        calculatedWidth,
+        layoutData,filter
       } = this.props;
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
 
       return (
         <div style={style.xenaGoView}>
-          {showDetailLayer &&
-                <CanvasDrawing
-                  associatedData={data}
-                  cohortIndex={cohortIndex}
-                  draw={DrawFunctions.drawGeneView}
-                  filter={filter}
-                  height={height}
-                  layout={layoutData}
-                  width={calculatedWidth}
-                />
-          }
+          <CanvasDrawing
+            associatedData={data}
+            cohortIndex={cohortIndex}
+            draw={DrawFunctions.drawGeneView}
+            filter={filter}
+            height={height}
+            layout={layoutData}
+            width={calculatedWidth}
+          />
           <LabelWrapper
             cohortIndex={cohortIndex}
             colorSettings={colorSettings}
@@ -150,7 +148,6 @@ export default class PathwayScoresView extends PureComponent {
             onMouseMove={this.handleLabelHover}
             onMouseOut={this.handleLabelHoverOut}
             pathways={pathways}
-            showDiffLayer={showDiffLayer}
             width={calculatedWidth}
           />
         </div>
@@ -169,8 +166,6 @@ PathwayScoresView.propTypes = {
   layoutData: PropTypes.any.isRequired,
   offset: PropTypes.number.isRequired,
   onHover: PropTypes.any.isRequired,
-  showDetailLayer: PropTypes.any,
-  showDiffLayer: PropTypes.any,
 };
 
 

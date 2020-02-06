@@ -99,8 +99,6 @@ export default class XenaGeneSetApp extends PureComponent {
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showCohortEditor: false,
-      showDetailLayer: true,
-      showDiffLayer: true,
       sortViewOrder:SORT_ORDER_ENUM.DESC,
       sortViewBy:SORT_ENUM.DIFF,
       filterOrder:SORT_ORDER_ENUM.DESC,
@@ -950,8 +948,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   // state
                                   renderOffset={TOP_HEIGHT}
                                   selectedCohort={this.state.selectedCohort[0]}
-                                  showDetailLayer={this.state.showDetailLayer}
-                                  showDiffLayer={this.state.showDiffLayer}
                                   subCohortCounts={this.state.subCohortCounts[0]}
                                   swapCohorts={this.swapCohorts}
                                 />
@@ -990,8 +986,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                   // state
                                   renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}
                                   selectedCohort={this.state.selectedCohort[1]}
-                                  showDetailLayer={this.state.showDetailLayer}
-                                  showDiffLayer={this.state.showDiffLayer}
                                   subCohortCounts={this.state.subCohortCounts[1]}
                                   swapCohorts={this.swapCohorts}
                                 />

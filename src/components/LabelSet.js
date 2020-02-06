@@ -27,7 +27,6 @@ export default class LabelSet extends PureComponent {
       cohortIndex,
       colorSettings,
       numSamples,
-      showDiffLayer,
     } = this.props;
     if (pathways.length === layout.length) {
       const possibleHeight = height - GENE_LABEL_HEIGHT;
@@ -43,7 +42,7 @@ export default class LabelSet extends PureComponent {
         const actualOffset = cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight;
         return (
           <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
-            { showDiffLayer && ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
+            { ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
                         && (
                           <DiffLabel
                             cohortIndex={cohortIndex}
@@ -116,5 +115,4 @@ LabelSet.propTypes = {
   layout: PropTypes.any.isRequired,
   numSamples: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-  showDiffLayer: PropTypes.any.isRequired,
 };
