@@ -8,11 +8,26 @@ import {Dialog} from 'react-toolbox/lib';
 
 const TooltipLink = Tooltip(Link);
 
-const MAGIC_LENGTH = 28;
+const COHORT_LENGTH= 15;
+const SUBCOHORT_LENGTH = 25;
 // let getShortName = (name) => (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
 
-function getShortName(name){
-  return (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
+function getShortName(name,length){
+  return (name.length>length? name.substr(0,length-3)+'..' : name);
+}
+
+function cleanSubCohortName(name){
+  const firstIndex = name.indexOf('.');
+  if(firstIndex>0) return name.substr(firstIndex+1);
+  return name ;
+}
+
+function getSelectedSubCohorts(selectedSubCohorts) {
+  if(selectedSubCohorts.length===0){ return '';}
+  if(selectedSubCohorts.length===1){
+    return getShortName(cleanSubCohortName(selectedSubCohorts));
+  }
+  return getShortName( selectedSubCohorts.map( s => cleanSubCohortName(s)).join(','),SUBCOHORT_LENGTH);
 }
 
 export class DetailedLabelTop extends PureComponent {
@@ -29,8 +44,10 @@ export class DetailedLabelTop extends PureComponent {
     const {cohort,colors,pathwayData,width} = this.props;
 
     // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
-    const cohortAName = getShortName(cohort[0].name);
-    const cohortBName = getShortName(cohort[1].name);
+    const cohortAName = getShortName(cohort[0].name,COHORT_LENGTH);
+    const subCohortADetails = getSelectedSubCohorts(cohort[0].selectedSubCohorts,SUBCOHORT_LENGTH);
+    const cohortBName = getShortName(cohort[1].name,COHORT_LENGTH);
+    const subCohortBDetails = getSelectedSubCohorts(cohort[1].selectedSubCohorts,SUBCOHORT_LENGTH);
     // let getShortName = (name) => (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
 
     return (
@@ -40,7 +57,7 @@ export class DetailedLabelTop extends PureComponent {
             <td className={BaseStyle.cohortAGeneSetViewer} style={{backgroundColor:colors[0]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
                 <TooltipLink
-                  className={BaseStyle.infoLink} href="#" label={cohortAName}
+                  className={BaseStyle.infoLink} href="#" label={cohortAName +' '+subCohortADetails}
                   onClick={()=>this.setState({showInfoA: true})}
                   tooltip={cohort[0].name}
                 />
@@ -72,7 +89,7 @@ export class DetailedLabelTop extends PureComponent {
             <td className={BaseStyle.cohortBGeneSetViewer} style={{backgroundColor:colors[1]}} width={width/2 +30}>
               <div className={BaseStyle.geneSetHeaderLabel}>
                 <TooltipLink
-                  className={BaseStyle.infoLink} href="#" label={cohortBName}
+                  className={BaseStyle.infoLink} href="#" label={cohortBName + ' '+subCohortBDetails}
                   onClick={()=>this.setState({showInfoB: true})}
                   tooltip={cohort[1].name}
                 />

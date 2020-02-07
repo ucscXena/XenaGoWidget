@@ -444,9 +444,12 @@ div[data-react-toolbox=dialog] > section{
 
 .infoLink{
   height: 20px;
-  margin: 0;
-  padding: 0;
   display: inline;
+  border-radius: 3px;
+  background-color: white;
+  padding: 2px;
+  margin: 0;
+  width: 100%;
 }
 
 .cohortAGeneSetViewer{
