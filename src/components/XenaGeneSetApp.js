@@ -832,14 +832,16 @@ export default class XenaGeneSetApp extends PureComponent {
                     }
                     {!isViewGeneExpression(this.state.filter) &&
                       <table>
-                        <tr>
-                          <td>
-                            <GeneSetLegend id='mean-score' label={'mean'} maxScore={50} minScore={-50}/>
-                          </td>
-                          <td>
-                            <GeneSetLegend id='densityGrad1' label={'density'} maxColor='red' maxScore={5} midColor='orange' minColor='white' minScore={0}/>
-                          </td>
-                        </tr>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <GeneSetLegend id='mean-score' label={'mean'} maxScore={50} minScore={-50}/>
+                            </td>
+                            <td>
+                              <GeneSetLegend id='densityGrad1' label={'density'} maxColor='red' maxScore={5} midColor='orange' minColor='white' minScore={0}/>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                     }
                   </div>
