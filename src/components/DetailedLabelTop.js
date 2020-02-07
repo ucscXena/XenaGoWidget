@@ -22,12 +22,12 @@ function cleanSubCohortName(name){
   return name ;
 }
 
-function getSelectedSubCohorts(selectedSubCohorts) {
+function getSelectedSubCohorts(selectedSubCohorts,length) {
   if(selectedSubCohorts.length===0){ return '';}
   if(selectedSubCohorts.length===1){
     return getShortName(cleanSubCohortName(selectedSubCohorts));
   }
-  return getShortName( selectedSubCohorts.map( s => cleanSubCohortName(s)).join(','),SUBCOHORT_LENGTH);
+  return getShortName( selectedSubCohorts.map( s => cleanSubCohortName(s)).join(','),length);
 }
 
 export class DetailedLabelTop extends PureComponent {
@@ -41,14 +41,13 @@ export class DetailedLabelTop extends PureComponent {
   }
 
   render() {
-    const {cohort,colors,pathwayData,width} = this.props;
+    const {cohort,colors,pathwayData,showCohortEditor,width} = this.props;
 
     // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
     const cohortAName = getShortName(cohort[0].name,COHORT_LENGTH);
     const subCohortADetails = getSelectedSubCohorts(cohort[0].selectedSubCohorts,SUBCOHORT_LENGTH);
     const cohortBName = getShortName(cohort[1].name,COHORT_LENGTH);
     const subCohortBDetails = getSelectedSubCohorts(cohort[1].selectedSubCohorts,SUBCOHORT_LENGTH);
-    // let getShortName = (name) => (name.length>MAGIC_LENGTH ? name.substr(0,MAGIC_LENGTH-3)+'..' : name);
 
     return (
       <table>
@@ -58,7 +57,7 @@ export class DetailedLabelTop extends PureComponent {
               <div className={BaseStyle.geneSetHeaderLabel}>
                 <TooltipLink
                   className={BaseStyle.infoLink} href="#" label={cohortAName +' '+subCohortADetails}
-                  onClick={()=>this.setState({showInfoA: true})}
+                  onClick={()=> showCohortEditor()}
                   tooltip={cohort[0].name}
                 />
                 <Dialog
@@ -91,6 +90,7 @@ export class DetailedLabelTop extends PureComponent {
                 <TooltipLink
                   className={BaseStyle.infoLink} href="#" label={cohortBName + ' '+subCohortBDetails}
                   onClick={()=>this.setState({showInfoB: true})}
+                  onClick={()=> showCohortEditor()}
                   tooltip={cohort[1].name}
                 />
                 <Dialog
@@ -129,5 +129,6 @@ DetailedLabelTop.propTypes = {
   cohort: PropTypes.any.isRequired,
   colors: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
+  showCohortEditor: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
 };
