@@ -35,9 +35,9 @@ export function getViewsForCohort(cohortName){
   let views =[];
   const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
   if(cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.COPY_NUMBER);
+  if(cohortDetail[MUTATION_KEY]) views.push(VIEW_ENUM.MUTATION);
   if(cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.CNV_MUTATION);
   if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION);
-  if(cohortDetail[MUTATION_KEY]) views.push(VIEW_ENUM.MUTATION);
   if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM);
   if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON);
   return views ;
@@ -48,9 +48,9 @@ export function getCohortsForView(view){
   for(let cohortName of Object.keys(DETAIL_DATASET_FOR_GENESET)){
     const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
     if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
+    if(view===VIEW_ENUM.MUTATION && cohortDetail[MUTATION_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.MUTATION && cohortDetail[MUTATION_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.PARADIGM && cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName);
     if(view===VIEW_ENUM.REGULON && cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName);
   }
