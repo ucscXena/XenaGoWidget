@@ -95,7 +95,6 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   const mutation3ColorMask = getMutation3ColorMask();
   const mutation2ColorMask = getMutation2ColorMask();
 
-  const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 ;
 
   // for each row / geneSet
   layout.forEach((el, i) => {
@@ -112,6 +111,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
       const r = regions.get(rs);
       const d = rowData.slice(r.start, r.end + 1);
 
+      const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 ;
       if(isViewGeneExpression(view)){
         const geneExpressionScore = meanDataByType(d, 'geneExpression');
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
@@ -140,6 +140,7 @@ function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
         const mutationColorMask = generateMask(mutation4Score,mutation4ColorMask,mutation3Score,mutation3ColorMask,mutation2ColorMask);
         const cnvColor = cnvScore === 0 ? 0 : 255;
         const mutationColor = mutationScore === 0 ? 0 : 255;
+        const offsetHeight = cohortIndex === 0 ? 3 : labelHeight-8 ;
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
           const pxRow = y * width;
           const buffStart = (pxRow + el.start) * 4;
