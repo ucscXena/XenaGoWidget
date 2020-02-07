@@ -8,8 +8,7 @@ import LabelWrapper from './LabelWrapper';
 
 
 export const GENE_LABEL_HEIGHT = 50;
-const UP_BUFFER = -3;
-const DOWN_BUFFER = 1;
+export const GENE_LEGEND_HEIGHT = 30;
 
 const style = {
   xenaGoView: {
@@ -57,16 +56,21 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, assoc
 
 let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
   let index = 0;
+  const COHORT_0_TOP_Y=11;
+  const COHORT_0_BOTTOM_Y=460;
+  const COHORT_1_TOP_Y=61;
+  const COHORT_1_BOTTOM_Y=510;
   switch (cohortIndex) {
   case 0:
-    index = y <= (height - (labelHeight + UP_BUFFER)) ? Math.trunc((height - labelHeight - y) * count / (height - (labelHeight + UP_BUFFER))) : -1;
+    index = y <= (COHORT_0_BOTTOM_Y) ? Math.trunc(count - (count * ( y - COHORT_0_TOP_Y ) / (COHORT_0_BOTTOM_Y - COHORT_0_TOP_Y ))) : -1;
     break;
   case 1:
-    index = y < (labelHeight + DOWN_BUFFER) ? -1 : Math.trunc((y - (labelHeight + DOWN_BUFFER)) * count / (height - (labelHeight + DOWN_BUFFER)));
+    index = y >= (COHORT_1_TOP_Y) ? Math.trunc( (count * ( y - COHORT_1_TOP_Y ) / (COHORT_1_BOTTOM_Y - COHORT_1_TOP_Y ))) : -1;
     break;
   default:
     // eslint-disable-next-line no-console
-    console.error('error', y, height, labelHeight, count, cohortIndex, UP_BUFFER);
+    console.error('error', y, height, labelHeight, count, cohortIndex);
+    return -1 ;
 
   }
   return index;
@@ -118,25 +122,23 @@ export default class PathwayScoresView extends PureComponent {
       const {
         height, offset, cohortIndex,
         colorSettings, highlightedGene,
-        showDetailLayer, calculatedWidth,
-        showDiffLayer, layoutData,filter
+        calculatedWidth,
+        layoutData,filter
       } = this.props;
 
       let {data,sortedSamples, pathways} = this.props.dataStats;
 
       return (
         <div style={style.xenaGoView}>
-          {showDetailLayer &&
-                <CanvasDrawing
-                  associatedData={data}
-                  cohortIndex={cohortIndex}
-                  draw={DrawFunctions.drawGeneView}
-                  filter={filter}
-                  height={height}
-                  layout={layoutData}
-                  width={calculatedWidth}
-                />
-          }
+          <CanvasDrawing
+            associatedData={data}
+            cohortIndex={cohortIndex}
+            draw={DrawFunctions.drawGeneView}
+            filter={filter}
+            height={height}
+            layout={layoutData}
+            width={calculatedWidth}
+          />
           <LabelWrapper
             cohortIndex={cohortIndex}
             colorSettings={colorSettings}
@@ -150,7 +152,6 @@ export default class PathwayScoresView extends PureComponent {
             onMouseMove={this.handleLabelHover}
             onMouseOut={this.handleLabelHoverOut}
             pathways={pathways}
-            showDiffLayer={showDiffLayer}
             width={calculatedWidth}
           />
         </div>
@@ -169,8 +170,6 @@ PathwayScoresView.propTypes = {
   layoutData: PropTypes.any.isRequired,
   offset: PropTypes.number.isRequired,
   onHover: PropTypes.any.isRequired,
-  showDetailLayer: PropTypes.any,
-  showDiffLayer: PropTypes.any,
 };
 
 

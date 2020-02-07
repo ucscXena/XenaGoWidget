@@ -4,7 +4,7 @@ import { omit, isEqual } from 'underscore';
 import PureComponent from './PureComponent';
 import { HeaderLabel } from './HeaderLabel';
 import { DiffLabel } from './DiffLabel';
-import { GENE_LABEL_HEIGHT } from './PathwayScoresView';
+import {GENE_LABEL_HEIGHT, GENE_LEGEND_HEIGHT} from './PathwayScoresView';
 import BaseStyle from '../css/base.css';
 
 const CHI_SQUARE_MAX = 100.0;
@@ -27,10 +27,9 @@ export default class LabelSet extends PureComponent {
       cohortIndex,
       colorSettings,
       numSamples,
-      showDiffLayer,
     } = this.props;
     if (pathways.length === layout.length) {
-      const possibleHeight = height - GENE_LABEL_HEIGHT;
+      const possibleHeight = height - GENE_LABEL_HEIGHT + GENE_LEGEND_HEIGHT;
       const offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
 
       return layout.map((el, i) => {
@@ -38,12 +37,12 @@ export default class LabelSet extends PureComponent {
         const geneLength = d.gene.length;
         const labelKey = d.gene[0];
         const highlighted = highlightedGene === labelKey;
-        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight;
+        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight*0.9;
         const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-        const actualOffset = cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight;
+        const actualOffset = (cohortIndex === 1 ? labelOffset+30 : possibleHeight - diffHeight)+25;
         return (
           <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
-            { showDiffLayer && ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
+            { ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
                         && (
                           <DiffLabel
                             cohortIndex={cohortIndex}
@@ -52,7 +51,7 @@ export default class LabelSet extends PureComponent {
                             item={d}
                             key={`${labelKey}-${cohortIndex}diff`}
                             labelHeight={diffHeight}
-                            labelOffset={actualOffset}
+                            labelOffset={actualOffset-45}
                             labelString={labelKey}
                             left={el.start}
                             numSamples={numSamples}
@@ -64,7 +63,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 0,
+                            top: 2,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -77,7 +76,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 0,
+                            top: 17,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -93,7 +92,7 @@ export default class LabelSet extends PureComponent {
               item={d}
               key={`${labelKey}-${cohortIndex}`}
               labelHeight={labelHeight}
-              labelOffset={offset}
+              labelOffset={offset+11}
               labelString={labelKey}
               left={el.start}
               numSamples={numSamples}
@@ -116,5 +115,4 @@ LabelSet.propTypes = {
   layout: PropTypes.any.isRequired,
   numSamples: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-  showDiffLayer: PropTypes.any.isRequired,
 };

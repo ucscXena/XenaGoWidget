@@ -264,11 +264,12 @@ body {
 }
 
 .cnvMutationLegendBox{
-  margin: 2px;
-  padding: 2px;
+  /*margin: 2px;*/
+  /*padding: 2px;*/
   font-family: sans-serif;
   font-size:small;
-  box-shadow: 1px 1px 1px 1px gray;
+  height: 25;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
   border-radius:5px;
 }
 
@@ -332,19 +333,15 @@ body {
 }
 
 .labelDefaultTop :hover{
-    /*background-color: #efefef;*/
-  background-color: hotpink;
-  z-index: 1000;
-  stroke-width: 1;
+    background-color: red;
+    stroke-width: 1;
     color: black;
     border-radius: 15px;
     box-shadow: 0 0 1px 1px gray inset;
 }
 
 .labelDefaultBottom :hover{
-    /*background-color: #efefef;*/
-  background-color: aqua;
-  z-index: 1000;
+    background-color: blue;
     stroke-width: 1;
     color: black;
     border-radius: 15px;
@@ -377,6 +374,7 @@ div[data-react-toolbox=dialog] > section{
     cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
+  z-index: 10;
 }
 
 .crosshairV{
@@ -392,6 +390,7 @@ div[data-react-toolbox=dialog] > section{
     cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
+  z-index: 10;
 }
 
 .scoreBox{
@@ -445,8 +444,12 @@ div[data-react-toolbox=dialog] > section{
 
 .infoLink{
   height: 20px;
+  display: inline;
+  border-radius: 3px;
+  background-color: white;
+  padding: 2px;
   margin: 0;
-  padding: 0;
+  width: 100%;
 }
 
 .cohortAGeneSetViewer{
@@ -463,6 +466,7 @@ div[data-react-toolbox=dialog] > section{
 .geneSetHeaderLabel{
   font-family: sans-serif;
   font-size: small;
+  display: inline;
 }
 
 .noBullets{

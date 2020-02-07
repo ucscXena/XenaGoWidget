@@ -52,7 +52,6 @@ export default class LabelWrapper extends PureComponent {
           layout={layout}
           numSamples={numSamples}
           pathways={pathways}
-          showDiffLayer={this.props.showDiffLayer}
         />
       </div>
     );
@@ -71,6 +70,5 @@ LabelWrapper.propTypes = {
   onMouseMove: PropTypes.any.isRequired,
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-  showDiffLayer: PropTypes.any,
   width: PropTypes.any.isRequired,
 };
