@@ -37,7 +37,7 @@ export default class LabelSet extends PureComponent {
         const geneLength = d.gene.length;
         const labelKey = d.gene[0];
         const highlighted = highlightedGene === labelKey;
-        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight;
+        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight*0.9;
         const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
         const actualOffset = (cohortIndex === 1 ? labelOffset+30 : possibleHeight - diffHeight)+25;
         return (
