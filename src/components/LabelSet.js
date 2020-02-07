@@ -51,7 +51,7 @@ export default class LabelSet extends PureComponent {
                             item={d}
                             key={`${labelKey}-${cohortIndex}diff`}
                             labelHeight={diffHeight+40}
-                            labelOffset={actualOffset-20}
+                            labelOffset={actualOffset-40}
                             labelString={labelKey}
                             left={el.start}
                             numSamples={numSamples}

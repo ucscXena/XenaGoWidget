@@ -56,10 +56,11 @@ function getExpressionForDataPoint(pathwayIndex, tissueIndex, cohortIndex, assoc
 
 let tissueIndexFromY = (y, height, labelHeight, count, cohortIndex) => {
   let index = 0;
-  const COHORT_0_TOP_Y=44;
-  const COHORT_0_BOTTOM_Y=492;
-  const COHORT_1_TOP_Y=93;
-  const COHORT_1_BOTTOM_Y=539;
+  const COHORT_0_TOP_Y=11;
+  const COHORT_0_BOTTOM_Y=460;
+  const COHORT_1_TOP_Y=61;
+  const COHORT_1_BOTTOM_Y=510;
+  console.log('index',cohortIndex,y);
   switch (cohortIndex) {
   case 0:
     index = y <= (COHORT_0_BOTTOM_Y) ? Math.trunc(count - (count * ( y - COHORT_0_TOP_Y ) / (COHORT_0_BOTTOM_Y - COHORT_0_TOP_Y ))) : -1;
