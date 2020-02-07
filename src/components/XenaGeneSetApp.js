@@ -825,27 +825,21 @@ export default class XenaGeneSetApp extends PureComponent {
                 </td>
               </tr>
               <tr>
+                {isViewGeneExpression(this.state.filter) &&
                 <td colSpan={3}>
-                  <div style={{marginLeft:0}}>
-                    {isViewGeneExpression(this.state.filter) &&
-                    <GeneSetLegend id='geneExpressionGeneSetScore' label={this.state.filter + ' score'} maxScore={maxValue} minScore={-maxValue}/>
-                    }
-                    {!isViewGeneExpression(this.state.filter) &&
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td>
-                              <GeneSetLegend id='mean-score' label={'mean'} maxScore={50} minScore={-50}/>
-                            </td>
-                            <td>
-                              <GeneSetLegend id='densityGrad1' label={'density'} maxColor='red' maxScore={5} midColor='orange' minColor='white' minScore={0}/>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    }
-                  </div>
+                  <GeneSetLegend id='geneExpressionGeneSetScore' label={this.state.filter + ' score'} maxScore={maxValue} minScore={-maxValue}/>
                 </td>
+                }
+                {!isViewGeneExpression(this.state.filter) &&
+                <td colSpan={1}>
+                  <GeneSetLegend id='mean-score' label={'mean'} maxScore={50} minScore={-50}  precision={0}/>
+                </td>
+                }
+                {!isViewGeneExpression(this.state.filter) &&
+                <td colSpan={2}>
+                  <GeneSetLegend id='densityGrad1' label={'density'} maxColor='red' maxScore={5} midColor='orange' minColor='white' minScore={0} precision={0}/>
+                </td>
+                }
                 <td colSpan={1}>
                   <div  style={{marginLeft:50}}>
                     {isViewGeneExpression(this.state.filter) &&

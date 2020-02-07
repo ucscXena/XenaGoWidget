@@ -10,8 +10,9 @@ export class GeneSetLegend extends PureComponent {
 
   render() {
 
-    const formattedMin = this.props.minScore.toFixed(2);
-    const formattedMax = this.props.maxScore.toFixed(2);
+    const precision = this.props.precision!==undefined ? this.props.precision : 2 ;
+    const formattedMin = this.props.minScore.toFixed(precision);
+    const formattedMax = this.props.maxScore.toFixed(precision);
 
     const label = this.props.label ;
     const labelLength = label.length * 9 ;
@@ -19,6 +20,8 @@ export class GeneSetLegend extends PureComponent {
     const maxColor = this.props.maxColor ? this.props.maxColor : 'red';
     const midColor = this.props.midColor ? this.props.midColor : 'white';
     const minColor = this.props.minColor ? this.props.minColor : 'blue';
+
+
 
     const fillURL = `url(#${this.props.id})`;
     return (
@@ -54,4 +57,5 @@ GeneSetLegend.propTypes = {
   midColor: PropTypes.any,
   minColor: PropTypes.any,
   minScore: PropTypes.any.isRequired,
+  precision: PropTypes.any,
 };
