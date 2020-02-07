@@ -809,8 +809,8 @@ export default class XenaGeneSetApp extends PureComponent {
                   <DetailedLabelTop
                     cohort={this.state.selectedCohort}
                     colors={this.state.cohortColors}
+                    onShowCohortEditor={this.handleEditCohorts}
                     pathwayData={this.state.pathwayData}
-                    showCohortEditor={this.handleEditCohorts}
                     width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH - 20}
                   />
                 </td>
