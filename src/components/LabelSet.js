@@ -63,7 +63,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 14,
+                            top: 2,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -76,7 +76,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 25,
+                            top: 17,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
