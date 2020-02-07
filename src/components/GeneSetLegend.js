@@ -13,20 +13,31 @@ export class GeneSetLegend extends PureComponent {
     const formattedMin = this.props.minScore.toFixed(2);
     const formattedMax = this.props.maxScore.toFixed(2);
 
+    const label = this.props.label ;
+    const labelLength = label.length * 9 ;
+
+    const maxColor = this.props.maxColor ? this.props.maxColor : 'red';
+    const midColor = this.props.midColor ? this.props.midColor : 'white';
+    const minColor = this.props.minColor ? this.props.minColor : 'blue';
+
+    const fillURL = `url(#${this.props.id})`;
     return (
       <svg height="20" width="100%">
         <defs>
-          <linearGradient id="grad1">
-            <stop offset="0%" stopColor="red" />
-            <stop offset="50%" stopColor="white" />
-            <stop offset="100%" stopColor="blue" />
+          <linearGradient id={this.props.id}>
+            <stop offset="0%" stopColor={maxColor} />
+            <stop offset="50%" stopColor={midColor} />
+            <stop offset="100%" stopColor={minColor} />
           </linearGradient>
         </defs>
-        <text fontFamily='monospace' height={20} width={20} x={0} y={TEXT_Y_OFFSET}>
+        <text fontFamily='monospace' height={20} width={labelLength} x={0} y={TEXT_Y_OFFSET}>
+          {label}
+        </text>
+        <text fontFamily='monospace' height={20} width={20} x={labelLength} y={TEXT_Y_OFFSET}>
           {formattedMax}
         </text>
-        <rect fill="url(#grad1)" height={IMAGE_HEIGHT} width={50} x={40} y={5}/>
-        <text fontFamily='monospace' height={10} width={300} x={100} y={TEXT_Y_OFFSET}>
+        <rect fill={fillURL} height={IMAGE_HEIGHT} width={50} x={labelLength+40} y={5}/>
+        <text fontFamily='monospace' height={10} width={300} x={labelLength+100} y={TEXT_Y_OFFSET}>
           {formattedMin}
         </text>
       </svg>
@@ -36,6 +47,11 @@ export class GeneSetLegend extends PureComponent {
 }
 
 GeneSetLegend.propTypes = {
+  id: PropTypes.any.isRequired,
+  label: PropTypes.any.isRequired,
+  maxColor: PropTypes.any,
   maxScore: PropTypes.any.isRequired,
+  midColor: PropTypes.any,
+  minColor: PropTypes.any,
   minScore: PropTypes.any.isRequired,
 };

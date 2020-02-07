@@ -43,10 +43,11 @@ import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
 import {CohortEditorSelector} from './CohortEditorSelector';
 import {DetailedLabelTop} from './DetailedLabelTop';
 import {GeneSetLegend} from './GeneSetLegend';
+import {CnvMutationLegend} from './CnvMutationLegend';
 
 
 const VIEWER_HEIGHT = 500;
-const TOP_HEIGHT = 81;
+const TOP_HEIGHT = 112;
 const VERTICAL_SELECTOR_WIDTH = 220;
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180;
 const BORDER_OFFSET = 2;
@@ -739,74 +740,72 @@ export default class XenaGeneSetApp extends PureComponent {
           }
           <table>
             <tbody>
-              {isViewGeneExpression(this.state.filter) &&
-                      <tr>
-                        <td className={BaseStyle.autoSortBox} colSpan={3}>
-                          <div className={BaseStyle.headerBox}>
+              <tr>
+                <td className={BaseStyle.autoSortBox} colSpan={3}>
+                  <div className={BaseStyle.headerBox}>
                             Gene Sets
-                          </div>
-                          <div className={BaseStyle.containerBox}>
+                  </div>
+                  <div className={BaseStyle.containerBox}>
                           Limit
-                            <input
-                              onBlur={() => this.setState({
-                                fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways
-                              })}
-                              onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
-                              value={this.state.geneSetLimit}
-                            />
-                          </div>
-                          <div className={BaseStyle.containerBox}>
+                    <input
+                      onBlur={() => this.setState({
+                        fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways
+                      })}
+                      onChange={(event) => this.setState({geneSetLimit: event.target.value})} size={3}
+                      value={this.state.geneSetLimit}
+                    />
+                  </div>
+                  <div className={BaseStyle.containerBox}>
                           Filter by
-                            <select
-                              onChange={(event) => this.setState({filterBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
-                              style={{marginLeft:5}}
-                              value={this.state.filterBy}
-                            >
-                              <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
-                              <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
-                              <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                              <option value={SORT_ENUM.TOTAL}>Total</option>
-                            </select>
-                            {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
+                    <select
+                      onChange={(event) => this.setState({filterBy: event.target.value, fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}
+                      style={{marginLeft:5}}
+                      value={this.state.filterBy}
+                    >
+                      <option value={SORT_ENUM.CONTRAST_DIFF}>{SORT_ENUM.CONTRAST_DIFF}</option>
+                      <option value={SORT_ENUM.ABS_DIFF}>{SORT_ENUM.ABS_DIFF}</option>
+                      <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
+                      <option value={SORT_ENUM.TOTAL}>Total</option>
+                    </select>
+                    {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
                           <FaSortAsc onClick={() => this.setState({filterOrder: 'desc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
-                            }
-                            {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
+                    }
+                    {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
                           <FaSortDesc onClick={() => this.setState({filterOrder: 'asc', fetch: true,currentLoadState: LOAD_STATE.LOADING,reloadPathways:this.state.automaticallyReloadPathways})}/>
-                            }
-                          </div>
-                          <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
+                    }
+                  </div>
+                  <Button icon='edit' onClick={() => this.setState({showGeneSetSearch: true})} raised>
                             Gene Sets&nbsp;
-                            {this.state.pathways &&
+                    {this.state.pathways &&
                             <div style={{display: 'inline'}}>
                               ({this.state.pathways.length})
                             </div>
-                            }
-                          </Button>
-                        </td>
-                        <td className={BaseStyle.autoSortBox}>
-                          <Button icon='edit' onClick={() => this.handleEditCohorts()} raised>
+                    }
+                  </Button>
+                </td>
+                <td className={BaseStyle.autoSortBox}>
+                  <Button icon='edit' onClick={() => this.handleEditCohorts()} raised>
                             Cohorts
-                          </Button>
+                  </Button>
                           &nbsp;&nbsp;&nbsp;Analysis:
-                          <select
-                            className={BaseStyle.softflow}
-                            onChange={this.handleChangeTopFilter}
-                            style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                            value={this.state.filter}
-                          >
-                            {
-                              allowableViews.map(c => {
-                                return (
-                                  <option key={c} value={c}>
-                                    {c}
-                                  </option>
-                                );
-                              })
-                            }
-                          </select>
-                        </td>
-                      </tr>
-              }
+                  <select
+                    className={BaseStyle.softflow}
+                    onChange={this.handleChangeTopFilter}
+                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
+                    value={this.state.filter}
+                  >
+                    {
+                      allowableViews.map(c => {
+                        return (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        );
+                      })
+                    }
+                  </select>
+                </td>
+              </tr>
               <tr>
                 <td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH*2 + VERTICAL_GENESET_DETAIL_WIDTH}>
                   <DetailedLabelTop
@@ -829,13 +828,32 @@ export default class XenaGeneSetApp extends PureComponent {
               </tr>
               <tr>
                 <td colSpan={3}>
-                  <div style={{marginLeft:230}}>
-                    <GeneSetLegend maxScore={maxValue} minScore={-maxValue}/>
+                  <div style={{marginLeft:0}}>
+                    {isViewGeneExpression(this.state.filter) &&
+                    <GeneSetLegend id='geneExpressionGeneSetScore' label={this.state.filter + ' score'} maxScore={maxValue} minScore={-maxValue}/>
+                    }
+                    {!isViewGeneExpression(this.state.filter) &&
+                      <table>
+                        <tr>
+                          <td>
+                            <GeneSetLegend id='mean-score' label={'mean'} maxScore={50} minScore={-50}/>
+                          </td>
+                          <td>
+                            <GeneSetLegend id='densityGrad1' label={'density'} maxColor='red' maxScore={5} midColor='orange' minColor='white' minScore={0}/>
+                          </td>
+                        </tr>
+                      </table>
+                    }
                   </div>
                 </td>
                 <td colSpan={1}>
-                  <div  style={{marginLeft:250}}>
-                    <GeneSetLegend maxScore={2} minScore={-2}/>
+                  <div  style={{marginLeft:50}}>
+                    {isViewGeneExpression(this.state.filter) &&
+                    <GeneSetLegend id='geneExpressionGeneScore' label={'Gene expression z-score'} maxScore={2} minScore={-2}/>
+                    }
+                    {!isViewGeneExpression(this.state.filter) &&
+                    <CnvMutationLegend view={this.state.filter}/>
+                    }
                   </div>
                 </td>
               </tr>

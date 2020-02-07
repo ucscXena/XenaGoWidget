@@ -137,18 +137,18 @@ describe('Test Cohorts', () => {
     expect(getViewsForCohort('TCGA Ovarian Cancer (OV)')).toEqual(
       [
         VIEW_ENUM.COPY_NUMBER,
+        VIEW_ENUM.MUTATION,
         VIEW_ENUM.CNV_MUTATION,
         VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.MUTATION,
         VIEW_ENUM.PARADIGM,
       ]
     );
     expect(getViewsForCohort('TCGA Lung Adenocarcinoma (LUAD)')).toEqual(
       [
         VIEW_ENUM.COPY_NUMBER,
+        VIEW_ENUM.MUTATION,
         VIEW_ENUM.CNV_MUTATION,
         VIEW_ENUM.GENE_EXPRESSION,
-        VIEW_ENUM.MUTATION,
         VIEW_ENUM.PARADIGM,
         VIEW_ENUM.REGULON,
       ]
