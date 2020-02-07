@@ -39,7 +39,7 @@ export default class LabelSet extends PureComponent {
         const highlighted = highlightedGene === labelKey;
         const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight;
         const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-        const actualOffset = (cohortIndex === 1 ? labelOffset : possibleHeight - diffHeight)+25;
+        const actualOffset = (cohortIndex === 1 ? labelOffset+30 : possibleHeight - diffHeight)+25;
         return (
           <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
             { ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
@@ -50,8 +50,8 @@ export default class LabelSet extends PureComponent {
                             geneLength={geneLength}
                             item={d}
                             key={`${labelKey}-${cohortIndex}diff`}
-                            labelHeight={diffHeight+40}
-                            labelOffset={actualOffset-40}
+                            labelHeight={diffHeight}
+                            labelOffset={actualOffset-45}
                             labelString={labelKey}
                             left={el.start}
                             numSamples={numSamples}
@@ -63,7 +63,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 35,
+                            top: 14,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
@@ -76,7 +76,7 @@ export default class LabelSet extends PureComponent {
                           <div style={{
                             position: 'absolute',
                             height,
-                            top: 45,
+                            top: 25,
                             left: el.start,
                             width: el.size,
                             opacity: 0.1,
