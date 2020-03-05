@@ -18,6 +18,13 @@ export class ApplicationWrapper extends PureComponent {
     this.state = {
       cohort: urlVariables.cohort
       ,filter: undefined
+      ,subCohortSamples1:urlVariables.subCohortSamples1
+      ,subCohortSamples2:urlVariables.subCohortSamples2
+      ,selectedSubCohorts1:urlVariables.selectedSubCohorts1
+      ,selectedSubCohorts2:urlVariables.selectedSubCohorts2
+      ,cohort1Color:urlVariables.cohort1Color
+      ,cohort2Color:urlVariables.cohort2Color
+
       ,wizard: urlVariables.wizard
       ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 45
       ,geneSetMethod: urlVariables.geneSetMethod ? urlVariables.geneSetMethod : 'default'
@@ -45,14 +52,23 @@ export class ApplicationWrapper extends PureComponent {
 
   handleFinish = () => {
     // set the URL here
-    location.hash = generatedUrlFunction(
+    let finalUrl = generatedUrlFunction(
       this.state.filter,
       undefined,
       this.state.cohort,
       this.state.cohort,
-      [],
-      [],
+      this.state.selectedSubCohorts1,
+      this.state.selectedSubCohorts2,
     )
+    // console.log('state',this.state)
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
+    finalUrl += `&cohort1Color=${this.state.cohort1Color}`
+    finalUrl += `&cohort2Color=${this.state.cohort2Color}`
+
+    // console.log('final url',finalUrl)
+
+    location.hash = finalUrl
 
     this.setState({
       wizard:undefined
