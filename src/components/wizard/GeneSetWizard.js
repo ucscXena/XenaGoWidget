@@ -6,28 +6,36 @@ import Wizard from '../../css/wizard.css'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { analysisMethod,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetMethod} = this.props
+    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetMethod} = this.props
     return (
       <div className={Wizard.wizardBox}>
-        <h3>Analysis {analysisMethod}</h3>
-        <h3>GeneSet</h3>
-        <button onClick={() => onPrevious('analysis')}>Previous</button>
-        <button
-          onClick={() => onFinish(undefined)}
-        >Finish</button>;
+        <h3>Analyzing Cohort: <u>{cohort}</u></h3>
+        <h3>Analysis Method: <u>{analysisMethod}</u></h3>
+        <h3>Gene Set Calculation</h3>
 
-        GeneSet Limit
+        Limit
         <input
           onChange={(value) => onSelectGeneSetLimit(value)}
           type='text' value={geneSetLimit}
         />
 
-        GeneSet Method
+        Selection Method
         <select onChange={(value) => onSelectGeneSetMethod(value)}>
           <option value={geneSetMethod}>{geneSetMethod}</option>
           <option value='bbb'/>
           <option value='aaa'/>
         </select>
+        Sort Method
+        <select onChange={(value) => onSelectGeneSetMethod(value)}>
+          <option value={geneSetMethod}>{geneSetMethod}</option>
+          <option value='bbb'/>
+          <option value='aaa'/>
+        </select>
+        <hr/>
+        <button onClick={() => onPrevious('analysis')}>Previous</button>
+        <button
+          onClick={() => onFinish(undefined)}
+        >Finish</button>
       </div>
     )
   }
