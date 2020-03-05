@@ -4,6 +4,8 @@ import QueryString from 'querystring'
 import XenaGeneSetApp from './XenaGeneSetApp'
 import {AnalysisWizard} from './wizard/AnalysisWizard'
 import {GeneSetWizard} from './wizard/GeneSetWizard'
+import {isViewGeneExpression} from '../functions/DataFunctions'
+import {SORT_ENUM} from '../data/SortEnum'
 
 export class ApplicationWrapper extends PureComponent {
 
@@ -33,7 +35,9 @@ export class ApplicationWrapper extends PureComponent {
   handleSelectAnalysis = (analysis) => {
     this.setState({
       filter:analysis,
-      wizard:'genesets'
+      wizard:'genesets',
+      geneSetMethod: isViewGeneExpression(analysis) ? SORT_ENUM.CONTRAST_DIFF : SORT_ENUM.ALPHA,
+      geneSetSort: isViewGeneExpression(analysis) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
     })
   }
 
@@ -52,13 +56,13 @@ export class ApplicationWrapper extends PureComponent {
 
   handleGeneSetMethod = (method) => {
     this.setState({
-      geneSetMethod: method
+      geneSetMethod: method.target.value
     })
   }
 
   handleGeneSetSort = (sort) => {
     this.setState({
-      geneSetSort: sort
+      geneSetSort: sort.target.value
     })
   }
 
@@ -76,6 +80,7 @@ export class ApplicationWrapper extends PureComponent {
         cohort={this.state.cohort1}
         geneSetLimit={this.state.geneSetLimit}
         geneSetMethod={this.state.geneSetMethod}
+        geneSetSort={this.state.geneSetSort}
         onFinish={this.handleFinish}
         onPrevious={this.handleGotoWizard}
         onSelectGeneSetLimit={this.handleGeneSetLimit}
