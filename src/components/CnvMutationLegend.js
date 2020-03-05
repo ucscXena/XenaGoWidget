@@ -1,8 +1,8 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import BaseStyle from '../css/base.css';
-import PropTypes from 'prop-types';
-import {VIEW_ENUM} from '../data/ViewEnum';
+import React from 'react'
+import PureComponent from './PureComponent'
+import BaseStyle from '../css/base.css'
+import PropTypes from 'prop-types'
+import {VIEW_ENUM} from '../data/ViewEnum'
 
 export class CnvMutationLegend extends PureComponent {
 
@@ -35,10 +35,10 @@ export class CnvMutationLegend extends PureComponent {
           </tbody>
         </table>
       </div>
-    );
+    )
   }
 }
 
 CnvMutationLegend.propTypes = {
   view: PropTypes.any.isRequired,
-};
+}

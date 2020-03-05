@@ -1,11 +1,11 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import {Chip} from 'react-toolbox';
-import BaseStyle from '../css/base.css';
-import {ScoreBadge} from './ScoreBadge';
-import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions';
-import {isViewGeneExpression} from '../functions/DataFunctions';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import {Chip} from 'react-toolbox'
+import BaseStyle from '../css/base.css'
+import {ScoreBadge} from './ScoreBadge'
+import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions'
+import {isViewGeneExpression} from '../functions/DataFunctions'
 
 export default class HoverGeneView extends PureComponent {
 
@@ -15,46 +15,46 @@ export default class HoverGeneView extends PureComponent {
      * @returns {string}
      */
     getRatio = data => {
-      let returnString = data.expression.samplesAffected + '/' + data.expression.total;
-      returnString += '  (';
-      returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0);
-      returnString += '%)';
-      return returnString;
+      let returnString = data.expression.samplesAffected + '/' + data.expression.total
+      returnString += '  ('
+      returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0)
+      returnString += '%)'
+      return returnString
     };
 
     getAffectedPathway = data => {
-      let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length);
-      returnString += '  (';
-      returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0);
-      returnString += '%)';
-      return returnString;
+      let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length)
+      returnString += '  ('
+      returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0)
+      returnString += '%)'
+      return returnString
 
     };
 
   findScore = (data, cohortIndex,filter) => {
     if(isViewGeneExpression(filter)){
       if(cohortIndex===0){
-        return data.pathway.firstSampleGeneExpressionPathwayActivity!==undefined  && data.tissue !=='Header' ? data.pathway.firstSampleGeneExpressionPathwayActivity: data.pathway.firstGeneExpressionPathwayActivity;
+        return data.pathway.firstSampleGeneExpressionPathwayActivity!==undefined  && data.tissue !=='Header' ? data.pathway.firstSampleGeneExpressionPathwayActivity: data.pathway.firstGeneExpressionPathwayActivity
       }
       else{
-        return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined && data.tissue !=='Header' ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity;
+        return data.pathway.secondSampleGeneExpressionPathwayActivity!==undefined && data.tissue !=='Header' ? data.pathway.secondSampleGeneExpressionPathwayActivity: data.pathway.secondGeneExpressionPathwayActivity
       }
     }
     else{
       if(cohortIndex===0){
-        return data.pathway.firstSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleTotal : data.pathway.firstChiSquared;
+        return data.pathway.firstSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleTotal : data.pathway.firstChiSquared
       }
       else{
-        return data.pathway.secondSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleTotal : data.pathway.secondChiSquared;
+        return data.pathway.secondSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleTotal : data.pathway.secondChiSquared
       }
 
     }
   };
 
   render() {
-    let {data, cohortIndex, view} = this.props;
+    let {data, cohortIndex, view} = this.props
     if (data.tissue) {
-      const score =this.findScore(data, cohortIndex,view);
+      const score =this.findScore(data, cohortIndex,view)
       return (
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
@@ -248,10 +248,10 @@ export default class HoverGeneView extends PureComponent {
                     </div>
           }
         </div>
-      );
+      )
     }
     else {
-      return <div/>;
+      return <div/>
     }
   }
 }
@@ -260,4 +260,4 @@ HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
-};
+}

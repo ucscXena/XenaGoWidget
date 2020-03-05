@@ -1,10 +1,10 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
 import {
   getHighlightedColor,
-} from '../functions/ColorFunctions';
-import * as d3 from 'd3';
+} from '../functions/ColorFunctions'
+import * as d3 from 'd3'
 
 export class GeneSetSelector extends PureComponent {
 
@@ -28,7 +28,7 @@ export class GeneSetSelector extends PureComponent {
         boxShadow: '0 0 4px 4px blue',
         borderRadius: '25px',
 
-      };
+      }
     }
 
     else if (hovered) {
@@ -39,7 +39,7 @@ export class GeneSetSelector extends PureComponent {
         borderRadius: '15px',
         boxShadow: '0 0 2px 2px green',
         cursor: 'pointer'
-      };
+      }
     }
     else if (highlighted)  {
       return {
@@ -49,7 +49,7 @@ export class GeneSetSelector extends PureComponent {
         borderRadius: '15px',
         boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
         cursor: 'pointer'
-      };
+      }
     }
     else {
       return {
@@ -57,30 +57,30 @@ export class GeneSetSelector extends PureComponent {
         width: width,
         strokeWidth: 2,
         cursor: 'pointer'
-      };
+      }
     }
   }
 
   onClick = (geneSet) => {
-    this.props.onClick({ pathway: geneSet, tissue: 'Header'});
+    this.props.onClick({ pathway: geneSet, tissue: 'Header'})
   };
 
   onMouseOut = () => {
-    this.props.onHover(null);
+    this.props.onHover(null)
   };
 
   onHover = (geneSet) => {
-    this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null);
+    this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
 
   render() {
-    let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props;
+    let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
 
-    let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
-    let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma));
+    let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
+    let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
 
     let pillStyleExp = score => {
-      let colorString = interpolateExp(score);
+      let colorString = interpolateExp(score)
       return {
         top: 0,
         left: 0,
@@ -90,11 +90,11 @@ export class GeneSetSelector extends PureComponent {
         fill: colorString,
 
         cursor: 'pointer'
-      };
-    };
+      }
+    }
 
     let pillStyle = score => {
-      let colorString = interpolate(score);
+      let colorString = interpolate(score)
       return {
         top: 0,
         left: 0,
@@ -104,21 +104,21 @@ export class GeneSetSelector extends PureComponent {
         fill: colorString,
 
         cursor: 'pointer'
-      };
-    };
+      }
+    }
 
     if (selectedPathway===undefined) {
       return (
         <div/>
-      );
+      )
     }
 
     return pathways.map((p) => {
-      let labelString = '(' + p.gene.length + ') ' + p.golabel;
-      labelString = labelString.replace(/_/g,' ');
-      let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false ;
-      let selected = selectedPathway.pathway.golabel === p.golabel;
-      let highlighted = p.gene.indexOf(highlightedGene) >= 0;
+      let labelString = '(' + p.gene.length + ') ' + p.golabel
+      labelString = labelString.replace(/_/g,' ')
+      let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false 
+      let selected = selectedPathway.pathway.golabel === p.golabel
+      let highlighted = p.gene.indexOf(highlightedGene) >= 0
 
       return (
         <svg
@@ -159,8 +159,8 @@ export class GeneSetSelector extends PureComponent {
             {width < 10 ? '' : labelString}
           </text>
         </svg>
-      );
-    });
+      )
+    })
   }
 }
 
@@ -177,4 +177,4 @@ GeneSetSelector.propTypes = {
   selectedPathway: PropTypes.any,
   topOffset: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
-};
+}

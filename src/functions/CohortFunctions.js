@@ -1,100 +1,100 @@
-import { uniq, pluck, flatten } from 'underscore';
+import { uniq, pluck, flatten } from 'underscore'
 
-import SUB_COHORT_LIST from '../data/Subtype_Selected';
-import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset';
-import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import {intersection} from './MathFunctions';
-import {VIEW_ENUM} from '../data/ViewEnum';
-import {AppStorageHandler} from '../service/AppStorageHandler';
+import SUB_COHORT_LIST from '../data/Subtype_Selected'
+import DETAIL_DATASET_FOR_GENESET from '../data/defaultDatasetForGeneset'
+import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector'
+import {intersection} from './MathFunctions'
+import {VIEW_ENUM} from '../data/ViewEnum'
+import {AppStorageHandler} from '../service/AppStorageHandler'
 
-const MUTATION_KEY = 'simple somatic mutation';
-const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity';
-const PARADIGM_KEY = 'PARADIGM';
-const PARADIGM_PATHWAY_ACTIVITY_KEY = 'PARADIGM pathway activity';
-const REGULON_PATHWAY_ACTIVITY_KEY = 'Regulon activity'; // also a gene expression
-const GENE_EXPRESSION_KEY = 'gene expression';
-const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view';
-const GENOME_BACKGROUND_VIEW_KEY = 'genome background';
-const GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY = 'copy number';
-const GENOME_BACKGROUND_MUTATION_VIEW_KEY = 'mutation';
+const MUTATION_KEY = 'simple somatic mutation'
+const GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY = 'gene expression pathway activity'
+const PARADIGM_KEY = 'PARADIGM'
+const PARADIGM_PATHWAY_ACTIVITY_KEY = 'PARADIGM pathway activity'
+const REGULON_PATHWAY_ACTIVITY_KEY = 'Regulon activity' // also a gene expression
+const GENE_EXPRESSION_KEY = 'gene expression'
+const COPY_NUMBER_VIEW_KEY = 'copy number for pathway view'
+const GENOME_BACKGROUND_VIEW_KEY = 'genome background'
+const GENOME_BACKGROUND_COPY_NUMBER_VIEW_KEY = 'copy number'
+const GENOME_BACKGROUND_MUTATION_VIEW_KEY = 'mutation'
 
-export const LABEL_A = 'A';
-export const LABEL_B = 'B';
+export const LABEL_A = 'A'
+export const LABEL_B = 'B'
 
 function lowerCaseCompareName(a, b) {
   try {
-    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.error('error evaluating name', a, b);
-    return null;
+    console.error('error evaluating name', a, b)
+    return null
   }
 }
 
 export function getViewsForCohort(cohortName){
-  let views =[];
-  const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
-  if(cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.COPY_NUMBER);
-  if(cohortDetail[MUTATION_KEY]) views.push(VIEW_ENUM.MUTATION);
-  if(cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.CNV_MUTATION);
-  if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION);
-  if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM);
-  if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON);
-  return views ;
+  let views =[]
+  const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName]
+  if(cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.COPY_NUMBER)
+  if(cohortDetail[MUTATION_KEY]) views.push(VIEW_ENUM.MUTATION)
+  if(cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) views.push(VIEW_ENUM.CNV_MUTATION)
+  if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION)
+  if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM)
+  if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON)
+  return views 
 }
 
 export function getCohortsForView(view){
-  let cohorts = [];
+  let cohorts = []
   for(let cohortName of Object.keys(DETAIL_DATASET_FOR_GENESET)){
-    const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName];
-    if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.MUTATION && cohortDetail[MUTATION_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.PARADIGM && cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName);
-    if(view===VIEW_ENUM.REGULON && cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName);
+    const cohortDetail = DETAIL_DATASET_FOR_GENESET[cohortName]
+    if(view===VIEW_ENUM.COPY_NUMBER && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName)
+    if(view===VIEW_ENUM.MUTATION && cohortDetail[MUTATION_KEY]) cohorts.push(cohortName)
+    if(view===VIEW_ENUM.CNV_MUTATION && cohortDetail[MUTATION_KEY] && cohortDetail[COPY_NUMBER_VIEW_KEY]) cohorts.push(cohortName)
+    if(view===VIEW_ENUM.GENE_EXPRESSION && cohortDetail[GENE_EXPRESSION_KEY]) cohorts.push(cohortName)
+    if(view===VIEW_ENUM.PARADIGM && cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName)
+    if(view===VIEW_ENUM.REGULON && cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) cohorts.push(cohortName)
   }
-  return cohorts;
+  return cohorts
 }
 
 export function getSubCohortsForCohort(cohort) {
   // TODO: do an update mapping?
-  let finalList = JSON.parse(JSON.stringify([...SUB_COHORT_LIST[cohort]]));
-  const addedSubCohorts = AppStorageHandler.getSubCohortsForCohort(cohort);
+  let finalList = JSON.parse(JSON.stringify([...SUB_COHORT_LIST[cohort]]))
+  const addedSubCohorts = AppStorageHandler.getSubCohortsForCohort(cohort)
   if(addedSubCohorts){
     for( const as of addedSubCohorts){
-      finalList[0][as.subCohortName] = as.samples.split(',');
+      finalList[0][as.subCohortName] = as.samples.split(',')
     }
   }
-  return  finalList[0] ;
+  return  finalList[0] 
 }
 
 export function getLabelForIndex(index){
-  return index=== 0 ? LABEL_A : LABEL_B;
+  return index=== 0 ? LABEL_A : LABEL_B
 }
 
 export function getSubCohortsOnlyForCohort(cohort) {
-  const subCohortsForCohort = getSubCohortsForCohort(cohort);
-  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : [];
+  const subCohortsForCohort = getSubCohortsForCohort(cohort)
+  return subCohortsForCohort ? [...Object.entries(subCohortsForCohort).map((c) => c[0]),...UNASSIGNED_SUBTYPE.key] : []
 }
 
 // TODO: remove . . always returns null?
 export function getGenesForPathways(pathways) {
-  return Array.from(new Set(flatten(pluck(pathways, 'gene'))));
+  return Array.from(new Set(flatten(pluck(pathways, 'gene'))))
 }
 
 export function getGenesForNamedPathways(selectedPathways, pathways) {
-  const filteredPathways = pathways.filter((f) => selectedPathways.indexOf(f.golabel) >= 0);
-  return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))));
+  const filteredPathways = pathways.filter((f) => selectedPathways.indexOf(f.golabel) >= 0)
+  return Array.from(new Set(flatten(pluck(filteredPathways, 'gene'))))
 }
 
 export function getAllSubCohortPossibleSamples(cohort){
-  return getSamplesFromSubCohortList(cohort,getSubCohortsOnlyForCohort(cohort));
+  return getSamplesFromSubCohortList(cohort,getSubCohortsOnlyForCohort(cohort))
 }
 
 function getUnassignedSamplesForCohort(selectedCohort, availableSamples) {
-  const overlapping = intersection(availableSamples,getAllSubCohortPossibleSamples(selectedCohort.name));
-  return availableSamples.filter( s => !overlapping.includes(s) );
+  const overlapping = intersection(availableSamples,getAllSubCohortPossibleSamples(selectedCohort.name))
+  return availableSamples.filter( s => !overlapping.includes(s) )
 }
 
 export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples) {
@@ -102,34 +102,34 @@ export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
         if(sc===UNASSIGNED_SUBTYPE.key){
-          return getUnassignedSamplesForCohort(selectedCohort,availableSamples);
+          return getUnassignedSamplesForCohort(selectedCohort,availableSamples)
         }
         else{
-          return getSamplesFromSubCohort(selectedCohort.name, sc);
+          return getSamplesFromSubCohort(selectedCohort.name, sc)
         }
-      }));
+      }))
   }
-  return null;
+  return null
 }
 
 export function getSamplesFromSubCohortList(cohort, subCohortArray) {
-  return uniq(subCohortArray.flatMap((sc) => getSamplesFromSubCohort(cohort, sc)));
+  return uniq(subCohortArray.flatMap((sc) => getSamplesFromSubCohort(cohort, sc)))
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  let subCohortsForCohort = getSubCohortsForCohort(cohort);
+  let subCohortsForCohort = getSubCohortsForCohort(cohort)
   if(subCohortsForCohort && Object.keys(subCohortsForCohort).length>0){
-    return uniq(subCohortsForCohort[subCohort]);
+    return uniq(subCohortsForCohort[subCohort])
   }
-  return [];
+  return []
 }
 
 export function getCohortDetails(selected) {
-  return fetchCohortData().find((c) => c.name === selected.name);
+  return fetchCohortData().find((c) => c.name === selected.name)
 }
 
 // TODO: this feels awkward
-let COHORT_DATA;
+let COHORT_DATA
 
 export function fetchCohortData() {
   if (COHORT_DATA === undefined) {
@@ -139,14 +139,14 @@ export function fetchCohortData() {
           && DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY]
       )
       .map((cohort) => {
-        const mutation = DETAIL_DATASET_FOR_GENESET[cohort][MUTATION_KEY];
-        const copyNumberView = DETAIL_DATASET_FOR_GENESET[cohort][COPY_NUMBER_VIEW_KEY];
-        const genomeBackground = DETAIL_DATASET_FOR_GENESET[cohort][GENOME_BACKGROUND_VIEW_KEY];
-        const geneExpression = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY];
-        const geneExpressionPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY];
-        const paradigm = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_KEY];
-        const paradigmPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_PATHWAY_ACTIVITY_KEY];
-        const regulonPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][REGULON_PATHWAY_ACTIVITY_KEY];
+        const mutation = DETAIL_DATASET_FOR_GENESET[cohort][MUTATION_KEY]
+        const copyNumberView = DETAIL_DATASET_FOR_GENESET[cohort][COPY_NUMBER_VIEW_KEY]
+        const genomeBackground = DETAIL_DATASET_FOR_GENESET[cohort][GENOME_BACKGROUND_VIEW_KEY]
+        const geneExpression = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_KEY]
+        const geneExpressionPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]
+        const paradigm = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_KEY]
+        const paradigmPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][PARADIGM_PATHWAY_ACTIVITY_KEY]
+        const regulonPathwayActivity  = DETAIL_DATASET_FOR_GENESET[cohort][REGULON_PATHWAY_ACTIVITY_KEY]
         let returnObject = {
           name: cohort,
           mutationDataSetId: mutation.dataset,
@@ -160,14 +160,14 @@ export function fetchCohortData() {
           amplificationThreshold: copyNumberView.amplificationThreshold,
           deletionThreshold: copyNumberView.deletionThreshold,
           host: mutation.host,
-        };
-        if(regulonPathwayActivity){
-          returnObject.regulonPathwayActivity = regulonPathwayActivity;
         }
-        return returnObject ;
+        if(regulonPathwayActivity){
+          returnObject.regulonPathwayActivity = regulonPathwayActivity
+        }
+        return returnObject 
       })
-      .sort(lowerCaseCompareName);
+      .sort(lowerCaseCompareName)
   }
-  return COHORT_DATA;
+  return COHORT_DATA
 }
 

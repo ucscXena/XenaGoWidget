@@ -1,23 +1,23 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import Dialog from 'react-toolbox/lib/dialog';
-import {isEqual} from 'underscore';
-import {Button} from 'react-toolbox/lib/button';
-import Link from 'react-toolbox/lib/link';
-import { Col, Row, Grid } from 'react-bootstrap';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import Dialog from 'react-toolbox/lib/dialog'
+import {isEqual} from 'underscore'
+import {Button} from 'react-toolbox/lib/button'
+import Link from 'react-toolbox/lib/link'
+import { Col, Row, Grid } from 'react-bootstrap'
 
-export const UNASSIGNED_SUBTYPE = { key: 'UNASSIGNED',label:'unassigned'};
+export const UNASSIGNED_SUBTYPE = { key: 'UNASSIGNED',label:'unassigned'}
 
 export class SubCohortSelector extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       originalSelectedSubCohorts:props.selectedSubCohorts,
       selectedSubCohorts:props.selectedSubCohorts,
       allSelected:isEqual(props.selectedSubCohorts.sort(),props.filterCounts.subCohortCounts.map( f => f.name).sort())
-    };
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -27,66 +27,66 @@ export class SubCohortSelector extends PureComponent {
         selectedSubCohorts:this.props.selectedSubCohorts,
         originalSelectedSubCohorts:this.props.selectedSubCohorts,
         allSelected:isEqual(this.props.selectedSubCohorts.sort(),this.props.filterCounts.subCohortCounts.map( f => f.name).sort())
-      });
+      })
     }
   }
 
 
   handleSelectOnly = (field) => {
-    const newSelected = [field];
+    const newSelected = [field]
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) 
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
-    });
+    })
   };
 
   handleCompareVersus = (field) => {
-    this.props.onSelectVsAll(field,this.props.cohortIndex);
-    this.props.onToggle();
+    this.props.onSelectVsAll(field,this.props.cohortIndex)
+    this.props.onToggle()
   };
 
   handleChange = (event) => {
-    const field = event.target.name;
-    const newValue = event.target.checked ;
-    let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) ;
+    const field = event.target.name
+    const newValue = event.target.checked 
+    let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) 
     if(newValue){
-      newSelected.push(field);
+      newSelected.push(field)
     }
     else{
-      let indexValue = newSelected.indexOf(field);
-      newSelected.splice(indexValue,1);
+      let indexValue = newSelected.indexOf(field)
+      newSelected.splice(indexValue,1)
     }
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) ;
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) 
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
-    });
+    })
   };
 
   selectAll(){
     this.setState({
       selectedSubCohorts:this.props.filterCounts.subCohortCounts.map( a => a.name),
       allSelected:true,
-    });
+    })
   }
 
   updateSubCategories(){
-    this.props.handleSubCohortChange(this.state.selectedSubCohorts);
+    this.props.handleSubCohortChange(this.state.selectedSubCohorts)
   }
 
   cancelUpdate(){
-    this.props.onToggle();
+    this.props.onToggle()
     this.setState({
       selectedSubCohorts: this.props.selectedSubCohorts
-    });
+    })
   }
 
   render() {
 
-    let {active,selectedCohort,filterCounts} = this.props;
-    let {allSelected,selectedSubCohorts} = this.state ;
+    let {active,selectedCohort,filterCounts} = this.props
+    let {allSelected,selectedSubCohorts} = this.state 
 
     return (
       <Dialog
@@ -122,16 +122,16 @@ export class SubCohortSelector extends PureComponent {
                               {`${cs.name} (${cs.count})`}
                             </div>
                             <Link
-                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name); }}
+                              href='#' label={'(Select Only)'} onClick={() => { this.handleSelectOnly(cs.name) }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                             <Link
-                              href='#' label={'(Vs All)'} onClick={() => { this.handleCompareVersus(cs.name); }}
+                              href='#' label={'(Vs All)'} onClick={() => { this.handleCompareVersus(cs.name) }}
                               style={{display:'inline', marginLeft: 20,fontSize: 'small'}}
                             />
                           </Col>
                         </Row>
-                      );
+                      )
                     })
                   }
                 </Grid>
@@ -171,7 +171,7 @@ export class SubCohortSelector extends PureComponent {
           </tbody>
         </table>
       </Dialog>
-    );
+    )
   }
 }
 
@@ -184,4 +184,4 @@ SubCohortSelector.propTypes = {
   onToggle: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
-};
+}

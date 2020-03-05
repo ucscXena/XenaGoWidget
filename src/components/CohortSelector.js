@@ -1,101 +1,101 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import BaseStyle from '../css/base.css';
-import {Button} from 'react-toolbox/lib/button';
-import FaFilter from 'react-icons/lib/fa/filter';
-import {SubCohortSelector} from './SubCohortSelector';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import BaseStyle from '../css/base.css'
+import {Button} from 'react-toolbox/lib/button'
+import FaFilter from 'react-icons/lib/fa/filter'
+import {SubCohortSelector} from './SubCohortSelector'
 import {
   fetchCohortData, getCohortsForView, getLabelForIndex, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
-} from '../functions/CohortFunctions';
-import {isEqual} from 'underscore';
-import {Tooltip} from 'react-toolbox/lib';
-import update from 'immutability-helper';
-import {ButtonGroup} from 'react-bootstrap';
-const TooltipButton = Tooltip(Button);
+} from '../functions/CohortFunctions'
+import {isEqual} from 'underscore'
+import {Tooltip} from 'react-toolbox/lib'
+import update from 'immutability-helper'
+import {ButtonGroup} from 'react-bootstrap'
+const TooltipButton = Tooltip(Button)
 
 
 
 export class CohortSelector extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       selectedCohort: props.selectedCohort,
       showSubCohortSelector: false,
       subCohortLabel: 'All Subtypes',
-    };
+    }
   }
 
     handleChange = (event) => {
-      this.props.onChange(event.target.value);
+      this.props.onChange(event.target.value)
     };
 
     handleSubCohortToggle = () => {
-      this.setState({showSubCohortSelector: !this.state.showSubCohortSelector});
+      this.setState({showSubCohortSelector: !this.state.showSubCohortSelector})
     };
 
 
     generateSubCohortDetails(){
-      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts;
-      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.props.selectedCohort.name);
-      if(subCohortsForSelected === undefined) return '';
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts
+      let subCohortsForSelected = getSubCohortsOnlyForCohort(this.props.selectedCohort.name)
+      if(subCohortsForSelected === undefined) return ''
       return Object.values(selectedSubCohorts).map( s => {
-        let splits = s.split('.');
+        let splits = s.split('.')
         if(splits.length>1) {
-          return splits[1];
+          return splits[1]
         }
         else {
-          return splits[0];
+          return splits[0]
         }
-      }).join(', ');
+      }).join(', ')
     }
 
     generateSubCohortLabels(){
-      let subCohortsForSelected = getSubCohortsForCohort(this.props.selectedCohort.name);
+      let subCohortsForSelected = getSubCohortsForCohort(this.props.selectedCohort.name)
       // no sub cohorts exist
-      if(!subCohortsForSelected) return '';
-      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts ? this.props.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected);
+      if(!subCohortsForSelected) return ''
+      let selectedSubCohorts = this.props.selectedCohort.selectedSubCohorts ? this.props.selectedCohort.selectedSubCohorts: Object.keys(subCohortsForSelected)
 
-      const availableSubtypes = Object.keys(subCohortsForSelected).length+1;
-      const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length;
+      const availableSubtypes = Object.keys(subCohortsForSelected).length+1
+      const selectedSubTypes = Object.values(selectedSubCohorts).filter( s => s ).length
       if(selectedSubCohorts.length===0 || availableSubtypes===selectedSubTypes){
-        return `All ${availableSubtypes} Subtypes`;
+        return `All ${availableSubtypes} Subtypes`
       }
-      return `(${selectedSubTypes}/${availableSubtypes}) Subtypes`;
+      return `(${selectedSubTypes}/${availableSubtypes}) Subtypes`
     }
 
     onChangeSubCohort = (newSelected) => {
-      const changes = !isEqual(this.props.selectedSubCohorts,newSelected);
-      this.setState({showSubCohortSelector:false});
+      const changes = !isEqual(this.props.selectedSubCohorts,newSelected)
+      this.setState({showSubCohortSelector:false})
       if(!changes){
-        return ;
+        return 
       }
 
       let selectionObject = update(this.state.selectedCohort,{
         selectedSubCohorts: { $set: newSelected },
-      });
-      this.props.onChangeSubCohort(selectionObject);
+      })
+      this.props.onChangeSubCohort(selectionObject)
     };
 
     handleCohortSelection = () => {
-      this.setState({showSubCohortSelector: true});
+      this.setState({showSubCohortSelector: true})
     };
 
     hasSubCohorts(){
-      let {filterCounts, filter} = this.props ;
-      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[filter] && filterCounts[filter].subCohortCounts && filterCounts[filter].subCohortCounts.length > 1;
+      let {filterCounts, filter} = this.props 
+      return filterCounts && Object.keys(filterCounts).length>0 && filterCounts[filter] && filterCounts[filter].subCohortCounts && filterCounts[filter].subCohortCounts.length > 1
     }
 
     render() {
 
-      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex,onVersusAll} = this.props ;
+      let {filterCounts,filter, swapCohorts,copyCohorts,cohortIndex,onVersusAll} = this.props 
       // let subCohortsForSelected = getSubCohortsForCohort(this.state.selectedCohort.name);
-      let subCohortLabel = this.generateSubCohortLabels();
-      let subCohortDetails = this.generateSubCohortDetails();
-      const cohorts = getCohortsForView(filter);
-      const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
+      let subCohortLabel = this.generateSubCohortLabels()
+      let subCohortDetails = this.generateSubCohortDetails()
+      const cohorts = getCohortsForView(filter)
+      const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 )
 
       return (
         <div>
@@ -139,7 +139,7 @@ export class CohortSelector extends PureComponent {
                   <option key={c.name} value={c.name}>
                     {c.name}
                   </option>
-                );
+                )
               })
             }
           </select>
@@ -150,7 +150,7 @@ export class CohortSelector extends PureComponent {
 
           }
         </div>
-      );
+      )
     }
 }
 
@@ -165,4 +165,4 @@ CohortSelector.propTypes = {
   selectedCohort: PropTypes.any.isRequired,
   selectedSubCohorts: PropTypes.any,
   swapCohorts: PropTypes.any.isRequired,
-};
+}

@@ -1,40 +1,40 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import Dialog from 'react-toolbox/lib/dialog';
-import Input from 'react-toolbox/lib/input';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import Dialog from 'react-toolbox/lib/dialog'
+import Input from 'react-toolbox/lib/input'
 
 
 export class ColorEditor extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       active: this.props.active,
       colorSettings: this.props.colorSettings,
-    };
+    }
   }
 
     handleChange = (name, value) => {
-      let newArray = JSON.parse(JSON.stringify(this.state.colorSettings));
+      let newArray = JSON.parse(JSON.stringify(this.state.colorSettings))
       if (name === 'shadingValue') {
-        value = 1 / (value / 100.0) ;
+        value = 1 / (value / 100.0) 
       }
-      newArray[name] = value;
+      newArray[name] = value
       if (name === 'highDomain' && this.state.colorSettings.linkDomains) {
-        newArray['lowDomain'] = -value;
-        this.props.onColorChange('lowDomain', -value);
+        newArray['lowDomain'] = -value
+        this.props.onColorChange('lowDomain', -value)
       }
       this.setState({
         colorSettings: newArray
-      });
-      this.props.onColorChange(name, value);
+      })
+      this.props.onColorChange(name, value)
     };
 
 
     render() {
 
-      let {active, onColorToggle} = this.props;
+      let {active, onColorToggle} = this.props
 
       return (
         <Dialog
@@ -158,7 +158,7 @@ export class ColorEditor extends PureComponent {
             </tbody>
           </table>
         </Dialog>
-      );
+      )
 
     }
 
@@ -169,4 +169,4 @@ ColorEditor.propTypes = {
   colorSettings: PropTypes.any.isRequired,
   onColorChange: PropTypes.any.isRequired,
   onColorToggle: PropTypes.any.isRequired,
-};
+}

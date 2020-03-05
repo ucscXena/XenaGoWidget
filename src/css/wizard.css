@@ -1,0 +1,22 @@
+
+.wizardBox{
+    border-radius: 10px;
+    background-color: goldenrod;
+}
+
+.wizardAnalysisButtonSelected{
+    border-radius: 10px;
+    background-color: darkblue;
+    color: white;
+}
+
+.wizardAnalysisButton{
+    border-radius: 10px;
+    background-color: white;
+    color: black;
+}
+
+.wizardNextButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+}

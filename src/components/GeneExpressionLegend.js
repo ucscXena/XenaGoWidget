@@ -1,7 +1,7 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import BaseStyle from '../css/base.css';
-import {CardText, Card} from 'react-toolbox';
+import React from 'react'
+import PureComponent from './PureComponent'
+import BaseStyle from '../css/base.css'
+import {CardText, Card} from 'react-toolbox'
 
 export class GeneExpressionLegend extends PureComponent {
 
@@ -15,6 +15,6 @@ export class GeneExpressionLegend extends PureComponent {
           <span className={BaseStyle.cnvLowColor}><strong>Under Expressed</strong></span>
         </CardText>
       </Card>
-    );
+    )
   }
 }

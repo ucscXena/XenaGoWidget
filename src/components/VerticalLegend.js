@@ -1,6 +1,6 @@
-import PureComponent from './PureComponent';
-import React from 'react';
-import BaseStyle from '../css/base.css';
+import PureComponent from './PureComponent'
+import React from 'react'
+import BaseStyle from '../css/base.css'
 
 export default class VerticalLegend extends PureComponent {
 
@@ -20,6 +20,6 @@ export default class VerticalLegend extends PureComponent {
           </tbody>
         </table>
       </div>
-    );
+    )
   }
 }

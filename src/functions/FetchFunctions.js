@@ -2,21 +2,21 @@ import {
   getGenesForPathways,
   getSamplesFromSelectedSubCohorts,
   getSubCohortsForCohort
-} from './CohortFunctions';
-import { intersection} from './MathFunctions';
+} from './CohortFunctions'
+import { intersection} from './MathFunctions'
 
-const Rx = require('ucsc-xena-client/dist/rx');
-const xenaQuery = require('ucsc-xena-client/dist/xenaQuery');
-import {VIEW_ENUM} from '../data/ViewEnum';
-import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector';
-import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet';
-import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet';
-import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets';
-import RegulonPathways from '../data/genesets/LuadRegulonGeneSets';
+const Rx = require('ucsc-xena-client/dist/rx')
+const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
+import {VIEW_ENUM} from '../data/ViewEnum'
+import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector'
+import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet'
+import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet'
+import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets'
+import RegulonPathways from '../data/genesets/LuadRegulonGeneSets'
 
 // eslint-disable-next-line no-unused-vars
-const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery;
-const REFERENCE = refGene['hg38'];
+const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery
+const REFERENCE = refGene['hg38']
 
 export function getSamplesForCohortAndView(cohort, view) {
   // scrunches the two
@@ -25,38 +25,38 @@ export function getSamplesForCohortAndView(cohort, view) {
   case VIEW_ENUM.CNV_MUTATION:
     return Rx.Observable.zip(datasetSamples(cohort.host, cohort.mutationDataSetId, null),
       datasetSamples(cohort.host, cohort.copyNumberDataSetId, null),
-      intersection);
+      intersection)
   case VIEW_ENUM.COPY_NUMBER:
-    return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null);
+    return datasetSamples(cohort.host, cohort.copyNumberDataSetId, null)
   case VIEW_ENUM.MUTATION:
-    return datasetSamples(cohort.host, cohort.mutationDataSetId, null);
+    return datasetSamples(cohort.host, cohort.mutationDataSetId, null)
   case VIEW_ENUM.REGULON:
   case VIEW_ENUM.GENE_EXPRESSION:
-    return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null);
+    return datasetSamples(cohort.geneExpression.host, cohort.geneExpression.dataset, null)
   case VIEW_ENUM.PARADIGM:
-    return datasetSamples(cohort.paradigm.host, cohort.paradigm.dataset, null);
+    return datasetSamples(cohort.paradigm.host, cohort.paradigm.dataset, null)
   default:
     // eslint-disable-next-line no-console
-    console.error('filter is not defined',view);
+    console.error('filter is not defined',view)
   }
 }
 
 export function calculateSubCohortCounts(availableSamples, cohort) {
-  const subCohorts = getSubCohortsForCohort(cohort.name);
+  const subCohorts = getSubCohortsForCohort(cohort.name)
   if(subCohorts && Object.keys(subCohorts).length > 0){
-    const allSubCohortSamples = intersection(Object.values(subCohorts).flat(),availableSamples);
+    const allSubCohortSamples = intersection(Object.values(subCohorts).flat(),availableSamples)
     let returnObject = Object.entries(subCohorts).map( c => {
       return {
         name: c[0],
         count: intersection(c[1],availableSamples).length
-      };
-    });
+      }
+    })
     // if it contains a final object, then great . . .
     returnObject[Object.keys(subCohorts).length] = {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
-    };
-    return returnObject ;
+    }
+    return returnObject 
   }
   else{
     return [
@@ -64,24 +64,24 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
         name: UNASSIGNED_SUBTYPE.key,
         count: availableSamples.length,
       }
-    ];
+    ]
   }
 }
 export function createFilterCountForView(samples, cohort,view){
 
-  let filterCounts = {};
+  let filterCounts = {}
   for( let viewEnum in VIEW_ENUM){
-    filterCounts[viewEnum] = {};
+    filterCounts[viewEnum] = {}
   }
 
-  const subCohortSamples = calculateSelectedSubCohortSamples(samples,cohort);
+  const subCohortSamples = calculateSelectedSubCohortSamples(samples,cohort)
   filterCounts[view] = {
     available: samples.length,
     current:subCohortSamples.length,
     subCohortCounts : calculateSubCohortCounts(samples,cohort),
     unassigned: samples.filter( s => subCohortSamples.indexOf(s)<0).length,
-  };
-  return filterCounts;
+  }
+  return filterCounts
 }
 
 // export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,paradigmSamples, cohort){
@@ -136,48 +136,48 @@ export function createFilterCountForView(samples, cohort,view){
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   // if UNASSIGNED is the only available sub cohort, then there are none really
   if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
-    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples));
+    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples))
   }
   else{
-    return availableSamples;
+    return availableSamples
   }
 }
 
 export const getGeneSetsForView = (view) => {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
-    return ParadigmPathways;
+    return ParadigmPathways
   case VIEW_ENUM.GENE_EXPRESSION:
-    return BpaPathways;
+    return BpaPathways
   case VIEW_ENUM.REGULON:
-    return RegulonPathways;
+    return RegulonPathways
   default:
-    return FlybasePathways;
+    return FlybasePathways
   }
-};
+}
 
 export const convertPathwaysToGeneSetLabel = (pathways) => {
   return pathways.map( p => {
     if(p.goid){
-      return p.golabel +' ('+p.goid+')';
+      return p.golabel +' ('+p.goid+')'
     }
     else{
-      return p.golabel;
+      return p.golabel
     }
-  } );
-};
+  } )
+}
 
 function getHostData(cohort,view) {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
-    return cohort.paradigmPathwayActivity;
+    return cohort.paradigmPathwayActivity
   case VIEW_ENUM.GENE_EXPRESSION:
-    return cohort.geneExpressionPathwayActivity;
+    return cohort.geneExpressionPathwayActivity
   case VIEW_ENUM.REGULON:
-    return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : undefined;
+    return cohort.regulonPathwayActivity ? cohort.regulonPathwayActivity : undefined
   default:
     // eslint-disable-next-line no-console
-    console.error('can not get host data for ',cohort,view);
+    console.error('can not get host data for ',cohort,view)
   }
 }
 
@@ -194,11 +194,11 @@ export function allFieldMean(cohort, samples,view) {
     '                      :columns fields\n' +
     '                      :samples samples}])]\n' +
     '  {:field fields\n' +
-    '   :mean (map car (mean data 1))}))';
-  const quote = x => '"' + x + '"';
-  const { dataset, host} = getHostData(cohort,view) ;
-  const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`;
-  return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response));
+    '   :mean (map car (mean data 1))}))'
+  const quote = x => '"' + x + '"'
+  const { dataset, host} = getHostData(cohort,view) 
+  const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`
+  return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response))
 }
 
 export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,dataHandler){
@@ -214,16 +214,16 @@ export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,d
   )
     .subscribe( (output ) => {
       // get the average activity for each
-      dataHandler(output);
-    });
+      dataHandler(output)
+    })
 
 }
 
 export function lookupGeneByName(geneQuery,callback){
-  let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit);
+  let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit)
   subscriber.subscribe(matches => {
-    callback(matches);
-  });
+    callback(matches)
+  })
 }
 
 export function getCohortDataForGeneExpressionView(selectedCohorts, view){
@@ -239,7 +239,7 @@ export function getCohortDataForGeneExpressionView(selectedCohorts, view){
         host: selectedCohorts[1].geneExpression.host,
         dataset: selectedCohorts[1].geneExpression.dataset
       },
-    ];
+    ]
   case VIEW_ENUM.PARADIGM:
     return [
       {
@@ -250,16 +250,16 @@ export function getCohortDataForGeneExpressionView(selectedCohorts, view){
         host: selectedCohorts[1].paradigm.host,
         dataset: selectedCohorts[1].paradigm.dataset
       },
-    ];
+    ]
   default:
-    return null ;
+    return null 
   }
 
 }
 
 export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
-  const cohortData = getCohortDataForGeneExpressionView(selectedCohorts,view);
+  const cohortData = getCohortDataForGeneExpressionView(selectedCohorts,view)
   Rx.Observable.zip(
     datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
     datasetSamples(cohortData[1].host, cohortData[1].dataset, null),
@@ -268,7 +268,7 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
       const availableSamples = [
         calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
         calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
-      ];
+      ]
 
       return Rx.Observable.zip(
         allFieldMean(selectedCohorts[0], availableSamples[0],view),
@@ -279,12 +279,12 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
           geneExpressionPathwayActivityA,
           geneExpressionPathwayActivityB,
         }),
-      );
+      )
     })
     .subscribe( (output ) => {
       // get the average activity for each
-      dataHandler(output);
-    });
+      dataHandler(output)
+    })
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
@@ -301,8 +301,8 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
   )
     .subscribe( (output ) => {
       // get the average activity for each
-      dataHandler(output);
-    });
+      dataHandler(output)
+    })
 }
 
 export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
@@ -316,14 +316,14 @@ export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
   )
     .subscribe( (output) => {
       // console.log('cohorts',JSON.stringify(cohortACounts),JSON.stringify(cohortBCounts),view);
-      handleSampleDataCounts(output.cohortACounts[view],output.cohortBCounts[view]);
-    });
+      handleSampleDataCounts(output.cohortACounts[view],output.cohortBCounts[view])
+    })
 }
 
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
-  const geneList = getGenesForPathways(pathways);
-  let filterCounts ;
+  const geneList = getGenesForPathways(pathways)
+  let filterCounts 
 
   function fetchDataForRegulon(selectedCohorts, samplesA,samplesB, geneList, geneSetLabels) {
     return Rx.Observable.zip(
@@ -342,7 +342,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB,
         geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
-    );
+    )
 
   }
 
@@ -363,7 +363,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB: geneExpressionB[1],
         geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
-    );
+    )
 
   }
 
@@ -384,7 +384,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB,
         geneExpressionPathwayActivityB:geneExpressionPathwayActivityB[1],
       }),
-    );
+    )
 
   }
 
@@ -405,7 +405,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB: mutationB,
         geneExpressionPathwayActivityB: genomeBackgroundMutationB,
       }),
-    );
+    )
 
   }
 
@@ -426,7 +426,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB: copyNumberB,
         geneExpressionPathwayActivityB: genomeBackgroundCopyNumberB,
       }),
-    );
+    )
 
   }
 
@@ -452,7 +452,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         geneExpressionB: [mutationB,copyNumberB],
         geneExpressionPathwayActivityB: [genomeBackgroundMutationB,genomeBackgroundCopyNumberB],
       }),
-    );
+    )
 
   }
 
@@ -463,29 +463,29 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     filterCounts = [
       createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
       createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),
-    ];
+    ]
 
-    const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohorts[0]);
-    const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1]);
-    const geneSetLabels = convertPathwaysToGeneSetLabel(pathways);
+    const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohorts[0])
+    const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1])
+    const geneSetLabels = convertPathwaysToGeneSetLabel(pathways)
 
     switch (view) {
     case VIEW_ENUM.GENE_EXPRESSION:
-      return fetchDataForGeneExpression(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForGeneExpression(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
     case VIEW_ENUM.PARADIGM:
-      return fetchDataForParadigm(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForParadigm(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
     case VIEW_ENUM.REGULON:
-      return fetchDataForRegulon(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForRegulon(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
     case VIEW_ENUM.COPY_NUMBER:
-      return fetchDataForCopyNumber(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForCopyNumber(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
     case VIEW_ENUM.MUTATION:
-      return fetchDataForMutation(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForMutation(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
       /// TODO: how? , just subscribe to more?
     case VIEW_ENUM.CNV_MUTATION:
-      return fetchDataForCnvMutation(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels);
+      return fetchDataForCnvMutation(selectedCohorts,samplesA,samplesB,geneList,geneSetLabels)
     default:
       // eslint-disable-next-line no-console
-      console.error('not sure how we here');
+      console.error('not sure how we here')
     }
 
     // TODO: minimize fetches based on the filter
@@ -522,6 +522,6 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
         genomeBackgroundMutationB:[],
         genomeBackgroundCopyNumberB:[],
         selectedCohorts,
-      });
-    });
+      })
+    })
 }

@@ -86,4 +86,4 @@ export default {
   IGR: 0,
 
   'Copy Number': 1,
-};
+}

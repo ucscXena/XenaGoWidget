@@ -1,6 +1,6 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import BaseStyle from '../css/base.css';
+import React from 'react'
+import PureComponent from './PureComponent'
+import BaseStyle from '../css/base.css'
 
 export class TwoColorLegend extends PureComponent {
 
@@ -12,6 +12,6 @@ export class TwoColorLegend extends PureComponent {
                 &nbsp;
         <span className={BaseStyle.mutationColor}><strong>Mutation</strong></span>
       </div>
-    );
+    )
   }
 }

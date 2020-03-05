@@ -1,158 +1,158 @@
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import React from 'react';
-import BaseStyle from '../css/base.css';
-import {Button} from 'react-toolbox';
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import React from 'react'
+import BaseStyle from '../css/base.css'
+import {Button} from 'react-toolbox'
 import {
   fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
   getCohortsForView, getSamplesFromSelectedSubCohorts, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
   getViewsForCohort
-} from '../functions/CohortFunctions';
-import {intersection} from '../functions/MathFunctions';
-import update from 'immutability-helper';
-import Link from 'react-toolbox/lib/link';
-import {AppStorageHandler} from '../service/AppStorageHandler';
+} from '../functions/CohortFunctions'
+import {intersection} from '../functions/MathFunctions'
+import update from 'immutability-helper'
+import Link from 'react-toolbox/lib/link'
+import {AppStorageHandler} from '../service/AppStorageHandler'
 
 
 export class CohortEditorSelector extends PureComponent {
 
   constructor(props) {
-    super(props);
-    const availableSamples = [getAllSubCohortPossibleSamples(props.cohort[0].name),getAllSubCohortPossibleSamples(props.cohort[1].name)];
-    const selectedSamples =[getSamplesFromSelectedSubCohorts(props.cohort[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(props.cohort[1],availableSamples[1])];
+    super(props)
+    const availableSamples = [getAllSubCohortPossibleSamples(props.cohort[0].name),getAllSubCohortPossibleSamples(props.cohort[1].name)]
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(props.cohort[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(props.cohort[1],availableSamples[1])]
     this.state = {
       view: props.view,
       cohort: props.cohort,
       availableSamples,
       selectedSamples,
       fetchSamples: false,
-    };
+    }
   }
 
   handleCohortChange = (event,cohortIndex) => {
-    const selectedCohortName = event.target.value ;
-    let cohortDetails = getCohortDetails({name: selectedCohortName});
-    cohortDetails.subCohorts = getSubCohortsOnlyForCohort(selectedCohortName);
-    cohortDetails.selectedSubCohorts =  cohortDetails.subCohorts ;
+    const selectedCohortName = event.target.value 
+    let cohortDetails = getCohortDetails({name: selectedCohortName})
+    cohortDetails.subCohorts = getSubCohortsOnlyForCohort(selectedCohortName)
+    cohortDetails.selectedSubCohorts =  cohortDetails.subCohorts 
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:cohortDetails}
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   };
 
   swapCohorts() {
     const newCohortState = update(this.state.cohort,{
       [0]: { $set:this.state.cohort[1]},
       [1]: { $set:this.state.cohort[0]}
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   }
 
   copyCohorts(fromCohortIndex,toCohortIndex) {
     const newCohortState = update(this.state.cohort,{
       [toCohortIndex]: { $set:this.state.cohort[fromCohortIndex]},
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   }
 
   handleSubCohortChange = (event,cohortIndex) => {
-    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
 
     if(event.target.checked && !newCohort.selectedSubCohorts.find( s => s===event.target.value )  ){
-      newCohort.selectedSubCohorts.push(event.target.value);
+      newCohort.selectedSubCohorts.push(event.target.value)
     }
     else
     if(!event.target.checked ){
-      newCohort.selectedSubCohorts =   newCohort.selectedSubCohorts.filter( s => s!==event.target.value);
+      newCohort.selectedSubCohorts =   newCohort.selectedSubCohorts.filter( s => s!==event.target.value)
     }
 
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   };
 
   handleViewChange = (event) => {
-    this.setState({view: event.target.value});
+    this.setState({view: event.target.value})
   };
 
   selectNone(cohortIndex){
-    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
     // newCohort.selectedSubCohorts = newCohort.subCohorts ;
-    newCohort.selectedSubCohorts = [] ;
+    newCohort.selectedSubCohorts = [] 
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   }
 
   selectOnly(cohortIndex,item){
-    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
     // newCohort.selectedSubCohorts = newCohort.subCohorts ;
-    newCohort.selectedSubCohorts = [item] ;
+    newCohort.selectedSubCohorts = [item] 
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   }
 
   updateSampleState(newCohortState) {
-    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)];
-    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])];
+    const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)]
+    const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])]
     this.setState({
       cohort: newCohortState,
       availableSamples,
       selectedSamples,
-    });
+    })
   }
 
   clearTemporarySubCohorts() {
 
     if(confirm('Remove added sub cohorts?')){
-      AppStorageHandler.clearSubCohorts();
+      AppStorageHandler.clearSubCohorts()
       // TODO: reset the list
-      let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]));
-      let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]));
+      let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]))
+      let newCohortB = JSON.parse(JSON.stringify(this.state.cohort[1]))
 
-      let subCohortsA = getSubCohortsForCohort(this.state.cohort[0].name);
-      let subCohortsB = getSubCohortsForCohort(this.state.cohort[1].name);
-      newCohortA.subCohorts = Object.keys(subCohortsA);
-      newCohortB.subCohorts = Object.keys(subCohortsB);
-      newCohortA.selectedSubCohorts = Object.keys(subCohortsA);
-      newCohortB.selectedSubCohorts = Object.keys(subCohortsB);
+      let subCohortsA = getSubCohortsForCohort(this.state.cohort[0].name)
+      let subCohortsB = getSubCohortsForCohort(this.state.cohort[1].name)
+      newCohortA.subCohorts = Object.keys(subCohortsA)
+      newCohortB.subCohorts = Object.keys(subCohortsB)
+      newCohortA.selectedSubCohorts = Object.keys(subCohortsA)
+      newCohortB.selectedSubCohorts = Object.keys(subCohortsB)
 
       // update state
       const newCohortState = update(this.state.cohort,{
         [0]: { $set:newCohortA},
         [1]: { $set:newCohortB},
-      });
-      this.updateSampleState(newCohortState);
+      })
+      this.updateSampleState(newCohortState)
     }
   }
 
 
   selectAll(cohortIndex){
-    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]));
-    newCohort.selectedSubCohorts = newCohort.subCohorts ;
+    let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
+    newCohort.selectedSubCohorts = newCohort.subCohorts 
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
-    });
-    this.updateSampleState(newCohortState);
+    })
+    this.updateSampleState(newCohortState)
   }
 
   render(){
 
-    const { onCancelCohortEdit, onChangeView, subCohortCounts } = this.props;
-    const {  view, cohort , selectedSamples, availableSamples } = this.state ;
-    const cohorts = getCohortsForView(view);
-    const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 );
-    const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name));
-    const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)];
+    const { onCancelCohortEdit, onChangeView, subCohortCounts } = this.props
+    const {  view, cohort , selectedSamples, availableSamples } = this.state 
+    const cohorts = getCohortsForView(view)
+    const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 )
+    const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name))
+    const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)]
 
     if(!subCohortCounts){
-      return (<div>Loading</div>) ;
+      return (<div>Loading</div>) 
     }
     else
     if(subCohortCounts){
@@ -161,7 +161,7 @@ export class CohortEditorSelector extends PureComponent {
           <div className={BaseStyle.cohortEditorBox}>
             <Button
               icon='save' label='Save' onClick={() => {
-                onChangeView(cohort,view);
+                onChangeView(cohort,view)
               }} primary raised
             />
             <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
@@ -179,7 +179,7 @@ export class CohortEditorSelector extends PureComponent {
                       Object.entries(allowableViews).map( f => {
                         return (
                           <option key={f[1]} value={f[1]}>{f[1]}</option>
-                        );
+                        )
                       })
                     }
                   </select>
@@ -205,7 +205,7 @@ export class CohortEditorSelector extends PureComponent {
                           <option key={c.name} value={c.name}>
                             {c.name}
                           </option>
-                        );
+                        )
                       })
                     }
                   </select>
@@ -224,7 +224,7 @@ export class CohortEditorSelector extends PureComponent {
                           <option key={c.name} value={c.name}>
                             {c.name}
                           </option>
-                        );
+                        )
                       })
                     }
                   </select>
@@ -266,7 +266,7 @@ export class CohortEditorSelector extends PureComponent {
                             </a>
                             )
                           </li>
-                        );
+                        )
                       })  }
                     </ul>
                   </div>
@@ -306,7 +306,7 @@ export class CohortEditorSelector extends PureComponent {
                           </a>
                           )
                         </li>
-                      );
+                      )
                     })}
                   </ul>
                 </div>
@@ -320,7 +320,7 @@ export class CohortEditorSelector extends PureComponent {
             Clear temporary sub cohorts
           </button>
         </div>
-      );
+      )
     }
   }
 
@@ -331,4 +331,4 @@ CohortEditorSelector.propTypes = {
   onChangeView: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
-};
+}

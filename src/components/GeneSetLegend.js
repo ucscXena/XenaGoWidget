@@ -1,29 +1,29 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
 
-const TEXT_Y_OFFSET = 15;
-const IMAGE_HEIGHT = 10 ;
+const TEXT_Y_OFFSET = 15
+const IMAGE_HEIGHT = 10 
 
 export class GeneSetLegend extends PureComponent {
 
 
   render() {
 
-    const precision = this.props.precision!==undefined ? this.props.precision : 2 ;
-    const formattedMin = this.props.minScore.toFixed(precision);
-    const formattedMax = this.props.maxScore.toFixed(precision);
+    const precision = this.props.precision!==undefined ? this.props.precision : 2 
+    const formattedMin = this.props.minScore.toFixed(precision)
+    const formattedMax = this.props.maxScore.toFixed(precision)
 
-    const label = this.props.label ;
-    const labelLength = label.length * 9 ;
+    const label = this.props.label 
+    const labelLength = label.length * 9 
 
-    const maxColor = this.props.maxColor ? this.props.maxColor : 'red';
-    const midColor = this.props.midColor ? this.props.midColor : 'white';
-    const minColor = this.props.minColor ? this.props.minColor : 'blue';
+    const maxColor = this.props.maxColor ? this.props.maxColor : 'red'
+    const midColor = this.props.midColor ? this.props.midColor : 'white'
+    const minColor = this.props.minColor ? this.props.minColor : 'blue'
 
 
 
-    const fillURL = `url(#${this.props.id})`;
+    const fillURL = `url(#${this.props.id})`
     return (
       <svg height="20" width="100%">
         <defs>
@@ -44,7 +44,7 @@ export class GeneSetLegend extends PureComponent {
           {formattedMin}
         </text>
       </svg>
-    );
+    )
   }
 
 }
@@ -58,4 +58,4 @@ GeneSetLegend.propTypes = {
   minColor: PropTypes.any,
   minScore: PropTypes.any.isRequired,
   precision: PropTypes.any,
-};
+}

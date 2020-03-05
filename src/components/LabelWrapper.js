@@ -1,8 +1,8 @@
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {getGeneColorMask} from '../functions/ColorFunctions';
-import LabelSet from './LabelSet';
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import React from 'react'
+import {getGeneColorMask} from '../functions/ColorFunctions'
+import LabelSet from './LabelSet'
 
 let styles = {
   overlay: {
@@ -12,7 +12,7 @@ let styles = {
     , opacity: 1
     , cursor: 'crosshair'
   }
-};
+}
 
 
 export default class LabelWrapper extends PureComponent {
@@ -33,7 +33,7 @@ export default class LabelWrapper extends PureComponent {
       , offset
       , pathways
       , numSamples
-    } = this.props;
+    } = this.props
 
     return (
       <div
@@ -54,7 +54,7 @@ export default class LabelWrapper extends PureComponent {
           pathways={pathways}
         />
       </div>
-    );
+    )
   }
 }
 LabelWrapper.propTypes = {
@@ -71,4 +71,4 @@ LabelWrapper.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
-};
+}
