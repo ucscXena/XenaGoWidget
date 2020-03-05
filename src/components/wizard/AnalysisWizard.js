@@ -8,21 +8,21 @@ import {VIEW_ENUM} from '../../data/ViewEnum'
 export class AnalysisWizard extends PureComponent {
 
   render () {
-    const { cohort,onNext, onSelectAnalysis} = this.props
+    const { cohort, onSelectAnalysis} = this.props
 
     return (
       <div className={Wizard.wizardBox}>
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
         {
           Object.values(VIEW_ENUM).map( v =>
-            (<button
+            (<button key={v}
               className={Wizard.wizardAnalysisButton}
               onClick={() => onSelectAnalysis(v)}
             >{v}</button>)
           )
         }
-        <hr/>
-        <button className={Wizard.wizardNextButton} onClick={() => onNext('genesets')}>Next</button>
+        {/*<hr/>*/}
+        {/*<button className={Wizard.wizardNextButton} onClick={() => onNext('genesets')}>Next</button>*/}
       </div>
     )
   }

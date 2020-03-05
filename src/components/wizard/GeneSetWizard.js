@@ -6,10 +6,11 @@ import Wizard from '../../css/wizard.css'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetMethod} = this.props
+    let { analysisMethod,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetMethod} = this.props
     return (
       <div className={Wizard.wizardBox}>
-        GeneSet Wizard
+        <h3>Analysis {analysisMethod}</h3>
+        <h3>GeneSet</h3>
         <button onClick={() => onPrevious('analysis')}>Previous</button>
         <button
           onClick={() => onFinish(undefined)}
@@ -27,16 +28,13 @@ export class GeneSetWizard extends PureComponent {
           <option value='bbb'/>
           <option value='aaa'/>
         </select>
-
-        {/*/!*GeneSet Method<input type='text' onChange={(value) => onSelectGeneSetLimit(value)}*!/*/}
-        {/*<button onClick={() => this.setState({wizard: undefined})}>Open in a*/}
-        {/*    new window (somehow)</button>;*/}
       </div>
     )
   }
 
 }
 GeneSetWizard.propTypes = {
+  analysisMethod: PropTypes.string.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   geneSetMethod: PropTypes.string.isRequired,
   onFinish: PropTypes.func.isRequired,
