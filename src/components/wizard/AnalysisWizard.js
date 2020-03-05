@@ -21,8 +21,6 @@ export class AnalysisWizard extends PureComponent {
             >{v}</button>)
           )
         }
-        {/*<hr/>*/}
-        {/*<button className={Wizard.wizardNextButton} onClick={() => onNext('genesets')}>Next</button>*/}
       </div>
     )
   }

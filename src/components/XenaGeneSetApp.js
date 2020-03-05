@@ -117,7 +117,6 @@ export default class XenaGeneSetApp extends PureComponent {
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
-      // sortedPathwayData: [{}, {}],
       showGeneSetSearch: false,
       geneHits: [],
       selectedGene: undefined,

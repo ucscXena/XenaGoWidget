@@ -6,6 +6,7 @@ import {AnalysisWizard} from './wizard/AnalysisWizard'
 import {GeneSetWizard} from './wizard/GeneSetWizard'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
+import {generatedUrlFunction} from '../functions/UrlFunctions'
 
 export class ApplicationWrapper extends PureComponent {
 
@@ -15,8 +16,7 @@ export class ApplicationWrapper extends PureComponent {
     const urlVariables = QueryString.parse(location.hash.substr(1))
     console.log('url variables', urlVariables)
     this.state = {
-      cohort1: urlVariables.cohort
-      ,cohort2: urlVariables.cohort
+      cohort: urlVariables.cohort
       ,filter: undefined
       ,wizard: urlVariables.wizard
       ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 45
@@ -33,6 +33,8 @@ export class ApplicationWrapper extends PureComponent {
   }
 
   handleSelectAnalysis = (analysis) => {
+    location.hash = `${location.hash}&view=${analysis}`
+
     this.setState({
       filter:analysis,
       wizard:'genesets',
@@ -42,7 +44,16 @@ export class ApplicationWrapper extends PureComponent {
   }
 
   handleFinish = () => {
-    console.log('finsihign ')
+    // set the URL here
+    location.hash = generatedUrlFunction(
+      this.state.filter,
+      undefined,
+      this.state.cohort,
+      this.state.cohort,
+      [],
+      [],
+    )
+
     this.setState({
       wizard:undefined
     })
@@ -69,7 +80,7 @@ export class ApplicationWrapper extends PureComponent {
   render() {
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
-        cohort={this.state.cohort1}
+        cohort={this.state.cohort}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
       />)
@@ -77,7 +88,7 @@ export class ApplicationWrapper extends PureComponent {
     if (this.state.wizard === 'genesets') {
       return (<GeneSetWizard
         analysisMethod={this.state.filter}
-        cohort={this.state.cohort1}
+        cohort={this.state.cohort}
         geneSetLimit={this.state.geneSetLimit}
         geneSetMethod={this.state.geneSetMethod}
         geneSetSort={this.state.geneSetSort}
