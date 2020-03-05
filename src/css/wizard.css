@@ -2,6 +2,8 @@
 .wizardBox{
     border-radius: 10px;
     background-color: goldenrod;
+    padding: 2px;
+    margin: 2px;
 }
 
 .wizardAnalysisButtonSelected{
@@ -19,4 +21,5 @@
 .wizardNextButton{
     border-radius: 10px;
     background-color: #2777b4;
+    margin-left: 80%;
 }

@@ -13,7 +13,8 @@ export class ApplicationWrapper extends PureComponent {
     const urlVariables = QueryString.parse(location.hash.substr(1))
     console.log('url variables', urlVariables)
     this.state = {
-      wizard: urlVariables.wizard
+      cohort: urlVariables.cohort
+      ,wizard: urlVariables.wizard
       ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 45
       ,geneSetMethod: urlVariables.geneSetMethod ? urlVariables.geneSetMethod : 'default'
     }
@@ -42,6 +43,7 @@ export class ApplicationWrapper extends PureComponent {
   render() {
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
+        cohort={this.state.cohort}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
       />)
