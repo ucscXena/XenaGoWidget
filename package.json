@@ -23,7 +23,7 @@
     "test:coverage": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --coverage",
     "test:watch": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --server"
   },
-   "pre-commit": [
+  "pre-commit": [
     "lint"
   ],
   "husky": {
