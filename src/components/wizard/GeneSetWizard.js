@@ -6,7 +6,7 @@ import Wizard from '../../css/wizard.css'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetMethod} = this.props
+    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetMethod,geneSetSort} = this.props
     return (
       <div className={Wizard.wizardBox}>
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
@@ -26,8 +26,8 @@ export class GeneSetWizard extends PureComponent {
           <option value='aaa'/>
         </select>
         Sort Method
-        <select onChange={(value) => onSelectGeneSetMethod(value)}>
-          <option value={geneSetMethod}>{geneSetMethod}</option>
+        <select onChange={(value) => onSelectGeneSetSort(value)}>
+          <option value={geneSetSort}>{geneSetSort}</option>
           <option value='bbb'/>
           <option value='aaa'/>
         </select>
@@ -43,10 +43,12 @@ export class GeneSetWizard extends PureComponent {
 }
 GeneSetWizard.propTypes = {
   analysisMethod: PropTypes.string.isRequired,
+  cohort: PropTypes.string.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   geneSetMethod: PropTypes.string.isRequired,
   onFinish: PropTypes.func.isRequired,
   onPrevious: PropTypes.func.isRequired,
   onSelectGeneSetLimit: PropTypes.func.isRequired,
   onSelectGeneSetMethod: PropTypes.func.isRequired,
+  onSelectGeneSetSort: PropTypes.func.isRequired,
 }

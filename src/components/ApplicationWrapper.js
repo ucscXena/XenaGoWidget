@@ -19,6 +19,7 @@ export class ApplicationWrapper extends PureComponent {
       ,wizard: urlVariables.wizard
       ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 45
       ,geneSetMethod: urlVariables.geneSetMethod ? urlVariables.geneSetMethod : 'default'
+      ,geneSortMethod: urlVariables.geneSortMethod ? urlVariables.geneSortMethod : 'default'
     }
   }
 
@@ -43,6 +44,24 @@ export class ApplicationWrapper extends PureComponent {
     })
   }
 
+  handleGeneSetLimit = (limit) => {
+    this.setState({
+      geneSetLimit: limit.target.value
+    })
+  }
+
+  handleGeneSetMethod = (method) => {
+    this.setState({
+      geneSetMethod: method
+    })
+  }
+
+  handleGeneSetSort = (sort) => {
+    this.setState({
+      geneSetSort: sort
+    })
+  }
+
   render() {
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
@@ -59,8 +78,9 @@ export class ApplicationWrapper extends PureComponent {
         geneSetMethod={this.state.geneSetMethod}
         onFinish={this.handleFinish}
         onPrevious={this.handleGotoWizard}
-        onSelectGeneSetLimit={(limit) => this.setState( {wizardGeneSetLimit: limit})}
-        onSelectGeneSetMethod={(method) => this.setState( {wizardGeneSetMethod: method})}
+        onSelectGeneSetLimit={this.handleGeneSetLimit}
+        onSelectGeneSetMethod={this.handleGeneSetMethod}
+        onSelectGeneSetSort={this.handleGeneSetSort}
       />)
     }
     return <XenaGeneSetApp/>
