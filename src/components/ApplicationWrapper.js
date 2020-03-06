@@ -60,7 +60,6 @@ export class ApplicationWrapper extends PureComponent {
       this.state.selectedSubCohorts1,
       this.state.selectedSubCohorts2,
     )
-    // console.log('state',this.state)
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
     finalUrl += `&cohort1Color=${this.state.cohort1Color}`
@@ -68,8 +67,6 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
-
-    console.log('final url',finalUrl)
 
     location.hash = finalUrl
 
