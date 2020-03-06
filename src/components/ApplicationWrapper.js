@@ -7,6 +7,8 @@ import {GeneSetWizard} from './wizard/GeneSetWizard'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
 import {generateUrl} from '../functions/UrlFunctions'
+import {Button} from 'react-toolbox/lib'
+import Wizard from '../css/wizard.css'
 
 export class ApplicationWrapper extends PureComponent {
 
@@ -125,6 +127,11 @@ export class ApplicationWrapper extends PureComponent {
       return (
         <div>
           <h3>Finished.  Please close window.</h3>
+          <hr/>
+          <Button
+            className={Wizard.wizardPreviousButton}
+            onClick={() => this.handleGotoWizard('genesets')}
+            raised>&lArr; Change Analysis</Button>
         </div>
       )
     }

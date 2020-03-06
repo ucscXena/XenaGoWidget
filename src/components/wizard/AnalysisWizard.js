@@ -4,6 +4,7 @@ import Wizard from '../../css/wizard.css'
 import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {Helmet} from 'react-helmet'
+import {Button} from 'react-toolbox'
 
 
 export class AnalysisWizard extends PureComponent {
@@ -39,11 +40,11 @@ export class AnalysisWizard extends PureComponent {
         </h4>
         {
           Object.values(VIEW_ENUM).map( v =>
-            (<button
+            (<Button
               className={Wizard.wizardAnalysisButton}
               key={v}
               onClick={() => onSelectAnalysis(v)}
-            >{v}</button>)
+            >{v}</Button>)
           )
         }
       </div>

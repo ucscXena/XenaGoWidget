@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Wizard from '../../css/wizard.css'
 import {SORT_ENUM} from '../../data/SortEnum'
 import {Helmet} from 'react-helmet'
+import {Button} from 'react-toolbox'
 
 export class GeneSetWizard extends PureComponent {
 
@@ -61,10 +62,14 @@ export class GeneSetWizard extends PureComponent {
           }
         </select>
         <hr/>
-        <button onClick={() => onPrevious('analysis')}>Previous</button>
-        <button
+        <Button
+          className={Wizard.wizardPreviousButton}
+          onClick={() => onPrevious('analysis')}
+          raised>&lArr; Previous</Button>
+        <Button
+          className={Wizard.wizardFinishButton}
           onClick={() => onFinish(undefined)}
-        >Finish</button>
+        >Finish: Compare in New Window</Button>
       </div>
     )
   }

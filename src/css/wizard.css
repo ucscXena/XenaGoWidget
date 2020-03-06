@@ -2,7 +2,7 @@
 .wizardBox{
     border-radius: 10px;
     background-color: goldenrod;
-    padding: 2px;
+    padding: 8px;
     margin: 2px;
 }
 
@@ -14,12 +14,29 @@
 
 .wizardAnalysisButton{
     border-radius: 10px;
+    margin: 5px;
     background-color: white;
     color: black;
+}
+
+.wizardPreviousButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+    margin-left: 0;
+    display:inline;
 }
 
 .wizardNextButton{
     border-radius: 10px;
     background-color: #2777b4;
     margin-left: 80%;
+    display:inline;
+}
+
+
+.wizardFinishButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+    margin-left: 30%;
+    display:inline;
 }
