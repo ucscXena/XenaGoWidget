@@ -8,7 +8,7 @@ import {Helmet} from 'react-helmet'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetMethod,geneSetSort} = this.props
+    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetFilterMethod,geneSetSortMethod} = this.props
     const title = `Select GeneSet method for ${cohort} and ${analysisMethod} analysis`
 
 
@@ -40,7 +40,7 @@ export class GeneSetWizard extends PureComponent {
         Selection Method
         <select
           onChange={(value) => onSelectGeneSetMethod(value)}
-          value={geneSetMethod}
+          value={geneSetFilterMethod}
         >
           {
             Object.values(SORT_ENUM).map( v =>
@@ -52,7 +52,7 @@ export class GeneSetWizard extends PureComponent {
         <select
           onChange={(value) =>
             onSelectGeneSetSort(value)}
-          value={geneSetSort}
+          value={geneSetSortMethod}
         >
           {
             Object.values(SORT_ENUM).map( v =>
@@ -73,9 +73,9 @@ export class GeneSetWizard extends PureComponent {
 GeneSetWizard.propTypes = {
   analysisMethod: PropTypes.string.isRequired,
   cohort: PropTypes.string.isRequired,
+  geneSetFilterMethod: PropTypes.string.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
-  geneSetMethod: PropTypes.string.isRequired,
-  geneSetSort: PropTypes.string.isRequired,
+  geneSetSortMethod: PropTypes.string.isRequired,
   onFinish: PropTypes.func.isRequired,
   onPrevious: PropTypes.func.isRequired,
   onSelectGeneSetLimit: PropTypes.func.isRequired,

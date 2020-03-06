@@ -26,9 +26,9 @@ export class ApplicationWrapper extends PureComponent {
       ,cohort2Color:urlVariables.cohort2Color
 
       ,wizard: urlVariables.wizard
-      ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 45
-      ,geneSetMethod: urlVariables.geneSetMethod ? urlVariables.geneSetMethod : 'default'
-      ,geneSortMethod: urlVariables.geneSortMethod ? urlVariables.geneSortMethod : 'default'
+      ,geneSetLimit: urlVariables.geneSetLimit
+      ,geneSetFilterMethod: urlVariables.geneSetFilterMethod
+      ,geneSetSortMethod: urlVariables.geneSetSortMethod
     }
   }
 
@@ -45,8 +45,9 @@ export class ApplicationWrapper extends PureComponent {
     this.setState({
       filter:analysis,
       wizard:'genesets',
-      geneSetMethod: isViewGeneExpression(analysis) ? SORT_ENUM.CONTRAST_DIFF : SORT_ENUM.ALPHA,
-      geneSetSort: isViewGeneExpression(analysis) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
+      geneSetLimit: 40,
+      geneSetFilterMethod:  isViewGeneExpression(analysis) ? SORT_ENUM.CONTRAST_DIFF : SORT_ENUM.ALPHA,
+      geneSetSortMethod: isViewGeneExpression(analysis) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
     })
   }
 
@@ -65,8 +66,11 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
     finalUrl += `&cohort1Color=${this.state.cohort1Color}`
     finalUrl += `&cohort2Color=${this.state.cohort2Color}`
+    finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
+    finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
+    finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-    // console.log('final url',finalUrl)
+    console.log('final url',finalUrl)
 
     location.hash = finalUrl
 
@@ -83,13 +87,13 @@ export class ApplicationWrapper extends PureComponent {
 
   handleGeneSetMethod = (method) => {
     this.setState({
-      geneSetMethod: method.target.value
+      geneSetFilterMethod: method.target.value
     })
   }
 
   handleGeneSetSort = (sort) => {
     this.setState({
-      geneSetSort: sort.target.value
+      geneSetSortMethod: sort.target.value
     })
   }
 
@@ -107,9 +111,9 @@ export class ApplicationWrapper extends PureComponent {
       return (<GeneSetWizard
         analysisMethod={this.state.filter}
         cohort={this.state.cohort}
+        geneSetFilterMethod={this.state.geneSetFilterMethod}
         geneSetLimit={this.state.geneSetLimit}
-        geneSetMethod={this.state.geneSetMethod}
-        geneSetSort={this.state.geneSetSort}
+        geneSetSortMethod={this.state.geneSetSortMethod}
         onFinish={this.handleFinish}
         onPrevious={this.handleGotoWizard}
         onSelectGeneSetLimit={this.handleGeneSetLimit}
