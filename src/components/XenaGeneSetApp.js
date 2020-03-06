@@ -968,7 +968,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 </td>
               </tr>
               <tr>
-                <td>
+                <td valign='top'>
                   <VerticalGeneSetScoresView
                     associatedData={this.state.associatedData[0]}
                     cohortIndex={0}
@@ -983,7 +983,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     width={VERTICAL_GENESET_DETAIL_WIDTH}
                   />
                 </td>
-                <td width={VERTICAL_SELECTOR_WIDTH - 20}>
+                <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
                   {this.state.pathways &&
                 <GeneSetSelector
                   geneStateColors={this.state.geneStateColors}
@@ -1001,7 +1001,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 />
                   }
                 </td>
-                <td>
+                <td valign='top'>
                   <VerticalGeneSetScoresView
                     associatedData={this.state.associatedData[1]}
                     cohortIndex={1}
@@ -1017,7 +1017,7 @@ export default class XenaGeneSetApp extends PureComponent {
                   />
                 </td>
                 {this.state.loading === LOAD_STATE.LOADED &&
-              <td
+              <td valign='top'
                 className="map_wrapper" onMouseMove={(ev) => {
                   const topClient = ev.currentTarget.getBoundingClientRect().top
                   let scrollDownBuffer = 0
