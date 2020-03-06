@@ -50,6 +50,10 @@ export class ApplicationWrapper extends PureComponent {
     })
   }
 
+  generateFinalUrl = () => {
+
+  }
+
   handleFinish = () => {
     // set the URL here
     let finalUrl = generatedUrlFunction(
@@ -68,10 +72,11 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-    location.hash = finalUrl
+    // location.hash = finalUrl
+    window.open(finalUrl, '_blank')
 
     this.setState({
-      wizard:undefined
+      wizard:'finished'
     })
   }
 
@@ -116,6 +121,13 @@ export class ApplicationWrapper extends PureComponent {
         onSelectGeneSetMethod={this.handleGeneSetMethod}
         onSelectGeneSetSort={this.handleGeneSetSort}
       />)
+    }
+    if (this.state.wizard === 'finished') {
+      return (
+        <div>
+          <h3>Finished.  Please close window.</h3>
+        </div>
+      )
     }
     return <XenaGeneSetApp/>
   }
