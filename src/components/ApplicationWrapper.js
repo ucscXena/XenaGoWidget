@@ -165,10 +165,10 @@ handleGotoWizard = (wizard) => {
     if (this.state.wizard === 'finished') {
       return (
         <div>
-          <h3>Finished.  Please close window.</h3>
-          <p>
+          <h4>Finished generating {this.state.filter} analysis for {this.state.cohort}
             {comparisonDescription}
-          </p>
+          </h4>
+          <div className={Wizard.wizardCloseThisWindow}>You may close this window</div>
           <hr/>
           <Button
             className={Wizard.wizardPreviousButton}

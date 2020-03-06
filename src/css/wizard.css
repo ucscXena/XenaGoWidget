@@ -47,3 +47,10 @@
     margin-left: 10%;
     display:inline;
 }
+
+.wizardCloseThisWindow{
+    font-family: SansSerif;
+    padding: 5px;
+    margin: 5px;
+    display:inline;
+}

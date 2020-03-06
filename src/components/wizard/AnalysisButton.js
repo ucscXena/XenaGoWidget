@@ -13,7 +13,7 @@ export class AnalysisButton extends PureComponent {
   render(){
     let {onClick,analysis} = this.props
     return (<Button
-      className={isViewGeneExpression(analysis) ? Wizard.wizardAnalysisGeneExpressionButton : Wizard.wizardAnalysisButton}
+      className={!isViewGeneExpression(analysis) ? Wizard.wizardAnalysisGeneExpressionButton : Wizard.wizardAnalysisButton}
       key={analysis}
       onClick={() => onClick(analysis)}
     >{analysis}</Button>)
