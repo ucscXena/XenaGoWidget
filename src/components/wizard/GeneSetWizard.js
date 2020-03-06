@@ -9,7 +9,7 @@ import {Button} from 'react-toolbox'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { analysisMethod,cohort,comparisonDescription,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetFilterMethod,geneSetSortMethod} = this.props
+    let { analysisMethod,cohort,comparisonDescription,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, geneSetLimit,geneSetFilterMethod} = this.props
     const title = `Select GeneSet method for ${cohort} and ${analysisMethod} analysis`
 
 
@@ -60,24 +60,6 @@ export class GeneSetWizard extends PureComponent {
                   {
                     Object.values(SORT_ENUM).map( v =>
                       (<option key={v} >{v}</option>)
-                    )
-                  }
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <th align='right'>
-                <u>Gene Set Sort Method</u>:
-              </th>
-              <td>
-                <select
-                  onChange={(value) =>
-                    onSelectGeneSetSort(value)}
-                  value={geneSetSortMethod}
-                >
-                  {
-                    Object.values(SORT_ENUM).map( v =>
-                      (<option key={v}>{v}</option>)
                     )
                   }
                 </select>

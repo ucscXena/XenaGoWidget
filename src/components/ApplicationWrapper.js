@@ -54,20 +54,46 @@ handleGotoWizard = (wizard) => {
 }
 
   handleSelectAnalysis = (analysis) => {
-    location.hash = `${location.hash}&view=${analysis}`
+    if(isViewGeneExpression(analysis)){
+      location.hash = `${location.hash}&view=${analysis}`
+      this.setState({
+        filter:analysis,
+        wizard:'genesets',
+        geneSetLimit: 40,
+        geneSetFilterMethod:   SORT_ENUM.CONTRAST_DIFF ,
+        geneSetSortMethod:  SORT_ENUM.DIFF ,
+      })
+    }
+    else{
+      // set the URL here
+      let finalUrl = generateUrl(
+        analysis,
+        undefined,
+        this.state.cohort,
+        this.state.cohort,
+        this.state.selectedSubCohorts1,
+        this.state.selectedSubCohorts2,
+      )
+      finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
+      finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
+      finalUrl += `&cohort1Color=${this.state.cohort1Color}`
+      finalUrl += `&cohort2Color=${this.state.cohort2Color}`
+      finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
+      finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
+      finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-    this.setState({
-      filter:analysis,
-      wizard:'genesets',
-      geneSetLimit: 40,
-      geneSetFilterMethod:  isViewGeneExpression(analysis) ? SORT_ENUM.CONTRAST_DIFF : SORT_ENUM.ALPHA,
-      geneSetSortMethod: isViewGeneExpression(analysis) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
-    })
+      window.open(window.location.origin+'#'+finalUrl, '_blank')
+      this.setState({
+        filter:analysis,
+        wizard:'finished',
+        geneSetLimit: 40,
+        geneSetFilterMethod:   SORT_ENUM.ALPHA,
+        geneSetSortMethod:  SORT_ENUM.ALPHA,
+      })
+    }
+
   }
 
-  generateFinalUrl = () => {
-
-  }
 
   handleFinish = () => {
     // set the URL here
@@ -117,7 +143,6 @@ handleGotoWizard = (wizard) => {
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
         cohort={this.state.cohort}
-        comparisonDescription={comparisonDescription}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
       />)
@@ -141,6 +166,9 @@ handleGotoWizard = (wizard) => {
       return (
         <div>
           <h3>Finished.  Please close window.</h3>
+          <p>
+            {comparisonDescription}
+          </p>
           <hr/>
           <Button
             className={Wizard.wizardPreviousButton}
