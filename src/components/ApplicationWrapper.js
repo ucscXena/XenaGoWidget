@@ -10,6 +10,7 @@ import {generateUrl} from '../functions/UrlFunctions'
 import {Button} from 'react-toolbox/lib'
 import Wizard from '../css/wizard.css'
 
+
 export class ApplicationWrapper extends PureComponent {
 
   constructor(props) {
@@ -33,12 +34,21 @@ export class ApplicationWrapper extends PureComponent {
     }
   }
 
-
-  handleGotoWizard = (wizard) => {
-    this.setState({
-      wizard:wizard
-    })
+  generateComparisonDescription(){
+    const { subCohortSamples1 ,subCohortSamples2} = this.state
+    const subCohort1Name = subCohortSamples1.split(':')[1]
+    const subCohort1SampleSize = subCohortSamples1.split(':')[2].split(',').length
+    const subCohort2Name = subCohortSamples2.split(':')[1]
+    const subCohort2SampleSize = subCohortSamples2.split(':')[2].split(',').length
+    return `Comparing subcohorts '${subCohort1Name}' (${subCohort1SampleSize} samples) to '${subCohort2Name}' (${subCohort2SampleSize} samples)`
   }
+
+
+handleGotoWizard = (wizard) => {
+  this.setState({
+    wizard:wizard
+  })
+}
 
   handleSelectAnalysis = (analysis) => {
     location.hash = `${location.hash}&view=${analysis}`
@@ -100,19 +110,20 @@ export class ApplicationWrapper extends PureComponent {
   }
 
   render() {
+    const comparisonDescription = this.generateComparisonDescription()
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
         cohort={this.state.cohort}
+        comparisonDescription={comparisonDescription}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
-        subCohortSamples1={this.state.subCohortSamples1}
-        subCohortSamples2={this.state.subCohortSamples2}
       />)
     }
     if (this.state.wizard === 'genesets') {
       return (<GeneSetWizard
         analysisMethod={this.state.filter}
         cohort={this.state.cohort}
+        comparisonDescription={comparisonDescription}
         geneSetFilterMethod={this.state.geneSetFilterMethod}
         geneSetLimit={this.state.geneSetLimit}
         geneSetSortMethod={this.state.geneSetSortMethod}

@@ -9,7 +9,7 @@ import {Button} from 'react-toolbox'
 export class GeneSetWizard extends PureComponent {
 
   render () {
-    let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetFilterMethod,geneSetSortMethod} = this.props
+    let { analysisMethod,cohort,comparisonDescription,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetFilterMethod,geneSetSortMethod} = this.props
     const title = `Select GeneSet method for ${cohort} and ${analysisMethod} analysis`
 
 
@@ -29,6 +29,9 @@ export class GeneSetWizard extends PureComponent {
           title={title}
         />
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
+        <h4>
+          {comparisonDescription}
+        </h4>
         <h3>Analysis Method: <u>{analysisMethod}</u></h3>
         <h3>Gene Set Calculation</h3>
 
@@ -78,6 +81,7 @@ export class GeneSetWizard extends PureComponent {
 GeneSetWizard.propTypes = {
   analysisMethod: PropTypes.string.isRequired,
   cohort: PropTypes.string.isRequired,
+  comparisonDescription: PropTypes.string.isRequired,
   geneSetFilterMethod: PropTypes.string.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   geneSetSortMethod: PropTypes.string.isRequired,

@@ -10,13 +10,15 @@ import {Button} from 'react-toolbox'
 export class AnalysisWizard extends PureComponent {
 
   render () {
-    const { cohort, onSelectAnalysis,subCohortSamples1,subCohortSamples2} = this.props
+    const { cohort, onSelectAnalysis,comparisonDescription } = this.props
 
-    const subCohort1Name = subCohortSamples1.split(':')[1]
-    const subCohort1SampleSize = subCohortSamples1.split(':')[2].split(',').length
-    const subCohort2Name = subCohortSamples2.split(':')[1]
-    const subCohort2SampleSize = subCohortSamples2.split(':')[2].split(',').length
+    // const subCohort1Name = subCohortSamples1.split(':')[1]
+    // const subCohort1SampleSize = subCohortSamples1.split(':')[2].split(',').length
+    // const subCohort2Name = subCohortSamples2.split(':')[1]
+    // const subCohort2SampleSize = subCohortSamples2.split(':')[2].split(',').length
     const title = `Select Analysis for ${cohort}`
+
+    // const comparisonString = `Comparing subcohorts '${subCohort1Name}' (${subCohort1SampleSize} samples) to '${subCohort2Name}' (${subCohort2SampleSize} samples)`
 
     return (
       <div className={Wizard.wizardBox}>
@@ -35,8 +37,7 @@ export class AnalysisWizard extends PureComponent {
         />
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
         <h4>
-          Comparing subcohorts '{subCohort1Name}' ({subCohort1SampleSize} samples)
-          to '{subCohort2Name}' ({subCohort2SampleSize} samples)
+          {comparisonDescription}
         </h4>
         {
           Object.values(VIEW_ENUM).map( v =>
@@ -53,8 +54,7 @@ export class AnalysisWizard extends PureComponent {
 }
 AnalysisWizard.propTypes = {
   cohort: PropTypes.string.isRequired,
+  comparisonDescription: PropTypes.string.isRequired,
   onNext: PropTypes.func.isRequired,
   onSelectAnalysis: PropTypes.func.isRequired,
-  subCohortSamples1: PropTypes.any.isRequired,
-  subCohortSamples2: PropTypes.any.isRequired,
 }
