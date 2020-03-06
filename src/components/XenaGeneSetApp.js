@@ -1017,8 +1017,9 @@ export default class XenaGeneSetApp extends PureComponent {
                   />
                 </td>
                 {this.state.loading === LOAD_STATE.LOADED &&
-              <td valign='top'
-                className="map_wrapper" onMouseMove={(ev) => {
+              <td
+                className="map_wrapper"
+                onMouseMove={(ev) => {
                   const topClient = ev.currentTarget.getBoundingClientRect().top
                   let scrollDownBuffer = 0
                   if (topClient < 0) {
@@ -1032,11 +1033,10 @@ export default class XenaGeneSetApp extends PureComponent {
                   } else {
                     this.setState({mousing: false, x, y})
                   }
-                }}
-                onMouseOut={() => {
+                }} onMouseOut={() => {
                   this.setState({mousing: false})
                 }}
-                valign="top"
+                valign='top'
               >
                 <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
                 <CrossHairV
