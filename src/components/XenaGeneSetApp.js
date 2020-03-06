@@ -789,8 +789,9 @@ export default class XenaGeneSetApp extends PureComponent {
                   <div className={BaseStyle.headerBox}>
                   Gene Sets
                   </div>
+                  {isViewGeneExpression(this.state.filter) &&
                   <div className={BaseStyle.containerBox}>
-                  Limit
+                    Limit
                     <input
                       onBlur={() => this.setState({
                         fetch: true,
@@ -802,8 +803,10 @@ export default class XenaGeneSetApp extends PureComponent {
                       value={this.state.geneSetLimit}
                     />
                   </div>
+                  }
+                  {isViewGeneExpression(this.state.filter) &&
                   <div className={BaseStyle.containerBox}>
-                  Filter by
+                    Filter by
                     <select
                       onChange={(event) => this.setState({
                         filterBy: event.target.value,
@@ -824,35 +827,43 @@ export default class XenaGeneSetApp extends PureComponent {
                       <option value={SORT_ENUM.TOTAL}>Total</option>
                     </select>
                     {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
-                  <FaSortAsc onClick={() => this.setState({
-                    filterOrder: 'desc',
-                    fetch: true,
-                    currentLoadState: LOAD_STATE.LOADING,
-                    reloadPathways: this.state.automaticallyReloadPathways,
-                  })}
-                  />
+                    <FaSortAsc onClick={() => this.setState({
+                      filterOrder: 'desc',
+                      fetch: true,
+                      currentLoadState: LOAD_STATE.LOADING,
+                      reloadPathways: this.state.automaticallyReloadPathways,
+                    })}
+                    />
                     }
                     {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
-                  <FaSortDesc onClick={() => this.setState({
-                    filterOrder: 'asc',
-                    fetch: true,
-                    currentLoadState: LOAD_STATE.LOADING,
-                    reloadPathways: this.state.automaticallyReloadPathways,
-                  })}
-                  />
+                    <FaSortDesc onClick={() => this.setState({
+                      filterOrder: 'asc',
+                      fetch: true,
+                      currentLoadState: LOAD_STATE.LOADING,
+                      reloadPathways: this.state.automaticallyReloadPathways,
+                    })}
+                    />
                     }
                   </div>
-                  <Button
-                    icon='edit' onClick={() => this.setState(
-                      {showGeneSetSearch: true})} raised
-                  >
-                  Gene Sets&nbsp;
-                    {this.state.pathways &&
+                  }
+                  {isViewGeneExpression(this.state.filter) &&
+                    <Button
+                      icon='edit' onClick={() => this.setState(
+                        {showGeneSetSearch: true})} raised
+                    >
+                    Gene Sets&nbsp;
+                      {this.state.pathways &&
+                    <div style={{display: 'inline'}}>
+                      ({this.state.pathways.length})
+                    </div>
+                      }
+                    </Button>
+                  }
+                  {!isViewGeneExpression(this.state.filter) &&
                   <div style={{display: 'inline'}}>
-                    ({this.state.pathways.length})
+                    Using default pathways
                   </div>
-                    }
-                  </Button>
+                  }
                 </td>
                 <td className={BaseStyle.autoSortBox}>
                   <Button

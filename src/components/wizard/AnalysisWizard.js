@@ -4,7 +4,7 @@ import Wizard from '../../css/wizard.css'
 import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {Helmet} from 'react-helmet'
-import {Button} from 'react-toolbox'
+import {AnalysisButton} from './AnalysisButton'
 
 
 export class AnalysisWizard extends PureComponent {
@@ -30,13 +30,27 @@ export class AnalysisWizard extends PureComponent {
         />
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
         {
-          Object.values(VIEW_ENUM).map( v =>
-            (<Button
-              className={Wizard.wizardAnalysisButton}
-              key={v}
-              onClick={() => onSelectAnalysis(v)}
-            >{v}</Button>)
-          )
+          <div>
+            <h3><b>Gene Expression </b> (select gene set filtering method)</h3>
+            <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
+            <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
+            {cohort.indexOf('LUAD') >= 0 &&
+            <AnalysisButton
+              analysis={VIEW_ENUM.REGULON}
+              onClick={onSelectAnalysis}/>
+            }
+            <h3><b>Mutation / CNV</b> (default gene sets)</h3>
+            <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
+            <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
+            <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
+          </div>
+          // Object.values(VIEW_ENUM).map( v =>
+          //   (<Button
+          //     className={Wizard.wizardAnalysisButton}
+          //     key={v}
+          //     onClick={() => onSelectAnalysis(v)}
+          //   >{v}</Button>)
+          // )
         }
       </div>
     )

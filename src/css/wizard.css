@@ -19,6 +19,13 @@
     color: black;
 }
 
+.wizardAnalysisGeneExpressionButton{
+    border-radius: 10px;
+    margin: 5px;
+    background-color: #2777b4;
+    color: black;
+}
+
 .wizardPreviousButton{
     border-radius: 10px;
     background-color: #2777b4;
@@ -37,6 +44,6 @@
 .wizardFinishButton{
     border-radius: 10px;
     background-color: #2777b4;
-    margin-left: 30%;
+    margin-left: 10%;
     display:inline;
 }

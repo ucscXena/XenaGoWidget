@@ -58,7 +58,7 @@ export class GeneSetWizard extends PureComponent {
                   value={geneSetFilterMethod}
                 >
                   {
-                    Object.values(SORT_ENUM).map( v =>
+                    Object.values(SORT_ENUM).filter( f=> f!=='Alpha').map( v =>
                       (<option key={v} >{v}</option>)
                     )
                   }
