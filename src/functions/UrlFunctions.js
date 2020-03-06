@@ -10,6 +10,7 @@ export function calculateFilter(urlVariables){
   return AppStorageHandler.getFilterState()
 }
 
+
 export function calculateGeneSet(urlVariables,pathways){
   // handle selected Pathway / GeneSet
   let selectedGeneSet = undefined

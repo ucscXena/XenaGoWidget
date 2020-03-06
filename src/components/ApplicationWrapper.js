@@ -14,7 +14,6 @@ export class ApplicationWrapper extends PureComponent {
     super(props)
 
     const urlVariables = QueryString.parse(location.hash.substr(1))
-    console.log('url variables', urlVariables)
     this.state = {
       cohort: urlVariables.cohort
       ,filter: undefined
