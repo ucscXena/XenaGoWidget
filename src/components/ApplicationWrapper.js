@@ -99,6 +99,8 @@ export class ApplicationWrapper extends PureComponent {
         cohort={this.state.cohort}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
+        subCohortSamples1={this.state.subCohortSamples1}
+        subCohortSamples2={this.state.subCohortSamples2}
       />)
     }
     if (this.state.wizard === 'genesets') {
