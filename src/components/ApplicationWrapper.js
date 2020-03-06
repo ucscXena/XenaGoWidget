@@ -6,7 +6,7 @@ import {AnalysisWizard} from './wizard/AnalysisWizard'
 import {GeneSetWizard} from './wizard/GeneSetWizard'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
-import {generatedUrlFunction} from '../functions/UrlFunctions'
+import {generateUrl} from '../functions/UrlFunctions'
 
 export class ApplicationWrapper extends PureComponent {
 
@@ -56,7 +56,7 @@ export class ApplicationWrapper extends PureComponent {
 
   handleFinish = () => {
     // set the URL here
-    let finalUrl = generatedUrlFunction(
+    let finalUrl = generateUrl(
       this.state.filter,
       undefined,
       this.state.cohort,
@@ -72,8 +72,7 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-    // location.hash = finalUrl
-    window.open(finalUrl, '_blank')
+    window.open(window.location.origin+'#'+finalUrl, '_blank')
 
     this.setState({
       wizard:'finished'

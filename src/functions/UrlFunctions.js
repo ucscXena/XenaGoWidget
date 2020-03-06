@@ -1,6 +1,5 @@
 import {AppStorageHandler} from '../service/AppStorageHandler'
 import {getCohortDetails, getSubCohortsOnlyForCohort} from './CohortFunctions'
-import {memoize} from 'underscore'
 
 export function calculateFilter(urlVariables){
   // handling filters
@@ -79,6 +78,3 @@ export const generateUrl = (filter,geneset,cohort1,cohort2,selectedSubCohorts1,s
   }
   return generatedUrl
 }
-
-export const generatedUrlFunction = memoize(generateUrl, (filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) =>
-  JSON.stringify([filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2]))

@@ -43,7 +43,7 @@ import {
   calculateCohorts,
   calculateFilter,
   calculateGeneSet,
-  generatedUrlFunction,
+  generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
 import Button from 'react-toolbox/lib/button'
@@ -144,7 +144,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   componentDidUpdate() {
-    const generatedUrl = generatedUrlFunction(
+    const generatedUrl = generateUrl(
       this.state.filter,
       this.state.pathwaySelection.pathway.golabel,
       this.state.selectedCohort[0].name,
