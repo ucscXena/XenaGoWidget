@@ -35,35 +35,59 @@ export class GeneSetWizard extends PureComponent {
         <h3>Analysis Method: <u>{analysisMethod}</u></h3>
         <h3>Gene Set Calculation</h3>
 
-        Limit
-        <input
-          onChange={(value) => onSelectGeneSetLimit(value)}
-          type='text' value={geneSetLimit}
-        />
+        <table>
+          <tbody>
+            <tr>
+              <th align='right'>
+                <u>Maximum Gene Sets</u>:
+              </th>
+              <td>
+                <input
+                  onChange={(value) => onSelectGeneSetLimit(value)}
+                  type='text' value={geneSetLimit}
+                />
+              </td>
+            </tr>
+            <tr>
+              <th align='right'>
+                <u>Gene Set Filtering Method</u>:
+              </th>
+              <td>
+                <select
+                  onChange={(value) => onSelectGeneSetMethod(value)}
+                  value={geneSetFilterMethod}
+                >
+                  {
+                    Object.values(SORT_ENUM).map( v =>
+                      (<option key={v} >{v}</option>)
+                    )
+                  }
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th align='right'>
+                <u>Gene Set Sort Method</u>:
+              </th>
+              <td>
+                <select
+                  onChange={(value) =>
+                    onSelectGeneSetSort(value)}
+                  value={geneSetSortMethod}
+                >
+                  {
+                    Object.values(SORT_ENUM).map( v =>
+                      (<option key={v}>{v}</option>)
+                    )
+                  }
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-        Selection Method
-        <select
-          onChange={(value) => onSelectGeneSetMethod(value)}
-          value={geneSetFilterMethod}
-        >
-          {
-            Object.values(SORT_ENUM).map( v =>
-              (<option key={v} >{v}</option>)
-            )
-          }
-        </select>
-        Sort Method
-        <select
-          onChange={(value) =>
-            onSelectGeneSetSort(value)}
-          value={geneSetSortMethod}
-        >
-          {
-            Object.values(SORT_ENUM).map( v =>
-              (<option key={v}>{v}</option>)
-            )
-          }
-        </select>
+
+
         <hr/>
         <Button
           className={Wizard.wizardPreviousButton}
