@@ -145,7 +145,7 @@ handleGotoWizard = (wizard) => {
           <Button
             className={Wizard.wizardPreviousButton}
             onClick={() => this.handleGotoWizard('genesets')}
-            raised>&lArr; Change Analysis</Button>
+            raised>&lArr; Change Gene Set Selection</Button>
         </div>
       )
     }

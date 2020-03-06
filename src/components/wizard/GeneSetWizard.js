@@ -92,7 +92,7 @@ export class GeneSetWizard extends PureComponent {
         <Button
           className={Wizard.wizardPreviousButton}
           onClick={() => onPrevious('analysis')}
-          raised>&lArr; Previous</Button>
+          raised>&lArr; Change Analysis</Button>
         <Button
           className={Wizard.wizardFinishButton}
           onClick={() => onFinish(undefined)}
