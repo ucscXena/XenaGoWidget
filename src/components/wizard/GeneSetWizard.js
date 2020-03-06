@@ -3,15 +3,30 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import Wizard from '../../css/wizard.css'
 import {SORT_ENUM} from '../../data/SortEnum'
+import {Helmet} from 'react-helmet'
 
 export class GeneSetWizard extends PureComponent {
 
   render () {
     let { analysisMethod,cohort,onFinish, onPrevious,onSelectGeneSetLimit, onSelectGeneSetMethod, onSelectGeneSetSort,geneSetLimit,geneSetMethod,geneSetSort} = this.props
+    const title = `Select GeneSet method for ${cohort} and ${analysisMethod} analysis`
 
 
     return (
       <div className={Wizard.wizardBox}>
+        <Helmet
+          link={[
+            {
+              'rel': 'icon',
+              'type': 'image/png',
+              'href': 'https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_hfz_icon.ico'
+            }
+          ]}
+          meta={[
+            {name: 'description', content: 'Xena Gene Set Viewer'}
+          ]}
+          title={title}
+        />
         <h3>Analyzing Cohort: <u>{cohort}</u></h3>
         <h3>Analysis Method: <u>{analysisMethod}</u></h3>
         <h3>Gene Set Calculation</h3>

@@ -51,7 +51,7 @@ class XenaGeneSetPage extends PureComponent {
           meta={[
             {name: 'description', content: 'Xena Gene Set Viewer'}
           ]}
-          title="Xena Gene Set Viewer"
+          title="Xena Gene Set Comparison"
         />
         <ApplicationWrapper/>
       </div>)
