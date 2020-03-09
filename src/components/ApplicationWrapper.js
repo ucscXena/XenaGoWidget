@@ -43,15 +43,28 @@ export class ApplicationWrapper extends PureComponent {
       const subCohort2SampleSize = subCohortSamples2.split(':')[2].split(',').length
       return `Comparing subcohorts '${subCohort1Name}' (${subCohort1SampleSize} samples) to '${subCohort2Name}' (${subCohort2SampleSize} samples)`
     }
-    return
+    return null
   }
 
 
-handleGotoWizard = (wizard) => {
-  this.setState({
-    wizard:wizard
-  })
-}
+  handleGotoWizard = (wizard) => {
+    this.setState({
+      wizard:wizard
+    })
+  }
+
+  openUrl = (finalUrl) => {
+    // window.open(window.location.origin+'xena/#'+finalUrl, '_blank')
+    // console.log('opening the final url',finalUrl)
+    console.log('node environment',process.env.NODE_ENV)
+    if(process.env.NODE_ENV === 'production'){
+      window.open(window.location.origin+'/xena/#'+finalUrl, '_blank')
+    }
+    else{
+      window.open(window.location.origin+'#'+finalUrl, '_blank')
+    }
+  }
+
 
   handleSelectAnalysis = (analysis) => {
     if(isViewGeneExpression(analysis)){
@@ -82,7 +95,7 @@ handleGotoWizard = (wizard) => {
       finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
       finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-      window.open(window.location.origin+'#'+finalUrl, '_blank')
+      this.openUrl(finalUrl)
       this.setState({
         filter:analysis,
         wizard:'finished',
@@ -113,7 +126,7 @@ handleGotoWizard = (wizard) => {
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-    window.open(window.location.origin+'#'+finalUrl, '_blank')
+    this.openUrl(finalUrl)
 
     this.setState({
       wizard:'finished'
