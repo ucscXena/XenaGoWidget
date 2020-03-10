@@ -1,37 +1,37 @@
-import React from 'react';
-import PureComponent from './PureComponent';
-import PropTypes from 'prop-types';
-import BaseStyle from '../css/base.css';
+import React from 'react'
+import PureComponent from './PureComponent'
+import PropTypes from 'prop-types'
+import BaseStyle from '../css/base.css'
 // import {IconButton} from 'react-toolbox';
-import {Dialog} from 'react-toolbox/lib';
-import Tooltip from 'react-toolbox/lib/tooltip';
-import Link from 'react-toolbox/lib/link';
-import {Button} from 'react-toolbox';
+import {Dialog} from 'react-toolbox/lib'
+import Tooltip from 'react-toolbox/lib/tooltip'
+import Link from 'react-toolbox/lib/link'
+import {Button} from 'react-toolbox'
 
-const TooltipLink = Tooltip(Link);
+const TooltipLink = Tooltip(Link)
 
-const MAGIC_LENGTH = 28 ;
-const MAX_SUB_COHORTS = 7 ;
+const MAGIC_LENGTH = 28 
+const MAX_SUB_COHORTS = 7 
 
 
 export class GeneSetInfoBox extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       showInfo: false,
-    };
+    }
   }
 
   allSubCohortsStatement(selectedSubCohorts) {
-    return `View All ${selectedSubCohorts.length} sub cohorts`;
+    return `View All ${selectedSubCohorts.length} sub cohorts`
   }
 
   render(){
-    const {cohortIndex,samplesLength,selectedCohort, onEditCohorts, subCohortCounts} = this.props;
-    const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
-    if(!subCohortCounts) return <div>Calculating</div>;
+    const {cohortIndex,samplesLength,selectedCohort, onEditCohorts, subCohortCounts} = this.props
+    const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name
+    if(!subCohortCounts) return <div>Calculating</div>
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
@@ -51,7 +51,7 @@ export class GeneSetInfoBox extends PureComponent {
               {selectedCohort.selectedSubCohorts.sort().map( s => {
                 return (
                   <li key={s}>{s} ({subCohortCounts[s]})</li>
-                );
+                )
               }
               )}
             </ul>
@@ -66,7 +66,7 @@ export class GeneSetInfoBox extends PureComponent {
             {selectedCohort.selectedSubCohorts.sort().map( s => {
               return (
                 <li key={s}>{s} ({subCohortCounts[s]})</li>
-              );
+              )
             }
             )}
           </ul>
@@ -76,7 +76,7 @@ export class GeneSetInfoBox extends PureComponent {
           {selectedCohort.selectedSubCohorts.sort().slice(0,MAX_SUB_COHORTS).map( s => {
             return (
               <li key={s}>{s}({subCohortCounts[s]})</li>
-            );
+            )
           }
           )}
           <li>
@@ -85,7 +85,7 @@ export class GeneSetInfoBox extends PureComponent {
         </ul>
         }
       </div>
-    );
+    )
   }
 
 }
@@ -96,4 +96,4 @@ GeneSetInfoBox.propTypes = {
   samplesLength: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any,
-};
+}

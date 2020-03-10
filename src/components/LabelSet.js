@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { omit, isEqual } from 'underscore';
-import PureComponent from './PureComponent';
-import { HeaderLabel } from './HeaderLabel';
-import { DiffLabel } from './DiffLabel';
-import {GENE_LABEL_HEIGHT, GENE_LEGEND_HEIGHT} from './PathwayScoresView';
-import BaseStyle from '../css/base.css';
+import PropTypes from 'prop-types'
+import React from 'react'
+import { omit, isEqual } from 'underscore'
+import PureComponent from './PureComponent'
+import { HeaderLabel } from './HeaderLabel'
+import { DiffLabel } from './DiffLabel'
+import {GENE_LABEL_HEIGHT, GENE_LEGEND_HEIGHT} from './PathwayScoresView'
+import BaseStyle from '../css/base.css'
 
-const CHI_SQUARE_MAX = 100.0;
-const OMIT_ARRAY = ['hoveredPathway','data' ];
+const CHI_SQUARE_MAX = 100.0
+const OMIT_ARRAY = ['hoveredPathway','data' ]
 
 export default class LabelSet extends PureComponent {
 
   shouldComponentUpdate(nextProps) {
-    return !isEqual(omit(nextProps, OMIT_ARRAY), omit(this.props, OMIT_ARRAY));
+    return !isEqual(omit(nextProps, OMIT_ARRAY), omit(this.props, OMIT_ARRAY))
   }
 
   render() {
@@ -27,19 +27,19 @@ export default class LabelSet extends PureComponent {
       cohortIndex,
       colorSettings,
       numSamples,
-    } = this.props;
+    } = this.props
     if (pathways.length === layout.length) {
-      const possibleHeight = height - GENE_LABEL_HEIGHT + GENE_LEGEND_HEIGHT;
-      const offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0;
+      const possibleHeight = height - GENE_LABEL_HEIGHT + GENE_LEGEND_HEIGHT
+      const offset = cohortIndex === 0 ? height - GENE_LABEL_HEIGHT : 0
 
       return layout.map((el, i) => {
-        const d = pathways[i];
-        const geneLength = d.gene.length;
-        const labelKey = d.gene[0];
-        const highlighted = highlightedGene === labelKey;
-        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight*0.9;
-        const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight;
-        const actualOffset = (cohortIndex === 1 ? labelOffset+30 : possibleHeight - diffHeight)+25;
+        const d = pathways[i]
+        const geneLength = d.gene.length
+        const labelKey = d.gene[0]
+        const highlighted = highlightedGene === labelKey
+        const diffHeight = (Math.abs(d.diffScore) < CHI_SQUARE_MAX ? Math.abs(d.diffScore) / CHI_SQUARE_MAX : 1) * possibleHeight*0.9
+        const labelOffset = cohortIndex === 0 ? possibleHeight : labelHeight
+        const actualOffset = (cohortIndex === 1 ? labelOffset+30 : possibleHeight - diffHeight)+25
         return (
           <div className={cohortIndex === 0 ? BaseStyle.labelDefaultTop : BaseStyle.labelDefaultBottom} key={`${labelKey}-${cohortIndex}-outer`}>
             { ((cohortIndex === 0 && d.diffScore > 0) || cohortIndex === 1 && d.diffScore < 0)
@@ -99,10 +99,10 @@ export default class LabelSet extends PureComponent {
               width={el.size}
             />
           </div>
-        );
-      });
+        )
+      })
     }
-    return <div />;
+    return <div />
   }
 }
 LabelSet.propTypes = {
@@ -115,4 +115,4 @@ LabelSet.propTypes = {
   layout: PropTypes.any.isRequired,
   numSamples: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-};
+}

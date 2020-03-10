@@ -1,5 +1,5 @@
-import { range } from 'underscore';
-import { reduceByKey, map2, /* partition, */partitionN } from './MathFunctions';
+import { range } from 'underscore'
+import { reduceByKey, map2, /* partition, */partitionN } from './MathFunctions'
 import {
   getGeneSetColorMask,
   getCNVHighColorMask,
@@ -7,18 +7,18 @@ import {
   getMutation2ColorMask,
   getMutation3ColorMask,
   getMutation4ColorMask,
-} from './ColorFunctions';
-import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView';
-import * as d3 from 'd3';
-import {VIEW_ENUM} from '../data/ViewEnum';
-import {isViewGeneExpression} from './DataFunctions';
+} from './ColorFunctions'
+import { GENE_LABEL_HEIGHT } from '../components/PathwayScoresView'
+import * as d3 from 'd3'
+import {VIEW_ENUM} from '../data/ViewEnum'
+import {isViewGeneExpression} from './DataFunctions'
 
 function clearScreen(vg, width, height) {
-  vg.save();
+  vg.save()
   // eslint-disable-next-line no-param-reassign
-  vg.fillStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
-  vg.strokeStyle = '#FFFFFF'; // sets the color to fill in the rectangle with
-  vg.fillRect(0, 0, width, height);
+  vg.fillStyle = '#FFFFFF' // sets the color to fill in the rectangle with
+  vg.strokeStyle = '#FFFFFF' // sets the color to fill in the rectangle with
+  vg.fillRect(0, 0, width, height)
 }
 
 function findRegions(height, count) {
@@ -27,143 +27,143 @@ function findRegions(height, count) {
   // range of samples in the region.
   const regions = reduceByKey(range(count),
     (i) => ~~(i * height / count),
-    (i, y, r) => (r ? { ...r, end: i } : { y, start: i, end: i }));
-  const starts = Array.from(regions.keys());
-  const se = partitionN(starts, 2, 1, [height]);
+    (i, y, r) => (r ? { ...r, end: i } : { y, start: i, end: i }))
+  const starts = Array.from(regions.keys())
+  const se = partitionN(starts, 2, 1, [height])
 
   // XXX side-effecting map
-  map2(starts, se, (start, [s, e]) => regions.get(start).height = e - s);
+  map2(starts, se, (start, [s, e]) => regions.get(start).height = e - s)
 
-  return regions;
+  return regions
 }
 
 export function sumDataByType(data, type) {
-  let total = 0;
-  data.forEach((d) => total += d[type]);
-  return total;
+  let total = 0
+  data.forEach((d) => total += d[type])
+  return total
 }
 
 export function meanDataByType(data, type) {
-  let total = 0;
-  data.forEach((d) => total += d[type]);
-  return total / data.length;
+  let total = 0
+  data.forEach((d) => total += d[type])
+  return total / data.length
 }
 
 function generateMask(mutation4Score, mutation4ColorMask,
   mutation3Score, mutation3ColorMask, mutation2ColorMask) {
-  if (mutation4Score) return mutation4ColorMask;
-  if (mutation3Score) return mutation3ColorMask;
-  return mutation2ColorMask;
+  if (mutation4Score) return mutation4ColorMask
+  if (mutation3Score) return mutation3ColorMask
+  return mutation2ColorMask
 }
 
 function regionColor(data, type) {
   // let total = data.reduce(sumDataTotal(0));
-  const total = sumDataByType(data, type);
-  if (total === 0) return 0;
-  const p = total / data.length;
-  const scale = 5;
-  return 255 * p / scale;
+  const total = sumDataByType(data, type)
+  if (total === 0) return 0
+  const p = total / data.length
+  const scale = 5
+  return 255 * p / scale
 }
 
 export function getColorArray(colorString){
-  return colorString ? colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim())) : null;
+  return colorString ? colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim())) : null
 }
 
-export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
-export const interpolateGenesetScoreFunction = max => d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0));
+export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
+export const interpolateGenesetScoreFunction = max => d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
 
 
-export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score);
+export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score)
 export let interpolateGeneExpressionFont = (score) => {
   if(score==='NaN'){
-    return 'black';
+    return 'black'
   }
-  let colorArray = getColorArray(interpolateGeneExpressionFunction(score));
-  return colorArray && colorArray[0]+colorArray[2]>255 ? 'black' : 'white';
-};
+  let colorArray = getColorArray(interpolateGeneExpressionFunction(score))
+  return colorArray && colorArray[0]+colorArray[2]>255 ? 'black' : 'white'
+}
 
 function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
   labelHeight, cohortIndex,view) {
-  const height = totalHeight - labelHeight;
-  const tissueCount = data[0].length;
-  const regions = findRegions(height, tissueCount);
-  const img = ctx.createImageData(width, totalHeight);
+  const height = totalHeight - labelHeight
+  const tissueCount = data[0].length
+  const regions = findRegions(height, tissueCount)
+  const img = ctx.createImageData(width, totalHeight)
 
-  const cnvHighColorMask = getCNVHighColorMask();
-  const cnvLowColorMask = getCNVLowColorMask();
-  const mutation4ColorMask = getMutation4ColorMask();
-  const mutation3ColorMask = getMutation3ColorMask();
-  const mutation2ColorMask = getMutation2ColorMask();
+  const cnvHighColorMask = getCNVHighColorMask()
+  const cnvLowColorMask = getCNVLowColorMask()
+  const mutation4ColorMask = getMutation4ColorMask()
+  const mutation3ColorMask = getMutation3ColorMask()
+  const mutation2ColorMask = getMutation2ColorMask()
 
 
   // for each row / geneSet
   layout.forEach((el, i) => {
     // TODO: may be faster to transform the whole data cohort at once
-    let rowData = data[i];
+    let rowData = data[i]
     if (cohortIndex === 0) {
-      rowData = data[i].reverse();
+      rowData = data[i].reverse()
     }
 
     // let reverseMap = new Map(Array.from(regions).reverse());
     // XXX watch for poor iterator performance in this for...of.
     // eslint-disable-next-line no-restricted-syntax
     for (const rs of regions.keys()) {
-      const r = regions.get(rs);
-      const d = rowData.slice(r.start, r.end + 1);
+      const r = regions.get(rs)
+      const d = rowData.slice(r.start, r.end + 1)
 
-      const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 ;
+      const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 
       if(isViewGeneExpression(view)){
-        const geneExpressionScore = meanDataByType(d, 'geneExpression');
+        const geneExpressionScore = meanDataByType(d, 'geneExpression')
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-          const pxRow = y * width;
-          const buffStart = (pxRow + el.start) * 4;
-          const buffEnd = (pxRow + el.start + el.size) * 4;
+          const pxRow = y * width
+          const buffStart = (pxRow + el.start) * 4
+          const buffEnd = (pxRow + el.start + el.size) * 4
           for (let l = buffStart; l < buffEnd ; l += 4) {
-            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore));
-            img.data[l] = colorArray[0];
-            img.data[l + 1] = colorArray[1];
-            img.data[l + 2] = colorArray[2];
-            img.data[l + 3] = 255 ;
+            let colorArray = getColorArray(interpolateGeneExpressionFunction(geneExpressionScore))
+            img.data[l] = colorArray[0]
+            img.data[l + 1] = colorArray[1]
+            img.data[l + 2] = colorArray[2]
+            img.data[l + 3] = 255 
           }
         }
       }
       else{
-        const cnvHighScore = sumDataByType(d, 'cnvHigh');
-        const cnvLowScore = sumDataByType(d, 'cnvLow');
-        const cnvScore = sumDataByType(d, 'cnv');
-        const mutation4Score = sumDataByType(d, 'mutation4');
-        const mutation3Score = sumDataByType(d, 'mutation3');
+        const cnvHighScore = sumDataByType(d, 'cnvHigh')
+        const cnvLowScore = sumDataByType(d, 'cnvLow')
+        const cnvScore = sumDataByType(d, 'cnv')
+        const mutation4Score = sumDataByType(d, 'mutation4')
+        const mutation3Score = sumDataByType(d, 'mutation3')
         // const mutation2Score = sumDataByType(d, 'mutation2');
-        const mutationScore = sumDataByType(d, 'mutation');
-        const cnvColorMask = cnvHighScore > cnvLowScore ? cnvHighColorMask : cnvLowColorMask;
+        const mutationScore = sumDataByType(d, 'mutation')
+        const cnvColorMask = cnvHighScore > cnvLowScore ? cnvHighColorMask : cnvLowColorMask
         // take the highest one
-        const mutationColorMask = generateMask(mutation4Score,mutation4ColorMask,mutation3Score,mutation3ColorMask,mutation2ColorMask);
-        const cnvColor = cnvScore === 0 ? 0 : 255;
-        const mutationColor = mutationScore === 0 ? 0 : 255;
-        const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 ;
+        const mutationColorMask = generateMask(mutation4Score,mutation4ColorMask,mutation3Score,mutation3ColorMask,mutation2ColorMask)
+        const cnvColor = cnvScore === 0 ? 0 : 255
+        const mutationColor = mutationScore === 0 ? 0 : 255
+        const offsetHeight = cohortIndex === 0 ? 9 : labelHeight-2 
         for (let y = rs + offsetHeight; y < rs + r.height + offsetHeight; ++y) {
-          const pxRow = y * width;
-          const buffStart = (pxRow + el.start) * 4;
-          const buffEnd = (pxRow + el.start + el.size) * 4;
-          let buffMid = (buffEnd - buffStart) / 2 + buffStart;
+          const pxRow = y * width
+          const buffStart = (pxRow + el.start) * 4
+          const buffEnd = (pxRow + el.start + el.size) * 4
+          let buffMid = (buffEnd - buffStart) / 2 + buffStart
           // buffMid has to be a multiple of 4
-          buffMid += buffMid % 4;
+          buffMid += buffMid % 4
           for (let l = buffStart, m = buffMid; l < buffMid; l += 4, m += 4) {
-            img.data[l] = cnvColorMask[0];
-            img.data[l + 1] = cnvColorMask[1];
-            img.data[l + 2] = cnvColorMask[2];
-            img.data[l + 3] = cnvColor;
+            img.data[l] = cnvColorMask[0]
+            img.data[l + 1] = cnvColorMask[1]
+            img.data[l + 2] = cnvColorMask[2]
+            img.data[l + 3] = cnvColor
 
-            img.data[m] = mutationColorMask[0];
-            img.data[m + 1] = mutationColorMask[1];
-            img.data[m + 2] = mutationColorMask[2];
-            img.data[m + 3] = mutationColor;
+            img.data[m] = mutationColorMask[0]
+            img.data[m + 1] = mutationColorMask[1]
+            img.data[m + 2] = mutationColorMask[2]
+            img.data[m + 3] = mutationColor
           }
         }
       }
     }
-    ctx.putImageData(img, 0, 0);
-  });
+    ctx.putImageData(img, 0, 0)
+  })
 }
 
 
@@ -179,70 +179,70 @@ function findPathwayData(pathwayWidth, count) {
   // range of samples in the region.
   const regions = reduceByKey(range(count),
     (i) => ~~(i * pathwayWidth / count),
-    (i, x, r) => (r ? { ...r, end: i } : { x, start: i, end: i }));
-  const starts = Array.from(regions.keys());
-  const se = partitionN(starts, 2, 1, [pathwayWidth]);
+    (i, x, r) => (r ? { ...r, end: i } : { x, start: i, end: i }))
+  const starts = Array.from(regions.keys())
+  const se = partitionN(starts, 2, 1, [pathwayWidth])
 
   // XXX side-effecting map
-  map2(starts, se, (start, [s, e]) => regions.get(start).width = e - s);
+  map2(starts, se, (start, [s, e]) => regions.get(start).width = e - s)
 
-  return regions;
+  return regions
 }
 
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex, view, maxValue) {
-  const tissueCount = data[0].length;
-  const img = ctx.createImageData(width, totalHeight);
-  const sampleRegions = findPathwayData(width, tissueCount);
-  const colorFilter = view === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total';
+  const tissueCount = data[0].length
+  const img = ctx.createImageData(width, totalHeight)
+  const sampleRegions = findPathwayData(width, tissueCount)
+  const colorFilter = view === VIEW_ENUM.GENE_EXPRESSION ? 'geneExpression': 'total'
 
   layout.forEach((el, i) => {
     //     // TODO: may be faster to transform the whole data cohort at once
-    let rowData = data[i];
+    let rowData = data[i]
     if (cohortIndex === 0) {
-      rowData = rowData.reverse();
+      rowData = rowData.reverse()
     }
 
     // XXX watch for poor iterator performance in this for...of.
     for (const rs of sampleRegions.keys()) {
-      const r = sampleRegions.get(rs);
-      const d = rowData.slice(r.start, r.end + 1);
+      const r = sampleRegions.get(rs)
+      const d = rowData.slice(r.start, r.end + 1)
       //
-      const pxRow = el.start * 4 * img.width; // first column and row in the block
+      const pxRow = el.start * 4 * img.width // first column and row in the block
       if(isViewGeneExpression(view)){
         // const geneExpressionScore = sumDataByType(d, 'geneExpression');
-        const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity');
+        const geneExpressionScore = meanDataByType(d, 'geneExpressionPathwayActivity')
         for (let xPos = 0; xPos < r.width; ++xPos) {
-          const buffStart = pxRow + (xPos + r.x) * 4;
-          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+          const buffStart = pxRow + (xPos + r.x) * 4
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore));
-            img.data[l] = colorArray[0];
-            img.data[l + 1] = colorArray[1];
-            img.data[l + 2] = colorArray[2];
-            img.data[l + 3] = 255 ;
+            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
+            img.data[l] = colorArray[0]
+            img.data[l + 1] = colorArray[1]
+            img.data[l + 2] = colorArray[2]
+            img.data[l + 3] = 255 
           }
         }
       }
       else{
-        let color = regionColor(d, colorFilter);
-        color = color > 255 ? 255 : color;
+        let color = regionColor(d, colorFilter)
+        color = color > 255 ? 255 : color
 
         // start buffer at the correct column
         for (let xPos = 0; xPos < r.width; ++xPos) {
-          const buffStart = pxRow + (xPos + r.x) * 4;
-          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight);
+          const buffStart = pxRow + (xPos + r.x) * 4
+          const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
 
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            img.data[l] = colorMask[0];
-            img.data[l + 1] = colorMask[1];
-            img.data[l + 2] = colorMask[2];
-            img.data[l + 3] = color;
+            img.data[l] = colorMask[0]
+            img.data[l + 1] = colorMask[1]
+            img.data[l + 2] = colorMask[2]
+            img.data[l + 3] = color
           }
         }
       }
     }
-  });
-  ctx.putImageData(img, 0, 0);
+  })
+  ctx.putImageData(img, 0, 0)
 }
 
 
@@ -251,23 +251,23 @@ export default {
   drawGeneView(vg, props) {
     const {
       width, height, layout, cohortIndex, associatedData, filter
-    } = props;
+    } = props
 
-    clearScreen(vg, width, height);
+    clearScreen(vg, width, height)
     if (associatedData.length === 0) {
-      return;
+      return
     }
-    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex,filter);
+    drawGeneWithManyColorTypes(vg, width, height, layout, associatedData, GENE_LABEL_HEIGHT, cohortIndex,filter)
   },
 
   drawGeneSetView(vg, props) {
     const {
       width, layout, labelHeight, cohortIndex, associatedData, filter, maxValue
-    } = props;
-    const totalHeight = labelHeight * layout.length;
-    clearScreen(vg, width, totalHeight);
-    if(associatedData.length!==layout.length) return ;
-    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter, maxValue);
+    } = props
+    const totalHeight = labelHeight * layout.length
+    clearScreen(vg, width, totalHeight)
+    if(associatedData.length!==layout.length) return 
+    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter, maxValue)
   },
 
-};
+}

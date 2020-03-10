@@ -1,45 +1,45 @@
-import PureComponent from './PureComponent';
-import React from 'react';
-import BaseStyle from '../css/base.css';
-import FaEdit from 'react-icons/lib/fa/edit';
-import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc';
-import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc';
-import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right';
-import {Button} from 'react-toolbox/lib/button';
-import PropTypes from 'prop-types';
+import PureComponent from './PureComponent'
+import React from 'react'
+import BaseStyle from '../css/base.css'
+import FaEdit from 'react-icons/lib/fa/edit'
+import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
+import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
+import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right'
+import {Button} from 'react-toolbox/lib/button'
+import PropTypes from 'prop-types'
 import {
   fetchPathwayActivityMeans, getGeneSetsForView,  lookupGeneByName
-} from '../functions/FetchFunctions';
-import FaTrashO from 'react-icons/lib/fa/trash-o';
-import FaCheckSquare from 'react-icons/lib/fa/check-square';
-import FaTrash from 'react-icons/lib/fa/trash';
-import update from 'immutability-helper';
-import {Chip, Input} from 'react-toolbox';
-import Autocomplete from 'react-toolbox/lib/autocomplete';
-import FaPlusCircle from 'react-icons/lib/fa/plus-circle';
-import {ButtonGroup} from 'react-bootstrap';
-import Dialog from 'react-toolbox/lib/dialog';
-import {scorePathway} from '../functions/SortFunctions';
-import {isViewGeneExpression} from '../functions/DataFunctions';
-import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum';
+} from '../functions/FetchFunctions'
+import FaTrashO from 'react-icons/lib/fa/trash-o'
+import FaCheckSquare from 'react-icons/lib/fa/check-square'
+import FaTrash from 'react-icons/lib/fa/trash'
+import update from 'immutability-helper'
+import {Chip, Input} from 'react-toolbox'
+import Autocomplete from 'react-toolbox/lib/autocomplete'
+import FaPlusCircle from 'react-icons/lib/fa/plus-circle'
+import {ButtonGroup} from 'react-bootstrap'
+import Dialog from 'react-toolbox/lib/dialog'
+import {scorePathway} from '../functions/SortFunctions'
+import {isViewGeneExpression} from '../functions/DataFunctions'
+import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 
-const VIEW_LIMIT = 200;
-const CART_LIMIT = 45;
+const VIEW_LIMIT = 200
+const CART_LIMIT = 45
 
 export default class GeneSetEditor extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    let loadedPathways = [];
-    let cartPathways = [];
+    let loadedPathways = []
+    let cartPathways = []
     if (!isViewGeneExpression(props.view)) {
-      loadedPathways = getGeneSetsForView(this.props.view);
-      const pathwayLabels = this.props.pathways.map(p => p.golabel);
+      loadedPathways = getGeneSetsForView(this.props.view)
+      const pathwayLabels = this.props.pathways.map(p => p.golabel)
       // included data from original pathways
-      cartPathways = loadedPathways.filter(p => pathwayLabels.indexOf(p.golabel) >= 0);
-      const cartLabels = cartPathways.map(p => p.golabel);
-      cartPathways = [...cartPathways, ...this.props.pathways.filter(p => cartLabels.indexOf(p.golabel) < 0)];
+      cartPathways = loadedPathways.filter(p => pathwayLabels.indexOf(p.golabel) >= 0)
+      const cartLabels = cartPathways.map(p => p.golabel)
+      cartPathways = [...cartPathways, ...this.props.pathways.filter(p => cartLabels.indexOf(p.golabel) < 0)]
     }
 
     this.state = {
@@ -64,7 +64,7 @@ export default class GeneSetEditor extends PureComponent {
       cartPathwayLimit: CART_LIMIT,
       limit: VIEW_LIMIT,
       newGeneStateName:'',
-    };
+    }
 
 
 
@@ -72,103 +72,103 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   componentDidMount() {
-    let { selectedCohort, samples } = this.state;
+    let { selectedCohort, samples } = this.state
     if(isViewGeneExpression(this.props.view)){
-      fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData);
+      fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData)
     }
     else{
-      this.filterByName();
+      this.filterByName()
     }
   }
 
 
   componentDidUpdate() {
-    this.filterByName();
+    this.filterByName()
   }
 
   showScore(){
-    return isViewGeneExpression(this.props.view);
+    return isViewGeneExpression(this.props.view)
   }
 
   handleMeanActivityData = (output) => {
-    const pathways = getGeneSetsForView(this.props.view);
+    const pathways = getGeneSetsForView(this.props.view)
     let loadedPathways = pathways.map( p => {
-      p.firstGeneExpressionPathwayActivity = undefined ;
-      p.secondGeneExpressionPathwayActivity = undefined ;
-      return p ;
-    });
+      p.firstGeneExpressionPathwayActivity = undefined 
+      p.secondGeneExpressionPathwayActivity = undefined 
+      return p 
+    })
 
-    let indexMap = {};
+    let indexMap = {}
     pathways.forEach( (p,index) => {
-      indexMap[p.golabel] = index ;
-    });
+      indexMap[p.golabel] = index 
+    })
 
     for(let index in output.geneExpressionPathwayActivityA.field){
-      const field = output.geneExpressionPathwayActivityA.field[index];
-      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim();
-      const sourceIndex = indexMap[cleanField];
-      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index];
-      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index];
+      const field = output.geneExpressionPathwayActivityA.field[index]
+      const cleanField = field.indexOf(' (GO:') < 0 ? field :  field.substr(0,field.indexOf('GO:')-1).trim()
+      const sourceIndex = indexMap[cleanField]
+      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index]
+      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index]
     }
 
-    const pathwayLabels = this.props.pathways.map( p => p.golabel);
+    const pathwayLabels = this.props.pathways.map( p => p.golabel)
     // included data from original pathways
-    let cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 );
-    const cartLabels = cartPathways.map( p => p.golabel);
-    cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )];
+    let cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
+    const cartLabels = cartPathways.map( p => p.golabel)
+    cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )]
 
 
     this.setState({
       loadedPathways,
       cartPathways,
-    });
+    })
   };
 
   filterByName(){
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||  (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
-        const scoreA = scorePathway(a,this.state.sortBy);
-        const scoreB = scorePathway(b,this.state.sortBy);
+        const scoreA = scorePathway(a,this.state.sortBy)
+        const scoreB = scorePathway(b,this.state.sortBy)
         switch(this.state.sortBy) {
         default:
-          if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
-          if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
-          if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
-          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA) ;
+          if(scoreA==='NaN' && scoreB !=='NaN') return 1 
+          if(scoreA!=='NaN' && scoreB ==='NaN') return -1
+          if(scoreA==='NaN' && scoreB ==='NaN') return -1 
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA) 
         case SORT_ENUM.ALPHA:
-          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase())
         }
-      }) ;
+      }) 
 
     this.setState({
       filteredPathways: filteredPathways,
       totalPathways: filteredPathways.length
-    });
+    })
   }
 
   getSelectedCartData(){
     // find filteredPathways from each selectedFilter
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
-      .filter( f => this.state.cartPathways.indexOf(f)<0 );
+      .filter( f => this.state.cartPathways.indexOf(f)<0 )
 
-    const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0);
+    const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0)
     if(alreadyExists.length>0){
       // eslint-disable-next-line no-console
-      console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' );
+      console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' )
     }
 
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
-    });
-    return selectedCartData.slice(0,this.state.cartPathwayLimit);
+    })
+    return selectedCartData.slice(0,this.state.cartPathwayLimit)
   }
 
   handleAddSelectedToCart() {
     this.setState({
       cartPathways: this.getSelectedCartData()
-    });
+    })
   }
 
 
@@ -176,41 +176,41 @@ export default class GeneSetEditor extends PureComponent {
     const newGeneSet = {
       golabel:'New Gene Set',
       gene: []
-    };
-    this.setState({newGeneStateName:newGeneSet.golabel,selectedEditGeneSet: newGeneSet,});
+    }
+    this.setState({newGeneStateName:newGeneSet.golabel,selectedEditGeneSet: newGeneSet,})
   }
 
   handleEditGeneSet(geneSet,geneSetList) {
-    const selectedEditGeneSet = geneSetList.filter( gs => gs.golabel === geneSet);
-    this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined});
+    const selectedEditGeneSet = geneSetList.filter( gs => gs.golabel === geneSet)
+    this.setState({editGeneSet:geneSet,selectedEditGeneSet: selectedEditGeneSet.length > 0 ? selectedEditGeneSet[0] : undefined})
   }
 
   handleDoneEditGeneSet() {
-    const selectedGoLabel = this.state.selectedEditGeneSet.golabel;
+    const selectedGoLabel = this.state.selectedEditGeneSet.golabel
     // find the new one we want
     const selectedEditedGeneSet = update(this.state.selectedEditGeneSet,{
       firstGeneExpressionPathwayActivity : { $set: undefined },
       secondGeneExpressionPathwayActivity : { $set: undefined },
       modified: { $set: true},
       golabel: { $set: selectedGoLabel + '_modified'},
-    });
+    })
 
     // slice out found via golabel
     const pathwayIndex = this.state.loadedPathways.findIndex( p => {
-      return p.golabel === selectedGoLabel+'_modified' ;
-    });
+      return p.golabel === selectedGoLabel+'_modified' 
+    })
 
     const newPathways= pathwayIndex >=0 ?
       update(this.state.loadedPathways,{[pathwayIndex]: {$set:selectedEditedGeneSet}}) :
-      update(this.state.loadedPathways,{$push:[selectedEditedGeneSet]});
+      update(this.state.loadedPathways,{$push:[selectedEditedGeneSet]})
 
     const cartIndex = this.state.cartPathways.findIndex( p => {
-      return p.golabel === selectedGoLabel ;
-    });
+      return p.golabel === selectedGoLabel 
+    })
 
     const newCart = cartIndex < 0 ?
       update(this.state.cartPathways,{$push:[selectedEditedGeneSet]}):
-      update(this.state.cartPathways,{[cartIndex]: {$set:selectedEditedGeneSet}});
+      update(this.state.cartPathways,{[cartIndex]: {$set:selectedEditedGeneSet}})
 
     this.setState(
       {
@@ -219,100 +219,100 @@ export default class GeneSetEditor extends PureComponent {
         cartPathways:newCart,
         loadedPathways:newPathways,
       }
-    );
+    )
   }
 
   handleCancelEditGeneSet() {
-    this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined});
+    this.setState({editGeneSet:undefined,selectedEditGeneSet:undefined})
   }
 
   handleClearCart() {
-    this.setState({cartPathways:[]});
+    this.setState({cartPathways:[]})
   }
 
 
   handleAddGeneToGeneSet(newGene) {
-    const foundGene = this.state.selectedEditGeneSet.gene.findIndex( g => g===newGene[0]);
+    const foundGene = this.state.selectedEditGeneSet.gene.findIndex( g => g===newGene[0])
     if(foundGene>=0){
-      alert('Gene already added: '+newGene[0]) ;
-      return ;
+      alert('Gene already added: '+newGene[0]) 
+      return 
     }
     this.setState({
       selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
         gene: { $push: newGene }
       })
-    });
+    })
   }
 
   handleRemoveGeneFromGeneSet(){
-    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  this.state.selectedGenesForGeneSet.indexOf(g)<0 );
+    const newGenes = this.state.selectedEditGeneSet.gene.filter( g =>  this.state.selectedGenesForGeneSet.indexOf(g)<0 )
     this.setState({
       selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
         gene: { $set: newGenes }
       })
-    });
+    })
   }
 
   handleRemoveSelectedFromCart() {
     // find filteredPathways from each selectedFilter
     const selectedCartPathways = this.state.cartPathways
-      .filter( f => this.state.selectedCartPathways.indexOf(f.golabel)<0 );
+      .filter( f => this.state.selectedCartPathways.indexOf(f.golabel)<0 )
     this.setState({
       cartPathways: selectedCartPathways
-    });
+    })
   }
 
   // TODO: push back to production pathways
   handleViewGeneSets() {
-    this.props.setPathways(this.getSelectedCartData());
+    this.props.setPathways(this.getSelectedCartData())
   }
   // TODO: push back to production pathways
   handleCancel() {
-    this.props.cancelPathwayEdit();
+    this.props.cancelPathwayEdit()
   }
 
   handleResetGeneSets() {
-    this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)});
+    this.setState({cartPathways:this.props.pathways.slice(0,this.state.limit)})
   }
 
   queryNewGenes(geneQuery) {
     if (geneQuery.trim().length === 0) {
       this.setState({
         geneOptions: []
-      });
-      return;
+      })
+      return
     }
 
-    lookupGeneByName(geneQuery,(matches) => { this.setState( {geneOptions:matches});});
+    lookupGeneByName(geneQuery,(matches) => { this.setState( {geneOptions:matches})})
   }
 
   handleNewGeneSetNameInput = (name, value) => {
-    this.setState({newGeneStateName:value});
+    this.setState({newGeneStateName:value})
   };
 
 
   handleNewGeneSetSaveAndStart = () => {
-    const nameToEdit = this.state.newGeneStateName;
+    const nameToEdit = this.state.newGeneStateName
     const selectedEditGeneSet = {
       firstGeneExpressionPathwayActivity : undefined,
       secondGeneExpressionPathwayActivity : undefined,
       modified: true,
       golabel: nameToEdit,
       gene: [],
-    };
+    }
 
-    this.setState({editGeneSet:nameToEdit,newGeneStateName:'',selectedEditGeneSet});
+    this.setState({editGeneSet:nameToEdit,newGeneStateName:'',selectedEditGeneSet})
   };
 
 
   cancelUpdate(){
     this.setState({
       newGeneStateName: '',
-    });
+    })
   }
 
   isCartFull() {
-    return this.state.cartPathways.length === this.state.cartPathwayLimit;
+    return this.state.cartPathways.length === this.state.cartPathwayLimit
   }
 
   render() {
@@ -351,7 +351,7 @@ export default class GeneSetEditor extends PureComponent {
                         value={this.state.sortBy}
                       >
                         {Object.entries(SORT_ENUM).map(s => {
-                          return <option key={s[0]} value={s[0]}>{s[1]}</option>;
+                          return <option key={s[0]} value={s[0]}>{s[1]}</option>
                         })
                         }
                       </select>
@@ -417,9 +417,9 @@ export default class GeneSetEditor extends PureComponent {
                   multiple
                   onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                      return opt.value;
-                    });
-                    this.setState({selectedFilteredPathways: selectedEvents});
+                      return opt.value
+                    })
+                    this.setState({selectedFilteredPathways: selectedEvents})
                   }}
                   style={{overflow: 'scroll', height: 200, width: 220}}
                 >
@@ -429,7 +429,7 @@ export default class GeneSetEditor extends PureComponent {
                         {this.showScore() &&
                         `${scorePathway(p, SORT_ENUM.DIFF)}, `
                         }
-                        N: {p.gene.length}) {p.golabel}</option>);
+                        N: {p.gene.length}) {p.golabel}</option>)
                     })
                   }
                 </select>
@@ -458,7 +458,7 @@ export default class GeneSetEditor extends PureComponent {
                           value={this.state.sortCartBy}
                         >
                           {Object.entries(SORT_ENUM).map(s => {
-                            return <option key={s[0]} value={s[0]}>{s[1]}</option>;
+                            return <option key={s[0]} value={s[0]}>{s[1]}</option>
                           })}
                         </select>
                       </td>
@@ -500,31 +500,31 @@ export default class GeneSetEditor extends PureComponent {
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                      return opt.value;
-                    });
-                    this.setState({selectedCartPathways: selectedEvents});
+                      return opt.value
+                    })
+                    this.setState({selectedCartPathways: selectedEvents})
                   }}
                   style={{overflow: 'scroll', height: 250, width: 250}}
                 >
                   {
                     this.state.cartPathways.sort((a, b) => {
-                      const scoreA = scorePathway(a,this.state.sortCartBy);
-                      const scoreB = scorePathway(b,this.state.sortCartBy);
+                      const scoreA = scorePathway(a,this.state.sortCartBy)
+                      const scoreB = scorePathway(b,this.state.sortCartBy)
                       switch (this.state.sortCartBy) {
                       case SORT_ENUM.ALPHA:
-                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase());
+                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase())
                       default:
-                        if(scoreA==='NaN' && scoreB !=='NaN') return 1 ;
-                        if(scoreA!=='NaN' && scoreB ==='NaN') return -1;
-                        if(scoreA==='NaN' && scoreB ==='NaN') return -1 ;
-                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA);
+                        if(scoreA==='NaN' && scoreB !=='NaN') return 1 
+                        if(scoreA!=='NaN' && scoreB ==='NaN') return -1
+                        if(scoreA==='NaN' && scoreB ==='NaN') return -1 
+                        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
                       }
                     }).map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.showScore() &&
                         `${scorePathway(p,SORT_ENUM.DIFF)}, `
                         }
-                        N: {p.gene.length}) {p.golabel}</option>);
+                        N: {p.gene.length}) {p.golabel}</option>)
                     })
                   }
                 </select>
@@ -547,9 +547,9 @@ export default class GeneSetEditor extends PureComponent {
                             multiple
                             onChange={(event) => {
                               const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
-                                return opt.value;
-                              });
-                              this.setState({ selectedGenesForGeneSet: selectedEvents});
+                                return opt.value
+                              })
+                              this.setState({ selectedGenesForGeneSet: selectedEvents})
                             }}
                             style={{height:350,width: 80}}
                           >
@@ -576,7 +576,7 @@ export default class GeneSetEditor extends PureComponent {
                                     disabled={this.state.newGene.length > 0}
                                     label='&nbsp;&nbsp;Add Gene'
                                     onChange={(newGene) => {
-                                      this.handleAddGeneToGeneSet(newGene);
+                                      this.handleAddGeneToGeneSet(newGene)
                                     // this.setState({newGene: newGene});
                                     }}
                                     onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
@@ -646,7 +646,7 @@ export default class GeneSetEditor extends PureComponent {
           </tbody>
         </table>
       </div>
-    );
+    )
   }
 }
 
@@ -656,4 +656,4 @@ GeneSetEditor.propTypes = {
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
-};
+}

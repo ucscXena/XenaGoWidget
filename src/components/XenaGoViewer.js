@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import PureComponent from './PureComponent';
-import PathwayScoresView from './PathwayScoresView';
-import BaseStyle from '../css/base.css';
-import HoverGeneView from './HoverGeneView';
-import {Card,Button} from 'react-toolbox';
+import React from 'react'
+import PropTypes from 'prop-types'
+import PureComponent from './PureComponent'
+import PathwayScoresView from './PathwayScoresView'
+import BaseStyle from '../css/base.css'
+import HoverGeneView from './HoverGeneView'
+import {Card,Button} from 'react-toolbox'
 
-import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp';
+import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp'
 import {
   getGenesForPathways,
-} from '../functions/CohortFunctions';
-import {partition} from '../functions/MathFunctions';
-import {GeneSetInfoBox} from './GeneSetInfoBox';
-const MIN_WIDTH = 400;
-const MIN_COL_WIDTH = 12;
+} from '../functions/CohortFunctions'
+import {partition} from '../functions/MathFunctions'
+import {GeneSetInfoBox} from './GeneSetInfoBox'
+const MIN_WIDTH = 400
+const MIN_COL_WIDTH = 12
 
-let layout = (width, {length = 0} = {}) => partition(width, length);
+let layout = (width, {length = 0} = {}) => partition(width, length)
 
 const style = {
   pathway: {
@@ -30,41 +30,41 @@ const style = {
     expressionColumns: 4,
     expressionWidth: 400,
   },
-};
+}
 
 
 export default class XenaGoViewer extends PureComponent {
 
     handleGeneHover = (geneHoverProps) => {
       if (geneHoverProps && geneHoverProps.expression) {
-        geneHoverProps.cohortIndex = this.props.cohortIndex;
-        geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected;
+        geneHoverProps.cohortIndex = this.props.cohortIndex
+        geneHoverProps.expression.samplesAffected = geneHoverProps.pathway.samplesAffected
       }
-      this.props.onGeneHover(geneHoverProps);
+      this.props.onGeneHover(geneHoverProps)
 
     };
 
     render() {
-      let geneList = getGenesForPathways(this.props.pathways);
+      let geneList = getGenesForPathways(this.props.pathways)
 
       let {renderHeight, renderOffset, cohortIndex,filter,
         geneDataStats, geneHoverData, onEditCohorts, onSetCollapsed , collapsed,
         highlightedGene, colorSettings, cohortColor,
         pathwayData, subCohortCounts,
-      } = this.props;
+      } = this.props
 
       // let { processing, pathwayData } = this.state ;
-      let genesInGeneSet = geneDataStats.data.length;
-      let calculatedWidth;
+      let genesInGeneSet = geneDataStats.data.length
+      let calculatedWidth
       if (genesInGeneSet < 8) {
-        calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX;
+        calculatedWidth = genesInGeneSet * MIN_GENE_WIDTH_PX
       } else if (genesInGeneSet > 85 && collapsed) {
-        calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX;
+        calculatedWidth = MAX_GENE_LAYOUT_WIDTH_PX
       } else {
-        calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * geneDataStats.pathways.length);
+        calculatedWidth = Math.max(MIN_WIDTH, MIN_COL_WIDTH * geneDataStats.pathways.length)
       }
 
-      let layoutData = layout(calculatedWidth, geneDataStats.data);
+      let layoutData = layout(calculatedWidth, geneDataStats.data)
       if (pathwayData) {
         return (
           <table>
@@ -139,7 +139,7 @@ export default class XenaGoViewer extends PureComponent {
               }
             </tbody>
           </table>
-        );
+        )
       }
     }
 }
@@ -173,4 +173,4 @@ XenaGoViewer.propTypes = {
 
   subCohortCounts: PropTypes.any,
   swapCohorts: PropTypes.any.isRequired,
-};
+}

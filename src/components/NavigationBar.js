@@ -1,10 +1,10 @@
-import React from 'react';
-import { Button, AppBar,  Navigation } from 'react-toolbox';
-import PureComponent from '../../src/components/PureComponent';
-import BaseStyle from '../css/base.css';
-import * as PropTypes from 'underscore';
-import Autocomplete from 'react-toolbox/lib/autocomplete';
-import AutocompleteTheme from '../css/autocomplete.css';
+import React from 'react'
+import { Button, AppBar,  Navigation } from 'react-toolbox'
+import PureComponent from '../../src/components/PureComponent'
+import BaseStyle from '../css/base.css'
+import * as PropTypes from 'underscore'
+import Autocomplete from 'react-toolbox/lib/autocomplete'
+import AutocompleteTheme from '../css/autocomplete.css'
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -16,33 +16,33 @@ const GithubIcon = () => (
       />
     </g>
   </svg>
-);
+)
 
 // eslint-disable-next-line react/no-multi-comp
 const XenaIcon = () => (
   <img alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
-);
+)
 
 // eslint-disable-next-line react/no-multi-comp
 export default class NavigationBar extends PureComponent {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       geneNameSearch: '',
-    };
+    }
   }
 
     handleSearch = (text) => {
-      this.props.searchHandler(text);
+      this.props.searchHandler(text)
     };
 
     acceptGeneHandler = (text) => {
-      this.props.acceptGeneHandler(text);
+      this.props.acceptGeneHandler(text)
     };
 
     showHelp = () => {
-      window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about');
+      window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')
     };
 
     render() {
@@ -62,12 +62,12 @@ export default class NavigationBar extends PureComponent {
                         label='Find Gene'
                         multiple={false}
                         onChange={(searchText) => {
-                          this.acceptGeneHandler(searchText);
-                          this.setState({geneNameSearch: searchText});
+                          this.acceptGeneHandler(searchText)
+                          this.setState({geneNameSearch: searchText})
                         }}
                         onQueryChange={(geneQuery) => {
-                          this.handleSearch(geneQuery);
-                          this.setState({geneNameSearch: geneQuery});
+                          this.handleSearch(geneQuery)
+                          this.setState({geneNameSearch: geneQuery})
                         }}
                         source={this.props.geneOptions}
                         theme={AutocompleteTheme}
@@ -91,7 +91,7 @@ export default class NavigationBar extends PureComponent {
             </Navigation>
           </AppBar>
 
-        </div>);
+        </div>)
     }
 
 
@@ -101,4 +101,4 @@ NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
-};
+}

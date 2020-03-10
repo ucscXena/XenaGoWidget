@@ -1,10 +1,10 @@
-import ReactDOM from 'react-dom';
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {omit,isEqual} from 'underscore';
+import ReactDOM from 'react-dom'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+import {omit,isEqual} from 'underscore'
 
 // const omitArray = ['associatedData','draw','data'];
-const omitArray = ['draw','data'];
+const omitArray = ['draw','data']
 const styles = {
   canvas: {
     cursor: 'crosshair',
@@ -31,48 +31,48 @@ const styles = {
     , zIndex: 9999
     , opacity: 1
   }
-};
+}
 
 export default class CanvasDrawing extends Component {
 
 
   componentDidMount() {
-    let canvas = ReactDOM.findDOMNode(this.refs.canvas);
-    this.vg = canvas.getContext('2d');
-    this.draw(this.props);
+    let canvas = ReactDOM.findDOMNode(this.refs.canvas)
+    this.vg = canvas.getContext('2d')
+    this.draw(this.props)
   }
 
   // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(newProps) {
     if (this.vg && ( !isEqual(omit(newProps,omitArray),
       omit(this.props,omitArray)) ) ) {
-      this.draw(newProps);
+      this.draw(newProps)
     }
   }
 
   shouldComponentUpdate() {
-    return false;
+    return false
   }
 
   draw(props) {
     let {draw, ...drawProps} = props,
       {height, width} = drawProps,
       el = ReactDOM.findDOMNode(this.refs.canvas),
-      vg = this.vg;
+      vg = this.vg
 
     if (el.width !== width) {
-      el.width = width;
+      el.width = width
     }
 
     if (el.height !== height) {
-      el.height = height;
+      el.height = height
     }
 
-    draw(vg, drawProps);
+    draw(vg, drawProps)
   }
 
   render() {
-    let {width, height} = this.props;
+    let {width, height} = this.props
     return (
       <canvas
         height={height}
@@ -83,7 +83,7 @@ export default class CanvasDrawing extends Component {
         style={styles.canvas}
         width={width}
       />
-    );
+    )
   }
 
 }
@@ -96,5 +96,5 @@ CanvasDrawing.propTypes = {
   onHover: PropTypes.any,
   onMouseOut: PropTypes.any,
   width: PropTypes.any.isRequired,
-};
+}
 

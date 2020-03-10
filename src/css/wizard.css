@@ -1,0 +1,56 @@
+
+.wizardBox{
+    border-radius: 10px;
+    background-color: goldenrod;
+    padding: 8px;
+    margin: 2px;
+}
+
+.wizardAnalysisButtonSelected{
+    border-radius: 10px;
+    background-color: darkblue;
+    color: white;
+}
+
+.wizardAnalysisButton{
+    border-radius: 10px;
+    margin: 5px;
+    background-color: white;
+    color: black;
+}
+
+.wizardAnalysisGeneExpressionButton{
+    border-radius: 10px;
+    margin: 5px;
+    background-color: #2777b4;
+    color: black;
+}
+
+.wizardPreviousButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+    margin-left: 0;
+    display:inline;
+}
+
+.wizardNextButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+    margin-left: 80%;
+    display:inline;
+}
+
+
+.wizardFinishButton{
+    border-radius: 10px;
+    background-color: #2777b4;
+    margin-left: 10%;
+    display:inline;
+}
+
+.wizardCloseThisWindow{
+    font-family: SansSerif;
+    padding: 5px;
+    margin: 5px;
+    display:inline;
+}
