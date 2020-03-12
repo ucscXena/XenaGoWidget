@@ -12,6 +12,14 @@ import {SORT_ENUM} from '../../data/SortEnum'
 
 export class AnalysisWizard extends PureComponent {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      showGeneSetOptions : false
+    }
+  }
+
+
   render () {
     const { cohort, onSelectAnalysis, comparisonDescription,
       geneSetLimit, geneSetFilterMethod, onSelectGeneSetLimit,onSelectGeneSetMethod} = this.props
@@ -49,7 +57,8 @@ export class AnalysisWizard extends PureComponent {
               onClick={onSelectAnalysis}/>
             }
             <br/>
-            <button>+ Advanced Options</button>
+            <button onClick={() => this.setState({showGeneSetOptions:!this.state.showGeneSetOptions})}>+ Advanced Options</button>
+            {this.state.showGeneSetOptions &&
             <table>
               <tbody>
                 <tr>
@@ -73,8 +82,8 @@ export class AnalysisWizard extends PureComponent {
                       value={geneSetFilterMethod}
                     >
                       {
-                        Object.values(SORT_ENUM).filter( f=> f!=='Alpha').map( v =>
-                          (<option key={v} >{v}</option>)
+                        Object.values(SORT_ENUM).filter(f => f !== 'Alpha').map(v =>
+                          (<option key={v}>{v}</option>)
                         )
                       }
                     </select>
@@ -82,6 +91,7 @@ export class AnalysisWizard extends PureComponent {
                 </tr>
               </tbody>
             </table>
+            }
             <h3>Mutation / CNV <Button><FaInfo/></Button></h3>
             <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>

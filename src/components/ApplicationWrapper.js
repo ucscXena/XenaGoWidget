@@ -190,7 +190,7 @@ export class ApplicationWrapper extends PureComponent {
           <Button
             className={Wizard.wizardPreviousButton}
             onClick={() => this.handleGotoWizard('analysis')}
-            raised>&lArr; Change Gene Set Selection</Button>
+            raised>&lArr; Change Analysis</Button>
         </div>
       )
     }
