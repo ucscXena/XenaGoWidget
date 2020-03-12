@@ -3,8 +3,6 @@ import PureComponent from './PureComponent'
 import QueryString from 'querystring'
 import XenaGeneSetApp from './XenaGeneSetApp'
 import {AnalysisWizard} from './wizard/AnalysisWizard'
-// import {GeneSetWizard} from './wizard/GeneSetWizard'
-// import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
 import {generateUrl} from '../functions/UrlFunctions'
 import {Button} from 'react-toolbox/lib'
@@ -28,8 +26,8 @@ export class ApplicationWrapper extends PureComponent {
       ,cohort2Color:urlVariables.cohort2Color
 
       ,wizard: urlVariables.wizard
-      ,geneSetLimit: urlVariables.geneSetLimit
-      ,geneSetFilterMethod: urlVariables.geneSetFilterMethod
+      ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 40
+      ,geneSetFilterMethod: urlVariables.geneSetFilterMethod ? urlVariables.geneSetFilterMethod :  SORT_ENUM.CONTRAST_DIFF
       ,geneSetSortMethod: urlVariables.geneSetSortMethod
     }
   }

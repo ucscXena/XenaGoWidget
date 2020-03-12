@@ -17,6 +17,7 @@
     margin: 5px;
     background-color: white;
     color: black;
+    cursor: pointer;
 }
 
 .wizardAnalysisGeneExpressionButton{
@@ -49,8 +50,19 @@
 }
 
 .wizardCloseThisWindow{
-    font-family: SansSerif;
+    font-family: sans-serif;
     padding: 5px;
     margin: 5px;
     display:inline;
+}
+
+.advancedOptions{
+  /*font-family: "Roboto","Helvetica","Arial";*/
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  display: inline;
+  cursor: pointer;
 }
