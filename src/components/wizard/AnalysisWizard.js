@@ -9,20 +9,28 @@ import FaInfo from 'react-icons/lib/fa/info-circle'
 import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
 import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
 import {SORT_ENUM} from '../../data/SortEnum'
+// import Dialog from 'react-toolbox/lib/dialog'
 
+const HELP_LINK = 'https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about#analysis'
 
 export class AnalysisWizard extends PureComponent {
 
   constructor(props) {
     super(props)
     this.state = {
-      showGeneSetOptions : false
+      showGeneSetOptions : false,
+      showHelp: false,
     }
   }
 
   handleHelpClick = () => {
-    alert('showing help')
+    window.open(HELP_LINK,'_blank')
+    // this.setState({showHelp:true})
   }
+  //
+  // handleCloseHelp = () => {
+  //   this.setState({showHelp:false})
+  // }
 
   render () {
     const { cohort, onSelectAnalysis, comparisonDescription,
@@ -31,6 +39,19 @@ export class AnalysisWizard extends PureComponent {
 
     return (
       <div className={Wizard.wizardBox}>
+        {/*<Dialog*/}
+        {/*  active={this.state.showHelp}*/}
+        {/*  onEscKeyDown={this.handleCloseHelp}*/}
+        {/*  onOverlayClick={this.handleCloseHelp}*/}
+        {/*  title='Analysis Help'*/}
+        {/*  // type='small'*/}
+        {/*>*/}
+        {/*  <iframe height='100%' src={HELP_LINK} width='100%'/>*/}
+        {/*  /!*<div>*!/*/}
+        {/*  /!*  Help*!/*/}
+        {/*  /!*</div>*!/*/}
+        {/*</Dialog>*/}
+
         <Helmet
           link={[
             {
