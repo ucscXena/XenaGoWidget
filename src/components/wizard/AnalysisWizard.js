@@ -7,12 +7,14 @@ import {Helmet} from 'react-helmet'
 import {AnalysisButton} from './AnalysisButton'
 import {Button} from 'react-toolbox'
 import FaInfo from 'react-icons/lib/fa/info-circle'
+import {SORT_ENUM} from '../../data/SortEnum'
 
 
 export class AnalysisWizard extends PureComponent {
 
   render () {
-    const { cohort, onSelectAnalysis,} = this.props
+    const { cohort, onSelectAnalysis, comparisonDescription,
+      geneSetLimit, geneSetFilterMethod, onSelectGeneSetLimit,onSelectGeneSetMethod} = this.props
     const title = `Select Analysis for ${cohort}`
 
     return (
@@ -31,6 +33,9 @@ export class AnalysisWizard extends PureComponent {
           title={title}
         />
         {/*<h3>Analyzing Cohort: <u>{cohort}</u></h3>*/}
+        <h4>
+          {comparisonDescription}
+        </h4>
         <h2>Select Analysis Method </h2>
         {
           <div>
@@ -45,6 +50,38 @@ export class AnalysisWizard extends PureComponent {
             }
             <br/>
             <button>+ Advanced Options</button>
+            <table>
+              <tbody>
+                <tr>
+                  <th align='right'>
+                    <u>Maximum Gene Sets</u>:
+                  </th>
+                  <td>
+                    <input
+                      onChange={(value) => onSelectGeneSetLimit(value)}
+                      type='text' value={geneSetLimit}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <th align='right'>
+                    <u>Gene Set Filtering Method</u>:
+                  </th>
+                  <td>
+                    <select
+                      onChange={(value) => onSelectGeneSetMethod(value)}
+                      value={geneSetFilterMethod}
+                    >
+                      {
+                        Object.values(SORT_ENUM).filter( f=> f!=='Alpha').map( v =>
+                          (<option key={v} >{v}</option>)
+                        )
+                      }
+                    </select>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <h3>Mutation / CNV <Button><FaInfo/></Button></h3>
             <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
@@ -64,6 +101,11 @@ export class AnalysisWizard extends PureComponent {
 }
 AnalysisWizard.propTypes = {
   cohort: PropTypes.string.isRequired,
+  comparisonDescription: PropTypes.string.isRequired,
+  geneSetFilterMethod: PropTypes.string.isRequired,
+  geneSetLimit: PropTypes.any.isRequired,
   onNext: PropTypes.func.isRequired,
   onSelectAnalysis: PropTypes.func.isRequired,
+  onSelectGeneSetLimit: PropTypes.func.isRequired,
+  onSelectGeneSetMethod: PropTypes.func.isRequired,
 }

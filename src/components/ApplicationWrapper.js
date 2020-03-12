@@ -155,6 +155,7 @@ export class ApplicationWrapper extends PureComponent {
     const comparisonDescription = this.generateComparisonDescription()
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
+        comparisonDescription={comparisonDescription}
         cohort={this.state.cohort}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
