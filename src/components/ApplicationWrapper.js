@@ -56,7 +56,6 @@ export class ApplicationWrapper extends PureComponent {
   openUrl = (finalUrl) => {
     // window.open(window.location.origin+'xena/#'+finalUrl, '_blank')
     // console.log('opening the final url',finalUrl)
-    console.log('node environment',process.env.NODE_ENV)
     if(process.env.NODE_ENV === 'production'){
       window.open(window.location.origin+'/xena/#'+finalUrl, '_blank')
     }
@@ -155,10 +154,14 @@ export class ApplicationWrapper extends PureComponent {
     const comparisonDescription = this.generateComparisonDescription()
     if (this.state.wizard === 'analysis') {
       return (<AnalysisWizard
-        comparisonDescription={comparisonDescription}
         cohort={this.state.cohort}
+        comparisonDescription={comparisonDescription}
+        geneSetFilterMethod={this.state.geneSetFilterMethod}
+        geneSetLimit={this.state.geneSetLimit}
         onNext={this.handleGotoWizard}
         onSelectAnalysis={this.handleSelectAnalysis}
+        onSelectGeneSetLimit={this.handleGeneSetLimit}
+        onSelectGeneSetMethod={this.handleGeneSetMethod}
       />)
     }
     // if (this.state.wizard === 'genesets') {
