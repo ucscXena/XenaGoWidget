@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {Helmet} from 'react-helmet'
 import {AnalysisButton} from './AnalysisButton'
+import {Button} from 'react-toolbox'
+import FaInfo from 'react-icons/lib/fa/info-circle'
 
 
 export class AnalysisWizard extends PureComponent {
@@ -28,10 +30,12 @@ export class AnalysisWizard extends PureComponent {
           ]}
           title={title}
         />
-        <h3>Analyzing Cohort: <u>{cohort}</u></h3>
+        {/*<h3>Analyzing Cohort: <u>{cohort}</u></h3>*/}
+        <h2>Select Analysis Method </h2>
         {
           <div>
-            <h3><b>Gene Expression </b> (select gene set filtering method)</h3>
+            <h3>Gene Expression <Button><FaInfo/></Button></h3>
+
             <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
             {cohort.indexOf('LUAD') >= 0 &&
@@ -39,7 +43,9 @@ export class AnalysisWizard extends PureComponent {
               analysis={VIEW_ENUM.REGULON}
               onClick={onSelectAnalysis}/>
             }
-            <h3><b>Mutation / CNV</b> (default gene sets)</h3>
+            <br/>
+            <button>+ Advanced Options</button>
+            <h3>Mutation / CNV <Button><FaInfo/></Button></h3>
             <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>

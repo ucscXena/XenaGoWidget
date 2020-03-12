@@ -3,8 +3,8 @@ import PureComponent from './PureComponent'
 import QueryString from 'querystring'
 import XenaGeneSetApp from './XenaGeneSetApp'
 import {AnalysisWizard} from './wizard/AnalysisWizard'
-import {GeneSetWizard} from './wizard/GeneSetWizard'
-import {isViewGeneExpression} from '../functions/DataFunctions'
+// import {GeneSetWizard} from './wizard/GeneSetWizard'
+// import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
 import {generateUrl} from '../functions/UrlFunctions'
 import {Button} from 'react-toolbox/lib'
@@ -67,43 +67,43 @@ export class ApplicationWrapper extends PureComponent {
 
 
   handleSelectAnalysis = (analysis) => {
-    if(isViewGeneExpression(analysis)){
-      location.hash = `${location.hash}&view=${analysis}`
-      this.setState({
-        filter:analysis,
-        wizard:'genesets',
-        geneSetLimit: 40,
-        geneSetFilterMethod:   SORT_ENUM.CONTRAST_DIFF ,
-        geneSetSortMethod:  SORT_ENUM.DIFF ,
-      })
-    }
-    else{
-      // set the URL here
-      let finalUrl = generateUrl(
-        analysis,
-        undefined,
-        this.state.cohort,
-        this.state.cohort,
-        this.state.selectedSubCohorts1,
-        this.state.selectedSubCohorts2,
-      )
-      finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
-      finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
-      finalUrl += `&cohort1Color=${this.state.cohort1Color}`
-      finalUrl += `&cohort2Color=${this.state.cohort2Color}`
-      finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
-      finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
-      finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
+    // if(isViewGeneExpression(analysis)){
+    //   location.hash = `${location.hash}&view=${analysis}`
+    //   this.setState({
+    //     filter:analysis,
+    //     wizard:'genesets',
+    //     geneSetLimit: 40,
+    //     geneSetFilterMethod:   SORT_ENUM.CONTRAST_DIFF ,
+    //     geneSetSortMethod:  SORT_ENUM.DIFF ,
+    //   })
+    // }
+    // else{
+    // set the URL here
+    let finalUrl = generateUrl(
+      analysis,
+      undefined,
+      this.state.cohort,
+      this.state.cohort,
+      this.state.selectedSubCohorts1,
+      this.state.selectedSubCohorts2,
+    )
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
+    finalUrl += `&cohort1Color=${this.state.cohort1Color}`
+    finalUrl += `&cohort2Color=${this.state.cohort2Color}`
+    finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
+    finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
+    finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-      this.openUrl(finalUrl)
-      this.setState({
-        filter:analysis,
-        wizard:'finished',
-        geneSetLimit: 40,
-        geneSetFilterMethod:   SORT_ENUM.ALPHA,
-        geneSetSortMethod:  SORT_ENUM.ALPHA,
-      })
-    }
+    this.openUrl(finalUrl)
+    this.setState({
+      filter:analysis,
+      wizard:'finished',
+      geneSetLimit: 40,
+      geneSetFilterMethod:   SORT_ENUM.ALPHA,
+      geneSetSortMethod:  SORT_ENUM.ALPHA,
+    })
+    // }
 
   }
 
@@ -160,21 +160,21 @@ export class ApplicationWrapper extends PureComponent {
         onSelectAnalysis={this.handleSelectAnalysis}
       />)
     }
-    if (this.state.wizard === 'genesets') {
-      return (<GeneSetWizard
-        analysisMethod={this.state.filter}
-        cohort={this.state.cohort}
-        comparisonDescription={comparisonDescription}
-        geneSetFilterMethod={this.state.geneSetFilterMethod}
-        geneSetLimit={this.state.geneSetLimit}
-        geneSetSortMethod={this.state.geneSetSortMethod}
-        onFinish={this.handleFinish}
-        onPrevious={this.handleGotoWizard}
-        onSelectGeneSetLimit={this.handleGeneSetLimit}
-        onSelectGeneSetMethod={this.handleGeneSetMethod}
-        onSelectGeneSetSort={this.handleGeneSetSort}
-      />)
-    }
+    // if (this.state.wizard === 'genesets') {
+    //   return (<GeneSetWizard
+    //     analysisMethod={this.state.filter}
+    //     cohort={this.state.cohort}
+    //     comparisonDescription={comparisonDescription}
+    //     geneSetFilterMethod={this.state.geneSetFilterMethod}
+    //     geneSetLimit={this.state.geneSetLimit}
+    //     geneSetSortMethod={this.state.geneSetSortMethod}
+    //     onFinish={this.handleFinish}
+    //     onPrevious={this.handleGotoWizard}
+    //     onSelectGeneSetLimit={this.handleGeneSetLimit}
+    //     onSelectGeneSetMethod={this.handleGeneSetMethod}
+    //     onSelectGeneSetSort={this.handleGeneSetSort}
+    //   />)
+    // }
     if (this.state.wizard === 'finished') {
       return (
         <div>
@@ -185,7 +185,7 @@ export class ApplicationWrapper extends PureComponent {
           <hr/>
           <Button
             className={Wizard.wizardPreviousButton}
-            onClick={() => this.handleGotoWizard('genesets')}
+            onClick={() => this.handleGotoWizard('analysis')}
             raised>&lArr; Change Gene Set Selection</Button>
         </div>
       )
