@@ -38,7 +38,7 @@ export class FinishedWizard extends PureComponent {
         <Button
           className={Wizard.wizardPreviousButton}
           onClick={() => onGoToWizard('analysis')}
-          raised>&lArr; Change Finished</Button>
+          raised>&lArr; Change Analysis</Button>
       </div>
     )
   }
