@@ -63,7 +63,7 @@ export class AnalysisWizard extends PureComponent {
             <br/>
             <br/>
             <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
-            Advanced Options
+            Advanced Options&nbsp;
               {!this.state.showGeneSetOptions &&
             <FaRightArrow/>
               }
@@ -72,7 +72,7 @@ export class AnalysisWizard extends PureComponent {
               }
             </div>
             {this.state.showGeneSetOptions &&
-            <table>
+            <table className={Wizard.advancedTable} style={{marginTop: 10}}>
               <tbody>
                 <tr>
                   <th align='right'>

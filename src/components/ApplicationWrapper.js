@@ -5,8 +5,7 @@ import XenaGeneSetApp from './XenaGeneSetApp'
 import {AnalysisWizard} from './wizard/AnalysisWizard'
 import {SORT_ENUM} from '../data/SortEnum'
 import {generateUrl} from '../functions/UrlFunctions'
-import {Button} from 'react-toolbox/lib'
-import Wizard from '../css/wizard.css'
+import {FinishedWizard} from './wizard/FinishedWizard'
 
 
 export class ApplicationWrapper extends PureComponent {
@@ -151,45 +150,26 @@ export class ApplicationWrapper extends PureComponent {
   render() {
     const comparisonDescription = this.generateComparisonDescription()
     if (this.state.wizard === 'analysis') {
-      return (<AnalysisWizard
-        cohort={this.state.cohort}
-        comparisonDescription={comparisonDescription}
-        geneSetFilterMethod={this.state.geneSetFilterMethod}
-        geneSetLimit={this.state.geneSetLimit}
-        onNext={this.handleGotoWizard}
-        onSelectAnalysis={this.handleSelectAnalysis}
-        onSelectGeneSetLimit={this.handleGeneSetLimit}
-        onSelectGeneSetMethod={this.handleGeneSetMethod}
-      />)
+      return (
+        <AnalysisWizard
+          cohort={this.state.cohort}
+          comparisonDescription={comparisonDescription}
+          geneSetFilterMethod={this.state.geneSetFilterMethod}
+          geneSetLimit={this.state.geneSetLimit}
+          onNext={this.handleGotoWizard}
+          onSelectAnalysis={this.handleSelectAnalysis}
+          onSelectGeneSetLimit={this.handleGeneSetLimit}
+          onSelectGeneSetMethod={this.handleGeneSetMethod}
+        />
+      )
     }
-    // if (this.state.wizard === 'genesets') {
-    //   return (<GeneSetWizard
-    //     analysisMethod={this.state.filter}
-    //     cohort={this.state.cohort}
-    //     comparisonDescription={comparisonDescription}
-    //     geneSetFilterMethod={this.state.geneSetFilterMethod}
-    //     geneSetLimit={this.state.geneSetLimit}
-    //     geneSetSortMethod={this.state.geneSetSortMethod}
-    //     onFinish={this.handleFinish}
-    //     onPrevious={this.handleGotoWizard}
-    //     onSelectGeneSetLimit={this.handleGeneSetLimit}
-    //     onSelectGeneSetMethod={this.handleGeneSetMethod}
-    //     onSelectGeneSetSort={this.handleGeneSetSort}
-    //   />)
-    // }
     if (this.state.wizard === 'finished') {
       return (
-        <div>
-          <h4>Finished generating {this.state.filter} analysis for {this.state.cohort}
-            {comparisonDescription}
-          </h4>
-          <div className={Wizard.wizardCloseThisWindow}>You may close this window</div>
-          <hr/>
-          <Button
-            className={Wizard.wizardPreviousButton}
-            onClick={() => this.handleGotoWizard('analysis')}
-            raised>&lArr; Change Analysis</Button>
-        </div>
+        <FinishedWizard
+          cohort={this.state.cohort}
+          comparisonDescription={comparisonDescription}
+          onGoToWizard={this.handleGotoWizard}
+        />
       )
     }
     return <XenaGeneSetApp/>
