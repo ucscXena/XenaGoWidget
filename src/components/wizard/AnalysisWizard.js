@@ -51,7 +51,7 @@ export class AnalysisWizard extends PureComponent {
         <h2>Select Analysis Method </h2>
         {
           <div>
-            <h3>Gene Expression <FaInfo className={Wizard.wizardAnalysisButton} onClick={this.handleHelpClick}/></h3>
+            <h3>Gene Expression <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
 
             <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
@@ -105,7 +105,7 @@ export class AnalysisWizard extends PureComponent {
               </tbody>
             </table>
             }
-            <h3>Mutation / CNV <FaInfo className={Wizard.wizardAnalysisButton} onClick={this.handleHelpClick}/></h3>
+            <h3>Mutation / CNV <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
             <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
