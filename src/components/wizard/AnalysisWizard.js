@@ -45,10 +45,10 @@ export class AnalysisWizard extends PureComponent {
           title={title}
         />
         {/*<h3>Analyzing Cohort: <u>{cohort}</u></h3>*/}
-        <h4>
+        <p>
           {comparisonDescription}
-        </h4>
-        <h2>Select Analysis Method </h2>
+        </p>
+        <h2><u>Select Analysis Method </u></h2>
         {
           <div>
             <h3>Gene Expression <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>

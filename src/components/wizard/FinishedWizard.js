@@ -30,9 +30,9 @@ export class FinishedWizard extends PureComponent {
           ]}
           title={title}
         />
-        <h4>
+        <p>
           {comparisonDescription}
-        </h4>
+        </p>
         <div className={Wizard.wizardCloseThisWindow}>You may close this window</div>
         <hr/>
         <Button
