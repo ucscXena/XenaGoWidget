@@ -27,10 +27,6 @@ export class AnalysisWizard extends PureComponent {
     window.open(HELP_LINK,'_blank')
     // this.setState({showHelp:true})
   }
-  //
-  // handleCloseHelp = () => {
-  //   this.setState({showHelp:false})
-  // }
 
   render () {
     const { cohort, onSelectAnalysis, comparisonDescription,
@@ -39,19 +35,6 @@ export class AnalysisWizard extends PureComponent {
 
     return (
       <div className={Wizard.wizardBox}>
-        {/*<Dialog*/}
-        {/*  active={this.state.showHelp}*/}
-        {/*  onEscKeyDown={this.handleCloseHelp}*/}
-        {/*  onOverlayClick={this.handleCloseHelp}*/}
-        {/*  title='Analysis Help'*/}
-        {/*  // type='small'*/}
-        {/*>*/}
-        {/*  <iframe height='100%' src={HELP_LINK} width='100%'/>*/}
-        {/*  /!*<div>*!/*/}
-        {/*  /!*  Help*!/*/}
-        {/*  /!*</div>*!/*/}
-        {/*</Dialog>*/}
-
         <Helmet
           link={[
             {
@@ -65,7 +48,6 @@ export class AnalysisWizard extends PureComponent {
           ]}
           title={title}
         />
-        {/*<h3>Analyzing Cohort: <u>{cohort}</u></h3>*/}
         <p>
           {comparisonDescription}
         </p>
@@ -131,13 +113,6 @@ export class AnalysisWizard extends PureComponent {
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
           </div>
-          // Object.values(VIEW_ENUM).map( v =>
-          //   (<Button
-          //     className={Wizard.wizardAnalysisButton}
-          //     key={v}
-          //     onClick={() => onSelectAnalysis(v)}
-          //   >{v}</Button>)
-          // )
         }
       </div>
     )

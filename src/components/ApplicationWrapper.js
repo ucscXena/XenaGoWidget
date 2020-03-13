@@ -51,8 +51,6 @@ export class ApplicationWrapper extends PureComponent {
   }
 
   openUrl = (finalUrl) => {
-    // window.open(window.location.origin+'xena/#'+finalUrl, '_blank')
-    // console.log('opening the final url',finalUrl)
     if(process.env.NODE_ENV === 'production'){
       window.open(window.location.origin+'/xena/#'+finalUrl, '_blank')
     }
@@ -63,17 +61,6 @@ export class ApplicationWrapper extends PureComponent {
 
 
   handleSelectAnalysis = (analysis) => {
-    // if(isViewGeneExpression(analysis)){
-    //   location.hash = `${location.hash}&view=${analysis}`
-    //   this.setState({
-    //     filter:analysis,
-    //     wizard:'genesets',
-    //     geneSetLimit: 40,
-    //     geneSetFilterMethod:   SORT_ENUM.CONTRAST_DIFF ,
-    //     geneSetSortMethod:  SORT_ENUM.DIFF ,
-    //   })
-    // }
-    // else{
     // set the URL here
     let finalUrl = generateUrl(
       analysis,
@@ -138,12 +125,6 @@ export class ApplicationWrapper extends PureComponent {
   handleGeneSetMethod = (method) => {
     this.setState({
       geneSetFilterMethod: method.target.value
-    })
-  }
-
-  handleGeneSetSort = (sort) => {
-    this.setState({
-      geneSetSortMethod: sort.target.value
     })
   }
 
