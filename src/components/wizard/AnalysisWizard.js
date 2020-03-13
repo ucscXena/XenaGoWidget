@@ -25,7 +25,6 @@ export class AnalysisWizard extends PureComponent {
 
   handleHelpClick = () => {
     window.open(HELP_LINK,'_blank')
-    // this.setState({showHelp:true})
   }
 
   render () {
