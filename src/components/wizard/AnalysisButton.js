@@ -3,7 +3,6 @@ import PureComponent from '../PureComponent'
 import {Button} from 'react-toolbox/lib'
 import PropTypes from 'prop-types'
 import Wizard from '../../css/wizard.css'
-import {isViewGeneExpression} from '../../functions/DataFunctions'
 
 export class AnalysisButton extends PureComponent {
   constructor(props) {
@@ -13,7 +12,7 @@ export class AnalysisButton extends PureComponent {
   render(){
     let {onClick,analysis} = this.props
     return (<Button
-      className={!isViewGeneExpression(analysis) ? Wizard.wizardAnalysisGeneExpressionButton : Wizard.wizardAnalysisButton}
+      className={Wizard.wizardAnalysisButton}
       key={analysis}
       onClick={() => onClick(analysis)}
     >{analysis}</Button>)

@@ -3,12 +3,9 @@ import PureComponent from './PureComponent'
 import QueryString from 'querystring'
 import XenaGeneSetApp from './XenaGeneSetApp'
 import {AnalysisWizard} from './wizard/AnalysisWizard'
-import {GeneSetWizard} from './wizard/GeneSetWizard'
-import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM} from '../data/SortEnum'
 import {generateUrl} from '../functions/UrlFunctions'
-import {Button} from 'react-toolbox/lib'
-import Wizard from '../css/wizard.css'
+import {FinishedWizard} from './wizard/FinishedWizard'
 
 
 export class ApplicationWrapper extends PureComponent {
@@ -28,8 +25,8 @@ export class ApplicationWrapper extends PureComponent {
       ,cohort2Color:urlVariables.cohort2Color
 
       ,wizard: urlVariables.wizard
-      ,geneSetLimit: urlVariables.geneSetLimit
-      ,geneSetFilterMethod: urlVariables.geneSetFilterMethod
+      ,geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : 40
+      ,geneSetFilterMethod: urlVariables.geneSetFilterMethod ? urlVariables.geneSetFilterMethod :  SORT_ENUM.CONTRAST_DIFF
       ,geneSetSortMethod: urlVariables.geneSetSortMethod
     }
   }
@@ -54,9 +51,6 @@ export class ApplicationWrapper extends PureComponent {
   }
 
   openUrl = (finalUrl) => {
-    // window.open(window.location.origin+'xena/#'+finalUrl, '_blank')
-    // console.log('opening the final url',finalUrl)
-    console.log('node environment',process.env.NODE_ENV)
     if(process.env.NODE_ENV === 'production'){
       window.open(window.location.origin+'/xena/#'+finalUrl, '_blank')
     }
@@ -67,43 +61,32 @@ export class ApplicationWrapper extends PureComponent {
 
 
   handleSelectAnalysis = (analysis) => {
-    if(isViewGeneExpression(analysis)){
-      location.hash = `${location.hash}&view=${analysis}`
-      this.setState({
-        filter:analysis,
-        wizard:'genesets',
-        geneSetLimit: 40,
-        geneSetFilterMethod:   SORT_ENUM.CONTRAST_DIFF ,
-        geneSetSortMethod:  SORT_ENUM.DIFF ,
-      })
-    }
-    else{
-      // set the URL here
-      let finalUrl = generateUrl(
-        analysis,
-        undefined,
-        this.state.cohort,
-        this.state.cohort,
-        this.state.selectedSubCohorts1,
-        this.state.selectedSubCohorts2,
-      )
-      finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
-      finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
-      finalUrl += `&cohort1Color=${this.state.cohort1Color}`
-      finalUrl += `&cohort2Color=${this.state.cohort2Color}`
-      finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
-      finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
-      finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
+    // set the URL here
+    let finalUrl = generateUrl(
+      analysis,
+      undefined,
+      this.state.cohort,
+      this.state.cohort,
+      this.state.selectedSubCohorts1,
+      this.state.selectedSubCohorts2,
+    )
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
+    finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
+    finalUrl += `&cohort1Color=${this.state.cohort1Color}`
+    finalUrl += `&cohort2Color=${this.state.cohort2Color}`
+    finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
+    finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
+    finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
 
-      this.openUrl(finalUrl)
-      this.setState({
-        filter:analysis,
-        wizard:'finished',
-        geneSetLimit: 40,
-        geneSetFilterMethod:   SORT_ENUM.ALPHA,
-        geneSetSortMethod:  SORT_ENUM.ALPHA,
-      })
-    }
+    this.openUrl(finalUrl)
+    this.setState({
+      filter:analysis,
+      wizard:'finished',
+      geneSetLimit: 40,
+      geneSetFilterMethod:   SORT_ENUM.ALPHA,
+      geneSetSortMethod:  SORT_ENUM.ALPHA,
+    })
+    // }
 
   }
 
@@ -145,49 +128,29 @@ export class ApplicationWrapper extends PureComponent {
     })
   }
 
-  handleGeneSetSort = (sort) => {
-    this.setState({
-      geneSetSortMethod: sort.target.value
-    })
-  }
-
   render() {
     const comparisonDescription = this.generateComparisonDescription()
     if (this.state.wizard === 'analysis') {
-      return (<AnalysisWizard
-        cohort={this.state.cohort}
-        onNext={this.handleGotoWizard}
-        onSelectAnalysis={this.handleSelectAnalysis}
-      />)
-    }
-    if (this.state.wizard === 'genesets') {
-      return (<GeneSetWizard
-        analysisMethod={this.state.filter}
-        cohort={this.state.cohort}
-        comparisonDescription={comparisonDescription}
-        geneSetFilterMethod={this.state.geneSetFilterMethod}
-        geneSetLimit={this.state.geneSetLimit}
-        geneSetSortMethod={this.state.geneSetSortMethod}
-        onFinish={this.handleFinish}
-        onPrevious={this.handleGotoWizard}
-        onSelectGeneSetLimit={this.handleGeneSetLimit}
-        onSelectGeneSetMethod={this.handleGeneSetMethod}
-        onSelectGeneSetSort={this.handleGeneSetSort}
-      />)
+      return (
+        <AnalysisWizard
+          cohort={this.state.cohort}
+          comparisonDescription={comparisonDescription}
+          geneSetFilterMethod={this.state.geneSetFilterMethod}
+          geneSetLimit={this.state.geneSetLimit}
+          onNext={this.handleGotoWizard}
+          onSelectAnalysis={this.handleSelectAnalysis}
+          onSelectGeneSetLimit={this.handleGeneSetLimit}
+          onSelectGeneSetMethod={this.handleGeneSetMethod}
+        />
+      )
     }
     if (this.state.wizard === 'finished') {
       return (
-        <div>
-          <h4>Finished generating {this.state.filter} analysis for {this.state.cohort}
-            {comparisonDescription}
-          </h4>
-          <div className={Wizard.wizardCloseThisWindow}>You may close this window</div>
-          <hr/>
-          <Button
-            className={Wizard.wizardPreviousButton}
-            onClick={() => this.handleGotoWizard('genesets')}
-            raised>&lArr; Change Gene Set Selection</Button>
-        </div>
+        <FinishedWizard
+          cohort={this.state.cohort}
+          comparisonDescription={comparisonDescription}
+          onGoToWizard={this.handleGotoWizard}
+        />
       )
     }
     return <XenaGeneSetApp/>

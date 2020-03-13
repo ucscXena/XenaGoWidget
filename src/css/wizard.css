@@ -1,7 +1,9 @@
 
 .wizardBox{
     border-radius: 10px;
-    background-color: goldenrod;
+    /*background-color: #4ECDC4;*/
+  background-color:white;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     padding: 8px;
     margin: 2px;
 }
@@ -13,10 +15,40 @@
 }
 
 .wizardAnalysisButton{
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 5px;
-    background-color: white;
-    color: black;
+    background-color: #f7f7f7;
+    color: #4ECDC4 !important;
+    cursor: pointer;
+}
+
+.wizardAnalysisButton:hover{
+  border-radius: 8px;
+  margin: 5px;
+  /*background-color: aquamarine;*/
+  background-color: #a7d3c7 !important;
+  /*background-color: darkgreen !important;*/
+  /*background-color: aquamarine !important;*/
+  /*color: #4cc960 !important;*/
+  color: #4ECDC4 !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.wizardInfoButton{
+  border-radius: 5px;
+  margin: 5px;
+  background-color: #f7f7f7;
+  color: black;
+  cursor: pointer;
+}
+
+.wizardInfoButton:hover{
+  border-radius: 8px;
+  margin: 5px;
+  background-color: darkgreen;
+  color: black;
+  cursor: pointer;
 }
 
 .wizardAnalysisGeneExpressionButton{
@@ -49,8 +81,29 @@
 }
 
 .wizardCloseThisWindow{
-    font-family: SansSerif;
+    font-family: sans-serif;
     padding: 5px;
     margin: 5px;
     display:inline;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.advancedOptions{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px 5px 5px 5px ;
+  display: inline;
+  cursor: pointer;
+}
+
+.advancedTable{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background-color: white;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px 5px 5px 5px ;
+  cursor: pointer;
 }
