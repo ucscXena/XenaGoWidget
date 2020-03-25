@@ -1,6 +1,5 @@
 import React from 'react'
 import PureComponent from './PureComponent'
-import XenaGoViewer from './XenaGoViewer'
 import {AppStorageHandler} from '../service/AppStorageHandler'
 import NavigationBar from './NavigationBar'
 import {GeneSetSelector} from './GeneSetSelector'
@@ -55,9 +54,9 @@ import {CohortEditorSelector} from './CohortEditorSelector'
 import {DetailedLabelTop} from './DetailedLabelTop'
 import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
+import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 
 const VIEWER_HEIGHT = 500
-const TOP_HEIGHT = 112
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
 const BORDER_OFFSET = 2
@@ -968,6 +967,17 @@ export default class XenaGeneSetApp extends PureComponent {
                 </td>
               </tr>
               <tr>
+                <td>
+                  Left Box
+                  <GeneSetInformationColumn
+                    cohort={this.state.selectedCohort}
+                    cohortColor={this.state.cohortColors}
+                    cohortIndex={0}
+                    onShowCohortEditor={this.handleEditCohorts}
+                    pathwayData={this.state.pathwayData}
+                    view={this.state.view}
+                  />
+                </td>
                 <td valign='top'>
                   <VerticalGeneSetScoresView
                     associatedData={this.state.associatedData[0]}
@@ -1016,6 +1026,22 @@ export default class XenaGeneSetApp extends PureComponent {
                     width={VERTICAL_GENESET_DETAIL_WIDTH}
                   />
                 </td>
+                <td>
+                  Right Box
+                  <GeneSetInformationColumn
+                    cohort={this.state.selectedCohort}
+                    cohortColor={this.state.cohortColors}
+                    cohortIndex={1}
+                    onShowCohortEditor={this.handleEditCohorts}
+                    pathwayData={this.state.pathwayData}
+                    view={this.state.view}
+                  />
+                  {/*<GeneSetInformationColumn*/}
+                  {/*  cohortColor={this.state.cohortColors[1]}*/}
+                  {/*  cohortIndex={1}*/}
+                  {/*  view={this.state.view}*/}
+                  {/*/>*/}
+                </td>
                 {this.state.loading === LOAD_STATE.LOADED &&
               <td
                 className="map_wrapper"
@@ -1043,88 +1069,88 @@ export default class XenaGeneSetApp extends PureComponent {
                   height={VIEWER_HEIGHT * 2}
                   mousing={this.state.mousing} x={this.state.x}
                 />
-                <XenaGoViewer
-                  // reference
-                  allowableViews={allowableViews}
-                  cohortColor={this.state.cohortColors[0]}
-                  cohortIndex={0}
+                {/*<XenaGoViewer*/}
+                {/*  // reference*/}
+                {/*  allowableViews={allowableViews}*/}
+                {/*  cohortColor={this.state.cohortColors[0]}*/}
+                {/*  cohortIndex={0}*/}
 
-                  // view
-                  collapsed={this.state.collapsed}
-                  colorSettings={this.state.geneStateColors}
-                  copyCohorts={this.copyCohorts}
+                {/*  // view*/}
+                {/*  collapsed={this.state.collapsed}*/}
+                {/*  colorSettings={this.state.geneStateColors}*/}
+                {/*  copyCohorts={this.copyCohorts}*/}
 
-                  // data
-                  filter={this.state.filter}
-                  geneDataStats={this.state.geneData[0]}
-                  geneHoverData={this.state.geneHoverData ?
-                    this.state.geneHoverData[0] :
-                    {}}
+                {/*  // data*/}
+                {/*  filter={this.state.filter}*/}
+                {/*  geneDataStats={this.state.geneData[0]}*/}
+                {/*  geneHoverData={this.state.geneHoverData ?*/}
+                {/*    this.state.geneHoverData[0] :*/}
+                {/*    {}}*/}
 
-                  // maybe state?
-                  highlightedGene={this.state.highlightedGene}
-                  onChangeCohort={this.handleChangeCohort}
-                  onChangeFilter={this.handleChangeFilter}
-                  onChangeSubCohort={this.handleChangeSubCohort}
-                  onEditCohorts={this.handleEditCohorts}
+                {/*  // maybe state?*/}
+                {/*  highlightedGene={this.state.highlightedGene}*/}
+                {/*  onChangeCohort={this.handleChangeCohort}*/}
+                {/*  onChangeFilter={this.handleChangeFilter}*/}
+                {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
+                {/*  onEditCohorts={this.handleEditCohorts}*/}
 
-                  // new pathway data
-                  onGeneHover={this.handleGeneHover}
-                  onSetCollapsed={this.handleSetCollapsed}
+                {/*  // new pathway data*/}
+                {/*  onGeneHover={this.handleGeneHover}*/}
+                {/*  onSetCollapsed={this.handleSetCollapsed}*/}
 
-                  // functions
-                  onVersusAll={this.handleVersusAll}
-                  pathwayData={this.state.pathwayData[0]}
-                  pathwaySelection={this.state.pathwaySelection}
-                  pathways={pathways}
-                  renderHeight={VIEWER_HEIGHT}
+                {/*  // functions*/}
+                {/*  onVersusAll={this.handleVersusAll}*/}
+                {/*  pathwayData={this.state.pathwayData[0]}*/}
+                {/*  pathwaySelection={this.state.pathwaySelection}*/}
+                {/*  pathways={pathways}*/}
+                {/*  renderHeight={VIEWER_HEIGHT}*/}
 
-                  // state
-                  renderOffset={TOP_HEIGHT}
-                  selectedCohort={this.state.selectedCohort[0]}
-                  subCohortCounts={this.state.subCohortCounts[0]}
-                  swapCohorts={this.swapCohorts}
-                />
-                <XenaGoViewer
-                  // reference
-                  allowableViews={allowableViews}
-                  cohortColor={this.state.cohortColors[1]}
-                  cohortIndex={1}
-                  collapsed={this.state.collapsed}
-                  colorSettings={this.state.geneStateColors}
-                  copyCohorts={this.copyCohorts}
+                {/*  // state*/}
+                {/*  renderOffset={TOP_HEIGHT}*/}
+                {/*  selectedCohort={this.state.selectedCohort[0]}*/}
+                {/*  subCohortCounts={this.state.subCohortCounts[0]}*/}
+                {/*  swapCohorts={this.swapCohorts}*/}
+                {/*/>*/}
+                {/*<XenaGoViewer*/}
+                {/*  // reference*/}
+                {/*  allowableViews={allowableViews}*/}
+                {/*  cohortColor={this.state.cohortColors[1]}*/}
+                {/*  cohortIndex={1}*/}
+                {/*  collapsed={this.state.collapsed}*/}
+                {/*  colorSettings={this.state.geneStateColors}*/}
+                {/*  copyCohorts={this.copyCohorts}*/}
 
-                  // data
-                  filter={this.state.filter}
-                  geneDataStats={this.state.geneData[1]}
-                  geneHoverData={this.state.geneHoverData ?
-                    this.state.geneHoverData[1] :
-                    {}}
+                {/*  // data*/}
+                {/*  filter={this.state.filter}*/}
+                {/*  geneDataStats={this.state.geneData[1]}*/}
+                {/*  geneHoverData={this.state.geneHoverData ?*/}
+                {/*    this.state.geneHoverData[1] :*/}
+                {/*    {}}*/}
 
-                  // maybe state?
-                  highlightedGene={this.state.highlightedGene}
-                  onChangeCohort={this.handleChangeCohort}
-                  onChangeFilter={this.handleChangeFilter}
-                  onChangeSubCohort={this.handleChangeSubCohort}
-                  onEditCohorts={this.handleEditCohorts}
+                {/*  // maybe state?*/}
+                {/*  highlightedGene={this.state.highlightedGene}*/}
+                {/*  onChangeCohort={this.handleChangeCohort}*/}
+                {/*  onChangeFilter={this.handleChangeFilter}*/}
+                {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
+                {/*  onEditCohorts={this.handleEditCohorts}*/}
 
-                  // new pathway data
-                  onGeneHover={this.handleGeneHover}
-                  onSetCollapsed={this.handleSetCollapsed}
+                {/*  // new pathway data*/}
+                {/*  onGeneHover={this.handleGeneHover}*/}
+                {/*  onSetCollapsed={this.handleSetCollapsed}*/}
 
-                  // functions
-                  onVersusAll={this.handleVersusAll}
-                  pathwayData={this.state.pathwayData[1]}
-                  pathwaySelection={this.state.pathwaySelection}
-                  pathways={pathways}
-                  renderHeight={VIEWER_HEIGHT}
+                {/*  // functions*/}
+                {/*  onVersusAll={this.handleVersusAll}*/}
+                {/*  pathwayData={this.state.pathwayData[1]}*/}
+                {/*  pathwaySelection={this.state.pathwaySelection}*/}
+                {/*  pathways={pathways}*/}
+                {/*  renderHeight={VIEWER_HEIGHT}*/}
 
-                  // state
-                  renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}
-                  selectedCohort={this.state.selectedCohort[1]}
-                  subCohortCounts={this.state.subCohortCounts[1]}
-                  swapCohorts={this.swapCohorts}
-                />
+                {/*  // state*/}
+                {/*  renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}*/}
+                {/*  selectedCohort={this.state.selectedCohort[1]}*/}
+                {/*  subCohortCounts={this.state.subCohortCounts[1]}*/}
+                {/*  swapCohorts={this.swapCohorts}*/}
+                {/*/>*/}
               </td>
                 }
               </tr>
