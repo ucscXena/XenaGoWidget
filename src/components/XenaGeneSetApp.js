@@ -51,7 +51,6 @@ import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
 import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 import {CohortEditorSelector} from './CohortEditorSelector'
-import {DetailedLabelTop} from './DetailedLabelTop'
 import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
@@ -895,14 +894,15 @@ export default class XenaGeneSetApp extends PureComponent {
                   colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH * 2 +
               VERTICAL_GENESET_DETAIL_WIDTH}
                 >
-                  <DetailedLabelTop
-                    cohort={this.state.selectedCohort}
-                    colors={this.state.cohortColors}
-                    onShowCohortEditor={this.handleEditCohorts}
-                    pathwayData={this.state.pathwayData}
-                    width={VERTICAL_GENESET_DETAIL_WIDTH * 2 +
-                  VERTICAL_GENESET_DETAIL_WIDTH - 20}
-                  />
+                  &nbsp;
+                  {/*<DetailedLabelTop*/}
+                  {/*  cohort={this.state.selectedCohort}*/}
+                  {/*  colors={this.state.cohortColors}*/}
+                  {/*  onShowCohortEditor={this.handleEditCohorts}*/}
+                  {/*  pathwayData={this.state.pathwayData}*/}
+                  {/*  width={VERTICAL_GENESET_DETAIL_WIDTH * 2 +*/}
+                  {/*VERTICAL_GENESET_DETAIL_WIDTH - 20}*/}
+                  {/*/>*/}
                 </td>
                 <td>
                   {this.state.pathwaySelection &&
