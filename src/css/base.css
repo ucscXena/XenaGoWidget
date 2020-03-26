@@ -475,6 +475,15 @@ div[data-react-toolbox=dialog] > section{
   margin: 0;
 }
 
+.geneSetDetailBox{
+  border-radius: 5px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+
+}
+
 .topGeneDetailBox{
 border-radius: 5px;
  padding-right: 20px;

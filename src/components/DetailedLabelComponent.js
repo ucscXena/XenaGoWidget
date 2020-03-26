@@ -40,9 +40,6 @@ export class DetailedLabelComponent extends PureComponent {
     // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
     const cohortName = getShortName(cohort.name,COHORT_LENGTH)
     const subCohortDetails = getSelectedSubCohorts(cohort.selectedSubCohorts,SUBCOHORT_LENGTH)
-
-    console.log('cohort',cohort)
-
     return (
       <table>
         <tbody>

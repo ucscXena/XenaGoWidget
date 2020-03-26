@@ -967,15 +967,18 @@ export default class XenaGeneSetApp extends PureComponent {
                 </td>
               </tr>
               <tr>
-                <td>
-                  Left Box
+                <td valign='top'>
                   <GeneSetInformationColumn
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
                     cohortIndex={0}
+                    geneDataStats={this.state.geneData}
+                    geneHoverData={this.state.geneHoverData}
+                    onEditCohorts={this.handleEditCohorts}
                     onShowCohortEditor={this.handleEditCohorts}
                     pathwayData={this.state.pathwayData}
-                    view={this.state.view}
+                    subCohortCounts={this.state.subCohortCounts}
+                    view={this.state.filter}
                   />
                 </td>
                 <td valign='top'>
@@ -1026,21 +1029,19 @@ export default class XenaGeneSetApp extends PureComponent {
                     width={VERTICAL_GENESET_DETAIL_WIDTH}
                   />
                 </td>
-                <td>
-                  Right Box
+                <td valign='top'>
                   <GeneSetInformationColumn
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
                     cohortIndex={1}
+                    geneDataStats={this.state.geneData}
+                    geneHoverData={this.state.geneHoverData}
+                    onEditCohorts={this.handleEditCohorts}
                     onShowCohortEditor={this.handleEditCohorts}
                     pathwayData={this.state.pathwayData}
-                    view={this.state.view}
+                    subCohortCounts={this.state.subCohortCounts}
+                    view={this.state.filter}
                   />
-                  {/*<GeneSetInformationColumn*/}
-                  {/*  cohortColor={this.state.cohortColors[1]}*/}
-                  {/*  cohortIndex={1}*/}
-                  {/*  view={this.state.view}*/}
-                  {/*/>*/}
                 </td>
                 {this.state.loading === LOAD_STATE.LOADED &&
               <td
