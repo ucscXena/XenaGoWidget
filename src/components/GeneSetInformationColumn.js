@@ -23,7 +23,7 @@ export class GeneSetInformationColumn extends PureComponent {
       >
         <DetailedLabelComponent {...this.props}/>
 
-        {this.props.geneDataStats &&
+        {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
         <GeneSetSubCohortBox
           cohortIndex={this.props.cohortIndex}
           geneDataStats={this.props.geneDataStats}

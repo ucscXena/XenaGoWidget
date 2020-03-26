@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
 import Tooltip from 'react-toolbox/lib/tooltip'
 import Link from 'react-toolbox/lib/link'
+import {VERTICAL_GENESET_DETAIL_WIDTH} from './XenaGeneSetApp'
 
 const TooltipLink = Tooltip(Link)
 
@@ -32,10 +33,11 @@ function getSelectedSubCohorts(selectedSubCohorts,length) {
 export class DetailedLabelComponent extends PureComponent {
 
   render() {
-    const {cohortIndex,onShowCohortEditor,width} = this.props
+    const {cohortIndex,onShowCohortEditor} = this.props
     const cohort = this.props.cohort[cohortIndex]
     const color = this.props.cohortColor[cohortIndex]
     const pathwayData = this.props.pathwayData[cohortIndex]
+    const width= VERTICAL_GENESET_DETAIL_WIDTH * 2
 
     // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
     const cohortName = getShortName(cohort.name,COHORT_LENGTH)
@@ -71,5 +73,4 @@ DetailedLabelComponent.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   onShowCohortEditor: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
-  width: PropTypes.any.isRequired,
 }
