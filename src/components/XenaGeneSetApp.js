@@ -12,7 +12,8 @@ import {
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
-import {ColorEditor} from './ColorEditor'
+import FaConfigure from 'react-icons/lib/fa/cog'
+// import FaConfigure from 'react-icons/lib/fa/cogs'
 import {Dialog} from 'react-toolbox'
 import {
   fetchBestPathways,
@@ -29,7 +30,7 @@ import CrossHairV from './CrossHairV'
 import {
   getCohortDetails,
   getSubCohortsOnlyForCohort,
-  getViewsForCohort,
+  // getViewsForCohort,
 } from '../functions/CohortFunctions'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
@@ -46,11 +47,11 @@ import {
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
 import Button from 'react-toolbox/lib/button'
-import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
-import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
-import {intersection} from '../functions/MathFunctions'
+// import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
+// import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
+// import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
-import {CohortEditorSelector} from './CohortEditorSelector'
+// import {CohortEditorSelector} from './CohortEditorSelector'
 import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
@@ -681,9 +682,9 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
-    const allowableViews = intersection(
-      getViewsForCohort(this.state.selectedCohort[0].name),
-      getViewsForCohort(this.state.selectedCohort[1].name))
+    // const allowableViews = intersection(
+    //   getViewsForCohort(this.state.selectedCohort[0].name),
+    //   getViewsForCohort(this.state.selectedCohort[1].name))
     let maxValue = 0
 
     if (this.doRefetch()) {
@@ -739,30 +740,30 @@ export default class XenaGeneSetApp extends PureComponent {
               {this.state.selectedCohort[1].name} ...
             </p>
           </Dialog>
-          <ColorEditor
-            active={this.state.showColorEditor}
-            colorSettings={this.state.geneStateColors}
-            onColorChange={this.handleColorChange}
-            onColorToggle={this.handleColorToggle}
-          />
-          {this.state.pathways && this.state.selectedCohort &&
-          <Dialog
-            active={this.state.showCohortEditor}
-            onEscKeyDown={() => this.setState({showCohortEditor: false})}
-            onOverlayClick={() => this.setState({showCohortEditor: false})}
-            title="Cohort Editor"
-            type='small'
-          >
-            <CohortEditorSelector
-              cohort={this.state.selectedCohort}
-              onCancelCohortEdit={() => this.setState(
-                {showCohortEditor: false})}
-              onChangeView={this.handleChangeView}
-              subCohortCounts={this.state.subCohortCounts}
-              view={this.state.filter}
-            />
-          </Dialog>
-          }
+          {/*<ColorEditor*/}
+          {/*  active={this.state.showColorEditor}*/}
+          {/*  colorSettings={this.state.geneStateColors}*/}
+          {/*  onColorChange={this.handleColorChange}*/}
+          {/*  onColorToggle={this.handleColorToggle}*/}
+          {/*/>*/}
+          {/*{this.state.pathways && this.state.selectedCohort &&*/}
+          {/*<Dialog*/}
+          {/*  active={this.state.showCohortEditor}*/}
+          {/*  onEscKeyDown={() => this.setState({showCohortEditor: false})}*/}
+          {/*  onOverlayClick={() => this.setState({showCohortEditor: false})}*/}
+          {/*  title="Cohort Editor"*/}
+          {/*  type='small'*/}
+          {/*>*/}
+          {/*  <CohortEditorSelector*/}
+          {/*    cohort={this.state.selectedCohort}*/}
+          {/*    onCancelCohortEdit={() => this.setState(*/}
+          {/*      {showCohortEditor: false})}*/}
+          {/*    onChangeView={this.handleChangeView}*/}
+          {/*    subCohortCounts={this.state.subCohortCounts}*/}
+          {/*    view={this.state.filter}*/}
+          {/*  />*/}
+          {/*</Dialog>*/}
+          {/*}*/}
           {this.state.pathways && this.state.associatedData &&
           <Dialog
             active={this.state.showGeneSetSearch}
@@ -782,119 +783,137 @@ export default class XenaGeneSetApp extends PureComponent {
           }
           <table>
             <tbody>
+              {/*<tr>*/}
+              {/*  <td className={BaseStyle.autoSortBox} colSpan={3}>*/}
+              {/*    <div className={BaseStyle.headerBox}>*/}
+              {/*    Gene Sets*/}
+              {/*    </div>*/}
+              {/*    {isViewGeneExpression(this.state.filter) &&*/}
+              {/*    <div className={BaseStyle.containerBox}>*/}
+              {/*      Limit*/}
+              {/*      <input*/}
+              {/*        onBlur={() => this.setState({*/}
+              {/*          fetch: true,*/}
+              {/*          currentLoadState: LOAD_STATE.LOADING,*/}
+              {/*          reloadPathways: this.state.automaticallyReloadPathways,*/}
+              {/*        })}*/}
+              {/*        onChange={(event) => this.setState(*/}
+              {/*          {geneSetLimit: event.target.value})} size={3}*/}
+              {/*        value={this.state.geneSetLimit}*/}
+              {/*      />*/}
+              {/*    </div>*/}
+              {/*    }*/}
+              {/*    {isViewGeneExpression(this.state.filter) &&*/}
+              {/*    <div className={BaseStyle.containerBox}>*/}
+              {/*      Filter by*/}
+              {/*      <select*/}
+              {/*        onChange={(event) => this.setState({*/}
+              {/*          filterBy: event.target.value,*/}
+              {/*          fetch: true,*/}
+              {/*          currentLoadState: LOAD_STATE.LOADING,*/}
+              {/*          reloadPathways: this.state.automaticallyReloadPathways,*/}
+              {/*        })}*/}
+              {/*        style={{marginLeft: 5}}*/}
+              {/*        value={this.state.filterBy}*/}
+              {/*      >*/}
+              {/*        <option*/}
+              {/*          value={SORT_ENUM.CONTRAST_DIFF}*/}
+              {/*        >{SORT_ENUM.CONTRAST_DIFF}</option>*/}
+              {/*        <option*/}
+              {/*          value={SORT_ENUM.ABS_DIFF}*/}
+              {/*        >{SORT_ENUM.ABS_DIFF}</option>*/}
+              {/*        <option value={SORT_ENUM.DIFF}>Cohort Diff</option>*/}
+              {/*        <option value={SORT_ENUM.TOTAL}>Total</option>*/}
+              {/*      </select>*/}
+              {/*      {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&*/}
+              {/*      <FaSortAsc onClick={() => this.setState({*/}
+              {/*        filterOrder: 'desc',*/}
+              {/*        fetch: true,*/}
+              {/*        currentLoadState: LOAD_STATE.LOADING,*/}
+              {/*        reloadPathways: this.state.automaticallyReloadPathways,*/}
+              {/*      })}*/}
+              {/*      />*/}
+              {/*      }*/}
+              {/*      {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&*/}
+              {/*      <FaSortDesc onClick={() => this.setState({*/}
+              {/*        filterOrder: 'asc',*/}
+              {/*        fetch: true,*/}
+              {/*        currentLoadState: LOAD_STATE.LOADING,*/}
+              {/*        reloadPathways: this.state.automaticallyReloadPathways,*/}
+              {/*      })}*/}
+              {/*      />*/}
+              {/*      }*/}
+              {/*    </div>*/}
+              {/*    }*/}
+              {/*    {isViewGeneExpression(this.state.filter) &&*/}
+              {/*      <Button*/}
+              {/*        icon='edit' onClick={() => this.setState(*/}
+              {/*          {showGeneSetSearch: true})} raised*/}
+              {/*      >*/}
+              {/*      Gene Sets&nbsp;*/}
+              {/*        {this.state.pathways &&*/}
+              {/*      <div style={{display: 'inline'}}>*/}
+              {/*        ({this.state.pathways.length})*/}
+              {/*      </div>*/}
+              {/*        }*/}
+              {/*      </Button>*/}
+              {/*    }*/}
+              {/*    {!isViewGeneExpression(this.state.filter) &&*/}
+              {/*    <div style={{display: 'inline'}}>*/}
+              {/*      Using default pathways*/}
+              {/*    </div>*/}
+              {/*    }*/}
+              {/*  </td>*/}
+              {/*  <td className={BaseStyle.autoSortBox}>*/}
+              {/*    <Button*/}
+              {/*      icon='edit' onClick={() => this.handleEditCohorts()}*/}
+              {/*      raised*/}
+              {/*    >*/}
+              {/*    Cohorts*/}
+              {/*    </Button>*/}
+              {/*  &nbsp;&nbsp;&nbsp;Analysis:*/}
+              {/*    <select*/}
+              {/*      className={BaseStyle.softflow}*/}
+              {/*      onChange={this.handleChangeTopFilter}*/}
+              {/*      style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}*/}
+              {/*      value={this.state.filter}*/}
+              {/*    >*/}
+              {/*      {*/}
+              {/*        allowableViews.map((c) => {*/}
+              {/*          return (*/}
+              {/*            <option key={c} value={c}>*/}
+              {/*              {c}*/}
+              {/*            </option>*/}
+              {/*          )*/}
+              {/*        })*/}
+              {/*      }*/}
+              {/*    </select>*/}
+              {/*  </td>*/}
+              {/*</tr>*/}
               <tr>
-                <td className={BaseStyle.autoSortBox} colSpan={3}>
-                  <div className={BaseStyle.headerBox}>
-                  Gene Sets
-                  </div>
-                  {isViewGeneExpression(this.state.filter) &&
-                  <div className={BaseStyle.containerBox}>
-                    Limit
-                    <input
-                      onBlur={() => this.setState({
-                        fetch: true,
-                        currentLoadState: LOAD_STATE.LOADING,
-                        reloadPathways: this.state.automaticallyReloadPathways,
-                      })}
-                      onChange={(event) => this.setState(
-                        {geneSetLimit: event.target.value})} size={3}
-                      value={this.state.geneSetLimit}
-                    />
-                  </div>
-                  }
-                  {isViewGeneExpression(this.state.filter) &&
-                  <div className={BaseStyle.containerBox}>
-                    Filter by
-                    <select
-                      onChange={(event) => this.setState({
-                        filterBy: event.target.value,
-                        fetch: true,
-                        currentLoadState: LOAD_STATE.LOADING,
-                        reloadPathways: this.state.automaticallyReloadPathways,
-                      })}
-                      style={{marginLeft: 5}}
-                      value={this.state.filterBy}
-                    >
-                      <option
-                        value={SORT_ENUM.CONTRAST_DIFF}
-                      >{SORT_ENUM.CONTRAST_DIFF}</option>
-                      <option
-                        value={SORT_ENUM.ABS_DIFF}
-                      >{SORT_ENUM.ABS_DIFF}</option>
-                      <option value={SORT_ENUM.DIFF}>Cohort Diff</option>
-                      <option value={SORT_ENUM.TOTAL}>Total</option>
-                    </select>
-                    {this.state.filterOrder === SORT_ORDER_ENUM.ASC &&
-                    <FaSortAsc onClick={() => this.setState({
-                      filterOrder: 'desc',
-                      fetch: true,
-                      currentLoadState: LOAD_STATE.LOADING,
-                      reloadPathways: this.state.automaticallyReloadPathways,
-                    })}
-                    />
-                    }
-                    {this.state.filterOrder === SORT_ORDER_ENUM.DESC &&
-                    <FaSortDesc onClick={() => this.setState({
-                      filterOrder: 'asc',
-                      fetch: true,
-                      currentLoadState: LOAD_STATE.LOADING,
-                      reloadPathways: this.state.automaticallyReloadPathways,
-                    })}
-                    />
-                    }
-                  </div>
-                  }
-                  {isViewGeneExpression(this.state.filter) &&
-                    <Button
-                      icon='edit' onClick={() => this.setState(
-                        {showGeneSetSearch: true})} raised
-                    >
-                    Gene Sets&nbsp;
-                      {this.state.pathways &&
-                    <div style={{display: 'inline'}}>
-                      ({this.state.pathways.length})
-                    </div>
-                      }
+                {/*<td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH * 2 + VERTICAL_GENESET_DETAIL_WIDTH}>*/}
+                <td colSpan={5}>
+                  <h3>
+                    Cohort X comparing sub cohorts A,B, C (z) to sub cohorts D, E, F (y)
+                    <Button floating mini onClick={() => alert('cog')}>
+                      <FaConfigure/>
                     </Button>
-                  }
-                  {!isViewGeneExpression(this.state.filter) &&
-                  <div style={{display: 'inline'}}>
-                    Using default pathways
-                  </div>
-                  }
-                </td>
-                <td className={BaseStyle.autoSortBox}>
-                  <Button
-                    icon='edit' onClick={() => this.handleEditCohorts()}
-                    raised
-                  >
-                  Cohorts
-                  </Button>
-                &nbsp;&nbsp;&nbsp;Analysis:
-                  <select
-                    className={BaseStyle.softflow}
-                    onChange={this.handleChangeTopFilter}
-                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
-                    value={this.state.filter}
-                  >
-                    {
-                      allowableViews.map((c) => {
-                        return (
-                          <option key={c} value={c}>
-                            {c}
-                          </option>
-                        )
-                      })
-                    }
-                  </select>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH * 2 +
-              VERTICAL_GENESET_DETAIL_WIDTH}
-                >
-                  &nbsp;
+                  </h3>
+                  {/*<Autocomplete*/}
+                  {/*  label='Find Gene'*/}
+                  {/*  multiple={false}*/}
+                  {/*  onChange={(searchText) => {*/}
+                  {/*    this.acceptGeneHandler(searchText)*/}
+                  {/*    this.setState({geneNameSearch: searchText})*/}
+                  {/*  }}*/}
+                  {/*  onQueryChange={(geneQuery) => {*/}
+                  {/*    this.handleSearch(geneQuery)*/}
+                  {/*    this.setState({geneNameSearch: geneQuery})*/}
+                  {/*  }}*/}
+                  {/*  source={this.props.geneOptions}*/}
+                  {/*  theme={AutocompleteTheme}*/}
+                  {/*  value={this.state.geneNameSearch}*/}
+                  {/*/>*/}
                   {/*<DetailedLabelTop*/}
                   {/*  cohort={this.state.selectedCohort}*/}
                   {/*  colors={this.state.cohortColors}*/}
@@ -904,74 +923,158 @@ export default class XenaGeneSetApp extends PureComponent {
                   {/*VERTICAL_GENESET_DETAIL_WIDTH - 20}*/}
                   {/*/>*/}
                 </td>
+              </tr>
+              <tr>
+                <td valign='top'>
+                  <GeneSetInformationColumn
+                    cohort={this.state.selectedCohort}
+                    cohortColor={this.state.cohortColors}
+                    cohortIndex={0}
+                    geneDataStats={this.state.geneData}
+                    geneHoverData={this.state.geneHoverData}
+                    onEditCohorts={this.handleEditCohorts}
+                    onShowCohortEditor={this.handleEditCohorts}
+                    pathwayData={this.state.pathwayData}
+                    subCohortCounts={this.state.subCohortCounts}
+                    view={this.state.filter}
+                  />
+                </td>
                 <td>
-                  {this.state.pathwaySelection &&
-                <div className={BaseStyle.geneSetInfoBox}>
-                  <div className={BaseStyle.geneSetBoxLabel}>Viewing Gene Set
-                    Details
-                  </div>
-                  {this.state.pathwaySelection.pathway.golabel}
-                  &nbsp;
-                  ({this.state.pathwaySelection.pathway.gene.length} genes)
-                </div>
-                  }
-                </td>
-              </tr>
-              <tr>
-                {isViewGeneExpression(this.state.filter) &&
-              <td colSpan={3}>
-                <GeneSetLegend
-                  id='geneExpressionGeneSetScore'
-                  label={this.state.filter + ' score'} maxScore={maxValue}
-                  minScore={-maxValue}
-                />
-              </td>
-                }
-                {!isViewGeneExpression(this.state.filter) &&
-              <td colSpan={3}>
-                <table style={{padding: 0, margin: 0, borderSpacing: 0}}>
-                  <tbody>
-                    <tr style={{padding: 0, margin: 0}}>
-                      <td style={{padding: 0, margin: 0}}>
-                        <GeneSetLegend
-                          id='mean-score' label={'mean'}
-                          maxScore={50} minScore={-50}
-                          precision={0}
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td colSpan={3}>
+                          {this.state.pathwaySelection &&
+                        <div className={BaseStyle.geneSetInfoBox}>
+                          <div className={BaseStyle.geneSetBoxLabel}>Viewing Gene Set
+                            Details
+                          </div>
+                          {this.state.pathwaySelection.pathway.golabel}
+                          &nbsp;
+                          ({this.state.pathwaySelection.pathway.gene.length} genes)
+                        </div>
+                          }
+                        </td>
+                      </tr>
+                      {isViewGeneExpression(this.state.filter) &&
+                        <tr>
+                          <td colSpan={3}>
+                            Pathway Score:
+                            <GeneSetLegend
+                              id='geneExpressionGeneSetScore'
+                              label={this.state.filter + ' score'} maxScore={maxValue}
+                              minScore={-maxValue}
+                            />
+                          </td>
+                        </tr>
+                      }
+                      {!isViewGeneExpression(this.state.filter) &&
+                          <tr>
+                            <td>
+                              <table style={{padding: 0, margin: 0, borderSpacing: 0}}>
+                                <tbody>
+                                  <tr style={{padding: 0, margin: 0}}>
+                                    <td style={{padding: 0, margin: 0}}>
+                                      Pathway Score:
+                                      <GeneSetLegend
+                                        id='mean-score' label={'mean'}
+                                        maxScore={50} minScore={-50}
+                                        precision={0}
+                                      />
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style={{padding: 0, margin: 0}}>
+                                      Sample Score:
+                                      <GeneSetLegend
+                                        id='densityGrad1' label={'density'} maxColor='red'
+                                        maxScore={5} midColor='orange'
+                                        minColor='white' minScore={0} precision={0}
+                                      />
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                      }
+                      <tr>
+                        <td colSpan={3}>
+                          {isViewGeneExpression(this.state.filter) &&
+                            <div style={{marginLeft: 5}}>
+                              Sample Legend:
+                              <GeneSetLegend
+                                id='geneExpressionGeneScore'
+                                label={'Gene expression z-score'} maxScore={2}
+                                minScore={-2}
+                              />
+                            </div>
+                          }
+                          {!isViewGeneExpression(this.state.filter) &&
+                          <div style={{marginLeft: 5}}>
+                            <CnvMutationLegend view={this.state.filter}/>
+                          </div>
+                          }
+                        </td>
+                      </tr>
+                      <tr>
+                        <td valign='top'>
+                          <VerticalGeneSetScoresView
+                            associatedData={this.state.associatedData[0]}
+                            cohortIndex={0}
+                            filter={this.state.filter}
+                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
+                            onClick={this.handlePathwaySelect}
+                            onHover={this.handlePathwayHover}
+                            onMouseOut={this.handlePathwayHover}
+                            pathways={pathways}
+                            selectedCohort={this.state.selectedCohort[0]}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
+                          />
+                        </td>
+                        <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
+                          {this.state.pathways &&
+                        <GeneSetSelector
+                          geneStateColors={this.state.geneStateColors}
+                          highlightedGene={this.state.highlightedGene}
+                          hoveredPathway={this.state.hoveredPathway}
+                          labelHeight={18}
+                          maxValue={maxValue}
+                          onClick={this.handlePathwaySelect}
+                          onHover={this.handlePathwayHover}
+                          onMouseOut={this.handlePathwayHover}
+                          pathways={this.state.pathways}
+                          selectedPathway={this.state.pathwaySelection}
+                          topOffset={14}
+                          width={VERTICAL_SELECTOR_WIDTH}
                         />
-                      </td>
-                      <td style={{padding: 0, margin: 0}}>
-                        <GeneSetLegend
-                          id='densityGrad1' label={'density'} maxColor='red'
-                          maxScore={5} midColor='orange'
-                          minColor='white' minScore={0} precision={0}
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-                }
-                <td colSpan={1}>
-                  <div style={{marginLeft: 50}}>
-                    {isViewGeneExpression(this.state.filter) &&
-                  <GeneSetLegend
-                    id='geneExpressionGeneScore'
-                    label={'Gene expression z-score'} maxScore={2}
-                    minScore={-2}
-                  />
-                    }
-                    {!isViewGeneExpression(this.state.filter) &&
-                  <CnvMutationLegend view={this.state.filter}/>
-                    }
-                  </div>
+                          }
+                        </td>
+                        <td valign='top'>
+                          <VerticalGeneSetScoresView
+                            associatedData={this.state.associatedData[1]}
+                            cohortIndex={1}
+                            filter={this.state.filter}
+                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
+                            onClick={this.handlePathwaySelect}
+                            onHover={this.handlePathwayHover}
+                            onMouseOut={this.handlePathwayHover}
+                            pathways={pathways}
+                            selectedCohort={this.state.selectedCohort[1]}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </td>
-              </tr>
-              <tr>
                 <td valign='top'>
                   <GeneSetInformationColumn
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
-                    cohortIndex={0}
+                    cohortIndex={1}
                     geneDataStats={this.state.geneData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
@@ -981,178 +1084,117 @@ export default class XenaGeneSetApp extends PureComponent {
                     view={this.state.filter}
                   />
                 </td>
-                <td valign='top'>
-                  <VerticalGeneSetScoresView
-                    associatedData={this.state.associatedData[0]}
-                    cohortIndex={0}
-                    filter={this.state.filter}
-                    labelHeight={18 + 2 * BORDER_OFFSET}
-                    maxValue={maxValue}
-                    onClick={this.handlePathwaySelect}
-                    onHover={this.handlePathwayHover}
-                    onMouseOut={this.handlePathwayHover}
-                    pathways={pathways}
-                    selectedCohort={this.state.selectedCohort[0]}
-                    width={VERTICAL_GENESET_DETAIL_WIDTH}
-                  />
-                </td>
-                <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
-                  {this.state.pathways &&
-                <GeneSetSelector
-                  geneStateColors={this.state.geneStateColors}
-                  highlightedGene={this.state.highlightedGene}
-                  hoveredPathway={this.state.hoveredPathway}
-                  labelHeight={18}
-                  maxValue={maxValue}
-                  onClick={this.handlePathwaySelect}
-                  onHover={this.handlePathwayHover}
-                  onMouseOut={this.handlePathwayHover}
-                  pathways={this.state.pathways}
-                  selectedPathway={this.state.pathwaySelection}
-                  topOffset={14}
-                  width={VERTICAL_SELECTOR_WIDTH}
-                />
-                  }
-                </td>
-                <td valign='top'>
-                  <VerticalGeneSetScoresView
-                    associatedData={this.state.associatedData[1]}
-                    cohortIndex={1}
-                    filter={this.state.filter}
-                    labelHeight={18 + 2 * BORDER_OFFSET}
-                    maxValue={maxValue}
-                    onClick={this.handlePathwaySelect}
-                    onHover={this.handlePathwayHover}
-                    onMouseOut={this.handlePathwayHover}
-                    pathways={pathways}
-                    selectedCohort={this.state.selectedCohort[1]}
-                    width={VERTICAL_GENESET_DETAIL_WIDTH}
-                  />
-                </td>
-                <td valign='top'>
-                  <GeneSetInformationColumn
-                    cohort={this.state.selectedCohort}
-                    cohortColor={this.state.cohortColors}
-                    cohortIndex={1}
-                    geneDataStats={this.state.geneData}
-                    geneHoverData={this.state.geneHoverData}
-                    onEditCohorts={this.handleEditCohorts}
-                    onShowCohortEditor={this.handleEditCohorts}
-                    pathwayData={this.state.pathwayData}
-                    subCohortCounts={this.state.subCohortCounts}
-                    view={this.state.filter}
-                  />
-                </td>
+
                 {this.state.loading === LOAD_STATE.LOADED &&
-              <td
-                className="map_wrapper"
-                onMouseMove={(ev) => {
-                  const topClient = ev.currentTarget.getBoundingClientRect().top
-                  let scrollDownBuffer = 0
-                  if (topClient < 0) {
-                    scrollDownBuffer = -topClient + 74
-                  }
+                <td
+                  className="map_wrapper"
+                  onMouseMove={(ev) => {
+                    const topClient = ev.currentTarget.getBoundingClientRect().top
+                    let scrollDownBuffer = 0
+                    if (topClient < 0) {
+                      scrollDownBuffer = -topClient + 74
+                    }
 
-                  const x = ev.clientX + 8
-                  const y = ev.clientY + 8 + scrollDownBuffer
-                  if (x >= 860 && y >= 200) {
-                    this.setState({mousing: true, x, y})
-                  } else {
-                    this.setState({mousing: false, x, y})
-                  }
-                }} onMouseOut={() => {
-                  this.setState({mousing: false})
-                }}
-                valign='top'
-              >
-                <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
-                <CrossHairV
-                  height={VIEWER_HEIGHT * 2}
-                  mousing={this.state.mousing} x={this.state.x}
-                />
-                {/*<XenaGoViewer*/}
-                {/*  // reference*/}
-                {/*  allowableViews={allowableViews}*/}
-                {/*  cohortColor={this.state.cohortColors[0]}*/}
-                {/*  cohortIndex={0}*/}
+                    const x = ev.clientX + 8
+                    const y = ev.clientY + 8 + scrollDownBuffer
+                    if (x >= 860 && y >= 200) {
+                      this.setState({mousing: true, x, y})
+                    } else {
+                      this.setState({mousing: false, x, y})
+                    }
+                  }} onMouseOut={() => {
+                    this.setState({mousing: false})
+                  }}
+                  valign='top'
+                >
+                  <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
+                  <CrossHairV
+                    height={VIEWER_HEIGHT * 2}
+                    mousing={this.state.mousing} x={this.state.x}
+                  />
+                  {/*<XenaGoViewer*/}
+                  {/*  // reference*/}
+                  {/*  allowableViews={allowableViews}*/}
+                  {/*  cohortColor={this.state.cohortColors[0]}*/}
+                  {/*  cohortIndex={0}*/}
 
-                {/*  // view*/}
-                {/*  collapsed={this.state.collapsed}*/}
-                {/*  colorSettings={this.state.geneStateColors}*/}
-                {/*  copyCohorts={this.copyCohorts}*/}
+                  {/*  // view*/}
+                  {/*  collapsed={this.state.collapsed}*/}
+                  {/*  colorSettings={this.state.geneStateColors}*/}
+                  {/*  copyCohorts={this.copyCohorts}*/}
 
-                {/*  // data*/}
-                {/*  filter={this.state.filter}*/}
-                {/*  geneDataStats={this.state.geneData[0]}*/}
-                {/*  geneHoverData={this.state.geneHoverData ?*/}
-                {/*    this.state.geneHoverData[0] :*/}
-                {/*    {}}*/}
+                  {/*  // data*/}
+                  {/*  filter={this.state.filter}*/}
+                  {/*  geneDataStats={this.state.geneData[0]}*/}
+                  {/*  geneHoverData={this.state.geneHoverData ?*/}
+                  {/*    this.state.geneHoverData[0] :*/}
+                  {/*    {}}*/}
 
-                {/*  // maybe state?*/}
-                {/*  highlightedGene={this.state.highlightedGene}*/}
-                {/*  onChangeCohort={this.handleChangeCohort}*/}
-                {/*  onChangeFilter={this.handleChangeFilter}*/}
-                {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
-                {/*  onEditCohorts={this.handleEditCohorts}*/}
+                  {/*  // maybe state?*/}
+                  {/*  highlightedGene={this.state.highlightedGene}*/}
+                  {/*  onChangeCohort={this.handleChangeCohort}*/}
+                  {/*  onChangeFilter={this.handleChangeFilter}*/}
+                  {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
+                  {/*  onEditCohorts={this.handleEditCohorts}*/}
 
-                {/*  // new pathway data*/}
-                {/*  onGeneHover={this.handleGeneHover}*/}
-                {/*  onSetCollapsed={this.handleSetCollapsed}*/}
+                  {/*  // new pathway data*/}
+                  {/*  onGeneHover={this.handleGeneHover}*/}
+                  {/*  onSetCollapsed={this.handleSetCollapsed}*/}
 
-                {/*  // functions*/}
-                {/*  onVersusAll={this.handleVersusAll}*/}
-                {/*  pathwayData={this.state.pathwayData[0]}*/}
-                {/*  pathwaySelection={this.state.pathwaySelection}*/}
-                {/*  pathways={pathways}*/}
-                {/*  renderHeight={VIEWER_HEIGHT}*/}
+                  {/*  // functions*/}
+                  {/*  onVersusAll={this.handleVersusAll}*/}
+                  {/*  pathwayData={this.state.pathwayData[0]}*/}
+                  {/*  pathwaySelection={this.state.pathwaySelection}*/}
+                  {/*  pathways={pathways}*/}
+                  {/*  renderHeight={VIEWER_HEIGHT}*/}
 
-                {/*  // state*/}
-                {/*  renderOffset={TOP_HEIGHT}*/}
-                {/*  selectedCohort={this.state.selectedCohort[0]}*/}
-                {/*  subCohortCounts={this.state.subCohortCounts[0]}*/}
-                {/*  swapCohorts={this.swapCohorts}*/}
-                {/*/>*/}
-                {/*<XenaGoViewer*/}
-                {/*  // reference*/}
-                {/*  allowableViews={allowableViews}*/}
-                {/*  cohortColor={this.state.cohortColors[1]}*/}
-                {/*  cohortIndex={1}*/}
-                {/*  collapsed={this.state.collapsed}*/}
-                {/*  colorSettings={this.state.geneStateColors}*/}
-                {/*  copyCohorts={this.copyCohorts}*/}
+                  {/*  // state*/}
+                  {/*  renderOffset={TOP_HEIGHT}*/}
+                  {/*  selectedCohort={this.state.selectedCohort[0]}*/}
+                  {/*  subCohortCounts={this.state.subCohortCounts[0]}*/}
+                  {/*  swapCohorts={this.swapCohorts}*/}
+                  {/*/>*/}
+                  {/*<XenaGoViewer*/}
+                  {/*  // reference*/}
+                  {/*  allowableViews={allowableViews}*/}
+                  {/*  cohortColor={this.state.cohortColors[1]}*/}
+                  {/*  cohortIndex={1}*/}
+                  {/*  collapsed={this.state.collapsed}*/}
+                  {/*  colorSettings={this.state.geneStateColors}*/}
+                  {/*  copyCohorts={this.copyCohorts}*/}
 
-                {/*  // data*/}
-                {/*  filter={this.state.filter}*/}
-                {/*  geneDataStats={this.state.geneData[1]}*/}
-                {/*  geneHoverData={this.state.geneHoverData ?*/}
-                {/*    this.state.geneHoverData[1] :*/}
-                {/*    {}}*/}
+                  {/*  // data*/}
+                  {/*  filter={this.state.filter}*/}
+                  {/*  geneDataStats={this.state.geneData[1]}*/}
+                  {/*  geneHoverData={this.state.geneHoverData ?*/}
+                  {/*    this.state.geneHoverData[1] :*/}
+                  {/*    {}}*/}
 
-                {/*  // maybe state?*/}
-                {/*  highlightedGene={this.state.highlightedGene}*/}
-                {/*  onChangeCohort={this.handleChangeCohort}*/}
-                {/*  onChangeFilter={this.handleChangeFilter}*/}
-                {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
-                {/*  onEditCohorts={this.handleEditCohorts}*/}
+                  {/*  // maybe state?*/}
+                  {/*  highlightedGene={this.state.highlightedGene}*/}
+                  {/*  onChangeCohort={this.handleChangeCohort}*/}
+                  {/*  onChangeFilter={this.handleChangeFilter}*/}
+                  {/*  onChangeSubCohort={this.handleChangeSubCohort}*/}
+                  {/*  onEditCohorts={this.handleEditCohorts}*/}
 
-                {/*  // new pathway data*/}
-                {/*  onGeneHover={this.handleGeneHover}*/}
-                {/*  onSetCollapsed={this.handleSetCollapsed}*/}
+                  {/*  // new pathway data*/}
+                  {/*  onGeneHover={this.handleGeneHover}*/}
+                  {/*  onSetCollapsed={this.handleSetCollapsed}*/}
 
-                {/*  // functions*/}
-                {/*  onVersusAll={this.handleVersusAll}*/}
-                {/*  pathwayData={this.state.pathwayData[1]}*/}
-                {/*  pathwaySelection={this.state.pathwaySelection}*/}
-                {/*  pathways={pathways}*/}
-                {/*  renderHeight={VIEWER_HEIGHT}*/}
+                  {/*  // functions*/}
+                  {/*  onVersusAll={this.handleVersusAll}*/}
+                  {/*  pathwayData={this.state.pathwayData[1]}*/}
+                  {/*  pathwaySelection={this.state.pathwaySelection}*/}
+                  {/*  pathways={pathways}*/}
+                  {/*  renderHeight={VIEWER_HEIGHT}*/}
 
-                {/*  // state*/}
-                {/*  renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}*/}
-                {/*  selectedCohort={this.state.selectedCohort[1]}*/}
-                {/*  subCohortCounts={this.state.subCohortCounts[1]}*/}
-                {/*  swapCohorts={this.swapCohorts}*/}
-                {/*/>*/}
-              </td>
+                  {/*  // state*/}
+                  {/*  renderOffset={TOP_HEIGHT + VIEWER_HEIGHT - 3}*/}
+                  {/*  selectedCohort={this.state.selectedCohort[1]}*/}
+                  {/*  subCohortCounts={this.state.subCohortCounts[1]}*/}
+                  {/*  swapCohorts={this.swapCohorts}*/}
+                  {/*/>*/}
+                </td>
                 }
               </tr>
             </tbody>
