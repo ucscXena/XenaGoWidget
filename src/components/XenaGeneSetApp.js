@@ -1023,6 +1023,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             associatedData={this.state.associatedData[0]}
                             cohortIndex={0}
                             filter={this.state.filter}
+                            geneDataStats={this.state.geneDataStats[1]}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
@@ -1030,12 +1031,14 @@ export default class XenaGeneSetApp extends PureComponent {
                             onMouseOut={this.handlePathwayHover}
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[0]}
+                            selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                         </td>
                         <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
                           {this.state.pathways &&
                         <GeneSetSelector
+                          geneDataStats={this.state.geneDataStats}
                           geneStateColors={this.state.geneStateColors}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
@@ -1056,6 +1059,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             associatedData={this.state.associatedData[1]}
                             cohortIndex={1}
                             filter={this.state.filter}
+                            geneDataStats={this.state.geneDataStats[1]}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
@@ -1063,6 +1067,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onMouseOut={this.handlePathwayHover}
                             pathways={pathways}
                             selectedCohort={this.state.selectedCohort[1]}
+                            selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                         </td>

@@ -45,30 +45,30 @@ function getPointData(event, props) {
 
   let pathway = pathways[pathwayIndex]
   if(isViewGeneExpression(filter)){
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null 
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null
     let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity
     if(cohortIndex===0){
-      pathway.firstSampleGeneExpressionPathwayActivity = activity 
+      pathway.firstSampleGeneExpressionPathwayActivity = activity
     }
     else{
-      pathway.secondSampleGeneExpressionPathwayActivity = activity 
+      pathway.secondSampleGeneExpressionPathwayActivity = activity
     }
   }
   else {
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null 
+    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null
     let activity = associatedData[pathwayIndex][sampleIndex]
     // TODO: map activity to sample-based activity
     if(cohortIndex===0){
-      pathway.firstSampleCnvHigh = activity.cnvHigh 
-      pathway.firstSampleCnvLow = activity.cnvLow 
+      pathway.firstSampleCnvHigh = activity.cnvHigh
+      pathway.firstSampleCnvLow = activity.cnvLow
       pathway.firstSampleMutation2 = activity.mutation2
       pathway.firstSampleMutation3 = activity.mutation3
       pathway.firstSampleMutation4 = activity.mutation4
       pathway.firstSampleTotal = activity.total
     }
     else{
-      pathway.secondSampleCnvHigh = activity.cnvHigh 
-      pathway.secondSampleCnvLow = activity.cnvLow 
+      pathway.secondSampleCnvHigh = activity.cnvHigh
+      pathway.secondSampleCnvLow = activity.cnvLow
       pathway.secondSampleMutation2 = activity.mutation2
       pathway.secondSampleMutation3 = activity.mutation3
       pathway.secondSampleMutation4 = activity.mutation4
@@ -144,6 +144,7 @@ VerticalGeneSetScoresView.propTypes = {
   associatedData: PropTypes.any,
   cohortIndex: PropTypes.any.isRequired,
   filter: PropTypes.any.isRequired,
+  geneDataStats: PropTypes.any.isRequired,
   labelHeight: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
   onClick: PropTypes.any.isRequired,
@@ -151,5 +152,6 @@ VerticalGeneSetScoresView.propTypes = {
   onMouseOut: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
   selectedCohort: PropTypes.any.isRequired,
+  selectedPathway: PropTypes.any.isRequired,
   width: PropTypes.any.isRequired,
 }
