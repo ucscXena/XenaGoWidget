@@ -287,6 +287,11 @@ body {
     cursor: pointer;
 }
 
+.geneHoverPathway{
+  word-break: break-all !important;
+  white-space: normal !important;
+  width: 180px !important;
+}
 
 
 .hoverScore{
