@@ -74,7 +74,7 @@ export class GeneSetSelector extends PureComponent {
   };
 
   render() {
-    let {geneStateColors,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
+    let {geneStateColors,geneDataStats,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
 
     let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
     let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
@@ -107,11 +107,11 @@ export class GeneSetSelector extends PureComponent {
       }
     }
 
-    if (selectedPathway===undefined) {
-      return (
-        <div/>
-      )
-    }
+    // if (selectedPathway===undefined) {
+    //   return (
+    //     <div/>
+    //   )
+    // }
 
     return pathways.map((p) => {
       let labelString = '(' + p.gene.length + ') ' + p.golabel
@@ -120,7 +120,7 @@ export class GeneSetSelector extends PureComponent {
       let selected = selectedPathway.pathway.golabel === p.golabel
       let highlighted = p.gene.indexOf(highlightedGene) >= 0
 
-      return (
+      let geneSetArray = [
         <svg
           key={p.golabel}
           onMouseDown={this.onClick.bind(this, p)}
@@ -159,7 +159,25 @@ export class GeneSetSelector extends PureComponent {
             {width < 10 ? '' : labelString}
           </text>
         </svg>
-      )
+      ]
+
+      if(selected){
+        console.log('gene data stats')
+        console.log(geneDataStats)
+
+
+        const genes = geneDataStats[0].pathways.map( p => {
+          return (
+            <div>
+              {p.gene[0]}
+            </div>
+          )
+        })
+        console.log('genes',genes)
+        geneSetArray.push(genes)
+      }
+
+      return geneSetArray
     })
   }
 }
