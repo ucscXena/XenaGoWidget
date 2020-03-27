@@ -165,7 +165,7 @@ export class GeneSetSelector extends PureComponent {
 }
 
 GeneSetSelector.propTypes = {
-  geneDataStats: PropTypes.any.isRequired,
+  geneDataStats: PropTypes.any,
   geneStateColors: PropTypes.any,
   highlightedGene: PropTypes.any,
   hoveredPathway: PropTypes.any,
