@@ -59,7 +59,7 @@ export default class HoverGeneView extends PureComponent {
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
             <div className={BaseStyle.pathwayChip}>
-              <span><strong>Pathway</strong> {data.pathway.golabel}</span>
+              <span><strong>Pathway</strong> {data.pathway.golabel.replace('/_/g',' ')}</span>
               <br/>
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
@@ -221,9 +221,9 @@ export default class HoverGeneView extends PureComponent {
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
                     <div className={BaseStyle.pathwayChip}>
-                      <span><strong>Pathway&nbsp;&nbsp;</strong>
+                      <div style={{width: 180,wordBreak: 'break-all',whiteSpace:'wrap'}}><strong>Pathway&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
-                      </span>
+                      </div>
                       {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
