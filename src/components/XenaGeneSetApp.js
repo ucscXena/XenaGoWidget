@@ -1023,7 +1023,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             associatedData={this.state.associatedData[0]}
                             cohortIndex={0}
                             filter={this.state.filter}
-                            geneDataStats={this.state.geneData[0]}
+                            geneData={this.state.geneData[0]}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
                             onClick={this.handlePathwaySelect}
@@ -1038,7 +1038,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
                           {this.state.pathways &&
                         <GeneSetSelector
-                          geneDataStats={this.state.geneData}
+                          geneData={this.state.geneData}
                           geneStateColors={this.state.geneStateColors}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
@@ -1059,7 +1059,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             associatedData={this.state.associatedData[1]}
                             cohortIndex={1}
                             filter={this.state.filter}
-                            geneDataStats={this.state.geneData[1]}
+                            geneData={this.state.geneData[1]}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
                             onClick={this.handlePathwaySelect}

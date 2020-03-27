@@ -74,7 +74,7 @@ export class GeneSetSelector extends PureComponent {
   };
 
   render() {
-    let {geneStateColors,geneDataStats,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
+    let {geneStateColors,geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
 
     let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
     let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
@@ -162,18 +162,18 @@ export class GeneSetSelector extends PureComponent {
       ]
 
       if(selected){
-        console.log('gene data stats')
-        console.log(geneDataStats)
+        // console.log('gene data stats')
+        // console.log(geneData)
 
 
-        const genes = geneDataStats[0].pathways.map( p => {
+        const genes = geneData[0].pathways.map(p => {
           return (
             <div>
               {p.gene[0]}
             </div>
           )
         })
-        console.log('genes',genes)
+        // console.log('genes',genes)
         geneSetArray.push(genes)
       }
 
@@ -183,7 +183,7 @@ export class GeneSetSelector extends PureComponent {
 }
 
 GeneSetSelector.propTypes = {
-  geneDataStats: PropTypes.any,
+  geneData: PropTypes.any,
   geneStateColors: PropTypes.any,
   highlightedGene: PropTypes.any,
   hoveredPathway: PropTypes.any,
