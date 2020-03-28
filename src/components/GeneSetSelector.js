@@ -168,7 +168,7 @@ export class GeneSetSelector extends PureComponent {
 
         const genes = geneData[0].pathways.map(p => {
           return (
-            <div>
+            <div key={p.gene[0]}>
               {p.gene[0]}
             </div>
           )
