@@ -53,7 +53,6 @@ GeneSetInformationColumn.propTypes = {
   geneDataStats: PropTypes.any,
   geneHoverData: PropTypes.any,
   onEditCohorts: PropTypes.any.isRequired,
-  onShowCohortEditor: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 

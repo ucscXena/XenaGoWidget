@@ -55,6 +55,7 @@ import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
+import {CohortEditorSelector} from './CohortEditorSelector'
 
 const VIEWER_HEIGHT = 500
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -310,14 +311,16 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData
 
     const mergedGeneSetData = [
-      mergeGeneSetAndGeneDetailData(selection,sortedGeneData[0],sortedAssociatedDataA),
-      mergeGeneSetAndGeneDetailData(selection,sortedGeneData[1],sortedAssociatedDataB),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB),
     ]
-    console.log('merged data',mergedGeneSetData)
+    console.log('merged data A',mergedGeneSetData[0][0][0])
+    console.log('original data A',sortedAssociatedDataA[0][0])
 
     currentLoadState = LOAD_STATE.LOADED
     this.setState({
       associatedData: [sortedAssociatedDataA, sortedAssociatedDataB],
+      // associatedData: mergedGeneSetData,
       pathwaySelection: selection,
       geneList,
       pathways,
@@ -752,24 +755,24 @@ export default class XenaGeneSetApp extends PureComponent {
           {/*  onColorChange={this.handleColorChange}*/}
           {/*  onColorToggle={this.handleColorToggle}*/}
           {/*/>*/}
-          {/*{this.state.pathways && this.state.selectedCohort &&*/}
-          {/*<Dialog*/}
-          {/*  active={this.state.showCohortEditor}*/}
-          {/*  onEscKeyDown={() => this.setState({showCohortEditor: false})}*/}
-          {/*  onOverlayClick={() => this.setState({showCohortEditor: false})}*/}
-          {/*  title="Cohort Editor"*/}
-          {/*  type='small'*/}
-          {/*>*/}
-          {/*  <CohortEditorSelector*/}
-          {/*    cohort={this.state.selectedCohort}*/}
-          {/*    onCancelCohortEdit={() => this.setState(*/}
-          {/*      {showCohortEditor: false})}*/}
-          {/*    onChangeView={this.handleChangeView}*/}
-          {/*    subCohortCounts={this.state.subCohortCounts}*/}
-          {/*    view={this.state.filter}*/}
-          {/*  />*/}
-          {/*</Dialog>*/}
-          {/*}*/}
+          {this.state.pathways && this.state.selectedCohort &&
+          <Dialog
+            active={this.state.showCohortEditor}
+            onEscKeyDown={() => this.setState({showCohortEditor: false})}
+            onOverlayClick={() => this.setState({showCohortEditor: false})}
+            title="Cohort Editor"
+            type='small'
+          >
+            <CohortEditorSelector
+              cohort={this.state.selectedCohort}
+              onCancelCohortEdit={() => this.setState(
+                {showCohortEditor: false})}
+              onChangeView={this.handleChangeView}
+              subCohortCounts={this.state.subCohortCounts}
+              view={this.state.filter}
+            />
+          </Dialog>
+          }
           {this.state.pathways && this.state.associatedData &&
           <Dialog
             active={this.state.showGeneSetSearch}
@@ -939,7 +942,6 @@ export default class XenaGeneSetApp extends PureComponent {
                     geneDataStats={this.state.geneData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
-                    onShowCohortEditor={this.handleEditCohorts}
                     pathwayData={this.state.pathwayData}
                     subCohortCounts={this.state.subCohortCounts}
                     view={this.state.filter}

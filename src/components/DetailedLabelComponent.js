@@ -33,7 +33,7 @@ function getSelectedSubCohorts(selectedSubCohorts,length) {
 export class DetailedLabelComponent extends PureComponent {
 
   render() {
-    const {cohortIndex,onShowCohortEditor} = this.props
+    const {cohortIndex,onEditCohorts} = this.props
     const cohort = this.props.cohort[cohortIndex]
     const color = this.props.cohortColor[cohortIndex]
     const pathwayData = this.props.pathwayData[cohortIndex]
@@ -50,7 +50,7 @@ export class DetailedLabelComponent extends PureComponent {
               <div className={BaseStyle.geneSetHeaderLabel}>
                 <TooltipLink
                   className={BaseStyle.infoLink} href="#" label={cohortName +' '+subCohortDetails}
-                  onClick={()=> onShowCohortEditor()}
+                  onClick={()=> onEditCohorts()}
                   tooltip={cohort.name}
                 />
                 {pathwayData.samples &&
@@ -71,6 +71,6 @@ DetailedLabelComponent.propTypes = {
   cohort: PropTypes.any.isRequired,
   cohortColor: PropTypes.any.isRequired,
   cohortIndex: PropTypes.any.isRequired,
-  onShowCohortEditor: PropTypes.any.isRequired,
+  onEditCohorts: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,
 }
