@@ -8,7 +8,7 @@ import {
   calculateAssociatedData,
   generateScoredData,
   generateZScoreForBoth,
-  isViewGeneExpression,
+  isViewGeneExpression, mergeGeneSetAndGeneDetailData,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
@@ -308,6 +308,12 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedGeneData = isViewGeneExpression(this.state.filter) ?
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
+
+    const mergedGeneSetData = [
+      mergeGeneSetAndGeneDetailData(selection,sortedGeneData[0],sortedAssociatedDataA),
+      mergeGeneSetAndGeneDetailData(selection,sortedGeneData[1],sortedAssociatedDataB),
+    ]
+    console.log('merged data',mergedGeneSetData)
 
     currentLoadState = LOAD_STATE.LOADED
     this.setState({
