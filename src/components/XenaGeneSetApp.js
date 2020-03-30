@@ -441,16 +441,21 @@ export default class XenaGeneSetApp extends PureComponent {
     // TODO: create gene data off of the sorted pathway data
     const geneData = generateScoredData(pathwaySelectionWrapper, pathwayData,
       geneSetPathways, filter, [sortedSamplesA, sortedSamplesB])
+    const sortedGeneData = isViewGeneExpression(this.state.filter) ?
+      sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
+      geneData
 
-    // const mergedGeneSetData = [
-    //   mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA),
-    //   mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB),
-    // ]
+    const mergedGeneSetData = [
+      mergeGeneSetAndGeneDetailData(sortedGeneData[0],newAssociatedData[0]),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[1],newAssociatedData[1]),
+    ]
 
     this.setState({
-      geneData,
+      // geneData,
+      sortedGeneData,
       pathwaySelection: pathwaySelectionWrapper,
-      associatedData: newAssociatedData,
+      // associatedData: newAssociatedData,
+      associatedData: mergedGeneSetData,
     })
   };
 
