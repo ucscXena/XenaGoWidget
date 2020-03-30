@@ -105,12 +105,13 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 
     render() {
-      let {cohortIndex, labelHeight, pathways, width, associatedData, maxValue} = this.props
+      let {cohortIndex, geneData, labelHeight, pathways, width, associatedData, maxValue} = this.props
       if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>
       }
       // need a size and vertical start for each
-      let layout = pathways.map((p, index) => {
+      let inputPathways = [...pathways.slice(0,3),...geneData.pathways,...pathways.slice(3)]
+      let layout = inputPathways.map((p, index) => {
         return {start: index * labelHeight, size: labelHeight}
       })
 

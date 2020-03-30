@@ -96,7 +96,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const cohortColors = calculateCohortColors(urlVariables)
 
     this.state = {
-      // TODO: this should use the full cohort Data, not just the top-level
       associatedData: [],
       selectedCohort: cohorts,
       subCohortCounts: [],
@@ -314,13 +313,11 @@ export default class XenaGeneSetApp extends PureComponent {
       mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA),
       mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB),
     ]
-    console.log('merged data A',mergedGeneSetData[0][0][0])
-    console.log('original data A',sortedAssociatedDataA[0][0])
 
     currentLoadState = LOAD_STATE.LOADED
     this.setState({
-      associatedData: [sortedAssociatedDataA, sortedAssociatedDataB],
-      // associatedData: mergedGeneSetData,
+      // associatedData: [sortedAssociatedDataA, sortedAssociatedDataB],
+      associatedData: mergedGeneSetData,
       pathwaySelection: selection,
       geneList,
       pathways,
@@ -444,6 +441,11 @@ export default class XenaGeneSetApp extends PureComponent {
     // TODO: create gene data off of the sorted pathway data
     const geneData = generateScoredData(pathwaySelectionWrapper, pathwayData,
       geneSetPathways, filter, [sortedSamplesA, sortedSamplesB])
+
+    // const mergedGeneSetData = [
+    //   mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA),
+    //   mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB),
+    // ]
 
     this.setState({
       geneData,
