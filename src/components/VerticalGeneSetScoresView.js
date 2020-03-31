@@ -38,7 +38,6 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
 
 function getPointData(event, props) {
   let {filter,labelHeight, pathways,cohortIndex, width,associatedData} = props
-  // eslint-disable-next-line no-unused-vars
   let {x, y} = getMousePos(event)
   let pathwayIndex = pathwayIndexFromY(y, labelHeight)
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
