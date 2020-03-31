@@ -117,6 +117,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
         return {start: index * labelHeight, size: labelHeight}
       })
 
+      console.log('layout ',layout,inputPathways,associatedData,selectedPathway,geneData)
+
       const totalHeight = layout.length * labelHeight
       if (associatedData.length === 0) {
         return <div>Loading...</div>
