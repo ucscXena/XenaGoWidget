@@ -8,7 +8,7 @@ import {
   calculateAssociatedData,
   generateScoredData,
   generateZScoreForBoth, getSelectedGeneSetIndex,
-  isViewGeneExpression, mergeGeneSetAndGeneDetailData,
+  isViewGeneExpression, mergeGeneSetAndGeneDetailData, pruneGeneSelection,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
@@ -429,26 +429,24 @@ export default class XenaGeneSetApp extends PureComponent {
     const selectedGoLabel = pathwaySelectionWrapper.pathway.golabel
 
     AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper)
-
     const geneSetPathways = AppStorageHandler.getPathways()
-
-    console.log('pathway selection wrapper',selectedGoLabel,geneSetPathways,pathwayData)
-    // const pureAssociatedData = associatedData.findIndex( ad => {
-    //
-    // })
+    const pureAssociatedData = [
+      pruneGeneSelection(associatedData[0],geneSetPathways,selectedGoLabel)
+      , pruneGeneSelection(associatedData[1],geneSetPathways,selectedGoLabel)
+    ]
 
     const newAssociatedData = [
-      sortAssociatedData(pathwaySelectionWrapper.pathway, associatedData[0],
+      sortAssociatedData(pathwaySelectionWrapper.pathway, pureAssociatedData[0],
         filter),
-      sortAssociatedData(pathwaySelectionWrapper.pathway, associatedData[1],
+      sortAssociatedData(pathwaySelectionWrapper.pathway, pureAssociatedData[1],
         filter),
     ]
 
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
-      associatedData[0], this.state.filter)
+      pureAssociatedData[0], this.state.filter)
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,
-      associatedData[1], this.state.filter)
+      pureAssociatedData[1], this.state.filter)
 
     const sortedSamplesA = sortedAssociatedDataA[0].map((d) => d.sample)
     const sortedSamplesB = sortedAssociatedDataB[0].map((d) => d.sample)
@@ -461,18 +459,11 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData
 
     let pathwayIndex = getSelectedGeneSetIndex(pathwaySelectionWrapper,geneSetPathways)
-    // let inputPathways = [
-    //   ...geneSetPathways.slice(0,pathwayIndex),
-    //   ...geneData.pathways,
-    //   ...geneSetPathways.slice(pathwayIndex)]
 
     const mergedGeneSetData = [
       mergeGeneSetAndGeneDetailData(sortedGeneData[0],newAssociatedData[0],pathwayIndex),
       mergeGeneSetAndGeneDetailData(sortedGeneData[1],newAssociatedData[1],pathwayIndex),
     ]
-    console.log('ass data',sortedAssociatedDataA,sortedAssociatedDataB,newAssociatedData)
-    console.log('merged gene data',geneData,sortedGeneData)
-    console.log('merged geneset data',mergedGeneSetData)
 
     this.setState({
       // geneData,

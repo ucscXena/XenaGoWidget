@@ -502,6 +502,24 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
   return total_prob
 }
 
+/**
+ * The associatedData has selected genes in it
+ * @param associatedData
+ * @param geneSetPathways
+ * @param selectedGoLabel
+ * @returns {*}
+ */
+export function pruneGeneSelection(associatedData){
+  let lastGoLabel = null
+  return associatedData.filter( (ad) => {
+    if(lastGoLabel===ad[0].golabel){
+      return false
+    }
+    lastGoLabel = ad[0].golabel
+    return true
+  })
+}
+
 export function mergeGeneSetAndGeneDetailData(geneData,geneSetData,pathwayIndex){
   const output = geneData.data.map( f => {
     return f.map( g => {
