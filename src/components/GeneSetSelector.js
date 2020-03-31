@@ -107,6 +107,9 @@ export class GeneSetSelector extends PureComponent {
       }
     }
 
+
+    console.log('pathways',pathways)
+
     return pathways.map((p) => {
       let labelString = '(' + p.gene.length + ') ' + p.golabel
       labelString = labelString.replace(/_/g,' ')
@@ -156,14 +159,53 @@ export class GeneSetSelector extends PureComponent {
       ]
 
       if(selected){
-        const genes = geneData[0].pathways.map(p => {
-          return (
-            <div key={p.gene[0]}>
-              {p.gene[0]}
-            </div>
+        let genesToAdd = []
+        for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
+          let gene0 = geneData[0].pathways[index]
+          let gene1 = geneData[1].pathways[index]
+          let geneEntry = (<svg
+            key={gene0.gene[0]}
+            onMouseDown={this.onClick.bind(this, gene0)}
+            onMouseOut={this.onMouseOut.bind(this, gene0)}
+            onMouseOver={this.onHover.bind(this, gene0)}
+            style={GeneSetSelector.labelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
+          >
+            {gene0.geneExpressionMean &&
+              <rect
+                height={labelHeight} style={pillStyleExp(gene0.geneExpressionMean)} width={width / 2 - 1}
+                x={0}
+              />
+            }
+            {p.firstObserved &&
+              <rect
+                height={labelHeight} style={pillStyle(gene0.firstChiSquared)} width={width / 2 - 1}
+                x={0}
+              />
+            }
+            {gene1.geneExpressionMean &&
+              <rect
+                height={labelHeight} style={pillStyleExp(gene1.geneExpressionMean)} width={width / 2}
+                x={width / 2 + 1}
+              />
+            }
+            {p.secondObserved &&
+              <rect
+                height={labelHeight} style={pillStyle(gene1.secondChiSquared)} width={width / 2}
+                x={width / 2 + 1}
+              />
+            }
+            <text
+              fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
+              y={topOffset}
+            >
+              {/*{width < 10 ? '' : labelString}*/}
+              {gene0.gene[0]}
+            </text>
+          </svg>
           )
-        })
-        geneSetArray.push(genes)
+          genesToAdd.push(  geneEntry )
+        }
+        geneSetArray.push(genesToAdd)
       }
 
       return geneSetArray
@@ -172,6 +214,7 @@ export class GeneSetSelector extends PureComponent {
 }
 
 GeneSetSelector.propTypes = {
+  geneColors: PropTypes.any,
   geneData: PropTypes.any,
   geneStateColors: PropTypes.any,
   highlightedGene: PropTypes.any,

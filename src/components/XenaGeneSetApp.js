@@ -1066,6 +1066,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
                           {this.state.pathways &&
                         <GeneSetSelector
+                          geneColors={this.state.geneColors}
                           geneData={this.state.geneData}
                           geneStateColors={this.state.geneStateColors}
                           highlightedGene={this.state.highlightedGene}
