@@ -27,7 +27,51 @@ export class GeneSetSelector extends PureComponent {
         strokeWidth: 1,
         boxShadow: '0 0 4px 4px blue',
         borderRadius: '25px',
+        cursor: 'pointer'
 
+      }
+    }
+
+    else if (hovered) {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 1,
+        borderRadius: '15px',
+        boxShadow: '0 0 2px 2px green',
+        cursor: 'pointer'
+      }
+    }
+    else if (highlighted)  {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 1,
+        borderRadius: '15px',
+        boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
+        cursor: 'pointer'
+      }
+    }
+    else {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 2,
+        cursor: 'pointer'
+      }
+    }
+  }
+
+  static geneLabelStyle(score, selected, hovered, width, labelHeight, highlighted) {
+
+    if (selected) {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 1,
+        boxShadow: '0 0 4px 4px purple',
+        borderRadius: '25px',
+        // cursor: 'pointer'
       }
     }
 
@@ -108,8 +152,6 @@ export class GeneSetSelector extends PureComponent {
     }
 
 
-    console.log('pathways',pathways)
-
     return pathways.map((p) => {
       let labelString = '(' + p.gene.length + ') ' + p.golabel
       labelString = labelString.replace(/_/g,' ')
@@ -168,7 +210,7 @@ export class GeneSetSelector extends PureComponent {
             onMouseDown={this.onClick.bind(this, gene0)}
             onMouseOut={this.onMouseOut.bind(this, gene0)}
             onMouseOver={this.onHover.bind(this, gene0)}
-            style={GeneSetSelector.labelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
+            style={GeneSetSelector.geneLabelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
           >
             {gene0.geneExpressionMean &&
               <rect
