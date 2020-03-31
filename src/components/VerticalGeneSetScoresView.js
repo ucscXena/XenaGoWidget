@@ -8,7 +8,7 @@ import {getLabelForIndex} from '../functions/CohortFunctions'
 import {getSelectedGeneSetIndex, isViewGeneExpression} from '../functions/DataFunctions'
 
 
-function pathwayIndexFromY(y, labelHeight) {
+function findGeneSetIndexFromY(y, labelHeight) {
   return Math.round((y - 15) / labelHeight)
 }
 
@@ -37,15 +37,40 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
 }
 
 function getPointData(event, props) {
-  let {filter,labelHeight, pathways,cohortIndex, width,associatedData} = props
+  let {filter,labelHeight, geneData, pathways,cohortIndex, width,associatedData,selectedPathway} = props
   let {x, y} = getMousePos(event)
-  let pathwayIndex = pathwayIndexFromY(y, labelHeight)
+  const selectedGeneSetIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
+  const pathwayIndexFromY = findGeneSetIndexFromY(y, labelHeight)
+
+  // console.log('selected index',selectedGeneSetIndex)
+  // console.log('pathway index',pathwayIndexFromY)
+
+  // associatedData
+  // console.log('get point data ',associatedData,pathwayIndexFromY, selectedPathway)
+  // console.log('all points',props)
+
+
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
 
-  let pathway = pathways[pathwayIndex]
+  const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length
+  // console.log('is gfene selected',isGeneSelected,selectedGeneSetIndex,pathwayIndexFromY,geneData.pathways.length)
+
+  let pathway
+  if(isGeneSelected){
+    pathway = geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex]
+    // TODO: it is missing sample somehow?
+    console.log('original gene selected: ',pathways[pathwayIndexFromY],'gene selected',geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex])
+    // pathway.golabel = pathway.gene[0]
+  }
+  else{
+    pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length]
+  }
+
+  // console.log('all pathways',pathways)
+  console.log('output pathway',pathway)
   if(isViewGeneExpression(filter)){
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null
-    let activity = associatedData[pathwayIndex][sampleIndex].geneExpressionPathwayActivity
+    if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null
+    let activity = associatedData[pathwayIndexFromY][sampleIndex].geneExpressionPathwayActivity
     if(cohortIndex===0){
       pathway.firstSampleGeneExpressionPathwayActivity = activity
     }
@@ -54,8 +79,8 @@ function getPointData(event, props) {
     }
   }
   else {
-    if(associatedData===undefined || pathwayIndex<0 || cohortIndex < 0 || associatedData[pathwayIndex][sampleIndex]===undefined) return null
-    let activity = associatedData[pathwayIndex][sampleIndex]
+    if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null
+    let activity = associatedData[pathwayIndexFromY][sampleIndex]
     // TODO: map activity to sample-based activity
     if(cohortIndex===0){
       pathway.firstSampleCnvHigh = activity.cnvHigh
@@ -79,7 +104,7 @@ function getPointData(event, props) {
   // TODO: handle other types here?
   return {
     pathway: pathway,
-    tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndex][sampleIndex].sample,
+    tissue: sampleIndex < 0 ? 'Header' : associatedData[pathwayIndexFromY][sampleIndex].sample,
     cohortIndex,
   }
 }
@@ -115,8 +140,6 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let layout = inputPathways.map((p, index) => {
         return {start: index * labelHeight, size: labelHeight}
       })
-
-      console.log('layout ',layout,inputPathways,associatedData,selectedPathway,geneData)
 
       const totalHeight = layout.length * labelHeight
       if (associatedData.length === 0) {

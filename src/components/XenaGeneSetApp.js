@@ -405,8 +405,6 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort1,
     ] : null
 
-    console.log('gene hover data',JSON.stringify(geneHoverData))
-
     this.setState({
       hoveredPathway,
       geneHoverData,
@@ -417,9 +415,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const {pathwayData, filter, associatedData} = this.state
 
     // slice out older pathway data
-
-    console.log('input ass data',associatedData)
-
     if (selection.pathway.gene.length === 0) {
       return
     }
