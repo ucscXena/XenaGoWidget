@@ -502,8 +502,7 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
   return total_prob
 }
 
-export function mergeGeneSetAndGeneDetailData(geneData,geneSetData){
-  console.log('input data',geneData,geneSetData)
+export function mergeGeneSetAndGeneDetailData(geneData,geneSetData,pathwayIndex){
   const output = geneData.data.map( f => {
     return f.map( g => {
       g.geneExpressionPathwayActivity = g.geneExpressionPathwayActivity ? g.geneExpressionPathwayActivity : g.geneExpression
@@ -512,7 +511,16 @@ export function mergeGeneSetAndGeneDetailData(geneData,geneSetData){
   })
   // console.log(output)
   // TODO: insert at the correct spot
-  return [...output,...geneSetData]
+  // return [...output,...geneSetData]
+  return [...geneSetData.slice(0,pathwayIndex),...output,...geneSetData.slice(pathwayIndex)]
+}
+
+export function getSelectedGeneSetIndex(selection,pathways){
+
+  return pathways.findIndex( p => {
+    return selection.pathway.golabel === p.golabel
+  })
+
 }
 
 export function calculateAssociatedData(pathwayData, filter) {

@@ -7,7 +7,7 @@ import {
   calculateAllPathways,
   calculateAssociatedData,
   generateScoredData,
-  generateZScoreForBoth,
+  generateZScoreForBoth, getSelectedGeneSetIndex,
   isViewGeneExpression, mergeGeneSetAndGeneDetailData,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
@@ -309,9 +309,10 @@ export default class XenaGeneSetApp extends PureComponent {
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
 
+    let pathwayIndex = getSelectedGeneSetIndex(selection,pathways)
     const mergedGeneSetData = [
-      mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA),
-      mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
     ]
 
     currentLoadState = LOAD_STATE.LOADED
@@ -698,9 +699,6 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
-    // const allowableViews = intersection(
-    //   getViewsForCohort(this.state.selectedCohort[0].name),
-    //   getViewsForCohort(this.state.selectedCohort[1].name))
     let maxValue = 0
 
     if (this.doRefetch()) {

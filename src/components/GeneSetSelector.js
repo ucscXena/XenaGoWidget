@@ -107,12 +107,6 @@ export class GeneSetSelector extends PureComponent {
       }
     }
 
-    // if (selectedPathway===undefined) {
-    //   return (
-    //     <div/>
-    //   )
-    // }
-
     return pathways.map((p) => {
       let labelString = '(' + p.gene.length + ') ' + p.golabel
       labelString = labelString.replace(/_/g,' ')
@@ -162,10 +156,6 @@ export class GeneSetSelector extends PureComponent {
       ]
 
       if(selected){
-        // console.log('gene data stats')
-        // console.log(geneData)
-
-
         const genes = geneData[0].pathways.map(p => {
           return (
             <div key={p.gene[0]}>
@@ -173,7 +163,6 @@ export class GeneSetSelector extends PureComponent {
             </div>
           )
         })
-        // console.log('genes',genes)
         geneSetArray.push(genes)
       }
 

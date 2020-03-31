@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import DrawFunctions from '../functions/DrawFunctions'
 import CanvasDrawing from './CanvasDrawing'
 import {getLabelForIndex} from '../functions/CohortFunctions'
-import {isViewGeneExpression} from '../functions/DataFunctions'
+import {getSelectedGeneSetIndex, isViewGeneExpression} from '../functions/DataFunctions'
 
 
 function pathwayIndexFromY(y, labelHeight) {
@@ -105,12 +105,14 @@ export default class VerticalGeneSetScoresView extends PureComponent {
 
 
     render() {
-      let {cohortIndex, geneData, labelHeight, pathways, width, associatedData, maxValue} = this.props
+      let {cohortIndex, geneData, labelHeight, width, associatedData, maxValue, pathways, selectedPathway} = this.props
       if (!associatedData) {
         return <div>Loading Cohort {getLabelForIndex(cohortIndex)}</div>
       }
+      let pathwayIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
+
       // need a size and vertical start for each
-      let inputPathways = [...pathways.slice(0,3),...geneData.pathways,...pathways.slice(3)]
+      let inputPathways = [...pathways.slice(0,pathwayIndex),...geneData.pathways,...pathways.slice(pathwayIndex)]
       let layout = inputPathways.map((p, index) => {
         return {start: index * labelHeight, size: labelHeight}
       })
@@ -119,6 +121,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       if (associatedData.length === 0) {
         return <div>Loading...</div>
       }
+
       return (
         <div>
           <CanvasDrawing
