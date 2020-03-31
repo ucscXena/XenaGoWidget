@@ -512,7 +512,7 @@ export function mergeGeneSetAndGeneDetailData(geneData,geneSetData,pathwayIndex)
   // console.log(output)
   // TODO: insert at the correct spot
   // return [...output,...geneSetData]
-  return [...geneSetData.slice(0,pathwayIndex),...output,...geneSetData.slice(pathwayIndex)]
+  return [...geneSetData.slice(0,pathwayIndex+1),...output,...geneSetData.slice(pathwayIndex+1)]
 }
 
 export function getSelectedGeneSetIndex(selection,pathways){

@@ -112,7 +112,7 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let pathwayIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
 
       // need a size and vertical start for each
-      let inputPathways = [...pathways.slice(0,pathwayIndex),...geneData.pathways,...pathways.slice(pathwayIndex)]
+      let inputPathways = [...pathways.slice(0,pathwayIndex+1),...geneData.pathways,...pathways.slice(pathwayIndex+1)]
       let layout = inputPathways.map((p, index) => {
         return {start: index * labelHeight, size: labelHeight}
       })

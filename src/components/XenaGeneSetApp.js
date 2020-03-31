@@ -425,9 +425,17 @@ export default class XenaGeneSetApp extends PureComponent {
       pathway: selection.pathway,
       tissue: 'Header',
     }
+
+    const selectedGoLabel = pathwaySelectionWrapper.pathway.golabel
+
     AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper)
 
     const geneSetPathways = AppStorageHandler.getPathways()
+
+    console.log('pathway selection wrapper',selectedGoLabel,geneSetPathways,pathwayData)
+    // const pureAssociatedData = associatedData.findIndex( ad => {
+    //
+    // })
 
     const newAssociatedData = [
       sortAssociatedData(pathwaySelectionWrapper.pathway, associatedData[0],
@@ -435,6 +443,8 @@ export default class XenaGeneSetApp extends PureComponent {
       sortAssociatedData(pathwaySelectionWrapper.pathway, associatedData[1],
         filter),
     ]
+
+
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
       associatedData[0], this.state.filter)
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,
