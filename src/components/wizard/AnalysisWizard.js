@@ -50,46 +50,33 @@ export class AnalysisWizard extends PureComponent {
         <p>
           {comparisonDescription}
         </p>
-        <h2><u>Select Analysis Method </u></h2>
-        {
-          <div>
-            <h3>Gene Expression <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
-
-            <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
-            <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
-            {cohort.indexOf('LUAD') >= 0 &&
+        <h3>Visualize differences using ...</h3>
+        <div className={Wizard.wizardDataBox}>
+          <h3 className={Wizard.wizardHeader}>Gene Expression data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+          <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
+          <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
+          {cohort.indexOf('LUAD') >= 0 &&
             <AnalysisButton
               analysis={VIEW_ENUM.REGULON}
               onClick={onSelectAnalysis}/>
-            }
-            <br/>
-            <br/>
-            <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
+          }
+          <br/>
+          <br/>
+          <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
             Advanced Options&nbsp;
-              {!this.state.showGeneSetOptions &&
+            {!this.state.showGeneSetOptions &&
             <FaRightArrow/>
-              }
-              {this.state.showGeneSetOptions &&
-            <FaDownArrow/>
-              }
-            </div>
+            }
             {this.state.showGeneSetOptions &&
+            <FaDownArrow/>
+            }
+          </div>
+          {this.state.showGeneSetOptions &&
             <table className={Wizard.advancedTable} style={{marginTop: 10}}>
               <tbody>
                 <tr>
                   <th align='right'>
-                    <u>Maximum Gene Sets</u>:
-                  </th>
-                  <td>
-                    <input
-                      onChange={(value) => onSelectGeneSetLimit(value)}
-                      type='text' value={geneSetLimit}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th align='right'>
-                    <u>Gene Set Filtering Method</u>:
+                    <u>Geneset ranking method</u>:
                   </th>
                   <td>
                     <select
@@ -104,15 +91,33 @@ export class AnalysisWizard extends PureComponent {
                     </select>
                   </td>
                 </tr>
+                <tr>
+                  <th align='right'>
+                    <u>Maximum genesets to visualize</u>:
+                  </th>
+                  <td>
+                    <input
+                      onChange={(value) => onSelectGeneSetLimit(value)}
+                      type='text' value={geneSetLimit}
+                    />
+                  </td>
+                </tr>
               </tbody>
             </table>
-            }
-            <h3>Mutation / CNV <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
-            <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
-            <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
-            <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
-          </div>
-        }
+          }
+        </div>
+        {/*<hr/>*/}
+        <br/>
+            OR
+        <br/>
+        <br/>
+        {/*<hr/>*/}
+        <div className={Wizard.wizardDataBox}>
+          <h3 className={Wizard.wizardHeader}>Mutation / CNV data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+          <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
+          <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
+          <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
+        </div>
       </div>
     )
   }
