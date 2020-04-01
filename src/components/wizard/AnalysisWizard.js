@@ -50,10 +50,10 @@ export class AnalysisWizard extends PureComponent {
         <p>
           {comparisonDescription}
         </p>
-        <h2><u>Select Analysis Method </u></h2>
+        <h2><u>Visualize differences using ...</u></h2>
         {
           <div>
-            <h3>Gene Expression <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+            <h3>Gene Expression data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
 
             <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
@@ -78,18 +78,7 @@ export class AnalysisWizard extends PureComponent {
               <tbody>
                 <tr>
                   <th align='right'>
-                    <u>Maximum Gene Sets</u>:
-                  </th>
-                  <td>
-                    <input
-                      onChange={(value) => onSelectGeneSetLimit(value)}
-                      type='text' value={geneSetLimit}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <th align='right'>
-                    <u>Gene Set Filtering Method</u>:
+                    <u>Geneset ranking method</u>:
                   </th>
                   <td>
                     <select
@@ -104,10 +93,21 @@ export class AnalysisWizard extends PureComponent {
                     </select>
                   </td>
                 </tr>
+                <tr>
+                  <th align='right'>
+                    <u>Maximum genesets to visualize</u>:
+                  </th>
+                  <td>
+                    <input
+                      onChange={(value) => onSelectGeneSetLimit(value)}
+                      type='text' value={geneSetLimit}
+                    />
+                  </td>
+                </tr>
               </tbody>
             </table>
             }
-            <h3>Mutation / CNV <FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+            <h3>Mutation / CNV data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
             <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
             <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
