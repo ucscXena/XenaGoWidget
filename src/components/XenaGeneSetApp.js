@@ -920,7 +920,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 {/*<td colSpan={3} width={VERTICAL_GENESET_DETAIL_WIDTH * 2 + VERTICAL_GENESET_DETAIL_WIDTH}>*/}
                 <td colSpan={5}>
                   <h3>
-                    Cohort X comparing sub cohorts A,B, C (z) to sub cohorts D, E, F (y)
+                    Cohort X comparing subgroups A,B, C (z) to subgroups D, E, F (y)
                     <Button floating mini onClick={() => alert('cog')}>
                       <FaConfigure/>
                     </Button>

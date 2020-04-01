@@ -25,7 +25,7 @@ export class GeneSetSubCohortBox extends PureComponent {
   }
 
   allSubCohortsStatement(selectedSubCohorts) {
-    return `View All ${selectedSubCohorts.length} sub cohorts`
+    return `View All ${selectedSubCohorts.length} subgroups`
   }
 
   render(){

@@ -32,10 +32,10 @@ export class CohortEditorSelector extends PureComponent {
   }
 
   handleCohortChange = (event,cohortIndex) => {
-    const selectedCohortName = event.target.value 
+    const selectedCohortName = event.target.value
     let cohortDetails = getCohortDetails({name: selectedCohortName})
     cohortDetails.subCohorts = getSubCohortsOnlyForCohort(selectedCohortName)
-    cohortDetails.selectedSubCohorts =  cohortDetails.subCohorts 
+    cohortDetails.selectedSubCohorts =  cohortDetails.subCohorts
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:cohortDetails}
     })
@@ -81,7 +81,7 @@ export class CohortEditorSelector extends PureComponent {
   selectNone(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
     // newCohort.selectedSubCohorts = newCohort.subCohorts ;
-    newCohort.selectedSubCohorts = [] 
+    newCohort.selectedSubCohorts = []
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     })
@@ -91,7 +91,7 @@ export class CohortEditorSelector extends PureComponent {
   selectOnly(cohortIndex,item){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
     // newCohort.selectedSubCohorts = newCohort.subCohorts ;
-    newCohort.selectedSubCohorts = [item] 
+    newCohort.selectedSubCohorts = [item]
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     })
@@ -110,7 +110,7 @@ export class CohortEditorSelector extends PureComponent {
 
   clearTemporarySubCohorts() {
 
-    if(confirm('Remove added sub cohorts?')){
+    if(confirm('Remove added subgroup?')){
       AppStorageHandler.clearSubCohorts()
       // TODO: reset the list
       let newCohortA = JSON.parse(JSON.stringify(this.state.cohort[0]))
@@ -135,7 +135,7 @@ export class CohortEditorSelector extends PureComponent {
 
   selectAll(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
-    newCohort.selectedSubCohorts = newCohort.subCohorts 
+    newCohort.selectedSubCohorts = newCohort.subCohorts
     const newCohortState = update(this.state.cohort,{
       [cohortIndex]: { $set:newCohort},
     })
@@ -145,14 +145,14 @@ export class CohortEditorSelector extends PureComponent {
   render(){
 
     const { onCancelCohortEdit, onChangeView, subCohortCounts } = this.props
-    const {  view, cohort , selectedSamples, availableSamples } = this.state 
+    const {  view, cohort , selectedSamples, availableSamples } = this.state
     const cohorts = getCohortsForView(view)
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 )
     const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name))
     const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)]
 
     if(!subCohortCounts){
-      return (<div>Loading</div>) 
+      return (<div>Loading</div>)
     }
     else
     if(subCohortCounts){
@@ -317,7 +317,7 @@ export class CohortEditorSelector extends PureComponent {
           </table>
           <hr/>
           <button onClick={() => this.clearTemporarySubCohorts()}>
-            Clear temporary sub cohorts
+            Clear temporary subgroups
           </button>
         </div>
       )
