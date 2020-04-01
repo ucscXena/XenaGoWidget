@@ -93,8 +93,9 @@
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   background-color: white;
   border-radius: 10px;
-  padding: 5px;
-  margin: 5px 5px 5px 5px ;
+  /*padding: 5px;*/
+  /*margin: 5px 5px 5px 5px ;*/
+  margin-top: 20px;
   display: inline;
   cursor: pointer;
 }
@@ -104,6 +105,23 @@
   background-color: white;
   border-radius: 10px;
   padding: 5px;
-  margin: 5px 5px 5px 5px ;
+  margin-top: 10px;
   cursor: pointer;
+}
+
+.wizardHeader{
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.wizardDataBox{
+  border-radius: 5px;
+  border: 1px solid #555555;
+  /*background-color: gray;*/
+  stroke-width: 2px;
+  padding-left: 10px;
+  padding-top: -5px;
+  padding-bottom: 10px;
+  box-shadow: 2px 2px 2px #555555;
+  width: 600px
 }
