@@ -47,7 +47,6 @@ export class AnalysisWizard extends PureComponent {
           ]}
           title={title}
         />
-        <h1>Differential geneset visualization</h1>
         <p>
           {comparisonDescription}
         </p>
