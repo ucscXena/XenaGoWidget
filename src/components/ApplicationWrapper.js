@@ -38,7 +38,7 @@ export class ApplicationWrapper extends PureComponent {
       const subCohort1SampleSize = subCohortSamples1.split(':')[2].split(',').length
       const subCohort2Name = subCohortSamples2.split(':')[1]
       const subCohort2SampleSize = subCohortSamples2.split(':')[2].split(',').length
-      return `Comparing subcohorts '${subCohort1Name}' (${subCohort1SampleSize} samples) to '${subCohort2Name}' (${subCohort2SampleSize} samples)`
+      return `Comparing subgroups '${subCohort1Name}' (${subCohort1SampleSize} samples) to '${subCohort2Name}' (${subCohort2SampleSize} samples)`
     }
     return null
   }
