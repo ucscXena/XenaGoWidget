@@ -10,8 +10,8 @@ import {Button} from 'react-toolbox'
 
 const TooltipLink = Tooltip(Link)
 
-const MAGIC_LENGTH = 28 
-const MAX_SUB_COHORTS = 7 
+const MAGIC_LENGTH = 28
+const MAX_SUB_COHORTS = 7
 
 
 export class GeneSetInfoBox extends PureComponent {
@@ -25,7 +25,7 @@ export class GeneSetInfoBox extends PureComponent {
   }
 
   allSubCohortsStatement(selectedSubCohorts) {
-    return `View All ${selectedSubCohorts.length} sub cohorts`
+    return `View All ${selectedSubCohorts.length} subgroups`
   }
 
   render(){
