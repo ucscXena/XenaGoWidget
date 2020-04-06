@@ -33,7 +33,7 @@ export class GeneSetSubCohortBox extends PureComponent {
     const samplesLength = geneDataStats[cohortIndex].samples.length
     const selectedCohort = geneDataStats[cohortIndex].selectedCohort
     const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name
-    if(!subCohortCounts) return <div>Calculating</div>
+    if(!subCohortCounts || subCohortCounts.length!==2) return <div>Calculating</div>
     return (
       <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
         <TooltipLink
@@ -52,7 +52,7 @@ export class GeneSetSubCohortBox extends PureComponent {
             <ul>
               {selectedCohort.selectedSubCohorts.sort().map( s => {
                 return (
-                  <li key={s}>{s} ({subCohortCounts[s]})</li>
+                  <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
                 )
               }
               )}
@@ -67,7 +67,7 @@ export class GeneSetSubCohortBox extends PureComponent {
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
               return (
-                <li key={s}>{s} ({subCohortCounts[s]})</li>
+                <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
               )
             }
             )}
