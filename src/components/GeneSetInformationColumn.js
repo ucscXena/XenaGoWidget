@@ -1,7 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
-import {DetailedLabelComponent} from './DetailedLabelComponent'
 import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './HoverGeneView'
@@ -21,8 +20,6 @@ export class GeneSetInformationColumn extends PureComponent {
         className={BaseStyle.geneSetDetailBox}
         style={{backgroundColor:cohortColor}}
       >
-        <DetailedLabelComponent {...this.props}/>
-
         {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
         <GeneSetSubCohortBox
           cohortIndex={this.props.cohortIndex}

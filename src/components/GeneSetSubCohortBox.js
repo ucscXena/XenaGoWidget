@@ -35,7 +35,7 @@ export class GeneSetSubCohortBox extends PureComponent {
     const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name
     if(!subCohortCounts || subCohortCounts.length!==2) return <div>Calculating</div>
     return (
-      <div className={cohortIndex===0 ? BaseStyle.topInfoBox : BaseStyle.bottomInfoBox}>
+      <div className={BaseStyle.bottomInfoBox}>
         <TooltipLink
           className={BaseStyle.infoLink} href="#" label={label}
           onClick={()=>this.setState({showInfo: true})}
