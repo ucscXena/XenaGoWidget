@@ -53,17 +53,20 @@ function getPointData(event, props) {
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
 
   const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length
-  console.log('is gfene selected',isGeneSelected,selectedGeneSetIndex,pathwayIndexFromY,geneData.pathways.length)
+  console.log('is gfene selected',sampleIndex,pathwayIndexFromY,isGeneSelected,selectedGeneSetIndex,pathwayIndexFromY,geneData.pathways.length)
 
   let pathway
   if(isGeneSelected){
     pathway = geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex-1]
+    pathway.source = 'Gene'
     // TODO: it is missing sample somehow?
     console.log('original gene selected: ',pathways[pathwayIndexFromY],'gene selected',geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex])
     // pathway.golabel = pathway.gene[0]
   }
   else{
     pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length]
+    pathway.source = 'GeneSet'
+    console.log('original PATHWAY selected: ',pathways[pathwayIndexFromY])
   }
 
   // console.log('all pathways',pathways)
