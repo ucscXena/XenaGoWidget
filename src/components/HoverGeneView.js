@@ -193,7 +193,7 @@ export default class HoverGeneView extends PureComponent {
               && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&
                     <div>
                       <div className={BaseStyle.pathwayChip}>
-                        <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
+                        <span><b>Gene</b> {data.pathway.gene[0].replace(/_/,' ')}</span>
                       </div>
                       <div className={BaseStyle.pathwayChip}>
                         <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
@@ -204,7 +204,7 @@ export default class HoverGeneView extends PureComponent {
             && ( isViewGeneExpression(view))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
-                <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
+                <span><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</span>
               </div>
               <div className={BaseStyle.pathwayChip}>
                 <span><strong>Mean ZScore</strong>
@@ -219,7 +219,7 @@ export default class HoverGeneView extends PureComponent {
                     {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
                   }
-                  <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
+                  {/*<div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>*/}
                 </span>
               </div>
             </div>
