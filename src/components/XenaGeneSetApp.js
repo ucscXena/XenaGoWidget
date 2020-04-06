@@ -983,8 +983,12 @@ export default class XenaGeneSetApp extends PureComponent {
                       </tr>
                       {isViewGeneExpression(this.state.filter) &&
                         <tr>
+                          <td>
+                            <div className={BaseStyle.verticalLegendBox}>
+                              Geneset Summary
+                            </div>
+                          </td>
                           <td colSpan={3}>
-                            Pathway Score:
                             <GeneSetLegend
                               id='geneExpressionGeneSetScore'
                               label={this.state.filter + ' score'} maxScore={maxValue}
@@ -1000,7 +1004,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                 <tbody>
                                   <tr style={{padding: 0, margin: 0}}>
                                     <td style={{padding: 0, margin: 0}}>
-                                      Pathway Score:
+                                      Geneset Summary:
+                                    </td>
+                                    <td style={{padding: 0, margin: 0}}>
                                       <GeneSetLegend
                                         id='mean-score' label={'mean'}
                                         maxScore={50} minScore={-50}
@@ -1010,7 +1016,9 @@ export default class XenaGeneSetApp extends PureComponent {
                                   </tr>
                                   <tr>
                                     <td style={{padding: 0, margin: 0}}>
-                                      Sample Score:
+                                      Sample Legend:
+                                    </td>
+                                    <td style={{padding: 0, margin: 0}}>
                                       <GeneSetLegend
                                         id='densityGrad1' label={'density'} maxColor='red'
                                         maxScore={5} midColor='orange'
@@ -1023,25 +1031,27 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                           </tr>
                       }
-                      <tr>
-                        <td colSpan={3}>
-                          {isViewGeneExpression(this.state.filter) &&
-                            <div style={{marginLeft: 5}}>
-                              Sample Legend:
+                      {isViewGeneExpression(this.state.filter) &&
+                          <tr>
+                            <td colSpan={1}>
+                              <div className={BaseStyle.verticalLegendBox}>
+                                    Gene Summary / Sample
+                              </div>
+                            </td>
+                            <td colSpan={3}>
                               <GeneSetLegend
                                 id='geneExpressionGeneScore'
                                 label={'Gene expression z-score'} maxScore={2}
                                 minScore={-2}
                               />
-                            </div>
-                          }
-                          {!isViewGeneExpression(this.state.filter) &&
+                            </td>
+                          </tr>
+                      }
+                      {!isViewGeneExpression(this.state.filter) &&
                           <div style={{marginLeft: 5}}>
                             <CnvMutationLegend view={this.state.filter}/>
                           </div>
-                          }
-                        </td>
-                      </tr>
+                      }
                       <tr>
                         <td valign='top'>
                           <VerticalGeneSetScoresView

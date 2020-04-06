@@ -42,35 +42,19 @@ function getPointData(event, props) {
   const selectedGeneSetIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
   const pathwayIndexFromY = findGeneSetIndexFromY(y, labelHeight)
 
-  // console.log('selected index',selectedGeneSetIndex)
-  // console.log('pathway index',pathwayIndexFromY)
-
-  // associatedData
-  // console.log('get point data ',associatedData,pathwayIndexFromY, selectedPathway)
-  // console.log('all points',props)
-
-
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
-
   const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length
-  console.log('is gfene selected',sampleIndex,pathwayIndexFromY,isGeneSelected,selectedGeneSetIndex,pathwayIndexFromY,geneData.pathways.length)
 
   let pathway
   if(isGeneSelected){
     pathway = geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex-1]
     pathway.source = 'Gene'
-    // TODO: it is missing sample somehow?
-    console.log('original gene selected: ',pathways[pathwayIndexFromY],'gene selected',geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex])
-    // pathway.golabel = pathway.gene[0]
   }
   else{
     pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length]
     pathway.source = 'GeneSet'
-    console.log('original PATHWAY selected: ',pathways[pathwayIndexFromY])
   }
 
-  // console.log('all pathways',pathways)
-  console.log('output pathway',pathway)
   if(isViewGeneExpression(filter)){
     if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null
     let activity = associatedData[pathwayIndexFromY][sampleIndex].geneExpressionPathwayActivity
