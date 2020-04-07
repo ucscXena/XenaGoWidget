@@ -159,10 +159,11 @@ export default class XenaGeneSetApp extends PureComponent {
   generateTitle() {
     let returnText = ''
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
-      returnText = `Analyzing cohort ${this.state.selectedCohort[0].name}: comparing ${this.state.geneData[0].samples.length} samples from `
+      returnText = `Analyzing cohort ${this.state.selectedCohort[0].name}: `
+      if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples from `
       returnText +=  ` sub cohorts: ${this.state.selectedCohort[0].selectedSubCohorts} `
       returnText +=  ' to '
-      returnText +=  ` ${this.state.geneData[1].samples.length} samples from `
+      if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples from `
       returnText +=  ` sub cohorts: ${this.state.selectedCohort[1].selectedSubCohorts} `
     }
     // there are two
@@ -862,10 +863,12 @@ export default class XenaGeneSetApp extends PureComponent {
                             <FaConfigure/>
                           </Button>
                           <div className={BaseStyle.geneSetBoxLabel}>
-                            Viewing Gene Set
-                            Details
+                            Viewing Gene Set Details
                           </div>
-                          {this.state.pathwaySelection.pathway.golabel}
+                          {this.state.pathwaySelection.pathway.golabel.length > 30 ?
+                            this.state.pathwaySelection.pathway.golabel.substr(0,30)+'...'  :
+                            this.state.pathwaySelection.pathway.golabel
+                          }
                           &nbsp;
                           ({this.state.pathwaySelection.pathway.gene.length} genes)
                         </div>
