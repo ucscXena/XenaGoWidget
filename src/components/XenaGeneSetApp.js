@@ -55,6 +55,7 @@ import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
+import {DiffColumn} from './DiffColumn'
 
 const VIEWER_HEIGHT = 500
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -956,6 +957,15 @@ export default class XenaGeneSetApp extends PureComponent {
                       }
                       <tr>
                         <td valign='top'>
+                          <DiffColumn
+                            associatedData={this.state.associatedData}
+                            cohortIndex={0}
+                            filter={this.state.filter}
+                            geneData={this.state.geneData}
+                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
+                          />
                           <VerticalGeneSetScoresView
                             associatedData={this.state.associatedData[0]}
                             cohortIndex={0}

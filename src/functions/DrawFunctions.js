@@ -189,6 +189,19 @@ function findPathwayData(pathwayWidth, count) {
   return regions
 }
 
+// function getDiffX(first,second,maxValue,width){
+//   let diffScore = (first - second).toFixed(2)
+//   let updatedDiffScore = diffScore
+//   if(diffScore < 0 && diffScore < -maxValue){
+//     updatedDiffScore = -maxValue
+//   }
+//   else
+//   if(diffScore > 0 && diffScore > maxValue){
+//     updatedDiffScore = maxValue
+//   }
+//   return width * updatedDiffScore
+// }
+//
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex, view, maxValue) {
   const tissueCount = data[0].length
   const img = ctx.createImageData(width, totalHeight)

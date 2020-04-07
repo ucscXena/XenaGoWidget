@@ -128,6 +128,7 @@ export class GeneSetSelector extends PureComponent {
 
   render() {
     let {geneStateColors,geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
+    console.log('props',this.props)
 
     let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
     let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
@@ -206,8 +207,41 @@ export class GeneSetSelector extends PureComponent {
           >
             {width < 10 ? '' : labelString}
           </text>
+          {/*<text*/}
+          {/*  fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={120}*/}
+          {/*  y={topOffset}*/}
+          {/*>*/}
+          {/*  {diffScore},  {diffX.toFixed(0)},  {width.toFixed(0)}*/}
+          {/*</text>*/}
         </svg>
       ]
+
+
+      // let diffXArray = [
+      //   <svg
+      //     key={p.golabel}
+      //     style={{
+      //       position: 'absolute',
+      //       y: topOffset,
+      //       x: -200,
+      //       width: width,
+      //       // backgroundColor: 'orange',
+      //       // color: 'brown',
+      //       // stroke: 'pink 2x solid',
+      //       height: this.props.labelHeight,
+      //       zIndex: 2000,
+      //     }}
+      //   >
+      //     <rect
+      //       fill='green'
+      //       height={labelHeight}
+      //       width={width/2}
+      //       x={-50}
+      //       y={3}
+      //     />
+      //   </svg>
+      // ]
+      // geneSetArray.push(diffXArray)
 
       if(selected && geneData[0].pathways){
         let genesToAdd = []
