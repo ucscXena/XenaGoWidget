@@ -873,11 +873,12 @@ export default class XenaGeneSetApp extends PureComponent {
                             <FaConfigure/>
                           </Button>
                           <div className={BaseStyle.geneSetBoxLabel}>
-                            Viewing Gene Set Details
+                            Gene Set Details
                           </div>
-                          {this.state.pathwaySelection.pathway.golabel.length > 30 ?
-                            this.state.pathwaySelection.pathway.golabel.substr(0,30)+'...'  :
-                            this.state.pathwaySelection.pathway.golabel
+                          {
+                            (this.state.pathwaySelection.pathway.golabel.length > 30 ?
+                              this.state.pathwaySelection.pathway.golabel.substr(0,30)+'...'  :
+                              this.state.pathwaySelection.pathway.golabel).replace(/_/g,' ')
                           }
                           &nbsp;
                           ({this.state.pathwaySelection.pathway.gene.length} genes)
@@ -889,7 +890,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <tr>
                           <td>
                             <div className={BaseStyle.verticalLegendBox}>
-                              Geneset Summary
+                              Geneset Legend
                             </div>
                           </td>
                           <td colSpan={3}>
@@ -939,7 +940,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           <tr>
                             <td colSpan={1}>
                               <div className={BaseStyle.verticalLegendBox}>
-                                    Gene Summary / Sample
+                                    Gene Legend
                               </div>
                             </td>
                             <td colSpan={3}>
