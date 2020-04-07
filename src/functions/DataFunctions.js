@@ -505,8 +505,6 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
 /**
  * The associatedData has selected genes in it
  * @param associatedData
- * @param geneSetPathways
- * @param selectedGoLabel
  * @returns {*}
  */
 export function pruneGeneSelection(associatedData){

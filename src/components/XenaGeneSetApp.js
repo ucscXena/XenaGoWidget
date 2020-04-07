@@ -458,20 +458,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const selectedGoLabel = pathwaySelectionWrapper.pathway.golabel
 
+    if(selectedGoLabel === this.state.pathwaySelection.pathway.golabel){
+      console.log('selecting the same so we should close: ',selectedGoLabel)
+    }
+
     AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper)
     const geneSetPathways = AppStorageHandler.getPathways()
-    const pureAssociatedData = [
-      pruneGeneSelection(associatedData[0],geneSetPathways,selectedGoLabel)
-      , pruneGeneSelection(associatedData[1],geneSetPathways,selectedGoLabel)
-    ]
-
-    const newAssociatedData = [
-      sortAssociatedData(pathwaySelectionWrapper.pathway, pureAssociatedData[0],
-        filter),
-      sortAssociatedData(pathwaySelectionWrapper.pathway, pureAssociatedData[1],
-        filter),
-    ]
-
+    const pureAssociatedData = [pruneGeneSelection(associatedData[0]), pruneGeneSelection(associatedData[1])]
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
       pureAssociatedData[0], this.state.filter)
@@ -491,9 +484,11 @@ export default class XenaGeneSetApp extends PureComponent {
     let pathwayIndex = getSelectedGeneSetIndex(pathwaySelectionWrapper,geneSetPathways)
 
     const mergedGeneSetData = [
-      mergeGeneSetAndGeneDetailData(sortedGeneData[0],newAssociatedData[0],pathwayIndex),
-      mergeGeneSetAndGeneDetailData(sortedGeneData[1],newAssociatedData[1],pathwayIndex),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
+      mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
     ]
+
+    console.log('selection, ',this.state.pathwaySelection,selection,pathwaySelectionWrapper)
 
     this.setState({
       // geneData,
