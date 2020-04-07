@@ -13,7 +13,6 @@ import {
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
 import FaConfigure from 'react-icons/lib/fa/cog'
-// import FaConfigure from 'react-icons/lib/fa/cogs'
 import {Dialog} from 'react-toolbox'
 import {
   fetchBestPathways,
@@ -807,9 +806,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td colSpan={5}>
                   <h3>
                     Cohort X comparing subgroups A,B, C (z) to subgroups D, E, F (y)
-                    <Button floating mini onClick={() => alert('cog')}>
-                      <FaConfigure/>
-                    </Button>
                   </h3>
                 </td>
               </tr>
@@ -834,7 +830,16 @@ export default class XenaGeneSetApp extends PureComponent {
                         <td colSpan={3}>
                           {this.state.pathwaySelection &&
                         <div className={BaseStyle.geneSetInfoBox}>
-                          <div className={BaseStyle.geneSetBoxLabel}>Viewing Gene Set
+                          <Button
+                            floating mini onClick={() =>
+                              this.setState({
+                                showGeneSetSearch: true
+                              })
+                            }>
+                            <FaConfigure/>
+                          </Button>
+                          <div className={BaseStyle.geneSetBoxLabel}>
+                            Viewing Gene Set
                             Details
                           </div>
                           {this.state.pathwaySelection.pathway.golabel}
