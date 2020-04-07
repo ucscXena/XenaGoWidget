@@ -39,7 +39,6 @@ export class DetailedLabelComponent extends PureComponent {
     const pathwayData = this.props.pathwayData[cohortIndex]
     const width= VERTICAL_GENESET_DETAIL_WIDTH * 2
 
-    // const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name;
     const cohortName = getShortName(cohort.name,COHORT_LENGTH)
     const subCohortDetails = getSelectedSubCohorts(cohort.selectedSubCohorts,SUBCOHORT_LENGTH)
     return (
