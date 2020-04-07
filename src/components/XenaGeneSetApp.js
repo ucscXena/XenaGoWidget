@@ -444,6 +444,13 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   };
 
+  // if it is open:
+  // if selected is open and is selected then close, otherwise open
+  // if selected is NOT open, then select, regardless
+  calculateOpen(currentSelection,priorSelection){
+    return priorSelection.open ? currentSelection.pathway.golabel !== priorSelection.pathway.golabel : true
+  }
+
   handlePathwaySelect = (selection) => {
     const {pathwayData, filter, associatedData} = this.state
 
@@ -451,15 +458,11 @@ export default class XenaGeneSetApp extends PureComponent {
     if (selection.pathway.gene.length === 0) {
       return
     }
+
     const pathwaySelectionWrapper = {
       pathway: selection.pathway,
+      open: this.calculateOpen(selection,this.state.pathwaySelection),
       tissue: 'Header',
-    }
-
-    const selectedGoLabel = pathwaySelectionWrapper.pathway.golabel
-
-    if(selectedGoLabel === this.state.pathwaySelection.pathway.golabel){
-      console.log('selecting the same so we should close: ',selectedGoLabel)
     }
 
     AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper)
@@ -475,18 +478,20 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedSamplesB = sortedAssociatedDataB[0].map((d) => d.sample)
 
     // TODO: create gene data off of the sorted pathway data
-    const geneData = generateScoredData(pathwaySelectionWrapper, pathwayData,
-      geneSetPathways, filter, [sortedSamplesA, sortedSamplesB])
-    const sortedGeneData = isViewGeneExpression(this.state.filter) ?
+    const geneData = pathwaySelectionWrapper  && pathwaySelectionWrapper.open ? generateScoredData(pathwaySelectionWrapper, pathwayData,
+      geneSetPathways, filter, [sortedSamplesA, sortedSamplesB]) : [{},{}]
+    const sortedGeneData = isViewGeneExpression(this.state.filter) && pathwaySelectionWrapper.open  ?
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
 
+    console.log('gene data',geneData,sortedGeneData)
     let pathwayIndex = getSelectedGeneSetIndex(pathwaySelectionWrapper,geneSetPathways)
 
-    const mergedGeneSetData = [
-      mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
-      mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
-    ]
+    const mergedGeneSetData =
+      pathwaySelectionWrapper.open ? [
+        mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
+        mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
+      ] : [sortedAssociatedDataA,sortedAssociatedDataB]
 
     console.log('selection, ',this.state.pathwaySelection,selection,pathwaySelectionWrapper)
 

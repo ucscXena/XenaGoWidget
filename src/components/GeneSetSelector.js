@@ -209,7 +209,7 @@ export class GeneSetSelector extends PureComponent {
         </svg>
       ]
 
-      if(selected){
+      if(selected && geneData[0].pathways){
         let genesToAdd = []
         for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
           let gene0 = geneData[0].pathways[index]
