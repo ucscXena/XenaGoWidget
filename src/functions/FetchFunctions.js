@@ -56,7 +56,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
       name: UNASSIGNED_SUBTYPE.key,
       count: availableSamples.length - allSubCohortSamples.length
     }
-    return returnObject 
+    return returnObject
   }
   else{
     return [
@@ -196,7 +196,7 @@ export function allFieldMean(cohort, samples,view) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))'
   const quote = x => '"' + x + '"'
-  const { dataset, host} = getHostData(cohort,view) 
+  const { dataset, host} = getHostData(cohort,view)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response))
 }
@@ -252,7 +252,7 @@ export function getCohortDataForGeneExpressionView(selectedCohorts, view){
       },
     ]
   default:
-    return null 
+    return null
   }
 
 }
@@ -323,7 +323,7 @@ export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
   const geneList = getGenesForPathways(pathways)
-  let filterCounts 
+  let filterCounts
 
   function fetchDataForRegulon(selectedCohorts, samplesA,samplesB, geneList, geneSetLabels) {
     return Rx.Observable.zip(

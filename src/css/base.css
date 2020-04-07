@@ -231,6 +231,16 @@ body {
   height: 40px;
 }
 
+.titleBox{
+  font-family: sans-serif;
+  border-radius:5px;
+  border-color: saddlebrown;
+  border-width: 2px;
+  background-color: lightsalmon;
+  margin: 5px;
+  padding: 5px;
+}
+
 .headerBox{
   margin: 5px;
   padding: 5px;

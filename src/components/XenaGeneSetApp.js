@@ -168,13 +168,14 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     // there are two
     else{
-      returnText = `From cohort '${this.state.selectedCohort[0].name}' `
-      if(this.state.geneData.length===2){
-        returnText +=  `comparing ${this.state.geneData[0].samples.length} samples `
+      returnText = `Comparing cohort '${this.state.selectedCohort[0].name}' `
+      if(this.state.geneData.length===2 && this.state.geneData[0].samples && this.state.geneData[1].samples){
+        returnText +=  `with ${this.state.geneData[0].samples.length} samples `
         if(this.state.selectedCohort[0].selectedSubCohorts.length < this.state.selectedCohort[0].subCohorts.length ){
           returnText +=  ` from ${this.state.selectedCohort[0].selectedSubCohorts.length} sub cohorts`
         }
-        returnText +=  ` to ${this.state.geneData[1].samples.length} samples `
+        returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
+        returnText +=  ` with ${this.state.geneData[1].samples.length} samples `
         if(this.state.selectedCohort[1].selectedSubCohorts.length < this.state.selectedCohort[1].subCohorts.length ){
           returnText +=  ` from ${this.state.selectedCohort[1].selectedSubCohorts.length} sub cohorts `
         }
@@ -833,9 +834,9 @@ export default class XenaGeneSetApp extends PureComponent {
             <tbody>
               <tr>
                 <td colSpan={5}>
-                  <h3>
+                  <h2 className={BaseStyle.titleBox}>
                     {this.generateTitle()}
-                  </h3>
+                  </h2>
                 </td>
               </tr>
               <tr>

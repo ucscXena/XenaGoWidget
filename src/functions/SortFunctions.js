@@ -260,9 +260,9 @@ export function sortGeneDataWithSamples(sortedSamples,geneData){
 function sortByIndexOrder(associatedDatum, indexedPathway) {
   let newAssociatedData = new Array(associatedDatum.length)
   for(let index in associatedDatum){
-    newAssociatedData[index] = associatedDatum[indexedPathway[index].originalIndex] 
+    newAssociatedData[index] = associatedDatum[indexedPathway[index].originalIndex]
   }
-  return newAssociatedData 
+  return newAssociatedData
 }
 
 /**
@@ -277,13 +277,13 @@ export function sortAssociatedData(selectedPathway,associatedData,view){
   // find the selected pathway and sor that sample based on the sample . .
   const realizedPathway = associatedData.filter( d => d[0].golabel === selectedPathway.golabel )
   const indexedPathway = realizedPathway[0].map( (p,i) => {
-    p.originalIndex = i 
-    return p 
+    p.originalIndex = i
+    return p
   }).sort( (a,b) => {
     if(isViewGeneExpression(view)){
-      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity !== 'NaN') return -1 
-      if(b.geneExpressionPathwayActivity !== 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return 1 
-      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression 
+      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity !== 'NaN') return -1
+      if(b.geneExpressionPathwayActivity !== 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return 1
+      if(b.geneExpressionPathwayActivity === 'NaN' && a.geneExpressionPathwayActivity === 'NaN') return b.geneExpression - a.geneExpression
       return b.geneExpressionPathwayActivity - a.geneExpressionPathwayActivity
     }
     else{
