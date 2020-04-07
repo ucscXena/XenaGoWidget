@@ -155,6 +155,29 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
+
+  generateTitle() {
+    let returnText = ''
+    if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
+      returnText = `Analyzing cohort ${this.state.selectedCohort[0].name}: comparing ${this.state.geneData[0].samples.length} samples from `
+      returnText +=  ` sub cohorts: ${this.state.selectedCohort[0].selectedSubCohorts} `
+      returnText +=  ' to '
+      returnText +=  ` ${this.state.geneData[1].samples.length} samples from `
+      returnText +=  ` sub cohorts: ${this.state.selectedCohort[1].selectedSubCohorts} `
+    }
+    // there are two
+    else{
+      returnText = `Comparing cohort ${this.state.selectedCohort[0].name} `
+      if(this.state.geneData.length===2){
+        returnText +=  `samples ${this.state.geneData[0].samples.length} from sub cohorts : ${this.state.selectedCohort[0].selectedSubCohorts} `
+        returnText +=  ' to '
+        returnText +=  `samples ${this.state.geneData[1].samples.length} from sub cohorts: ${this.state.selectedCohort[1].selectedSubCohorts} `
+      }
+    }
+
+    return returnText
+  }
+
   queryGenes = (geneQuery) => {
     const {reference: {host, name}, limit} = this.state
     if (geneQuery.trim().length === 0) {
@@ -805,7 +828,7 @@ export default class XenaGeneSetApp extends PureComponent {
               <tr>
                 <td colSpan={5}>
                   <h3>
-                    Cohort X comparing subgroups A,B, C (z) to subgroups D, E, F (y)
+                    {this.generateTitle()}
                   </h3>
                 </td>
               </tr>
