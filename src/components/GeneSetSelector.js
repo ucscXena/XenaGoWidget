@@ -113,6 +113,15 @@ export class GeneSetSelector extends PureComponent {
     this.props.onHover(null)
   };
 
+  onHoverGene = (gene0,gene1) => {
+    if(gene0 && gene1){
+      gene0.firstGeneExpressionMean = gene0.geneExpressionMean
+      gene0.secondGeneExpressionMean = gene1.geneExpressionMean
+    }
+    gene0.source = 'Gene'
+    this.props.onHover(gene0 ? { pathway: gene0, tissue: 'Header'} : null)
+  };
+
   onHover = (geneSet) => {
     this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
@@ -209,7 +218,7 @@ export class GeneSetSelector extends PureComponent {
             key={gene0.gene[0]}
             onMouseDown={this.onClick.bind(this, gene0)}
             onMouseOut={this.onMouseOut.bind(this, gene0)}
-            onMouseOver={this.onHover.bind(this, gene0)}
+            onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
             style={GeneSetSelector.geneLabelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
           >
             {gene0.geneExpressionMean &&

@@ -405,7 +405,11 @@ export default class XenaGeneSetApp extends PureComponent {
       tissue: sourceCohort === 0 ? hoveredPoint.tissue : 'Header',
       source: 'GeneSet',
       cohortIndex: 0,
-      pathway: hoveredPathway,
+      // pathway: hoveredPathway,
+      // this makes this explicit
+      pathway: update(hoveredPathway,{
+        geneExpressionMean: { $set: hoveredPathway.firstGeneExpressionMean},
+      }),
       expression: {
         affected: hoveredPathway.firstObserved,
         samplesAffected: hoveredPathway.firstObserved,
@@ -420,7 +424,7 @@ export default class XenaGeneSetApp extends PureComponent {
       source: 'GeneSet',
       cohortIndex: 1,
       pathway: update(hoveredPathway,{
-        geneExpressionMean: { $set: hoveredPathway.geneExpressionMean },
+        geneExpressionMean: { $set: hoveredPathway.secondGeneExpressionMean},
       }),
       expression: {
         affected: hoveredPathway.secondObserved,
@@ -435,6 +439,8 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort0,
       cohort1,
     ] : null
+
+    console.log('output ',hoveredPathway,geneHoverData)
 
     this.setState({
       hoveredPathway,
