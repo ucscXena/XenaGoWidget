@@ -484,7 +484,6 @@ export default class XenaGeneSetApp extends PureComponent {
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
 
-    console.log('gene data',geneData,sortedGeneData)
     let pathwayIndex = getSelectedGeneSetIndex(pathwaySelectionWrapper,geneSetPathways)
 
     const mergedGeneSetData =
@@ -492,8 +491,6 @@ export default class XenaGeneSetApp extends PureComponent {
         mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
         mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
       ] : [sortedAssociatedDataA,sortedAssociatedDataB]
-
-    console.log('selection, ',this.state.pathwaySelection,selection,pathwaySelectionWrapper)
 
     this.setState({
       // geneData,

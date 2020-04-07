@@ -43,7 +43,7 @@ function getPointData(event, props) {
   const pathwayIndexFromY = findGeneSetIndexFromY(y, labelHeight)
 
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
-  const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length
+  const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways ? geneData.pathways.length : 0
 
   let pathway
   if(isGeneSelected){
@@ -51,7 +51,7 @@ function getPointData(event, props) {
     pathway.source = 'Gene'
   }
   else{
-    pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length]
+    pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways ? geneData.pathways.length : 0 ]
     pathway.source = 'GeneSet'
   }
 
@@ -123,7 +123,8 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let pathwayIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
 
       // need a size and vertical start for each
-      let inputPathways = [...pathways.slice(0,pathwayIndex+1),...geneData.pathways,...pathways.slice(pathwayIndex+1)]
+
+      let inputPathways = geneData.pathways ? [...pathways.slice(0,pathwayIndex+1),...geneData.pathways,...pathways.slice(pathwayIndex+1)] : pathways
       let layout = inputPathways.map((p, index) => {
         return {start: index * labelHeight, size: labelHeight}
       })
