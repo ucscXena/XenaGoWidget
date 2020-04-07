@@ -1003,6 +1003,15 @@ export default class XenaGeneSetApp extends PureComponent {
                           }
                         </td>
                         <td valign='top'>
+                          <DiffColumn
+                            associatedData={this.state.associatedData}
+                            cohortIndex={1}
+                            filter={this.state.filter}
+                            geneData={this.state.geneData}
+                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            maxValue={maxValue}
+                            width={VERTICAL_GENESET_DETAIL_WIDTH}
+                          />
                           <VerticalGeneSetScoresView
                             associatedData={this.state.associatedData[1]}
                             cohortIndex={1}

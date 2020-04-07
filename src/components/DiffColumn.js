@@ -11,19 +11,20 @@ export class DiffColumn extends PureComponent {
 
 
   render(){
-    let { labelHeight, width } = this.props
-    return (<div
-      style={{
-        backgroundColor: 'brown',
-        color: 'green',
-        position: 'absolute',
-        zIndex: 2000,
-        x: 50,
-        y: 50,
-        width: width,
-        height: labelHeight ,
-      }}>
-    </div>)
+    // let { labelHeight, width } = this.props
+    return (<div></div>)
+    // return (<div
+    //   style={{
+    //     backgroundColor: 'brown',
+    //     color: 'green',
+    //     position: 'absolute',
+    //     zIndex: 2000,
+    //     x: 50,
+    //     y: 50,
+    //     width: width,
+    //     height: labelHeight ,
+    //   }}>
+    // </div>)
   }
 
 }

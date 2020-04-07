@@ -36,6 +36,21 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
   return undefined
 }
 
+function isGeneSelect(selectedGeneIndex,pathwayIndexFromY,genePathways){
+  // we have not selected past the selected gene index
+  if(selectedGeneIndex>= pathwayIndexFromY) {
+    return false
+  }
+
+  // if we have selected past, then so long as we haven't selected ALL the way geneData, then its true
+  if(!genePathways || genePathways.length===0) {
+    return false
+  }
+
+  // const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length ? geneData.pathways.length>0 : false
+  return pathwayIndexFromY <= selectedGeneIndex + genePathways.length
+}
+
 function getPointData(event, props) {
   let {filter,labelHeight, geneData, pathways,cohortIndex, width,associatedData,selectedPathway} = props
   let {x, y} = getMousePos(event)
@@ -43,7 +58,8 @@ function getPointData(event, props) {
   const pathwayIndexFromY = findGeneSetIndexFromY(y, labelHeight)
 
   let sampleIndex = sampleIndexFromX(x,width, cohortIndex, associatedData[0].length)
-  const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways ? geneData.pathways.length : 0
+  // const isGeneSelected = selectedGeneSetIndex >= pathwayIndexFromY ? false : pathwayIndexFromY <= selectedGeneSetIndex + geneData.pathways.length ? geneData.pathways.length>0 : false
+  const isGeneSelected = isGeneSelect(selectedGeneSetIndex,pathwayIndexFromY,geneData.pathways)
 
   let pathway
   if(isGeneSelected){
