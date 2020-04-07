@@ -157,22 +157,27 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
   generateTitle() {
-    let returnText = ''
+    let returnText
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
       returnText = `Analyzing cohort ${this.state.selectedCohort[0].name}: `
       if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples from `
-      returnText +=  ` sub cohorts: ${this.state.selectedCohort[0].selectedSubCohorts} `
+      returnText +=  ` ${this.state.selectedCohort[0].selectedSubCohorts.length} sub cohorts `
       returnText +=  ' to '
       if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples from `
-      returnText +=  ` sub cohorts: ${this.state.selectedCohort[1].selectedSubCohorts} `
+      returnText +=  ` ${this.state.selectedCohort[1].selectedSubCohorts.length} sub cohorts  `
     }
     // there are two
     else{
-      returnText = `Comparing cohort ${this.state.selectedCohort[0].name} `
+      returnText = `From cohort '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData.length===2){
-        returnText +=  `samples ${this.state.geneData[0].samples.length} from sub cohorts : ${this.state.selectedCohort[0].selectedSubCohorts} `
-        returnText +=  ' to '
-        returnText +=  `samples ${this.state.geneData[1].samples.length} from sub cohorts: ${this.state.selectedCohort[1].selectedSubCohorts} `
+        returnText +=  `comparing ${this.state.geneData[0].samples.length} samples `
+        if(this.state.selectedCohort[0].selectedSubCohorts.length < this.state.selectedCohort[0].subCohorts.length ){
+          returnText +=  ` from ${this.state.selectedCohort[0].selectedSubCohorts.length} sub cohorts`
+        }
+        returnText +=  ` to ${this.state.geneData[1].samples.length} samples `
+        if(this.state.selectedCohort[1].selectedSubCohorts.length < this.state.selectedCohort[1].subCohorts.length ){
+          returnText +=  ` from ${this.state.selectedCohort[1].selectedSubCohorts.length} sub cohorts `
+        }
       }
     }
 
