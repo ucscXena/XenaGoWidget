@@ -38,7 +38,7 @@ export class DiffColumn extends PureComponent {
           return {
             geneData[cohortIndex].pathways.map( (g,index) => {
               return (
-                <text fontSize={22} x={5} y={labelHeight*(index+2)}>
+                <text fontSize={22} key={g.gene[0]} x={5} y={labelHeight*(index+2)}>
                   {g.diffScore}, {index}
                 </text>
               )
