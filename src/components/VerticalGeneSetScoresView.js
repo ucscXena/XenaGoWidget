@@ -68,6 +68,7 @@ function getPointData(event, props) {
   }
   else{
     pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways ? geneData.pathways.length : 0 ]
+    if (!pathway) return null
     pathway.source = 'GeneSet'
   }
 
