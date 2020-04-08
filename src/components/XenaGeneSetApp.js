@@ -785,6 +785,10 @@ export default class XenaGeneSetApp extends PureComponent {
           searchHandler={this.searchHandler}
         />
 
+        <h2 className={BaseStyle.titleBox}>
+          {this.generateTitle()}
+        </h2>
+
         <div
           className="map_wrapper"
           onMouseMove={(ev) => {
@@ -796,7 +800,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
             const x = ev.clientX + 8
             const y = ev.clientY + 8 + scrollDownBuffer
-            if (   y >= 308 &&  ((x >= 278 && x <= 457) || (x >= 686 && x <= 865)) ) {
+            if (   y >= 303 &&  ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
               this.setState({mousing: true, x, y})
             } else {
               this.setState({mousing: false, x, y})
@@ -858,13 +862,6 @@ export default class XenaGeneSetApp extends PureComponent {
           }
           <table>
             <tbody>
-              <tr>
-                <td colSpan={5}>
-                  <h2 className={BaseStyle.titleBox}>
-                    {this.generateTitle()}
-                  </h2>
-                </td>
-              </tr>
               <tr>
                 <td valign='top' width={100}>
                   <GeneSetInformationColumn
