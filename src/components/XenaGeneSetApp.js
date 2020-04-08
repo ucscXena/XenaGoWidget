@@ -785,7 +785,31 @@ export default class XenaGeneSetApp extends PureComponent {
           searchHandler={this.searchHandler}
         />
 
-        <div>
+        <div
+          className="map_wrapper"
+          onMouseMove={(ev) => {
+            const topClient = ev.currentTarget.getBoundingClientRect().top
+            let scrollDownBuffer = 0
+            if (topClient < 0) {
+              scrollDownBuffer = -topClient + 74
+            }
+
+            const x = ev.clientX + 8
+            const y = ev.clientY + 8 + scrollDownBuffer
+            if (   y >= 308 &&  ((x >= 278 && x <= 457) || (x >= 686 && x <= 865)) ) {
+              this.setState({mousing: true, x, y})
+            } else {
+              this.setState({mousing: false, x, y})
+            }
+          }} onMouseOut={() => {
+            this.setState({mousing: false})
+          }}
+        >
+          <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
+          <CrossHairV
+            height={VIEWER_HEIGHT * 3}
+            mousing={this.state.mousing} x={this.state.x}
+          />
           <Dialog
             active={this.state.currentLoadState === LOAD_STATE.LOADING}
             style={{width: 400}}
@@ -1050,36 +1074,6 @@ export default class XenaGeneSetApp extends PureComponent {
                     view={this.state.filter}
                   />
                 </td>
-
-                {this.state.loading === LOAD_STATE.LOADED &&
-                <td
-                  className="map_wrapper"
-                  onMouseMove={(ev) => {
-                    const topClient = ev.currentTarget.getBoundingClientRect().top
-                    let scrollDownBuffer = 0
-                    if (topClient < 0) {
-                      scrollDownBuffer = -topClient + 74
-                    }
-
-                    const x = ev.clientX + 8
-                    const y = ev.clientY + 8 + scrollDownBuffer
-                    if (x >= 860 && y >= 200) {
-                      this.setState({mousing: true, x, y})
-                    } else {
-                      this.setState({mousing: false, x, y})
-                    }
-                  }} onMouseOut={() => {
-                    this.setState({mousing: false})
-                  }}
-                  valign='top'
-                >
-                  <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
-                  <CrossHairV
-                    height={VIEWER_HEIGHT * 2}
-                    mousing={this.state.mousing} x={this.state.x}
-                  />
-                </td>
-                }
               </tr>
             </tbody>
           </table>
