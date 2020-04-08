@@ -63,7 +63,6 @@ export class DiffColumn extends PureComponent {
                 if(cohortIndex===1 && g.diffScore < -maxValue){
                   finalScore = -maxValue
                 }
-                console.log('final score',cohortIndex,finalScore,maxValue)
                 return [
                   // <text fontSize={22} key={g.gene[0]} x={50} y={labelHeight*(index+2)}>
                   //   {finalScore.toFixed(0)}
