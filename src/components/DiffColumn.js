@@ -9,39 +9,74 @@ export class DiffColumn extends PureComponent {
     super(props)
   }
 
+  calculateDiamond(finalScore,maxValue,width,height,cohortIndex,geneIndex) {
+    // const diamondWidth = 6 * (width /20)
+    // const diamondHeight = 6 * (width / 20)
+    const diamondWidth = 20
+    const diamondHeight = height
+    const heightOffset = (geneIndex+1) * height
+    const scoreOffset = Math.abs(finalScore / maxValue * width)
+    if(cohortIndex === 0){
+      // return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`
+      return `${width - scoreOffset} ${heightOffset + height /2},
+                     ${width - scoreOffset + (diamondWidth / 2)} ${heightOffset},
+                      ${width - scoreOffset + (diamondWidth / 2)} ${heightOffset + diamondHeight}`
+    }
+    else{
+      return `${scoreOffset} ${heightOffset + height /2},
+                     ${scoreOffset - (diamondWidth / 2)} ${heightOffset},
+                      ${scoreOffset - (diamondWidth / 2)} ${heightOffset + diamondHeight}`
+    }
+  }
 
   render(){
-    let { cohortIndex,geneData,labelHeight,selectedPathway, pathways,width } = this.props
-    console.log('1 ass data',geneData,selectedPathway,pathways)
-    const TOP_OFFSET = 298
+    let { cohortIndex,geneData,maxValue, labelHeight,selectedPathway, pathways,width } = this.props
+    const TOP_OFFSET = 295
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
       const selectedPathwayIndex =pathways.findIndex( p => {
         return p.golabel  === selectedPathway.pathway.golabel
       })
-      console.log('selected pathway index: ',selectedPathwayIndex)
       return (
         <svg
+          key={selectedPathway.pathway.golabel + '-'+cohortIndex}
           style={{
             zIndex: 100,
             x: 0,
             top: (labelHeight * selectedPathwayIndex)  + TOP_OFFSET,
-            height: labelHeight * (geneData[cohortIndex].pathways.length+1),
+            height: labelHeight * (geneData[cohortIndex].pathways.length+1)-2,
+            width: width-2,
             position: 'absolute',
             color: 'black',
             pointerEvents: 'none',
-            stroke: 'black',
-            strokeWidth: '2px',
-            width: width,
-            border: '1px solid black'
+            boxShadow: '1px 1px 1px 1px gray',
+            border: '2px solid black',
+            borderRadius: '5px',
           }}
         >
           return {
             geneData[cohortIndex].pathways.map( (g,index) => {
-              return (
-                <text fontSize={22} key={g.gene[0]} x={5} y={labelHeight*(index+2)}>
-                  {g.diffScore}, {index}
-                </text>
-              )
+              if( (g.diffScore > 0 && cohortIndex===0) || (g.diffScore < 0 && cohortIndex ===1)){
+                let finalScore = g.diffScore
+                if(cohortIndex===0 && g.diffScore > maxValue){
+                  finalScore = maxValue
+                }
+                if(cohortIndex===1 && g.diffScore < -maxValue){
+                  finalScore = -maxValue
+                }
+                console.log('final score',cohortIndex,finalScore,maxValue)
+                return [
+                  // <text fontSize={22} key={g.gene[0]} x={50} y={labelHeight*(index+2)}>
+                  //   {finalScore.toFixed(0)}
+                  //   {/*, {index}*/}
+                  // </text>
+                  // ,
+                  <polygon
+                    fill='black'
+                    key={g.gene[0]}
+                    points={this.calculateDiamond(finalScore,maxValue,width,labelHeight,cohortIndex,index)}
+                    stroke='black'/>
+                ]
+              }
             })
           }
         </svg>
