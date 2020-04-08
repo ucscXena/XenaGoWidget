@@ -964,6 +964,8 @@ export default class XenaGeneSetApp extends PureComponent {
                             geneData={this.state.geneData}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
+                            pathways={pathways}
+                            selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                           <VerticalGeneSetScoresView
@@ -1010,6 +1012,8 @@ export default class XenaGeneSetApp extends PureComponent {
                             geneData={this.state.geneData}
                             labelHeight={18 + 2 * BORDER_OFFSET}
                             maxValue={maxValue}
+                            pathways={pathways}
+                            selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
                           <VerticalGeneSetScoresView
