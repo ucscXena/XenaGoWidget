@@ -156,30 +156,40 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
+  generateSubCohortText(selectedCohort){
+    if(
+      (!selectedCohort.subCohorts)
+      ||
+      (selectedCohort.subCohorts.length===selectedCohort.selectedSubCohorts.length)
+    ){
+      return ' from all available '
+    }
+    if(selectedCohort.selectedSubCohorts.length===1){
+      return  ` from sub cohort '${selectedCohort.selectedSubCohorts[0]}' `
+    }
+    else{
+      return  ` ${selectedCohort.selectedSubCohorts.length} sub cohorts `
+    }
+  }
 
   generateTitle() {
     let returnText
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
-      returnText = `Analyzing cohort ${this.state.selectedCohort[0].name}: `
-      if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples from `
-      returnText +=  ` ${this.state.selectedCohort[0].selectedSubCohorts.length} sub cohorts `
-      returnText +=  ' to '
-      if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples from `
-      returnText +=  ` ${this.state.selectedCohort[1].selectedSubCohorts.length} sub cohorts  `
+      returnText = `From cohort '${this.state.selectedCohort[0].name}' `
+      if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
+      returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+      if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples `
+      returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
     }
     // there are two
     else{
       returnText = `Comparing cohort '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData.length===2 && this.state.geneData[0].samples && this.state.geneData[1].samples){
         returnText +=  `with ${this.state.geneData[0].samples.length} samples `
-        if(this.state.selectedCohort[0].selectedSubCohorts.length < this.state.selectedCohort[0].subCohorts.length ){
-          returnText +=  ` from ${this.state.selectedCohort[0].selectedSubCohorts.length} sub cohorts`
-        }
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
         returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
         returnText +=  ` with ${this.state.geneData[1].samples.length} samples `
-        if(this.state.selectedCohort[1].selectedSubCohorts.length < this.state.selectedCohort[1].subCohorts.length ){
-          returnText +=  ` from ${this.state.selectedCohort[1].selectedSubCohorts.length} sub cohorts `
-        }
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
     }
 
