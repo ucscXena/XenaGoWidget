@@ -54,7 +54,9 @@ export default class HoverGeneView extends PureComponent {
   render() {
     let {data, cohortIndex, view} = this.props
 
-    if (data.tissue) {
+    console.log('gene expression mean ',data && data.pathway ? data.pathway : 'nothing seleected')
+
+    if (data && data.tissue) {
       const score =this.findScore(data, cohortIndex,view)
       return (
         <div>
@@ -63,6 +65,7 @@ export default class HoverGeneView extends PureComponent {
               className={BaseStyle.pathwayChip}
               style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
             >
+              <div className={BaseStyle.boxHeader}>A - Hovering over</div>
               {data.pathway.source === 'GeneSet' &&
               <span>
                 <strong>Gene Set&nbsp;</strong>
@@ -199,21 +202,23 @@ export default class HoverGeneView extends PureComponent {
                       }
                     </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&
-                    <div>
-                      <div className={BaseStyle.pathwayChip}>
-                        <span><b>Gene</b> {data.pathway.gene[0].replace(/_/,' ')}</span>
-                      </div>
-                      <div className={BaseStyle.pathwayChip}>
-                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
-                      </div>
-                    </div>
-          }
+          {/*{data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression*/}
+          {/*    && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&*/}
+          {/*          <div>*/}
+          {/*            <div className={BaseStyle.boxHeader}>Hovering over AA</div>*/}
+          {/*            <div className={BaseStyle.pathwayChip}>*/}
+          {/*              <span><b>Gene</b> {data.pathway.gene[0].replace(/_/,' ')}</span>*/}
+          {/*            </div>*/}
+          {/*            <div className={BaseStyle.pathwayChip}>*/}
+          {/*              <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>*/}
+          {/*            </div>*/}
+          {/*          </div>*/}
+          {/*}*/}
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
             && ( isViewGeneExpression(view))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
+                <div className={BaseStyle.boxHeader}>B - Hovering over </div>
                 <div><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</div>
                 <br/>
                 { isViewGeneExpression(view) &&
@@ -233,6 +238,7 @@ export default class HoverGeneView extends PureComponent {
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
                     <div className={BaseStyle.pathwayChip}>
+                      <div className={BaseStyle.boxHeader}>C - Hovering over </div>
                       <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
                         <strong>Gene Set&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
@@ -264,13 +270,21 @@ export default class HoverGeneView extends PureComponent {
       )
     }
     else {
-      return <div/>
+      return(
+        <div
+          className={BaseStyle.pathwayChip}
+          style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
+        >
+          <div className={BaseStyle.boxHeader}>D - Hovering over </div>
+          <hr/>
+        </div>
+      )
     }
   }
 }
 
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
-  data: PropTypes.any.isRequired,
+  data: PropTypes.any,
   view: PropTypes.any.isRequired,
 }

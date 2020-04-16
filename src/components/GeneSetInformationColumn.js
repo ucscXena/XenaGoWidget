@@ -36,13 +36,11 @@ export class GeneSetInformationColumn extends PureComponent {
             view={this.props.view}
           />
         }
-        {this.props.geneHoverData &&
-          <HoverGeneView
-            cohortIndex={this.props.cohortIndex}
-            data={this.props.geneHoverData[this.props.cohortIndex]}
-            view={this.props.view}
-          />
-        }
+        <HoverGeneView
+          cohortIndex={this.props.cohortIndex}
+          data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
+          view={this.props.view}
+        />
 
 
       </div>
