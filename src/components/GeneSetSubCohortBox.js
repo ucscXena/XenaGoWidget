@@ -7,6 +7,7 @@ import {Dialog} from 'react-toolbox/lib'
 import Tooltip from 'react-toolbox/lib/tooltip'
 import Link from 'react-toolbox/lib/link'
 import {Button} from 'react-toolbox'
+import FaEdit from 'react-icons/lib/fa/edit'
 
 const TooltipLink = Tooltip(Link)
 
@@ -61,7 +62,9 @@ export class GeneSetSubCohortBox extends PureComponent {
         </Dialog>
         <div className={BaseStyle.samplesBox}>
           {samplesLength} samples
-          <Button icon='edit' mini onClick={() => onEditCohorts()} />
+          <Button mini onClick={() => onEditCohorts()}>
+            <FaEdit/>
+          </Button>
         </div>
         { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length <= MAX_SUB_COHORTS &&
           <ul className={BaseStyle.noBullets}>
