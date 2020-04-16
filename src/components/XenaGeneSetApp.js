@@ -902,24 +902,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td  width={300}>
                   <table>
                     <tbody>
-                      <tr>
-                        <td colSpan={3}>
-                          {this.state.pathwaySelection &&
-                        <div className={BaseStyle.geneSetInfoBox}>
-                          <div className={BaseStyle.geneSetBoxLabel}>
-                            Gene Set Details
-                          </div>
-                          {
-                            (this.state.pathwaySelection.pathway.golabel.length > 30 ?
-                              this.state.pathwaySelection.pathway.golabel.substr(0,30)+'...'  :
-                              this.state.pathwaySelection.pathway.golabel).replace(/_/g,' ')
-                          }
-                          &nbsp;
-                          ({this.state.pathwaySelection.pathway.gene.length} genes)
-                        </div>
-                          }
-                        </td>
-                      </tr>
                       {isViewGeneExpression(this.state.filter) &&
                         <tr>
                           <td>
