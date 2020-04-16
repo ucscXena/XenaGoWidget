@@ -71,7 +71,7 @@ export default class HoverGeneView extends PureComponent {
               }
               {data.pathway.source === 'Gene' &&
               <span>
-                <strong>AA Gene&nbsp;</strong>
+                <strong>Gene&nbsp;</strong>
                 {data.pathway.gene[0]}
               </span>
               }

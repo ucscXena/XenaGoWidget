@@ -30,7 +30,6 @@ export default class SelectGeneView extends PureComponent {
     };
 
   findScore = (pathwaySelection, cohortIndex,filter) => {
-    console.log('pathway selection',pathwaySelection)
     if(isViewGeneExpression(filter)){
       if(cohortIndex===0){
         return pathwaySelection.firstSampleGeneExpressionPathwayActivity!==undefined   ? pathwaySelection.firstSampleGeneExpressionPathwayActivity: pathwaySelection.firstGeneExpressionPathwayActivity
@@ -60,44 +59,34 @@ export default class SelectGeneView extends PureComponent {
     if (pathwaySelection) {
       const score =this.findScore(pathwaySelection, cohortIndex,view)
       return (
-        <div>
-          {pathwaySelection &&
-                    <div className={BaseStyle.pathwayChip}>
-                      <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
-                        <strong>Selected Gene Set&nbsp;&nbsp;</strong>
-                        {pathwaySelection.golabel.replace(/_/g,' ')}
-                      </div>
-                      <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
-                        {pathwaySelection.gene.length} Genes
-                      </div>
-                      {/*{!isViewGeneExpression(view) &&*/}
-                      {/*<div>*/}
-                      {/*  <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>*/}
-                      {/*</div>*/}
-                      {/*}*/}
-                      {/*{!isViewGeneExpression(view) &&*/}
-                      {/*<div>*/}
-                      {/*  <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>*/}
-                      {/*</div>*/}
-                      {/*}*/}
-                      <div>
-                        <br/>
-                        <span
-                          className={BaseStyle.scoreBox}
-                          style={{
-                            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
-                            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
-                          }}
-                        >
-                          <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
-                      </div>
-                    </div>
-          }
+        <div className={BaseStyle.pathwayChip}>
+          <div className={BaseStyle.boxHeader}>Selected Gene Set</div>
+          <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
+            {pathwaySelection.golabel.replace(/_/g,' ')}
+          </div>
+          <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
+            {pathwaySelection.gene.length} Genes
+          </div>
+          <div>
+            <br/>
+            <span
+              className={BaseStyle.scoreBox}
+              style={{
+                color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+                backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
+              }}
+            >
+              <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
+          </div>
         </div>
       )
     }
     else {
-      return <div/>
+      return (
+        <div className={BaseStyle.pathwayChip}>
+        No Gene Set selected
+        </div>
+      )
     }
   }
 }

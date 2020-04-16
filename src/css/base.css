@@ -429,6 +429,11 @@ div[data-react-toolbox=dialog] > section{
   /*border: solid 1px;*/
 }
 
+.boxHeader{
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
 .bottomInfoBox{
   height: 220px;
   width: 190px;
