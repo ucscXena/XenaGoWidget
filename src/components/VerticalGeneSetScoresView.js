@@ -65,6 +65,7 @@ function getPointData(event, props) {
   if(isGeneSelected){
     pathway = geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex-1]
     pathway.source = 'Gene'
+    console.log('Gene pathway',pathway)
   }
   else{
     const pathwayIndex = selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length

@@ -64,6 +64,18 @@ export class GeneSetSelector extends PureComponent {
 
   static geneLabelStyle(score, selected, hovered, width, labelHeight, highlighted) {
 
+
+    if (hovered) {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 1,
+        borderRadius: '15px',
+        boxShadow: '0 0 2px 2px green',
+        cursor: 'pointer'
+      }
+    }
+
     if (selected) {
       return {
         height: labelHeight,
@@ -74,18 +86,7 @@ export class GeneSetSelector extends PureComponent {
         // cursor: 'pointer'
       }
     }
-
-    else if (hovered) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px green',
-        cursor: 'pointer'
-      }
-    }
-    else if (highlighted)  {
+    if (highlighted)  {
       return {
         height: labelHeight,
         width: width,
@@ -95,13 +96,11 @@ export class GeneSetSelector extends PureComponent {
         cursor: 'pointer'
       }
     }
-    else {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 2,
-        cursor: 'pointer'
-      }
+    return {
+      height: labelHeight,
+      width: width,
+      strokeWidth: 2,
+      cursor: 'pointer'
     }
   }
 
@@ -246,6 +245,7 @@ export class GeneSetSelector extends PureComponent {
         for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
           let gene0 = geneData[0].pathways[index]
           let gene1 = geneData[1].pathways[index]
+          let hovered = hoveredPathway ? hoveredPathway.gene[0] === gene0.gene[0] : false
           let geneEntry = (<svg
             key={gene0.gene[0]}
             onMouseDown={this.onClick.bind(this, gene0)}
