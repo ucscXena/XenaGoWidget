@@ -76,6 +76,9 @@ export class GeneSetSubCohortBox extends PureComponent {
             )}
           </ul>
         }
+        {selectedCohort.selectedSubCohorts.length === selectedCohort.subCohorts.length &&
+        <div style={{marginLeft: 7,marginTop: 10}}>Showing all available samples</div>
+        }
         { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length > MAX_SUB_COHORTS &&
         <ul className={BaseStyle.noBullets}>
           {selectedCohort.selectedSubCohorts.sort().slice(0,MAX_SUB_COHORTS).map( s => {
