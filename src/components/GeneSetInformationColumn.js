@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './HoverGeneView'
+import SelectGeneView from './SelectGeneView'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -29,18 +30,24 @@ export class GeneSetInformationColumn extends PureComponent {
         />
         }
         {this.props.geneDataStats &&
-        <HoverGeneView
-          cohortIndex={this.props.cohortIndex}
-          data={this.props.geneDataStats[this.props.cohortIndex]}
-          view={this.props.view}
-        />
+          <div>
+            <h3>Selected Gene Set</h3>
+            <SelectGeneView
+              cohortIndex={this.props.cohortIndex}
+              data={this.props.geneDataStats[this.props.cohortIndex]}
+              view={this.props.view}
+            />
+          </div>
         }
         {this.props.geneHoverData &&
-        <HoverGeneView
-          cohortIndex={this.props.cohortIndex}
-          data={this.props.geneHoverData[this.props.cohortIndex]}
-          view={this.props.view}
-        />
+          <div>
+            <h3>Hovering</h3>
+            <HoverGeneView
+              cohortIndex={this.props.cohortIndex}
+              data={this.props.geneHoverData[this.props.cohortIndex]}
+              view={this.props.view}
+            />
+          </div>
         }
 
 

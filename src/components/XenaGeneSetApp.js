@@ -411,7 +411,13 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   handlePathwayHover = (hoveredPoint) => {
-    if (!hoveredPoint) return
+    if (!hoveredPoint) {
+      this.setState({
+        hoveredPathway: null,
+        geneHoverData: null,
+      })
+      return
+    }
     let hoveredPathway = hoveredPoint.pathway
     const sourceCohort = hoveredPoint.cohortIndex
 
