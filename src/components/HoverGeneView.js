@@ -65,7 +65,7 @@ export default class HoverGeneView extends PureComponent {
               className={BaseStyle.pathwayChip}
               style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
             >
-              <div className={BaseStyle.boxHeader}>A - Hovering over</div>
+              <div className={BaseStyle.boxHeader}>Hovering over</div>
               {data.pathway.source === 'GeneSet' &&
               <span>
                 <strong>Gene Set&nbsp;</strong>
@@ -218,7 +218,7 @@ export default class HoverGeneView extends PureComponent {
             && ( isViewGeneExpression(view))  &&
             <div>
               <div className={BaseStyle.pathwayChip}>
-                <div className={BaseStyle.boxHeader}>B - Hovering over </div>
+                <div className={BaseStyle.boxHeader}>Hovering over </div>
                 <div><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</div>
                 <br/>
                 { isViewGeneExpression(view) &&
@@ -238,7 +238,7 @@ export default class HoverGeneView extends PureComponent {
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
                     <div className={BaseStyle.pathwayChip}>
-                      <div className={BaseStyle.boxHeader}>C - Hovering over </div>
+                      <div className={BaseStyle.boxHeader}>Hovering over </div>
                       <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
                         <strong>Gene Set&nbsp;&nbsp;</strong>
                         {data.pathway.golabel.replace(/_/g,' ')}
@@ -275,7 +275,7 @@ export default class HoverGeneView extends PureComponent {
           className={BaseStyle.pathwayChip}
           style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
         >
-          <div className={BaseStyle.boxHeader}>D - Hovering over </div>
+          <div className={BaseStyle.boxHeader}>Hovering over </div>
           <hr/>
         </div>
       )

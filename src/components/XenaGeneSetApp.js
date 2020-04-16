@@ -420,6 +420,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     let hoveredPathway = hoveredPoint.pathway
     const sourceCohort = hoveredPoint.cohortIndex
+    console.log('hovered pathway',hoveredPoint)
 
     const cohort0 = {
       tissue: sourceCohort === 0 ? hoveredPoint.tissue : 'Header',
