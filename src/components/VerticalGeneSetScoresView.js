@@ -67,7 +67,8 @@ function getPointData(event, props) {
     pathway.source = 'Gene'
   }
   else{
-    pathway = pathways[selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways ? geneData.pathways.length : 0 ]
+    const pathwayIndex = selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length
+    pathway = pathways[pathwayIndex]
     if (!pathway) return null
     pathway.source = 'GeneSet'
   }
@@ -77,15 +78,12 @@ function getPointData(event, props) {
   if(isViewGeneExpression(filter)){
     if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null
     let activity = associatedData[pathwayIndexFromY][sampleIndex].geneExpressionPathwayActivity
-    console.log('input pathway activity',activity)
-    console.log('ass data',associatedData[pathwayIndexFromY][sampleIndex])
     if(cohortIndex===0){
       pathway.firstSampleGeneExpressionPathwayActivity = activity
     }
     else{
       pathway.secondSampleGeneExpressionPathwayActivity = activity
     }
-    console.log('final data',pathway)
   }
   else {
     if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null

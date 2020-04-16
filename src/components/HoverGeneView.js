@@ -53,9 +53,6 @@ export default class HoverGeneView extends PureComponent {
 
   render() {
     let {data, cohortIndex, view} = this.props
-
-    console.log('gene expression mean ',data && data.pathway ? data.pathway : 'nothing seleected')
-
     if (data && data.tissue) {
       const score =this.findScore(data, cohortIndex,view)
       return (
