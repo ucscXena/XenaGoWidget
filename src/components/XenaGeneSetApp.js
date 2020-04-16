@@ -12,7 +12,6 @@ import {
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
-import FaConfigure from 'react-icons/lib/fa/cog'
 import {Dialog} from 'react-toolbox'
 import {
   fetchBestPathways,
@@ -45,7 +44,6 @@ import {
   generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
-import Button from 'react-toolbox/lib/button'
 // import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
 // import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
 // import {intersection} from '../functions/MathFunctions'
@@ -170,6 +168,13 @@ export default class XenaGeneSetApp extends PureComponent {
     else{
       return  ` ${selectedCohort.selectedSubCohorts.length} sub cohorts `
     }
+  }
+
+
+  showConfiguration = () => {
+    this.setState({
+      showGeneSetSearch: true
+    })
   }
 
   generateTitle() {
@@ -791,6 +796,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <NavigationBar
           acceptGeneHandler={this.geneHighlight}
+          configurationHandler={this.showConfiguration}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
         />
@@ -859,6 +865,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
             onOverlayClick={() => this.setState({showGeneSetSearch: false})}
             title="Gene Set Editor"
+            type="large"
           >
             <GeneSetEditor
               cancelPathwayEdit={() => this.setState(
@@ -893,14 +900,6 @@ export default class XenaGeneSetApp extends PureComponent {
                         <td colSpan={3}>
                           {this.state.pathwaySelection &&
                         <div className={BaseStyle.geneSetInfoBox}>
-                          <Button
-                            floating mini onClick={() =>
-                              this.setState({
-                                showGeneSetSearch: true
-                              })
-                            }>
-                            <FaConfigure/>
-                          </Button>
                           <div className={BaseStyle.geneSetBoxLabel}>
                             Gene Set Details
                           </div>

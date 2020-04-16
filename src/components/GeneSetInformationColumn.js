@@ -28,6 +28,13 @@ export class GeneSetInformationColumn extends PureComponent {
           subCohortCounts={this.props.subCohortCounts}
         />
         }
+        {this.props.geneDataStats &&
+        <HoverGeneView
+          cohortIndex={this.props.cohortIndex}
+          data={this.props.geneDataStats[this.props.cohortIndex]}
+          view={this.props.view}
+        />
+        }
         {this.props.geneHoverData &&
         <HoverGeneView
           cohortIndex={this.props.cohortIndex}
