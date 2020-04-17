@@ -798,6 +798,9 @@ export default class XenaGeneSetApp extends PureComponent {
       maxValue = Math.max(...maxValues)
     }
 
+    let titleText = this.generateTitle()
+    let titleSize = (45 - titleText.length * 0.15)
+
     return (
       <div>
 
@@ -808,8 +811,10 @@ export default class XenaGeneSetApp extends PureComponent {
           searchHandler={this.searchHandler}
         />
 
-        <h2 className={BaseStyle.titleBox}>
-          {this.generateTitle()}
+        <h2
+          className={BaseStyle.titleBox}
+          style={{fontSize:titleSize,width: 1100}}>
+          {titleText}
         </h2>
 
         <div
