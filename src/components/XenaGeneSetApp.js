@@ -349,6 +349,10 @@ export default class XenaGeneSetApp extends PureComponent {
       [sortedAssociatedDataA, sortedAssociatedDataB], this.state.filter)
     pathwayDataA.pathways = pathways
     pathwayDataB.pathways = pathways
+    pathwayDataA.pathwaySelection = selection
+    pathwayDataB.pathwaySelection = selection
+    pathwayDataA.selectedCohort = selectedCohorts[0]
+    pathwayDataB.selectedCohort = selectedCohorts[1]
 
     const geneData = selection && selection.open ? generateScoredData(selection, [pathwayDataA, pathwayDataB],
       pathways, this.state.filter, [sortedSamplesA, sortedSamplesB]) : [{},{}]
@@ -472,7 +476,6 @@ export default class XenaGeneSetApp extends PureComponent {
   // if selected is open and is selected then close, otherwise open
   // if selected is NOT open, then select, regardless
   calculateOpen(currentSelection,priorSelection){
-    console.log('calculating open: ',priorSelection.open,currentSelection)
     return priorSelection.open ? currentSelection.pathway.golabel !== priorSelection.pathway.golabel : true
   }
 
@@ -902,7 +905,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
                     cohortIndex={0}
-                    geneDataStats={this.state.geneData}
+                    geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
                     pathwayData={this.state.pathwayData}
@@ -1070,7 +1073,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
                     cohortIndex={1}
-                    geneDataStats={this.state.geneData}
+                    geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
                     onShowCohortEditor={this.handleEditCohorts}
