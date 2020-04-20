@@ -20,6 +20,17 @@ export class GeneSetSelector extends PureComponent {
      */
   static labelStyle(score, selected, hovered, width, labelHeight, highlighted) {
 
+    if (hovered) {
+      return {
+        height: labelHeight,
+        width: width,
+        strokeWidth: 1,
+        borderRadius: '15px',
+        boxShadow: '0 0 2px 2px green',
+        cursor: 'pointer'
+      }
+    }
+    else
     if (selected) {
       return {
         height: labelHeight,
@@ -29,17 +40,6 @@ export class GeneSetSelector extends PureComponent {
         borderRadius: '25px',
         cursor: 'pointer'
 
-      }
-    }
-
-    else if (hovered) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px green',
-        cursor: 'pointer'
       }
     }
     else if (highlighted)  {
