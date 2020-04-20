@@ -958,7 +958,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                           </tr>
                       }
-                      {isViewGeneExpression(this.state.filter) &&
+                      {isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&
                           <tr>
                             <td colSpan={1}>
                               <div className={BaseStyle.verticalLegendBox}>
