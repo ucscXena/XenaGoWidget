@@ -385,10 +385,10 @@ div[data-react-toolbox=dialog] > section{
     visibility: visible;
     float: left;
     position: absolute;
-    /*background-color:rgba(100,100,100,0.5);*/
     pointer-events: none;
-    background-image:url('./dots.gif');
-    cursor: none;
+    /*background-image:url('./dots.gif');*/
+  background-color:rgba(100,100,100,0.5);
+  cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
   z-index: 10;
@@ -397,9 +397,9 @@ div[data-react-toolbox=dialog] > section{
 .crosshairV{
     float: left;
     position: absolute;
-    /*background-color:rgba(100,100,100,0.5);*/
     pointer-events: none;
-    background-image:url('./dots.gif');
+    /*background-image:url('./dots.gif');*/
+  background-color:rgba(100,100,100,0.5);
     height:100%;
     width:1px;
     margin-left: -8px;

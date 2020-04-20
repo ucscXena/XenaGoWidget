@@ -850,10 +850,10 @@ export default class XenaGeneSetApp extends PureComponent {
             if (topClient < 0) {
               scrollDownBuffer = -topClient + 74
             }
-
+            const yLimit = this.state.geneData[0].samples ? 233 : 193
             const x = ev.clientX + 8
             const y = ev.clientY + 8 + scrollDownBuffer
-            if (   y >= 303 &&  ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
+            if (   y >= yLimit &&  ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
               this.setState({mousing: true, x, y})
             } else {
               this.setState({mousing: false, x, y})
