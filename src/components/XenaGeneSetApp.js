@@ -181,10 +181,19 @@ export default class XenaGeneSetApp extends PureComponent {
     let returnText
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
       returnText = `From cohort '${this.state.selectedCohort[0].name}' `
-      if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
-      returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
-      if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples `
-      returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+      if(this.state.geneData[0].samples ){
+        if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+      }
+      else
+      if(this.state.pathwayData[0].samples ){
+        if(this.state.pathwayData[0].samples) returnText += ` comparing ${this.state.pathwayData[0].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        if(this.state.pathwayData[1].samples) returnText += ` ${this.state.pathwayData[1].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+      }
     }
     // there are two
     else{
@@ -194,6 +203,14 @@ export default class XenaGeneSetApp extends PureComponent {
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
         returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
         returnText +=  ` with ${this.state.geneData[1].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+      }
+      else
+      if(this.state.pathwayData.length===2 && this.state.pathwayData[0].samples && this.state.pathwayData[1].samples){
+        returnText +=  `with ${this.state.pathwayData[0].samples.length} samples `
+        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
+        returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
+        returnText +=  ` with ${this.state.pathwayData[1].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
     }
