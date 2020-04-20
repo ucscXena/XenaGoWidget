@@ -204,48 +204,15 @@ export class GeneSetSelector extends PureComponent {
           >
             {width < 10 ? '' : labelString}
           </text>
-          {/*<text*/}
-          {/*  fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={120}*/}
-          {/*  y={topOffset}*/}
-          {/*>*/}
-          {/*  {diffScore},  {diffX.toFixed(0)},  {width.toFixed(0)}*/}
-          {/*</text>*/}
         </svg>
       ]
-
-
-      // let diffXArray = [
-      //   <svg
-      //     key={p.golabel}
-      //     style={{
-      //       position: 'absolute',
-      //       y: topOffset,
-      //       x: -200,
-      //       width: width,
-      //       // backgroundColor: 'orange',
-      //       // color: 'brown',
-      //       // stroke: 'pink 2x solid',
-      //       height: this.props.labelHeight,
-      //       zIndex: 2000,
-      //     }}
-      //   >
-      //     <rect
-      //       fill='green'
-      //       height={labelHeight}
-      //       width={width/2}
-      //       x={-50}
-      //       y={3}
-      //     />
-      //   </svg>
-      // ]
-      // geneSetArray.push(diffXArray)
 
       if(selected && geneData[0].pathways){
         let genesToAdd = []
         for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
           let gene0 = geneData[0].pathways[index]
           let gene1 = geneData[1].pathways[index]
-          let hovered = hoveredPathway ? hoveredPathway.gene[0] === gene0.gene[0] : false
+          let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
           let geneEntry = (<svg
             key={gene0.gene[0]}
             onMouseDown={this.onClick.bind(this, gene0)}
