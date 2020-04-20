@@ -38,7 +38,7 @@ function sampleIndexFromX(x, width, cohortIndex, sampleLength) {
 
 function isGeneSelect(selectedGeneIndex,pathwayIndexFromY,genePathways){
   // we have not selected past the selected gene index
-  if(selectedGeneIndex>= pathwayIndexFromY) {
+  if(genePathways===undefined || selectedGeneIndex>= pathwayIndexFromY) {
     return false
   }
 
@@ -65,16 +65,13 @@ function getPointData(event, props) {
   if(isGeneSelected){
     pathway = geneData.pathways[pathwayIndexFromY - selectedGeneSetIndex-1]
     pathway.source = 'Gene'
-    console.log('Gene pathway',pathway)
   }
   else{
-    const pathwayIndex = selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - geneData.pathways.length
+    const pathwayIndex = selectedGeneSetIndex >= pathwayIndexFromY ? pathwayIndexFromY : pathwayIndexFromY - (geneData.pathways ? geneData.pathways.length : 0 )
     pathway = pathways[pathwayIndex]
     if (!pathway) return null
     pathway.source = 'GeneSet'
   }
-
-  console.log('input pathway',pathway)
 
   if(isViewGeneExpression(filter)){
     if(associatedData===undefined || pathwayIndexFromY<0 || cohortIndex < 0 || associatedData[pathwayIndexFromY][sampleIndex]===undefined) return null

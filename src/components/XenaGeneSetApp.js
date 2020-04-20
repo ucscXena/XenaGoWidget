@@ -332,7 +332,9 @@ export default class XenaGeneSetApp extends PureComponent {
       !selection.pathway.golabel ||
       associatedDataA.filter(
         (d) => d[0].golabel === selection.pathway.golabel).length === 0) {
-      selection.pathway = pathways[0]
+      selection.pathway = update(pathways[0], {
+        open: {$set: false}
+      })
     }
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
@@ -348,17 +350,17 @@ export default class XenaGeneSetApp extends PureComponent {
     pathwayDataA.pathways = pathways
     pathwayDataB.pathways = pathways
 
-    const geneData = generateScoredData(selection, [pathwayDataA, pathwayDataB],
-      pathways, this.state.filter, [sortedSamplesA, sortedSamplesB])
-    const sortedGeneData = isViewGeneExpression(this.state.filter) ?
+    const geneData = selection && selection.open ? generateScoredData(selection, [pathwayDataA, pathwayDataB],
+      pathways, this.state.filter, [sortedSamplesA, sortedSamplesB]) : [{},{}]
+    const sortedGeneData = isViewGeneExpression(this.state.filter) && selection.open ?
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
 
     let pathwayIndex = getSelectedGeneSetIndex(selection,pathways)
-    const mergedGeneSetData = [
+    const mergedGeneSetData = selection.open ?[
       mergeGeneSetAndGeneDetailData(sortedGeneData[0],sortedAssociatedDataA,pathwayIndex),
       mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
-    ]
+    ] : [sortedAssociatedDataA,sortedAssociatedDataB]
 
     currentLoadState = LOAD_STATE.LOADED
     this.setState({
@@ -420,7 +422,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     let hoveredPathway = hoveredPoint.pathway
     const sourceCohort = hoveredPoint.cohortIndex
-    console.log('hovered pathway',hoveredPoint)
 
     const cohort0 = {
       tissue: sourceCohort === 0 ? hoveredPoint.tissue : 'Header',
@@ -471,6 +472,7 @@ export default class XenaGeneSetApp extends PureComponent {
   // if selected is open and is selected then close, otherwise open
   // if selected is NOT open, then select, regardless
   calculateOpen(currentSelection,priorSelection){
+    console.log('calculating open: ',priorSelection.open,currentSelection)
     return priorSelection.open ? currentSelection.pathway.golabel !== priorSelection.pathway.golabel : true
   }
 
@@ -500,7 +502,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const sortedSamplesA = sortedAssociatedDataA[0].map((d) => d.sample)
     const sortedSamplesB = sortedAssociatedDataB[0].map((d) => d.sample)
 
-    // TODO: create gene data off of the sorted pathway data
     const geneData = pathwaySelectionWrapper  && pathwaySelectionWrapper.open ? generateScoredData(pathwaySelectionWrapper, pathwayData,
       geneSetPathways, filter, [sortedSamplesA, sortedSamplesB]) : [{},{}]
     const sortedGeneData = isViewGeneExpression(this.state.filter) && pathwaySelectionWrapper.open  ?
@@ -690,13 +691,17 @@ export default class XenaGeneSetApp extends PureComponent {
   setActiveGeneSets = (newPathways) => {
     AppStorageHandler.storePathways(newPathways)
 
+    const defaultPathway = update( newPathways[0],{
+      open: {$set: false},
+    })
     let pathwaySelection = newPathways.filter(
       (p) => this.state.pathwaySelection.pathway.golabel === p.golabel)
+
     pathwaySelection = {
       tissue: 'Header',
       pathway: pathwaySelection.length > 0 ?
         pathwaySelection[0] :
-        newPathways[0],
+        defaultPathway,
     }
     this.setState({
       pathwaySelection,

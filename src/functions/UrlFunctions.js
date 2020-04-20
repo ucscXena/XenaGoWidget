@@ -18,6 +18,7 @@ export function calculateGeneSet(urlVariables,pathways){
     const geneset = pathways.find( p => p.golabel === urlVariables.geneset )
     if(geneset){
       selectedGeneSet = {
+        open: false,
         pathway: geneset,
         tissue: 'Header'
       }
@@ -25,6 +26,7 @@ export function calculateGeneSet(urlVariables,pathways){
     else{
       // if specified before calculated, we get this
       selectedGeneSet = {
+        open: false,
         pathway: {
           goid: undefined,
           golabel:urlVariables.geneset,
@@ -52,13 +54,13 @@ export function calculateCohorts(urlVariables){
   if(urlVariables.cohort1){
     let cohort1Details = getCohortDetails({name: urlVariables.cohort1})
     cohort1Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort1)
-    cohort1Details.selectedSubCohorts = urlVariables.selectedSubCohorts1 ? urlVariables.selectedSubCohorts1.split(',') : cohort1Details.subCohorts 
+    cohort1Details.selectedSubCohorts = urlVariables.selectedSubCohorts1 ? urlVariables.selectedSubCohorts1.split(',') : cohort1Details.subCohorts
     AppStorageHandler.storeCohortState(cohort1Details,0)
   }
   if(urlVariables.cohort2){
     const cohort2Details = getCohortDetails({name: urlVariables.cohort2})
     cohort2Details.subCohorts = getSubCohortsOnlyForCohort(urlVariables.cohort2)
-    cohort2Details.selectedSubCohorts = urlVariables.selectedSubCohorts2 ? urlVariables.selectedSubCohorts2.split(',') : cohort2Details.subCohorts 
+    cohort2Details.selectedSubCohorts = urlVariables.selectedSubCohorts2 ? urlVariables.selectedSubCohorts2.split(',') : cohort2Details.subCohorts
     AppStorageHandler.storeCohortState(cohort2Details,1)
   }
   // handle selected subCohorts
