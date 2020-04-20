@@ -127,11 +127,11 @@ export class GeneSetSelector extends PureComponent {
 
   render() {
     let {geneStateColors,geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
-    let interpolateExp = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
-    let interpolate = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
+    let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
+    let interpolateCnvMutation = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
 
-    let pillStyleExp = score => {
-      let colorString = interpolateExp(score)
+    let pillStyleExp = (score,selected) => {
+      let colorString = interpolateGeneExpression(score)
       return {
         top: 0,
         left: 0,
@@ -139,13 +139,13 @@ export class GeneSetSelector extends PureComponent {
         strokeWidth: 1,
         stroke: colorString,
         fill: colorString,
-
+        opacity: selected ? 1 : 0.2,
         cursor: 'pointer'
       }
     }
 
-    let pillStyle = score => {
-      let colorString = interpolate(score)
+    let pillStyle = (score,selected) => {
+      let colorString = interpolateCnvMutation(score)
       return {
         top: 0,
         left: 0,
@@ -153,7 +153,7 @@ export class GeneSetSelector extends PureComponent {
         strokeWidth: 1,
         stroke: colorString,
         fill: colorString,
-
+        opacity: selected ? 1 : 0.2,
         cursor: 'pointer'
       }
     }
@@ -164,6 +164,7 @@ export class GeneSetSelector extends PureComponent {
       labelString = labelString.replace(/_/g,' ')
       let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false
       let selected = selectedPathway.pathway.golabel === p.golabel
+      const open = selectedPathway.open
       let highlighted = p.gene.indexOf(highlightedGene) >= 0
 
       let geneSetArray = [
@@ -176,30 +177,30 @@ export class GeneSetSelector extends PureComponent {
         >
           {p.firstGeneExpressionPathwayActivity &&
           <rect
-            height={labelHeight} style={pillStyleExp(p.firstGeneExpressionPathwayActivity)} width={width / 2 - 1}
+            height={labelHeight} style={pillStyleExp(p.firstGeneExpressionPathwayActivity,selected || !open)} width={width / 2 - 1}
             x={0}
           />
           }
           {p.firstObserved &&
                   <rect
-                    height={labelHeight} style={pillStyle(p.firstChiSquared)} width={width / 2 - 1}
+                    height={labelHeight} style={pillStyle(p.firstChiSquared,selected || !open)} width={width / 2 - 1}
                     x={0}
                   />
           }
           {p.secondGeneExpressionPathwayActivity &&
           <rect
-            height={labelHeight} style={pillStyleExp(p.secondGeneExpressionPathwayActivity)} width={width / 2}
+            height={labelHeight} style={pillStyleExp(p.secondGeneExpressionPathwayActivity,selected || !open)} width={width / 2}
             x={width / 2 + 1}
           />
           }
           {p.secondObserved &&
                   <rect
-                    height={labelHeight} style={pillStyle(p.secondChiSquared)} width={width / 2}
+                    height={labelHeight} style={pillStyle(p.secondChiSquared,selected || !open)} width={width / 2}
                     x={width / 2 + 1}
                   />
           }
           <text
-            fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
+            fill={selected || !open ? 'black' : 'gray'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
             y={topOffset}
           >
             {width < 10 ? '' : labelString}
@@ -222,25 +223,25 @@ export class GeneSetSelector extends PureComponent {
           >
             {gene0.geneExpressionMean &&
               <rect
-                height={labelHeight} style={pillStyleExp(gene0.geneExpressionMean)} width={width / 2 - 1}
+                height={labelHeight} style={pillStyleExp(gene0.geneExpressionMean,selected)} width={width / 2 - 1}
                 x={0}
               />
             }
             {p.firstObserved &&
               <rect
-                height={labelHeight} style={pillStyle(gene0.firstChiSquared)} width={width / 2 - 1}
+                height={labelHeight} style={pillStyle(gene0.firstChiSquared,selected)} width={width / 2 - 1}
                 x={0}
               />
             }
             {gene1.geneExpressionMean &&
               <rect
-                height={labelHeight} style={pillStyleExp(gene1.geneExpressionMean)} width={width / 2}
+                height={labelHeight} style={pillStyleExp(gene1.geneExpressionMean,selected)} width={width / 2}
                 x={width / 2 + 1}
               />
             }
             {p.secondObserved &&
               <rect
-                height={labelHeight} style={pillStyle(gene1.secondChiSquared)} width={width / 2}
+                height={labelHeight} style={pillStyle(gene1.secondChiSquared,selected)} width={width / 2}
                 x={width / 2 + 1}
               />
             }
