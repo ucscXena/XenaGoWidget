@@ -387,7 +387,8 @@ div[data-react-toolbox=dialog] > section{
     position: absolute;
     pointer-events: none;
     /*background-image:url('./dots.gif');*/
-  background-color:rgba(100,100,100,0.5);
+  /*background-color:rgba(100,100,100,0.5);*/
+  background-color:rgba(57,255,20,1);
   cursor: none;
     -webkit-touch-callout: none;
     user-select: none;
@@ -399,7 +400,8 @@ div[data-react-toolbox=dialog] > section{
     position: absolute;
     pointer-events: none;
     /*background-image:url('./dots.gif');*/
-  background-color:rgba(100,100,100,0.5);
+  /*background-color:rgba(100,100,100,0.5);*/
+   background-color:rgba(57,255,20,1);
     height:100%;
     width:1px;
     margin-left: -8px;
