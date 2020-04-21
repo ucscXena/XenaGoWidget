@@ -141,10 +141,14 @@ export default class VerticalGeneSetScoresView extends PureComponent {
       let pathwayIndex = getSelectedGeneSetIndex(selectedPathway,pathways)
 
       // need a size and vertical start for each
-
       let inputPathways = geneData.pathways ? [...pathways.slice(0,pathwayIndex+1),...geneData.pathways,...pathways.slice(pathwayIndex+1)] : pathways
+
       let layout = inputPathways.map((p, index) => {
-        return {start: index * labelHeight, size: labelHeight}
+        return {start: index * labelHeight,
+          size: labelHeight,
+          // if none are open, then show all, if selected is open, then show that one and the genes
+          active: !selectedPathway.open ? true : index >= pathwayIndex && index <= (pathwayIndex + geneData.pathways.length) ,
+        }
       })
 
       const totalHeight = layout.length * labelHeight

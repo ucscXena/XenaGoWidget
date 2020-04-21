@@ -66,7 +66,7 @@ function regionColor(data, type) {
 }
 
 export function getColorArray(colorString){
-  return colorString ? colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim())) : null
+  return colorString ? colorString.replace('rgb(','').replace(')','').split(',').map( c => parseInt(c.trim())) : [0,0,0]
 }
 
 export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
@@ -228,11 +228,11 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffStart = pxRow + (xPos + r.x) * 4
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            let colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
+            const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
             img.data[l] = colorArray[0]
             img.data[l + 1] = colorArray[1]
             img.data[l + 2] = colorArray[2]
-            img.data[l + 3] = 255
+            img.data[l + 3] = el.active ? 255 : 50
           }
         }
       }
