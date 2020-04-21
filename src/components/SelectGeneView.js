@@ -76,7 +76,7 @@ export default class SelectGeneView extends PureComponent {
                 backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
               }}
             >
-              <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
+              <strong>Mean Score</strong> {score === undefined || score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
           </div>
         </div>
       )

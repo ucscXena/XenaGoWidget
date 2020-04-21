@@ -65,6 +65,7 @@ export class ApplicationWrapper extends PureComponent {
     let finalUrl = generateUrl(
       analysis,
       undefined,
+      false,
       this.state.cohort,
       this.state.cohort,
       this.state.selectedSubCohorts1,
@@ -90,31 +91,6 @@ export class ApplicationWrapper extends PureComponent {
 
   }
 
-
-  handleFinish = () => {
-    // set the URL here
-    let finalUrl = generateUrl(
-      this.state.filter,
-      undefined,
-      this.state.cohort,
-      this.state.cohort,
-      this.state.selectedSubCohorts1,
-      this.state.selectedSubCohorts2,
-    )
-    finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
-    finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
-    finalUrl += `&cohort1Color=${this.state.cohort1Color}`
-    finalUrl += `&cohort2Color=${this.state.cohort2Color}`
-    finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
-    finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
-    finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
-
-    this.openUrl(finalUrl)
-
-    this.setState({
-      wizard:'finished'
-    })
-  }
 
   handleGeneSetLimit = (limit) => {
     this.setState({

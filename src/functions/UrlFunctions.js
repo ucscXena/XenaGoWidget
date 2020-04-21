@@ -18,15 +18,15 @@ export function calculateGeneSet(urlVariables,pathways){
     const geneset = pathways.find( p => p.golabel === urlVariables.geneset )
     if(geneset){
       selectedGeneSet = {
-        open: false,
+        open: urlVariables.genesetOpen === 'true' ,
         pathway: geneset,
         tissue: 'Header'
       }
     }
     else{
-      // if specified before calculated, we get this
+      // if specified before calculated, we get this, geneset not found
       selectedGeneSet = {
-        open: false,
+        open: urlVariables.genesetOpen === 'true',
         pathway: {
           goid: undefined,
           golabel:urlVariables.geneset,
@@ -67,11 +67,12 @@ export function calculateCohorts(urlVariables){
   return [ AppStorageHandler.getCohortState(0), AppStorageHandler.getCohortState(1)]
 }
 
-export const generateUrl = (filter,geneset,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
+export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
   let generatedUrl = `cohort1=${cohort1}`
   generatedUrl += `&cohort2=${cohort2}`
   generatedUrl += `&filter=${filter}`
   generatedUrl += `&geneset=${geneset}`
+  generatedUrl += `&genesetOpen=${genesetOpen ? genesetOpen : false }`
   if( selectedSubCohorts1){
     generatedUrl += `&selectedSubCohorts1=${selectedSubCohorts1}`
   }

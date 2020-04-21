@@ -144,6 +144,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const generatedUrl = generateUrl(
       this.state.filter,
       this.state.pathwaySelection.pathway.golabel,
+      this.state.pathwaySelection.open ? this.state.pathwaySelection.open : false,
       this.state.selectedCohort[0].name,
       this.state.selectedCohort[1].name,
       this.state.selectedCohort[0].selectedSubCohorts,
