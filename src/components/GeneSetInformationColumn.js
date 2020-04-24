@@ -8,14 +8,28 @@ import SelectGeneView from './SelectGeneView'
 
 export class GeneSetInformationColumn extends PureComponent {
 
-
   constructor(props) {
     super(props)
+  }
+
+
+  canShowHover() {
+    const {geneHoverData,cohortIndex} = this.props
+    if(!geneHoverData || geneHoverData.length !== 2) return false
+    // if they both are tissue 'Header' then show
+    if(geneHoverData[0].tissue === geneHoverData[1].tissue && geneHoverData[1].tissue === 'Header') {
+      return true
+    }
+    // or if the selected cohort is NOT
+    return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
   render(){
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
+
+    console.log('gene hover data',this.props.geneHoverData)
+
     return (
       <div
         className={BaseStyle.geneSetDetailBox}
@@ -36,11 +50,14 @@ export class GeneSetInformationColumn extends PureComponent {
             view={this.props.view}
           />
         }
-        <HoverGeneView
-          cohortIndex={this.props.cohortIndex}
-          data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
-          view={this.props.view}
-        />
+        {
+          this.canShowHover() &&
+          <HoverGeneView
+            cohortIndex={this.props.cohortIndex}
+            data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
+            view={this.props.view}
+          />
+        }
 
 
       </div>
