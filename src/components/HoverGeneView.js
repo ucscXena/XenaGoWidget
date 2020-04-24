@@ -60,7 +60,6 @@ export default class HoverGeneView extends PureComponent {
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
             <div
               className={BaseStyle.pathwayChip}
-              style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
             >
               <div className={BaseStyle.boxHeader}>Hovering over</div>
               {data.pathway.source === 'GeneSet' &&
