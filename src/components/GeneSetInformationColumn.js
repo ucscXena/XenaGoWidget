@@ -28,8 +28,6 @@ export class GeneSetInformationColumn extends PureComponent {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
 
-    console.log('gene hover data',this.props.geneHoverData)
-
     return (
       <div
         className={BaseStyle.geneSetDetailBox}
