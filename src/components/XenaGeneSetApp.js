@@ -918,7 +918,7 @@ export default class XenaGeneSetApp extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td valign='top' width={100}>
+                <td valign='top' width={250}>
                   <GeneSetInformationColumn
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
@@ -1086,7 +1086,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     </tbody>
                   </table>
                 </td>
-                <td valign='top' width={100}>
+                <td valign='top' width={250}>
                   <GeneSetInformationColumn
                     cohort={this.state.selectedCohort}
                     cohortColor={this.state.cohortColors}
