@@ -953,35 +953,45 @@ export default class XenaGeneSetApp extends PureComponent {
                       {!isViewGeneExpression(this.state.filter) &&
                           <tr>
                             <td>
-                              <table style={{padding: 0, margin: 0, borderSpacing: 0}}>
-                                <tbody>
-                                  <tr style={{padding: 0, margin: 0}}>
-                                    <td style={{padding: 0, margin: 0}}>
-                                      Geneset Summary:
-                                    </td>
-                                    <td style={{padding: 0, margin: 0}}>
-                                      <GeneSetLegend
-                                        id='mean-score' label={'mean'}
-                                        maxScore={50} minScore={-50}
-                                        precision={0}
-                                      />
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td style={{padding: 0, margin: 0}}>
-                                      Sample Legend:
-                                    </td>
-                                    <td style={{padding: 0, margin: 0}}>
-                                      <GeneSetLegend
-                                        id='densityGrad1' label={'density'} maxColor='red'
-                                        maxScore={5} midColor='orange'
-                                        minColor='white' minScore={0} precision={0}
-                                      />
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                              <div className={BaseStyle.verticalLegendBox}>
+                              Geneset Legend
+                              </div>
                             </td>
+                            <td colSpan={3}>
+                              <GeneSetLegend
+                                id='mean-score' label={'mean'}
+                                maxScore={50} minScore={-50}
+                                precision={0}
+                              />
+                            </td>
+                            {/*<table style={{padding: 0, margin: 0, borderSpacing: 0}}>*/}
+                            {/*  <tbody>*/}
+                            {/*    <tr style={{padding: 0, margin: 0}}>*/}
+                            {/*      <td style={{padding: 0, margin: 0}}>*/}
+                            {/*        Geneset Summary:*/}
+                            {/*      </td>*/}
+                            {/*      <td style={{padding: 0, margin: 0}}>*/}
+                            {/*        <GeneSetLegend*/}
+                            {/*          id='mean-score' label={'mean'}*/}
+                            {/*          maxScore={50} minScore={-50}*/}
+                            {/*          precision={0}*/}
+                            {/*        />*/}
+                            {/*      </td>*/}
+                            {/*    </tr>*/}
+                            {/*    <tr>*/}
+                            {/*      <td style={{padding: 0, margin: 0}}>*/}
+                            {/*        Sample Legend:*/}
+                            {/*      </td>*/}
+                            {/*      <td style={{padding: 0, margin: 0}}>*/}
+                            {/*        <GeneSetLegend*/}
+                            {/*          id='densityGrad1' label={'density'} maxColor='red'*/}
+                            {/*          maxScore={5} midColor='orange'*/}
+                            {/*          minColor='white' minScore={0} precision={0}*/}
+                            {/*        />*/}
+                            {/*      </td>*/}
+                            {/*    </tr>*/}
+                            {/*  </tbody>*/}
+                            {/*</table>*/}
                           </tr>
                       }
                       {isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&
@@ -1000,10 +1010,26 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                           </tr>
                       }
-                      {!isViewGeneExpression(this.state.filter) &&
-                          <div style={{marginLeft: 5}}>
+                      {!isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&
+                        <tr>
+                          <td colSpan={1}>
+                            <div className={BaseStyle.verticalLegendBox}>
+                              Gene Legend
+                            </div>
+                          </td>
+                          <td>
                             <CnvMutationLegend view={this.state.filter}/>
-                          </div>
+                          </td>
+                          {/*<div style={{marginLeft: 5}}>*/}
+                          <td>
+                            <GeneSetLegend
+                              id='densityGrad1' label={'density'} maxColor='red'
+                              maxScore={5} midColor='orange'
+                              minColor='white' minScore={0} precision={0}
+                            />
+                          </td>
+                          {/*</div>*/}
+                        </tr>
                       }
                       <tr>
                         <td valign='top'>
