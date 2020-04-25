@@ -5,6 +5,12 @@ import {
   getHighlightedColor,
 } from '../functions/ColorFunctions'
 import * as d3 from 'd3'
+import {
+  GAMMA_GENE_STATE_COLOR,
+  HIGH_GENE_STATE_COLOR,
+  LOW_GENE_STATE_COLOR,
+  MID_GENE_STATE_COLOR
+} from './XenaGeneSetApp'
 
 export class GeneSetSelector extends PureComponent {
 
@@ -126,9 +132,9 @@ export class GeneSetSelector extends PureComponent {
   };
 
   render() {
-    let {geneStateColors,geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
-    let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, geneStateColors.midDomain, maxValue*1.5]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
-    let interpolateCnvMutation = d3.scaleLinear().domain([geneStateColors.lowDomain, geneStateColors.midDomain, geneStateColors.highDomain]).range([geneStateColors.lowColor,geneStateColors.midColor,geneStateColors.highColor]).interpolate(d3.interpolateRgb.gamma(geneStateColors.gamma))
+    let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
+    let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, MID_GENE_STATE_COLOR, maxValue*1.5]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
+    let interpolateCnvMutation = d3.scaleLinear().domain([LOW_GENE_STATE_COLOR, MID_GENE_STATE_COLOR, HIGH_GENE_STATE_COLOR]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
 
     let pillStyleExp = (score,selected) => {
       let colorString = interpolateGeneExpression(score)
@@ -265,9 +271,7 @@ export class GeneSetSelector extends PureComponent {
 }
 
 GeneSetSelector.propTypes = {
-  geneColors: PropTypes.any,
   geneData: PropTypes.any,
-  geneStateColors: PropTypes.any,
   highlightedGene: PropTypes.any,
   hoveredPathway: PropTypes.any,
   labelHeight: PropTypes.any.isRequired,

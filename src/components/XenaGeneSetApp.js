@@ -75,6 +75,11 @@ const LOAD_STATE = {
 
 let currentLoadState = LOAD_STATE.UNLOADED
 
+export const LOW_GENE_STATE_COLOR = '#0000ff'
+export const MID_GENE_STATE_COLOR = '#ffffff'
+export const HIGH_GENE_STATE_COLOR = '#ff0000'
+export const GAMMA_GENE_STATE_COLOR = 1.0
+
 /**
  * refactor that from index
  */
@@ -125,18 +130,6 @@ export default class XenaGeneSetApp extends PureComponent {
       mousing: false,
       x: -1,
       y: -1,
-      geneStateColors: {
-        highDomain: 100,
-        midDomain: 0,
-        lowDomain: -100,
-        lowColor: '#0000ff',
-        midColor: '#ffffff',
-        highColor: '#ff0000',
-        gamma: 1.0,
-        geneGamma: 1.0,
-        linkDomains: true,
-        shadingValue: 10,
-      },
     }
   }
 
@@ -538,35 +531,14 @@ export default class XenaGeneSetApp extends PureComponent {
       ] : [sortedAssociatedDataA,sortedAssociatedDataB]
 
     this.setState({
-      // geneData,
       geneData:sortedGeneData,
       pathwaySelection: pathwaySelectionWrapper,
-      // pathways: inputPathways,
-      // associatedData: newAssociatedData,
       associatedData: mergedGeneSetData,
     })
   };
 
   searchHandler = (geneQuery) => {
     this.queryGenes(geneQuery)
-  };
-
-  handleColorToggle = () => {
-    this.setState({showColorEditor: !this.state.showColorEditor})
-  };
-
-  handleColorChange = (name, value) => {
-    const newArray = JSON.parse(JSON.stringify(this.state.geneStateColors))
-    newArray[name] = value
-    this.setState({
-      geneStateColors: newArray,
-    })
-  };
-
-  handleSetCollapsed = (collapsed) => {
-    this.setState({
-      collapsed: collapsed,
-    })
   };
 
   doRefetch() {
@@ -1063,9 +1035,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <td valign='top' width={VERTICAL_SELECTOR_WIDTH - 20}>
                           {this.state.pathways &&
                         <GeneSetSelector
-                          geneColors={this.state.geneColors}
                           geneData={this.state.geneData}
-                          geneStateColors={this.state.geneStateColors}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
                           labelHeight={18}
