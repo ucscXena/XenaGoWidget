@@ -46,7 +46,6 @@ export default class HoverGeneView extends PureComponent {
       }
     }
     else{
-      console.log('data',data)
       if(data.source==='GeneSet' && data.tissue === 'Header'){
         if(cohortIndex===0){
           return data.pathway.firstChiSquared!==undefined  ?  data.pathway.firstChiSquared : data.pathway.firstSampleTotal
