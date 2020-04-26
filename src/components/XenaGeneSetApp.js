@@ -64,6 +64,7 @@ export const MIN_FILTER = 2
 export const MIN_GENE_WIDTH_PX = 80// 8 or less
 export const MAX_GENE_WIDTH = 85
 export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH // 85 genes
+export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
 
@@ -793,10 +794,15 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     if (this.state.pathways) {
-      const maxValues = this.state.pathways.map((p) =>
-        Math.max(Math.abs(p.firstGeneExpressionPathwayActivity),
-          Math.abs(p.secondGeneExpressionPathwayActivity)))
-      maxValue = Math.max(...maxValues)
+      if(isViewGeneExpression(this.state.filter)){
+        const maxValues = this.state.pathways.map((p) =>
+          Math.max(Math.abs(p.firstGeneExpressionPathwayActivity),
+            Math.abs(p.secondGeneExpressionPathwayActivity)))
+        maxValue = Math.max(...maxValues)
+      }
+      else{
+        maxValue = MAX_CNV_MUTATION_DIFF
+      }
     }
 
     let titleText = this.generateTitle()
@@ -935,7 +941,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             <td colSpan={3}>
                               <GeneSetLegend
                                 id='mean-score' label={'mean'}
-                                maxScore={50} minScore={-50}
+                                maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
                                 precision={0}
                               />
                             </td>

@@ -31,6 +31,7 @@ export class DiffColumn extends PureComponent {
 
   render(){
     let { cohortIndex,geneData,maxValue, labelHeight,selectedPathway, pathways,width } = this.props
+    console.log('INPUT MAX VALUE',maxValue,' for cohort ',cohortIndex)
     const TOP_OFFSET = 218
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
       const selectedPathwayIndex = pathways.findIndex( p => {
@@ -63,6 +64,7 @@ export class DiffColumn extends PureComponent {
                 if(cohortIndex===1 && g.diffScore < -maxValue){
                   finalScore = -maxValue
                 }
+                console.log('final score: ',finalScore,maxValue,width,labelHeight,cohortIndex,index)
                 return [
                   // <text fontSize={22} key={g.gene[0]} x={50} y={labelHeight*(index+2)}>
                   //   {finalScore.toFixed(0)}
