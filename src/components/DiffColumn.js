@@ -10,14 +10,11 @@ export class DiffColumn extends PureComponent {
   }
 
   calculateDiamond(finalScore,maxValue,width,height,cohortIndex,geneIndex) {
-    // const diamondWidth = 6 * (width /20)
-    // const diamondHeight = 6 * (width / 20)
     const diamondWidth = 20
     const diamondHeight = height
     const heightOffset = (geneIndex+1) * height
     const scoreOffset = Math.abs(finalScore / maxValue * width)
     if(cohortIndex === 0){
-      // return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`
       return `${width - scoreOffset} ${heightOffset + height /2},
                      ${width - scoreOffset + (diamondWidth / 2)} ${heightOffset},
                       ${width - scoreOffset + (diamondWidth / 2)} ${heightOffset + diamondHeight}`
@@ -31,7 +28,6 @@ export class DiffColumn extends PureComponent {
 
   render(){
     let { cohortIndex,geneData,maxValue, labelHeight,selectedPathway, pathways,width } = this.props
-    console.log('INPUT MAX VALUE',maxValue,' for cohort ',cohortIndex)
     const TOP_OFFSET = 218
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
       const selectedPathwayIndex = pathways.findIndex( p => {
@@ -64,7 +60,6 @@ export class DiffColumn extends PureComponent {
                 if(cohortIndex===1 && g.diffScore < -maxValue){
                   finalScore = -maxValue
                 }
-                console.log('final score: ',finalScore,maxValue,width,labelHeight,cohortIndex,index)
                 return [
                   // <text fontSize={22} key={g.gene[0]} x={50} y={labelHeight*(index+2)}>
                   //   {finalScore.toFixed(0)}
@@ -87,18 +82,6 @@ export class DiffColumn extends PureComponent {
     else{
       return <div/>
     }
-    // return (<div
-    //   style={{
-    //     backgroundColor: 'brown',
-    //     color: 'green',
-    //     position: 'absolute',
-    //     zIndex: 2000,
-    //     x: 50,
-    //     y: 50,
-    //     width: width,
-    //     height: labelHeight ,
-    //   }}>
-    // </div>)
   }
 
 }
@@ -111,7 +94,6 @@ DiffColumn.propTypes = {
   labelHeight: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
   pathways: PropTypes.any.isRequired,
-  // selectedCohort: PropTypes.any.isRequired,
   selectedPathway: PropTypes.any,
   width: PropTypes.any.isRequired,
 }

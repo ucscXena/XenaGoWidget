@@ -134,7 +134,7 @@ export class GeneSetSelector extends PureComponent {
   render() {
     let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
     let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, MID_GENE_STATE_COLOR, maxValue*1.5]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
-    let interpolateCnvMutation = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
+    let interpolateCnvMutation = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb)
 
     let pillStyleExp = (score,selected) => {
       let colorString = interpolateGeneExpression(score)
@@ -255,7 +255,6 @@ export class GeneSetSelector extends PureComponent {
               fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
               y={topOffset}
             >
-              {/*{width < 10 ? '' : labelString}*/}
               {gene0.gene[0]}
             </text>
           </svg>
