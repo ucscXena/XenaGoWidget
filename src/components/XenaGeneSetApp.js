@@ -78,7 +78,6 @@ let currentLoadState = LOAD_STATE.UNLOADED
 export const LOW_GENE_STATE_COLOR = '#0000ff'
 export const MID_GENE_STATE_COLOR = '#ffffff'
 export const HIGH_GENE_STATE_COLOR = '#ff0000'
-export const GAMMA_GENE_STATE_COLOR = 1.0
 export const LOW_DOMAIN = '-100'
 export const MID_DOMAIN = '0'
 export const HIGH_DOMAIN = '100'
@@ -939,34 +938,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 precision={0}
                               />
                             </td>
-                            {/*<table style={{padding: 0, margin: 0, borderSpacing: 0}}>*/}
-                            {/*  <tbody>*/}
-                            {/*    <tr style={{padding: 0, margin: 0}}>*/}
-                            {/*      <td style={{padding: 0, margin: 0}}>*/}
-                            {/*        Geneset Summary:*/}
-                            {/*      </td>*/}
-                            {/*      <td style={{padding: 0, margin: 0}}>*/}
-                            {/*        <GeneSetLegend*/}
-                            {/*          id='mean-score' label={'mean'}*/}
-                            {/*          maxScore={50} minScore={-50}*/}
-                            {/*          precision={0}*/}
-                            {/*        />*/}
-                            {/*      </td>*/}
-                            {/*    </tr>*/}
-                            {/*    <tr>*/}
-                            {/*      <td style={{padding: 0, margin: 0}}>*/}
-                            {/*        Sample Legend:*/}
-                            {/*      </td>*/}
-                            {/*      <td style={{padding: 0, margin: 0}}>*/}
-                            {/*        <GeneSetLegend*/}
-                            {/*          id='densityGrad1' label={'density'} maxColor='red'*/}
-                            {/*          maxScore={5} midColor='orange'*/}
-                            {/*          minColor='white' minScore={0} precision={0}*/}
-                            {/*        />*/}
-                            {/*      </td>*/}
-                            {/*    </tr>*/}
-                            {/*  </tbody>*/}
-                            {/*</table>*/}
                           </tr>
                       }
                       {isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&

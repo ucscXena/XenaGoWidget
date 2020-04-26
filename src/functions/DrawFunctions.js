@@ -13,7 +13,6 @@ import * as d3 from 'd3'
 import {VIEW_ENUM} from '../data/ViewEnum'
 import {isViewGeneExpression} from './DataFunctions'
 import {
-  GAMMA_GENE_STATE_COLOR,
   HIGH_GENE_STATE_COLOR,
   LOW_GENE_STATE_COLOR,
   MID_GENE_STATE_COLOR,
@@ -79,7 +78,7 @@ export function getColorArray(colorString){
 }
 
 export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
-export const interpolateCnvMutationFunction = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
+export const interpolateCnvMutationFunction = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb)
 
 export const interpolateGenesetScoreFunction = max => d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
 

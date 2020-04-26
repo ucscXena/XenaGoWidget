@@ -33,7 +33,7 @@ export class DiffColumn extends PureComponent {
     let { cohortIndex,geneData,maxValue, labelHeight,selectedPathway, pathways,width } = this.props
     const TOP_OFFSET = 218
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
-      const selectedPathwayIndex =pathways.findIndex( p => {
+      const selectedPathwayIndex = pathways.findIndex( p => {
         return p.golabel  === selectedPathway.pathway.golabel
       })
       return (
