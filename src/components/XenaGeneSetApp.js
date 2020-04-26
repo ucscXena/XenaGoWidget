@@ -78,6 +78,7 @@ let currentLoadState = LOAD_STATE.UNLOADED
 export const LOW_GENE_STATE_COLOR = '#0000ff'
 export const MID_GENE_STATE_COLOR = '#ffffff'
 export const HIGH_GENE_STATE_COLOR = '#ff0000'
+export const GAMMA_GENE_STATE_COLOR = 1.0
 export const LOW_DOMAIN = '-100'
 export const MID_DOMAIN = '0'
 export const HIGH_DOMAIN = '100'
