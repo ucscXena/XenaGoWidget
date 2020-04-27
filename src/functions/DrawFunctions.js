@@ -72,8 +72,15 @@ export function getColorArray(colorString){
 export const interpolateGeneExpressionFunction = d3.scaleLinear().domain([-2,0,2]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
 export const interpolateCnvMutationFunction = d3.scaleLinear().domain([-50, 0, 50]).range(['blue','white','red']).interpolate(d3.interpolateRgb)
 
-export const interpolateGenesetScoreFunction = max => d3.scaleLinear().domain([-max,0,max])
-  .range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
+const interpolationTable = {}
+
+export const interpolateGenesetScoreFunction = max => {
+  if(!interpolationTable[max]){
+    const scoreFunction = d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb)
+    interpolationTable[max] = scoreFunction
+  }
+  return interpolationTable[max]
+}
 
 
 export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score)
