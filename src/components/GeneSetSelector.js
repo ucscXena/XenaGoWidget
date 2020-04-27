@@ -143,7 +143,6 @@ export class GeneSetSelector extends PureComponent {
   };
 
   onHoverGene = (gene0,gene1) => {
-    console.log('hovering over a gene',gene0,gene1)
     if(gene0 && gene1){
       gene0.firstGeneExpressionMean = gene0.geneExpressionMean
       gene0.secondGeneExpressionMean = gene1.geneExpressionMean
@@ -216,40 +215,6 @@ export class GeneSetSelector extends PureComponent {
 
   }
 
-  render() {
-    let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene,  view} = this.props
-    // let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, MID_GENE_STATE_COLOR, maxValue*1.5]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
-    // let interpolateCnvMutation = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb)
-
-    return pathways.map((p) => {
-      let labelString = '(' + p.gene.length + ') ' + p.golabel
-      labelString = labelString.replace(/_/g,' ')
-      let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false
-      let selected = selectedPathway.pathway.golabel === p.golabel
-      const open = selectedPathway.open
-      let highlighted = p.gene.indexOf(highlightedGene) >= 0
-
-      let geneSetArray = isViewGeneExpression(view) ? this.generateGeneSetExpressionArray(p,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
-        : this.generateGeneSetCnvMutationArray(p,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
-
-      if(selected && geneData[0].pathways){
-        let genesToAdd = []
-        for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
-          let gene0 = geneData[0].pathways[index]
-          let gene1 = geneData[1].pathways[index]
-          let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
-          let geneEntry = isViewGeneExpression(view) ? this.generateGeneEntryForGeneExpression(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
-            : this.generateGeneEntryForCnvMutation(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
-          genesToAdd.push(  geneEntry )
-        }
-        geneSetArray.push(genesToAdd)
-      }
-
-      return geneSetArray
-    })
-  }
-
-
   generateGeneEntryForGeneExpression(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
     return (<svg
       key={gene0.gene[0]}
@@ -306,6 +271,41 @@ export class GeneSetSelector extends PureComponent {
     )
 
   }
+
+  render() {
+    let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene,  view} = this.props
+    // let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, MID_GENE_STATE_COLOR, maxValue*1.5]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
+    // let interpolateCnvMutation = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb)
+
+    return pathways.map((p) => {
+      let labelString = '(' + p.gene.length + ') ' + p.golabel
+      labelString = labelString.replace(/_/g,' ')
+      let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false
+      let selected = selectedPathway.pathway.golabel === p.golabel
+      const open = selectedPathway.open
+      let highlighted = p.gene.indexOf(highlightedGene) >= 0
+
+      let geneSetArray = isViewGeneExpression(view) ? this.generateGeneSetExpressionArray(p,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
+        : this.generateGeneSetCnvMutationArray(p,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
+
+      if(selected && geneData[0].pathways){
+        let genesToAdd = []
+        for( let index = 0 ; index < geneData[0].pathways.length ; ++index){
+          let gene0 = geneData[0].pathways[index]
+          let gene1 = geneData[1].pathways[index]
+          let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
+          let geneEntry = isViewGeneExpression(view) ? this.generateGeneEntryForGeneExpression(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
+            : this.generateGeneEntryForCnvMutation(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
+          genesToAdd.push(  geneEntry )
+        }
+        geneSetArray.push(genesToAdd)
+      }
+
+      return geneSetArray
+    })
+  }
+
+
 }
 
 GeneSetSelector.propTypes = {

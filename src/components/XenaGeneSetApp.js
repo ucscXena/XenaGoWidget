@@ -435,17 +435,9 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     let hoveredPathway = hoveredPoint.pathway
     const source = hoveredPathway.source
-    console.log('hovered pathway',hoveredPathway)
     const sourceCohort = hoveredPoint.cohortIndex
-
-    console.log('input gene datas',this.state.geneData[0].pathways,hoveredPathway)
-
-
     const gene0Data = this.state.geneData ? this.state.geneData[0].pathways.filter( p => p.gene[0]===hoveredPathway.gene[0])[0] : undefined
     const gene1Data = this.state.geneData ? this.state.geneData[1].pathways.filter( p => p.gene[0] ===hoveredPathway.gene[0])[0] : undefined
-
-    console.log('input gene data 0',gene0Data)
-    console.log('input gene data 1',gene1Data)
 
     const cohort0 = {
       tissue: sourceCohort === 0 ? hoveredPoint.tissue : 'Header',

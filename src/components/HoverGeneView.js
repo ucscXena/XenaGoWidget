@@ -68,7 +68,6 @@ export default class HoverGeneView extends PureComponent {
     let {data, cohortIndex, view} = this.props
     if (data && data.tissue) {
       const score = this.findScore(data, cohortIndex,view)
-      console.log('input ',data,score)
       return (
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
