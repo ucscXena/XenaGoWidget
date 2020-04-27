@@ -1027,6 +1027,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           pathways={this.state.pathways}
                           selectedPathway={this.state.pathwaySelection}
                           topOffset={14}
+                          view={this.state.filter}
                           width={VERTICAL_SELECTOR_WIDTH}
                         />
                           }
