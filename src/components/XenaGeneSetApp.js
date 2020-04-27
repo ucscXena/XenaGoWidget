@@ -830,8 +830,9 @@ export default class XenaGeneSetApp extends PureComponent {
           onMouseMove={(ev) => {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             let scrollDownBuffer = 0
+            // 128 is the top buffer
             if (topClient < 0) {
-              scrollDownBuffer = -topClient + 74
+              scrollDownBuffer = 128 - topClient
             }
             const yLimit = this.state.geneData[0].samples ? 233 : 193
             const x = ev.clientX + 8
