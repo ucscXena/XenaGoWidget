@@ -9,7 +9,7 @@ import {getSelectedGeneSetIndex, isViewGeneExpression} from '../functions/DataFu
 
 
 function findGeneSetIndexFromY(y, labelHeight) {
-  return Math.round((y - 15) / labelHeight)
+  return Math.round((y - 10) / labelHeight)
 }
 
 function getMousePos(evt) {
