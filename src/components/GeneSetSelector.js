@@ -25,6 +25,7 @@ export class GeneSetSelector extends PureComponent {
 
   static pillStyle (score,selected,labelHeight) {
     let colorString = interpolateCnvMutationColor(score)
+    console.log('input score',score,colorString)
     return {
       top: 0,
       left: 0,
@@ -184,13 +185,14 @@ export class GeneSetSelector extends PureComponent {
   }
 
   generateGeneSetCnvMutationArray(p, selected, hovered, width, labelHeight, highlighted, open,labelString,topOffset) {
+    console.log('generate geneset with ',p)
     return  [
       <svg
         key={p.golabel}
         onMouseDown={this.onClick.bind(this, p)}
         onMouseOut={this.onMouseOut.bind(this, p)}
         onMouseOver={this.onHover.bind(this, p)}
-        style={GeneSetSelector.labelStyle((p.firstObserved + p.secondObserved) / 2.0, selected, hovered,  width, labelHeight, highlighted)}
+        style={GeneSetSelector.labelStyle((p.firstChiSquared + p.secondChiSquared) / 2.0, selected, hovered,  width, labelHeight, highlighted)}
       >
         {p.firstObserved &&
         <rect
