@@ -25,7 +25,6 @@ export class GeneSetSelector extends PureComponent {
 
   static pillStyle (score,selected,labelHeight) {
     let colorString = interpolateCnvMutationColor(score)
-    console.log('input score',score,colorString)
     return {
       top: 0,
       left: 0,
@@ -185,7 +184,6 @@ export class GeneSetSelector extends PureComponent {
   }
 
   generateGeneSetCnvMutationArray(p, selected, hovered, width, labelHeight, highlighted, open,labelString,topOffset) {
-    console.log('generate geneset with ',p)
     return  [
       <svg
         key={p.golabel}
@@ -239,45 +237,8 @@ export class GeneSetSelector extends PureComponent {
           let gene0 = geneData[0].pathways[index]
           let gene1 = geneData[1].pathways[index]
           let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
-          let geneEntry = (<svg
-            key={gene0.gene[0]}
-            onMouseDown={this.onClick.bind(this, gene0)}
-            onMouseOut={this.onMouseOut.bind(this, gene0)}
-            onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
-            style={GeneSetSelector.geneLabelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
-          >
-            {gene0.geneExpressionMean &&
-              <rect
-                height={labelHeight} style={GeneSetSelector.pillStyleExp(gene0.geneExpressionMean,selected,labelHeight)} width={width / 2 - 1}
-                x={0}
-              />
-            }
-            {p.firstObserved &&
-              <rect
-                height={labelHeight} style={GeneSetSelector.pillStyle(gene0.firstChiSquared,selected,labelHeight)} width={width / 2 - 1}
-                x={0}
-              />
-            }
-            {gene1.geneExpressionMean &&
-              <rect
-                height={labelHeight} style={GeneSetSelector.pillStyleExp(gene1.geneExpressionMean,selected,labelHeight)} width={width / 2}
-                x={width / 2 + 1}
-              />
-            }
-            {p.secondObserved &&
-              <rect
-                height={labelHeight} style={GeneSetSelector.pillStyle(gene1.secondChiSquared,selected,labelHeight)} width={width / 2}
-                x={width / 2 + 1}
-              />
-            }
-            <text
-              fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
-              y={topOffset}
-            >
-              {gene0.gene[0]}
-            </text>
-          </svg>
-          )
+          let geneEntry = isViewGeneExpression(view) ? this.generateGeneEntryForGeneExpression(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
+            : this.generateGeneEntryForCnvMutation(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,topOffset)
           genesToAdd.push(  geneEntry )
         }
         geneSetArray.push(genesToAdd)
@@ -288,7 +249,62 @@ export class GeneSetSelector extends PureComponent {
   }
 
 
+  generateGeneEntryForGeneExpression(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
+    return (<svg
+      key={gene0.gene[0]}
+      onMouseDown={this.onClick.bind(this, gene0)}
+      onMouseOut={this.onMouseOut.bind(this, gene0)}
+      onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
+      style={GeneSetSelector.geneLabelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
+    >
+      {gene0.geneExpressionMean &&
+        <rect
+          height={labelHeight} style={GeneSetSelector.pillStyleExp(gene0.geneExpressionMean,selected,labelHeight)} width={width / 2 - 1}
+          x={0}
+        />
+      }
+      {gene1.geneExpressionMean &&
+        <rect
+          height={labelHeight} style={GeneSetSelector.pillStyleExp(gene1.geneExpressionMean,selected,labelHeight)} width={width / 2}
+          x={width / 2 + 1}
+        />
+      }
+      <text
+        fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
+        y={topOffset}
+      >
+        {gene0.gene[0]}
+      </text>
+    </svg>
+    )
+  }
 
+  generateGeneEntryForCnvMutation(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
+    return (<svg
+      key={gene0.gene[0]}
+      onMouseDown={this.onClick.bind(this, gene0)}
+      onMouseOut={this.onMouseOut.bind(this, gene0)}
+      onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
+      style={GeneSetSelector.geneLabelStyle((gene0.affected + gene1.affected) / 2.0, selected, hovered, width, labelHeight, highlighted)}
+    >
+      <rect
+        height={labelHeight} style={GeneSetSelector.pillStyle(gene0.affected,selected,labelHeight)} width={width / 2 - 1}
+        x={0}
+      />
+      <rect
+        height={labelHeight} style={GeneSetSelector.pillStyle(gene1.affected,selected,labelHeight)} width={width / 2}
+        x={width / 2 + 1}
+      />
+      <text
+        fill={'black'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
+        y={topOffset}
+      >
+        {gene0.gene[0]}
+      </text>
+    </svg>
+    )
+
+  }
 }
 
 GeneSetSelector.propTypes = {
