@@ -1,6 +1,7 @@
 import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
+import {isViewGeneExpression} from '../functions/DataFunctions'
 
 
 export class DiffColumn extends PureComponent {
@@ -27,19 +28,19 @@ export class DiffColumn extends PureComponent {
   }
 
   render(){
-    let { cohortIndex,geneData,maxValue, labelHeight,selectedPathway, pathways,width } = this.props
-    const TOP_OFFSET = 218
+    let { cohortIndex,geneData,maxValue, filter, labelHeight,selectedPathway, pathways,width } = this.props
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
       const selectedPathwayIndex = pathways.findIndex( p => {
         return p.golabel  === selectedPathway.pathway.golabel
       })
+      const topOffset = isViewGeneExpression(filter) ? 202 + ((labelHeight +1)*selectedPathwayIndex) : 212 + (labelHeight*selectedPathwayIndex)
       return (
         <svg
           key={selectedPathway.pathway.golabel + '-'+cohortIndex}
           style={{
             zIndex: 100,
             x: 0,
-            top: (labelHeight * selectedPathwayIndex)  + TOP_OFFSET,
+            top: topOffset,
             height: labelHeight * (geneData[cohortIndex].pathways.length+1)-2,
             width: width-2,
             position: 'absolute',
