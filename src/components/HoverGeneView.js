@@ -20,9 +20,9 @@ export default class HoverGeneView extends PureComponent {
      * @returns {string}
      */
     getRatio = data => {
-      let returnString = data.expression.samplesAffected + '/' + data.expression.total
+      let returnString = data.samplesAffected + '/' + data.total
       returnString += '  ('
-      returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0)
+      returnString += ((Number.parseFloat(data.samplesAffected ) / Number.parseFloat(data.total)) * 100.0).toFixed(0)
       returnString += '%)'
       return returnString
     };
@@ -225,17 +225,10 @@ export default class HoverGeneView extends PureComponent {
                     {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
                 }
-                { !isViewGeneExpression(view) &&
-              <div
-                className={BaseStyle.scoreBox}
-                style={{
-                  color: interpolateCnvMutationFont(data.pathway.samplesAffected),
-                  backgroundColor: interpolateCnvMutationColor(data.pathway.samplesAffected)
-                }}
-              >
-                Affected samples &nbsp;&nbsp;
-                {data.pathway.samplesAffected ? data.pathway.samplesAffected.toPrecision(2) : 0}
-              </div>
+                { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
+                  <span>
+                    <strong>Samples Affected</strong><br/> {this.getRatio(data.pathway)}
+                  </span>
                 }
               </div>
             </div>

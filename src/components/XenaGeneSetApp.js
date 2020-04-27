@@ -434,16 +434,29 @@ export default class XenaGeneSetApp extends PureComponent {
       return
     }
     let hoveredPathway = hoveredPoint.pathway
+    const source = hoveredPathway.source
+    console.log('hovered pathway',hoveredPathway)
     const sourceCohort = hoveredPoint.cohortIndex
+
+    console.log('input gene datas',this.state.geneData[0].pathways,hoveredPathway)
+
+
+    const gene0Data = this.state.geneData ? this.state.geneData[0].pathways.filter( p => p.gene[0]===hoveredPathway.gene[0])[0] : undefined
+    const gene1Data = this.state.geneData ? this.state.geneData[1].pathways.filter( p => p.gene[0] ===hoveredPathway.gene[0])[0] : undefined
+
+    console.log('input gene data 0',gene0Data)
+    console.log('input gene data 1',gene1Data)
 
     const cohort0 = {
       tissue: sourceCohort === 0 ? hoveredPoint.tissue : 'Header',
-      source: 'GeneSet',
+      source: source,
       cohortIndex: 0,
       // pathway: hoveredPathway,
       // this makes this explicit
       pathway: update(hoveredPathway,{
         geneExpressionMean: { $set: hoveredPathway.firstGeneExpressionMean},
+        samplesAffected: { $set: gene0Data ? gene0Data.samplesAffected : undefined},
+        total: { $set: gene0Data ? gene0Data.total : undefined},
       }),
       expression: {
         affected: hoveredPathway.firstObserved,
@@ -456,10 +469,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const cohort1 = {
       tissue: sourceCohort === 1 ? hoveredPoint.tissue : 'Header',
-      source: 'GeneSet',
+      source: source,
       cohortIndex: 1,
       pathway: update(hoveredPathway,{
         geneExpressionMean: { $set: hoveredPathway.secondGeneExpressionMean},
+        samplesAffected: { $set: gene1Data ? gene1Data.samplesAffected : undefined},
+        total: { $set: gene1Data ? gene1Data.total : undefined},
       }),
       expression: {
         affected: hoveredPathway.secondObserved,
