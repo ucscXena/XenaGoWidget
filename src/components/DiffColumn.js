@@ -33,7 +33,10 @@ export class DiffColumn extends PureComponent {
       const selectedPathwayIndex = pathways.findIndex( p => {
         return p.golabel  === selectedPathway.pathway.golabel
       })
-      const topOffset = isViewGeneExpression(filter) ? 202 + ((labelHeight +1)*selectedPathwayIndex) : 212 + (labelHeight*selectedPathwayIndex)
+      // const topOffset = isViewGeneExpression(filter) ? 202 + ((labelHeight +1)*selectedPathwayIndex) : 212 + (labelHeight*selectedPathwayIndex)
+      console.log('selected pathway index',selectedPathwayIndex)
+      const topOffset = isViewGeneExpression(filter) ? (labelHeight * selectedPathwayIndex) + 210 : (labelHeight * selectedPathwayIndex) + 215
+      console.log('the top offset is',topOffset)
       return (
         <svg
           key={selectedPathway.pathway.golabel + '-'+cohortIndex}
