@@ -135,7 +135,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          { isViewGeneExpression(view) &&
+                          { isViewGeneExpression(view) && data && data.expression && data.geneExpression &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
