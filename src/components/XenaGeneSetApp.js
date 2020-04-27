@@ -333,7 +333,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter)
 
     AppStorageHandler.storePathways(pathways)
-    const selection = AppStorageHandler.getPathwaySelection()
+    let selection = AppStorageHandler.getPathwaySelection()
     if (!selection ||
       !selection.pathway ||
       !selection.pathway.golabel ||
@@ -373,16 +373,17 @@ export default class XenaGeneSetApp extends PureComponent {
       mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
     ] : [sortedAssociatedDataA,sortedAssociatedDataB]
 
+    // populate selection with the appropriate with the statistics loaded correctly
+    selection.pathway = pathways.filter( p => p.golabel === selection.pathway.golabel )[0]
+
     currentLoadState = LOAD_STATE.LOADED
     this.setState({
-      // associatedData: [sortedAssociatedDataA, sortedAssociatedDataB],
       associatedData: mergedGeneSetData,
       pathwaySelection: selection,
       geneList,
       pathways,
       geneData: sortedGeneData,
       pathwayData: [pathwayDataA, pathwayDataB],
-      // sortedPathwayData,
       loading: LOAD_STATE.LOADED,
       currentLoadState: currentLoadState,
       processing: false,
@@ -799,6 +800,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     let titleText = this.generateTitle()
     let titleSize = (45 - titleText.length * 0.15)
+
+    console.log('gene data',this.state.geneData[0],this.state.pathwayData[0])
 
     return (
       <div>

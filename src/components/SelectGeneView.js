@@ -2,7 +2,12 @@ import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
-import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions'
+import {
+  interpolateCnvMutationColor,
+  interpolateCnvMutationFont,
+  interpolateGeneExpression,
+  interpolateGeneExpressionFont
+} from '../functions/DrawFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 
 export default class SelectGeneView extends PureComponent {
@@ -39,15 +44,13 @@ export default class SelectGeneView extends PureComponent {
       }
     }
     else{
+      console.log('pathway selectdion',pathwaySelection)
       if(cohortIndex===0){
-        // return pathwaySelection.firstSampleTotal!==undefined   data.pathway.firstSampleTotal : data.pathway.firstChiSquared
-        return 3
+        return pathwaySelection.firstChiSquared!==undefined  ?  pathwaySelection.firstChiSquared : pathwaySelection.firstSampleTotal
       }
       else{
-        // return pathwaySelection.secondSampleTotal!==undefined  ? data.pathway.secondSampleTotal : data.pathway.secondChiSquared
-        return 7
+        return pathwaySelection.secondChiSquared!==undefined  ?  pathwaySelection.secondChiSquared : pathwaySelection.secondSampleTotal
       }
-
     }
   };
 
@@ -72,8 +75,8 @@ export default class SelectGeneView extends PureComponent {
             <span
               className={BaseStyle.scoreBox}
               style={{
-                color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
-                backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
+                color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
+                backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) :interpolateCnvMutationColor(score),
               }}
             >
               <strong>Mean Score</strong> {score === undefined || score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
