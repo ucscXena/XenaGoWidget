@@ -27,14 +27,14 @@ export default class HoverGeneView extends PureComponent {
       return returnString
     };
 
-    getAffectedPathway = data => {
-      let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length)
-      returnString += '  ('
-      returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0)
-      returnString += '%)'
-      return returnString
+  getAffectedPathway = data => {
+    let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length)
+    returnString += '  ('
+    returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0)
+    returnString += '%)'
+    return returnString
 
-    };
+  };
 
   findScore = (data, cohortIndex,filter) => {
     if(isViewGeneExpression(filter)){
@@ -241,7 +241,7 @@ export default class HoverGeneView extends PureComponent {
             </div>
             {!isViewGeneExpression(view) &&
                       <div>
-                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
+                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data.expression)}</span>
                       </div>
             }
             {!isViewGeneExpression(view) &&
