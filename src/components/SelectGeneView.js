@@ -44,7 +44,6 @@ export default class SelectGeneView extends PureComponent {
       }
     }
     else{
-      console.log('pathway selectdion',pathwaySelection)
       if(cohortIndex===0){
         return pathwaySelection.firstChiSquared!==undefined  ?  pathwaySelection.firstChiSquared : pathwaySelection.firstSampleTotal
       }

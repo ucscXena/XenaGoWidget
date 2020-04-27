@@ -143,6 +143,7 @@ export class GeneSetSelector extends PureComponent {
   };
 
   onHoverGene = (gene0,gene1) => {
+    console.log('hovering over a gene',gene0,gene1)
     if(gene0 && gene1){
       gene0.firstGeneExpressionMean = gene0.geneExpressionMean
       gene0.secondGeneExpressionMean = gene1.geneExpressionMean

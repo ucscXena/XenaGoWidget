@@ -801,8 +801,6 @@ export default class XenaGeneSetApp extends PureComponent {
     let titleText = this.generateTitle()
     let titleSize = (45 - titleText.length * 0.15)
 
-    console.log('gene data',this.state.geneData[0],this.state.pathwayData[0])
-
     return (
       <div>
 

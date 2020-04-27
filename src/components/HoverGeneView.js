@@ -68,6 +68,7 @@ export default class HoverGeneView extends PureComponent {
     let {data, cohortIndex, view} = this.props
     if (data && data.tissue) {
       const score = this.findScore(data, cohortIndex,view)
+      console.log('input ',data,score)
       return (
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
@@ -81,12 +82,7 @@ export default class HoverGeneView extends PureComponent {
                 {data.pathway.golabel.replace(/_/g,' ')}
               </span>
               }
-              {data.pathway.source === 'Gene' &&
-              <span>
-                <strong>Gene&nbsp;</strong>
-                {data.pathway.gene[0]}
-              </span>
-              }
+            }
               <br/>
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
@@ -211,8 +207,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                     </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && ( isViewGeneExpression(view))  &&
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway &&
             <div>
               <div className={BaseStyle.pathwayChip}>
                 <div className={BaseStyle.boxHeader}>Hovering over </div>
@@ -229,6 +224,18 @@ export default class HoverGeneView extends PureComponent {
                     Mean ZScore&nbsp;&nbsp;
                     {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
+                }
+                { !isViewGeneExpression(view) &&
+              <div
+                className={BaseStyle.scoreBox}
+                style={{
+                  color: interpolateCnvMutationFont(data.pathway.samplesAffected),
+                  backgroundColor: interpolateCnvMutationColor(data.pathway.samplesAffected)
+                }}
+              >
+                Affected samples &nbsp;&nbsp;
+                {data.pathway.samplesAffected ? data.pathway.samplesAffected.toPrecision(2) : 0}
+              </div>
                 }
               </div>
             </div>

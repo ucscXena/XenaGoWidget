@@ -404,7 +404,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
 }
 
 export function isViewGeneExpression(filter){
-  switch (filter) {
+  switch (filter !== undefined ? filter : this.props.filter) {
   case VIEW_ENUM.GENE_EXPRESSION:
   case VIEW_ENUM.PARADIGM:
   case VIEW_ENUM.REGULON:
