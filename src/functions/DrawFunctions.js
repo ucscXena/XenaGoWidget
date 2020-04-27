@@ -13,6 +13,9 @@ import * as d3 from 'd3'
 import {VIEW_ENUM} from '../data/ViewEnum'
 import {isViewGeneExpression} from './DataFunctions'
 
+// CACHE
+let colorArrayGeneExpressionCache = {}
+
 function clearScreen(vg, width, height) {
   vg.save()
   // eslint-disable-next-line no-param-reassign
@@ -207,19 +210,6 @@ function findPathwayData(pathwayWidth, count) {
   return regions
 }
 
-// function getDiffX(first,second,maxValue,width){
-//   let diffScore = (first - second).toFixed(2)
-//   let updatedDiffScore = diffScore
-//   if(diffScore < 0 && diffScore < -maxValue){
-//     updatedDiffScore = -maxValue
-//   }
-//   else
-//   if(diffScore > 0 && diffScore > maxValue){
-//     updatedDiffScore = maxValue
-//   }
-//   return width * updatedDiffScore
-// }
-//
 function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, colorMask, cohortIndex, view, maxValue) {
   const tissueCount = data[0].length
   const img = ctx.createImageData(width, totalHeight)
@@ -246,7 +236,8 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffStart = pxRow + (xPos + r.x) * 4
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
+            // const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
+            const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : calculateColorArray(maxValue ,geneExpressionScore)
             img.data[l] = colorArray[0]
             img.data[l + 1] = colorArray[1]
             img.data[l + 2] = colorArray[2]
@@ -274,6 +265,16 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
     }
   })
   ctx.putImageData(img, 0, 0)
+}
+
+
+
+function calculateColorArray(maxValue,score){
+  const key = maxValue+'::'+score
+  if(!colorArrayGeneExpressionCache[key]){
+    colorArrayGeneExpressionCache[key] = getColorArray(interpolateGenesetScoreFunction(maxValue )(score))
+  }
+  return colorArrayGeneExpressionCache[key]
 }
 
 
