@@ -168,9 +168,10 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   generateTitle() {
-    let returnText
+    let returnText = 'Visualizing differences using '
+    returnText += `'${this.state.filter}'`
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
-      returnText = `From cohort '${this.state.selectedCohort[0].name}' `
+      returnText += ` to compare within cohort '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData[0].samples ){
         if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
@@ -187,7 +188,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     // there are two
     else{
-      returnText = `Comparing cohort '${this.state.selectedCohort[0].name}' `
+      returnText += ` to compare between cohort '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData.length===2 && this.state.geneData[0].samples && this.state.geneData[1].samples){
         returnText +=  `with ${this.state.geneData[0].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
