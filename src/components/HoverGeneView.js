@@ -81,7 +81,6 @@ export default class HoverGeneView extends PureComponent {
                 {data.pathway.golabel.replace(/_/g,' ')}
               </span>
               }
-            }
               <br/>
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
