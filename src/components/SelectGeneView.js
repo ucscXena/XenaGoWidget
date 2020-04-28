@@ -2,12 +2,6 @@ import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
-import {
-  interpolateCnvMutationColor,
-  interpolateCnvMutationFont,
-  interpolateGeneExpression,
-  interpolateGeneExpressionFont
-} from '../functions/DrawFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 
 export default class SelectGeneView extends PureComponent {
@@ -54,12 +48,11 @@ export default class SelectGeneView extends PureComponent {
   };
 
   render() {
-    const {data, cohortIndex, view} = this.props
+    const {data} = this.props
     if(!data.pathwaySelection) return <div/>
     const pathwaySelection = data.pathwaySelection.pathway
 
     if (pathwaySelection && data.pathwaySelection.open) {
-      const score =this.findScore(pathwaySelection, cohortIndex,view)
       return (
         <div className={BaseStyle.pathwayChip}>
           <div className={BaseStyle.boxHeader}>Opened Gene Set</div>
@@ -68,17 +61,6 @@ export default class SelectGeneView extends PureComponent {
           </div>
           <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
             {pathwaySelection.gene.length} Genes
-          </div>
-          <div>
-            <br/>
-            <span
-              className={BaseStyle.scoreBox}
-              style={{
-                color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
-                backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) :interpolateCnvMutationColor(score),
-              }}
-            >
-              <strong>Mean Score</strong> {score === undefined || score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
           </div>
         </div>
       )
@@ -94,7 +76,5 @@ export default class SelectGeneView extends PureComponent {
 }
 
 SelectGeneView.propTypes = {
-  cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
-  view: PropTypes.any.isRequired,
 }

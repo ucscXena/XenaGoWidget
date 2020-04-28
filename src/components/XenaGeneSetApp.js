@@ -150,7 +150,7 @@ export default class XenaGeneSetApp extends PureComponent {
       ||
       (selectedCohort.subCohorts.length===selectedCohort.selectedSubCohorts.length)
     ){
-      return ' from all available '
+      return ''
     }
     if(selectedCohort.selectedSubCohorts.length===1){
       return  ` from sub cohort '${selectedCohort.selectedSubCohorts[0]}' `
@@ -909,6 +909,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
+                    open={this.state.geneData && this.state.geneData[0].pathwaySelection}
                     pathwayData={this.state.pathwayData}
                     subCohortCounts={this.state.subCohortCounts}
                     view={this.state.filter}
@@ -1075,6 +1076,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
                     onShowCohortEditor={this.handleEditCohorts}
+                    open={this.state.geneData && this.state.geneData[1].pathwaySelection}
                     pathwayData={this.state.pathwayData}
                     subCohortCounts={this.state.subCohortCounts}
                     view={this.state.filter}

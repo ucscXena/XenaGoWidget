@@ -41,11 +41,9 @@ export class GeneSetInformationColumn extends PureComponent {
           subCohortCounts={this.props.subCohortCounts}
         />
         }
-        {this.props.geneDataStats &&
+        {this.props.open &&
           <SelectGeneView
-            cohortIndex={this.props.cohortIndex}
             data={this.props.geneDataStats[this.props.cohortIndex]}
-            view={this.props.view}
           />
         }
         {
@@ -71,6 +69,7 @@ GeneSetInformationColumn.propTypes = {
   geneDataStats: PropTypes.any,
   geneHoverData: PropTypes.any,
   onEditCohorts: PropTypes.any.isRequired,
+  open: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 
