@@ -944,7 +944,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                             <td colSpan={3}>
                               <GeneSetLegend
-                                id='mean-score' label={'mean'}
+                                id='mean-score' label={'chi-square test χ2'}
                                 maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
                                 precision={0}
                               />
@@ -980,8 +980,8 @@ export default class XenaGeneSetApp extends PureComponent {
                           {/*<div style={{marginLeft: 5}}>*/}
                           <td>
                             <GeneSetLegend
-                              id='densityGrad1' label={'density'} maxColor='red'
-                              maxScore={5} midColor='orange'
+                              id='densityGrad1' label={'hits'} maxColor='red'
+                              maxScore={5} midColor='pink'
                               minColor='white' minScore={0} precision={0}
                             />
                           </td>
