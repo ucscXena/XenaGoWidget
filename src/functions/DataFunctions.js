@@ -20,7 +20,7 @@ const associateCache = lru(500)
 const pruneDataCache = lru(500)
 
 // NOTE: this should be false for production.
-const ignoreCache = false 
+const ignoreCache = false
 
 export const DEFAULT_DATA_VALUE = {
   total: 0, mutation: 0, cnv: 0, mutation4: 0, mutation3: 0, mutation2: 0, cnvHigh: 0, cnvLow: 0, geneExpression: 0,
@@ -61,8 +61,8 @@ export function generateZScore( data,stats){
   return  data.map( (ge, index) => {
     const statRow = stats[index]
     return ge.map( (e) => {
-      if(isNaN(e))  return e 
-      return (e - statRow.mean) / statRow.stdev 
+      if(isNaN(e))  return e
+      return (e - statRow.mean) / statRow.stdev
     } )
   })
 }
@@ -330,7 +330,7 @@ export function filterMutations(expression,returnArray,samples,pathways){
 }
 
 export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivity, returnArray) {
-  let scored = 0 
+  let scored = 0
   for(const pathwayIndex in returnArray){
     for(const sampleIndex in returnArray[pathwayIndex]){
       if(geneExpressionPathwayActivity[pathwayIndex]){
@@ -349,7 +349,7 @@ export function filterGeneExpressionPathwayActivity(geneExpressionPathwayActivit
 export function filterGeneExpression(geneExpression,returnArray,geneList,pathways){
   const genePathwayLookup = getGenePathwayLookup(pathways)
 
-  let scored = 0 
+  let scored = 0
   for (const gene of geneList) {
     // if we have not processed that gene before, then process
     const geneIndex = geneList.indexOf(gene)
@@ -362,8 +362,8 @@ export function filterGeneExpression(geneExpression,returnArray,geneList,pathway
       for (const sampleEntryIndex in sampleEntries) {
         const returnValue = sampleEntries[sampleEntryIndex]
         if (!isNaN(returnValue)) {
-          ++scored 
-          returnArray[index][sampleEntryIndex].geneExpression += returnValue 
+          ++scored
+          returnArray[index][sampleEntryIndex].geneExpression += returnValue
         }
       }
     }
@@ -404,7 +404,7 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
 }
 
 export function isViewGeneExpression(filter){
-  switch (filter) {
+  switch (filter !== undefined ? filter : this.props.filter) {
   case VIEW_ENUM.GENE_EXPRESSION:
   case VIEW_ENUM.PARADIGM:
   case VIEW_ENUM.REGULON:
@@ -421,7 +421,7 @@ function labelArray(returnArray,pathways, samples) {
       returnArray[pathwayIndex][sampleIndex].sample = samples[sampleIndex]
     }
   }
-  return returnArray 
+  return returnArray
 }
 
 /**
@@ -502,6 +502,43 @@ export function addIndepProb(prob_list) { //  p = PA + PB - PAB, etc
   return total_prob
 }
 
+/**
+ * The associatedData has selected genes in it
+ * @param associatedData
+ * @returns {*}
+ */
+export function pruneGeneSelection(associatedData){
+  let lastGoLabel = null
+  return associatedData.filter( (ad) => {
+    if(lastGoLabel===ad[0].golabel){
+      return false
+    }
+    lastGoLabel = ad[0].golabel
+    return true
+  })
+}
+
+export function mergeGeneSetAndGeneDetailData(geneData,geneSetData,pathwayIndex){
+  const output = geneData.data.map( f => {
+    return f.map( g => {
+      g.geneExpressionPathwayActivity = g.geneExpressionPathwayActivity ? g.geneExpressionPathwayActivity : g.geneExpression
+      return g
+    })
+  })
+  // console.log(output)
+  // TODO: insert at the correct spot
+  // return [...output,...geneSetData]
+  return [...geneSetData.slice(0,pathwayIndex+1),...output,...geneSetData.slice(pathwayIndex+1)]
+}
+
+export function getSelectedGeneSetIndex(selection,pathways){
+
+  return pathways.findIndex( p => {
+    return selection.pathway.golabel === p.golabel
+  })
+
+}
+
 export function calculateAssociatedData(pathwayData, filter) {
   const hashAssociation = update(pathwayData, {
     filter: { $set: filter },
@@ -543,8 +580,8 @@ export function calculateAllPathways(pathwayData,associatedData,view) {
   const maxSamplesAffectedB = pathwayDataB.samples.length
 
   // if not gene expression, then we use the scoreChi instead
-  let pathwayActivityA = isViewGeneExpression(view) ? calculateGeneExpressionActivity(pathwayDataA) : null 
-  let pathwayActivityB = isViewGeneExpression(view) ?calculateGeneExpressionActivity(pathwayDataB) : null 
+  let pathwayActivityA = isViewGeneExpression(view) ? calculateGeneExpressionActivity(pathwayDataA) : null
+  let pathwayActivityB = isViewGeneExpression(view) ?calculateGeneExpressionActivity(pathwayDataB) : null
 
   let expectedA, expectedB
   if(!isViewGeneExpression(view)){
@@ -689,7 +726,7 @@ function calculateVarianceGeneExpression(datum,mean) {
   for (let i = 0; i < datum.length; ++i) {
     total += Math.pow(datum[i].geneExpression - mean,2.0)
   }
-  return total / (datum.length-1) 
+  return total / (datum.length-1)
 }
 
 
@@ -698,7 +735,7 @@ function calculateMeanGeneExpression(datum) {
   for (let i = 0; i < datum.length; ++i) {
     total += datum[i].geneExpression
   }
-  return total / datum.length 
+  return total / datum.length
 }
 
 export function scoreGeneData(inputGeneData) {

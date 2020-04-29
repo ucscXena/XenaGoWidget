@@ -4,7 +4,12 @@ import PropTypes from 'prop-types'
 import {Chip} from 'react-toolbox'
 import BaseStyle from '../css/base.css'
 import {ScoreBadge} from './ScoreBadge'
-import {interpolateGeneExpression, interpolateGeneExpressionFont} from '../functions/DrawFunctions'
+import {
+  interpolateCnvMutationColor,
+  interpolateCnvMutationFont,
+  interpolateGeneExpression,
+  interpolateGeneExpressionFont
+} from '../functions/DrawFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 
 export default class HoverGeneView extends PureComponent {
@@ -15,21 +20,21 @@ export default class HoverGeneView extends PureComponent {
      * @returns {string}
      */
     getRatio = data => {
-      let returnString = data.expression.samplesAffected + '/' + data.expression.total
+      let returnString = data.samplesAffected + '/' + data.total
       returnString += '  ('
-      returnString += ((Number.parseFloat(data.expression.samplesAffected ) / Number.parseFloat(data.expression.total)) * 100.0).toFixed(0)
+      returnString += ((Number.parseFloat(data.samplesAffected ) / Number.parseFloat(data.total)) * 100.0).toFixed(0)
       returnString += '%)'
       return returnString
     };
 
-    getAffectedPathway = data => {
-      let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length)
-      returnString += '  ('
-      returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0)
-      returnString += '%)'
-      return returnString
+  getAffectedPathway = data => {
+    let returnString = data.expression.allGeneAffected + '/' + (data.expression.total * data.pathway.gene.length)
+    returnString += '  ('
+    returnString += ((Number.parseFloat(data.expression.allGeneAffected) / Number.parseFloat(data.expression.total * data.pathway.gene.length)) * 100.0).toFixed(0)
+    returnString += '%)'
+    return returnString
 
-    };
+  };
 
   findScore = (data, cohortIndex,filter) => {
     if(isViewGeneExpression(filter)){
@@ -41,25 +46,41 @@ export default class HoverGeneView extends PureComponent {
       }
     }
     else{
-      if(cohortIndex===0){
-        return data.pathway.firstSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.firstSampleTotal : data.pathway.firstChiSquared
+      if(data.source==='GeneSet' && data.tissue === 'Header'){
+        if(cohortIndex===0){
+          return data.pathway.firstChiSquared!==undefined  ?  data.pathway.firstChiSquared : data.pathway.firstSampleTotal
+        }
+        else{
+          return data.pathway.secondChiSquared!==undefined  ?  data.pathway.secondChiSquared : data.pathway.secondSampleTotal
+        }
       }
-      else{
-        return data.pathway.secondSampleTotal!==undefined  && data.tissue !=='Header'? data.pathway.secondSampleTotal : data.pathway.secondChiSquared
+      else {
+        if (cohortIndex === 0) {
+          return data.pathway.firstSampleTotal !== undefined && data.tissue !== 'Header' ? data.pathway.firstSampleTotal : data.pathway.firstChiSquared
+        } else {
+          return data.pathway.secondSampleTotal !== undefined && data.tissue !== 'Header' ? data.pathway.secondSampleTotal : data.pathway.secondChiSquared
+        }
       }
-
     }
-  };
+  }
 
   render() {
     let {data, cohortIndex, view} = this.props
-    if (data.tissue) {
-      const score =this.findScore(data, cohortIndex,view)
+    if (data && data.tissue) {
+      const score = this.findScore(data, cohortIndex,view)
       return (
         <div>
           {data.tissue !== 'Header' && data.source === 'GeneSet' && score!==undefined &&
-            <div className={BaseStyle.pathwayChip}>
-              <span><strong>Pathway</strong> {data.pathway.golabel}</span>
+            <div
+              className={BaseStyle.pathwayChip}
+            >
+              <div className={BaseStyle.boxHeader}>Hovering over</div>
+              {data.pathway.source === 'GeneSet' &&
+              <span>
+                <strong>Gene Set&nbsp;</strong>
+                {data.pathway.golabel.replace(/_/g,' ')}
+              </span>
+              }
               <br/>
               <span><strong>Sample</strong> {data.tissue}</span>
               <br/>
@@ -113,7 +134,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                       {data.expression != null &&
                         <div>
-                          { isViewGeneExpression(view) &&
+                          { isViewGeneExpression(view) && data && data.expression && data.geneExpression &&
                           <div className={BaseStyle.pathwayChip}>
                             <strong>ZScore</strong>
                             <div
@@ -184,26 +205,13 @@ export default class HoverGeneView extends PureComponent {
                       }
                     </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.expression
-              && data.expression.total > 0 && data.expression.allGeneAffected===undefined && !isViewGeneExpression(view) &&
-                    <div>
-                      <div className={BaseStyle.pathwayChip}>
-                        <span>{data.pathway.gene[0].replace(/_/,' ')}</span>
-                      </div>
-                      <div className={BaseStyle.pathwayChip}>
-                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
-                      </div>
-                    </div>
-          }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway
-            && ( isViewGeneExpression(view))  &&
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway &&
             <div>
               <div className={BaseStyle.pathwayChip}>
-                <span>{data.pathway.gene[0].replace(/_/g,' ')}</span>
-              </div>
-              <div className={BaseStyle.pathwayChip}>
-                <span><strong>Mean ZScore</strong>
-                  { isViewGeneExpression(view) &&
+                <div className={BaseStyle.boxHeader}>Hovering over </div>
+                <div><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</div>
+                <br/>
+                { isViewGeneExpression(view) &&
                   <div
                     className={BaseStyle.scoreBox}
                     style={{
@@ -211,53 +219,67 @@ export default class HoverGeneView extends PureComponent {
                       backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                     }}
                   >
+                    Mean ZScore&nbsp;&nbsp;
                     {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
                   </div>
-                  }
-                  <div style={{fontSize:'smaller',display: 'inline'}}>({data.expression.total})</div>
-                </span>
+                }
+                { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
+                  <span>
+                    <strong>Samples Affected</strong><br/> {this.getRatio(data.pathway)}
+                  </span>
+                }
               </div>
             </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score &&
-                    <div className={BaseStyle.pathwayChip}>
-                      <span><strong>Pathway&nbsp;&nbsp;</strong>
-                        {data.pathway.golabel.replace(/_/g,' ')}
-                      </span>
-                      {!isViewGeneExpression(view) &&
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score
+          && <div className={BaseStyle.pathwayChip}>
+            <div className={BaseStyle.boxHeader}>Hovering over </div>
+            <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
+              <strong>Gene Set&nbsp;&nbsp;</strong>
+              {data.pathway.golabel.replace(/_/g,' ')}
+            </div>
+            {!isViewGeneExpression(view) &&
                       <div>
-                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data)}</span>
+                        <span><strong>Samples Affected</strong><br/> {this.getRatio(data.expression)}</span>
                       </div>
-                      }
-                      {!isViewGeneExpression(view) &&
+            }
+            {!isViewGeneExpression(view) &&
                       <div>
                         <span><strong>Affected Area</strong><br/> {this.getAffectedPathway(data)}</span>
                       </div>
-                      }
-                      <div>
-                        <br/>
-                        <span
-                          className={BaseStyle.scoreBox}
-                          style={{
-                            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
-                            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
-                          }}
-                        >
-                          <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
-                      </div>
-                    </div>
+            }
+            <div>
+              <br/>
+              <span
+                className={BaseStyle.scoreBox}
+                style={{
+                  color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
+                  backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
+                }}
+              >
+                <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
+            </div>
+          </div>
           }
         </div>
       )
     }
     else {
-      return <div/>
+      return(
+        <div
+          className={BaseStyle.pathwayChip}
+          style={{width: 180,wordBreak:'break-all',whiteSpace:'normal'}}
+        >
+          <div className={BaseStyle.boxHeader}>Hovering over </div>
+          <hr/>
+        </div>
+      )
     }
   }
 }
 
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
-  data: PropTypes.any.isRequired,
+  data: PropTypes.any,
   view: PropTypes.any.isRequired,
 }

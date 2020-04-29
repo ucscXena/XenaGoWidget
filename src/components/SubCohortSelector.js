@@ -35,7 +35,7 @@ export class SubCohortSelector extends PureComponent {
   handleSelectOnly = (field) => {
     const newSelected = [field]
     // this is going to be almost always false
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) 
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort())
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -49,8 +49,8 @@ export class SubCohortSelector extends PureComponent {
 
   handleChange = (event) => {
     const field = event.target.name
-    const newValue = event.target.checked 
-    let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts)) 
+    const newValue = event.target.checked
+    let newSelected = JSON.parse(JSON.stringify(this.state.selectedSubCohorts))
     if(newValue){
       newSelected.push(field)
     }
@@ -58,7 +58,7 @@ export class SubCohortSelector extends PureComponent {
       let indexValue = newSelected.indexOf(field)
       newSelected.splice(indexValue,1)
     }
-    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort()) 
+    let allSelected = isEqual(this.props.filterCounts.subCohortCounts.map( f => f.name).sort(),newSelected.sort())
     this.setState({
       selectedSubCohorts:newSelected,
       allSelected,
@@ -86,7 +86,7 @@ export class SubCohortSelector extends PureComponent {
   render() {
 
     let {active,selectedCohort,filterCounts} = this.props
-    let {allSelected,selectedSubCohorts} = this.state 
+    let {allSelected,selectedSubCohorts} = this.state
 
     return (
       <Dialog
@@ -99,7 +99,7 @@ export class SubCohortSelector extends PureComponent {
           <tbody>
             <tr>
               <td>
-                Select Sub Cohorts for <br/>{selectedCohort.name}
+                Select Subgroup for <br/>{selectedCohort.name}
               </td>
             </tr>
             <tr>

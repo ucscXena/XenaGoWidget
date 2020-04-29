@@ -5,6 +5,7 @@ import BaseStyle from '../css/base.css'
 import * as PropTypes from 'underscore'
 import Autocomplete from 'react-toolbox/lib/autocomplete'
 import AutocompleteTheme from '../css/autocomplete.css'
+import FaEdit from 'react-icons/lib/fa/edit'
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -57,6 +58,12 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
+                    <td width="10%">
+                      <Button
+                        floating mini onClick={() =>this.props.configurationHandler()}>
+                        <FaEdit/>
+                      </Button>
+                    </td>
                     <td width="30%">
                       <Autocomplete
                         label='Find Gene'
@@ -99,6 +106,7 @@ export default class NavigationBar extends PureComponent {
 
 NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
+  configurationHandler: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
 }
