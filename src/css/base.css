@@ -269,6 +269,16 @@ body {
   display: inline;
 }
 
+.openGeneSet{
+  margin: 5px;
+  padding: 5px;
+  font-family: sans-serif;
+  font-size:small;
+  background-color: beige;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
+  border-radius:5px;
+}
+
 .verticalLegendBox{
   margin: 5px;
   padding: 5px;
@@ -529,3 +539,4 @@ border-radius: 5px;
   padding-bottom: 5px;
 
 }
+

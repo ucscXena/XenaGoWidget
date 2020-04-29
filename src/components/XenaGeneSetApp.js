@@ -54,6 +54,8 @@ import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './DiffColumn'
+import FaFolderOpenO from 'react-icons/lib/fa/folder-open-o'
+import FaArrowDown from 'react-icons/lib/fa/arrow-down'
 
 const VIEWER_HEIGHT = 500
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -951,27 +953,39 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                           </tr>
                       }
-                      {isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&
-                          <tr>
+                      {isViewGeneExpression(this.state.filter) &&
+                          <tr style={{height: 40}}>
                             <td colSpan={1}>
+                              {this.state.geneData && this.state.geneData[0].data &&
                               <div className={BaseStyle.verticalLegendBox}>
-                                    Gene Legend
+                                Gene Legend
                               </div>
+                              }
                             </td>
+                            {this.state.geneData && this.state.geneData[0].data &&
                             <td colSpan={3}>
                               <GeneSetLegend
                                 id='geneExpressionGeneScore'
                                 label={'Gene expression z-score'} maxScore={2}
                                 minScore={-2}
                               />
+                              }
                             </td>
+                            }
+                            {(!this.state.geneData || !this.state.geneData[0].data) &&
+                            <td colSpan={1}>
+                              <div className={BaseStyle.openGeneSet}>
+                                <FaArrowDown/> Open Gene Set <FaFolderOpenO/>
+                              </div>
+                            </td>
+                            }
                           </tr>
                       }
-                      {!isViewGeneExpression(this.state.filter) && this.state.geneData && this.state.geneData[0].data &&
-                        <tr>
+                      {!isViewGeneExpression(this.state.filter) &&
+                        <tr style={{height: 40}}>
                           <td colSpan={1}>
                             <div className={BaseStyle.verticalLegendBox}>
-                              Gene Legend
+                              Sample Legend
                             </div>
                           </td>
                           <td>
