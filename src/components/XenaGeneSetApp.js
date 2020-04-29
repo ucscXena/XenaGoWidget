@@ -207,7 +207,6 @@ export default class XenaGeneSetApp extends PureComponent {
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
     }
-    returnText += ` analyzing '${this.state.filter}'`
 
     return returnText
   }
