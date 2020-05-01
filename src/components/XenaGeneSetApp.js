@@ -1035,7 +1035,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           geneData={this.state.geneData}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
-                          labelHeight={22}
+                          labelHeight={18}
                           maxValue={maxValue}
                           onClick={this.handlePathwaySelect}
                           onHover={this.handlePathwayHover}
