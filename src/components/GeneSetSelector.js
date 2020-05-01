@@ -150,7 +150,9 @@ export class GeneSetSelector extends PureComponent {
     this.props.onClick({ pathway: geneSet, tissue: 'Header'})
   };
 
-  onMouseOut = () => {
+  onMouseOut = (nullgene,event) => {
+    event.target.setAttribute('fill','black')
+    event.target.setAttribute('stroke','none')
     this.props.onHover(null)
   };
 
@@ -163,19 +165,14 @@ export class GeneSetSelector extends PureComponent {
     this.props.onHover(gene0 ? { pathway: gene0, tissue: 'Header'} : null)
   };
 
-  onHover = (geneSet) => {
+  onHover = (geneSet,event) => {
+    event.target.setAttribute('fill','green')
+    event.target.setAttribute('stroke','green')
     this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
 
   generateGeneSetExpressionArray(p, selected, hovered, width, labelHeight, highlighted, open,labelString,topOffset) {
     return [
-      // <svg
-      //   key={p.golabel}
-      //   onMouseDown={this.onClick.bind(this, p)}
-      //   onMouseOut={this.onMouseOut.bind(this, p)}
-      //   onMouseOver={this.onHover.bind(this, p)}
-      //   style={GeneSetSelector.labelStyle((p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity) / 2.0, selected, hovered,  width, labelHeight, highlighted)}
-      // >
       <rect
         height={labelHeight}
         key={p.golabel+'0'}
@@ -211,7 +208,6 @@ export class GeneSetSelector extends PureComponent {
       >
         {width < 10 ? '' : labelString}
       </text>
-    //   </svg>
     ]
   }
 
@@ -249,14 +245,6 @@ export class GeneSetSelector extends PureComponent {
 
   generateGeneEntryForGeneExpression(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
     return [
-    //   <svg
-    //   key={gene0.gene[0]}
-    //   onMouseDown={this.onClick.bind(this, gene0)}
-    //   onMouseOut={this.onMouseOut.bind(this, gene0)}
-    //   onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
-    //   style={GeneSetSelector.geneLabelStyle((gene0.geneExpressionMean + gene1.geneExpressionMean) / 2.0, selected, hovered, width, labelHeight, highlighted)}
-    // >
-    //   {gene0.geneExpressionMean &&
       <rect
         height={labelHeight}
         key={gene0.gene[0]+'0'}
@@ -268,8 +256,6 @@ export class GeneSetSelector extends PureComponent {
         y={topOffset-labelHeight}
       />
       ,
-      // }
-      // {gene1.geneExpressionMean &&
       <rect
         height={labelHeight}
         key={gene0.gene[0]+'1'}
@@ -281,7 +267,6 @@ export class GeneSetSelector extends PureComponent {
         y={topOffset-labelHeight}
       />
       ,
-      // }
       <text
         fill={'black'}
         fontFamily='Arial'
@@ -294,7 +279,6 @@ export class GeneSetSelector extends PureComponent {
       >
         {gene0.gene[0]}
       </text>
-    // </svg>
     ]
   }
 
