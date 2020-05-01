@@ -100,8 +100,8 @@ export class GeneSetSelector extends PureComponent {
         height: labelHeight,
         width: width,
         strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px green',
+        // borderRadius: '15px',
+        // boxShadow: '0 0 2px 2px green',
         cursor: 'pointer'
       }
     }
@@ -111,8 +111,8 @@ export class GeneSetSelector extends PureComponent {
         height: labelHeight,
         width: width,
         strokeWidth: 1,
-        boxShadow: '0 0 4px 4px purple',
-        borderRadius: '25px',
+        // boxShadow: '0 0 4px 4px purple',
+        // borderRadius: '25px',
         // cursor: 'pointer'
       }
     }
@@ -274,8 +274,6 @@ export class GeneSetSelector extends PureComponent {
 
   render() {
     let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene,  view} = this.props
-    // let interpolateGeneExpression = d3.scaleLinear().domain([-maxValue*1.5, MID_GENE_STATE_COLOR, maxValue*1.5]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb.gamma(GAMMA_GENE_STATE_COLOR))
-    // let interpolateCnvMutation = d3.scaleLinear().domain([LOW_DOMAIN, MID_DOMAIN, HIGH_DOMAIN]).range([LOW_GENE_STATE_COLOR,MID_GENE_STATE_COLOR,HIGH_GENE_STATE_COLOR]).interpolate(d3.interpolateRgb)
 
     return pathways.map((p) => {
       let labelString = '(' + p.gene.length + ') ' + p.golabel
