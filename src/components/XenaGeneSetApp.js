@@ -968,7 +968,6 @@ export default class XenaGeneSetApp extends PureComponent {
                                 label={'Gene expression z-score'} maxScore={2}
                                 minScore={-2}
                               />
-                              }
                             </td>
                             }
                             {(!this.state.geneData || !this.state.geneData[0].data) &&
