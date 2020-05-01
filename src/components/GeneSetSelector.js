@@ -156,12 +156,14 @@ export class GeneSetSelector extends PureComponent {
     this.props.onHover(null)
   };
 
-  onHoverGene = (gene0,gene1) => {
+  onHoverGene = (gene0,gene1,event) => {
     if(gene0 && gene1){
       gene0.firstGeneExpressionMean = gene0.geneExpressionMean
       gene0.secondGeneExpressionMean = gene1.geneExpressionMean
     }
     gene0.source = 'Gene'
+    event.target.setAttribute('fill','orange')
+    event.target.setAttribute('stroke','orange')
     this.props.onHover(gene0 ? { pathway: gene0, tissue: 'Header'} : null)
   };
 
