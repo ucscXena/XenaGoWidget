@@ -151,7 +151,6 @@ export class GeneSetSelector extends PureComponent {
   };
 
   onMouseOut = (nullgene,event) => {
-    event.target.setAttribute('fill','black')
     event.target.setAttribute('stroke','none')
     this.props.onHover(null)
   };
@@ -162,13 +161,11 @@ export class GeneSetSelector extends PureComponent {
       gene0.secondGeneExpressionMean = gene1.geneExpressionMean
     }
     gene0.source = 'Gene'
-    event.target.setAttribute('fill','orange')
     event.target.setAttribute('stroke','orange')
     this.props.onHover(gene0 ? { pathway: gene0, tissue: 'Header'} : null)
   };
 
   onHover = (geneSet,event) => {
-    event.target.setAttribute('fill','green')
     event.target.setAttribute('stroke','green')
     this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
