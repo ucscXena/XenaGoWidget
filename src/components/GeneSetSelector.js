@@ -19,7 +19,10 @@ export class GeneSetSelector extends PureComponent {
       stroke: colorString,
       fill: colorString,
       opacity: selected ? 1 : 0.2,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      padding: 0,
+      margin: 0,
+      borderSpacing: 0,
     }
   }
 
@@ -33,7 +36,10 @@ export class GeneSetSelector extends PureComponent {
       stroke: colorString,
       fill: colorString,
       opacity: selected ? 1 : 0.2,
-      cursor: 'pointer'
+      cursor: 'pointer',
+      padding: 0,
+      margin: 0,
+      borderSpacing: 0,
     }
   }
 
@@ -57,7 +63,9 @@ export class GeneSetSelector extends PureComponent {
         strokeWidth: 1,
         borderRadius: '15px',
         boxShadow: '0 0 2px 2px green',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        margin: 0,
+        padding: 0,
       }
     }
     else
@@ -66,9 +74,11 @@ export class GeneSetSelector extends PureComponent {
         height: labelHeight,
         width: width,
         strokeWidth: 1,
-        boxShadow: '0 0 4px 4px blue',
+        // boxShadow: '0 0 4px 4px blue',
         borderRadius: '25px',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        margin: 0,
+        padding: 0,
 
       }
     }
@@ -79,7 +89,9 @@ export class GeneSetSelector extends PureComponent {
         strokeWidth: 1,
         borderRadius: '15px',
         boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
-        cursor: 'pointer'
+        cursor: 'pointer',
+        margin: 0,
+        padding: 0,
       }
     }
     else {
@@ -172,7 +184,6 @@ export class GeneSetSelector extends PureComponent {
           height={labelHeight} style={GeneSetSelector.pillStyleExp(p.secondGeneExpressionPathwayActivity,selected || !open,labelHeight)} width={width / 2}
           x={width / 2 + 1}
         />
-        }
         <text
           fill={selected || !open ? 'black' : 'gray'} fontFamily='Arial' fontSize={12} fontWeight={'bold'} x={10}
           y={topOffset}

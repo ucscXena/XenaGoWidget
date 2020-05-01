@@ -911,7 +911,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
-                    open={this.state.geneData && this.state.geneData[0].pathwaySelection}
+                    open={(this.state.geneData && this.state.geneData[0].pathwaySelection) ? this.state.geneData[0].pathwaySelection.open : false}
                     pathwayData={this.state.pathwayData}
                     subCohortCounts={this.state.subCohortCounts}
                     view={this.state.filter}
@@ -1035,7 +1035,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           geneData={this.state.geneData}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
-                          labelHeight={18}
+                          labelHeight={22}
                           maxValue={maxValue}
                           onClick={this.handlePathwaySelect}
                           onHover={this.handlePathwayHover}
@@ -1089,7 +1089,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     geneHoverData={this.state.geneHoverData}
                     onEditCohorts={this.handleEditCohorts}
                     onShowCohortEditor={this.handleEditCohorts}
-                    open={this.state.geneData && this.state.geneData[1].pathwaySelection}
+                    open={(this.state.geneData && this.state.geneData[1].pathwaySelection) ? this.state.geneData[1].pathwaySelection.open : false}
                     pathwayData={this.state.pathwayData}
                     subCohortCounts={this.state.subCohortCounts}
                     view={this.state.filter}
