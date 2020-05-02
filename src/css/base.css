@@ -540,3 +540,13 @@ border-radius: 5px;
 
 }
 
+.selectedGeneset{
+  fill: none;
+  stroke: greenyellow;
+  stroke-width: 2px;
+}
+.selectedGenes{
+  fill: none;
+  stroke: magenta;
+  stroke-width: 2px;
+}
