@@ -2,7 +2,6 @@ import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
-import {isViewGeneExpression} from '../functions/DataFunctions'
 
 
 export class DiffColumn extends PureComponent {
@@ -29,32 +28,15 @@ export class DiffColumn extends PureComponent {
   }
 
   render(){
-    let { cohortIndex,geneData,maxValue, filter, labelHeight,selectedPathway, pathways,width } = this.props
+    let { cohortIndex,geneData,maxValue,  labelHeight,selectedPathway, pathways,width } = this.props
     if(geneData && geneData.length === 2 && geneData[cohortIndex].pathways){
       const selectedPathwayIndex = pathways.findIndex( p => {
         return p.golabel  === selectedPathway.pathway.golabel
       })
-      // const topOffset = isViewGeneExpression(filter) ? (labelHeight * selectedPathwayIndex) + 210 : (labelHeight * selectedPathwayIndex) + 215
-      const topOffset = isViewGeneExpression(filter) ? (labelHeight * selectedPathwayIndex)    : (labelHeight * selectedPathwayIndex)
+      const topOffset = labelHeight * selectedPathwayIndex
       const geneLength = + (geneData && geneData[0].pathways ? geneData[0].pathways.length : 0)
       const layoutLength = pathways.length + geneLength
       return (
-        // <svg
-        //   key={selectedPathway.pathway.golabel + '-'+cohortIndex}
-        //   style={{
-        //     zIndex: 100,
-        //     x: 0,
-        //     top: topOffset,
-        //     height: labelHeight * (geneData[cohortIndex].pathways.length+1)-2,
-        //     width: width-2,
-        //     position: 'absolute',
-        //     color: 'black',
-        //     pointerEvents: 'none',
-        //     boxShadow: '1px 1px 1px 1px gray',
-        //     border: '2px solid black',
-        //     borderRadius: '5px',
-        //   }}
-        // >
         <svg style={{
           height: labelHeight * layoutLength,
           width:width,
@@ -94,7 +76,6 @@ export class DiffColumn extends PureComponent {
             y={topOffset+labelHeight}
           />
         </svg>
-
       )
     }
     else{
@@ -107,7 +88,6 @@ export class DiffColumn extends PureComponent {
 DiffColumn.propTypes = {
   associatedData: PropTypes.any,
   cohortIndex: PropTypes.any.isRequired,
-  filter: PropTypes.any.isRequired,
   geneData: PropTypes.any,
   labelHeight: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,

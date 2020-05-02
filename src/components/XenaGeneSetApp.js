@@ -1005,7 +1005,6 @@ export default class XenaGeneSetApp extends PureComponent {
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={0}
-                            filter={this.state.filter}
                             geneData={this.state.geneData}
                             labelHeight={22}
                             maxValue={maxValue}
@@ -1052,7 +1051,6 @@ export default class XenaGeneSetApp extends PureComponent {
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={1}
-                            filter={this.state.filter}
                             geneData={this.state.geneData}
                             labelHeight={22}
                             maxValue={maxValue}
