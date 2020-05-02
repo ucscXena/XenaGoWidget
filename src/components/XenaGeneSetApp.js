@@ -1005,9 +1005,8 @@ export default class XenaGeneSetApp extends PureComponent {
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={0}
-                            filter={this.state.filter}
                             geneData={this.state.geneData}
-                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            labelHeight={22}
                             maxValue={maxValue}
                             pathways={pathways}
                             selectedPathway={this.state.pathwaySelection}
@@ -1035,14 +1034,14 @@ export default class XenaGeneSetApp extends PureComponent {
                           geneData={this.state.geneData}
                           highlightedGene={this.state.highlightedGene}
                           hoveredPathway={this.state.hoveredPathway}
-                          labelHeight={18}
+                          labelHeight={22}
                           maxValue={maxValue}
                           onClick={this.handlePathwaySelect}
                           onHover={this.handlePathwayHover}
                           onMouseOut={this.handlePathwayHover}
                           pathways={this.state.pathways}
                           selectedPathway={this.state.pathwaySelection}
-                          topOffset={14}
+                          topOffset={19}
                           view={this.state.filter}
                           width={VERTICAL_SELECTOR_WIDTH}
                         />
@@ -1052,9 +1051,8 @@ export default class XenaGeneSetApp extends PureComponent {
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={1}
-                            filter={this.state.filter}
                             geneData={this.state.geneData}
-                            labelHeight={18 + 2 * BORDER_OFFSET}
+                            labelHeight={22}
                             maxValue={maxValue}
                             pathways={pathways}
                             selectedPathway={this.state.pathwaySelection}
