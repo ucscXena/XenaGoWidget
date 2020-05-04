@@ -43,6 +43,7 @@ export class DiffColumn extends PureComponent {
           cursor: 'pointer',
           position: 'absolute',
           zIndex: 5,
+          pointerEvents: 'none',
         }}>
           return {
             geneData[cohortIndex].pathways.map( (g,index) => {
