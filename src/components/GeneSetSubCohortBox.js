@@ -83,7 +83,7 @@ export class GeneSetSubCohortBox extends PureComponent {
         <ul className={BaseStyle.noBullets}>
           {selectedCohort.selectedSubCohorts.sort().slice(0,MAX_SUB_COHORTS).map( s => {
             return (
-              <li key={s}>{s}({subCohortCounts[s]})</li>
+              <li key={s}>{s}({subCohortCounts[cohortIndex][s]})</li>
             )
           }
           )}
