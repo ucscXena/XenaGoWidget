@@ -205,7 +205,7 @@ export default class HoverGeneView extends PureComponent {
                       }
                     </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 && data.pathway &&
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 &&
             <div>
               <div className={BaseStyle.pathwayChip}>
                 <div className={BaseStyle.boxHeader}>Hovering over </div>
@@ -231,8 +231,9 @@ export default class HoverGeneView extends PureComponent {
               </div>
             </div>
           }
-          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 && data.expression && data.expression.allGeneAffected!==undefined && score
-          && <div className={BaseStyle.pathwayChip}>
+          {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 &&
+            data.expression && data.expression.allGeneAffected!==undefined && score &&
+          <div className={BaseStyle.pathwayChip}>
             <div className={BaseStyle.boxHeader}>Hovering over </div>
             <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
               <strong>Gene Set&nbsp;&nbsp;</strong>
