@@ -11,9 +11,8 @@ export default class CrossHairV extends PureComponent{
 
   render() {
     let {mousing, x, height} = this.props
-    if(!mousing) return <div/>
     return (
-      <div className={BaseStyle.crosshairV} style={{left: x, height}}/>
+      <div className={BaseStyle.crosshairV} style={{left: x, height, visibility: mousing ? 'visible' : 'hidden'}}/>
     )
   }
 

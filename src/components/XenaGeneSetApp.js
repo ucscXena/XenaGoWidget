@@ -57,7 +57,6 @@ import {DiffColumn} from './DiffColumn'
 import FaFolderOpenO from 'react-icons/lib/fa/folder-open-o'
 import FaArrowDown from 'react-icons/lib/fa/arrow-down'
 
-const VIEWER_HEIGHT = 500
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
 const BORDER_OFFSET = 2
@@ -811,6 +810,10 @@ export default class XenaGeneSetApp extends PureComponent {
     let titleText = this.generateTitle()
     let titleSize = (45 - titleText.length * 0.15)
 
+    const crosshairHeight = ((this.state.pathways.length + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
+    // console.log('input gene data',this.state.geneData[0].pathways,crosshairHeight)
+    // console.log('crossheight height',this.state.pathways.length,this.state.geneData[0].pathways.length)
+
     return (
       <div>
 
@@ -836,21 +839,21 @@ export default class XenaGeneSetApp extends PureComponent {
             if (topClient < 0) {
               scrollDownBuffer = 128 - topClient
             }
-            const yLimit = this.state.geneData[0].samples ? 233 : 193
             const x = ev.clientX + 8
             const y = ev.clientY + 8 + scrollDownBuffer
-            if (   y >= yLimit &&  ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
+            if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
               this.setState({mousing: true, x, y})
             } else {
               this.setState({mousing: false, x, y})
             }
-          }} onMouseOut={() => {
+          }}
+          onMouseOut={() => {
             this.setState({mousing: false})
           }}
         >
           <CrossHairH mousing={this.state.mousing} y={this.state.y}/>
           <CrossHairV
-            height={VIEWER_HEIGHT * 3}
+            height={crosshairHeight}
             mousing={this.state.mousing} x={this.state.x}
           />
           <Dialog
