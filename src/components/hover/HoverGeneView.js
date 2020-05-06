@@ -30,7 +30,7 @@ export default class HoverGeneView extends PureComponent {
             <HoverGeneSample cohortIndex={cohortIndex} data={data} score={score} view={view}/>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length === 1 &&
-          <HoverGeneLabel cohortIndex={cohortIndex} data={data} score={score} view={view}/>
+          <HoverGeneLabel data={data} view={view}/>
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 &&
             data.expression && data.expression.allGeneAffected!==undefined && score &&

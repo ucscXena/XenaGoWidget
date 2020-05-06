@@ -18,7 +18,7 @@ export default class HoverGeneSetLabel extends PureComponent {
     let {data, cohortIndex, score,view} = this.props
     return (
       <div className={BaseStyle.pathwayChip}>
-        <div className={BaseStyle.boxHeader}>Hovering over GS Label</div>
+        <div className={BaseStyle.boxHeader}>Hovering over </div>
         <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
           <strong>Gene Set&nbsp;&nbsp;</strong>
           {data.pathway.golabel.replace(/_/g,' ')}
@@ -43,7 +43,8 @@ export default class HoverGeneSetLabel extends PureComponent {
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
             }}
           >
-            <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}</span>
+            <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+          </span>
         </div>
       </div>
     )
