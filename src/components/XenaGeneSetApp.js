@@ -808,7 +808,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     let titleText = this.generateTitle()
-    let titleSize = (45 - titleText.length * 0.15)
+    let titleSize = (45 - (titleText.length * 0.13))
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
@@ -835,8 +835,9 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 8
-            const y = ev.clientY + 132 - topClient
-            if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
+            const y = ev.clientY + 150 - topClient
+            // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
+            if ( x >= 265 && x <= 853 ) {
               this.setState({mousing: true, x, y})
             } else {
               this.setState({mousing: false, x, y})
