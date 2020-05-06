@@ -25,10 +25,7 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
 const {sparseDataMatchPartialField, refGene} = xenaQuery
 import CrossHairH from './CrossHairH'
 import CrossHairV from './CrossHairV'
-import {
-  getCohortDetails,
-  getSubCohortsOnlyForCohort, getViewsForCohort,
-} from '../functions/CohortFunctions'
+import {getViewsForCohort,} from '../functions/CohortFunctions'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
 import {
@@ -45,7 +42,6 @@ import {
 import GeneSetEditor from './GeneSetEditor'
 import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
-// import {CohortEditorSelector} from './CohortEditorSelector'
 import {GeneSetLegend} from './GeneSetLegend'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
@@ -564,28 +560,28 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
-  handleChangeCohort = (selectedCohort, cohortIndex) => {
-    const cohortDetails = getCohortDetails({name: selectedCohort})
-    const subCohorts = getSubCohortsOnlyForCohort(selectedCohort)
-    if (subCohorts) {
-      cohortDetails.subCohorts = subCohorts
-      cohortDetails.selectedSubCohorts = subCohorts
-    }
-
-    const newCohortState = [
-      cohortIndex === 0 ? cohortDetails : this.state.selectedCohort[0],
-      cohortIndex === 1 ? cohortDetails : this.state.selectedCohort[1],
-    ]
-    AppStorageHandler.storeCohortState(newCohortState[cohortIndex],
-      cohortIndex)
-
-    this.setState({
-      selectedCohort: newCohortState,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-      reloadPathways: this.state.automaticallyReloadPathways,
-    })
-  };
+  // handleChangeCohort = (selectedCohort, cohortIndex) => {
+  //   const cohortDetails = getCohortDetails({name: selectedCohort})
+  //   const subCohorts = getSubCohortsOnlyForCohort(selectedCohort)
+  //   if (subCohorts) {
+  //     cohortDetails.subCohorts = subCohorts
+  //     cohortDetails.selectedSubCohorts = subCohorts
+  //   }
+  //
+  //   const newCohortState = [
+  //     cohortIndex === 0 ? cohortDetails : this.state.selectedCohort[0],
+  //     cohortIndex === 1 ? cohortDetails : this.state.selectedCohort[1],
+  //   ]
+  //   AppStorageHandler.storeCohortState(newCohortState[cohortIndex],
+  //     cohortIndex)
+  //
+  //   this.setState({
+  //     selectedCohort: newCohortState,
+  //     fetch: true,
+  //     currentLoadState: LOAD_STATE.LOADING,
+  //     reloadPathways: this.state.automaticallyReloadPathways,
+  //   })
+  // };
 
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
@@ -600,21 +596,21 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   };
 
-  handleChangeSubCohort = (selectedCohort, cohortIndex) => {
-    const updateCohortState = update(this.state.selectedCohort, {
-      [cohortIndex]: {
-        selectedSubCohorts: {$set: selectedCohort.selectedSubCohorts},
-      },
-    })
-    AppStorageHandler.storeCohortState(updateCohortState[cohortIndex],
-      cohortIndex)
-    this.setState({
-      selectedCohort: updateCohortState,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-      reloadPathways: this.state.automaticallyReloadPathways,
-    })
-  };
+  // handleChangeSubCohort = (selectedCohort, cohortIndex) => {
+  //   const updateCohortState = update(this.state.selectedCohort, {
+  //     [cohortIndex]: {
+  //       selectedSubCohorts: {$set: selectedCohort.selectedSubCohorts},
+  //     },
+  //   })
+  //   AppStorageHandler.storeCohortState(updateCohortState[cohortIndex],
+  //     cohortIndex)
+  //   this.setState({
+  //     selectedCohort: updateCohortState,
+  //     fetch: true,
+  //     currentLoadState: LOAD_STATE.LOADING,
+  //     reloadPathways: this.state.automaticallyReloadPathways,
+  //   })
+  // };
 
   handleChangeFilter = (newView) => {
     AppStorageHandler.storeFilterState(newView)
@@ -628,60 +624,60 @@ export default class XenaGeneSetApp extends PureComponent {
     )
   };
 
-  handleChangeTopFilter = (event) => {
-    this.handleChangeFilter(event.target.value)
-  };
-
-  handleVersusAll = (selectedSubCohort, cohortSourceIndex) => {
-    // select ONLY
-    const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-      selectedSubCohorts: {$set: [selectedSubCohort]},
-    })
-
-    // select ALL
-    const targetCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-      selectedSubCohorts: {$set: this.state.selectedCohort[cohortSourceIndex].subCohorts},
-    })
-
-    const newCohortState = [
-      cohortSourceIndex === 0 ? sourceCohort : targetCohort,
-      cohortSourceIndex === 0 ? targetCohort : sourceCohort,
-    ]
-    AppStorageHandler.storeCohortStateArray(newCohortState)
-    this.setState({
-      selectedCohort: newCohortState,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-    })
-  };
-
-  swapCohorts = () => {
-    // TODO: swap cohorts, sub cohorts, filters,
-    const newCohortState = [
-      this.state.selectedCohort[1],
-      this.state.selectedCohort[0],
-    ]
-    AppStorageHandler.storeCohortStateArray(newCohortState)
-    this.setState({
-      selectedCohort: newCohortState,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-    })
-  };
-
-  copyCohorts = (cohortSourceIndex) => {
-    // TODO: swap cohorts, sub cohorts, filters,
-    const newCohortState = [
-      this.state.selectedCohort[cohortSourceIndex],
-      this.state.selectedCohort[cohortSourceIndex],
-    ]
-    AppStorageHandler.storeCohortStateArray(newCohortState)
-    this.setState({
-      selectedCohort: newCohortState,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-    })
-  };
+  // handleChangeTopFilter = (event) => {
+  //   this.handleChangeFilter(event.target.value)
+  // };
+  //
+  // handleVersusAll = (selectedSubCohort, cohortSourceIndex) => {
+  //   // select ONLY
+  //   const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex], {
+  //     selectedSubCohorts: {$set: [selectedSubCohort]},
+  //   })
+  //
+  //   // select ALL
+  //   const targetCohort = update(this.state.selectedCohort[cohortSourceIndex], {
+  //     selectedSubCohorts: {$set: this.state.selectedCohort[cohortSourceIndex].subCohorts},
+  //   })
+  //
+  //   const newCohortState = [
+  //     cohortSourceIndex === 0 ? sourceCohort : targetCohort,
+  //     cohortSourceIndex === 0 ? targetCohort : sourceCohort,
+  //   ]
+  //   AppStorageHandler.storeCohortStateArray(newCohortState)
+  //   this.setState({
+  //     selectedCohort: newCohortState,
+  //     fetch: true,
+  //     currentLoadState: LOAD_STATE.LOADING,
+  //   })
+  // };
+  //
+  // swapCohorts = () => {
+  //   // TODO: swap cohorts, sub cohorts, filters,
+  //   const newCohortState = [
+  //     this.state.selectedCohort[1],
+  //     this.state.selectedCohort[0],
+  //   ]
+  //   AppStorageHandler.storeCohortStateArray(newCohortState)
+  //   this.setState({
+  //     selectedCohort: newCohortState,
+  //     fetch: true,
+  //     currentLoadState: LOAD_STATE.LOADING,
+  //   })
+  // };
+  //
+  // copyCohorts = (cohortSourceIndex) => {
+  //   // TODO: swap cohorts, sub cohorts, filters,
+  //   const newCohortState = [
+  //     this.state.selectedCohort[cohortSourceIndex],
+  //     this.state.selectedCohort[cohortSourceIndex],
+  //   ]
+  //   AppStorageHandler.storeCohortStateArray(newCohortState)
+  //   this.setState({
+  //     selectedCohort: newCohortState,
+  //     fetch: true,
+  //     currentLoadState: LOAD_STATE.LOADING,
+  //   })
+  // };
 
   setActiveGeneSets = (newPathways) => {
     AppStorageHandler.storePathways(newPathways)
@@ -821,7 +817,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <h2
           className={BaseStyle.titleBox}
-          style={{fontSize:titleSize,width: 1100}}>
+          style={{fontSize:titleSize,width: 1100,
+            visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
+        >
           Visualizing differences using
           <select
             className={BaseStyle.analysisTitleSelector}
@@ -929,7 +927,7 @@ export default class XenaGeneSetApp extends PureComponent {
                   />
                 </td>
                 <td  width={300}>
-                  <table>
+                  <table style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}>
                     <tbody>
                       {isViewGeneExpression(this.state.filter) &&
                         <tr>

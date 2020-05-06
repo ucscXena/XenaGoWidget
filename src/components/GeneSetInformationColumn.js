@@ -24,40 +24,41 @@ export class GeneSetInformationColumn extends PureComponent {
     return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
-  render(){
+  render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
 
-    return (
-      <div
-        className={BaseStyle.geneSetDetailBox}
-        style={{backgroundColor:cohortColor}}
-      >
-        {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
-        <GeneSetSubCohortBox
-          cohortIndex={this.props.cohortIndex}
-          geneDataStats={this.props.geneDataStats}
-          onEditCohorts={this.props.onEditCohorts}
-          subCohortCounts={this.props.subCohortCounts}
-        />
-        }
-        {this.props.open &&
+    if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
+      return (
+        <div
+          className={BaseStyle.geneSetDetailBox}
+          style={{backgroundColor: cohortColor}}
+        >
+          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
+          <GeneSetSubCohortBox
+            cohortIndex={this.props.cohortIndex}
+            geneDataStats={this.props.geneDataStats}
+            onEditCohorts={this.props.onEditCohorts}
+            subCohortCounts={this.props.subCohortCounts}
+          />
+          }
+          {this.props.open &&
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}
           />
-        }
-        {
-          this.canShowHover() &&
-          <HoverGeneView
-            cohortIndex={this.props.cohortIndex}
-            data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
-            view={this.props.view}
-          />
-        }
-
-
-      </div>
-    )
+          }
+          {
+            this.canShowHover() &&
+            <HoverGeneView
+              cohortIndex={this.props.cohortIndex}
+              data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
+              view={this.props.view}
+            />
+          }
+        </div>
+      )
+    }
+    return <div/>
   }
 
 }
