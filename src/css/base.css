@@ -245,6 +245,13 @@ body {
   height: 50px;
 }
 
+.analysisTitleSelector{
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  vertical-align: top;
+}
+
 .headerBox{
   margin: 5px;
   padding: 5px;
