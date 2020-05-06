@@ -27,8 +27,7 @@ import CrossHairH from './CrossHairH'
 import CrossHairV from './CrossHairV'
 import {
   getCohortDetails,
-  getSubCohortsOnlyForCohort,
-  // getViewsForCohort,
+  getSubCohortsOnlyForCohort, getViewsForCohort,
 } from '../functions/CohortFunctions'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
@@ -44,9 +43,7 @@ import {
   generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
-// import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
-// import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
-// import {intersection} from '../functions/MathFunctions'
+import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 // import {CohortEditorSelector} from './CohortEditorSelector'
 import {GeneSetLegend} from './GeneSetLegend'
@@ -169,8 +166,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   generateTitle() {
-    let returnText = 'Visualizing differences using '
-    returnText += `'${this.state.filter}'`
+    let returnText = ''
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
       returnText += ` to compare within cohort '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData[0].samples ){
@@ -808,11 +804,11 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     let titleText = this.generateTitle()
-    let titleSize = (45 - (titleText.length * 0.13))
+    let titleSize = (45 - (titleText.length * 0.17))
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
-
+    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name))
     return (
       <div>
 
@@ -826,6 +822,21 @@ export default class XenaGeneSetApp extends PureComponent {
         <h2
           className={BaseStyle.titleBox}
           style={{fontSize:titleSize,width: 1100}}>
+          Visualizing differences using
+          <select
+            onChange={(event) => {
+              this.handleChangeFilter(event.target.value)
+            }}
+            value={this.state.filter}
+          >
+            {
+              Object.entries(allowableViews).map( f => {
+                return (
+                  <option key={f[1]} value={f[1]}>{f[1]}</option>
+                )
+              })
+            }
+          </select>
           {titleText}
         </h2>
 
