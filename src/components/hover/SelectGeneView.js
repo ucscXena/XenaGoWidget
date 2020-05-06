@@ -1,8 +1,8 @@
 import React from 'react'
-import PureComponent from './PureComponent'
+import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
-import BaseStyle from '../css/base.css'
-import {isViewGeneExpression} from '../functions/DataFunctions'
+import BaseStyle from '../../css/base.css'
+import {isViewGeneExpression} from '../../functions/DataFunctions'
 
 export default class SelectGeneView extends PureComponent {
 

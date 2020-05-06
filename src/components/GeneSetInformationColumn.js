@@ -3,8 +3,8 @@ import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
-import HoverGeneView from './HoverGeneView'
-import SelectGeneView from './SelectGeneView'
+import HoverGeneView from './hover/HoverGeneView'
+import SelectGeneView from './hover/SelectGeneView'
 
 export class GeneSetInformationColumn extends PureComponent {
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import PureComponent from './PureComponent'
 import PathwayScoresView from './PathwayScoresView'
 import BaseStyle from '../css/base.css'
-import HoverGeneView from './HoverGeneView'
+import HoverGeneView from './hover/HoverGeneView'
 import {Card,Button} from 'react-toolbox'
 
 import {MAX_GENE_LAYOUT_WIDTH_PX, MAX_GENE_WIDTH, MIN_GENE_WIDTH_PX} from './XenaGeneSetApp'
