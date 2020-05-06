@@ -950,54 +950,46 @@ export default class XenaGeneSetApp extends PureComponent {
                             </td>
                           </tr>
                       }
-                      {isViewGeneExpression(this.state.filter) &&
-                          <tr style={{height: 40}}>
-                            <td colSpan={1}>
-                              {this.state.geneData && this.state.geneData[0].data &&
+                      <tr style={{height: 40}}>
+                        <td colSpan={1}>
+                          {this.state.geneData && this.state.geneData[0].data &&
                               <div className={BaseStyle.verticalLegendBox}>
                                 Gene Legend
                               </div>
-                              }
-                            </td>
-                            {this.state.geneData && this.state.geneData[0].data &&
-                            <td colSpan={3}>
-                              <GeneSetLegend
-                                id='geneExpressionGeneScore'
-                                label={'Gene expression z-score'} maxScore={2}
-                                minScore={-2}
-                              />
-                            </td>
-                            }
-                            {(!this.state.geneData || !this.state.geneData[0].data) &&
+                          }
+                        </td>
+                        {this.state.geneData && this.state.geneData[0].data && isViewGeneExpression(this.state.filter) &&
+                        <td colSpan={3}>
+                          <GeneSetLegend
+                            id='geneExpressionGeneScore'
+                            label={'Gene expression z-score'} maxScore={2}
+                            minScore={-2}
+                          />
+                        </td>
+                        }
+                        {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
+                          <td>
+                            <CnvMutationLegend view={this.state.filter}/>
+                          </td>
+                        }
+                        {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
+                        <td>
+                          {/*<CnvMutationLegend view={this.state.filter}/>*/}
+                          <GeneSetLegend
+                            id='densityGrad1' label={'hits'} maxColor='red'
+                            maxScore={5} midColor='pink'
+                            minColor='white' minScore={0} precision={0}
+                          />
+                        </td>
+                        }
+                        {(!this.state.geneData || !this.state.geneData[0].data) &&
                             <td colSpan={1}>
                               <div className={BaseStyle.openGeneSet}>
                                 <FaArrowDown/> Open Gene Set <FaFolderOpenO/>
                               </div>
                             </td>
-                            }
-                          </tr>
-                      }
-                      {!isViewGeneExpression(this.state.filter) &&
-                        <tr style={{height: 40}}>
-                          <td colSpan={1}>
-                            <div className={BaseStyle.verticalLegendBox}>
-                              Sample Legend
-                            </div>
-                          </td>
-                          <td>
-                            <CnvMutationLegend view={this.state.filter}/>
-                          </td>
-                          {/*<div style={{marginLeft: 5}}>*/}
-                          <td>
-                            <GeneSetLegend
-                              id='densityGrad1' label={'hits'} maxColor='red'
-                              maxScore={5} midColor='pink'
-                              minColor='white' minScore={0} precision={0}
-                            />
-                          </td>
-                          {/*</div>*/}
-                        </tr>
-                      }
+                        }
+                      </tr>
                       <tr>
                         <td valign='top'>
                           <DiffColumn
