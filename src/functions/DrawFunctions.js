@@ -255,10 +255,18 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
 
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            img.data[l] = colorMask[0]
-            img.data[l + 1] = colorMask[1]
-            img.data[l + 2] = colorMask[2]
-            img.data[l + 3] = color
+            if(el.active){
+              img.data[l] = colorMask[0]
+              img.data[l + 1] = colorMask[1]
+              img.data[l + 2] = colorMask[2]
+              img.data[l + 3] = color
+            }
+            else{
+              img.data[l] = 0
+              img.data[l + 1] = 0
+              img.data[l + 2] = 0
+              img.data[l + 3] = color * 0.3
+            }
           }
         }
       }
