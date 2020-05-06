@@ -824,6 +824,7 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{fontSize:titleSize,width: 1100}}>
           Visualizing differences using
           <select
+            className={BaseStyle.analysisTitleSelector}
             onChange={(event) => {
               this.handleChangeFilter(event.target.value)
             }}
