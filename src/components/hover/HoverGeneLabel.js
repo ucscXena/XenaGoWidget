@@ -9,7 +9,7 @@ import {
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getRatio} from '../../functions/HoverFunctions'
-import {getMiddleGeneSetLabelForView} from '../legend/GeneSetGeneExpressionLegend'
+import {getMiddleGeneLabelForView} from '../legend/GeneGeneExpressionLegend'
 
 export default class HoverGeneLabel extends PureComponent {
 
@@ -33,7 +33,7 @@ export default class HoverGeneLabel extends PureComponent {
               backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
             }}
           >
-            {getMiddleGeneSetLabelForView(view)}&nbsp;&nbsp;
+            {getMiddleGeneLabelForView(view)}&nbsp;&nbsp;
             {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
           </div>
           }

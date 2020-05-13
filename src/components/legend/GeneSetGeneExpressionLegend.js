@@ -8,11 +8,11 @@ import {VIEW_ENUM} from '../../data/ViewEnum'
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
   case VIEW_ENUM.GENE_EXPRESSION:
-    return 'Sample BPA score'
+    return 'Mean BPA score'
   case VIEW_ENUM.PARADIGM:
-    return 'Sample GSEA score'
+    return 'Mean GSEA score'
   case VIEW_ENUM.REGULON:
-    return 'Sample Regulon activity score'
+    return 'Mean Regulon activity score'
 
   default:
     // eslint-disable-next-line no-console
