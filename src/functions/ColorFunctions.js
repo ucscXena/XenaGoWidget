@@ -1,3 +1,5 @@
+import {isViewGeneExpression} from './DataFunctions'
+
 export function getSelectColor() {
   return '#113871'
 }
@@ -45,7 +47,10 @@ export function getGeneColorMask() {
   return [26, 83, 92]
 }
 
+export const GENE_EXPRESSION_GENE_SET_COLOR_MAX = [255, 10, 10]
+export const CNV_MUTATION_GENE_SET_COLOR_MAX = [139,69,19]
+export const CNV_MUTATION_GENE_SET_COLOR_MID = '#e78e4f'
 
-export function getGeneSetColorMask() {
-  return [255, 10, 10]
+export function getGeneSetColorMask(view) {
+  return isViewGeneExpression(view) ? GENE_EXPRESSION_GENE_SET_COLOR_MAX : CNV_MUTATION_GENE_SET_COLOR_MAX
 }

@@ -375,7 +375,7 @@ export default {
     const totalHeight = labelHeight * layout.length
     clearScreen(vg, width, totalHeight)
     if(associatedData.length!==layout.length) return
-    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(), cohortIndex,filter, maxValue)
+    drawGeneSetData(vg, width, totalHeight, layout, associatedData, labelHeight, getGeneSetColorMask(filter), cohortIndex,filter, maxValue)
   },
 
 }

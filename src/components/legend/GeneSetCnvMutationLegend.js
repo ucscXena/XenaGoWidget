@@ -2,6 +2,7 @@ import React from 'react'
 import PureComponent from '../PureComponent'
 import {GeneSetLegend} from './GeneSetLegend'
 import {MAX_CNV_MUTATION_DIFF} from '../XenaGeneSetApp'
+import {CNV_MUTATION_GENE_SET_COLOR_MAX, CNV_MUTATION_GENE_SET_COLOR_MID} from '../../functions/ColorFunctions'
 
 
 export class GeneSetCnvMutationLegend extends PureComponent {
@@ -25,8 +26,8 @@ export class GeneSetCnvMutationLegend extends PureComponent {
           />
           Sample
           <GeneSetLegend
-            id='geneSampleLegendMutationCnv' label={'hits per sample'} maxColor='red'
-            maxScore={'5+'} midColor='pink'
+            id='geneSampleLegendMutationCnv' label={'hits per sample'} maxColor={CNV_MUTATION_GENE_SET_COLOR_MAX}
+            maxScore={'5+'} midColor={CNV_MUTATION_GENE_SET_COLOR_MID}
             minColor='white' minScore={0} precision={0}
           />
 
