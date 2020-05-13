@@ -227,7 +227,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
         style={isViewGeneExpression(this.props.view) ?
           GeneSetSelector.pillStyleExp(gene0.geneExpressionMean,selected,labelHeight)  :
-          GeneSetSelector.pillStyle(gene0.affected,selected,labelHeight)
+          GeneSetSelector.pillStyle(gene0.affected / gene0.total * 50.0,selected,labelHeight)
         }
         width={width / 2 - 1}
         x={0}
@@ -242,7 +242,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
         style={isViewGeneExpression(this.props.view) ?
           GeneSetSelector.pillStyleExp(gene1.geneExpressionMean,selected,labelHeight)  :
-          GeneSetSelector.pillStyle(gene1.affected,selected,labelHeight)
+          GeneSetSelector.pillStyle(gene1.affected / gene1.total * 50.0,selected,labelHeight)
         }
         width={width / 2}
         x={width / 2 + 1}

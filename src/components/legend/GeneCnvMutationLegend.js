@@ -15,8 +15,8 @@ export class GeneCnvMutationLegend extends PureComponent {
         <td colSpan={4}>
           Gene Label
           <GeneSetLegend
-            id='densityGrad1' label={'hits'} maxColor='red'
-            maxScore={5} midColor='pink'
+            id='densityGrad1' label={'Samples affected %'} maxColor='red'
+            maxScore={100} midColor='pink'
             minColor='white' minScore={0} precision={0}
           />
 

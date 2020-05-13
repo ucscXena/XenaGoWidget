@@ -26,7 +26,7 @@ export class GeneSetCnvMutationLegend extends PureComponent {
           Sample
           <GeneSetLegend
             id='geneSampleLegendMutationCnv' label={'hits per sample'} maxColor='red'
-            maxScore={'>5'} midColor='pink'
+            maxScore={'5+'} midColor='pink'
             minColor='white' minScore={0} precision={0}
           />
 
