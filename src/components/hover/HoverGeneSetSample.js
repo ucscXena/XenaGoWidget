@@ -37,7 +37,8 @@ export default class HoverGeneSetSample extends PureComponent {
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
             }}
           >
-            <strong>Hits in sample</strong>: {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
+            {isViewGeneExpression(view) ? <strong>Sample Score</strong> : <strong>Hits in sample</strong>}
+            : {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
           </div>
           <br/>
           <br/>

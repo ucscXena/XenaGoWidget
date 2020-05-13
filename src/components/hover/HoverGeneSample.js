@@ -34,7 +34,7 @@ export default class HoverGeneSample extends PureComponent {
             backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
           }}
         >
-          <strong>Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+          <strong>ZScore</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
         </div>
         }
         {/*{ isViewGeneExpression(view) &&  data.expression && data.geneExpression &&*/}

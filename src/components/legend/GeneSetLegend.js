@@ -1,21 +1,21 @@
 import React from 'react'
-import PureComponent from './PureComponent'
+import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 
 const TEXT_Y_OFFSET = 15
-const IMAGE_HEIGHT = 10 
+const IMAGE_HEIGHT = 10
 
 export class GeneSetLegend extends PureComponent {
 
 
   render() {
 
-    const precision = this.props.precision!==undefined ? this.props.precision : 2 
-    const formattedMin = this.props.minScore.toFixed(precision)
-    const formattedMax = this.props.maxScore.toFixed(precision)
+    const precision = this.props.precision!==undefined ? this.props.precision : 2
+    const formattedMin = isNaN(this.props.minScore) ? this.props.minScore : this.props.minScore.toFixed(precision)
+    const formattedMax = isNaN(this.props.maxScore) ? this.props.maxScore : this.props.maxScore.toFixed(precision)
 
-    const label = this.props.label 
-    const labelLength = label.length * 9 
+    const label = this.props.label
+    const labelLength = label.length * 9
 
     const maxColor = this.props.maxColor ? this.props.maxColor : 'red'
     const midColor = this.props.midColor ? this.props.midColor : 'white'

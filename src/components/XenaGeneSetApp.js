@@ -23,8 +23,8 @@ import {
 
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
 const {sparseDataMatchPartialField, refGene} = xenaQuery
-import CrossHairH from './CrossHairH'
-import CrossHairV from './CrossHairV'
+import CrossHairH from './crosshair/CrossHairH'
+import CrossHairV from './crosshair/CrossHairV'
 import {getViewsForCohort,} from '../functions/CohortFunctions'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
@@ -42,13 +42,14 @@ import {
 import GeneSetEditor from './GeneSetEditor'
 import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
-import {GeneSetLegend} from './GeneSetLegend'
-import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './DiffColumn'
-import FaFolderOpenO from 'react-icons/lib/fa/folder-open-o'
-import FaArrowDown from 'react-icons/lib/fa/arrow-down'
+import {GeneSetCnvMutationLegend} from './legend/GeneSetCnvMutationLegend'
+import {GeneCnvMutationLegend} from './legend/GeneCnvMutationLegend'
+import {OpenGeneSetLegend} from './legend/OpenGeneSetLegend'
+import {GeneGeneExpressionLegend} from './legend/GeneGeneExpressionLegend'
+import {GeneSetGeneExpressionLegend} from './legend/GeneSetGeneExpressionLegend'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -929,78 +930,27 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td  width={300}>
                   <table style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}>
                     <tbody>
+                      {/*Gene set layer*/}
                       {isViewGeneExpression(this.state.filter) &&
-                        <tr>
-                          <td>
-                            <div className={BaseStyle.verticalLegendBox}>
-                              Geneset Legend
-                            </div>
-                          </td>
-                          <td colSpan={3}>
-                            <GeneSetLegend
-                              id='geneExpressionGeneSetScore'
-                              label={this.state.filter + ' score'} maxScore={maxValue}
-                              minScore={-maxValue}
-                            />
-                          </td>
-                        </tr>
+                        <GeneSetGeneExpressionLegend filter={this.state.filter} maxValue={maxValue}/>
                       }
                       {!isViewGeneExpression(this.state.filter) &&
-                          <tr>
-                            <td>
-                              <div className={BaseStyle.verticalLegendBox}>
-                              Geneset Legend
-                              </div>
-                            </td>
-                            <td colSpan={3}>
-                              <GeneSetLegend
-                                id='mean-score' label={'chi-square test χ2'}
-                                maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
-                                precision={0}
-                              />
-                            </td>
-                          </tr>
+                        <GeneSetCnvMutationLegend/>
                       }
-                      <tr style={{height: 40}}>
-                        <td colSpan={1}>
-                          {this.state.geneData && this.state.geneData[0].data &&
-                              <div className={BaseStyle.verticalLegendBox}>
-                                Gene Legend
-                              </div>
-                          }
-                        </td>
-                        {this.state.geneData && this.state.geneData[0].data && isViewGeneExpression(this.state.filter) &&
-                        <td colSpan={3}>
-                          <GeneSetLegend
-                            id='geneExpressionGeneScore'
-                            label={'Gene expression z-score'} maxScore={2}
-                            minScore={-2}
-                          />
-                        </td>
-                        }
-                        {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
-                          <td>
-                            <CnvMutationLegend view={this.state.filter}/>
-                          </td>
-                        }
-                        {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
-                        <td>
-                          {/*<CnvMutationLegend view={this.state.filter}/>*/}
-                          <GeneSetLegend
-                            id='densityGrad1' label={'hits'} maxColor='red'
-                            maxScore={5} midColor='pink'
-                            minColor='white' minScore={0} precision={0}
-                          />
-                        </td>
-                        }
-                        {(!this.state.geneData || !this.state.geneData[0].data) &&
-                            <td colSpan={1}>
-                              <div className={BaseStyle.openGeneSet}>
-                                <FaArrowDown/> Open Gene Set <FaFolderOpenO/>
-                              </div>
-                            </td>
-                        }
-                      </tr>
+
+
+                      {/*Gene layer*/}
+                      {/*empty*/}
+                      {(!this.state.geneData || !this.state.geneData[0].data) &&
+                        <OpenGeneSetLegend />
+                      }
+                      {this.state.geneData && this.state.geneData[0].data && isViewGeneExpression(this.state.filter) &&
+                        <GeneGeneExpressionLegend />
+                      }
+                      {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
+                      <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
+                      }
+
                       <tr>
                         <td valign='top'>
                           <DiffColumn

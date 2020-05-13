@@ -1,6 +1,6 @@
 import React from 'react'
-import PureComponent from './PureComponent'
-import BaseStyle from '../css/base.css'
+import PureComponent from '../PureComponent'
+import BaseStyle from '../../css/base.css'
 import PropTypes from 'prop-types'
 
 export default class CrossHairV extends PureComponent{
