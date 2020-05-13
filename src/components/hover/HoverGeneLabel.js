@@ -27,13 +27,14 @@ export default class HoverGeneLabel extends PureComponent {
           <br/>
           { isViewGeneExpression(view) &&
             [
-              <strong>
+              <strong key={1}>
                 {getMiddleGeneLabelForView(view)}
               </strong>,
-              <br/>,
-              <br/>,
+              <br key={2}/>,
+              <br key={3}/>,
               <div
                 className={BaseStyle.scoreBox}
+                key={4}
                 style={{
                   color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
                   backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
