@@ -24,7 +24,8 @@ export class GeneSetCnvMutationLegend extends PureComponent {
         </td>
         <td colSpan={1}>
           <span className={BaseStyle.legendLabel}>Middle</span>
-          <pre style={{marginLeft: 10,display:'inline'}}>chi-square test χ2</pre>
+          <br/>
+          <pre style={{marginLeft: 0,display:'inline'}}>chi-square test χ2</pre>
           <GeneSetLegend
             id='mean-score'
             maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
@@ -33,7 +34,8 @@ export class GeneSetCnvMutationLegend extends PureComponent {
         </td>
         <td colSpan={1}>
           <span className={BaseStyle.legendLabel}>Sample</span>
-          <pre style={{marginLeft: 10,display:'inline'}}>Hits per sample</pre>
+          <br/>
+          <pre style={{marginLeft: 0,display:'inline'}}>Hits per sample</pre>
           <GeneSetLegend
             id='geneSampleLegendMutationCnv'
             maxColor={RGBToHex(CNV_MUTATION_GENE_SET_COLOR_MAX)}

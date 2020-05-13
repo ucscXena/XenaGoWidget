@@ -9,6 +9,7 @@ import {
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getRatio} from '../../functions/HoverFunctions'
+import {getMiddleGeneLabelForView} from '../legend/GeneGeneExpressionLegend'
 
 export default class HoverGeneLabel extends PureComponent {
 
@@ -25,16 +26,23 @@ export default class HoverGeneLabel extends PureComponent {
           <div><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</div>
           <br/>
           { isViewGeneExpression(view) &&
-          <div
-            className={BaseStyle.scoreBox}
-            style={{
-              color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
-              backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
-            }}
-          >
-            Mean ZScore&nbsp;&nbsp;
-            {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
-          </div>
+            [
+              <strong key={1}>
+                {getMiddleGeneLabelForView(view)}
+              </strong>,
+              <br key={2}/>,
+              <br key={3}/>,
+              <div
+                className={BaseStyle.scoreBox}
+                key={4}
+                style={{
+                  color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
+                  backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
+                }}
+              >
+                {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
+              </div>
+            ]
           }
           { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
           <div

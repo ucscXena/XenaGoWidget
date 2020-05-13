@@ -20,8 +20,8 @@ export class GeneCnvMutationLegend extends PureComponent {
           </div>
         </td>
         <td colSpan={1}>
-          <span className={BaseStyle.legendLabel}>Middle</span>
-          <pre style={{marginLeft: 10,display:'inline'}}>Samples affected %</pre>
+          {/*<span className={BaseStyle.legendLabel}>Middle</span>*/}
+          <pre style={{marginLeft: 0,display:'inline'}}>Samples affected %</pre>
           <GeneSetLegend
             id='densityGrad1'
             maxColor='red'
@@ -30,7 +30,7 @@ export class GeneCnvMutationLegend extends PureComponent {
           />
         </td>
         <td colSpan={1}>
-          <span className={BaseStyle.legendLabel}>Sample</span>
+          {/*<span className={BaseStyle.legendLabel}>Sample</span>*/}
           <CnvMutationLegend view={this.props.filter}/>
         </td>
       </tr>

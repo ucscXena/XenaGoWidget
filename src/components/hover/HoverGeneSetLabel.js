@@ -10,6 +10,7 @@ import {
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getAffectedPathway, getRatio} from '../../functions/HoverFunctions'
+import {getMiddleGeneSetLabelForView} from '../legend/GeneSetGeneExpressionLegend'
 
 export default class HoverGeneSetLabel extends PureComponent {
 
@@ -35,6 +36,10 @@ export default class HoverGeneSetLabel extends PureComponent {
         ]
         }
         <div>
+          <strong>
+            { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}
+          </strong>
+          <br/>
           <br/>
           <span
             className={BaseStyle.scoreBox}
@@ -43,10 +48,7 @@ export default class HoverGeneSetLabel extends PureComponent {
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
             }}
           >
-            <strong>
-              { isViewGeneExpression(view) ? 'Score' : 'chi-square test χ2'}
-            </strong>
-            : {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+            {score === 'NaN' ? 'Not available' : score.toFixed(2)}
           </span>
         </div>
       </div>
