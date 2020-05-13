@@ -12,17 +12,33 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
 
     return (
       <tr>
-        <td>
+        <td colSpan={1}>
           <div className={BaseStyle.verticalLegendBox}>
-            Geneset Legend
+            Geneset
           </div>
         </td>
-        <td colSpan={3}>
+        <td colSpan={1}>
+          <span className={BaseStyle.legendLabel}>Label</span>
+          <pre style={{marginLeft: 10,display:'inline'}}>{this.props.filter} </pre>
+          <br/>
           <GeneSetLegend
-            id='geneExpressionGeneSetScore'
-            label={this.props.filter + ' score'} maxScore={this.props.maxValue}
+            id='geneExpressionGeneSetLabelScore'
+            // label={this.props.filter + ' score'}
+            maxScore={this.props.maxValue}
             minScore={-this.props.maxValue}
           />
+        </td>
+        <td colSpan={1}>
+          <span className={BaseStyle.legendLabel}>Sample</span>
+          <pre style={{marginLeft: 10,display:'inline'}}>Sample Score</pre>
+          <br/>
+          <GeneSetLegend
+            id='geneExpressionGeneSetSampleScore'
+            // label={this.props.filter + ' score'}
+            maxScore={this.props.maxValue}
+            minScore={-this.props.maxValue}
+          />
+
         </td>
       </tr>
     )
