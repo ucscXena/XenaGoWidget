@@ -10,6 +10,7 @@ import {
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import CnvMutationScoreBox from './CnvMutationScoreBox'
+import {getSampleGeneLabelForView} from '../legend/GeneGeneExpressionLegend'
 
 export default class HoverGeneSample extends PureComponent {
 
@@ -34,23 +35,9 @@ export default class HoverGeneSample extends PureComponent {
             backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
           }}
         >
-          <strong>ZScore</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+          <strong>{getSampleGeneLabelForView(view)}</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
         </div>
         }
-        {/*{ isViewGeneExpression(view) &&  data.expression && data.geneExpression &&*/}
-        {/*  <div className={BaseStyle.pathwayChip}>*/}
-        {/*    <strong>ZScore</strong>*/}
-        {/*    <div*/}
-        {/*      className={BaseStyle.scoreBox}*/}
-        {/*      style={{*/}
-        {/*        color:interpolateGeneExpressionFont(data.expression.geneExpression),*/}
-        {/*        backgroundColor:interpolateGeneExpression(data.expression.geneExpression)*/}
-        {/*      }}*/}
-        {/*    >*/}
-        {/*      {data.expression.geneExpression.toPrecision(2)}*/}
-        {/*    </div>*/}
-        {/*  </div>*/}
-        {/*}*/}
         {!isViewGeneExpression(view) &&
             <CnvMutationScoreBox cohortIndex={cohortIndex} data={data}/>
         }
