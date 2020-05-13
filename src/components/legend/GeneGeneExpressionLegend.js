@@ -15,7 +15,7 @@ export class GeneGeneExpressionLegend extends PureComponent {
           </div>
         </td>
         <td colSpan={1}>
-          <span className={BaseStyle.legendLabel}>Label</span>
+          <span className={BaseStyle.legendLabel}>Middle</span>
           <pre style={{marginLeft: 10,display:'inline'}}>Mean ZScore</pre>
           <br/>
           <GeneSetLegend
