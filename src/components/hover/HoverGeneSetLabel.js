@@ -43,7 +43,7 @@ export default class HoverGeneSetLabel extends PureComponent {
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
             }}
           >
-            <strong>Mean Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+            <strong>chi-square test χ2</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
           </span>
         </div>
       </div>
