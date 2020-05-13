@@ -47,9 +47,25 @@ export function getGeneColorMask() {
   return [26, 83, 92]
 }
 
+export function RGBToHex(inputArray) {
+  let [r,g,b] = inputArray
+  r = r.toString(16)
+  g = g.toString(16)
+  b = b.toString(16)
+
+  if (r.length === 1)
+    r = '0' + r
+  if (g.length === 1)
+    g = '0' + g
+  if (b.length === 1)
+    b = '0' + b
+
+  return '#' + r + g + b
+}
+
 export const GENE_EXPRESSION_GENE_SET_COLOR_MAX = [255, 10, 10]
 export const CNV_MUTATION_GENE_SET_COLOR_MAX = [139,69,19]
-export const CNV_MUTATION_GENE_SET_COLOR_MID = '#e78e4f'
+export const CNV_MUTATION_GENE_SET_COLOR_MID = [231,142,79]
 
 export function getGeneSetColorMask(view) {
   return isViewGeneExpression(view) ? GENE_EXPRESSION_GENE_SET_COLOR_MAX : CNV_MUTATION_GENE_SET_COLOR_MAX
