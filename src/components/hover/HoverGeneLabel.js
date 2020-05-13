@@ -26,16 +26,22 @@ export default class HoverGeneLabel extends PureComponent {
           <div><b>Gene</b> {data.pathway.gene[0].replace(/_/g,' ')}</div>
           <br/>
           { isViewGeneExpression(view) &&
-          <div
-            className={BaseStyle.scoreBox}
-            style={{
-              color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
-              backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
-            }}
-          >
-            {getMiddleGeneLabelForView(view)}&nbsp;&nbsp;
-            {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
-          </div>
+            [
+              <strong>
+                {getMiddleGeneLabelForView(view)}
+              </strong>,
+              <br/>,
+              <br/>,
+              <div
+                className={BaseStyle.scoreBox}
+                style={{
+                  color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
+                  backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
+                }}
+              >
+                {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
+              </div>
+            ]
           }
           { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
           <div

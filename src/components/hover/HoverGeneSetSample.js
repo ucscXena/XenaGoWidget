@@ -30,6 +30,8 @@ export default class HoverGeneSetSample extends PureComponent {
           <br/>
           <span><strong>Sample</strong> {data.tissue}</span>
           <br/>
+          {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}
+          <br/>
           <br/>
           <div
             className={BaseStyle.scoreBox}
@@ -38,8 +40,7 @@ export default class HoverGeneSetSample extends PureComponent {
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
             }}
           >
-            {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}
-            : {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
+            {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
           </div>
           <br/>
           <br/>
