@@ -15,6 +15,7 @@ export function getMiddleGeneSetLabelForView(view){
     return 'Sample Regulon activity score'
 
   default:
+    // eslint-disable-next-line no-console
     console.error('do not know how to handle')
   }
   return view
@@ -30,6 +31,7 @@ export function getSampleGeneSetLabelForView(view){
     return 'Sample Regulon activity score'
 
   default:
+    // eslint-disable-next-line no-console
     console.error('do not know how to handle')
   }
   return view

@@ -15,6 +15,7 @@ export function getMiddleGeneLabelForView(view){
     return 'Mean gene exp Z-Score'
 
   default:
+    // eslint-disable-next-line no-console
     console.error('do not know how to handle')
   }
   return view
@@ -30,6 +31,7 @@ export function getSampleGeneLabelForView(view){
     return 'Sample gene exp Z-Score'
 
   default:
+    // eslint-disable-next-line no-console
     console.error('do not know how to handle')
   }
   return view
