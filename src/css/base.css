@@ -440,6 +440,13 @@ div[data-react-toolbox=dialog] > section{
   display: inline;
 }
 
+.scoreBoxBlock{
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: 5px;
+  display: block;
+}
+
 .samplesBox{
   padding-left: 5px;
   padding-top: 0;
@@ -557,4 +564,9 @@ border-radius: 5px;
   fill: none;
   stroke: magenta;
   stroke-width: 2px;
+}
+
+.legendLabel{
+  text-decoration: underline;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }

@@ -1,21 +1,21 @@
 import React from 'react'
-import PureComponent from './PureComponent'
+import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 
 const TEXT_Y_OFFSET = 15
-const IMAGE_HEIGHT = 10 
+const IMAGE_HEIGHT = 10
 
 export class GeneSetLegend extends PureComponent {
 
 
   render() {
 
-    const precision = this.props.precision!==undefined ? this.props.precision : 2 
-    const formattedMin = this.props.minScore.toFixed(precision)
-    const formattedMax = this.props.maxScore.toFixed(precision)
+    const precision = this.props.precision!==undefined ? this.props.precision : 2
+    const formattedMin = isNaN(this.props.minScore) ? this.props.minScore : this.props.minScore.toFixed(precision)
+    const formattedMax = isNaN(this.props.maxScore) ? this.props.maxScore : this.props.maxScore.toFixed(precision)
 
-    const label = this.props.label 
-    const labelLength = label.length * 9 
+    const label = this.props.label
+    const labelLength = label ? label.length * 9 : 0
 
     const maxColor = this.props.maxColor ? this.props.maxColor : 'red'
     const midColor = this.props.midColor ? this.props.midColor : 'white'
@@ -33,9 +33,11 @@ export class GeneSetLegend extends PureComponent {
             <stop offset="100%" stopColor={minColor} />
           </linearGradient>
         </defs>
+        {label &&
         <text fontFamily='monospace' height={20} width={labelLength} x={0} y={TEXT_Y_OFFSET}>
           {label}
         </text>
+        }
         <text fontFamily='monospace' height={20} width={20} x={labelLength} y={TEXT_Y_OFFSET}>
           {formattedMax}
         </text>
@@ -51,7 +53,7 @@ export class GeneSetLegend extends PureComponent {
 
 GeneSetLegend.propTypes = {
   id: PropTypes.any.isRequired,
-  label: PropTypes.any.isRequired,
+  label: PropTypes.any,
   maxColor: PropTypes.any,
   maxScore: PropTypes.any.isRequired,
   midColor: PropTypes.any,

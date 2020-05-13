@@ -3,6 +3,7 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
+  interpolateCnvMutationColor,
   interpolateGeneExpression,
   interpolateGeneExpressionFont
 } from '../../functions/DrawFunctions'
@@ -11,6 +12,9 @@ import {getRatio} from '../../functions/HoverFunctions'
 
 export default class HoverGeneLabel extends PureComponent {
 
+  getPercent(data){
+    return data.pathway.samplesAffected / data.pathway.total * 100.0
+  }
 
   render() {
     let {data, view} = this.props
@@ -33,9 +37,16 @@ export default class HoverGeneLabel extends PureComponent {
           </div>
           }
           { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
-          <span>
+          <div
+            className={BaseStyle.scoreBoxBlock}
+            style={{
+              color: 'black',
+              marginTop: 5,
+              backgroundColor: interpolateCnvMutationColor(this.getPercent(data) )
+            }}
+          >
             <strong>Samples Affected</strong><br/> {getRatio(data.pathway)}
-          </span>
+          </div>
           }
         </div>
       </div>

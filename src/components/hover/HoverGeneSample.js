@@ -26,33 +26,33 @@ export default class HoverGeneSample extends PureComponent {
           <strong>Sample</strong>{data.tissue}
         </div>
         <br/>
+        {isViewGeneExpression(view) &&
         <div
           className={BaseStyle.scoreBox}
           style={{
-            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
+            color: isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
             backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
           }}
         >
-          <strong>Score</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+          <strong>ZScore</strong> {score === 'NaN' ? 'Not available' : score.toFixed(2)}
         </div>
-        { isViewGeneExpression(view) &&  data.expression && data.geneExpression &&
-          <div className={BaseStyle.pathwayChip}>
-            <strong>ZScore</strong>
-            <div
-              className={BaseStyle.scoreBox}
-              style={{
-                color:interpolateGeneExpressionFont(data.expression.geneExpression),
-                backgroundColor:interpolateGeneExpression(data.expression.geneExpression)
-              }}
-            >
-              {data.expression.geneExpression.toPrecision(2)}
-            </div>
-          </div>
         }
-        <br/>
-        <br/>
+        {/*{ isViewGeneExpression(view) &&  data.expression && data.geneExpression &&*/}
+        {/*  <div className={BaseStyle.pathwayChip}>*/}
+        {/*    <strong>ZScore</strong>*/}
+        {/*    <div*/}
+        {/*      className={BaseStyle.scoreBox}*/}
+        {/*      style={{*/}
+        {/*        color:interpolateGeneExpressionFont(data.expression.geneExpression),*/}
+        {/*        backgroundColor:interpolateGeneExpression(data.expression.geneExpression)*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      {data.expression.geneExpression.toPrecision(2)}*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*}*/}
         {!isViewGeneExpression(view) &&
-          <CnvMutationScoreBox cohortIndex={cohortIndex} data={data}/>
+            <CnvMutationScoreBox cohortIndex={cohortIndex} data={data}/>
         }
       </div>
     )
