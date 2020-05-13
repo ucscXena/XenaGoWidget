@@ -300,21 +300,41 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
             const mutationColorMask = generateMask(mutation4Score,mutation4ColorMask,mutation3Score,mutation3ColorMask,mutation2ColorMask)
             const cnvColor = cnvScore === 0 ? 0 : 255
             const mutationColor = mutationScore === 0 ? 0 : 255
-            let buffMid = (buffEnd - buffStart) / 2 + buffStart
             // buffMid has to be a multiple of 4
-            buffMid += buffMid % 4
-            for (let l = buffStart ; l < buffEnd ; l += 4 * img.width) {
-              if(l < buffMid){
-                img.data[l] = cnvColorMask[0]
-                img.data[l + 1] = cnvColorMask[1]
-                img.data[l + 2] = cnvColorMask[2]
-                img.data[l + 3] = cnvColor
+            if(view===VIEW_ENUM.CNV_MUTATION){
+              let buffMid = (buffEnd - buffStart) / 2 + buffStart
+              buffMid += buffMid % 4
+              for (let l = buffStart ; l < buffEnd ; l += 4 * img.width) {
+                if(l < buffMid){
+                  img.data[l] = cnvColorMask[0]
+                  img.data[l + 1] = cnvColorMask[1]
+                  img.data[l + 2] = cnvColorMask[2]
+                  img.data[l + 3] = cnvColor
+                }
+                if(l >= buffMid){
+                  img.data[l] = mutationColorMask[0]
+                  img.data[l + 1] = mutationColorMask[1]
+                  img.data[l + 2] = mutationColorMask[2]
+                  img.data[l + 3] = mutationColor
+                }
               }
-              if(l >= buffMid){
+            }
+            else
+            if(view===VIEW_ENUM.MUTATION) {
+              for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
                 img.data[l] = mutationColorMask[0]
                 img.data[l + 1] = mutationColorMask[1]
                 img.data[l + 2] = mutationColorMask[2]
                 img.data[l + 3] = mutationColor
+              }
+            }
+            else
+            if(view===VIEW_ENUM.COPY_NUMBER) {
+              for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
+                img.data[l] = cnvColorMask[0]
+                img.data[l + 1] = cnvColorMask[1]
+                img.data[l + 2] = cnvColorMask[2]
+                img.data[l + 3] = cnvColor
               }
             }
           }
