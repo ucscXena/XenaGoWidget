@@ -278,7 +278,6 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
       }
       else{
         let color = regionColor(d, colorFilter)
-        if(d[0].golabel==='Intrinsic apoptotic pathway' && color > 250) console.log('d',JSON.stringify(d[0].golabel),d,color)
 
         color = color > 255 ? 255 : color
 
