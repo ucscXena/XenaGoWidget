@@ -565,3 +565,8 @@ border-radius: 5px;
   stroke: magenta;
   stroke-width: 2px;
 }
+
+.legendLabel{
+  text-decoration: underline;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}

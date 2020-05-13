@@ -1,6 +1,7 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import {GeneSetLegend} from './GeneSetLegend'
+import BaseStyle from '../../css/base.css'
 import {MAX_CNV_MUTATION_DIFF} from '../XenaGeneSetApp'
 import {
   CNV_MUTATION_GENE_SET_COLOR_MAX,
@@ -16,21 +17,26 @@ export class GeneSetCnvMutationLegend extends PureComponent {
 
     return (
       <tr>
-        <td colSpan={4}>
-          {/*<div className={BaseStyle.verticalLegendBox}>*/}
+        <td colSpan={1} >
+          <div className={BaseStyle.verticalLegendBox}>
           Geneset
-          {/*</div>*/}
-          {/*</td>*/}
-          {/*<td colSpan={1}>*/}
-          Label
+          </div>
+        </td>
+        <td colSpan={1}>
+          <span className={BaseStyle.legendLabel}>Label</span>
+          <pre style={{marginLeft: 10,display:'inline'}}>chi-square test χ2</pre>
           <GeneSetLegend
-            id='mean-score' label={'chi-square test χ2'}
+            id='mean-score'
             maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
             precision={0}
           />
-          Sample
+        </td>
+        <td colSpan={1}>
+          <span className={BaseStyle.legendLabel}>Sample</span>
+          <pre style={{marginLeft: 10,display:'inline'}}>Hits per sample</pre>
           <GeneSetLegend
-            id='geneSampleLegendMutationCnv' label={'hits per sample'} maxColor={RGBToHex(CNV_MUTATION_GENE_SET_COLOR_MAX)}
+            id='geneSampleLegendMutationCnv'
+            maxColor={RGBToHex(CNV_MUTATION_GENE_SET_COLOR_MAX)}
             maxScore={'5+'} midColor={RGBToHex(CNV_MUTATION_GENE_SET_COLOR_MID)}
             minColor='white' minScore={0} precision={0}
           />
