@@ -294,6 +294,8 @@ body {
   font-size:small;
   box-shadow: 1px 1px 1px 1px gray;
   border-radius:5px;
+  float: right;
+  background-color: lemonchiffon;
 }
 
 .cnvMutationLegendBox{

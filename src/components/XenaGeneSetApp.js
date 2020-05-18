@@ -948,7 +948,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <GeneGeneExpressionLegend filter={this.state.filter}/>
                       }
                       {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
-                      <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
+                        <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
                       }
 
                       <tr>

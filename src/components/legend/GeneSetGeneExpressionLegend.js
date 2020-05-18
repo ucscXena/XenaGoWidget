@@ -4,6 +4,7 @@ import {GeneSetLegend} from './GeneSetLegend'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {VIEW_ENUM} from '../../data/ViewEnum'
+import {GeneSetLegendLabel} from './GeneSetLegendLabel'
 
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
@@ -45,9 +46,7 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
     return (
       <tr>
         <td colSpan={1}>
-          <div className={BaseStyle.verticalLegendBox}>
-            Geneset
-          </div>
+          <GeneSetLegendLabel/>
         </td>
         <td colSpan={1}>
           <span className={BaseStyle.legendLabel}>Middle</span>

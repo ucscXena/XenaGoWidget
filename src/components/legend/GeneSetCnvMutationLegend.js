@@ -8,6 +8,7 @@ import {
   CNV_MUTATION_GENE_SET_COLOR_MID,
   RGBToHex
 } from '../../functions/ColorFunctions'
+import {GeneSetLegendLabel} from './GeneSetLegendLabel'
 
 
 export class GeneSetCnvMutationLegend extends PureComponent {
@@ -18,9 +19,7 @@ export class GeneSetCnvMutationLegend extends PureComponent {
     return (
       <tr>
         <td colSpan={1} >
-          <div className={BaseStyle.verticalLegendBox}>
-          Geneset
-          </div>
+          <GeneSetLegendLabel/>
         </td>
         <td colSpan={1}>
           <span className={BaseStyle.legendLabel}>Middle</span>

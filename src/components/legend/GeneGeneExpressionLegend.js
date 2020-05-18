@@ -1,9 +1,9 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
-import BaseStyle from '../../css/base.css'
 import {GeneSetLegend} from './GeneSetLegend'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import PropTypes from 'prop-types'
+import {GeneLegendLabel} from './GeneLegendLabel'
 
 export function getMiddleGeneLabelForView(view){
   switch (view) {
@@ -43,9 +43,7 @@ export class GeneGeneExpressionLegend extends PureComponent {
     return (
       <tr style={{height: 50}} >
         <td colSpan={1}>
-          <div className={BaseStyle.verticalLegendBox}>
-            Gene
-          </div>
+          <GeneLegendLabel/>
         </td>
         <td colSpan={1} style={{borderLeftWidth:1,borderLeft:'1 px solid black'}}>
           {/*<span className={BaseStyle.legendLabel}>Middle</span>*/}

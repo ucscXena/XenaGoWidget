@@ -3,7 +3,7 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetLegend} from './GeneSetLegend'
-import BaseStyle from '../../css/base.css'
+import {GeneLegendLabel} from './GeneLegendLabel'
 
 
 export class GeneCnvMutationLegend extends PureComponent {
@@ -13,11 +13,8 @@ export class GeneCnvMutationLegend extends PureComponent {
 
     return (
       <tr style={{height: 50}} >
-
         <td colSpan={1} >
-          <div className={BaseStyle.verticalLegendBox}>
-            Gene
-          </div>
+          {<GeneLegendLabel/>}
         </td>
         <td colSpan={1}>
           {/*<span className={BaseStyle.legendLabel}>Middle</span>*/}
