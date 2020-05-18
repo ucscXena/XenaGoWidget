@@ -4,6 +4,7 @@ import {GeneSetLegend} from './GeneSetLegend'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import PropTypes from 'prop-types'
 import {GeneLegendLabel} from './GeneLegendLabel'
+import BaseStyle from '../../css/base.css'
 
 export function getMiddleGeneLabelForView(view){
   switch (view) {
@@ -45,27 +46,28 @@ export class GeneGeneExpressionLegend extends PureComponent {
         <td colSpan={1}>
           <GeneLegendLabel/>
         </td>
-        <td colSpan={1} style={{borderLeftWidth:1,borderLeft:'1 px solid black'}}>
-          {/*<span className={BaseStyle.legendLabel}>Middle</span>*/}
-          <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneLabelForView(this.props.filter)}</pre>
-          <br/>
-          <GeneSetLegend
-            id='geneExpressionGeneScore'
-            maxScore={2}
-            minScore={-2}
-          />
+        <td colSpan={1} >
+          <div className={BaseStyle.legendTextDiv}>
+            <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneLabelForView(this.props.filter)}</pre>
+            <br/>
+            <GeneSetLegend
+              id='geneExpressionGeneScore'
+              maxScore={2}
+              minScore={-2}
+            />
+          </div>
         </td>
         <td colSpan={1}>
-          {/*<span className={BaseStyle.legendLabel}>Sample</span>*/}
-          <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneLabelForView(this.props.filter)}</pre>
-          <br/>
-          <GeneSetLegend
-            id='geneExpressionGeneSampleScore'
-            // label={this.props.filter + ' score'}
-            maxScore={2}
-            minScore={-2}
-          />
-
+          <div className={BaseStyle.legendTextDiv}>
+            <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneLabelForView(this.props.filter)}</pre>
+            <br/>
+            <GeneSetLegend
+              id='geneExpressionGeneSampleScore'
+              // label={this.props.filter + ' score'}
+              maxScore={2}
+              minScore={-2}
+            />
+          </div>
         </td>
       </tr>
     )

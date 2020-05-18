@@ -4,6 +4,7 @@ import {GeneSetLegend} from './GeneSetLegend'
 import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {GeneSetLegendLabel} from './GeneSetLegendLabel'
+import BaseStyle from '../../css/base.css'
 
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
@@ -48,22 +49,26 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
           <GeneSetLegendLabel/>
         </td>
         <td colSpan={1}>
-          <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
-          <br/>
-          <GeneSetLegend
-            id='geneExpressionGeneSetLabelScore'
-            maxScore={this.props.maxValue}
-            minScore={-this.props.maxValue}
-          />
+          <div className={BaseStyle.legendTextDiv}>
+            <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
+            <br/>
+            <GeneSetLegend
+              id='geneExpressionGeneSetLabelScore'
+              maxScore={this.props.maxValue}
+              minScore={-this.props.maxValue}
+            />
+          </div>
         </td>
         <td colSpan={1}>
-          <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
-          <br/>
-          <GeneSetLegend
-            id='geneExpressionGeneSetSampleScore'
-            maxScore={this.props.maxValue}
-            minScore={-this.props.maxValue}
-          />
+          <div className={BaseStyle.legendTextDiv}>
+            <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
+            <br/>
+            <GeneSetLegend
+              id='geneExpressionGeneSetSampleScore'
+              maxScore={this.props.maxValue}
+              minScore={-this.props.maxValue}
+            />
+          </div>
         </td>
       </tr>
     )
