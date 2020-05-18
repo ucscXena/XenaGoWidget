@@ -29,8 +29,10 @@ export class GeneCnvMutationLegend extends PureComponent {
             />
           </div>
         </td>
-        <td className={BaseStyle.legendDiv} colSpan={1}>
-          <CnvMutationLegend view={this.props.filter}/>
+        <td colSpan={1}>
+          <div className={BaseStyle.legendDiv}>
+            <CnvMutationLegend view={this.props.filter}/>
+          </div>
         </td>
       </tr>
     )

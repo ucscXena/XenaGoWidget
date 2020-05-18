@@ -310,6 +310,7 @@ body {
   border: solid 1px brown;
   background-color: lemonchiffon;
   border-radius: 5px;
+  height: 42px;
   /*box-shadow: 1px 1px inset;*/
 }
 
