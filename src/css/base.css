@@ -298,6 +298,22 @@ body {
   background-color: lemonchiffon;
 }
 
+.legendTextDiv{
+  padding-left: 3px;
+  border: solid 1px brown;
+  background-color: lemonchiffon;
+  border-radius: 5px;
+  /*box-shadow: 1px 1px inset;*/
+}
+
+.legendDiv{
+  border: solid 1px brown;
+  background-color: lemonchiffon;
+  border-radius: 5px;
+  height: 42px;
+  /*box-shadow: 1px 1px inset;*/
+}
+
 .cnvMutationLegendBox{
   /*margin: 2px;*/
   /*padding: 2px;*/

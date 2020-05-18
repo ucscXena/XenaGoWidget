@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetLegend} from './GeneSetLegend'
 import {GeneLegendLabel} from './GeneLegendLabel'
+import BaseStyle from '../../css/base.css'
+
 
 
 export class GeneCnvMutationLegend extends PureComponent {
@@ -17,18 +19,20 @@ export class GeneCnvMutationLegend extends PureComponent {
           {<GeneLegendLabel/>}
         </td>
         <td colSpan={1}>
-          {/*<span className={BaseStyle.legendLabel}>Middle</span>*/}
-          <pre style={{marginLeft: 0,display:'inline'}}>Samples affected %</pre>
-          <GeneSetLegend
-            id='densityGrad1'
-            maxColor='red'
-            maxScore={100} midColor='pink'
-            minColor='white' minScore={0} precision={0}
-          />
+          <div className={BaseStyle.legendTextDiv}>
+            <pre style={{marginLeft: 0,display:'inline'}}>Samples affected %</pre>
+            <GeneSetLegend
+              id='densityGrad1'
+              maxColor='red'
+              maxScore={100} midColor='pink'
+              minColor='white' minScore={0} precision={0}
+            />
+          </div>
         </td>
         <td colSpan={1}>
-          {/*<span className={BaseStyle.legendLabel}>Sample</span>*/}
-          <CnvMutationLegend view={this.props.filter}/>
+          <div className={BaseStyle.legendDiv}>
+            <CnvMutationLegend view={this.props.filter}/>
+          </div>
         </td>
       </tr>
     )

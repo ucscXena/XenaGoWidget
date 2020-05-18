@@ -15,8 +15,9 @@ export default class CrossHairH extends PureComponent{
 
   render() {
     let {mousing, y} = this.props
+    const isVisible = mousing && y > 275
     return (
-      <div className={BaseStyle.crosshairH} style={{top: y, visibility: mousing && y > 270? 'visible' : 'hidden'}}/>
+      <div className={BaseStyle.crosshairH} style={{top: y, visibility: isVisible ? 'visible' : 'hidden'}}/>
     )
   }
 
