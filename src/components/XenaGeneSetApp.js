@@ -50,6 +50,7 @@ import {GeneCnvMutationLegend} from './legend/GeneCnvMutationLegend'
 import {OpenGeneSetLegend} from './legend/OpenGeneSetLegend'
 import {GeneGeneExpressionLegend} from './legend/GeneGeneExpressionLegend'
 import {GeneSetGeneExpressionLegend} from './legend/GeneSetGeneExpressionLegend'
+import {TopLegend} from './legend/TopLegend'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -930,6 +931,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 <td  width={300}>
                   <table style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}>
                     <tbody>
+                      <TopLegend/>
                       {/*Gene set layer*/}
                       {isViewGeneExpression(this.state.filter) &&
                         <GeneSetGeneExpressionLegend filter={this.state.filter} maxValue={maxValue}/>

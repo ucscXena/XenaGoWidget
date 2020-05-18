@@ -2,7 +2,6 @@ import React from 'react'
 import PureComponent from '../PureComponent'
 import {GeneSetLegend} from './GeneSetLegend'
 import PropTypes from 'prop-types'
-import BaseStyle from '../../css/base.css'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {GeneSetLegendLabel} from './GeneSetLegendLabel'
 
@@ -49,29 +48,22 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
           <GeneSetLegendLabel/>
         </td>
         <td colSpan={1}>
-          <span className={BaseStyle.legendLabel}>Middle</span>
-          <br/>
           <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
           <br/>
           <GeneSetLegend
             id='geneExpressionGeneSetLabelScore'
-            // label={this.props.filter + ' score'}
             maxScore={this.props.maxValue}
             minScore={-this.props.maxValue}
           />
         </td>
         <td colSpan={1}>
-          <span className={BaseStyle.legendLabel}>Sample</span>
-          <br/>
           <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
           <br/>
           <GeneSetLegend
             id='geneExpressionGeneSetSampleScore'
-            // label={this.props.filter + ' score'}
             maxScore={this.props.maxValue}
             minScore={-this.props.maxValue}
           />
-
         </td>
       </tr>
     )
