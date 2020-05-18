@@ -17,9 +17,7 @@ export default class HoverGeneSetSample extends PureComponent {
     let {data, cohortIndex, score,view} = this.props
     return (
       <div>
-        <div
-          className={BaseStyle.pathwayChip}
-        >
+        <div className={BaseStyle.pathwayChip}>
           <div className={BaseStyle.boxHeader}>Hovering over</div>
           {data.pathway.source === 'GeneSet' &&
             <span>
@@ -30,20 +28,17 @@ export default class HoverGeneSetSample extends PureComponent {
           <br/>
           <span><strong>Sample</strong> {data.tissue}</span>
           <br/>
-          {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}
-          <br/>
-          <br/>
           <div
-            className={BaseStyle.scoreBox}
+            className={BaseStyle.scoreBoxBlock}
             style={{
               color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
             }}
           >
+            {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}
+            <br/>
             {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
           </div>
-          <br/>
-          <br/>
           { !isViewGeneExpression(view) &&
           <CnvMutationScoreBox cohortIndex={cohortIndex} data={data}/>
           }

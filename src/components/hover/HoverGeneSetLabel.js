@@ -35,22 +35,19 @@ export default class HoverGeneSetLabel extends PureComponent {
           </div>
         ]
         }
-        <div>
+        <span
+          className={BaseStyle.scoreBoxBlock}
+          style={{
+            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
+            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
+          }}
+        >
           <strong>
             { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}
           </strong>
           <br/>
-          <br/>
-          <span
-            className={BaseStyle.scoreBox}
-            style={{
-              color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
-              backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
-            }}
-          >
-            {score === 'NaN' ? 'Not available' : score.toFixed(2)}
-          </span>
-        </div>
+          {score === 'NaN' ? 'Not available' : score.toFixed(2)}
+        </span>
       </div>
     )
   }

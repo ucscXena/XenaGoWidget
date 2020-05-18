@@ -3,8 +3,6 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
-  interpolateCnvMutationColor,
-  interpolateCnvMutationFont,
   interpolateGeneExpression,
   interpolateGeneExpressionFont
 } from '../../functions/DrawFunctions'
@@ -27,21 +25,17 @@ export default class HoverGeneSample extends PureComponent {
           <strong>Sample</strong>{data.tissue}
         </div>
         {isViewGeneExpression(view) &&
-          [
-            <strong key={1}>{getSampleGeneLabelForView(view)}</strong>,
-            <br key={2}/>,
-            <br key={3}/>,
-            <div
-              className={BaseStyle.scoreBox}
-              key={4}
-              style={{
-                color: isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
-                backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
-              }}
-            >
-              {score === 'NaN' ? 'Not available' : score.toFixed(2)}
-            </div>
-          ]
+        <div
+          className={BaseStyle.scoreBoxBlock}
+          style={{
+            color:interpolateGeneExpressionFont(score),
+            backgroundColor: interpolateGeneExpression(score)
+          }}
+        >
+          <strong>{getSampleGeneLabelForView(view)}</strong>
+          <br/>
+          {score ==='NaN' ? 'Not Available' :score.toFixed(2)}
+        </div>
         }
         {!isViewGeneExpression(view) &&
             <CnvMutationScoreBox cohortIndex={cohortIndex} data={data}/>
