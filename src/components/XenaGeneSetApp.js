@@ -51,6 +51,7 @@ import {OpenGeneSetLegend} from './legend/OpenGeneSetLegend'
 import {GeneGeneExpressionLegend} from './legend/GeneGeneExpressionLegend'
 import {GeneSetGeneExpressionLegend} from './legend/GeneSetGeneExpressionLegend'
 import {TopLegend} from './legend/TopLegend'
+import {DiffScaleLegend} from './legend/DiffScaleLegend'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -952,6 +953,7 @@ export default class XenaGeneSetApp extends PureComponent {
                       {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
                         <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
                       }
+                      <DiffScaleLegend maxValue={30} minValue={0} showScale={(this.state.geneData && this.state.geneData[0].data)!==undefined}/>
 
                       <tr>
                         <td valign='top'>

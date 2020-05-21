@@ -1,9 +1,6 @@
 import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
-import {
-  getHighlightedColor,
-} from '../functions/ColorFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {interpolateCnvMutationColor, interpolateGeneExpression} from '../functions/DrawFunctions'
 
@@ -44,107 +41,7 @@ export class GeneSetSelector extends PureComponent {
   }
 
 
-  /**
-   * Score is from 0 to 1
-   * @param score
-     * @param selected
-     * @param hovered
-     * @param width
-     * @param labelHeight
-     * @param highlighted
-     * @returns {*}
-     */
-  static labelStyle(score, selected, hovered, width, labelHeight, highlighted) {
 
-    if (hovered) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px green',
-        cursor: 'pointer',
-        margin: 0,
-        padding: 0,
-      }
-    }
-    else
-    if (selected) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        // boxShadow: '0 0 4px 4px blue',
-        borderRadius: '25px',
-        cursor: 'pointer',
-        margin: 0,
-        padding: 0,
-
-      }
-    }
-    else if (highlighted)  {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
-        cursor: 'pointer',
-        margin: 0,
-        padding: 0,
-      }
-    }
-    else {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 2,
-        cursor: 'pointer'
-      }
-    }
-  }
-
-  static geneLabelStyle(score, selected, hovered, width, labelHeight, highlighted) {
-
-
-    if (hovered) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        // borderRadius: '15px',
-        // boxShadow: '0 0 2px 2px green',
-        cursor: 'pointer'
-      }
-    }
-
-    if (selected) {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        // boxShadow: '0 0 4px 4px purple',
-        // borderRadius: '25px',
-        cursor: 'pointer'
-      }
-    }
-    if (highlighted)  {
-      return {
-        height: labelHeight,
-        width: width,
-        strokeWidth: 1,
-        borderRadius: '15px',
-        boxShadow: '0 0 2px 2px ' + getHighlightedColor(),
-        cursor: 'pointer'
-      }
-    }
-    return {
-      height: labelHeight,
-      width: width,
-      strokeWidth: 2,
-      cursor: 'pointer'
-    }
-  }
 
   onClick = (geneSet) => {
     this.props.onClick({ pathway: geneSet, tissue: 'Header'})
