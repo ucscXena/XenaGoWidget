@@ -25,7 +25,7 @@ export class DiffScaleLegend extends PureComponent {
     return (
       <tr style={{height: 20}} >
         <td colSpan={1}>
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
+          <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -37,7 +37,7 @@ export class DiffScaleLegend extends PureComponent {
               x={10}
               y={10}
             >
-              {this.props.maxValue}
+              {this.props.maxValue.toPrecision(3)}
             </text>
             <text
               fontSize={'smaller'}
@@ -56,7 +56,7 @@ export class DiffScaleLegend extends PureComponent {
             style={{display: 'inline'}} type='checkbox'/> Show
         </td>
         <td colSpan={1}>
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
+          <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -72,10 +72,10 @@ export class DiffScaleLegend extends PureComponent {
             </text>
             <text
               fontSize={'smaller'}
-              x={VERTICAL_GENESET_DETAIL_WIDTH - 30}
+              x={VERTICAL_GENESET_DETAIL_WIDTH - 40}
               y={10}
             >
-              {-this.props.maxValue}
+              {-this.props.maxValue.toPrecision(3)}
             </text>
           </svg>
         </td>

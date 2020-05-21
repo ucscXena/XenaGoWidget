@@ -955,7 +955,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
                       }
                       <DiffScaleLegend
-                        maxValue={30} minValue={0}
+                        maxValue={maxValue} minValue={0}
                         onShowDiffLabel={(value) => {
                           this.setState( { showDiffLabel: value })
                         }}
