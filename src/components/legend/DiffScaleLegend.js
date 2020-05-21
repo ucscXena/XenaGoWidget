@@ -10,11 +10,8 @@ import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
 
 export class DiffScaleLegend extends PureComponent {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      showScale : props.showScale
-    }
+  handleShowDiffLabel = () => {
+    this.props.onShowDiffLabel(!this.props.showDiffLabel)
   }
 
   render() {
@@ -26,9 +23,10 @@ export class DiffScaleLegend extends PureComponent {
       )
     }
     return (
-      <tr style={{height: 20}} >
+      <tr style={{height: 30}} >
         <td colSpan={1}>
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
+          {this.props.showDiffLabel &&
+          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1}}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -50,13 +48,18 @@ export class DiffScaleLegend extends PureComponent {
               {this.props.minValue}
             </text>
           </svg>
+          }
         </td>
         <td colSpan={1} style={{height: 20}}>
           <pre style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</pre>
-          <input checked={this.state.showScale} style={{display: 'inline'}} type='checkbox'/> Show
+          <input
+            checked={this.props.showDiffLabel}
+            onChange={this.handleShowDiffLabel}
+            style={{display: 'inline'}} type='checkbox'/> Show
         </td>
         <td colSpan={1}>
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
+          {this.props.showDiffLabel &&
+          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1}}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -78,6 +81,7 @@ export class DiffScaleLegend extends PureComponent {
               {-this.props.maxValue}
             </text>
           </svg>
+          }
         </td>
       </tr>
     )
@@ -86,5 +90,7 @@ export class DiffScaleLegend extends PureComponent {
 DiffScaleLegend.propTypes = {
   maxValue: PropTypes.any.isRequired,
   minValue: PropTypes.any.isRequired,
+  onShowDiffLabel: PropTypes.any.isRequired,
+  showDiffLabel: PropTypes.any.isRequired,
   showScale: PropTypes.any,
 }
