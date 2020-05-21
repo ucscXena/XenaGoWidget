@@ -17,16 +17,15 @@ export class DiffScaleLegend extends PureComponent {
   render() {
     if(!this.props.showScale){
       return (
-        <tr style={{height: 20}} >
-          <td colSpan={3} style={{height: 20}}/>
+        <tr style={{height: 24}} >
+          <td colSpan={3} style={{height: 24}}/>
         </tr>
       )
     }
     return (
-      <tr style={{height: 30}} >
+      <tr style={{height: 20}} >
         <td colSpan={1}>
-          {this.props.showDiffLabel &&
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1}}>
+          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -48,7 +47,6 @@ export class DiffScaleLegend extends PureComponent {
               {this.props.minValue}
             </text>
           </svg>
-          }
         </td>
         <td colSpan={1} style={{height: 20}}>
           <pre style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</pre>
@@ -58,8 +56,7 @@ export class DiffScaleLegend extends PureComponent {
             style={{display: 'inline'}} type='checkbox'/> Show
         </td>
         <td colSpan={1}>
-          {this.props.showDiffLabel &&
-          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1}}>
+          <svg style={{width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
               points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
@@ -81,7 +78,6 @@ export class DiffScaleLegend extends PureComponent {
               {-this.props.maxValue}
             </text>
           </svg>
-          }
         </td>
       </tr>
     )
