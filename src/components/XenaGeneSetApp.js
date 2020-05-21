@@ -51,6 +51,7 @@ import {OpenGeneSetLegend} from './legend/OpenGeneSetLegend'
 import {GeneGeneExpressionLegend} from './legend/GeneGeneExpressionLegend'
 import {GeneSetGeneExpressionLegend} from './legend/GeneSetGeneExpressionLegend'
 import {TopLegend} from './legend/TopLegend'
+import {DiffScaleLegend} from './legend/DiffScaleLegend'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -103,6 +104,7 @@ export default class XenaGeneSetApp extends PureComponent {
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showCohortEditor: false,
+      showDiffLabel: true,
       sortViewOrder: SORT_ORDER_ENUM.DESC,
       sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.DIFF,
       filterOrder: SORT_ORDER_ENUM.DESC,
@@ -952,9 +954,18 @@ export default class XenaGeneSetApp extends PureComponent {
                       {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
                         <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
                       }
+                      <DiffScaleLegend
+                        maxValue={maxValue} minValue={0}
+                        onShowDiffLabel={(value) => {
+                          this.setState( { showDiffLabel: value })
+                        }}
+                        showDiffLabel={this.state.showDiffLabel}
+                        showScale={(this.state.geneData && this.state.geneData[0].data)!==undefined}
+                      />
 
                       <tr>
                         <td valign='top'>
+                          {this.state.showDiffLabel &&
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={0}
@@ -965,6 +976,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
+                          }
                           <VerticalGeneSetScoresView
                             associatedData={this.state.associatedData[0]}
                             cohortIndex={0}
@@ -1001,6 +1013,7 @@ export default class XenaGeneSetApp extends PureComponent {
                           }
                         </td>
                         <td valign='top'>
+                          {this.state.showDiffLabel &&
                           <DiffColumn
                             associatedData={this.state.associatedData}
                             cohortIndex={1}
@@ -1011,6 +1024,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
                           />
+                          }
                           <VerticalGeneSetScoresView
                             associatedData={this.state.associatedData[1]}
                             cohortIndex={1}
