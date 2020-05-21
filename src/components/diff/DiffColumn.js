@@ -1,7 +1,7 @@
 import React from 'react'
-import PureComponent from './PureComponent'
+import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
-import BaseStyle from '../css/base.css'
+import BaseStyle from '../../css/base.css'
 
 
 export class DiffColumn extends PureComponent {

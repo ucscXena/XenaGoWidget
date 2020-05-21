@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import underscore from 'underscore'
-import PureComponent from './PureComponent'
-import { scoreData } from '../functions/DataFunctions'
+import PureComponent from '../PureComponent'
+import { scoreData } from '../../functions/DataFunctions'
 
 export class DiffLabel extends PureComponent {
   constructor(props) {
@@ -37,7 +37,7 @@ export class DiffLabel extends PureComponent {
   }
 
   calculateDiamond(width,height,cohortIndex) {
-    const diamondWidth = 6 * (width /20) 
+    const diamondWidth = 6 * (width /20)
     const diamondHeight = 6 * (width / 20)
     const offset = (width - diamondWidth) / 2.0
     if(cohortIndex === 0){
