@@ -73,12 +73,9 @@ let currentLoadState = LOAD_STATE.UNLOADED
 function getMaxGeneValue(geneData) {
 
   if(geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways){
-    // console.log(geneData[0].pathways.map( g => g.diffScore ))
-    // console.log(geneData[1].pathways.map( g => g.diffScore ))
     let maxGeneScore = Math.max(...geneData[0].pathways.map( g => g.diffScore))
     let minGeneScore = Math.min(...geneData[1].pathways.map( g => g.diffScore))
     const max = Math.max(Math.abs(maxGeneScore),Math.abs(minGeneScore))
-    // console.log('as',max,minGeneScore,maxGeneScore)
     return [-max,max]
   }
 
