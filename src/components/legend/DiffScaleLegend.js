@@ -1,12 +1,8 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
-// import {GeneSetLegend} from './GeneSetLegend'
-// import {VIEW_ENUM} from '../../data/ViewEnum'
 import PropTypes from 'prop-types'
 import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
-// import {GeneLegendLabel} from './GeneLegendLabel'
-// import BaseStyle from '../../css/base.css'
-
+import {isViewGeneExpression} from '../../functions/DataFunctions'
 
 export class DiffScaleLegend extends PureComponent {
 
@@ -35,6 +31,7 @@ export class DiffScaleLegend extends PureComponent {
       )
     }
 
+    const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
     return (
       <tr style={{height: 20}} >
         <td colSpan={1}>
@@ -59,7 +56,7 @@ export class DiffScaleLegend extends PureComponent {
               x={55}
               y={10}
             >
-              Gene difference
+              {legendText}
             </text>
             <text
               fontSize={'smaller'}
@@ -101,7 +98,7 @@ export class DiffScaleLegend extends PureComponent {
               x={35}
               y={10}
             >
-              Gene difference
+              {legendText}
             </text>
             <text
               fill={'blue'}
@@ -128,4 +125,5 @@ DiffScaleLegend.propTypes = {
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   showScale: PropTypes.any,
+  view: PropTypes.string.isRequired,
 }

@@ -983,6 +983,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         }}
                         showDiffLabel={this.state.showDiffLabel}
                         showScale={(this.state.geneData && this.state.geneData[0].data)!==undefined}
+                        view={this.state.filter}
                       />
 
                       <tr>
