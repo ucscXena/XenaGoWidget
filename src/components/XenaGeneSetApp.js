@@ -58,9 +58,6 @@ export const VERTICAL_GENESET_DETAIL_WIDTH = 180
 const BORDER_OFFSET = 2
 
 export const MIN_FILTER = 2
-export const MIN_GENE_WIDTH_PX = 80// 8 or less
-export const MAX_GENE_WIDTH = 85
-export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH // 85 genes
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
