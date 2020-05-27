@@ -10,6 +10,18 @@ import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
 
 export class DiffScaleLegend extends PureComponent {
 
+  calculateDiamond(width,height,cohortIndex) {
+    const diamondWidth = 10
+    const offset = (width - diamondWidth)
+    if(cohortIndex === 0){
+      // return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`
+      return `${diamondWidth} ${height},${0} ${height /2.0}, ${diamondWidth} 0`
+    }
+    else{
+      return `${offset} ${height},${width} ${height /2.0}, ${offset} 0`
+    }
+  }
+
   handleShowDiffLabel = () => {
     this.props.onShowDiffLabel(!this.props.showDiffLabel)
   }
@@ -34,10 +46,17 @@ export class DiffScaleLegend extends PureComponent {
             />
             <text
               fontSize={'smaller'}
-              x={10}
+              x={15}
               y={10}
             >
               {this.props.maxValue.toPrecision(3)}
+            </text>
+            <text
+              fontSize={'smaller'}
+              x={55}
+              y={10}
+            >
+              Gene difference
             </text>
             <text
               fontSize={'smaller'}
@@ -46,6 +65,10 @@ export class DiffScaleLegend extends PureComponent {
             >
               {this.props.minValue}
             </text>
+            <polygon
+              fill='black'
+              points={this.calculateDiamond(VERTICAL_GENESET_DETAIL_WIDTH,20,0)}
+              stroke='black'/>
           </svg>
         </td>
         <td colSpan={1} style={{height: 20}}>
@@ -72,11 +95,22 @@ export class DiffScaleLegend extends PureComponent {
             </text>
             <text
               fontSize={'smaller'}
-              x={VERTICAL_GENESET_DETAIL_WIDTH - 40}
+              x={35}
+              y={10}
+            >
+              Gene difference
+            </text>
+            <text
+              fontSize={'smaller'}
+              x={VERTICAL_GENESET_DETAIL_WIDTH - 45}
               y={10}
             >
               {-this.props.maxValue.toPrecision(3)}
             </text>
+            <polygon
+              fill='black'
+              points={this.calculateDiamond(VERTICAL_GENESET_DETAIL_WIDTH,20,1)}
+              stroke='black'/>
           </svg>
         </td>
       </tr>
