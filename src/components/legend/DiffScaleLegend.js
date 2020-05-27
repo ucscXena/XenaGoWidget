@@ -34,6 +34,7 @@ export class DiffScaleLegend extends PureComponent {
         </tr>
       )
     }
+
     return (
       <tr style={{height: 20}} >
         <td colSpan={1}>
@@ -45,11 +46,13 @@ export class DiffScaleLegend extends PureComponent {
               strokeWidth={1}
             />
             <text
+              fill={'red'}
               fontSize={'smaller'}
+              fontWeight={'bolder'}
               x={15}
               y={10}
             >
-              {this.props.maxValue.toPrecision(3)}
+              {this.props.minValue.toPrecision(3)}
             </text>
             <text
               fontSize={'smaller'}
@@ -63,7 +66,7 @@ export class DiffScaleLegend extends PureComponent {
               x={VERTICAL_GENESET_DETAIL_WIDTH - 20}
               y={10}
             >
-              {this.props.minValue}
+              {0}
             </text>
             <polygon
               fill='black'
@@ -91,7 +94,7 @@ export class DiffScaleLegend extends PureComponent {
               x={10}
               y={10}
             >
-              {-this.props.minValue}
+              {0}
             </text>
             <text
               fontSize={'smaller'}
@@ -101,7 +104,9 @@ export class DiffScaleLegend extends PureComponent {
               Gene difference
             </text>
             <text
+              fill={'blue'}
               fontSize={'smaller'}
+              fontWeight={'bolder'}
               x={VERTICAL_GENESET_DETAIL_WIDTH - 45}
               y={10}
             >
