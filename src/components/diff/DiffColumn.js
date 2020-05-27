@@ -3,7 +3,6 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 
-
 export class DiffColumn extends PureComponent {
 
   constructor(props) {
@@ -50,9 +49,11 @@ export class DiffColumn extends PureComponent {
               if( (g.diffScore > 0 && cohortIndex===0) || (g.diffScore < 0 && cohortIndex ===1)){
                 let finalScore = g.diffScore
                 if(cohortIndex===0 && g.diffScore > maxValue){
+                  // console.log('0 g diffScore',g.diffScore,maxValue)
                   finalScore = maxValue
                 }
                 if(cohortIndex===1 && g.diffScore < -maxValue){
+                  // console.log('1 g diffScore',g.diffScore,maxValue)
                   finalScore = -maxValue
                 }
                 return [

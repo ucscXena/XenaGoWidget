@@ -1,14 +1,22 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
-// import {GeneSetLegend} from './GeneSetLegend'
-// import {VIEW_ENUM} from '../../data/ViewEnum'
 import PropTypes from 'prop-types'
 import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
-// import {GeneLegendLabel} from './GeneLegendLabel'
-// import BaseStyle from '../../css/base.css'
-
+import {isViewGeneExpression} from '../../functions/DataFunctions'
 
 export class DiffScaleLegend extends PureComponent {
+
+  calculateDiamond(width,height,cohortIndex) {
+    const diamondWidth = 10
+    const offset = (width - diamondWidth)
+    if(cohortIndex === 0){
+      // return `${offset} 0,${offset + diamondWidth / 2} ${diamondHeight}, ${offset + diamondWidth} 0`
+      return `${diamondWidth} ${height},${0} ${height /2.0}, ${diamondWidth} 0`
+    }
+    else{
+      return `${offset} ${height},${width} ${height /2.0}, ${offset} 0`
+    }
+  }
 
   handleShowDiffLabel = () => {
     this.props.onShowDiffLabel(!this.props.showDiffLabel)
@@ -22,6 +30,8 @@ export class DiffScaleLegend extends PureComponent {
         </tr>
       )
     }
+
+    const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
     return (
       <tr style={{height: 20}} >
         <td colSpan={1}>
@@ -33,19 +43,32 @@ export class DiffScaleLegend extends PureComponent {
               strokeWidth={1}
             />
             <text
+              fill={'red'}
               fontSize={'smaller'}
-              x={10}
+              fontWeight={'bolder'}
+              x={15}
               y={10}
             >
-              {this.props.maxValue.toPrecision(3)}
+              {this.props.minValue.toPrecision(3)}
+            </text>
+            <text
+              fontSize={'smaller'}
+              x={55}
+              y={10}
+            >
+              {legendText}
             </text>
             <text
               fontSize={'smaller'}
               x={VERTICAL_GENESET_DETAIL_WIDTH - 20}
               y={10}
             >
-              {this.props.minValue}
+              {0}
             </text>
+            <polygon
+              fill='black'
+              points={this.calculateDiamond(VERTICAL_GENESET_DETAIL_WIDTH,20,0)}
+              stroke='black'/>
           </svg>
         </td>
         <td colSpan={1} style={{height: 20}}>
@@ -68,15 +91,28 @@ export class DiffScaleLegend extends PureComponent {
               x={10}
               y={10}
             >
-              {-this.props.minValue}
+              {0}
             </text>
             <text
               fontSize={'smaller'}
-              x={VERTICAL_GENESET_DETAIL_WIDTH - 40}
+              x={35}
+              y={10}
+            >
+              {legendText}
+            </text>
+            <text
+              fill={'blue'}
+              fontSize={'smaller'}
+              fontWeight={'bolder'}
+              x={VERTICAL_GENESET_DETAIL_WIDTH - 45}
               y={10}
             >
               {-this.props.maxValue.toPrecision(3)}
             </text>
+            <polygon
+              fill='black'
+              points={this.calculateDiamond(VERTICAL_GENESET_DETAIL_WIDTH,20,1)}
+              stroke='black'/>
           </svg>
         </td>
       </tr>
@@ -89,4 +125,5 @@ DiffScaleLegend.propTypes = {
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   showScale: PropTypes.any,
+  view: PropTypes.string.isRequired,
 }

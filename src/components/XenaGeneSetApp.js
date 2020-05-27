@@ -58,9 +58,6 @@ export const VERTICAL_GENESET_DETAIL_WIDTH = 180
 const BORDER_OFFSET = 2
 
 export const MIN_FILTER = 2
-export const MIN_GENE_WIDTH_PX = 80// 8 or less
-export const MAX_GENE_WIDTH = 85
-export const MAX_GENE_LAYOUT_WIDTH_PX = 12 * MAX_GENE_WIDTH // 85 genes
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
@@ -72,6 +69,18 @@ const LOAD_STATE = {
 }
 
 let currentLoadState = LOAD_STATE.UNLOADED
+
+function getMaxGeneValue(geneData) {
+
+  if(geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways){
+    let maxGeneScore = Math.max(...geneData[0].pathways.map( g => g.diffScore))
+    let minGeneScore = Math.min(...geneData[1].pathways.map( g => g.diffScore))
+    const max = Math.max(Math.abs(maxGeneScore),Math.abs(minGeneScore))
+    return [-max,max]
+  }
+
+  return [-2,2]
+}
 
 /**
  * refactor that from index
@@ -110,6 +119,8 @@ export default class XenaGeneSetApp extends PureComponent {
       filterOrder: SORT_ORDER_ENUM.DESC,
       filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.CONTRAST_DIFF,
       filter: filter,
+      minGeneData: -2,
+      maxGeneData: 2,
       hoveredPathway: undefined,
       geneData: [{}, {}],
       pathwayData: [{}, {}],
@@ -375,11 +386,15 @@ export default class XenaGeneSetApp extends PureComponent {
     selection.pathway = pathways.filter( p => p.golabel === selection.pathway.golabel )[0]
 
     currentLoadState = LOAD_STATE.LOADED
+
+    const [minGeneValue,maxGeneValue] = getMaxGeneValue(sortedGeneData)
     this.setState({
       associatedData: mergedGeneSetData,
       pathwaySelection: selection,
       geneList,
       pathways,
+      minGeneData:minGeneValue,
+      maxGeneData:maxGeneValue,
       geneData: sortedGeneData,
       pathwayData: [pathwayDataA, pathwayDataB],
       loading: LOAD_STATE.LOADED,
@@ -532,8 +547,11 @@ export default class XenaGeneSetApp extends PureComponent {
         mergeGeneSetAndGeneDetailData(sortedGeneData[1],sortedAssociatedDataB,pathwayIndex),
       ] : [sortedAssociatedDataA,sortedAssociatedDataB]
 
+    const [minGeneValue,maxGeneValue] = getMaxGeneValue(sortedGeneData)
     this.setState({
       geneData:sortedGeneData,
+      minGeneData:minGeneValue,
+      maxGeneData:maxGeneValue,
       pathwaySelection: pathwaySelectionWrapper,
       associatedData: mergedGeneSetData,
     })
@@ -766,6 +784,7 @@ export default class XenaGeneSetApp extends PureComponent {
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
     let maxValue = 0
 
+
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
       // change gene sets here
@@ -955,12 +974,13 @@ export default class XenaGeneSetApp extends PureComponent {
                         <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
                       }
                       <DiffScaleLegend
-                        maxValue={maxValue} minValue={0}
+                        maxValue={this.state.maxGeneData} minValue={this.state.maxGeneData}
                         onShowDiffLabel={(value) => {
                           this.setState( { showDiffLabel: value })
                         }}
                         showDiffLabel={this.state.showDiffLabel}
                         showScale={(this.state.geneData && this.state.geneData[0].data)!==undefined}
+                        view={this.state.filter}
                       />
 
                       <tr>
@@ -971,7 +991,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={0}
                             geneData={this.state.geneData}
                             labelHeight={22}
-                            maxValue={maxValue}
+                            maxValue={this.state.maxGeneData}
                             pathways={pathways}
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
@@ -1019,7 +1039,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             cohortIndex={1}
                             geneData={this.state.geneData}
                             labelHeight={22}
-                            maxValue={maxValue}
+                            maxValue={this.state.maxGeneData}
                             pathways={pathways}
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
