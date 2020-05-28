@@ -35,6 +35,12 @@ export class GeneSetInformationColumn extends PureComponent {
           style={{backgroundColor: cohortColor}}
         >
           {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
+            <div className={BaseStyle.ssInfoBox}>
+              {/*<Link hr*/}
+              <a href="https://google.com" target='_blank'>Link to SS</a>
+            </div>
+          }
+          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
