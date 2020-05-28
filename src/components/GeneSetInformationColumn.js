@@ -24,30 +24,34 @@ export class GeneSetInformationColumn extends PureComponent {
     return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
+  generateLink(){
+
+    return 'https://google.com'
+  }
+
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
+      const externalLink = this.generateLink()
       return (
         <div
           className={BaseStyle.geneSetDetailBox}
           style={{backgroundColor: cohortColor}}
         >
-          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
-            <div className={BaseStyle.ssInfoBox}>
-              {/*<Link hr*/}
-              <a href="https://google.com" target='_blank'>Link to SS</a>
-            </div>
-          }
-          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
+          <div className={BaseStyle.ssInfoBox}>
+            <a
+              href={externalLink}
+              rel="noopener noreferrer"
+              target='_blank'>Link to SS</a>
+          </div>
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
           />
-          }
           {this.props.open &&
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}
