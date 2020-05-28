@@ -5,6 +5,9 @@ import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
+import {getHostData} from '../functions/FetchFunctions'
+
+const XENA_SS_LINK = 'https://xenabrowser.net/heatmap/'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -24,9 +27,34 @@ export class GeneSetInformationColumn extends PureComponent {
     return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
-  generateLink(){
+  // ?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D\">Example 1</a>"
 
-    return 'https://google.com'
+  generateLink(){
+    const hostData = getHostData(this.props.cohort[this.props.cohortIndex], this.props.view)
+    console.log('host data',hostData)
+    console.log('props',this.props)
+
+    let linkString = ''
+
+    // add gene link
+    // let geneSetName = 'tcga_Kallisto_tpm'
+    // let geneSetHost = 'https://toil.xenahubs.net'
+    let geneSetName = hostData.dataset
+    // let geneSetHost = 'https://toil.xenahubs.net'
+    let geneSetHost = hostData.host
+    // let genes = 'TP53 FOXM1'
+    let genes = this.props.geneDataStats[this.props.cohortIndex].pathways.map( p => p.gene[0]).join(' ')
+    console.log('genes',genes)
+    linkString += `?columns=[{"name":"${geneSetName}","host":"${geneSetHost}","fields":"${genes}"}]`
+
+    // add gene link
+
+    // <a id="link1" href="https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D">Example 1</a>
+    // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22:%22Gene%20Details%22,%22host%22:%22https://toil.xenahubs.net%22,%22fields%22:%22TP53%20FOXM1%22%7D%5D
+    // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D
+
+    let encodedUri = encodeURI(linkString)
+    return XENA_SS_LINK + encodedUri.replace(/:/g,'%3A').replace(/\//g,'%2F').replace(/,/g,'%2C')
   }
 
   render() {

@@ -167,7 +167,7 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } )
 }
 
-function getHostData(cohort,view) {
+export function getHostData(cohort,view) {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return cohort.paradigmPathwayActivity
