@@ -13,10 +13,12 @@ export class TopLegend extends PureComponent {
       <tr>
         <td colSpan={1}/>
         <td colSpan={1}>
+          <FaArrowDown style={{marginLeft:60}}/>
           <span className={BaseStyle.legendLabel}>Middle</span>
           <FaArrowDown/>
         </td>
         <td colSpan={1}>
+          <FaArrowDown style={{marginLeft:60}}/>
           <span className={BaseStyle.legendLabel}>Sample</span>
           <FaArrowDown/>
         </td>

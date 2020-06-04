@@ -585,7 +585,7 @@ border-radius: 5px;
 }
 
 .legendLabel{
-  text-decoration: underline;
+  /*text-decoration: underline;*/
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  margin-left: 70px;
+  margin-left: 0px;
 }
