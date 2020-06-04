@@ -26,11 +26,11 @@ export class LegendBox extends PureComponent {
         position: 'fixed',
         zIndex:8,
         marginTop: HEADER_HEIGHT,
-        marginLeft:260,
-        border:2,
-        borderRadius: 15,
-        borderStyle:'solid',
-        borderColor: 'black',
+        marginLeft:250,
+        // border:2,
+        // borderRadius: 15,
+        // borderStyle:'solid',
+        // borderColor: 'black',
         width: 182 + 182  + 222
       }}>
         <table>
