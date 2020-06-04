@@ -14,7 +14,7 @@ export class GeneCnvMutationLegend extends PureComponent {
   render() {
 
     return (
-      <tr style={{height: 50}} >
+      <tr style={{height: 50, fixed: 'position'}} >
         <td colSpan={1} >
           {<GeneLegendLabel/>}
         </td>

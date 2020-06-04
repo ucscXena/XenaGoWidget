@@ -3,6 +3,7 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
+import BaseStyle from '../../css/base.css'
 
 export class DiffScaleLegend extends PureComponent {
 
@@ -33,7 +34,7 @@ export class DiffScaleLegend extends PureComponent {
 
     const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
     return (
-      <tr style={{height: 20}} >
+      <tr className={BaseStyle.diffScaleLegend} >
         <td colSpan={1}>
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline

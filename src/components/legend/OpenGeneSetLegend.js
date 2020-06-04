@@ -9,7 +9,7 @@ export class OpenGeneSetLegend extends PureComponent {
 
   render() {
     return (
-      <tr style={{height: 50}} >
+      <tr style={{height: 50, position:'fixed'}} >
         <td colSpan={1}/>
         <td colSpan={1}>
           <div className={BaseStyle.openGeneSet}>

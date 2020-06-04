@@ -10,7 +10,7 @@ export class TopLegend extends PureComponent {
   render() {
 
     return (
-      <tr>
+      <tr className={BaseStyle.middleSampleLegend}>
         <td colSpan={1}/>
         <td colSpan={1}>
           <FaArrowDown style={{marginLeft:60}}/>
