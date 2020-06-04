@@ -34,7 +34,7 @@ export class GeneSetInformationColumn extends PureComponent {
           className={BaseStyle.geneSetDetailBox}
           style={{
             backgroundColor: cohortColor,
-            marginTop: 80,
+            marginTop: 70,
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >

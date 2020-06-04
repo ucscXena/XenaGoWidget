@@ -3,7 +3,7 @@ import PureComponent from '../PureComponent'
 // import BaseStyle from '../../css/base.css'
 import PropTypes from 'prop-types'
 // import {VIEW_ENUM} from '../../data/ViewEnum'
-import {LEGEND_HEIGHT} from '../XenaGeneSetApp'
+import {HEADER_HEIGHT, LEGEND_HEIGHT} from '../XenaGeneSetApp'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {OpenGeneSetLegend} from './OpenGeneSetLegend'
 import {GeneGeneExpressionLegend} from './GeneGeneExpressionLegend'
@@ -20,7 +20,19 @@ export class LegendBox extends PureComponent {
 
     return (
 
-      <div style={{height: LEGEND_HEIGHT,backgroundColor: 'white',position: 'fixed',zIndex:8,marginTop:140, marginLeft:260, border:2, borderStyle:'solid', borderColor: 'black',  width: 182 + 182  + 222}}>
+      <div style={{
+        height: LEGEND_HEIGHT,
+        backgroundColor: 'rgba(255,255,255,0.7)',
+        position: 'fixed',
+        zIndex:8,
+        marginTop: HEADER_HEIGHT,
+        marginLeft:260,
+        border:2,
+        borderRadius: 15,
+        borderStyle:'solid',
+        borderColor: 'black',
+        width: 182 + 182  + 222
+      }}>
         <table>
           <tbody>
             <TopLegend/>

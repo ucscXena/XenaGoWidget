@@ -53,7 +53,8 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 80
+export const LEGEND_HEIGHT = 155
+export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 180
 export const LABEL_WIDTH = 200
 
@@ -410,28 +411,6 @@ export default class XenaGeneSetApp extends PureComponent {
     )
   };
 
-  handleGeneHover = (geneHover) => {
-    if (geneHover && geneHover.pathway) {
-      const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0
-      const geneHoverData = []
-      geneHoverData[geneHover.cohortIndex] = geneHover
-
-      const gene = geneHover.pathway.gene[0]
-      const otherPathway = this.state.geneData[otherCohortIndex].pathways.filter(
-        (p) => p.gene[0] === gene)[0]
-      geneHoverData[otherCohortIndex] = {
-        cohortIndex: otherCohortIndex,
-        tissue: 'Header',
-        pathway: otherPathway,
-        expression: otherPathway, // for displaying the hover
-      }
-
-      this.setState({
-        geneHoverData,
-      })
-    }
-  };
-
   handlePathwayHover = (hoveredPoint) => {
     if (!hoveredPoint) {
       this.setState({
@@ -577,29 +556,6 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
-  // handleChangeCohort = (selectedCohort, cohortIndex) => {
-  //   const cohortDetails = getCohortDetails({name: selectedCohort})
-  //   const subCohorts = getSubCohortsOnlyForCohort(selectedCohort)
-  //   if (subCohorts) {
-  //     cohortDetails.subCohorts = subCohorts
-  //     cohortDetails.selectedSubCohorts = subCohorts
-  //   }
-  //
-  //   const newCohortState = [
-  //     cohortIndex === 0 ? cohortDetails : this.state.selectedCohort[0],
-  //     cohortIndex === 1 ? cohortDetails : this.state.selectedCohort[1],
-  //   ]
-  //   AppStorageHandler.storeCohortState(newCohortState[cohortIndex],
-  //     cohortIndex)
-  //
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //     reloadPathways: this.state.automaticallyReloadPathways,
-  //   })
-  // };
-
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -613,88 +569,6 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   };
 
-  // handleChangeSubCohort = (selectedCohort, cohortIndex) => {
-  //   const updateCohortState = update(this.state.selectedCohort, {
-  //     [cohortIndex]: {
-  //       selectedSubCohorts: {$set: selectedCohort.selectedSubCohorts},
-  //     },
-  //   })
-  //   AppStorageHandler.storeCohortState(updateCohortState[cohortIndex],
-  //     cohortIndex)
-  //   this.setState({
-  //     selectedCohort: updateCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //     reloadPathways: this.state.automaticallyReloadPathways,
-  //   })
-  // };
-
-  // handleChangeFilter = (newView) => {
-  //   AppStorageHandler.storeFilterState(newView)
-  //
-  //   this.setState({
-  //     filter: newView,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //     reloadPathways: this.state.automaticallyReloadPathways,
-  //   },
-  //   )
-  // };
-
-  // handleChangeTopFilter = (event) => {
-  //   this.handleChangeFilter(event.target.value)
-  // };
-  //
-  // handleVersusAll = (selectedSubCohort, cohortSourceIndex) => {
-  //   // select ONLY
-  //   const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-  //     selectedSubCohorts: {$set: [selectedSubCohort]},
-  //   })
-  //
-  //   // select ALL
-  //   const targetCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-  //     selectedSubCohorts: {$set: this.state.selectedCohort[cohortSourceIndex].subCohorts},
-  //   })
-  //
-  //   const newCohortState = [
-  //     cohortSourceIndex === 0 ? sourceCohort : targetCohort,
-  //     cohortSourceIndex === 0 ? targetCohort : sourceCohort,
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
-  //
-  // swapCohorts = () => {
-  //   // TODO: swap cohorts, sub cohorts, filters,
-  //   const newCohortState = [
-  //     this.state.selectedCohort[1],
-  //     this.state.selectedCohort[0],
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
-  //
-  // copyCohorts = (cohortSourceIndex) => {
-  //   // TODO: swap cohorts, sub cohorts, filters,
-  //   const newCohortState = [
-  //     this.state.selectedCohort[cohortSourceIndex],
-  //     this.state.selectedCohort[cohortSourceIndex],
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
 
   setActiveGeneSets = (newPathways) => {
     AppStorageHandler.storePathways(newPathways)
@@ -825,9 +699,6 @@ export default class XenaGeneSetApp extends PureComponent {
     return (
       <div>
 
-        {/*<div style={{height: LEGEND_HEIGHT,position: 'fixed',zIndex:8,marginTop:140, marginLeft:260, border:2, borderStyle:'solid', borderColor: 'black',  width: 182 + 182  + 222}}>*/}
-        {/*  Lengend stuff goes here*/}
-        {/*</div>*/}
         <LegendBox
           geneData={this.state.geneData}
           maxGeneData={this.state.maxGeneData}
@@ -949,7 +820,7 @@ export default class XenaGeneSetApp extends PureComponent {
             />
           </Dialog>
           }
-          <table style={{marginTop: LEGEND_HEIGHT + 15}}>
+          <table style={{marginTop: LEGEND_HEIGHT+5}}>
             <tbody>
               <tr>
                 <td style={{minWidth:250}} valign='top' width={250} />
