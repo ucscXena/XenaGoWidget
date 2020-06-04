@@ -49,7 +49,7 @@ export class DiffScaleLegend extends PureComponent {
               x={15}
               y={10}
             >
-              {this.props.minValue.toPrecision(3)}
+              {this.props.minValue.toFixed(2)}
             </text>
             <text
               fontSize={'smaller'}
@@ -107,7 +107,7 @@ export class DiffScaleLegend extends PureComponent {
               x={VERTICAL_GENESET_DETAIL_WIDTH - 45}
               y={10}
             >
-              {-this.props.maxValue.toPrecision(3)}
+              {-this.props.maxValue.toFixed(2)}
             </text>
             <polygon
               fill='black'

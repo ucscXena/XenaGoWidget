@@ -37,7 +37,7 @@ export default class HoverGeneLabel extends PureComponent {
                   {getMiddleGeneLabelForView(view)}
                 </strong>
                 <br/>
-                {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toPrecision(2) : 0}
+                {data.pathway.geneExpressionMean ? data.pathway.geneExpressionMean.toFixed(2) : 0}
               </div>
           }
           { !isViewGeneExpression(view) && data.pathway && data.pathway.samplesAffected!==undefined &&
