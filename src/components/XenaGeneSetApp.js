@@ -790,7 +790,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onEscKeyDown={() => this.setState({showCohortEditor: false})}
             onOverlayClick={() => this.setState({showCohortEditor: false})}
             title="Cohort Editor"
-            type='normal'
+            type='large'
           >
             <CohortEditorSelector
               cohort={this.state.selectedCohort}
