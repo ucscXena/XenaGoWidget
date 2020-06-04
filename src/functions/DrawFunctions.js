@@ -78,30 +78,14 @@ const interpolationTable = {}
 
 export const interpolateGenesetScoreFunction = max => {
   if(!interpolationTable[max]){
-    const scoreFunction = d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb)
-    interpolationTable[max] = scoreFunction
+    interpolationTable[max] = d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb)
   }
   return interpolationTable[max]
 }
 
 
 export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score)
-export let interpolateGeneExpressionFont = (score) => {
-  if(score==='NaN'){
-    return 'black'
-  }
-  let colorArray = getColorArray(interpolateGeneExpressionFunction(score))
-  return colorArray && colorArray[0]+colorArray[2]>255 ? 'black' : 'white'
-}
-
 export let interpolateCnvMutationColor = (score) => score==='NaN' ? 'gray' : interpolateCnvMutationFunction(score)
-export let interpolateCnvMutationFont = (score) => {
-  if(score==='NaN'){
-    return 'black'
-  }
-  let colorArray = getColorArray(interpolateCnvMutationFunction(score))
-  return colorArray && colorArray[0]+colorArray[2]>255 ? 'black' : 'white'
-}
 
 // function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,
 //   labelHeight, cohortIndex,view) {

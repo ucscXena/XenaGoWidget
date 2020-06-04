@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
   interpolateGeneExpression,
-  interpolateGeneExpressionFont
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import CnvMutationScoreBox from './CnvMutationScoreBox'
@@ -31,7 +30,7 @@ export default class HoverGeneSetSample extends PureComponent {
           <div
             className={BaseStyle.scoreBoxBlock}
             style={{
-              color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : 'black',
+              color: 'black',
               backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : 'white'
             }}
           >

@@ -5,7 +5,6 @@ import BaseStyle from '../../css/base.css'
 import {
   interpolateCnvMutationColor,
   interpolateGeneExpression,
-  interpolateGeneExpressionFont
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getRatio} from '../../functions/HoverFunctions'
@@ -30,7 +29,7 @@ export default class HoverGeneLabel extends PureComponent {
                 className={BaseStyle.scoreBoxBlock}
                 key={4}
                 style={{
-                  color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
+                  color: 'white',
                   backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                 }}
               >
