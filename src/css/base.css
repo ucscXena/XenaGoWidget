@@ -589,20 +589,21 @@ border-radius: 5px;
 }
 
 .geneSetLegend{
-  position: fixed;
+  position: absolute;
   margin-top: 30px;
 }
 
 .geneLegend{
-  position: fixed;
+  position: absolute;
   margin-top: 30px;
   height: 50px;
 }
 .diffScaleLegend{
-  position: fixed;
+  position: absolute;
   margin-top: 20px;
 }
 
 .middleSampleLegend{
+  position: absolute;
   margin-top: 30px;
 }
