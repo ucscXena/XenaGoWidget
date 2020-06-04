@@ -15,6 +15,9 @@ import update from 'immutability-helper'
 import Link from 'react-toolbox/lib/link'
 import {AppStorageHandler} from '../service/AppStorageHandler'
 
+function calculateCanSave(samples){
+  return samples[0].length>0 && samples[1].length>0
+}
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -25,6 +28,7 @@ export class CohortEditorSelector extends PureComponent {
     this.state = {
       view: props.view,
       cohort: props.cohort,
+      canSave: calculateCanSave(selectedSamples),
       availableSamples,
       selectedSamples,
       fetchSamples: false,
@@ -101,8 +105,11 @@ export class CohortEditorSelector extends PureComponent {
   updateSampleState(newCohortState) {
     const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)]
     const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])]
+    console.log(selectedSamples)
+
     this.setState({
       cohort: newCohortState,
+      canSave: calculateCanSave(selectedSamples),
       availableSamples,
       selectedSamples,
     })
@@ -310,7 +317,7 @@ export class CohortEditorSelector extends PureComponent {
           <hr/>
           <div className={BaseStyle.cohortEditorBox}>
             <Button
-              icon='save' label='Save' onClick={() => {
+              disabled={!this.state.canSave} icon='save' label='Save' onClick={() => {
                 onChangeView(cohort,view)
               }} primary raised
             />
