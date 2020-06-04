@@ -29,7 +29,7 @@ export default class HoverGeneLabel extends PureComponent {
                 className={BaseStyle.scoreBoxBlock}
                 key={4}
                 style={{
-                  color: 'white',
+                  color: 'black',
                   backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
                 }}
               >
