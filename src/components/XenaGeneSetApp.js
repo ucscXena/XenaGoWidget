@@ -25,7 +25,6 @@ const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
 const {sparseDataMatchPartialField, refGene} = xenaQuery
 import CrossHairH from './crosshair/CrossHairH'
 import CrossHairV from './crosshair/CrossHairV'
-import {getViewsForCohort,} from '../functions/CohortFunctions'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
 import {
@@ -40,7 +39,6 @@ import {
   generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
-import {intersection} from '../functions/MathFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
@@ -827,7 +825,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
-    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name))
     return (
       <div>
 
@@ -843,22 +840,7 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{fontSize:titleSize,width: 1100,
             visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
         >
-          Visualizing differences using
-          <select
-            className={BaseStyle.analysisTitleSelector}
-            onChange={(event) => {
-              this.handleChangeFilter(event.target.value)
-            }}
-            value={this.state.filter}
-          >
-            {
-              Object.entries(allowableViews).map( f => {
-                return (
-                  <option key={f[1]} value={f[1]}>{f[1]}</option>
-                )
-              })
-            }
-          </select>
+          Visualizing differences using '{this.state.filter}'
           {titleText}
         </h2>
 
