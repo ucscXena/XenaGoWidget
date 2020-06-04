@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {GeneSetLegendLabel} from './GeneSetLegendLabel'
 import BaseStyle from '../../css/base.css'
+import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
@@ -45,10 +46,10 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
 
     return (
       <tr className={BaseStyle.geneSetLegend}>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <GeneSetLegendLabel/>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
             <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
             <br/>
@@ -59,7 +60,7 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
             />
           </div>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
             <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
             <br/>

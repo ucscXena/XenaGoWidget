@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
-import {VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
+import {DETAIL_WIDTH, LABEL_WIDTH, VERTICAL_GENESET_DETAIL_WIDTH} from '../XenaGeneSetApp'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import BaseStyle from '../../css/base.css'
 
@@ -35,7 +35,7 @@ export class DiffScaleLegend extends PureComponent {
     const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
     return (
       <tr className={BaseStyle.diffScaleLegend} >
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
@@ -72,14 +72,14 @@ export class DiffScaleLegend extends PureComponent {
               stroke='black'/>
           </svg>
         </td>
-        <td colSpan={1} style={{height: 20}}>
+        <td colSpan={1} style={{height: 20}} width={LABEL_WIDTH}>
           <pre style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</pre>
           <input
             checked={this.props.showDiffLabel}
             onChange={this.handleShowDiffLabel}
             style={{display: 'inline'}} type='checkbox'/> Show
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
