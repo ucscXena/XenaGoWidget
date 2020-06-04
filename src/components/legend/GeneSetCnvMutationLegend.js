@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import {GeneSetLegend} from './GeneSetLegend'
-import {MAX_CNV_MUTATION_DIFF} from '../XenaGeneSetApp'
+import {DETAIL_WIDTH, LABEL_WIDTH, MAX_CNV_MUTATION_DIFF} from '../XenaGeneSetApp'
 import {
   CNV_MUTATION_GENE_SET_COLOR_MAX,
   CNV_MUTATION_GENE_SET_COLOR_MID,
@@ -17,11 +17,11 @@ export class GeneSetCnvMutationLegend extends PureComponent {
   render() {
 
     return (
-      <tr>
-        <td colSpan={1} >
+      <tr className={BaseStyle.geneSetLegend}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <GeneSetLegendLabel/>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
             <pre style={{marginLeft: 0,display:'inline'}}>chi-square test χ2</pre>
             <GeneSetLegend
@@ -31,7 +31,7 @@ export class GeneSetCnvMutationLegend extends PureComponent {
             />
           </div>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
             <pre style={{marginLeft: 0,display:'inline'}}>Hits per sample</pre>
             <GeneSetLegend

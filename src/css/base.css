@@ -587,3 +587,24 @@ border-radius: 5px;
 .legendLabel{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
+
+.geneSetLegend{
+  position: absolute;
+  margin-top: 0;
+}
+
+.geneLegend{
+  position: absolute;
+  margin-top: 50px;
+  height: 50px;
+}
+.diffScaleLegend{
+  position: absolute;
+  margin-top: 100px;
+}
+
+.middleSampleLegend{
+  /*position: absolute;*/
+  margin-top: 0;
+  /*margin-left: 0;*/
+}

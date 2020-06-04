@@ -32,7 +32,11 @@ export class GeneSetInformationColumn extends PureComponent {
       return (
         <div
           className={BaseStyle.geneSetDetailBox}
-          style={{backgroundColor: cohortColor}}
+          style={{
+            backgroundColor: cohortColor,
+            marginTop: 70,
+            marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
+          }}
         >
           {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
           <GeneSetSubCohortBox

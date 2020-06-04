@@ -43,13 +43,7 @@ import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
-import {GeneSetCnvMutationLegend} from './legend/GeneSetCnvMutationLegend'
-import {GeneCnvMutationLegend} from './legend/GeneCnvMutationLegend'
-import {OpenGeneSetLegend} from './legend/OpenGeneSetLegend'
-import {GeneGeneExpressionLegend} from './legend/GeneGeneExpressionLegend'
-import {GeneSetGeneExpressionLegend} from './legend/GeneSetGeneExpressionLegend'
-import {TopLegend} from './legend/TopLegend'
-import {DiffScaleLegend} from './legend/DiffScaleLegend'
+import {LegendBox} from './legend/LegendBox'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -59,6 +53,10 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
+export const LEGEND_HEIGHT = 155
+export const HEADER_HEIGHT = 135
+export const DETAIL_WIDTH = 180
+export const LABEL_WIDTH = 200
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -413,28 +411,6 @@ export default class XenaGeneSetApp extends PureComponent {
     )
   };
 
-  handleGeneHover = (geneHover) => {
-    if (geneHover && geneHover.pathway) {
-      const otherCohortIndex = geneHover.cohortIndex === 0 ? 1 : 0
-      const geneHoverData = []
-      geneHoverData[geneHover.cohortIndex] = geneHover
-
-      const gene = geneHover.pathway.gene[0]
-      const otherPathway = this.state.geneData[otherCohortIndex].pathways.filter(
-        (p) => p.gene[0] === gene)[0]
-      geneHoverData[otherCohortIndex] = {
-        cohortIndex: otherCohortIndex,
-        tissue: 'Header',
-        pathway: otherPathway,
-        expression: otherPathway, // for displaying the hover
-      }
-
-      this.setState({
-        geneHoverData,
-      })
-    }
-  };
-
   handlePathwayHover = (hoveredPoint) => {
     if (!hoveredPoint) {
       this.setState({
@@ -580,29 +556,6 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
-  // handleChangeCohort = (selectedCohort, cohortIndex) => {
-  //   const cohortDetails = getCohortDetails({name: selectedCohort})
-  //   const subCohorts = getSubCohortsOnlyForCohort(selectedCohort)
-  //   if (subCohorts) {
-  //     cohortDetails.subCohorts = subCohorts
-  //     cohortDetails.selectedSubCohorts = subCohorts
-  //   }
-  //
-  //   const newCohortState = [
-  //     cohortIndex === 0 ? cohortDetails : this.state.selectedCohort[0],
-  //     cohortIndex === 1 ? cohortDetails : this.state.selectedCohort[1],
-  //   ]
-  //   AppStorageHandler.storeCohortState(newCohortState[cohortIndex],
-  //     cohortIndex)
-  //
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //     reloadPathways: this.state.automaticallyReloadPathways,
-  //   })
-  // };
-
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -616,88 +569,6 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   };
 
-  // handleChangeSubCohort = (selectedCohort, cohortIndex) => {
-  //   const updateCohortState = update(this.state.selectedCohort, {
-  //     [cohortIndex]: {
-  //       selectedSubCohorts: {$set: selectedCohort.selectedSubCohorts},
-  //     },
-  //   })
-  //   AppStorageHandler.storeCohortState(updateCohortState[cohortIndex],
-  //     cohortIndex)
-  //   this.setState({
-  //     selectedCohort: updateCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //     reloadPathways: this.state.automaticallyReloadPathways,
-  //   })
-  // };
-
-  handleChangeFilter = (newView) => {
-    AppStorageHandler.storeFilterState(newView)
-
-    this.setState({
-      filter: newView,
-      fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
-      reloadPathways: this.state.automaticallyReloadPathways,
-    },
-    )
-  };
-
-  // handleChangeTopFilter = (event) => {
-  //   this.handleChangeFilter(event.target.value)
-  // };
-  //
-  // handleVersusAll = (selectedSubCohort, cohortSourceIndex) => {
-  //   // select ONLY
-  //   const sourceCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-  //     selectedSubCohorts: {$set: [selectedSubCohort]},
-  //   })
-  //
-  //   // select ALL
-  //   const targetCohort = update(this.state.selectedCohort[cohortSourceIndex], {
-  //     selectedSubCohorts: {$set: this.state.selectedCohort[cohortSourceIndex].subCohorts},
-  //   })
-  //
-  //   const newCohortState = [
-  //     cohortSourceIndex === 0 ? sourceCohort : targetCohort,
-  //     cohortSourceIndex === 0 ? targetCohort : sourceCohort,
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
-  //
-  // swapCohorts = () => {
-  //   // TODO: swap cohorts, sub cohorts, filters,
-  //   const newCohortState = [
-  //     this.state.selectedCohort[1],
-  //     this.state.selectedCohort[0],
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
-  //
-  // copyCohorts = (cohortSourceIndex) => {
-  //   // TODO: swap cohorts, sub cohorts, filters,
-  //   const newCohortState = [
-  //     this.state.selectedCohort[cohortSourceIndex],
-  //     this.state.selectedCohort[cohortSourceIndex],
-  //   ]
-  //   AppStorageHandler.storeCohortStateArray(newCohortState)
-  //   this.setState({
-  //     selectedCohort: newCohortState,
-  //     fetch: true,
-  //     currentLoadState: LOAD_STATE.LOADING,
-  //   })
-  // };
 
   setActiveGeneSets = (newPathways) => {
     AppStorageHandler.storePathways(newPathways)
@@ -828,11 +699,46 @@ export default class XenaGeneSetApp extends PureComponent {
     return (
       <div>
 
+        <LegendBox
+          geneData={this.state.geneData}
+          maxGeneData={this.state.maxGeneData}
+          maxValue={maxValue}
+          showDiffLabel={this.state.showDiffLabel}
+          view={this.state.filter}
+        />
+
         <NavigationBar
           acceptGeneHandler={this.geneHighlight}
           configurationHandler={this.showConfiguration}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
+        />
+
+        <GeneSetInformationColumn
+          cohort={this.state.selectedCohort}
+          cohortColor={this.state.cohortColors}
+          cohortIndex={0}
+          geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
+          geneHoverData={this.state.geneHoverData}
+          onEditCohorts={this.handleEditCohorts}
+          open={(this.state.geneData && this.state.geneData[0].pathwaySelection) ? this.state.geneData[0].pathwaySelection.open : false}
+          pathwayData={this.state.pathwayData}
+          subCohortCounts={this.state.subCohortCounts}
+          view={this.state.filter}
+        />
+
+        <GeneSetInformationColumn
+          cohort={this.state.selectedCohort}
+          cohortColor={this.state.cohortColors}
+          cohortIndex={1}
+          geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
+          geneHoverData={this.state.geneHoverData}
+          onEditCohorts={this.handleEditCohorts}
+          onShowCohortEditor={this.handleEditCohorts}
+          open={(this.state.geneData && this.state.geneData[1].pathwaySelection) ? this.state.geneData[1].pathwaySelection.open : false}
+          pathwayData={this.state.pathwayData}
+          subCohortCounts={this.state.subCohortCounts}
+          view={this.state.filter}
         />
 
         <h2
@@ -914,56 +820,13 @@ export default class XenaGeneSetApp extends PureComponent {
             />
           </Dialog>
           }
-          <table>
+          <table style={{marginTop: LEGEND_HEIGHT+5}}>
             <tbody>
               <tr>
-                <td style={{minWidth:250}} valign='top' width={250}>
-                  <GeneSetInformationColumn
-                    cohort={this.state.selectedCohort}
-                    cohortColor={this.state.cohortColors}
-                    cohortIndex={0}
-                    geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
-                    geneHoverData={this.state.geneHoverData}
-                    onEditCohorts={this.handleEditCohorts}
-                    open={(this.state.geneData && this.state.geneData[0].pathwaySelection) ? this.state.geneData[0].pathwaySelection.open : false}
-                    pathwayData={this.state.pathwayData}
-                    subCohortCounts={this.state.subCohortCounts}
-                    view={this.state.filter}
-                  />
-                </td>
+                <td style={{minWidth:250}} valign='top' width={250} />
                 <td  width={300}>
                   <table style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}>
                     <tbody>
-                      <TopLegend/>
-                      {/*Gene set layer*/}
-                      {isViewGeneExpression(this.state.filter) &&
-                        <GeneSetGeneExpressionLegend filter={this.state.filter} maxValue={maxValue}/>
-                      }
-                      {!isViewGeneExpression(this.state.filter) &&
-                        <GeneSetCnvMutationLegend/>
-                      }
-
-
-                      {/*Gene layer*/}
-                      {/*empty*/}
-                      {(!this.state.geneData || !this.state.geneData[0].data) &&
-                        <OpenGeneSetLegend />
-                      }
-                      {this.state.geneData && this.state.geneData[0].data && isViewGeneExpression(this.state.filter) &&
-                        <GeneGeneExpressionLegend filter={this.state.filter}/>
-                      }
-                      {this.state.geneData && this.state.geneData[0].data && !isViewGeneExpression(this.state.filter) &&
-                        <GeneCnvMutationLegend filter={this.state.filter} maxValue={5} />
-                      }
-                      <DiffScaleLegend
-                        maxValue={this.state.maxGeneData} minValue={this.state.maxGeneData}
-                        onShowDiffLabel={(value) => {
-                          this.setState( { showDiffLabel: value })
-                        }}
-                        showDiffLabel={this.state.showDiffLabel}
-                        showScale={(this.state.geneData && this.state.geneData[0].data)!==undefined}
-                        view={this.state.filter}
-                      />
 
                       <tr>
                         <td valign='top'>
@@ -1047,21 +910,7 @@ export default class XenaGeneSetApp extends PureComponent {
                     </tbody>
                   </table>
                 </td>
-                <td style={{minWidth:250}} valign='top' width={250}>
-                  <GeneSetInformationColumn
-                    cohort={this.state.selectedCohort}
-                    cohortColor={this.state.cohortColors}
-                    cohortIndex={1}
-                    geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
-                    geneHoverData={this.state.geneHoverData}
-                    onEditCohorts={this.handleEditCohorts}
-                    onShowCohortEditor={this.handleEditCohorts}
-                    open={(this.state.geneData && this.state.geneData[1].pathwaySelection) ? this.state.geneData[1].pathwaySelection.open : false}
-                    pathwayData={this.state.pathwayData}
-                    subCohortCounts={this.state.subCohortCounts}
-                    view={this.state.filter}
-                  />
-                </td>
+                <td style={{minWidth:250}} valign='top' width={250} />
               </tr>
             </tbody>
           </table>
