@@ -105,8 +105,6 @@ export class CohortEditorSelector extends PureComponent {
   updateSampleState(newCohortState) {
     const availableSamples = [getAllSubCohortPossibleSamples(newCohortState[0].name),getAllSubCohortPossibleSamples(newCohortState[1].name)]
     const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])]
-    console.log(selectedSamples)
-
     this.setState({
       cohort: newCohortState,
       canSave: calculateCanSave(selectedSamples),
@@ -169,7 +167,9 @@ export class CohortEditorSelector extends PureComponent {
             <tbody>
               <tr>
                 <td>
-              Analysis:
+                  <div
+                    style={{fontSize:'large',display:'inline',marginRight: 5, fontWeight: 'bolder',marginBottom: 100}}>
+                    Analysis</div>
                   <select
                     onChange={this.handleViewChange}
                     value={view}
@@ -183,19 +183,18 @@ export class CohortEditorSelector extends PureComponent {
                     }
                   </select>
                 </td>
-                <td>
-                  <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
-                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
-                  <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
+              </tr>
+              <tr>
+                <td colSpan={3}>
+                  <u>Current View:</u>Visualizing differences using '{view}'
+                  {this.props.titleText}
                 </td>
               </tr>
               <tr>
-                <th>
-                  <u>Cohort A</u>
+                <th colSpan={2} style={{textAlign: 'left'}}>
                   <select
                     className={BaseStyle.softflow}
                     onChange={(event) => this.handleCohortChange(event,0)}
-                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                     value={cohort[0].name}
                   >
                     {
@@ -209,8 +208,7 @@ export class CohortEditorSelector extends PureComponent {
                     }
                   </select>
                 </th>
-                <th>
-                  <u>Cohort B</u>
+                <th style={{textAlign: 'left'}}>
                   <select
                     className={BaseStyle.softflow}
                     onChange={(event) => this.handleCohortChange(event,1)}
@@ -270,6 +268,13 @@ export class CohortEditorSelector extends PureComponent {
                     </ul>
                   </div>
                   }
+                </td>
+                <td>
+                  <Button flat floating icon='arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
+                  <br/>
+                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
+                  <br/>
+                  <Button flat floating icon='arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
                 </td>
                 <td valign='top'>
                   {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
@@ -342,5 +347,6 @@ CohortEditorSelector.propTypes = {
   onCancelCohortEdit: PropTypes.any.isRequired,
   onChangeView: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
+  titleText: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

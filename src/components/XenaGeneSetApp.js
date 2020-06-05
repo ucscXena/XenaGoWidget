@@ -798,6 +798,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 {showCohortEditor: false})}
               onChangeView={this.handleChangeView}
               subCohortCounts={this.state.subCohortCounts}
+              titleText={titleText}
               view={this.state.filter}
             />
           </Dialog>
