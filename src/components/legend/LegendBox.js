@@ -17,8 +17,7 @@ export class LegendBox extends PureComponent {
 
   render() {
     const {view,maxValue,geneData,maxGeneData,showDiffLabel } = this.props
-
-    if (geneData && geneData[0].samples) {
+    if (geneData) {
       return (
 
         <div style={{

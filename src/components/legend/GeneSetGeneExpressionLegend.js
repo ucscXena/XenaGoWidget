@@ -44,6 +44,10 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
 
   render() {
 
+    if(!this.props.maxValue){
+      return <tr><td/></tr>
+    }
+
     return (
       <tr className={BaseStyle.geneSetLegend}>
         <td colSpan={1} width={DETAIL_WIDTH}>
