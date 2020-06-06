@@ -31,7 +31,8 @@ export class LegendBox extends PureComponent {
           // borderRadius: 15,
           // borderStyle:'solid',
           // borderColor: 'black',
-          width: 182 + 182 + 222
+          // width: 182 + 182 + 222
+          width: '100%'
         }}>
           <table>
             <tbody>
