@@ -21,7 +21,7 @@ export class GeneCnvMutationLegend extends PureComponent {
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>Samples affected %</pre>
+              Samples affected %
             <GeneSetLegend
               id='densityGrad1'
               maxColor='red'

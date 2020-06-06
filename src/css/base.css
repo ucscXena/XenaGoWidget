@@ -302,7 +302,8 @@ body {
   border: solid 1px brown;
   background-color: lemonchiffon;
   border-radius: 5px;
-  /*box-shadow: 1px 1px inset;*/
+  font-family: sans-serif;
+  font-size:small;
 }
 
 .legendDiv{

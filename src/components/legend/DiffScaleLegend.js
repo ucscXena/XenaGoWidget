@@ -45,6 +45,7 @@ export class DiffScaleLegend extends PureComponent {
             />
             <text
               fill={'red'}
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               fontWeight={'bolder'}
               x={15}
@@ -53,6 +54,7 @@ export class DiffScaleLegend extends PureComponent {
               {this.props.minValue.toFixed(2)}
             </text>
             <text
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               x={55}
               y={10}
@@ -60,6 +62,7 @@ export class DiffScaleLegend extends PureComponent {
               {legendText}
             </text>
             <text
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               x={VERTICAL_GENESET_DETAIL_WIDTH - 20}
               y={10}
@@ -72,8 +75,8 @@ export class DiffScaleLegend extends PureComponent {
               stroke='black'/>
           </svg>
         </td>
-        <td colSpan={1} style={{height: 20}} width={LABEL_WIDTH}>
-          <pre style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</pre>
+        <td colSpan={1} style={{fontFamily: 'sans-serif',fontSize: 'small',height: 20}} width={LABEL_WIDTH}>
+          <span style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</span>
           <input
             checked={this.props.showDiffLabel}
             onChange={this.handleShowDiffLabel}
@@ -88,6 +91,7 @@ export class DiffScaleLegend extends PureComponent {
               strokeWidth={1}
             />
             <text
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               x={10}
               y={10}
@@ -95,6 +99,7 @@ export class DiffScaleLegend extends PureComponent {
               {0}
             </text>
             <text
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               x={35}
               y={10}
@@ -103,6 +108,7 @@ export class DiffScaleLegend extends PureComponent {
             </text>
             <text
               fill={'blue'}
+              fontFamily={'sans-serif'}
               fontSize={'smaller'}
               fontWeight={'bolder'}
               x={VERTICAL_GENESET_DETAIL_WIDTH - 45}

@@ -55,7 +55,7 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
+            {getMiddleGeneSetLabelForView(this.props.filter)}
             <br/>
             <GeneSetLegend
               id='geneExpressionGeneSetLabelScore'
@@ -66,7 +66,7 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
         </td>
         <td colSpan={1} width={DETAIL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
+            {getSampleGeneSetLabelForView(this.props.filter)}
             <br/>
             <GeneSetLegend
               id='geneExpressionGeneSetSampleScore'
