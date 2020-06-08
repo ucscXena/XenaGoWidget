@@ -703,6 +703,7 @@ export default class XenaGeneSetApp extends PureComponent {
           geneData={this.state.geneData}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
+          onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
           view={this.state.filter}
         />
