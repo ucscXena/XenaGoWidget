@@ -55,8 +55,8 @@ export const MAX_CNV_MUTATION_DIFF = 50
 export const DEFAULT_GENE_SET_LIMIT = 45
 export const LEGEND_HEIGHT = 155
 export const HEADER_HEIGHT = 135
-export const DETAIL_WIDTH = 180
-export const LABEL_WIDTH = 200
+export const DETAIL_WIDTH = 185
+export const LABEL_WIDTH = 220
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -703,6 +703,7 @@ export default class XenaGeneSetApp extends PureComponent {
           geneData={this.state.geneData}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
+          onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
           view={this.state.filter}
         />

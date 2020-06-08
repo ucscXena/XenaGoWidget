@@ -1,8 +1,6 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
-// import BaseStyle from '../../css/base.css'
 import PropTypes from 'prop-types'
-// import {VIEW_ENUM} from '../../data/ViewEnum'
 import {HEADER_HEIGHT, LEGEND_HEIGHT} from '../XenaGeneSetApp'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {OpenGeneSetLegend} from './OpenGeneSetLegend'
@@ -31,7 +29,8 @@ export class LegendBox extends PureComponent {
           // borderRadius: 15,
           // borderStyle:'solid',
           // borderColor: 'black',
-          width: 182 + 182 + 222
+          width: 182 + 182 + 222 +30
+          // width: '100%'
         }}>
           <table>
             <tbody>
@@ -58,9 +57,7 @@ export class LegendBox extends PureComponent {
               }
               <DiffScaleLegend
                 maxValue={maxGeneData} minValue={maxGeneData}
-                onShowDiffLabel={(value) => {
-                  this.setState({showDiffLabel: value})
-                }}
+                onShowDiffLabel={this.props.onShowDiffLabel}
                 showDiffLabel={showDiffLabel}
                 showScale={(geneData && geneData[0].data) !== undefined}
                 view={view}
@@ -78,6 +75,7 @@ LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
+  onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

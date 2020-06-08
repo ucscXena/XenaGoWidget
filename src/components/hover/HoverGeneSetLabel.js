@@ -41,7 +41,8 @@ export default class HoverGeneSetLabel extends PureComponent {
           }}
         >
           <strong>
-            { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}
+            {/*{ isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}*/}
+            { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'χ2 test'}
           </strong>
           <br/>
           {score === 'NaN' ? 'Not available' : score.toFixed(2)}
