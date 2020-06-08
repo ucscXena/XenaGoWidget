@@ -32,10 +32,11 @@ export class DiffScaleLegend extends PureComponent {
       )
     }
 
-    const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
+    // const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'chi-square test χ2'
+    const legendText = isViewGeneExpression(this.props.view) ? 't-test gene expr' : 'χ2 test'
     return (
       <tr className={BaseStyle.diffScaleLegend} >
-        <td colSpan={1} width={DETAIL_WIDTH}>
+        <td colSpan={1} style={{paddingLeft: 6}} width={DETAIL_WIDTH}>
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
@@ -56,7 +57,7 @@ export class DiffScaleLegend extends PureComponent {
             <text
               fontFamily={'sans-serif'}
               fontSize={'smaller'}
-              x={55}
+              x={60}
               y={10}
             >
               {legendText}
@@ -64,7 +65,7 @@ export class DiffScaleLegend extends PureComponent {
             <text
               fontFamily={'sans-serif'}
               fontSize={'smaller'}
-              x={VERTICAL_GENESET_DETAIL_WIDTH - 20}
+              x={VERTICAL_GENESET_DETAIL_WIDTH - 13}
               y={10}
             >
               {0}
@@ -75,7 +76,7 @@ export class DiffScaleLegend extends PureComponent {
               stroke='black'/>
           </svg>
         </td>
-        <td colSpan={1} style={{fontFamily: 'sans-serif',fontSize: 'small',height: 20}} width={LABEL_WIDTH}>
+        <td colSpan={1} style={{fontFamily: 'sans-serif',fontSize: 'small',height: 20}} width={LABEL_WIDTH-5}>
           <span style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</span>
           <input
             checked={this.props.showDiffLabel}
@@ -93,7 +94,7 @@ export class DiffScaleLegend extends PureComponent {
             <text
               fontFamily={'sans-serif'}
               fontSize={'smaller'}
-              x={10}
+              x={7}
               y={10}
             >
               {0}
@@ -101,7 +102,7 @@ export class DiffScaleLegend extends PureComponent {
             <text
               fontFamily={'sans-serif'}
               fontSize={'smaller'}
-              x={35}
+              x={25}
               y={10}
             >
               {legendText}
@@ -111,7 +112,7 @@ export class DiffScaleLegend extends PureComponent {
               fontFamily={'sans-serif'}
               fontSize={'smaller'}
               fontWeight={'bolder'}
-              x={VERTICAL_GENESET_DETAIL_WIDTH - 45}
+              x={VERTICAL_GENESET_DETAIL_WIDTH - 55}
               y={10}
             >
               {-this.props.maxValue.toFixed(2)}

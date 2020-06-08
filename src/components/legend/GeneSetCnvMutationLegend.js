@@ -23,7 +23,8 @@ export class GeneSetCnvMutationLegend extends PureComponent {
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-              chi-square test χ2
+            {/*chi-square test χ2*/}
+            χ2 test
             <GeneSetLegend
               id='mean-score'
               maxScore={MAX_CNV_MUTATION_DIFF} minScore={-MAX_CNV_MUTATION_DIFF}
