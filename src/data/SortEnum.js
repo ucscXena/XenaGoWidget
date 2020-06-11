@@ -4,9 +4,9 @@ export const SORT_ENUM = {
   ABS_DIFF:'Absolute Diff',
   DIFF:'Cohort Diff',
   ALPHA:'Alpha',
-};
+}
 
 export const SORT_ORDER_ENUM = {
   ASC:'asc',
   DESC:'desc',
-};
+}
