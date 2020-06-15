@@ -65,6 +65,7 @@ export default class GeneSetEditor extends PureComponent {
       cartPathwayLimit: CART_LIMIT,
       limit: VIEW_LIMIT,
       newGeneStateName:'',
+      showLoading:false,
     }
 
 
@@ -75,6 +76,9 @@ export default class GeneSetEditor extends PureComponent {
   componentDidMount() {
     let { selectedCohort, samples } = this.state
     if(isViewGeneExpression(this.props.view)){
+      this.setState({
+        showLoading: true
+      })
       fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData)
     }
     else{
@@ -137,6 +141,7 @@ export default class GeneSetEditor extends PureComponent {
     this.setState({
       loadedPathways,
       cartPathways,
+      showLoading:false,
     })
   };
 
@@ -367,6 +372,11 @@ export default class GeneSetEditor extends PureComponent {
   render() {
     return (
       <div className={BaseStyle.geneSetBox}>
+        <Dialog
+          active={this.state.showLoading}
+          style={{width: 400}}
+          title="Loading Gene Sets"
+        />
         <Dialog
           active={this.state.newGeneStateName!==''}
           onEscKeyDown={() => this.cancelUpdate()}
