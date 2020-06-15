@@ -132,15 +132,15 @@ export function diffSort(prunedColumns,sampleOrder) {
 }
 
 export function scorePathway(p,sortBy) {
-  switch (sortBy) {
-  case SORT_ENUM[SORT_ENUM.TOTAL]:
+  switch (SORT_ENUM[sortBy]) {
+  case SORT_ENUM.TOTAL:
     return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2)
-  case SORT_ENUM[SORT_ENUM.CONTRAST_DIFF]:
+  case SORT_ENUM.CONTRAST_DIFF:
     // if it a positive, then there is no contrast so multiple by 0.5 to emphasize contrast
     return ((p.firstGeneExpressionPathwayActivity * p.secondGeneExpressionPathwayActivity) < 0 ? 1 : 0.5) * Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2)
-  case SORT_ENUM[SORT_ENUM.ABS_DIFF]:
+  case SORT_ENUM.ABS_DIFF:
     return Math.abs(p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2)
-  case SORT_ENUM[SORT_ENUM.DIFF]:
+  case SORT_ENUM.DIFF:
   default:
     return (p.firstGeneExpressionPathwayActivity - p.secondGeneExpressionPathwayActivity).toFixed(2)
   }

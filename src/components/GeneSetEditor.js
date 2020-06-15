@@ -141,21 +141,23 @@ export default class GeneSetEditor extends PureComponent {
   };
 
   filterCart(){
-    console.log('input cart pathways',this.state.cartPathways)
+    // console.log('input cart pathways',this.state.cartPathways,SORT_ENUM[this.state.sortCartBy],SORT_ENUM.ALPHA,SORT_ENUM[this.state.sortCartBy]===SORT_ENUM.ALPHA)
+    // console.log('sort oder is ',this.state.sortCartOrder,SORT_ORDER_ENUM.ASC)
     const filteredCartPathways = this.state.cartPathways.sort((a, b) => {
-      const scoreA = scorePathway(a,this.state.sortCartBy)
-      const scoreB = scorePathway(b,this.state.sortCartBy)
-      switch (this.state.sortCartBy) {
-      case SORT_ENUM[SORT_ENUM.ALPHA]:
-        return (this.state.sortCartOrder === SORT_ORDER_ENUM[SORT_ORDER_ENUM.ASC] ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase())
-      default:
+      if(SORT_ENUM[this.state.sortCartBy]===SORT_ENUM.ALPHA){
+        console.log(a.golabel.toUpperCase(),b.golabel.toUpperCase(),(a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase()))
+        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
+      }
+      else{
+        const scoreA = scorePathway(a,this.state.sortCartBy)
+        const scoreB = scorePathway(b,this.state.sortCartBy)
         if(scoreA==='NaN' && scoreB !=='NaN') return 1
         if(scoreA!=='NaN' && scoreB ==='NaN') return -1
         if(scoreA==='NaN' && scoreB ==='NaN') return -1
-        return (this.state.sortCartOrder === SORT_ORDER_ENUM[SORT_ORDER_ENUM.ASC] ? 1 : -1) * (scoreB-scoreA)
+        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
       }
     })
-    console.log('output cart pathways',this.state.cartPathways)
+    console.log('output cart pathways',filteredCartPathways)
     this.setState({
       filteredCartPathways
     })
@@ -163,22 +165,24 @@ export default class GeneSetEditor extends PureComponent {
 
   filterAvailable(){
     console.log('resorting...')
-    let i = 0
+    console.log('input filter pathways',this.state.loadedPathways,SORT_ENUM[this.state.sortBy],SORT_ENUM.ALPHA,SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA)
+    console.log('sort filter oder is ',this.state.sortOrder,SORT_ORDER_ENUM.ASC)
+    // let i = 0
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||
         (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
-        const scoreA = scorePathway(a,this.state.sortBy)
-        const scoreB = scorePathway(b,this.state.sortBy)
-        if(i <2  ){
-          console.log('score A/B',this.state.sortBy,scoreA,scoreB,JSON.stringify('asdf'))
-          i += 1
+        // if(i <2  ){
+        //   console.log('score A/B',this.state.sortBy,scoreA,scoreB,JSON.stringify('asdf'))
+        //   i += 1
+        // }
+        if(SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA) {
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * a.golabel.toUpperCase().localeCompare(b.golabel.toUpperCase())
         }
-        switch(this.state.sortBy) {
-        case SORT_ENUM[SORT_ENUM.ALPHA]:
-          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) *
-            a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase())
-        default:
+        else{
+        // default:
+          const scoreA = scorePathway(a,this.state.sortBy)
+          const scoreB = scorePathway(b,this.state.sortBy)
           if(scoreA==='NaN' && scoreB !=='NaN') return 1
           if(scoreA!=='NaN' && scoreB ==='NaN') return -1
           if(scoreA==='NaN' && scoreB ==='NaN') return -1
