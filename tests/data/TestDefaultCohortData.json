@@ -221,7 +221,7 @@
     "copyNumberDataSetId": "TCGA.COAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
     "geneExpression": {
       "host": "https://xenago.xenahubs.net",
-      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv2"
+      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv"
     },
     "geneExpressionPathwayActivity": {
       "host": "https://xenago.xenahubs.net",
