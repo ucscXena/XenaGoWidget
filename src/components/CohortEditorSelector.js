@@ -322,25 +322,29 @@ export class CohortEditorSelector extends PureComponent {
                   }
                 </td>
               </tr>
+              <tr>
+                <td colSpan={3}>
+                  <hr/>
+                  {/*<div className={BaseStyle.cohortEditorBox}>*/}
+                  <Button
+                    disabled={!this.state.canSave} icon='save' label='Save' onClick={() => {
+                      onChangeView(cohort,view)
+                    }} primary raised
+                  />
+                  <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
+                  <Button
+                    mini
+                    onClick={() => this.clearTemporarySubCohorts()}
+                    raised
+                    style={{color:'orange',marginLeft:150,fontSize:'smaller'}}
+                  >
+                    Clear temporary subgroups
+                  </Button>
+                  {/*</div>*/}
+                </td>
+              </tr>
             </tbody>
           </table>
-          <hr/>
-          <div className={BaseStyle.cohortEditorBox}>
-            <Button
-              disabled={!this.state.canSave} icon='save' label='Save' onClick={() => {
-                onChangeView(cohort,view)
-              }} primary raised
-            />
-            <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
-            <Button
-              mini
-              onClick={() => this.clearTemporarySubCohorts()}
-              raised
-              style={{color:'orange',marginLeft:150,fontSize:'smaller'}}
-            >
-              Clear temporary subgroups
-            </Button>
-          </div>
         </div>
       )
     }
