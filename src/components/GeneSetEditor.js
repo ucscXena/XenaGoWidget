@@ -4,7 +4,7 @@ import BaseStyle from '../css/base.css'
 import FaEdit from 'react-icons/lib/fa/edit'
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
-import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-o-right'
+import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-right'
 import {Button} from 'react-toolbox/lib/button'
 import PropTypes from 'prop-types'
 import {
@@ -304,7 +304,6 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleRemoveSelectedFromCart() {
-    // find filteredPathways from each selectedFilter
     const selectedCartPathways = this.state.cartPathways
       .filter( f => this.state.selectedCartPathways.indexOf(f.golabel)<0 )
     this.setState({
@@ -380,7 +379,6 @@ export default class GeneSetEditor extends PureComponent {
             // onChange={(newName) => this.setState({newGeneStateName:newName})}
             value={this.state.newGeneStateName}
           />
-          {/*<Button label='Save' onClick={() => this.setState({editGeneSet:this.state.newGeneStateName,newGeneStateName:undefined})} primary raised/>*/}
           <Button label='Save' onClick={this.handleNewGeneSetSaveAndStart.bind(this,'newGeneSetName')} primary raised/>
           <Button label='Cancel' onClick={() => this.setState({newGeneStateName:''})} />
         </Dialog>
@@ -389,7 +387,7 @@ export default class GeneSetEditor extends PureComponent {
             <tr>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox}  width={250}>
-                <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>Source</div>
+                <div style={{fontSize:'larger',fontWeight:'bolder'}}>All Gene Sets available for: <br/>'{this.props.view}'</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
@@ -485,12 +483,12 @@ export default class GeneSetEditor extends PureComponent {
                 </select>
               </td>
               }
-              <td style={{verticalAlign: 'middle'}} valign='top' width={80}>
-                {/*<FaArrowCircleORight style={{verticalAlign:'middle',align:'center'}}/>*/}
+              <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
+                <FaArrowCircleORight style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
-                <div style={{fontSize:'larger',fontWeight:'bolder',textDecoration:'underline'}}>View</div>
+                <div style={{fontSize:'larger',fontWeight:'bolder'}}>Visible Gene Sets</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
