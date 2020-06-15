@@ -629,7 +629,7 @@ border-radius: 5px;
   position: absolute;
   height: calc(100% - 179px);
   left: 50px;
-  width: 700px;
+  width: 800px;
   top: 64px;
 }
 
@@ -638,8 +638,8 @@ border-radius: 5px;
   display: block;
   position: absolute;
   border-radius: 10px;
+  width: 800px;
   left: 50px;
-  /*width: 1000px;*/
   top: 64px;
 }
 
