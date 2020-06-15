@@ -608,3 +608,46 @@ border-radius: 5px;
   margin-top: 0;
   /*margin-left: 0;*/
 }
+
+.dialogWrapper {
+  display: block;
+  position: absolute;
+  height: calc(100% - 179px);
+  width: 1000px;
+  top: 64px;
+}
+.dialogBase {
+  display: block;
+  position: absolute;
+  border-radius: 10px;
+  width: 1000px;
+  top: 64px;
+}
+
+.cohortEditorDialogWrapperBase {
+  display: block;
+  position: absolute;
+  height: calc(100% - 179px);
+  left: 50px;
+  width: 700px;
+  top: 64px;
+}
+
+
+.cohortEditorDialogBase {
+  display: block;
+  position: absolute;
+  border-radius: 10px;
+  left: 50px;
+  /*width: 1000px;*/
+  top: 64px;
+}
+
+
+
+/*div.dialogOverlay {*/
+/*  position: absolute;*/
+/*  width: 100%;*/
+/*  height: 100%;*/
+/*  top: 0;*/
+/*}*/

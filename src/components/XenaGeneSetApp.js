@@ -790,8 +790,11 @@ export default class XenaGeneSetApp extends PureComponent {
             active={this.state.showCohortEditor}
             onEscKeyDown={() => this.setState({showCohortEditor: false})}
             onOverlayClick={() => this.setState({showCohortEditor: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
             title="Cohort Editor"
-            type='large'
           >
             <CohortEditorSelector
               cohort={this.state.selectedCohort}
@@ -809,8 +812,11 @@ export default class XenaGeneSetApp extends PureComponent {
             active={this.state.showGeneSetSearch}
             onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
             onOverlayClick={() => this.setState({showGeneSetSearch: false})}
+            theme={{
+              dialog: BaseStyle.cohortEditorDialogBase,
+              wrapper: BaseStyle.cohortEditorDialogWrapperBase,
+            }}
             title="Gene Set Editor"
-            type="large"
           >
             <GeneSetEditor
               cancelPathwayEdit={() => this.setState(
