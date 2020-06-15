@@ -4,6 +4,7 @@ import BaseStyle from '../css/base.css'
 import FaEdit from 'react-icons/lib/fa/edit'
 import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
 import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
+import FaRedo from 'react-icons/lib/fa/refresh'
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-right'
 import {Button} from 'react-toolbox/lib/button'
 import PropTypes from 'prop-types'
@@ -108,6 +109,11 @@ export default class GeneSetEditor extends PureComponent {
 
   showScore(){
     return isViewGeneExpression(this.props.view)
+  }
+
+
+  redoFilter() {
+    console.log('redoing filter')
   }
 
   handleMeanActivityData = (output) => {
@@ -365,6 +371,22 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
+
+  getCartColor() {
+    // full
+    if(this.state.cartPathways.length === this.state.cartPathwayLimit){
+      return 'lightgreen'
+    }
+    else
+    if(this.state.cartPathways.length < this.state.cartPathwayLimit){
+      return 'green'
+    }
+    else
+    if(this.state.cartPathways.length > this.state.cartPathwayLimit){
+      return 'orange'
+    }
+  }
+
   isCartFull() {
     return this.state.cartPathways.length === this.state.cartPathwayLimit
   }
@@ -375,7 +397,7 @@ export default class GeneSetEditor extends PureComponent {
         <Dialog
           active={this.state.showLoading}
           style={{width: 400}}
-          title="Loading Gene Sets"
+          title={`Loading Gene Sets for '${this.props.view}'...`}
         />
         <Dialog
           active={this.state.newGeneStateName!==''}
@@ -511,7 +533,7 @@ export default class GeneSetEditor extends PureComponent {
                     <tr>
                       <td>
                         <Chip
-                          style={{ backgroundColor: this.isCartFull() ? 'orange':'lightgray'}}
+                          style={{ backgroundColor: this.getCartColor(),color: 'black'}}
                         >{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
                       </td>
                       {this.showScore() &&
@@ -544,9 +566,19 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                         <input
                           onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}
-                          style={{width: 25}}
+                          style={{width: 40}}
                           value={this.state.cartPathwayLimit}
                         />
+                        <Button
+                          // disabled={this.state.selectedCartPathways.length !== 1}
+                          floating
+                          mini
+                          onClick={() => this.redoFilter()}
+                          style={{marginLeft: 20}}
+                          // raised
+                        >
+                          <FaRedo/>
+                        </Button>
                       </td>
                     </tr>
                   </tbody>
@@ -690,22 +722,24 @@ export default class GeneSetEditor extends PureComponent {
             {!this.state.editGeneSet &&
             <tr>
               <td colSpan={3}>
-                <Button
-                  disabled={this.state.editGeneSet !== undefined}
-                  label='View' mini
-                  onClick={() => this.handleViewGeneSets()}
-                  primary raised
-                />
-                <Button
-                  label='Reset' mini
-                  onClick={() => this.handleResetGeneSets()}
-                  raised
-                />
-                <Button
-                  label='Cancel' mini
-                  onClick={() => this.handleCancel()}
-                  raised
-                />
+                <div style={{marginTop: 10}}>
+                  <Button
+                    disabled={this.state.editGeneSet !== undefined}
+                    label='View' mini
+                    onClick={() => this.handleViewGeneSets()}
+                    primary raised
+                  />
+                  <Button
+                    label='Reset' mini
+                    onClick={() => this.handleResetGeneSets()}
+                    raised
+                  />
+                  <Button
+                    label='Cancel' mini
+                    onClick={() => this.handleCancel()}
+                    raised
+                  />
+                </div>
               </td>
             </tr>
             }
