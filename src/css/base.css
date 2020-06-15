@@ -612,7 +612,7 @@ border-radius: 5px;
 .dialogWrapper {
   display: block;
   position: absolute;
-  height: calc(100% - 179px);
+  height: calc(100% );
   width: 1000px;
   top: 64px;
 }

@@ -93,14 +93,14 @@ export default class GeneSetEditor extends PureComponent {
   handleMeanActivityData = (output) => {
     const pathways = getGeneSetsForView(this.props.view)
     let loadedPathways = pathways.map( p => {
-      p.firstGeneExpressionPathwayActivity = undefined 
-      p.secondGeneExpressionPathwayActivity = undefined 
-      return p 
+      p.firstGeneExpressionPathwayActivity = undefined
+      p.secondGeneExpressionPathwayActivity = undefined
+      return p
     })
 
     let indexMap = {}
     pathways.forEach( (p,index) => {
-      indexMap[p.golabel] = index 
+      indexMap[p.golabel] = index
     })
 
     for(let index in output.geneExpressionPathwayActivityA.field){
@@ -132,14 +132,14 @@ export default class GeneSetEditor extends PureComponent {
         const scoreB = scorePathway(b,this.state.sortBy)
         switch(this.state.sortBy) {
         default:
-          if(scoreA==='NaN' && scoreB !=='NaN') return 1 
+          if(scoreA==='NaN' && scoreB !=='NaN') return 1
           if(scoreA!=='NaN' && scoreB ==='NaN') return -1
-          if(scoreA==='NaN' && scoreB ==='NaN') return -1 
-          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA) 
+          if(scoreA==='NaN' && scoreB ==='NaN') return -1
+          return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA)
         case SORT_ENUM.ALPHA:
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase())
         }
-      }) 
+      })
 
     this.setState({
       filteredPathways: filteredPathways,
@@ -197,7 +197,7 @@ export default class GeneSetEditor extends PureComponent {
 
     // slice out found via golabel
     const pathwayIndex = this.state.loadedPathways.findIndex( p => {
-      return p.golabel === selectedGoLabel+'_modified' 
+      return p.golabel === selectedGoLabel+'_modified'
     })
 
     const newPathways= pathwayIndex >=0 ?
@@ -205,7 +205,7 @@ export default class GeneSetEditor extends PureComponent {
       update(this.state.loadedPathways,{$push:[selectedEditedGeneSet]})
 
     const cartIndex = this.state.cartPathways.findIndex( p => {
-      return p.golabel === selectedGoLabel 
+      return p.golabel === selectedGoLabel
     })
 
     const newCart = cartIndex < 0 ?
@@ -234,8 +234,8 @@ export default class GeneSetEditor extends PureComponent {
   handleAddGeneToGeneSet(newGene) {
     const foundGene = this.state.selectedEditGeneSet.gene.findIndex( g => g===newGene[0])
     if(foundGene>=0){
-      alert('Gene already added: '+newGene[0]) 
-      return 
+      alert('Gene already added: '+newGene[0])
+      return
     }
     this.setState({
       selectedEditGeneSet: update( this.state.selectedEditGeneSet,{
@@ -382,7 +382,7 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                         <input
                           onChange={(event) => this.setState({limit: event.target.value})}
-                          style={{width: 25}}
+                          style={{width: 50}}
                           value={this.state.limit}
                         />
                       </td>
@@ -410,8 +410,8 @@ export default class GeneSetEditor extends PureComponent {
                   </Button>
                 </ButtonGroup>
                 }
-
                 {this.state.selectedFilteredPathways.length} Selected
+                <br/>
                 <select
                   disabled={this.state.editGeneSet}
                   multiple
@@ -514,9 +514,9 @@ export default class GeneSetEditor extends PureComponent {
                       case SORT_ENUM.ALPHA:
                         return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase())
                       default:
-                        if(scoreA==='NaN' && scoreB !=='NaN') return 1 
+                        if(scoreA==='NaN' && scoreB !=='NaN') return 1
                         if(scoreA!=='NaN' && scoreB ==='NaN') return -1
-                        if(scoreA==='NaN' && scoreB ==='NaN') return -1 
+                        if(scoreA==='NaN' && scoreB ==='NaN') return -1
                         return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
                       }
                     }).map(p => {
