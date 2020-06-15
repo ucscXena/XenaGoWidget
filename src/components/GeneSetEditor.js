@@ -460,12 +460,12 @@ export default class GeneSetEditor extends PureComponent {
                   >
                     <FaEdit/> Edit GeneSet
                   </Button>
-                  <Button
-                    disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
-                    onClick={() => this.handleAddSelectedToCart()}
-                  >
-                    <FaArrowCircleORight/> Add To View
-                  </Button>
+                  {/*<Button*/}
+                  {/*  disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}*/}
+                  {/*  onClick={() => this.handleAddSelectedToCart()}*/}
+                  {/*>*/}
+                  {/*  <FaArrowCircleORight/> Add To View*/}
+                  {/*</Button>*/}
                 </ButtonGroup>
                 }
                 {this.state.selectedFilteredPathways.length} Selected
@@ -494,7 +494,14 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               }
               <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
-                <FaArrowCircleORight style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
+                <Button
+                  disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
+                  onClick={() => this.handleAddSelectedToCart()}
+                >
+                  <FaArrowCircleORight style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
+                  <br/>
+                  Add To View
+                </Button>
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
