@@ -66,20 +66,13 @@ export default class GeneSetEditor extends PureComponent {
       cartPathwayLimit: CART_LIMIT,
       limit: VIEW_LIMIT,
       newGeneStateName:'',
-      showLoading:false,
+      showLoading:true,
     }
-
-
-
-
   }
 
   componentDidMount() {
     let { selectedCohort, samples } = this.state
     if(isViewGeneExpression(this.props.view)){
-      this.setState({
-        showLoading: true
-      })
       fetchPathwayActivityMeans(selectedCohort,samples,this.props.view,this.handleMeanActivityData)
     }
     else{
@@ -100,7 +93,6 @@ export default class GeneSetEditor extends PureComponent {
       || prevState.sortCartOrder !== this.state.sortCartOrder
       || this.state.filteredCartPathways.length === 0
     ){
-      console.log('filtering by name for cart ')
       this.filterCart()
     }
   }
@@ -111,10 +103,7 @@ export default class GeneSetEditor extends PureComponent {
 
 
   redoFilter() {
-    console.log('redoing filter')
-
     this.sortCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
-    // this.getSelectedCartData()
   }
 
   handleMeanActivityData = (output) => {
@@ -153,8 +142,6 @@ export default class GeneSetEditor extends PureComponent {
   };
 
   filterCart(){
-    // console.log('input cart pathways',this.state.cartPathways,SORT_ENUM[this.state.sortCartBy],SORT_ENUM.ALPHA,SORT_ENUM[this.state.sortCartBy]===SORT_ENUM.ALPHA)
-    // console.log('sort oder is ',this.state.sortCartOrder,SORT_ORDER_ENUM.ASC)
     this.setState({
       filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
     })
@@ -222,7 +209,6 @@ export default class GeneSetEditor extends PureComponent {
   getFilteredCart(pathways,sortBy,sortOrder){
     const filteredCartPathways = pathways.sort((a, b) => {
       if(SORT_ENUM[sortBy]===SORT_ENUM.ALPHA){
-        console.log(a.golabel.toUpperCase(),b.golabel.toUpperCase(),(a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase()))
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
       }
       else{
@@ -234,7 +220,6 @@ export default class GeneSetEditor extends PureComponent {
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
       }
     })
-    console.log('output cart pathways',filteredCartPathways)
     return filteredCartPathways
 
   }
