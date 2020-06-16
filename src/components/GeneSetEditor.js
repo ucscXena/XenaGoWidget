@@ -232,6 +232,12 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
+  handleRefreshView() {
+    console.log('refresshing view')
+    // this.setState({
+    //   cartPathways: this.getSelectedCartData()
+    // })
+  }
 
   handleNewGeneSet() {
     const newGeneSet = {
@@ -516,6 +522,23 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               }
               <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <Button
+                  disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
+                  onClick={() => this.handleRefreshView()}
+                >
+                  <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
+                  <br/>
+                  Refresh View
+                </Button>
+                <br/>
+                <br/>
+                <br/>
                 <Button
                   disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
                   onClick={() => this.handleAddSelectedToCart()}
