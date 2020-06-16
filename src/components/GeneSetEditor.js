@@ -113,7 +113,8 @@ export default class GeneSetEditor extends PureComponent {
   redoFilter() {
     console.log('redoing filter')
 
-    this.getSelectedCartData()
+    this.sortCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
+    // this.getSelectedCartData()
   }
 
   handleMeanActivityData = (output) => {
@@ -154,44 +155,32 @@ export default class GeneSetEditor extends PureComponent {
   filterCart(){
     // console.log('input cart pathways',this.state.cartPathways,SORT_ENUM[this.state.sortCartBy],SORT_ENUM.ALPHA,SORT_ENUM[this.state.sortCartBy]===SORT_ENUM.ALPHA)
     // console.log('sort oder is ',this.state.sortCartOrder,SORT_ORDER_ENUM.ASC)
-    const filteredCartPathways = this.state.cartPathways.sort((a, b) => {
-      if(SORT_ENUM[this.state.sortCartBy]===SORT_ENUM.ALPHA){
-        console.log(a.golabel.toUpperCase(),b.golabel.toUpperCase(),(a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase()))
-        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
-      }
-      else{
-        const scoreA = scorePathway(a,this.state.sortCartBy)
-        const scoreB = scorePathway(b,this.state.sortCartBy)
-        if(scoreA==='NaN' && scoreB !=='NaN') return 1
-        if(scoreA!=='NaN' && scoreB ==='NaN') return -1
-        if(scoreA==='NaN' && scoreB ==='NaN') return -1
-        return (this.state.sortCartOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
-      }
-    })
-    console.log('output cart pathways',filteredCartPathways)
     this.setState({
-      filteredCartPathways
+      filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
     })
   }
 
+  sortCart(sortBy,sortOrder,cartLimit) {
+    const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
+    this.setState({
+      sortCartBy: sortBy,
+      sortCartOrder: sortOrder,
+      cartPathwaysLimit: cartLimit,
+      cartPathways: filteredCart.slice(0,cartLimit) ,
+      filteredCartPathways: filteredCart.slice(0,cartLimit),
+    })
+
+  }
+
   filterAvailable(){
-    console.log('resorting...')
-    console.log('input filter pathways',this.state.loadedPathways,SORT_ENUM[this.state.sortBy],SORT_ENUM.ALPHA,SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA)
-    console.log('sort filter oder is ',this.state.sortOrder,SORT_ORDER_ENUM.ASC)
-    // let i = 0
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||
         (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
       .sort( (a,b) => {
-        // if(i <2  ){
-        //   console.log('score A/B',this.state.sortBy,scoreA,scoreB,JSON.stringify('asdf'))
-        //   i += 1
-        // }
         if(SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA) {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * a.golabel.toUpperCase().localeCompare(b.golabel.toUpperCase())
         }
         else{
-        // default:
           const scoreA = scorePathway(a,this.state.sortBy)
           const scoreB = scorePathway(b,this.state.sortBy)
           if(scoreA==='NaN' && scoreB !=='NaN') return 1
@@ -200,8 +189,6 @@ export default class GeneSetEditor extends PureComponent {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA)
         }
       })
-    console.log('sorted!',filteredPathways,this.state.loadedPathways)
-
     this.setState({
       filteredPathways: filteredPathways,
       totalPathways: filteredPathways.length
@@ -232,11 +219,32 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
+  getFilteredCart(pathways,sortBy,sortOrder){
+    const filteredCartPathways = pathways.sort((a, b) => {
+      if(SORT_ENUM[sortBy]===SORT_ENUM.ALPHA){
+        console.log(a.golabel.toUpperCase(),b.golabel.toUpperCase(),(a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase()))
+        return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
+      }
+      else{
+        const scoreA = scorePathway(a,sortBy)
+        const scoreB = scorePathway(b,sortBy)
+        if(scoreA==='NaN' && scoreB !=='NaN') return 1
+        if(scoreA!=='NaN' && scoreB ==='NaN') return -1
+        if(scoreA==='NaN' && scoreB ==='NaN') return -1
+        return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
+      }
+    })
+    console.log('output cart pathways',filteredCartPathways)
+    return filteredCartPathways
+
+  }
+
   handleRefreshView() {
-    console.log('refresshing view')
-    // this.setState({
-    //   cartPathways: this.getSelectedCartData()
-    // })
+    const newCart = this.state.filteredPathways.slice(0,this.state.cartPathwayLimit)
+    this.setState({
+      cartPathways: newCart,
+      filteredCartPathways: this.getFilteredCart(newCart,this.state.sortCartBy,this.state.sortCartOrder)
+    })
   }
 
   handleNewGeneSet() {
@@ -433,7 +441,11 @@ export default class GeneSetEditor extends PureComponent {
                     <td>
                       Sort By
                       <select
-                        onChange={(event) => this.setState({sortBy: event.target.value})}
+                        onChange={
+                          (event) => {
+                            // this.setState({sortBy: event.target.value})
+                            this.sortCart(event.target.value,this.state.sortCartOrder,this.state.cartPathwayLimit)
+                          }}
                         value={this.state.sortBy}
                       >
                         {Object.entries(SORT_ENUM).map(s => {
@@ -446,10 +458,17 @@ export default class GeneSetEditor extends PureComponent {
 
                       <td>
                         {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
-                      <FaSortAsc onClick={() => this.setState({sortOrder: SORT_ORDER_ENUM.DESC })}/>
+                      <FaSortAsc onClick={() => {
+                        // this.setState({sortOrder: SORT_ORDER_ENUM.DESC })
+                        this.sortCart(this.state.sortCartBy,SORT_ORDER_ENUM.DESC,this.state.cartPathwayLimit)
+                      }}
+                      />
                         }
                         {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
-                      <FaSortDesc onClick={() => this.setState({sortOrder: SORT_ORDER_ENUM.ASC})}/>
+                      <FaSortDesc onClick={() => {
+                        // this.setState({sortOrder: SORT_ORDER_ENUM.ASC})
+                        this.sortCart(this.state.sortCartBy,SORT_ORDER_ENUM.ASC,this.state.cartPathwayLimit)
+                      }}/>
                         }
                       </td>
                     </tr>
@@ -529,14 +548,16 @@ export default class GeneSetEditor extends PureComponent {
                 <br/>
                 <br/>
                 <br/>
+                <br/>
                 <Button
                   disabled={this.state.editGeneSet !== undefined}
                   onClick={() => this.handleRefreshView()}
                 >
                   <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
                   <br/>
-                  Reload Visible <br/>GeneSets
+                  Reload Visible
                 </Button>
+                <br/>
                 <br/>
                 <br/>
                 <br/>
@@ -773,6 +794,7 @@ export default class GeneSetEditor extends PureComponent {
       </div>
     )
   }
+
 }
 
 GeneSetEditor.propTypes = {
