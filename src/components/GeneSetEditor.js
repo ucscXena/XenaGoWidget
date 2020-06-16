@@ -294,7 +294,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   handleClearCart() {
-    this.setState({cartPathways:[]})
+    this.setState({cartPathways:[],filteredCartPathways:[]})
   }
 
 
@@ -528,14 +528,16 @@ export default class GeneSetEditor extends PureComponent {
                 <br/>
                 <br/>
                 <br/>
+                <br/>
                 <Button
-                  disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
+                  disabled={this.state.editGeneSet !== undefined}
                   onClick={() => this.handleRefreshView()}
                 >
                   <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
                   <br/>
                   Refresh View
                 </Button>
+                <br/>
                 <br/>
                 <br/>
                 <br/>
