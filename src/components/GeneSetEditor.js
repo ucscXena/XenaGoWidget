@@ -241,7 +241,7 @@ export default class GeneSetEditor extends PureComponent {
 
   handleNewGeneSet() {
     const newGeneSet = {
-      golabel:'New Gene Set',
+      golabel:'New GeneSet',
       gene: []
     }
     this.setState({newGeneStateName:newGeneSet.golabel,selectedEditGeneSet: newGeneSet,})
@@ -403,13 +403,13 @@ export default class GeneSetEditor extends PureComponent {
         <Dialog
           active={this.state.showLoading}
           style={{width: 400}}
-          title={`Loading Gene Sets for '${this.props.view}'...`}
+          title={`Loading GeneSets for '${this.props.view}'...`}
         />
         <Dialog
           active={this.state.newGeneStateName!==''}
           onEscKeyDown={() => this.cancelUpdate()}
           onOverlayClick={() => this.cancelUpdate()}
-          title='Edit Gene Set Name'
+          title='Edit GeneSet Name'
         >
           <Input
             name='newGeneSetName'
@@ -425,7 +425,7 @@ export default class GeneSetEditor extends PureComponent {
             <tr>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox}  width={250}>
-                <div style={{fontSize:'larger',fontWeight:'bolder'}}>All Gene Sets available for: <br/>'{this.props.view}'</div>
+                <div style={{fontSize:'larger',fontWeight:'bolder'}}>All GeneSets available for: <br/>'{this.props.view}'</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
@@ -535,7 +535,7 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
                   <br/>
-                  Refresh View
+                  Reload Visible <br/>GeneSets
                 </Button>
                 <br/>
                 <br/>
@@ -552,7 +552,7 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} width={300} >
-                <div style={{fontSize:'larger',fontWeight:'bolder'}}>Visible Gene Sets</div>
+                <div style={{fontSize:'larger',fontWeight:'bolder'}}>Visible GeneSets</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
                     <tr>
