@@ -492,12 +492,6 @@ export default class GeneSetEditor extends PureComponent {
                   >
                     <FaEdit/> Edit GeneSet
                   </Button>
-                  {/*<Button*/}
-                  {/*  disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}*/}
-                  {/*  onClick={() => this.handleAddSelectedToCart()}*/}
-                  {/*>*/}
-                  {/*  <FaArrowCircleORight/> Add To View*/}
-                  {/*</Button>*/}
                 </ButtonGroup>
                 }
                 {this.state.selectedFilteredPathways.length} Selected
@@ -526,14 +520,7 @@ export default class GeneSetEditor extends PureComponent {
               </td>
               }
               <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <br/><br/><br/><br/><br/><br/><br/><br/>
                 <Button
                   disabled={this.state.editGeneSet !== undefined}
                   onClick={() => this.handleRefreshView()}
@@ -542,11 +529,7 @@ export default class GeneSetEditor extends PureComponent {
                   <br/>
                   Reload Visible
                 </Button>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
+                <br/><br/><br/><br/><br/>
                 <Button
                   disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
                   onClick={() => this.handleAddSelectedToCart()}
@@ -635,19 +618,6 @@ export default class GeneSetEditor extends PureComponent {
                   style={{overflow: 'scroll', height: 250, width: 250}}
                 >
                   {
-                    // this.state.cartPathways.sort((a, b) => {
-                    //   const scoreA = scorePathway(a,this.state.sortCartBy)
-                    //   const scoreB = scorePathway(b,this.state.sortCartBy)
-                    //   switch (this.state.sortCartBy) {
-                    //   case SORT_ENUM[SORT_ENUM.ALPHA]:
-                    //     return (this.state.sortCartOrder === SORT_ORDER_ENUM[SORT_ORDER_ENUM.ASC] ? 1 : -1) * (a.golabel.toLowerCase()).localeCompare(b.golabel.toLowerCase())
-                    //   default:
-                    //     if(scoreA==='NaN' && scoreB !=='NaN') return 1
-                    //     if(scoreA!=='NaN' && scoreB ==='NaN') return -1
-                    //     if(scoreA==='NaN' && scoreB ==='NaN') return -1
-                    //     return (this.state.sortCartOrder === SORT_ORDER_ENUM[SORT_ORDER_ENUM.ASC] ? 1 : -1) * (scoreB-scoreA)
-                    //   }
-                    // })
                     this.state.filteredCartPathways.map(p => {
                       return (<option key={p.golabel} value={p.golabel}>(
                         {this.showScore() &&
@@ -706,7 +676,6 @@ export default class GeneSetEditor extends PureComponent {
                                     label='&nbsp;&nbsp;Add Gene'
                                     onChange={(newGene) => {
                                       this.handleAddGeneToGeneSet(newGene)
-                                    // this.setState({newGene: newGene});
                                     }}
                                     onQueryChange={(geneQuery) => this.queryNewGenes(geneQuery)}
                                     source={this.state.geneOptions}
