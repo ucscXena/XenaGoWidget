@@ -771,7 +771,7 @@ export default class GeneSetEditor extends PureComponent {
                 <div style={{marginTop: 10}}>
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
-                    label='View' mini
+                    label='View Visible' mini
                     onClick={() => this.handleViewGeneSets()}
                     primary raised
                   />
