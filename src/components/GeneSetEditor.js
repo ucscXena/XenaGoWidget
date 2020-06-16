@@ -88,8 +88,6 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('updating ',prevState,this.state)
-    console.log('props',prevState,this.state)
     if(prevState.name !== this.state.name
    || prevState.sortOrder !== this.state.sortOrder
       || prevState.sortBy !== this.state.sortBy
@@ -114,6 +112,8 @@ export default class GeneSetEditor extends PureComponent {
 
   redoFilter() {
     console.log('redoing filter')
+
+    this.getSelectedCartData()
   }
 
   handleMeanActivityData = (output) => {
