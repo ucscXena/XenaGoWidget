@@ -132,7 +132,7 @@ export function diffSort(prunedColumns,sampleOrder) {
 }
 
 export function scorePathway(p,sortBy) {
-  switch (sortBy) {
+  switch (SORT_ENUM[sortBy]) {
   case SORT_ENUM.TOTAL:
     return (p.firstGeneExpressionPathwayActivity + p.secondGeneExpressionPathwayActivity).toFixed(2)
   case SORT_ENUM.CONTRAST_DIFF:

@@ -3,7 +3,7 @@ export const SORT_ENUM = {
   TOTAL:'Total',
   ABS_DIFF:'Absolute Diff',
   DIFF:'Cohort Diff',
-  ALPHA:'Alpha',
+  ALPHA:'Alphabetical',
 }
 
 export const SORT_ORDER_ENUM = {
