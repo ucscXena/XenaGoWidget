@@ -103,7 +103,7 @@ export default class GeneSetEditor extends PureComponent {
 
 
   redoFilter() {
-    this.sortCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
+    this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
   }
 
   handleMeanActivityData = (output) => {
@@ -147,7 +147,7 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
-  sortCart(sortBy,sortOrder,cartLimit) {
+  sortVisibleCart(sortBy, sortOrder, cartLimit) {
     const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
     this.setState({
       sortCartBy: sortBy,
@@ -424,12 +424,11 @@ export default class GeneSetEditor extends PureComponent {
                     <tr>
                       {this.showScore() &&
                     <td>
-                      Sort By
+                      Sort Gene Sets By
                       <select
                         onChange={
                           (event) => {
-                            // this.setState({sortBy: event.target.value})
-                            this.sortCart(event.target.value,this.state.sortCartOrder,this.state.cartPathwayLimit)
+                            this.setState({sortBy: event.target.value})
                           }}
                         value={this.state.sortBy}
                       >
@@ -444,15 +443,13 @@ export default class GeneSetEditor extends PureComponent {
                       <td>
                         {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
                       <FaSortAsc onClick={() => {
-                        // this.setState({sortOrder: SORT_ORDER_ENUM.DESC })
-                        this.sortCart(this.state.sortCartBy,SORT_ORDER_ENUM.DESC,this.state.cartPathwayLimit)
+                        this.setState({sortOrder: SORT_ORDER_ENUM.DESC })
                       }}
                       />
                         }
                         {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
                       <FaSortDesc onClick={() => {
-                        // this.setState({sortOrder: SORT_ORDER_ENUM.ASC})
-                        this.sortCart(this.state.sortCartBy,SORT_ORDER_ENUM.ASC,this.state.cartPathwayLimit)
+                        this.setState({sortOrder: SORT_ORDER_ENUM.ASC})
                       }}/>
                         }
                       </td>
