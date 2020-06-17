@@ -34,7 +34,7 @@ export class AnalysisWizard extends PureComponent {
     const title = `Select Analysis for ${cohort}`
 
     return (
-      <div className={Wizard.wizardBox}>
+      <div className={Wizard.wizardColumn}>
         <Helmet
           link={[
             {
@@ -51,9 +51,10 @@ export class AnalysisWizard extends PureComponent {
         <p>
           {comparisonDescription}
         </p>
-        <h3>Visualize differences using ...</h3>
-        <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Gene Expression data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+        {/*<h3>Visualize differences using ...</h3>*/}
+        <div className={Wizard.wizardCell}>Visualize differences using ...</div>
+        <div className={Wizard.wizardCell}>
+          <div className={Wizard.wizardHeader}>Gene Expression data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
           {cohort.indexOf('LUAD') >= 0 &&
@@ -63,7 +64,7 @@ export class AnalysisWizard extends PureComponent {
           }
           <br/>
           <br/>
-          <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
+          <div className={Wizard.advancedOptionsCell} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
             Advanced Options&nbsp;
             {!this.state.showGeneSetOptions &&
             <FaRightArrow className={Wizard.advancedOptionsArrow}/>
@@ -77,7 +78,7 @@ export class AnalysisWizard extends PureComponent {
               <tbody>
                 <tr>
                   <th align='right'>
-                    <u>Geneset ranking method</u>:
+                    Geneset ranking method:
                   </th>
                   <td>
                     <select
@@ -94,7 +95,7 @@ export class AnalysisWizard extends PureComponent {
                 </tr>
                 <tr>
                   <th align='right'>
-                    <u>Maximum genesets to visualize</u>:
+                    Maximum genesets to visualize:
                   </th>
                   <td>
                     <input
@@ -108,13 +109,13 @@ export class AnalysisWizard extends PureComponent {
           }
         </div>
         {/*<hr/>*/}
-        <br/>
-            OR
-        <br/>
-        <br/>
+        {/*<br/>*/}
+        {/*    OR*/}
+        {/*<br/>*/}
+        {/*<br/>*/}
         {/*<hr/>*/}
-        <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Mutation / CNV data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+        <div className={Wizard.wizardCell}>
+          <div className={Wizard.wizardHeader}>Mutation / CNV data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
