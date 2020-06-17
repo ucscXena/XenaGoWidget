@@ -84,61 +84,16 @@ export function createFilterCountForView(samples, cohort,view){
   return filterCounts
 }
 
-// export function createFilterCounts(mutationSamples,copyNumberSamples,geneExpressionSamples,paradigmSamples, cohort){
-//   const intersectedCnvMutation = uniq(intersection(copyNumberSamples,mutationSamples));
-//   const intersectedCnvMutationSubCohortSamples = calculateSelectedSubCohortSamples(intersectedCnvMutation,cohort);
-//   const mutationSubCohortSamples = calculateSelectedSubCohortSamples(mutationSamples,cohort);
-//   const copyNumberSubCohortSamples = calculateSelectedSubCohortSamples(copyNumberSamples,cohort);
-//   const geneExpressionSubCohortSamples = calculateSelectedSubCohortSamples(geneExpressionSamples,cohort);
-//   const paradigmSubCohortSamples = calculateSelectedSubCohortSamples(paradigmSamples,cohort);
-//   let filterCounts = {};
-//   // calculate mutations per subfilter
-//   filterCounts[VIEW_ENUM.MUTATION] =  {
-//     available: mutationSamples.length,
-//     current:mutationSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(mutationSamples,cohort),
-//     unassigned: mutationSamples.filter( s => mutationSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.COPY_NUMBER] =  {
-//     available: copyNumberSamples.length,
-//     current: copyNumberSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(copyNumberSamples,cohort),
-//     unassigned: copyNumberSamples.filter( s => copyNumberSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.CNV_MUTATION] =  {
-//     available: intersectedCnvMutation.length,
-//     current: intersectedCnvMutationSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(intersectedCnvMutation,cohort),
-//     unassigned: copyNumberSamples.filter( s => intersectedCnvMutationSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.GENE_EXPRESSION] =  {
-//     available: geneExpressionSamples.length,
-//     current: geneExpressionSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
-//     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.PARADIGM] =  {
-//     available: paradigmSamples.length,
-//     current: paradigmSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(paradigmSamples,cohort),
-//     unassigned: paradigmSamples.filter( s => paradigmSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   filterCounts[VIEW_ENUM.REGULON] =  {
-//     available: geneExpressionSamples.length,
-//     current: geneExpressionSubCohortSamples.length,
-//     subCohortCounts : calculateSubCohortCounts(geneExpressionSamples,cohort),
-//     unassigned: geneExpressionSamples.filter( s => geneExpressionSubCohortSamples.indexOf(s)<0).length,
-//   };
-//   return filterCounts;
-// }
-
-
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   // if UNASSIGNED is the only available sub cohort, then there are none really
-  console.log('caculating . . . ',availableSamples,cohort)
   if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
-    console.log('doing intersections . . . ',getSamplesFromSelectedSubCohorts(cohort,availableSamples))
-    return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples))
+    const results = intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples))
+    if(results.length===0){
+      console.error(`NOTE: no samples are available for the selected sub cohort(s) ${cohort.name} / ${cohort.selectedSubCohorts} so returning all available samples`)
+      alert(`NOTE: no samples are available for the selected sub cohort(s) ${cohort.name} / ${cohort.selectedSubCohorts} so returning all available samples`)
+      return availableSamples
+    }
+    return results
   }
   else{
     return availableSamples
@@ -269,12 +224,10 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
   )
     .flatMap((unfilteredSamples) => {
 
-      console.log('fetch best pathways unfiletered',unfilteredSamples)
       const availableSamples = [
         calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
         calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
       ]
-      console.log('fetch best pathways available',availableSamples)
 
       return Rx.Observable.zip(
         allFieldMean(selectedCohorts[0], availableSamples[0],view),
@@ -294,8 +247,6 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
-
-  console.log('fetch pathway activitty means',samples)
 
   Rx.Observable.zip(
     allFieldMean(selectedCohorts[0], samples[0],view),
