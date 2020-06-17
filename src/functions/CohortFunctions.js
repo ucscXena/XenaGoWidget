@@ -40,7 +40,7 @@ export function getViewsForCohort(cohortName){
   if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION)
   if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM)
   if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON)
-  return views 
+  return views
 }
 
 export function getCohortsForView(view){
@@ -66,7 +66,7 @@ export function getSubCohortsForCohort(cohort) {
       finalList[0][as.subCohortName] = as.samples.split(',')
     }
   }
-  return  finalList[0] 
+  return  finalList[0]
 }
 
 export function getLabelForIndex(index){
@@ -98,9 +98,11 @@ function getUnassignedSamplesForCohort(selectedCohort, availableSamples) {
 }
 
 export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples) {
+  console.log('A',selectedCohort.selectedSubCohorts)
   if (selectedCohort.selectedSubCohorts) {
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
+        console.log('B',sc)
         if(sc===UNASSIGNED_SUBTYPE.key){
           return getUnassignedSamplesForCohort(selectedCohort,availableSamples)
         }
@@ -117,10 +119,14 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
+  console.log('C',cohort,subCohort)
   let subCohortsForCohort = getSubCohortsForCohort(cohort)
+  console.log('D',subCohortsForCohort)
   if(subCohortsForCohort && Object.keys(subCohortsForCohort).length>0){
+    console.log('E',subCohortsForCohort[subCohort],subCohortsForCohort,subCohort)
     return uniq(subCohortsForCohort[subCohort])
   }
+  console.log('F, returning nothing')
   return []
 }
 
@@ -164,7 +170,7 @@ export function fetchCohortData() {
         if(regulonPathwayActivity){
           returnObject.regulonPathwayActivity = regulonPathwayActivity
         }
-        return returnObject 
+        return returnObject
       })
       .sort(lowerCaseCompareName)
   }

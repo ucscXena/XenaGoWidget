@@ -135,7 +135,9 @@ export function createFilterCountForView(samples, cohort,view){
 
 export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   // if UNASSIGNED is the only available sub cohort, then there are none really
+  console.log('caculating . . . ',availableSamples,cohort)
   if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
+    console.log('doing intersections . . . ',getSamplesFromSelectedSubCohorts(cohort,availableSamples))
     return intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples))
   }
   else{
@@ -259,16 +261,20 @@ export function getCohortDataForGeneExpressionView(selectedCohorts, view){
 
 export function fetchBestPathways(selectedCohorts,view,dataHandler){
 
+
   const cohortData = getCohortDataForGeneExpressionView(selectedCohorts,view)
   Rx.Observable.zip(
     datasetSamples(cohortData[0].host, cohortData[0].dataset, null),
     datasetSamples(cohortData[1].host, cohortData[1].dataset, null),
   )
     .flatMap((unfilteredSamples) => {
+
+      console.log('fetch best pathways unfiletered',unfilteredSamples)
       const availableSamples = [
         calculateSelectedSubCohortSamples(unfilteredSamples[0],selectedCohorts[0]),
         calculateSelectedSubCohortSamples(unfilteredSamples[1],selectedCohorts[1]),
       ]
+      console.log('fetch best pathways available',availableSamples)
 
       return Rx.Observable.zip(
         allFieldMean(selectedCohorts[0], availableSamples[0],view),
@@ -288,6 +294,8 @@ export function fetchBestPathways(selectedCohorts,view,dataHandler){
 }
 
 export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandler){
+
+  console.log('fetch pathway activitty means',samples)
 
   Rx.Observable.zip(
     allFieldMean(selectedCohorts[0], samples[0],view),
