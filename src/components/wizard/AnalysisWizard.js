@@ -7,8 +7,8 @@ import {Helmet} from 'react-helmet'
 import {AnalysisButton} from './AnalysisButton'
 // import FaInfo from 'react-icons/lib/fa/info-circle'
 import FaQuestion from 'react-icons/lib/fa/question-circle'
-import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
-import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
+// import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
+// import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
 import {SORT_ENUM} from '../../data/SortEnum'
 // import Dialog from 'react-toolbox/lib/dialog'
 
@@ -50,8 +50,8 @@ export class AnalysisWizard extends PureComponent {
         />
         <div className={Wizard.descriptionText}>
           {comparisonDescription.replace(/^Comparing/,'Visualize differences between geneset ')}.
-          <br/>
-          <br/>
+        </div>
+        <div className={Wizard.smallDescriptionText}>
           Visualize differences using ...
         </div>
         <div className={Wizard.wizardCell}>
@@ -63,17 +63,17 @@ export class AnalysisWizard extends PureComponent {
               analysis={VIEW_ENUM.REGULON}
               onClick={onSelectAnalysis}/>
           }
-          <br/>
-          <br/>
-          <div className={Wizard.advancedOptionsCell} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
-            Advanced Options&nbsp;
-            {!this.state.showGeneSetOptions &&
-            <FaRightArrow className={Wizard.advancedOptionsArrow}/>
-            }
-            {this.state.showGeneSetOptions &&
-            <FaDownArrow className={Wizard.advancedOptionsArrow}/>
-            }
-          </div>
+          {/*<br/>*/}
+          {/*<br/>*/}
+          {/*<div className={Wizard.advancedOptionsCell} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>*/}
+          {/*  Advanced Options&nbsp;*/}
+          {/*  {!this.state.showGeneSetOptions &&*/}
+          {/*  <FaRightArrow className={Wizard.advancedOptionsArrow}/>*/}
+          {/*  }*/}
+          {/*  {this.state.showGeneSetOptions &&*/}
+          {/*  <FaDownArrow className={Wizard.advancedOptionsArrow}/>*/}
+          {/*  }*/}
+          {/*</div>*/}
           {this.state.showGeneSetOptions &&
             <table className={Wizard.advancedTable} style={{marginTop: 10}}>
               <tbody>
