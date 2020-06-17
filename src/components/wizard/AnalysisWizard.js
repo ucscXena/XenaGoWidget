@@ -5,7 +5,8 @@ import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {Helmet} from 'react-helmet'
 import {AnalysisButton} from './AnalysisButton'
-import FaInfo from 'react-icons/lib/fa/info-circle'
+// import FaInfo from 'react-icons/lib/fa/info-circle'
+import FaQuestion from 'react-icons/lib/fa/question-circle'
 import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
 import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
 import {SORT_ENUM} from '../../data/SortEnum'
@@ -52,7 +53,7 @@ export class AnalysisWizard extends PureComponent {
         </p>
         <h3>Visualize differences using ...</h3>
         <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Gene Expression data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+          <h3 className={Wizard.wizardHeader}>Gene Expression data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
           <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
           {cohort.indexOf('LUAD') >= 0 &&
@@ -65,10 +66,10 @@ export class AnalysisWizard extends PureComponent {
           <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
             Advanced Options&nbsp;
             {!this.state.showGeneSetOptions &&
-            <FaRightArrow/>
+            <FaRightArrow className={Wizard.advancedOptionsArrow}/>
             }
             {this.state.showGeneSetOptions &&
-            <FaDownArrow/>
+            <FaDownArrow className={Wizard.advancedOptionsArrow}/>
             }
           </div>
           {this.state.showGeneSetOptions &&
@@ -113,7 +114,7 @@ export class AnalysisWizard extends PureComponent {
         <br/>
         {/*<hr/>*/}
         <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Mutation / CNV data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+          <h3 className={Wizard.wizardHeader}>Mutation / CNV data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
           <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>
