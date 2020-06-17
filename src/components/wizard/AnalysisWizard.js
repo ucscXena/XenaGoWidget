@@ -50,7 +50,6 @@ export class AnalysisWizard extends PureComponent {
         />
         <div className={Wizard.descriptionText}>
           {comparisonDescription.replace(/^Comparing/,'Visualize differences between geneset ')}.
-
           <br/>
           <br/>
           Visualize differences using ...
