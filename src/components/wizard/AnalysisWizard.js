@@ -48,11 +48,13 @@ export class AnalysisWizard extends PureComponent {
           ]}
           title={title}
         />
-        <p>
-          {comparisonDescription}
-        </p>
-        {/*<h3>Visualize differences using ...</h3>*/}
-        <div className={Wizard.wizardCell}>Visualize differences using ...</div>
+        <div className={Wizard.descriptionText}>
+          {comparisonDescription.replace(/^Comparing/,'Visualize differences between geneset ')}.
+
+          <br/>
+          <br/>
+          Visualize differences using ...
+        </div>
         <div className={Wizard.wizardCell}>
           <div className={Wizard.wizardHeader}>Gene Expression data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
