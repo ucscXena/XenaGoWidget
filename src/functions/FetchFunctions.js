@@ -89,8 +89,9 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   if(cohort.subCohorts && cohort.subCohorts.length > 1 && cohort.selectedSubCohorts.length > 0){
     const results = intersection(availableSamples, getSamplesFromSelectedSubCohorts(cohort,availableSamples))
     if(results.length===0){
+      // eslint-disable-next-line no-console
       console.error(`NOTE: no samples are available for the selected sub cohort(s) ${cohort.name} / ${cohort.selectedSubCohorts} so returning all available samples`)
-      alert(`NOTE: no samples are available for the selected sub cohort(s) ${cohort.name} / ${cohort.selectedSubCohorts} so returning all available samples`)
+      // alert(`NOTE: no samples are available for the selected sub cohort(s) ${cohort.name} / ${cohort.selectedSubCohorts} so returning all available samples`)
       return availableSamples
     }
     return results

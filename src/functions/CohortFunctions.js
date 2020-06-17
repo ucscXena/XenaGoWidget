@@ -98,11 +98,9 @@ function getUnassignedSamplesForCohort(selectedCohort, availableSamples) {
 }
 
 export function getSamplesFromSelectedSubCohorts(selectedCohort,availableSamples) {
-  console.log('A',selectedCohort.selectedSubCohorts)
   if (selectedCohort.selectedSubCohorts) {
     return uniq(selectedCohort.selectedSubCohorts
       .flatMap((sc) => {
-        console.log('B',sc)
         if(sc===UNASSIGNED_SUBTYPE.key){
           return getUnassignedSamplesForCohort(selectedCohort,availableSamples)
         }
@@ -119,14 +117,10 @@ export function getSamplesFromSubCohortList(cohort, subCohortArray) {
 }
 
 export function getSamplesFromSubCohort(cohort, subCohort) {
-  console.log('C',cohort,subCohort)
   let subCohortsForCohort = getSubCohortsForCohort(cohort)
-  console.log('D',subCohortsForCohort)
   if(subCohortsForCohort && Object.keys(subCohortsForCohort).length>0){
-    console.log('E',subCohortsForCohort[subCohort],subCohortsForCohort,subCohort)
     return uniq(subCohortsForCohort[subCohort])
   }
-  console.log('F, returning nothing')
   return []
 }
 
