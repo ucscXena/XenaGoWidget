@@ -52,9 +52,18 @@ export class GeneSetSubCohortBox extends PureComponent {
           <div>
             <ul>
               {selectedCohort.selectedSubCohorts.sort().map( s => {
-                return (
-                  <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
-                )
+                if(selectedCohort.selectedSubCohorts.length===1 && subCohortCounts[cohortIndex][s]===0){
+                  return (
+                    <li className={BaseStyle.noteError} key={s}>
+                      Note: No sub cohorts available for {s} <br/>so ALL available samples selected.
+                    </li>
+                  )
+                }
+                else{
+                  return (
+                    <li key={s}>ASDASFASD {s} ({subCohortCounts[cohortIndex][s]})</li>
+                  )
+                }
               }
               )}
             </ul>
@@ -69,9 +78,18 @@ export class GeneSetSubCohortBox extends PureComponent {
         { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length <= MAX_SUB_COHORTS &&
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
-              return (
-                <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
-              )
+              if(selectedCohort.selectedSubCohorts.length===1 && subCohortCounts[cohortIndex][s]===0) {
+                return (
+                  <li className={BaseStyle.noteError} key={s}>
+                    Note: No sub cohorts available for {s} so ALL available samples selected.
+                  </li>
+                )
+              }
+              else{
+                return (
+                  <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
+                )
+              }
             }
             )}
           </ul>
