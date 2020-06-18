@@ -693,7 +693,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     let titleText = this.generateTitle()
     // let titleSize = (45 - (titleText.length * 0.17))
-    let titleSize = 22
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
@@ -745,8 +744,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <h2
           className={BaseStyle.titleBox}
-          style={{fontSize:titleSize,width: 1100,
-            visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
+          style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
         >
           Visualizing differences using '{this.state.filter}'
           {titleText}
