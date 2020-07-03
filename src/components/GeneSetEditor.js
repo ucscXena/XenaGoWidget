@@ -46,6 +46,7 @@ export default class GeneSetEditor extends PureComponent {
     this.state = {
       editGeneSet: undefined,
       name: '',
+      geneName: '',
       sortOrder: SORT_ORDER_ENUM.ASC,
       sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.CONTRAST_DIFF: SORT_ENUM.ALPHA,
       sortCartOrder:SORT_ORDER_ENUM.ASC,
@@ -81,8 +82,10 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.name !== this.state.name
-   || prevState.sortOrder !== this.state.sortOrder
+    if(
+      prevState.name !== this.state.name
+      || prevState.geneName !== this.state.geneName
+      || prevState.sortOrder !== this.state.sortOrder
       || prevState.sortBy !== this.state.sortBy
       || this.state.filteredPathways.length === 0
     ){
@@ -160,9 +163,11 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   filterAvailable(){
+    console.log('loaded pathways',this.state.loadedPathways)
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||
         (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
+      .filter( p => this.state.geneName ==='' || ( p.gene.indexOf(this.state.geneName.toUpperCase())>=0))
       .sort( (a,b) => {
         if(SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA) {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * a.golabel.toUpperCase().localeCompare(b.golabel.toUpperCase())
@@ -459,6 +464,14 @@ export default class GeneSetEditor extends PureComponent {
                         <input
                           onChange={(event) => this.setState({name: event.target.value.toLowerCase()})}
                           placeholder='Filter by name' size={30}
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input
+                          onChange={(event) => this.setState({geneName: event.target.value.toLowerCase()})}
+                          placeholder='Filter by gene' size={30}
                         />
                       </td>
                     </tr>
