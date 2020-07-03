@@ -701,9 +701,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <LegendBox
           geneData={this.state.geneData}
+          handleGeneEdit={this.showConfiguration}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
-          onGeneEdit={this.showConfiguration}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
           view={this.state.filter}

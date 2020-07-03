@@ -47,8 +47,7 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    <td width="30%">
-                    </td>
+                    <td width="30%"/>
                     <td width="10%">
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>

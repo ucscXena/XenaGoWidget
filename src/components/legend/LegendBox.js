@@ -51,7 +51,7 @@ export class LegendBox extends PureComponent {
             <OpenGeneSetLegend/>
               }
               {(!geneData || !geneData[0].data) &&
-              <EditGeneSetButton onGeneEdit={this.props.onGeneEdit}/>
+              <EditGeneSetButton onGeneEdit={this.props.handleGeneEdit}/>
               }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
             <GeneGeneExpressionLegend filter={view}/>
@@ -79,7 +79,7 @@ LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
-  onGeneEdit: PropTypes.any.isRequired,
+  handleGeneEdit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
