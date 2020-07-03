@@ -464,15 +464,16 @@ export default class GeneSetEditor extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                      View Limit (Tot: {this.state.totalPathways})
+                        {/*View Limit (Tot: {this.state.totalPathways})*/}
+                        Results: {this.state.totalPathways}
                       </td>
-                      <td>
-                        <input
-                          onChange={(event) => this.setState({limit: event.target.value})}
-                          style={{width: 50}}
-                          value={this.state.limit}
-                        />
-                      </td>
+                      {/*<td>*/}
+                      {/*  <input*/}
+                      {/*    onChange={(event) => this.setState({limit: event.target.value})}*/}
+                      {/*    style={{width: 50}}*/}
+                      {/*    value={this.state.limit}*/}
+                      {/*  />*/}
+                      {/*</td>*/}
                     </tr>
                   </tbody>
                 </table>
@@ -570,28 +571,28 @@ export default class GeneSetEditor extends PureComponent {
                         }
                       </td>
                     </tr>
-                    <tr>
-                      <td>
-                      View Limit
-                      </td>
-                      <td>
-                        <input
-                          onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}
-                          style={{width: 40}}
-                          value={this.state.cartPathwayLimit}
-                        />
-                        <Button
-                          // disabled={this.state.selectedCartPathways.length !== 1}
-                          floating
-                          mini
-                          onClick={() => this.redoFilter()}
-                          style={{marginLeft: 20}}
-                          // raised
-                        >
-                          <FaRedo/>
-                        </Button>
-                      </td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*  <td>*/}
+                    {/*  View Limit*/}
+                    {/*  </td>*/}
+                    {/*  <td>*/}
+                    {/*    <input*/}
+                    {/*      onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}*/}
+                    {/*      style={{width: 40}}*/}
+                    {/*      value={this.state.cartPathwayLimit}*/}
+                    {/*    />*/}
+                    {/*    <Button*/}
+                    {/*      // disabled={this.state.selectedCartPathways.length !== 1}*/}
+                    {/*      floating*/}
+                    {/*      mini*/}
+                    {/*      onClick={() => this.redoFilter()}*/}
+                    {/*      style={{marginLeft: 20}}*/}
+                    {/*      // raised*/}
+                    {/*    >*/}
+                    {/*      <FaRedo/>*/}
+                    {/*    </Button>*/}
+                    {/*  </td>*/}
+                    {/*</tr>*/}
                   </tbody>
                 </table>
                 <ButtonGroup>
