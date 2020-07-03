@@ -31,14 +31,6 @@ export default class NavigationBar extends PureComponent {
     }
   }
 
-    handleSearch = (text) => {
-      this.props.searchHandler(text)
-    };
-
-    acceptGeneHandler = (text) => {
-      this.props.acceptGeneHandler(text)
-    };
-
     showHelp = () => {
       window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')
     };
@@ -55,39 +47,7 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    {/*<td width="10%">*/}
-                    {/*  <button*/}
-                    {/*    className={BaseStyle.editGeneSets}*/}
-                    {/*    onClick={() =>this.props.configurationHandler()}*/}
-                    {/*  >*/}
-                    {/*    <table>*/}
-                    {/*      <tr>*/}
-                    {/*        <td>*/}
-                    {/*        Gene Sets*/}
-                    {/*        </td>*/}
-                    {/*        <td>*/}
-                    {/*          <FaEdit style={{fontSize: 'x-large'}}/>*/}
-                    {/*        </td>*/}
-                    {/*      </tr>*/}
-                    {/*    </table>*/}
-                    {/*  </button>*/}
-                    {/*</td>*/}
                     <td width="30%">
-                      {/*<Autocomplete*/}
-                      {/*  label='Find Gene'*/}
-                      {/*  multiple={false}*/}
-                      {/*  onChange={(searchText) => {*/}
-                      {/*    this.acceptGeneHandler(searchText)*/}
-                      {/*    this.setState({geneNameSearch: searchText})*/}
-                      {/*  }}*/}
-                      {/*  onQueryChange={(geneQuery) => {*/}
-                      {/*    this.handleSearch(geneQuery)*/}
-                      {/*    this.setState({geneNameSearch: geneQuery})*/}
-                      {/*  }}*/}
-                      {/*  source={this.props.geneOptions}*/}
-                      {/*  theme={AutocompleteTheme}*/}
-                      {/*  value={this.state.geneNameSearch}*/}
-                      {/*/>*/}
                     </td>
                     <td width="10%">
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
