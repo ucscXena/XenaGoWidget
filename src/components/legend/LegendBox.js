@@ -77,9 +77,9 @@ export class LegendBox extends PureComponent {
 
 LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
+  handleGeneEdit: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
-  handleGeneEdit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
