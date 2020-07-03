@@ -362,11 +362,29 @@
   border-radius: 15px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin-top: 40px;
-  margin-left: 55px;
+  margin-left: 5px;
   background-color: lightgoldenrodyellow;
   cursor: pointer;
 }
 
+.editGeneSetLimits{
+  margin-top: 40px;
+  display: inline;
+}
+
+.editGeneSetOrder{
+  margin-top: 40px;
+  width: 80px;
+  display: inline;
+}
+
+.geneSetLabel{
+  font-size: medium;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+  margin: 5px;
+  display: inline;
+}
 
 .inlineSearch{
     width: 200px;
@@ -661,3 +679,4 @@ border-radius: 5px;
   max-width: 700px;
   list-style-type: none;
 }
+

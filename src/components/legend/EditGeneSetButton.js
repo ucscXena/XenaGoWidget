@@ -11,25 +11,43 @@ export class EditGeneSetButton extends PureComponent {
   render() {
     return (
       <tr className={BaseStyle.geneLegend} >
-        <td colSpan={1} width={DETAIL_WIDTH}/>
-        <td colSpan={1} width={LABEL_WIDTH}>
-          <button
-            className={BaseStyle.editGeneSets}
-            onClick={() =>this.props.onGeneEdit()}
-          >
-            <table>
-              <tr>
-                <td>
+        <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
+          {/*<td colSpan={1} width={DETAIL_WIDTH}/>*/}
+          {/*<td colSpan={1} width={LABEL_WIDTH}>*/}
+          <table>
+            <tr>
+              <td>
+                <div className={BaseStyle.geneSetLabel}>Max Gene Sets</div>
+                <input className={BaseStyle.editGeneSetLimits} size={3} type='text' value={12}/>
+              </td>
+              <td>
+                <div className={BaseStyle.geneSetLabel}>Sort By </div>
+                <select className={BaseStyle.editGeneSetOrder}>
+                  <option>Similar</option>
+                  <option>Different</option>
+                </select>
+              </td>
+              <td>
+                <button
+                  className={BaseStyle.editGeneSets}
+                  onClick={() =>this.props.onGeneEdit()}
+                >
+                  <table>
+                    <tr>
+                      <td>
                   Gene Sets
-                </td>
-                <td>
-                  <FaEdit style={{fontSize: 'x-large'}}/>
-                </td>
-              </tr>
-            </table>
-          </button>
+                      </td>
+                      <td>
+                        <FaEdit style={{fontSize: 'x-large'}}/>
+                      </td>
+                    </tr>
+                  </table>
+                </button>
+              </td>
+            </tr>
+          </table>
         </td>
-        <td colSpan={1} width={DETAIL_WIDTH}/>
+        {/*<td colSpan={1} width={DETAIL_WIDTH}/>*/}
       </tr>
     )
   }
