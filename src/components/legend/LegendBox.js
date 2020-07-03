@@ -10,6 +10,7 @@ import {DiffScaleLegend} from './DiffScaleLegend'
 import {GeneSetCnvMutationLegend} from './GeneSetCnvMutationLegend'
 import {GeneSetGeneExpressionLegend} from './GeneSetGeneExpressionLegend'
 import {TopLegend} from './TopLegend'
+import {EditGeneSetButton} from './EditGeneSetButton'
 
 export class LegendBox extends PureComponent {
 
@@ -49,6 +50,9 @@ export class LegendBox extends PureComponent {
               {(!geneData || !geneData[0].data) &&
             <OpenGeneSetLegend/>
               }
+              {(!geneData || !geneData[0].data) &&
+              <EditGeneSetButton onGeneEdit={this.props.onGeneEdit}/>
+              }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
             <GeneGeneExpressionLegend filter={view}/>
               }
@@ -75,6 +79,7 @@ LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
+  onGeneEdit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,

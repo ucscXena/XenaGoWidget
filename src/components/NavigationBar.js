@@ -3,9 +3,6 @@ import { Button, AppBar,  Navigation } from 'react-toolbox'
 import PureComponent from '../../src/components/PureComponent'
 import BaseStyle from '../css/base.css'
 import * as PropTypes from 'underscore'
-import Autocomplete from 'react-toolbox/lib/autocomplete'
-import AutocompleteTheme from '../css/autocomplete.css'
-import FaEdit from 'react-icons/lib/fa/edit'
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -58,28 +55,39 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    <td width="10%">
-                      <Button
-                        floating mini onClick={() =>this.props.configurationHandler()}>
-                        <FaEdit/>
-                      </Button>
-                    </td>
+                    {/*<td width="10%">*/}
+                    {/*  <button*/}
+                    {/*    className={BaseStyle.editGeneSets}*/}
+                    {/*    onClick={() =>this.props.configurationHandler()}*/}
+                    {/*  >*/}
+                    {/*    <table>*/}
+                    {/*      <tr>*/}
+                    {/*        <td>*/}
+                    {/*        Gene Sets*/}
+                    {/*        </td>*/}
+                    {/*        <td>*/}
+                    {/*          <FaEdit style={{fontSize: 'x-large'}}/>*/}
+                    {/*        </td>*/}
+                    {/*      </tr>*/}
+                    {/*    </table>*/}
+                    {/*  </button>*/}
+                    {/*</td>*/}
                     <td width="30%">
-                      <Autocomplete
-                        label='Find Gene'
-                        multiple={false}
-                        onChange={(searchText) => {
-                          this.acceptGeneHandler(searchText)
-                          this.setState({geneNameSearch: searchText})
-                        }}
-                        onQueryChange={(geneQuery) => {
-                          this.handleSearch(geneQuery)
-                          this.setState({geneNameSearch: geneQuery})
-                        }}
-                        source={this.props.geneOptions}
-                        theme={AutocompleteTheme}
-                        value={this.state.geneNameSearch}
-                      />
+                      {/*<Autocomplete*/}
+                      {/*  label='Find Gene'*/}
+                      {/*  multiple={false}*/}
+                      {/*  onChange={(searchText) => {*/}
+                      {/*    this.acceptGeneHandler(searchText)*/}
+                      {/*    this.setState({geneNameSearch: searchText})*/}
+                      {/*  }}*/}
+                      {/*  onQueryChange={(geneQuery) => {*/}
+                      {/*    this.handleSearch(geneQuery)*/}
+                      {/*    this.setState({geneNameSearch: geneQuery})*/}
+                      {/*  }}*/}
+                      {/*  source={this.props.geneOptions}*/}
+                      {/*  theme={AutocompleteTheme}*/}
+                      {/*  value={this.state.geneNameSearch}*/}
+                      {/*/>*/}
                     </td>
                     <td width="10%">
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
@@ -106,7 +114,7 @@ export default class NavigationBar extends PureComponent {
 
 NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
-  configurationHandler: PropTypes.any,
+  // configurationHandler: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
 }

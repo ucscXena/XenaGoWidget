@@ -354,9 +354,19 @@
 }
 
 .wideNavigation{
-    width: 400px;
+    width: 80%;
     display:inline;
 }
+
+.editGeneSets{
+  border-radius: 15px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  margin-top: 40px;
+  margin-left: 55px;
+  background-color: lightgoldenrodyellow;
+  cursor: pointer;
+}
+
 
 .inlineSearch{
     width: 200px;
@@ -651,4 +661,3 @@ border-radius: 5px;
   max-width: 700px;
   list-style-type: none;
 }
-
