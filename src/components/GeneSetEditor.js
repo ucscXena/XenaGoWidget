@@ -163,7 +163,6 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   filterAvailable(){
-    console.log('loaded pathways',this.state.loadedPathways)
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||
         (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
