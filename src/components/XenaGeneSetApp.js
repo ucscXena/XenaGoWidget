@@ -53,6 +53,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
+export const DEFAULT_GENE_SET_SORT_BY = 'DIFFERENT' // versus "SIMILAR" TODO: make enum
 export const LEGEND_HEIGHT = 155
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
@@ -127,6 +128,7 @@ export default class XenaGeneSetApp extends PureComponent {
       reference: refGene['hg38'],
       limit: 25,
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
+      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
       highlightedGene: undefined,
       collapsed: true,
       mousing: false,
@@ -649,19 +651,37 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
+  handleGeneSetLimit = (limit) => {
+    currentLoadState= LOAD_STATE.LOADED
+    this.setState({
+      geneSetLimit: limit,
+      reloadPathways: true,
+      fetch: true,
+    })
+  }
+
+  handleGeneSetSortBy = (method) => {
+    currentLoadState= LOAD_STATE.LOADED
+    this.setState({
+      geneSetSortBy: method,
+      reloadPathways: true,
+      fetch: true,
+    })
+  }
+
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
     let maxValue = 0
-
-
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
+      this.setState({
+        currentLoadState
+      })
       // change gene sets here
 
       // if gene Expressions
-      if (getCohortDataForGeneExpressionView(this.state.selectedCohort,
-        this.state.filter) !== null) {
+      if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
           fetchBestPathways(this.state.selectedCohort, this.state.filter,
             this.handleMeanActivityData)
@@ -697,6 +717,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
+
+
     return (
       <div>
 
@@ -706,9 +728,11 @@ export default class XenaGeneSetApp extends PureComponent {
           handleGeneEdit={this.showConfiguration}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
+          onChangeGeneSetLimit={this.handleGeneSetLimit}
+          onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
-          sortGeneSetBy={this.state.sortGeneSetBy}
+          sortGeneSetBy={this.state.geneSetSortBy}
           view={this.state.filter}
         />
 
