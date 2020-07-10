@@ -11,7 +11,6 @@ export class EditGeneSetButton extends PureComponent {
 
   constructor(props) {
     super(props)
-    console.log('input props',props.geneSetLimit,props)
     this.state = {
       geneSetLimit : props.geneSetLimit,
       sortGeneSetBy : props.sortGeneSetBy
