@@ -8,21 +8,28 @@ import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 
 export class EditGeneSetButton extends PureComponent {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      geneSetLimit : props.geneSetLimit,
+      sortGeneSetBy : props.sortGeneSetBy
+    }
+  }
+
   render() {
     return (
       <tr className={BaseStyle.geneLegend} >
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
-          {/*<td colSpan={1} width={DETAIL_WIDTH}/>*/}
-          {/*<td colSpan={1} width={LABEL_WIDTH}>*/}
           <table>
             <tbody>
               <tr>
                 <td>
                   <div className={BaseStyle.geneSetLabel}>Max Gene Sets</div>
-                  <input className={BaseStyle.editGeneSetLimits} size={3} type='text' value={12}/>
+                  <input className={BaseStyle.editGeneSetLimits} size={3} type='text' value={this.state.geneSetLimit}/>
                 </td>
                 <td>
-                  <div className={BaseStyle.geneSetLabel}>Sort By </div>
+                  <div className={BaseStyle.geneSetLabel}>Find Most</div>
+                  [ {this.state.sortGeneSetBy} ]
                   <select className={BaseStyle.editGeneSetOrder}>
                     <option>Similar</option>
                     <option>Different</option>
@@ -58,5 +65,7 @@ export class EditGeneSetButton extends PureComponent {
 }
 
 EditGeneSetButton.propTypes = {
+  geneSetLimit: PropTypes.any.require,
   onGeneEdit: PropTypes.any.require,
+  sortGeneSetBy: PropTypes.any.require,
 }
