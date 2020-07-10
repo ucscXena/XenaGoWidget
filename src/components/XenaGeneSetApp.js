@@ -53,7 +53,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const DEFAULT_GENE_SET_SORT_BY = 'DIFFERENT' // versus "SIMILAR" TODO: make enum
+export const DEFAULT_GENE_SET_SORT_BY = 'Different' // versus "SIMILAR" TODO: make enum
 export const LEGEND_HEIGHT = 155
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
@@ -662,8 +662,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleGeneSetSortBy = (method) => {
     currentLoadState= LOAD_STATE.LOADED
+    console.log('handling gene set sort by ',method,currentLoadState,this.state.currentLoadState)
     this.setState({
-      geneSetSortBy: method,
+      sortViewBy: method,
       reloadPathways: true,
       fetch: true,
     })
@@ -675,6 +676,7 @@ export default class XenaGeneSetApp extends PureComponent {
     let maxValue = 0
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
+      // TODO: remove state currentLoadState
       this.setState({
         currentLoadState
       })
@@ -732,7 +734,7 @@ export default class XenaGeneSetApp extends PureComponent {
           onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
-          sortGeneSetBy={this.state.geneSetSortBy}
+          sortGeneSetBy={this.state.sortViewBy}
           view={this.state.filter}
         />
 
