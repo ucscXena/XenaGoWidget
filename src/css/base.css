@@ -680,3 +680,8 @@ border-radius: 5px;
   list-style-type: none;
 }
 
+.refreshButton{
+  margin-left: 2px;
+  margin-right: 2px;
+  cursor: pointer;
+}

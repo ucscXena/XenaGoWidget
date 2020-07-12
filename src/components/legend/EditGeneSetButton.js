@@ -5,6 +5,7 @@ import FaEdit from 'react-icons/lib/fa/edit'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import FaRefresh from 'react-icons/lib/fa/refresh'
+import {SORT_VIEW_BY} from '../../data/SortEnum'
 
 
 export class EditGeneSetButton extends PureComponent {
@@ -30,16 +31,25 @@ export class EditGeneSetButton extends PureComponent {
                     className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
                     size={3} type='text'
                     value={this.state.geneSetLimit}/>
-                  <button onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
+                  <button
+                    className={BaseStyle.refreshButton}
+                    onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
                     <FaRefresh/>
                   </button>
                 </td>
                 <td>
                   <div className={BaseStyle.geneSetLabel}>Find Most</div>
                   [ {this.props.sortGeneSetBy} ]
-                  <select className={BaseStyle.editGeneSetOrder} onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}>
-                    <option>Similar</option>
-                    <option>Different</option>
+                  <select
+                    className={BaseStyle.editGeneSetOrder}
+                    onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}
+                    value={this.props.sortGeneSetBy}
+                  >
+                    {
+                      Object.values(SORT_VIEW_BY).map( v =>
+                        (<option key={v}>{v}</option>)
+                      )
+                    }
                   </select>
                 </td>
                 <td>
