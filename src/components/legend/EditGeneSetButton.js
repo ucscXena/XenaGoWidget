@@ -39,7 +39,6 @@ export class EditGeneSetButton extends PureComponent {
                 </td>
                 <td>
                   <div className={BaseStyle.geneSetLabel}>Find Most</div>
-                  [ {this.props.sortGeneSetBy} ]
                   <select
                     className={BaseStyle.editGeneSetOrder}
                     onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}

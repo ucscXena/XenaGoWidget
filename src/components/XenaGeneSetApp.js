@@ -112,7 +112,8 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       sortViewOrder: SORT_ORDER_ENUM.DESC,
-      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_VIEW_BY.DIFFERENT,
+      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
+      sortViewByLabel: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_VIEW_BY.DIFFERENT,
       filterOrder: SORT_ORDER_ENUM.DESC,
       // filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.CONTRAST_DIFF,
       filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.DIFF,
@@ -662,10 +663,41 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleGeneSetSortBy = (method) => {
     currentLoadState= LOAD_STATE.LOADED
-    console.log('handling gene set sort by ',method,currentLoadState,this.state.currentLoadState)
+
+    let sortViewOrder = SORT_ORDER_ENUM.DESC
+    let sortViewBy = SORT_ENUM.ABS_DIFF
+    let filterBy = SORT_ENUM.DIFF
+    let filterOrder = SORT_ORDER_ENUM.DESC
+
+    if(method===SORT_VIEW_BY.DIFFERENT){
+      sortViewBy = SORT_ENUM.ABS_DIFF
+      filterBy = SORT_ENUM.DIFF
+      filterOrder = SORT_ORDER_ENUM.DESC
+      sortViewOrder = SORT_ORDER_ENUM.DESC
+    }
+    else
+    if(method===SORT_VIEW_BY.SIMILAR){
+      filterBy = SORT_ENUM.ABS_DIFF
+      filterOrder = SORT_ORDER_ENUM.ASC
+      sortViewBy = SORT_ENUM.ABS_DIFF
+      sortViewOrder = SORT_ORDER_ENUM.ASC
+    }
+    else
+    if(method===SORT_VIEW_BY.ALPHA){
+      filterBy = SORT_ENUM.ALPHA
+      filterOrder = SORT_ORDER_ENUM.ASC
+      sortViewBy = SORT_ENUM.ALPHA
+      sortViewOrder = SORT_ORDER_ENUM.ASC
+    }
+
+
     this.setState({
-      sortViewBy: method,
       reloadPathways: true,
+      sortViewByLabel: method,
+      sortViewBy,
+      sortViewOrder,
+      filterBy,
+      filterOrder,
       fetch: true,
     })
   }
@@ -734,13 +766,12 @@ export default class XenaGeneSetApp extends PureComponent {
           onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
-          sortGeneSetBy={this.state.sortViewBy}
+          sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}
         />
 
         <NavigationBar
           acceptGeneHandler={this.geneHighlight}
-          // configurationHandler={this.showConfiguration}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
         />
