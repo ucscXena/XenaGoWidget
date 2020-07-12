@@ -14,5 +14,5 @@ export const SORT_ORDER_ENUM = {
 export const SORT_VIEW_BY = {
   SIMILAR: 'Similar',
   DIFFERENT: 'Different',
-  ALPHA: 'Alphabetic',
+  // ALPHA: 'Alphabetic',
 }
