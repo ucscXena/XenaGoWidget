@@ -1,7 +1,7 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
-import FaEdit from 'react-icons/lib/fa/edit'
+// import FaEdit from 'react-icons/lib/fa/edit'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import FaRefresh from 'react-icons/lib/fa/refresh'
@@ -52,24 +52,27 @@ export class EditGeneSetButton extends PureComponent {
                   </select>
                 </td>
                 <td>
-                  <button
-                    className={BaseStyle.editGeneSets}
-                    onClick={() =>this.props.onGeneEdit()}
-                  >
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                  Gene Sets
-                          </td>
-                          <td>
-                            <FaEdit style={{fontSize: 'x-large'}}/>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </button>
+                  <div style={{marginTop: 80}}/>
                 </td>
+                {/*<td>*/}
+                {/*  <button*/}
+                {/*    className={BaseStyle.editGeneSets}*/}
+                {/*    onClick={() =>this.props.onGeneEdit()}*/}
+                {/*  >*/}
+                {/*    <table>*/}
+                {/*      <tbody>*/}
+                {/*        <tr>*/}
+                {/*          <td>*/}
+                {/*  Gene Sets*/}
+                {/*          </td>*/}
+                {/*          <td>*/}
+                {/*            <FaEdit style={{fontSize: 'x-large'}}/>*/}
+                {/*          </td>*/}
+                {/*        </tr>*/}
+                {/*      </tbody>*/}
+                {/*    </table>*/}
+                {/*  </button>*/}
+                {/*</td>*/}
               </tr>
             </tbody>
           </table>
