@@ -670,25 +670,25 @@ export default class XenaGeneSetApp extends PureComponent {
     let filterOrder = SORT_ORDER_ENUM.DESC
 
     if(method===SORT_VIEW_BY.DIFFERENT){
-      sortViewBy = SORT_ENUM.ABS_DIFF
-      filterBy = SORT_ENUM.DIFF
+      filterBy = SORT_ENUM.ABS_DIFF
       filterOrder = SORT_ORDER_ENUM.DESC
+      sortViewBy = SORT_ENUM.DIFF
       sortViewOrder = SORT_ORDER_ENUM.DESC
     }
     else
     if(method===SORT_VIEW_BY.SIMILAR){
       filterBy = SORT_ENUM.ABS_DIFF
       filterOrder = SORT_ORDER_ENUM.ASC
-      sortViewBy = SORT_ENUM.ABS_DIFF
+      sortViewBy = SORT_ENUM.DIFF
       sortViewOrder = SORT_ORDER_ENUM.ASC
     }
-    else
-    if(method===SORT_VIEW_BY.ALPHA){
-      filterBy = SORT_ENUM.ALPHA
-      filterOrder = SORT_ORDER_ENUM.ASC
-      sortViewBy = SORT_ENUM.ALPHA
-      sortViewOrder = SORT_ORDER_ENUM.ASC
-    }
+    // else
+    // if(method===SORT_VIEW_BY.ALPHA){
+    //   filterBy = SORT_ENUM.ALPHA
+    //   filterOrder = SORT_ORDER_ENUM.ASC
+    //   sortViewBy = SORT_ENUM.ALPHA
+    //   sortViewOrder = SORT_ORDER_ENUM.ASC
+    // }
 
 
     this.setState({
