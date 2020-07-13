@@ -67,7 +67,7 @@ export function calculateCohorts(urlVariables){
   return [ AppStorageHandler.getCohortState(0), AppStorageHandler.getCohortState(1)]
 }
 
-export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2,limit) => {
+export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2) => {
   let generatedUrl = `cohort1=${cohort1}`
   generatedUrl += `&cohort2=${cohort2}`
   generatedUrl += `&filter=${filter}`
@@ -78,9 +78,6 @@ export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedS
   }
   if( selectedSubCohorts2){
     generatedUrl += `&selectedSubCohorts2=${selectedSubCohorts2}`
-  }
-  if( limit ){
-    generatedUrl += `&geneSetLimit=${limit}`
   }
   return generatedUrl
 }

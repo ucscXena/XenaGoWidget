@@ -2,7 +2,37 @@ import update from 'immutability-helper'
 import { sumInstances, sumGeneExpression, sumParadigm} from './MathFunctions'
 import {VIEW_ENUM} from '../data/ViewEnum'
 import {isViewGeneExpression} from './DataFunctions'
-import {SORT_ENUM} from '../data/SortEnum'
+import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
+
+
+export function calculateSortingByMethod(method){
+  let sortViewOrder = SORT_ORDER_ENUM.DESC
+  let sortViewBy = SORT_ENUM.ABS_DIFF
+  let filterBy = SORT_ENUM.DIFF
+  let filterOrder = SORT_ORDER_ENUM.DESC
+
+  if(method===SORT_VIEW_BY.DIFFERENT){
+    filterBy = SORT_ENUM.ABS_DIFF
+    filterOrder = SORT_ORDER_ENUM.DESC
+    sortViewBy = SORT_ENUM.DIFF
+    sortViewOrder = SORT_ORDER_ENUM.DESC
+  }
+  else
+  if(method===SORT_VIEW_BY.SIMILAR){
+    filterBy = SORT_ENUM.ABS_DIFF
+    filterOrder = SORT_ORDER_ENUM.ASC
+    sortViewBy = SORT_ENUM.DIFF
+    sortViewOrder = SORT_ORDER_ENUM.ASC
+  }
+
+  return {
+    sortViewOrder,
+    sortViewBy,
+    filterBy,
+    filterOrder,
+  }
+
+}
 
 export function transpose(a) {
   // return a[0].map(function (_, c) { return a.map(function (r) { return r[c]; }); });

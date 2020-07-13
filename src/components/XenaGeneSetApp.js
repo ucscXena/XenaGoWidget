@@ -28,6 +28,7 @@ import CrossHairV from './crosshair/CrossHairV'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
 import {
+  calculateSortingByMethod,
   scorePathway, sortAssociatedData, sortGeneDataWithSamples,
 } from '../functions/SortFunctions'
 import QueryString from 'querystring'
@@ -112,7 +113,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
-      sortViewByLabel: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_VIEW_BY.DIFFERENT,
+      sortViewByLabel: urlVariables.sortViewByLabel ?urlVariables.sortViewByLabel : SORT_VIEW_BY.DIFFERENT,
       sortViewOrder: SORT_ORDER_ENUM.DESC,
       sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
       filterOrder: SORT_ORDER_ENUM.DESC,
@@ -146,7 +147,6 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].name,
       this.state.selectedCohort[0].selectedSubCohorts,
       this.state.selectedCohort[1].selectedSubCohorts,
-      this.state.geneSetLimit,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
@@ -664,32 +664,7 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetSortBy = (method) => {
     currentLoadState= LOAD_STATE.LOADED
 
-    let sortViewOrder = SORT_ORDER_ENUM.DESC
-    let sortViewBy = SORT_ENUM.ABS_DIFF
-    let filterBy = SORT_ENUM.DIFF
-    let filterOrder = SORT_ORDER_ENUM.DESC
-
-    if(method===SORT_VIEW_BY.DIFFERENT){
-      filterBy = SORT_ENUM.ABS_DIFF
-      filterOrder = SORT_ORDER_ENUM.DESC
-      sortViewBy = SORT_ENUM.DIFF
-      sortViewOrder = SORT_ORDER_ENUM.DESC
-    }
-    else
-    if(method===SORT_VIEW_BY.SIMILAR){
-      filterBy = SORT_ENUM.ABS_DIFF
-      filterOrder = SORT_ORDER_ENUM.ASC
-      sortViewBy = SORT_ENUM.DIFF
-      sortViewOrder = SORT_ORDER_ENUM.ASC
-    }
-    // else
-    // if(method===SORT_VIEW_BY.ALPHA){
-    //   filterBy = SORT_ENUM.ALPHA
-    //   filterOrder = SORT_ORDER_ENUM.ASC
-    //   sortViewBy = SORT_ENUM.ALPHA
-    //   sortViewOrder = SORT_ORDER_ENUM.ASC
-    // }
-
+    let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
 
     this.setState({
       reloadPathways: true,

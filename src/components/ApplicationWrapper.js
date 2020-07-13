@@ -70,7 +70,6 @@ export class ApplicationWrapper extends PureComponent {
       this.state.cohort,
       this.state.selectedSubCohorts1,
       this.state.selectedSubCohorts2,
-      this.state.geneSetLimit,
     )
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
@@ -79,14 +78,15 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&geneSetLimit=${this.state.geneSetLimit}`
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
+    finalUrl += `&sortViewByLabel=${this.state.sortViewByLabel}`
 
     this.openUrl(finalUrl)
     this.setState({
       filter:analysis,
       wizard:'finished',
       geneSetLimit: 40,
-      geneSetFilterMethod:   SORT_ENUM.ALPHA,
-      geneSetSortMethod:  SORT_ENUM.ALPHA,
+      // geneSetFilterMethod:   SORT_ENUM.ALPHA,
+      // geneSetSortMethod:  SORT_ENUM.ALPHA,
     })
     // }
 
