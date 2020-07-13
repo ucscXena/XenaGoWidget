@@ -1,5 +1,7 @@
 import {AppStorageHandler} from '../service/AppStorageHandler'
 import {getCohortDetails, getSubCohortsOnlyForCohort} from './CohortFunctions'
+import {SORT_VIEW_BY} from '../data/SortEnum'
+import {calculateSortingByMethod} from './SortFunctions'
 
 export function calculateFilter(urlVariables){
   // handling filters
@@ -40,6 +42,11 @@ export function calculateGeneSet(urlVariables,pathways){
   return selectedGeneSet
 }
 
+export function calculateSorting(urlVariables){
+  const sortViewByLabel= urlVariables.sortViewByLabel ?urlVariables.sortViewByLabel : SORT_VIEW_BY.DIFFERENT
+  return calculateSortingByMethod(sortViewByLabel)
+}
+
 export function calculateCohortColors(urlVariables){
 
   if(urlVariables.cohort1Color && urlVariables.cohort2Color){
@@ -67,7 +74,7 @@ export function calculateCohorts(urlVariables){
   return [ AppStorageHandler.getCohortState(0), AppStorageHandler.getCohortState(1)]
 }
 
-export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2,limit) => {
+export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedSubCohorts1,selectedSubCohorts2,limit,sortViewByLabel) => {
   let generatedUrl = `cohort1=${cohort1}`
   generatedUrl += `&cohort2=${cohort2}`
   generatedUrl += `&filter=${filter}`
@@ -81,6 +88,9 @@ export const generateUrl = (filter,geneset,genesetOpen,cohort1,cohort2,selectedS
   }
   if(limit){
     generatedUrl += `&geneSetLimit=${limit}`
+  }
+  if(sortViewByLabel){
+    generatedUrl += `&sortViewByLabel=${sortViewByLabel}`
   }
   return generatedUrl
 }

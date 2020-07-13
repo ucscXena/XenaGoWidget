@@ -36,11 +36,11 @@ import {
   calculateCohortColors,
   calculateCohorts,
   calculateFilter,
-  calculateGeneSet,
+  calculateGeneSet, calculateSorting,
   generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
-import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
+import {SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
@@ -97,6 +97,10 @@ export default class XenaGeneSetApp extends PureComponent {
       this.calculateSubCohortSamples(urlVariables))
     const cohorts = calculateCohorts(urlVariables)
     const cohortColors = calculateCohortColors(urlVariables)
+    const { sortViewByLabel, filterOrder, filterBy, sortViewOrder, sortViewBy } = calculateSorting(urlVariables)
+
+
+
 
     this.state = {
       associatedData: [],
@@ -113,14 +117,15 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
-      filter: filter,
-      sortViewByLabel: urlVariables.sortViewByLabel ?urlVariables.sortViewByLabel : SORT_VIEW_BY.DIFFERENT,
+      filter,
 
-      filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.DIFF,
-      filterOrder: SORT_ORDER_ENUM.DESC,
+      sortViewByLabel,
 
-      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
-      sortViewOrder: SORT_ORDER_ENUM.DESC,
+      filterBy,
+      filterOrder,
+
+      sortViewBy,
+      sortViewOrder,
       geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
 
       minGeneData: -2,
@@ -151,6 +156,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[0].selectedSubCohorts,
       this.state.selectedCohort[1].selectedSubCohorts,
       this.state.geneSetLimit,
+      this.state.sortViewByLabel,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl

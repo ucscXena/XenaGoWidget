@@ -26,6 +26,7 @@ export function calculateSortingByMethod(method){
   }
 
   return {
+    sortViewByLabel: method,
     sortViewOrder,
     sortViewBy,
     filterBy,
