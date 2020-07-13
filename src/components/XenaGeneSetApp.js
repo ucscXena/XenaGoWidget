@@ -126,7 +126,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
       sortViewBy,
       sortViewOrder,
-      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
 
       minGeneData: -2,
       maxGeneData: 2,
