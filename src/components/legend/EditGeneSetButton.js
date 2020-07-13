@@ -54,25 +54,6 @@ export class EditGeneSetButton extends PureComponent {
                 <td>
                   <div style={{marginTop: 80}}/>
                 </td>
-                {/*<td>*/}
-                {/*  <button*/}
-                {/*    className={BaseStyle.editGeneSets}*/}
-                {/*    onClick={() =>this.props.onGeneEdit()}*/}
-                {/*  >*/}
-                {/*    <table>*/}
-                {/*      <tbody>*/}
-                {/*        <tr>*/}
-                {/*          <td>*/}
-                {/*  Gene Sets*/}
-                {/*          </td>*/}
-                {/*          <td>*/}
-                {/*            <FaEdit style={{fontSize: 'x-large'}}/>*/}
-                {/*          </td>*/}
-                {/*        </tr>*/}
-                {/*      </tbody>*/}
-                {/*    </table>*/}
-                {/*  </button>*/}
-                {/*</td>*/}
               </tr>
             </tbody>
           </table>

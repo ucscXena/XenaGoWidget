@@ -12,9 +12,9 @@ export function calculateSortingByMethod(method){
   let filterOrder = SORT_ORDER_ENUM.DESC
 
   if(method===SORT_VIEW_BY.DIFFERENT){
-    filterBy = SORT_ENUM.ABS_DIFF
+    filterBy = SORT_ENUM.DIFF
     filterOrder = SORT_ORDER_ENUM.DESC
-    sortViewBy = SORT_ENUM.DIFF
+    sortViewBy = SORT_ENUM.ABS_DIFF
     sortViewOrder = SORT_ORDER_ENUM.DESC
   }
   else

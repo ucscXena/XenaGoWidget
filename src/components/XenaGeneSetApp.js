@@ -113,13 +113,16 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
-      sortViewByLabel: urlVariables.sortViewByLabel ?urlVariables.sortViewByLabel : SORT_VIEW_BY.DIFFERENT,
-      sortViewOrder: SORT_ORDER_ENUM.DESC,
-      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
-      filterOrder: SORT_ORDER_ENUM.DESC,
-      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
-      filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.DIFF,
       filter: filter,
+      sortViewByLabel: urlVariables.sortViewByLabel ?urlVariables.sortViewByLabel : SORT_VIEW_BY.DIFFERENT,
+
+      filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.DIFF,
+      filterOrder: SORT_ORDER_ENUM.DESC,
+
+      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
+      sortViewOrder: SORT_ORDER_ENUM.DESC,
+      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
+
       minGeneData: -2,
       maxGeneData: 2,
       hoveredPathway: undefined,
