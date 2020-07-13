@@ -147,6 +147,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].name,
       this.state.selectedCohort[0].selectedSubCohorts,
       this.state.selectedCohort[1].selectedSubCohorts,
+      this.state.geneSetLimit,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
