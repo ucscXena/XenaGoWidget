@@ -111,11 +111,12 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
+      sortViewByLabel: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_VIEW_BY.DIFFERENT,
       sortViewOrder: SORT_ORDER_ENUM.DESC,
       sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.ABS_DIFF,
-      sortViewByLabel: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_VIEW_BY.DIFFERENT,
       filterOrder: SORT_ORDER_ENUM.DESC,
-      // filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.CONTRAST_DIFF,
+      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
       filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.DIFF,
       filter: filter,
       minGeneData: -2,
@@ -128,8 +129,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedGene: undefined,
       reference: refGene['hg38'],
       limit: 25,
-      geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
-      geneSetSortBy: urlVariables.geneSetSortBy ?urlVariables.geneSetSortBy : DEFAULT_GENE_SET_SORT_BY,
       highlightedGene: undefined,
       collapsed: true,
       mousing: false,
@@ -147,6 +146,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].name,
       this.state.selectedCohort[0].selectedSubCohorts,
       this.state.selectedCohort[1].selectedSubCohorts,
+      this.state.geneSetLimit,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl

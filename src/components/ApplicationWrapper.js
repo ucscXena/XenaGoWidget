@@ -70,6 +70,7 @@ export class ApplicationWrapper extends PureComponent {
       this.state.cohort,
       this.state.selectedSubCohorts1,
       this.state.selectedSubCohorts2,
+      this.state.geneSetLimit,
     )
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples1}`
     finalUrl += `&subCohortSamples=${this.state.subCohortSamples2}`
