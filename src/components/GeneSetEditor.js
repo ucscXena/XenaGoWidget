@@ -473,13 +473,6 @@ export default class GeneSetEditor extends PureComponent {
                         }
                         &nbsp;Results: {this.state.totalPathways}
                       </td>
-                      {/*<td>*/}
-                      {/*  <input*/}
-                      {/*    onChange={(event) => this.setState({limit: event.target.value})}*/}
-                      {/*    style={{width: 50}}*/}
-                      {/*    value={this.state.limit}*/}
-                      {/*  />*/}
-                      {/*</td>*/}
                     </tr>
                   </tbody>
                 </table>
@@ -498,27 +491,18 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>(
+                      return (<option key={p.golabel} value={p.golabel}>
+                        {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `${scorePathway(p, SORT_ENUM.ABS_DIFF)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}, `
                         }
-                        N: {p.gene.length}) {p.golabel}</option>)
+                        )</option>)
                     })
                   }
                 </select>
               </td>
               }
               <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
-                {/*<br/><br/><br/><br/><br/><br/><br/><br/>*/}
-                {/*<Button*/}
-                {/*  disabled={this.state.editGeneSet !== undefined}*/}
-                {/*  onClick={() => this.handleRefreshView()}*/}
-                {/*>*/}
-                {/*  <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>*/}
-                {/*  <br/>*/}
-                {/*  Reload Visible*/}
-                {/*</Button>*/}
-                {/*<br/><br/><br/><br/><br/>*/}
                 <Button
                   disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
                   onClick={() => this.handleAddSelectedToCart()}
@@ -531,7 +515,6 @@ export default class GeneSetEditor extends PureComponent {
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} valign='top' width={300}>
                 <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Current Gene Sets</div>
-                {/*<h3>Current Gene Sets</h3>*/}
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
@@ -543,11 +526,12 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   {
                     this.state.filteredCartPathways.map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>(
+                      return (<option key={p.golabel} value={p.golabel}>
+                        {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `${scorePathway(p,this.state.sortCartBy)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}, `
                         }
-                        N: {p.gene.length}) {p.golabel}</option>)
+                        )</option>)
                     })
                   }
                 </select>
