@@ -54,7 +54,6 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const DEFAULT_GENE_SET_SORT_BY = 'Different' // versus "SIMILAR" TODO: make enum
 export const LEGEND_HEIGHT = 155
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
@@ -109,7 +108,6 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortColors,
       fetch: false,
       automaticallyReloadPathways: true,
-      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: process.env.NODE_ENV !== 'test',
       loading: LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
@@ -407,7 +405,6 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData: sortedGeneData,
       pathwayData: [pathwayDataA, pathwayDataB],
       loading: LOAD_STATE.LOADED,
-      currentLoadState: currentLoadState,
       processing: false,
       fetch: false,
     })
@@ -576,7 +573,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: updateCohortState,
       filter: newView,
       fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: this.state.automaticallyReloadPathways,
       showCohortEditor: false,
     })
@@ -604,7 +600,6 @@ export default class XenaGeneSetApp extends PureComponent {
       pathways: newPathways,
       fetch: true,
       reloadPathways: false,
-      currentLoadState: LOAD_STATE.LOADING,
     })
   };
 
@@ -692,11 +687,6 @@ export default class XenaGeneSetApp extends PureComponent {
     let maxValue = 0
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
-      // TODO: remove state currentLoadState
-      this.setState({
-        currentLoadState
-      })
-      // change gene sets here
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
@@ -819,7 +809,7 @@ export default class XenaGeneSetApp extends PureComponent {
             mousing={this.state.mousing} x={this.state.x}
           />
           <Dialog
-            active={this.state.currentLoadState === LOAD_STATE.LOADING}
+            active={currentLoadState === LOAD_STATE.LOADING}
             style={{width: 400}}
             title="Loading"
           >
