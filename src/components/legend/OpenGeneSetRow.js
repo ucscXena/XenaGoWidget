@@ -6,9 +6,10 @@ import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import FaRefresh from 'react-icons/lib/fa/refresh'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
+import FaEdit from 'react-icons/lib/fa/edit'
 
 
-export class EditGeneSetButton extends PureComponent {
+export class OpenGeneSetRow extends PureComponent {
 
   constructor(props) {
     super(props)
@@ -52,7 +53,22 @@ export class EditGeneSetButton extends PureComponent {
                   </select>
                 </td>
                 <td>
-                  <div style={{marginTop: 80}}/>
+                  {/*<div style={{marginTop: 80}}/>*/}
+                  <button
+                    className={BaseStyle.editGeneSets}
+                    onClick={() =>this.props.onGeneEdit()}
+                  >
+                    <table>
+                      <tr>
+                        <td>
+                          Gene Sets
+                        </td>
+                        <td>
+                          <FaEdit style={{fontSize: 'x-large'}}/>
+                        </td>
+                      </tr>
+                    </table>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -63,7 +79,7 @@ export class EditGeneSetButton extends PureComponent {
   }
 }
 
-EditGeneSetButton.propTypes = {
+OpenGeneSetRow.propTypes = {
   geneSetLimit: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   onChangeGeneSetSort: PropTypes.any.isRequired,

@@ -365,6 +365,7 @@
   margin-left: 5px;
   background-color: lightgoldenrodyellow;
   cursor: pointer;
+  outline: 0;
 }
 
 .editGeneSetLimits{
