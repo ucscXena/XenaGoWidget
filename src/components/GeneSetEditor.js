@@ -425,35 +425,10 @@ export default class GeneSetEditor extends PureComponent {
                 <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Available Gene Sets from <br/>'{this.props.view}'</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
-                    <tr>
-                      <td>
-                        {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
-                          <button
-                            onClick={() => {
-                              this.setState({
-                                sortOrder: SORT_ORDER_ENUM.DESC,
-                                sortCartOrder: SORT_ORDER_ENUM.DESC
-                              })
-                            }}
-                          >
-                            Most differential
-                            <FaSortAsc/>
-                          </button>
-                        }
-                        {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
-                        <button
-                          onClick={() => {
-                            this.setState({
-                              sortOrder: SORT_ORDER_ENUM.ASC,
-                              sortCartOrder: SORT_ORDER_ENUM.ASC
-                            })}}
-                        >
-                          Most similar
-                          <FaSortDesc />
-                        </button>
-                        }
-                      </td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*  <td>*/}
+                    {/*  </td>*/}
+                    {/*</tr>*/}
                     <tr>
                       <td>
                         <input
@@ -473,7 +448,30 @@ export default class GeneSetEditor extends PureComponent {
                     <tr>
                       <td>
                         {/*View Limit (Tot: {this.state.totalPathways})*/}
-                        Results: {this.state.totalPathways}
+                        {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
+                        <button
+                          onClick={() => {
+                            this.setState({
+                              sortOrder: SORT_ORDER_ENUM.DESC,
+                            })
+                          }}
+                        >
+                          Score
+                          <FaSortAsc/>
+                        </button>
+                        }
+                        {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
+                        <button
+                          onClick={() => {
+                            this.setState({
+                              sortOrder: SORT_ORDER_ENUM.ASC,
+                            })}}
+                        >
+                          Score
+                          <FaSortDesc />
+                        </button>
+                        }
+                        &nbsp;Results: {this.state.totalPathways}
                       </td>
                       {/*<td>*/}
                       {/*  <input*/}
