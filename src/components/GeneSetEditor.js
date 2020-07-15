@@ -1,10 +1,8 @@
 import PureComponent from './PureComponent'
 import React from 'react'
 import BaseStyle from '../css/base.css'
-import FaEdit from 'react-icons/lib/fa/edit'
-import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
-import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
-import FaRedo from 'react-icons/lib/fa/refresh'
+// import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
+// import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-right'
 import {Button} from 'react-toolbox/lib/button'
 import PropTypes from 'prop-types'
@@ -15,17 +13,15 @@ import FaTrashO from 'react-icons/lib/fa/trash-o'
 import FaCheckSquare from 'react-icons/lib/fa/check-square'
 import FaTrash from 'react-icons/lib/fa/trash'
 import update from 'immutability-helper'
-import {Chip, Input} from 'react-toolbox'
+import {Input} from 'react-toolbox'
 import Autocomplete from 'react-toolbox/lib/autocomplete'
-import FaPlusCircle from 'react-icons/lib/fa/plus-circle'
-import {ButtonGroup} from 'react-bootstrap'
 import Dialog from 'react-toolbox/lib/dialog'
-import {scorePathway} from '../functions/SortFunctions'
+import {calculateSortingByMethod, scorePathway} from '../functions/SortFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
-import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
+import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
 
 const VIEW_LIMIT = 200
-const CART_LIMIT = 45
+const CART_LIMIT = 1000
 
 export default class GeneSetEditor extends PureComponent {
 
@@ -43,13 +39,19 @@ export default class GeneSetEditor extends PureComponent {
       cartPathways = [...cartPathways, ...this.props.pathways.filter(p => cartLabels.indexOf(p.golabel) < 0)]
     }
 
+    const sortingOptions = calculateSortingByMethod(SORT_VIEW_BY.DIFFERENT)
+
     this.state = {
       editGeneSet: undefined,
       name: '',
-      sortOrder: SORT_ORDER_ENUM.ASC,
-      sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.CONTRAST_DIFF: SORT_ENUM.ALPHA,
-      sortCartOrder:SORT_ORDER_ENUM.ASC,
-      sortCartBy: isViewGeneExpression(props.view) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
+      geneName: '',
+      sortOrder: sortingOptions.sortViewOrder,
+      // sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.CONTRAST_DIFF: SORT_ENUM.ALPHA,
+      sortBy: sortingOptions.sortViewBy,
+      sortCartOrder:sortingOptions.sortViewOrder,
+      sortCartOrderLabel:SORT_VIEW_BY.DIFFERENT,
+      // sortCartBy: isViewGeneExpression(props.view) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
+      sortCartBy: sortingOptions.sortViewBy,
       geneSet: '8K',
       newGene: [],
       geneOptions: [],
@@ -57,7 +59,7 @@ export default class GeneSetEditor extends PureComponent {
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       filteredPathways : [],
-      filteredCartPathways : [],
+      // filteredCartPathways : [],
       cartPathways,
       selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
@@ -81,20 +83,23 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.name !== this.state.name
-   || prevState.sortOrder !== this.state.sortOrder
-      || prevState.sortBy !== this.state.sortBy
+    if(
+      prevState.name !== this.state.name
+      || prevState.geneName !== this.state.geneName
+      || prevState.sortOrder !== this.state.sortOrder
       || this.state.filteredPathways.length === 0
     ){
-      this.filterAvailable()
+      this.filterAvailable(prevState.sortOrder !== this.state.sortOrder)
     }
 
-    if(prevState.sortCartBy !== this.state.sortCartBy
-      || prevState.sortCartOrder !== this.state.sortCartOrder
-      || this.state.filteredCartPathways.length === 0
+    if(prevState.sortCartOrderLabel !== this.state.sortCartOrderLabel
     ){
-      this.filterCart()
+      this.sortVisibleCartByLabel(this.state.sortCartOrderLabel)
+      // this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
     }
+
+    // if(prevState.sortCartOrder !== this.state.sortCartOrder){
+    // }
   }
 
   showScore(){
@@ -102,9 +107,9 @@ export default class GeneSetEditor extends PureComponent {
   }
 
 
-  redoFilter() {
-    this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
-  }
+  // redoFilter() {
+  //   this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder)
+  // }
 
   handleMeanActivityData = (output) => {
     const pathways = getGeneSetsForView(this.props.view)
@@ -141,14 +146,29 @@ export default class GeneSetEditor extends PureComponent {
     })
   };
 
-  filterCart(){
+  // filterCart(){
+  //   this.setState({
+  //     filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
+  //   })
+  // }
+
+  sortVisibleCartByLabel(sortCartByLabel) {
+    const sortingOptions = calculateSortingByMethod(sortCartByLabel)
+    // console.log('sorting visible ',sortCartByLabel,sortingOptions)
+    const filteredCart = this.getFilteredCart(this.state.cartPathways,sortingOptions.sortViewBy,sortingOptions.sortViewOrder)
+    // console.log('filtered cart from ',this.state.cartPathways,sortingOptions.sortViewBy,sortingOptions.sortViewOrder)
     this.setState({
-      filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
+      sortCartBy: sortingOptions.sortViewBy,
+      sortCartOrder: sortingOptions.sortViewOrder,
+      cartPathways: filteredCart.slice(0,this.state.cartPathwayLimit) ,
+      filteredCartPathways: filteredCart.slice(0,this.state.cartPathwayLimit),
     })
+
   }
 
   sortVisibleCart(sortBy, sortOrder, cartLimit) {
     const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
+    // console.log('filtering by visible cart',filteredCart,sortBy,sortOrder)
     this.setState({
       sortCartBy: sortBy,
       sortCartOrder: sortOrder,
@@ -156,13 +176,13 @@ export default class GeneSetEditor extends PureComponent {
       cartPathways: filteredCart.slice(0,cartLimit) ,
       filteredCartPathways: filteredCart.slice(0,cartLimit),
     })
-
   }
 
   filterAvailable(){
     const filteredPathways = this.state.loadedPathways
       .filter( p => ( p.golabel.toLowerCase().indexOf(this.state.name)>=0 ||
         (p.goid && p.goid.toLowerCase().indexOf(this.state.name)>=0)))
+      .filter( p => this.state.geneName ==='' || ( p.gene.indexOf(this.state.geneName.toUpperCase())>=0))
       .sort( (a,b) => {
         if(SORT_ENUM[this.state.sortBy]===SORT_ENUM.ALPHA) {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * a.golabel.toUpperCase().localeCompare(b.golabel.toUpperCase())
@@ -176,7 +196,9 @@ export default class GeneSetEditor extends PureComponent {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA)
         }
       })
+    // const newCart = filterCart ? filteredPathways.slice(0,this.state.cartPathwayLimit) : this.state.cartPathways
     this.setState({
+      // cartPathways: newCart,
       filteredPathways: filteredPathways,
       totalPathways: filteredPathways.length
     })
@@ -197,7 +219,8 @@ export default class GeneSetEditor extends PureComponent {
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     })
-    return selectedCartData.slice(0,this.state.cartPathwayLimit)
+    // return selectedCartData.slice(0,this.state.cartPathwayLimit)
+    return selectedCartData
   }
 
   handleAddSelectedToCart() {
@@ -207,7 +230,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   getFilteredCart(pathways,sortBy,sortOrder){
-    const filteredCartPathways = pathways.sort((a, b) => {
+    return pathways.sort((a, b) => {
       if(SORT_ENUM[sortBy]===SORT_ENUM.ALPHA){
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
       }
@@ -220,8 +243,6 @@ export default class GeneSetEditor extends PureComponent {
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
       }
     })
-    return filteredCartPathways
-
   }
 
   handleRefreshView() {
@@ -418,79 +439,61 @@ export default class GeneSetEditor extends PureComponent {
             <tr>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox}  width={250}>
-                <div style={{fontSize:'larger',fontWeight:'bolder'}}>All GeneSets available for: <br/>'{this.props.view}'</div>
+                <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Available Gene Sets from <br/>'{this.props.view}'</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
-                    <tr>
-                      {this.showScore() &&
-                    <td>
-                      Sort Gene Sets By
-                      <select
-                        onChange={
-                          (event) => {
-                            this.setState({sortBy: event.target.value})
-                          }}
-                        value={this.state.sortBy}
-                      >
-                        {Object.entries(SORT_ENUM).map(s => {
-                          return <option key={s[0]} value={s[0]}>{s[1]}</option>
-                        })
-                        }
-                      </select>
-                    </td>
-                      }
-
-                      <td>
-                        {this.state.sortOrder === SORT_ORDER_ENUM.ASC &&
-                      <FaSortAsc onClick={() => {
-                        this.setState({sortOrder: SORT_ORDER_ENUM.DESC })
-                      }}
-                      />
-                        }
-                        {this.state.sortOrder === SORT_ORDER_ENUM.DESC &&
-                      <FaSortDesc onClick={() => {
-                        this.setState({sortOrder: SORT_ORDER_ENUM.ASC})
-                      }}/>
-                        }
-                      </td>
-                    </tr>
+                    {/*<tr>*/}
+                    {/*  <td>*/}
+                    {/*  </td>*/}
+                    {/*</tr>*/}
                     <tr>
                       <td>
                         <input
                           onChange={(event) => this.setState({name: event.target.value.toLowerCase()})}
-                          placeholder='Filter by name' size={30}
+                          placeholder='Filter by gene set name' size={30}
                         />
                       </td>
                     </tr>
                     <tr>
                       <td>
-                      View Limit (Tot: {this.state.totalPathways})
-                      </td>
-                      <td>
                         <input
-                          onChange={(event) => this.setState({limit: event.target.value})}
-                          style={{width: 50}}
-                          value={this.state.limit}
+                          onChange={(event) => this.setState({geneName: event.target.value.toLowerCase()})}
+                          placeholder='Filter by exact gene name' size={30}
                         />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        {/*{this.state.sortOrder === SORT_ORDER_ENUM.ASC &&*/}
+                        {/*<button*/}
+                        {/*  className={BaseStyle.refreshButton}*/}
+                        {/*  onClick={() => {*/}
+                        {/*    this.setState({*/}
+                        {/*      sortOrder: SORT_ORDER_ENUM.DESC,*/}
+                        {/*    })*/}
+                        {/*  }}*/}
+                        {/*>*/}
+                        {/*  Score*/}
+                        {/*  <FaSortAsc/>*/}
+                        {/*</button>*/}
+                        {/*}*/}
+                        {/*{this.state.sortOrder === SORT_ORDER_ENUM.DESC &&*/}
+                        {/*<button*/}
+                        {/*  className={BaseStyle.refreshButton}*/}
+                        {/*  onClick={() => {*/}
+                        {/*    this.setState({*/}
+                        {/*      sortOrder: SORT_ORDER_ENUM.ASC,*/}
+                        {/*    })}}*/}
+                        {/*>*/}
+                        {/*  Score*/}
+                        {/*  <FaSortDesc />*/}
+                        {/*</button>*/}
+                        {/*}*/}
+                        &nbsp;Results: {this.state.totalPathways}
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                {this.state.editGeneSet === undefined &&
-                <ButtonGroup>
-                  <Button
-                    onClick={() => this.handleNewGeneSet()}
-                  >
-                    <FaPlusCircle/> New GeneSet
-                  </Button>
-                  <Button
-                    disabled={this.state.selectedFilteredPathways.length !== 1}
-                    onClick={() => this.handleEditGeneSet(this.state.selectedFilteredPathways[0], this.state.filteredPathways)}
-                  >
-                    <FaEdit/> Edit GeneSet
-                  </Button>
-                </ButtonGroup>
-                }
                 {this.state.selectedFilteredPathways.length} Selected
                 <br/>
                 <select
@@ -502,109 +505,61 @@ export default class GeneSetEditor extends PureComponent {
                     })
                     this.setState({selectedFilteredPathways: selectedEvents})
                   }}
-                  style={{overflow: 'scroll', height: 200, width: 220}}
+                  style={{overflow: 'scroll', height: 200, width: 300}}
                 >
                   {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>(
+                      return (<option key={p.golabel} value={p.golabel}>
+                        {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `${scorePathway(p, SORT_ENUM.DIFF)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}`
                         }
-                        N: {p.gene.length}) {p.golabel}</option>)
+                        )</option>)
                     })
                   }
                 </select>
               </td>
               }
               <td style={{verticalAlign: 'middle',textAlign:'center'}} valign='top' width={85}>
-                <br/><br/><br/><br/><br/><br/><br/><br/>
-                <Button
-                  disabled={this.state.editGeneSet !== undefined}
-                  onClick={() => this.handleRefreshView()}
-                >
-                  <FaRedo style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
-                  <br/>
-                  Reload Visible
-                </Button>
-                <br/><br/><br/><br/><br/>
                 <Button
                   disabled={this.isCartFull() || this.state.selectedFilteredPathways.length === 0 || this.state.editGeneSet !== undefined}
                   onClick={() => this.handleAddSelectedToCart()}
                 >
                   <FaArrowCircleORight style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
                   <br/>
-                  Add To View
+                  Add To <br/>
+                  Current <br/>
+                  View
                 </Button>
               </td>
               {!this.state.editGeneSet &&
-              <td className={BaseStyle.geneSetFilterBox} width={300} >
-                <div style={{fontSize:'larger',fontWeight:'bolder'}}>Visible GeneSets</div>
-                <table className={BaseStyle.geneSetFilterBox}>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <Chip
-                          style={{ backgroundColor: this.getCartColor(),color: 'black'}}
-                        >{this.state.cartPathways.length} / {this.state.cartPathwayLimit} </Chip>
-                      </td>
-                      {this.showScore() &&
-                      <td>
-                      Sort By
-                        <br/>
-                        <select
-                          onChange={(event) => this.setState({sortCartBy: event.target.value})}
-                          value={this.state.sortCartBy}
-                        >
-                          {Object.entries(SORT_ENUM).map(s => {
-                            return <option key={s[0]} value={s[0]}>{s[1]}</option>
-                          })}
-                        </select>
-                      </td>
-                      }
-                      <td>
-                        {this.state.sortCartOrder === SORT_ORDER_ENUM.ASC &&
-                        <FaSortAsc onClick={() => this.setState({sortCartOrder: SORT_ORDER_ENUM.DESC})}/>
-                        }
-                        {this.state.sortCartOrder === SORT_ORDER_ENUM.DESC  &&
-                        <FaSortDesc onClick={() => this.setState({sortCartOrder: SORT_ORDER_ENUM.ASC})}/>
-                        }
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                      View Limit
-                      </td>
-                      <td>
-                        <input
-                          onChange={(event) => this.setState({cartPathwayLimit: event.target.value})}
-                          style={{width: 40}}
-                          value={this.state.cartPathwayLimit}
-                        />
-                        <Button
-                          // disabled={this.state.selectedCartPathways.length !== 1}
-                          floating
-                          mini
-                          onClick={() => this.redoFilter()}
-                          style={{marginLeft: 20}}
-                          // raised
-                        >
-                          <FaRedo/>
-                        </Button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <ButtonGroup>
-                  <Button
-                    disabled={this.state.selectedCartPathways.length !== 1}
-                    onClick={() => this.handleEditGeneSet(this.state.selectedCartPathways[0],this.state.cartPathways)}
-                  >
-                    <FaEdit/> Edit
-                  </Button>
-                  <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
-                    <FaTrashO  color='orange'/> Remove
-                  </Button>
-                </ButtonGroup>
+              <td className={BaseStyle.geneSetFilterBox} valign='top' width={300}>
+                <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Current Gene Sets</div>
+                {/*{this.state.sortCartOrderLabel === SORT_VIEW_BY.DIFFERENT &&*/}
+                {/*<button*/}
+                {/*  className={BaseStyle.refreshButton}*/}
+                {/*  onClick={() => {*/}
+                {/*    this.setState({*/}
+                {/*      sortCartOrderLabel: SORT_VIEW_BY.SIMILAR,*/}
+                {/*    })*/}
+                {/*  }}*/}
+                {/*>*/}
+                {/*  Score*/}
+                {/*  <FaSortAsc/>*/}
+                {/*</button>*/}
+                {/*}*/}
+                {/*{this.state.sortCartOrderLabel === SORT_VIEW_BY.SIMILAR &&*/}
+                {/*<button*/}
+                {/*  className={BaseStyle.refreshButton}*/}
+                {/*  onClick={() => {*/}
+                {/*    this.setState({*/}
+                {/*      sortCartOrderLabel: SORT_VIEW_BY.DIFFERENT,*/}
+                {/*    })}}*/}
+                {/*>*/}
+                {/*  Score*/}
+                {/*  <FaSortDesc />*/}
+                {/*</button>*/}
+                {/*}*/}
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
@@ -612,19 +567,23 @@ export default class GeneSetEditor extends PureComponent {
                     })
                     this.setState({selectedCartPathways: selectedEvents})
                   }}
-                  style={{overflow: 'scroll', height: 250, width: 250}}
+                  style={{overflow: 'scroll', height: 320, width: 300}}
                 >
                   {
-                    this.state.filteredCartPathways.map(p => {
-                      return (<option key={p.golabel} value={p.golabel}>(
+                    this.state.cartPathways.map(p => {
+                      return (<option key={p.golabel} value={p.golabel}>
+                        {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `${scorePathway(p,this.state.sortCartBy)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}`
                         }
-                        N: {p.gene.length}) {p.golabel}</option>)
+                        )</option>)
                     })
                   }
                 </select>
                 <br/>
+                <Button disabled={this.state.selectedCartPathways.length===0 || this.state.editGeneSet!==undefined} onClick={() => this.handleRemoveSelectedFromCart()} >
+                  <FaTrashO  color='orange'/> Remove
+                </Button>
                 <Button
                   disabled={this.state.editGeneSet!==undefined}
                   onClick={() => this.handleClearCart()}
@@ -718,19 +677,20 @@ export default class GeneSetEditor extends PureComponent {
             }
             {!this.state.editGeneSet &&
             <tr>
-              <td colSpan={3}>
+              <td colSpan={2}/>
+              <td colSpan={1}>
                 <div style={{marginTop: 10}}>
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
-                    label='View Visible' mini
+                    label='Save View' mini
                     onClick={() => this.handleViewGeneSets()}
                     primary raised
                   />
-                  <Button
-                    label='Reset' mini
-                    onClick={() => this.handleResetGeneSets()}
-                    raised
-                  />
+                  {/*<Button*/}
+                  {/*  label='Reset' mini*/}
+                  {/*  onClick={() => this.handleResetGeneSets()}*/}
+                  {/*  raised*/}
+                  {/*/>*/}
                   <Button
                     label='Cancel' mini
                     onClick={() => this.handleCancel()}

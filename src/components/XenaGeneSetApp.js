@@ -28,6 +28,7 @@ import CrossHairV from './crosshair/CrossHairV'
 import {isEqual} from 'underscore'
 import update from 'immutability-helper'
 import {
+  calculateSortingByMethod,
   scorePathway, sortAssociatedData, sortGeneDataWithSamples,
 } from '../functions/SortFunctions'
 import QueryString from 'querystring'
@@ -35,11 +36,11 @@ import {
   calculateCohortColors,
   calculateCohorts,
   calculateFilter,
-  calculateGeneSet,
+  calculateGeneSet, calculateSorting,
   generateUrl,
 } from '../functions/UrlFunctions'
 import GeneSetEditor from './GeneSetEditor'
-import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
+import {SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
@@ -95,6 +96,10 @@ export default class XenaGeneSetApp extends PureComponent {
       this.calculateSubCohortSamples(urlVariables))
     const cohorts = calculateCohorts(urlVariables)
     const cohortColors = calculateCohortColors(urlVariables)
+    const { sortViewByLabel, filterOrder, filterBy, sortViewOrder, sortViewBy } = calculateSorting(urlVariables)
+
+
+
 
     this.state = {
       associatedData: [],
@@ -103,18 +108,23 @@ export default class XenaGeneSetApp extends PureComponent {
       cohortColors,
       fetch: false,
       automaticallyReloadPathways: true,
-      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: process.env.NODE_ENV !== 'test',
       loading: LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
-      sortViewOrder: SORT_ORDER_ENUM.DESC,
-      sortViewBy: urlVariables.geneSetSortMethod ?urlVariables.geneSetSortMethod : SORT_ENUM.DIFF,
-      filterOrder: SORT_ORDER_ENUM.DESC,
-      filterBy: urlVariables.geneSetFilterMethod ?urlVariables.geneSetFilterMethod :SORT_ENUM.CONTRAST_DIFF,
-      filter: filter,
+      geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
+      filter,
+
+      sortViewByLabel,
+
+      filterBy,
+      filterOrder,
+
+      sortViewBy,
+      sortViewOrder,
+
       minGeneData: -2,
       maxGeneData: 2,
       hoveredPathway: undefined,
@@ -125,7 +135,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedGene: undefined,
       reference: refGene['hg38'],
       limit: 25,
-      geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       highlightedGene: undefined,
       collapsed: true,
       mousing: false,
@@ -143,6 +152,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].name,
       this.state.selectedCohort[0].selectedSubCohorts,
       this.state.selectedCohort[1].selectedSubCohorts,
+      this.state.geneSetLimit,
+      this.state.sortViewByLabel,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
@@ -394,7 +405,6 @@ export default class XenaGeneSetApp extends PureComponent {
       geneData: sortedGeneData,
       pathwayData: [pathwayDataA, pathwayDataB],
       loading: LOAD_STATE.LOADED,
-      currentLoadState: currentLoadState,
       processing: false,
       fetch: false,
     })
@@ -563,7 +573,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: updateCohortState,
       filter: newView,
       fetch: true,
-      currentLoadState: LOAD_STATE.LOADING,
       reloadPathways: this.state.automaticallyReloadPathways,
       showCohortEditor: false,
     })
@@ -591,7 +600,6 @@ export default class XenaGeneSetApp extends PureComponent {
       pathways: newPathways,
       fetch: true,
       reloadPathways: false,
-      currentLoadState: LOAD_STATE.LOADING,
     })
   };
 
@@ -648,19 +656,40 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
+  handleGeneSetLimit = (limit) => {
+    currentLoadState= LOAD_STATE.LOADED
+    this.setState({
+      geneSetLimit: limit,
+      reloadPathways: true,
+      fetch: true,
+    })
+  }
+
+  handleGeneSetSortBy = (method) => {
+    currentLoadState= LOAD_STATE.LOADED
+
+    let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
+
+    this.setState({
+      reloadPathways: true,
+      sortViewByLabel: method,
+      sortViewBy,
+      sortViewOrder,
+      filterBy,
+      filterOrder,
+      fetch: true,
+    })
+  }
+
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
     let maxValue = 0
-
-
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
-      // change gene sets here
 
       // if gene Expressions
-      if (getCohortDataForGeneExpressionView(this.state.selectedCohort,
-        this.state.filter) !== null) {
+      if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
           fetchBestPathways(this.state.selectedCohort, this.state.filter,
             this.handleMeanActivityData)
@@ -696,21 +725,27 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
+
+
     return (
       <div>
 
         <LegendBox
           geneData={this.state.geneData}
+          geneSetLimit={this.state.geneSetLimit}
+          handleGeneEdit={this.showConfiguration}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
+          onChangeGeneSetLimit={this.handleGeneSetLimit}
+          onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
+          sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}
         />
 
         <NavigationBar
           acceptGeneHandler={this.geneHighlight}
-          configurationHandler={this.showConfiguration}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
         />
@@ -774,7 +809,7 @@ export default class XenaGeneSetApp extends PureComponent {
             mousing={this.state.mousing} x={this.state.x}
           />
           <Dialog
-            active={this.state.currentLoadState === LOAD_STATE.LOADING}
+            active={currentLoadState === LOAD_STATE.LOADING}
             style={{width: 400}}
             title="Loading"
           >

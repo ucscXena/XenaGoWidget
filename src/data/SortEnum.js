@@ -10,3 +10,9 @@ export const SORT_ORDER_ENUM = {
   ASC:'asc',
   DESC:'desc',
 }
+
+export const SORT_VIEW_BY = {
+  SIMILAR: 'Similar',
+  DIFFERENT: 'Differential',
+  // ALPHA: 'Alphabetic',
+}

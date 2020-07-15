@@ -10,6 +10,7 @@ import {DiffScaleLegend} from './DiffScaleLegend'
 import {GeneSetCnvMutationLegend} from './GeneSetCnvMutationLegend'
 import {GeneSetGeneExpressionLegend} from './GeneSetGeneExpressionLegend'
 import {TopLegend} from './TopLegend'
+import {OpenGeneSetRow} from './OpenGeneSetRow'
 
 export class LegendBox extends PureComponent {
 
@@ -49,6 +50,14 @@ export class LegendBox extends PureComponent {
               {(!geneData || !geneData[0].data) &&
             <OpenGeneSetLegend/>
               }
+              {(!geneData || !geneData[0].data) &&
+              <OpenGeneSetRow
+                geneSetLimit={this.props.geneSetLimit}
+                onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
+                onChangeGeneSetSort={this.props.onChangeGeneSetSort}
+                onGeneEdit={this.props.handleGeneEdit}
+                sortGeneSetBy={this.props.sortGeneSetBy}/>
+              }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
             <GeneGeneExpressionLegend filter={view}/>
               }
@@ -73,9 +82,14 @@ export class LegendBox extends PureComponent {
 
 LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
+  geneSetLimit: PropTypes.any.isRequired,
+  handleGeneEdit: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
+  onChangeGeneSetLimit: PropTypes.any.isRequired,
+  onChangeGeneSetSort: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
+  sortGeneSetBy: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

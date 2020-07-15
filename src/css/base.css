@@ -354,8 +354,66 @@
 }
 
 .wideNavigation{
-    width: 400px;
+    width: 80%;
     display:inline;
+}
+
+.findNewGeneSets{
+  border-radius: 5px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  /*margin-top: 40px;*/
+  margin-left: 5px;
+  margin-top: 15px;
+  padding: 6px;
+  background-color: lightgoldenrodyellow;
+  /*cursor: pointer;*/
+  outline: 0;
+  display: inline;
+  border: solid 2px gray;
+}
+
+.geneSetLabelOr{
+  display: inline;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+}
+
+.editGeneSets{
+  border-radius: 5px;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  margin-top: 40px;
+  margin-left: 5px;
+  padding: 3px;
+  background-color: lightgoldenrodyellow;
+  cursor: pointer;
+  outline: 0;
+}
+
+.editGeneSetLimits{
+  margin-top: 40px;
+  display: inline;
+}
+
+.editGeneSetOrder{
+  margin-top: 40px;
+  width: 100px;
+  display: inline;
+}
+
+.geneSetLabel{
+  font-size: medium;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: bold;
+  margin: 5px;
+  display: inline;
+}
+
+.editGeneSetSearch{
+  font-size: small;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  /*font-weight: bold;*/
+  margin: 5px;
+  display: inline;
 }
 
 .inlineSearch{
@@ -652,3 +710,8 @@ border-radius: 5px;
   list-style-type: none;
 }
 
+.refreshButton{
+  margin-left: 2px;
+  margin-right: 2px;
+  cursor: pointer;
+}
