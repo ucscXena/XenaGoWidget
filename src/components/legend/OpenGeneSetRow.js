@@ -69,14 +69,16 @@ export class OpenGeneSetRow extends PureComponent {
                     onClick={() =>this.props.onGeneEdit()}
                   >
                     <table>
-                      <tr>
-                        <td>
+                      <tbody>
+                        <tr>
+                          <td>
                           Set Gene Sets
-                        </td>
-                        <td>
-                          <FaEdit style={{fontSize: 'large'}}/>
-                        </td>
-                      </tr>
+                          </td>
+                          <td>
+                            <FaEdit style={{fontSize: 'large'}}/>
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </button>
                 </td>

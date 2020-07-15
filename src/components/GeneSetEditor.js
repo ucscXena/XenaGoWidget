@@ -21,7 +21,7 @@ import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM} from '../data/SortEnum'
 
 const VIEW_LIMIT = 200
-const CART_LIMIT = 45
+const CART_LIMIT = 1000
 
 export default class GeneSetEditor extends PureComponent {
 
@@ -191,8 +191,11 @@ export default class GeneSetEditor extends PureComponent {
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 )
+    console.log('input state',this.state.filteredPathways,this.state.selectedFilteredPathways,this.state.cartPathways)
+    console.log('selected ',selectedFilteredPathways)
 
     const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0)
+    console.log('already exists',alreadyExists)
     if(alreadyExists.length>0){
       // eslint-disable-next-line no-console
       console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' )
@@ -201,7 +204,9 @@ export default class GeneSetEditor extends PureComponent {
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     })
-    return selectedCartData.slice(0,this.state.cartPathwayLimit)
+    console.log('selected cart data',selectedCartData)
+    // return selectedCartData.slice(0,this.state.cartPathwayLimit)
+    return selectedCartData
   }
 
   handleAddSelectedToCart() {
@@ -487,7 +492,7 @@ export default class GeneSetEditor extends PureComponent {
                     })
                     this.setState({selectedFilteredPathways: selectedEvents})
                   }}
-                  style={{overflow: 'scroll', height: 200, width: 220}}
+                  style={{overflow: 'scroll', height: 200, width: 300}}
                 >
                   {
                     this.state.filteredPathways.slice(0, this.state.limit).map(p => {
@@ -509,7 +514,9 @@ export default class GeneSetEditor extends PureComponent {
                 >
                   <FaArrowCircleORight style={{verticalAlign:'middle',align:'center',fontSize:'x-large',width: 50}}/>
                   <br/>
-                  Add To Current
+                  Add To <br/>
+                  Current <br/>
+                  View
                 </Button>
               </td>
               {!this.state.editGeneSet &&
@@ -522,7 +529,7 @@ export default class GeneSetEditor extends PureComponent {
                     })
                     this.setState({selectedCartPathways: selectedEvents})
                   }}
-                  style={{overflow: 'scroll', height: 320, width: 250}}
+                  style={{overflow: 'scroll', height: 320, width: 300}}
                 >
                   {
                     this.state.filteredCartPathways.map(p => {
