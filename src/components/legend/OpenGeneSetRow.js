@@ -4,9 +4,9 @@ import BaseStyle from '../../css/base.css'
 // import FaEdit from 'react-icons/lib/fa/edit'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
-import FaRefresh from 'react-icons/lib/fa/refresh'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
 import FaEdit from 'react-icons/lib/fa/edit'
+import FaSearch from 'react-icons/lib/fa/search'
 
 
 export class OpenGeneSetRow extends PureComponent {
@@ -26,33 +26,43 @@ export class OpenGeneSetRow extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td>
-                  <div className={BaseStyle.geneSetLabel}>Gene Sets</div>
-                  <input
-                    className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
-                    size={3} type='text'
-                    value={this.state.geneSetLimit}/>
-                  <button
-                    className={BaseStyle.refreshButton}
-                    onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
-                    <FaRefresh/>
-                  </button>
-                </td>
-                <td>
-                  <div className={BaseStyle.geneSetLabel}>Find Most</div>
-                  <select
-                    className={BaseStyle.editGeneSetOrder}
-                    onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}
-                    value={this.props.sortGeneSetBy}
+                <td colSpan={2}>
+                  <div className={BaseStyle.findNewGeneSets}
                   >
-                    {
-                      Object.values(SORT_VIEW_BY).map( v =>
-                        (<option key={v}>{v}</option>)
-                      )
-                    }
-                  </select>
+
+                    <div className={BaseStyle.editGeneSetSearch}>Find</div>
+                    <input
+                      className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
+                      size={3} type='text'
+                      value={this.state.geneSetLimit}/>
+                    <div className={BaseStyle.editGeneSetSearch}>Most</div>
+                    <select
+                      className={BaseStyle.editGeneSetOrder}
+                      onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}
+                      value={this.props.sortGeneSetBy}
+                    >
+                      {
+                        Object.values(SORT_VIEW_BY).map( v =>
+                          (<option key={v}>{v}</option>)
+                        )
+                      }
+                    </select>
+                    {/*</td>*/}
+                    {/*<td>*/}
+                    <div className={BaseStyle.editGeneSetSearch}>Gene Sets</div>
+                    <button
+                      className={BaseStyle.refreshButton}
+                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
+                      Fetch <FaSearch/>
+                    </button>
+                  </div>
                 </td>
                 <td>
+                  <div className={BaseStyle.geneSetLabelOr}>
+                    &nbsp;
+                    - OR -
+                    &nbsp;
+                  </div>
                   {/*<div style={{marginTop: 80}}/>*/}
                   <button
                     className={BaseStyle.editGeneSets}
@@ -61,10 +71,10 @@ export class OpenGeneSetRow extends PureComponent {
                     <table>
                       <tr>
                         <td>
-                          Gene Sets
+                          Set Gene Sets
                         </td>
                         <td>
-                          <FaEdit style={{fontSize: 'x-large'}}/>
+                          <FaEdit style={{fontSize: 'large'}}/>
                         </td>
                       </tr>
                     </table>
