@@ -56,7 +56,7 @@ export default class GeneSetEditor extends PureComponent {
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       filteredPathways : [],
-      filteredCartPathways : [],
+      // filteredCartPathways : [],
       cartPathways,
       selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
@@ -84,18 +84,16 @@ export default class GeneSetEditor extends PureComponent {
       prevState.name !== this.state.name
       || prevState.geneName !== this.state.geneName
       || prevState.sortOrder !== this.state.sortOrder
-      // || prevState.sortBy !== this.state.sortBy
       || this.state.filteredPathways.length === 0
     ){
       this.filterAvailable(prevState.sortOrder !== this.state.sortOrder)
     }
 
-    if(prevState.sortCartBy !== this.state.sortCartBy
-      || prevState.sortCartOrder !== this.state.sortCartOrder
-      || this.state.filteredCartPathways.length === 0
-    ){
-      this.filterCart()
-    }
+    // if(prevState.sortCartBy !== this.state.sortCartBy
+    //   || prevState.sortCartOrder !== this.state.sortCartOrder
+    // ){
+    //   this.filterCart()
+    // }
   }
 
   showScore(){
@@ -103,9 +101,9 @@ export default class GeneSetEditor extends PureComponent {
   }
 
 
-  redoFilter() {
-    this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
-  }
+  // redoFilter() {
+  //   this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.~)
+  // }
 
   handleMeanActivityData = (output) => {
     const pathways = getGeneSetsForView(this.props.view)
@@ -142,23 +140,23 @@ export default class GeneSetEditor extends PureComponent {
     })
   };
 
-  filterCart(){
-    this.setState({
-      filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
-    })
-  }
+  // filterCart(){
+  //   this.setState({
+  //     filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
+  //   })
+  // }
 
-  sortVisibleCart(sortBy, sortOrder, cartLimit) {
-    const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
-    this.setState({
-      sortCartBy: sortBy,
-      sortCartOrder: sortOrder,
-      cartPathwaysLimit: cartLimit,
-      cartPathways: filteredCart.slice(0,cartLimit) ,
-      filteredCartPathways: filteredCart.slice(0,cartLimit),
-    })
-
-  }
+  // sortVisibleCart(sortBy, sortOrder, cartLimit) {
+  //   const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
+  //   this.setState({
+  //     sortCartBy: sortBy,
+  //     sortCartOrder: sortOrder,
+  //     cartPathwaysLimit: cartLimit,
+  //     cartPathways: filteredCart.slice(0,cartLimit) ,
+  //     filteredCartPathways: filteredCart.slice(0,cartLimit),
+  //   })
+  //
+  // }
 
   filterAvailable(filterCart){
     const filteredPathways = this.state.loadedPathways
@@ -191,11 +189,8 @@ export default class GeneSetEditor extends PureComponent {
     const selectedFilteredPathways = this.state.filteredPathways
       .filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0 )
       .filter( f => this.state.cartPathways.indexOf(f)<0 )
-    console.log('input state',this.state.filteredPathways,this.state.selectedFilteredPathways,this.state.cartPathways)
-    console.log('selected ',selectedFilteredPathways)
 
     const alreadyExists = this.state.cartPathways.filter( f => this.state.selectedFilteredPathways.indexOf(f.golabel)>=0)
-    console.log('already exists',alreadyExists)
     if(alreadyExists.length>0){
       // eslint-disable-next-line no-console
       console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' )
@@ -204,7 +199,6 @@ export default class GeneSetEditor extends PureComponent {
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     })
-    console.log('selected cart data',selectedCartData)
     // return selectedCartData.slice(0,this.state.cartPathwayLimit)
     return selectedCartData
   }
@@ -216,7 +210,7 @@ export default class GeneSetEditor extends PureComponent {
   }
 
   getFilteredCart(pathways,sortBy,sortOrder){
-    const filteredCartPathways = pathways.sort((a, b) => {
+    return pathways.sort((a, b) => {
       if(SORT_ENUM[sortBy]===SORT_ENUM.ALPHA){
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (a.golabel.toUpperCase()).localeCompare(b.golabel.toUpperCase())
       }
@@ -229,8 +223,6 @@ export default class GeneSetEditor extends PureComponent {
         return (sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1) * (scoreB-scoreA)
       }
     })
-    return filteredCartPathways
-
   }
 
   handleRefreshView() {
@@ -499,7 +491,7 @@ export default class GeneSetEditor extends PureComponent {
                       return (<option key={p.golabel} value={p.golabel}>
                         {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}`
                         }
                         )</option>)
                     })
@@ -532,11 +524,11 @@ export default class GeneSetEditor extends PureComponent {
                   style={{overflow: 'scroll', height: 320, width: 300}}
                 >
                   {
-                    this.state.filteredCartPathways.map(p => {
+                    this.state.cartPathways.map(p => {
                       return (<option key={p.golabel} value={p.golabel}>
                         {p.golabel} ({p.gene.length} genes
                         {this.showScore() &&
-                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}, `
+                        `, score: ${scorePathway(p, SORT_ENUM.ABS_DIFF)}`
                         }
                         )</option>)
                     })
