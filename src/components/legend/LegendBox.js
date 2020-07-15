@@ -50,7 +50,7 @@ export class LegendBox extends PureComponent {
               {(!geneData || !geneData[0].data) &&
             <OpenGeneSetLegend/>
               }
-              {(!geneData || !geneData[0].data) &&
+              {(!geneData || !geneData[0].data) && isViewGeneExpression(view) &&
               <OpenGeneSetRow
                 geneSetLimit={this.props.geneSetLimit}
                 onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
