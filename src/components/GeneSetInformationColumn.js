@@ -46,7 +46,9 @@ export class GeneSetInformationColumn extends PureComponent {
     // let genes = 'TP53 FOXM1'
     let genes = this.props.geneDataStats[this.props.cohortIndex].pathways.map( p => p.gene[0]).join(' ')
     console.log('genes',genes)
-    linkString += `?columns=[{"name":"${geneSetName}","host":"${geneSetHost}","fields":"${genes}"}]`
+    linkString += '?columns=['
+    linkString += `{"name":"${geneSetName}","host":"${geneSetHost}","fields":"${genes}","columnLabel":"Gene Set View","fieldLabel":"${genes.length} genes"}`
+    linkString += ']'
 
     // add gene link
     console.log('link string: '+linkString)
@@ -79,9 +81,9 @@ export class GeneSetInformationColumn extends PureComponent {
           <div className={BaseStyle.ssInfoBox}>
             <a
               href={externalLink}
-              title={externalLink}
               rel="noopener noreferrer"
-              target='_blank'>Link to SS</a>
+              target='_blank'
+              title={externalLink}>Link to SS</a>
           </div>
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
