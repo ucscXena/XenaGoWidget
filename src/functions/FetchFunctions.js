@@ -125,12 +125,16 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } )
 }
 
-export function getHostGeneData(cohort, view) {
+export function getHostForGeneData(cohort, view) {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
   case VIEW_ENUM.GENE_EXPRESSION:
   case VIEW_ENUM.REGULON:
     return cohort.geneExpression
+  case VIEW_ENUM.COPY_NUMBER:
+    return cohort.copyNumber
+  case VIEW_ENUM.MUTATION:
+    return cohort.copyNumber
   default:
     // eslint-disable-next-line no-console
     console.error('can not get host data for ',cohort,view)
