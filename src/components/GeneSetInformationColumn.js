@@ -5,7 +5,7 @@ import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
-import {getHostData} from '../functions/FetchFunctions'
+import {getHostGeneData} from '../functions/FetchFunctions'
 
 const XENA_SS_LINK = 'https://xenabrowser.net/heatmap/'
 
@@ -30,9 +30,10 @@ export class GeneSetInformationColumn extends PureComponent {
   // ?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D\">Example 1</a>"
 
   generateLink(){
-    const hostData = getHostData(this.props.cohort[this.props.cohortIndex], this.props.view)
+    const hostData = getHostGeneData(this.props.cohort[this.props.cohortIndex], this.props.view)
     console.log('host data',hostData)
     console.log('props',this.props)
+
 
     let linkString = ''
 
@@ -48,13 +49,16 @@ export class GeneSetInformationColumn extends PureComponent {
     linkString += `?columns=[{"name":"${geneSetName}","host":"${geneSetHost}","fields":"${genes}"}]`
 
     // add gene link
+    console.log('link string: '+linkString)
 
     // <a id="link1" href="https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D">Example 1</a>
     // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22:%22Gene%20Details%22,%22host%22:%22https://toil.xenahubs.net%22,%22fields%22:%22TP53%20FOXM1%22%7D%5D
     // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D
 
     let encodedUri = encodeURI(linkString)
-    return XENA_SS_LINK + encodedUri.replace(/:/g,'%3A').replace(/\//g,'%2F').replace(/,/g,'%2C')
+    const finalLink = XENA_SS_LINK + encodedUri.replace(/:/g,'%3A').replace(/\//g,'%2F').replace(/,/g,'%2C')
+    console.log(finalLink)
+    return finalLink
   }
 
   render() {
@@ -75,6 +79,7 @@ export class GeneSetInformationColumn extends PureComponent {
           <div className={BaseStyle.ssInfoBox}>
             <a
               href={externalLink}
+              title={externalLink}
               rel="noopener noreferrer"
               target='_blank'>Link to SS</a>
           </div>
