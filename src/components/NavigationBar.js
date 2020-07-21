@@ -3,9 +3,6 @@ import { Button, AppBar,  Navigation } from 'react-toolbox'
 import PureComponent from '../../src/components/PureComponent'
 import BaseStyle from '../css/base.css'
 import * as PropTypes from 'underscore'
-import Autocomplete from 'react-toolbox/lib/autocomplete'
-import AutocompleteTheme from '../css/autocomplete.css'
-import FaEdit from 'react-icons/lib/fa/edit'
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -34,14 +31,6 @@ export default class NavigationBar extends PureComponent {
     }
   }
 
-    handleSearch = (text) => {
-      this.props.searchHandler(text)
-    };
-
-    acceptGeneHandler = (text) => {
-      this.props.acceptGeneHandler(text)
-    };
-
     showHelp = () => {
       window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')
     };
@@ -58,29 +47,7 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    <td width="10%">
-                      <Button
-                        floating mini onClick={() =>this.props.configurationHandler()}>
-                        <FaEdit/>
-                      </Button>
-                    </td>
-                    <td width="30%">
-                      <Autocomplete
-                        label='Find Gene'
-                        multiple={false}
-                        onChange={(searchText) => {
-                          this.acceptGeneHandler(searchText)
-                          this.setState({geneNameSearch: searchText})
-                        }}
-                        onQueryChange={(geneQuery) => {
-                          this.handleSearch(geneQuery)
-                          this.setState({geneNameSearch: geneQuery})
-                        }}
-                        source={this.props.geneOptions}
-                        theme={AutocompleteTheme}
-                        value={this.state.geneNameSearch}
-                      />
-                    </td>
+                    <td width="30%"/>
                     <td width="10%">
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>
@@ -106,7 +73,7 @@ export default class NavigationBar extends PureComponent {
 
 NavigationBar.propTypes = {
   acceptGeneHandler: PropTypes.any,
-  configurationHandler: PropTypes.any,
+  // configurationHandler: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
 }

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {GeneSetLegendLabel} from './GeneSetLegendLabel'
 import BaseStyle from '../../css/base.css'
+import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
@@ -43,14 +44,18 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
 
   render() {
 
+    if(!this.props.maxValue){
+      return <tr><td/></tr>
+    }
+
     return (
-      <tr>
-        <td colSpan={1}>
+      <tr className={BaseStyle.geneSetLegend}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <GeneSetLegendLabel/>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>{getMiddleGeneSetLabelForView(this.props.filter)} </pre>
+            {getMiddleGeneSetLabelForView(this.props.filter)}
             <br/>
             <GeneSetLegend
               id='geneExpressionGeneSetLabelScore'
@@ -59,9 +64,9 @@ export class GeneSetGeneExpressionLegend extends PureComponent {
             />
           </div>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>{getSampleGeneSetLabelForView(this.props.filter)}</pre>
+            {getSampleGeneSetLabelForView(this.props.filter)}
             <br/>
             <GeneSetLegend
               id='geneExpressionGeneSetSampleScore'

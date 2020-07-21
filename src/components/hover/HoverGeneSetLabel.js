@@ -4,9 +4,7 @@ import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
   interpolateCnvMutationColor,
-  interpolateCnvMutationFont,
   interpolateGeneExpression,
-  interpolateGeneExpressionFont
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getAffectedPathway, getRatio} from '../../functions/HoverFunctions'
@@ -38,12 +36,13 @@ export default class HoverGeneSetLabel extends PureComponent {
         <span
           className={BaseStyle.scoreBoxBlock}
           style={{
-            color:isViewGeneExpression(view) ? interpolateGeneExpressionFont(score) : interpolateCnvMutationFont(score),
+            color: 'black',
             backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
           }}
         >
           <strong>
-            { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}
+            {/*{ isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}*/}
+            { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'χ2 test'}
           </strong>
           <br/>
           {score === 'NaN' ? 'Not available' : score.toFixed(2)}

@@ -5,9 +5,10 @@ import PropTypes from 'prop-types'
 import {VIEW_ENUM} from '../../data/ViewEnum'
 import {Helmet} from 'react-helmet'
 import {AnalysisButton} from './AnalysisButton'
-import FaInfo from 'react-icons/lib/fa/info-circle'
-import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
-import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
+// import FaInfo from 'react-icons/lib/fa/info-circle'
+import FaQuestion from 'react-icons/lib/fa/question-circle'
+// import FaDownArrow from 'react-icons/lib/fa/chevron-circle-down'
+// import FaRightArrow from 'react-icons/lib/fa/chevron-circle-right'
 import {SORT_ENUM} from '../../data/SortEnum'
 // import Dialog from 'react-toolbox/lib/dialog'
 
@@ -33,7 +34,7 @@ export class AnalysisWizard extends PureComponent {
     const title = `Select Analysis for ${cohort}`
 
     return (
-      <div className={Wizard.wizardBox}>
+      <div className={Wizard.wizardColumn}>
         <Helmet
           link={[
             {
@@ -47,12 +48,14 @@ export class AnalysisWizard extends PureComponent {
           ]}
           title={title}
         />
-        <p>
-          {comparisonDescription}
-        </p>
-        <h3>Visualize differences using ...</h3>
-        <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Gene Expression data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+        <div className={Wizard.descriptionText}>
+          {comparisonDescription.replace(/^Comparing/,'Visualize differences between geneset ')}.
+        </div>
+        <div className={Wizard.smallDescriptionText}>
+          Visualize differences using ...
+        </div>
+        <div className={Wizard.wizardCell}>
+          <div className={Wizard.wizardHeader}>Gene Expression data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.GENE_EXPRESSION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.PARADIGM} onClick={onSelectAnalysis}/>
           {cohort.indexOf('LUAD') >= 0 &&
@@ -60,23 +63,23 @@ export class AnalysisWizard extends PureComponent {
               analysis={VIEW_ENUM.REGULON}
               onClick={onSelectAnalysis}/>
           }
-          <br/>
-          <br/>
-          <div className={Wizard.advancedOptions} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>
-            Advanced Options&nbsp;
-            {!this.state.showGeneSetOptions &&
-            <FaRightArrow/>
-            }
-            {this.state.showGeneSetOptions &&
-            <FaDownArrow/>
-            }
-          </div>
+          {/*<br/>*/}
+          {/*<br/>*/}
+          {/*<div className={Wizard.advancedOptionsCell} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>*/}
+          {/*  Advanced Options&nbsp;*/}
+          {/*  {!this.state.showGeneSetOptions &&*/}
+          {/*  <FaRightArrow className={Wizard.advancedOptionsArrow}/>*/}
+          {/*  }*/}
+          {/*  {this.state.showGeneSetOptions &&*/}
+          {/*  <FaDownArrow className={Wizard.advancedOptionsArrow}/>*/}
+          {/*  }*/}
+          {/*</div>*/}
           {this.state.showGeneSetOptions &&
             <table className={Wizard.advancedTable} style={{marginTop: 10}}>
               <tbody>
                 <tr>
                   <th align='right'>
-                    <u>Geneset ranking method</u>:
+                    Geneset ranking method:
                   </th>
                   <td>
                     <select
@@ -93,7 +96,7 @@ export class AnalysisWizard extends PureComponent {
                 </tr>
                 <tr>
                   <th align='right'>
-                    <u>Maximum genesets to visualize</u>:
+                    Maximum genesets to visualize:
                   </th>
                   <td>
                     <input
@@ -107,13 +110,13 @@ export class AnalysisWizard extends PureComponent {
           }
         </div>
         {/*<hr/>*/}
-        <br/>
-            OR
-        <br/>
-        <br/>
+        {/*<br/>*/}
+        {/*    OR*/}
+        {/*<br/>*/}
+        {/*<br/>*/}
         {/*<hr/>*/}
-        <div className={Wizard.wizardDataBox}>
-          <h3 className={Wizard.wizardHeader}>Mutation / CNV data<FaInfo className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></h3>
+        <div className={Wizard.wizardCell}>
+          <div className={Wizard.wizardHeader}>Mutation / CNV data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.COPY_NUMBER} onClick={onSelectAnalysis}/>
           <AnalysisButton analysis={VIEW_ENUM.MUTATION} onClick={onSelectAnalysis}/>

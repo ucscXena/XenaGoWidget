@@ -40,7 +40,7 @@ export function getViewsForCohort(cohortName){
   if(cohortDetail[GENE_EXPRESSION_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.GENE_EXPRESSION)
   if(cohortDetail[PARADIGM_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.PARADIGM)
   if(cohortDetail[REGULON_PATHWAY_ACTIVITY_KEY]) views.push(VIEW_ENUM.REGULON)
-  return views 
+  return views
 }
 
 export function getCohortsForView(view){
@@ -66,7 +66,7 @@ export function getSubCohortsForCohort(cohort) {
       finalList[0][as.subCohortName] = as.samples.split(',')
     }
   }
-  return  finalList[0] 
+  return  finalList[0]
 }
 
 export function getLabelForIndex(index){
@@ -164,7 +164,7 @@ export function fetchCohortData() {
         if(regulonPathwayActivity){
           returnObject.regulonPathwayActivity = regulonPathwayActivity
         }
-        return returnObject 
+        return returnObject
       })
       .sort(lowerCaseCompareName)
   }

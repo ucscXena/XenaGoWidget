@@ -15,6 +15,14 @@ import update from 'immutability-helper'
 import Link from 'react-toolbox/lib/link'
 import {AppStorageHandler} from '../service/AppStorageHandler'
 
+function calculateCanSave(samples,cohorts){
+  // if we have sub cohorts and we must have samples, otherwise we will automatically choose everything anyway
+  return (
+    ((cohorts[0].subCohorts.length> 0 && samples[0].length ) || cohorts[0].subCohorts.length===0)
+    &&
+    ((cohorts[1].subCohorts.length> 1 && samples[1].length ) || cohorts[1].subCohorts.length===0)
+  )
+}
 
 export class CohortEditorSelector extends PureComponent {
 
@@ -25,6 +33,7 @@ export class CohortEditorSelector extends PureComponent {
     this.state = {
       view: props.view,
       cohort: props.cohort,
+      canSave: calculateCanSave(selectedSamples,props.cohort),
       availableSamples,
       selectedSamples,
       fetchSamples: false,
@@ -103,6 +112,7 @@ export class CohortEditorSelector extends PureComponent {
     const selectedSamples =[getSamplesFromSelectedSubCohorts(newCohortState[0],availableSamples[0]),getSamplesFromSelectedSubCohorts(newCohortState[1],availableSamples[1])]
     this.setState({
       cohort: newCohortState,
+      canSave: calculateCanSave(selectedSamples,newCohortState),
       availableSamples,
       selectedSamples,
     })
@@ -158,19 +168,13 @@ export class CohortEditorSelector extends PureComponent {
     if(subCohortCounts){
       return (
         <div>
-          <div className={BaseStyle.cohortEditorBox}>
-            <Button
-              icon='save' label='Save' onClick={() => {
-                onChangeView(cohort,view)
-              }} primary raised
-            />
-            <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
-          </div>
           <table className={BaseStyle.cohortEditorBox}>
             <tbody>
               <tr>
                 <td>
-              Analysis:
+                  <div
+                    style={{fontSize:'large',display:'inline',marginRight: 5, fontWeight: 'bolder',marginBottom: 100}}>
+                    Analysis</div>
                   <select
                     onChange={this.handleViewChange}
                     value={view}
@@ -184,19 +188,18 @@ export class CohortEditorSelector extends PureComponent {
                     }
                   </select>
                 </td>
-                <td>
-                  <Button flat floating icon='subdirectory_arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
-                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
-                  <Button flat floating icon='subdirectory_arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
+              </tr>
+              <tr>
+                <td colSpan={3}>
+                  <u>Current View:</u>Visualizing differences using '{view}'
+                  {this.props.titleText}
                 </td>
               </tr>
               <tr>
-                <th>
-                  <u>Cohort A</u>
+                <th colSpan={2} style={{textAlign: 'left'}}>
                   <select
                     className={BaseStyle.softflow}
                     onChange={(event) => this.handleCohortChange(event,0)}
-                    style={{marginLeft: 10, marginTop: 3, marginBottom: 3}}
                     value={cohort[0].name}
                   >
                     {
@@ -210,8 +213,7 @@ export class CohortEditorSelector extends PureComponent {
                     }
                   </select>
                 </th>
-                <th>
-                  <u>Cohort B</u>
+                <th style={{textAlign: 'left'}}>
                   <select
                     className={BaseStyle.softflow}
                     onChange={(event) => this.handleCohortChange(event,1)}
@@ -272,6 +274,13 @@ export class CohortEditorSelector extends PureComponent {
                   </div>
                   }
                 </td>
+                <td>
+                  <Button flat floating icon='arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
+                  <br/>
+                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
+                  <br/>
+                  <Button flat floating icon='arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
+                </td>
                 <td valign='top'>
                   {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&
                 <div>
@@ -313,12 +322,29 @@ export class CohortEditorSelector extends PureComponent {
                   }
                 </td>
               </tr>
+              <tr>
+                <td colSpan={3}>
+                  <hr/>
+                  {/*<div className={BaseStyle.cohortEditorBox}>*/}
+                  <Button
+                    disabled={!this.state.canSave} icon='save' label='Save' onClick={() => {
+                      onChangeView(cohort,view)
+                    }} primary raised
+                  />
+                  <Button icon='cancel' label='Cancel' onClick={onCancelCohortEdit} raised/>
+                  <Button
+                    mini
+                    onClick={() => this.clearTemporarySubCohorts()}
+                    raised
+                    style={{color:'orange',marginLeft:150,fontSize:'smaller'}}
+                  >
+                    Clear temporary subgroups
+                  </Button>
+                  {/*</div>*/}
+                </td>
+              </tr>
             </tbody>
           </table>
-          <hr/>
-          <button onClick={() => this.clearTemporarySubCohorts()}>
-            Clear temporary subgroups
-          </button>
         </div>
       )
     }
@@ -330,5 +356,6 @@ CohortEditorSelector.propTypes = {
   onCancelCohortEdit: PropTypes.any.isRequired,
   onChangeView: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
+  titleText: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

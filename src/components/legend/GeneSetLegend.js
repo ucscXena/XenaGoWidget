@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 const TEXT_Y_OFFSET = 15
 const IMAGE_HEIGHT = 10
+const FONT_FAMILY = 'sans-serif'
 
 export class GeneSetLegend extends PureComponent {
 
@@ -34,15 +35,15 @@ export class GeneSetLegend extends PureComponent {
           </linearGradient>
         </defs>
         {label &&
-        <text fontFamily='monospace' height={20} width={labelLength} x={0} y={TEXT_Y_OFFSET}>
+        <text fontFamily={FONT_FAMILY} height={20} width={labelLength} x={0} y={TEXT_Y_OFFSET}>
           {label}
         </text>
         }
-        <text fontFamily='monospace' height={20} width={20} x={labelLength} y={TEXT_Y_OFFSET}>
+        <text fontFamily={FONT_FAMILY} height={20} width={20} x={labelLength} y={TEXT_Y_OFFSET}>
           {formattedMax}
         </text>
         <rect fill={fillURL} height={IMAGE_HEIGHT} width={50} x={labelLength+40} y={5}/>
-        <text fontFamily='monospace' height={10} width={300} x={labelLength+100} y={TEXT_Y_OFFSET}>
+        <text fontFamily={FONT_FAMILY} height={10} width={300} x={labelLength+100} y={TEXT_Y_OFFSET}>
           {formattedMin}
         </text>
       </svg>

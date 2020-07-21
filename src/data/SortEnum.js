@@ -3,10 +3,16 @@ export const SORT_ENUM = {
   TOTAL:'Total',
   ABS_DIFF:'Absolute Diff',
   DIFF:'Cohort Diff',
-  ALPHA:'Alpha',
-};
+  ALPHA:'Alphabetical',
+}
 
 export const SORT_ORDER_ENUM = {
   ASC:'asc',
   DESC:'desc',
-};
+}
+
+export const SORT_VIEW_BY = {
+  SIMILAR: 'Similar',
+  DIFFERENT: 'Differential',
+  // ALPHA: 'Alphabetic',
+}

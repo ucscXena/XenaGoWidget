@@ -5,6 +5,7 @@ import {CnvMutationLegend} from './CnvMutationLegend'
 import {GeneSetLegend} from './GeneSetLegend'
 import {GeneLegendLabel} from './GeneLegendLabel'
 import BaseStyle from '../../css/base.css'
+import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 
 
 
@@ -14,13 +15,13 @@ export class GeneCnvMutationLegend extends PureComponent {
   render() {
 
     return (
-      <tr style={{height: 50}} >
-        <td colSpan={1} >
-          {<GeneLegendLabel/>}
+      <tr className={BaseStyle.geneLegend} >
+        <td colSpan={1} width={DETAIL_WIDTH}>
+          <GeneLegendLabel/>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.legendTextDiv}>
-            <pre style={{marginLeft: 0,display:'inline'}}>Samples affected %</pre>
+              Samples affected %
             <GeneSetLegend
               id='densityGrad1'
               maxColor='red'
@@ -29,7 +30,7 @@ export class GeneCnvMutationLegend extends PureComponent {
             />
           </div>
         </td>
-        <td colSpan={1}>
+        <td colSpan={1} width={DETAIL_WIDTH}>
           <div className={BaseStyle.legendDiv}>
             <CnvMutationLegend view={this.props.filter}/>
           </div>

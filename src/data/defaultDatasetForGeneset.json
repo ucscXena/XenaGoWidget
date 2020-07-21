@@ -335,7 +335,7 @@
     },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
-      "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv2"
+      "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -476,7 +476,7 @@
     },
     "gene expression": {
       "host": "https://xenago.xenahubs.net",
-      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv2"
+      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",

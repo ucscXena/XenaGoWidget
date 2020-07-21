@@ -16,7 +16,7 @@ export class FinishedWizard extends PureComponent {
     const title = `Finished Finished for ${cohort}`
 
     return (
-      <div className={Wizard.wizardBox}>
+      <div className={Wizard.wizardColumn}>
         <Helmet
           link={[
             {
@@ -30,15 +30,17 @@ export class FinishedWizard extends PureComponent {
           ]}
           title={title}
         />
-        <p>
+        <div className={Wizard.descriptionText}>
           {comparisonDescription}
-        </p>
+        </div>
+        <br/>
         <div className={Wizard.wizardCloseThisWindow}>You may close this window</div>
-        <hr/>
+        <br/>
+        <br/>
         <Button
-          className={Wizard.wizardPreviousButton}
+          className={Wizard.wizardAnalysisButton}
           onClick={() => onGoToWizard('analysis')}
-          raised>&lArr; Change Analysis</Button>
+        >&lArr; Change Analysis</Button>
       </div>
     )
   }

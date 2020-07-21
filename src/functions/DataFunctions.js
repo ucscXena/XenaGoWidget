@@ -646,6 +646,8 @@ export function tTestGeneExpression(geneData0Element, geneData1Element) {
   const poolSquared = Math.sqrt(   ( (( geneData0Element.total - 1 ) * geneData0Element.geneExpressionVariance)  + (( geneData1Element.total - 1 ) * geneData1Element.geneExpressionVariance) ) / (geneData0Element.total + geneData1Element.total - 2) )
   const standardError = poolSquared * Math.sqrt( (1 / geneData0Element.total ) + ( 1 / geneData1Element.total ))
   return  (geneData0Element.geneExpressionMean - geneData1Element.geneExpressionMean) / standardError
+  // const standardError = (geneData0Element.geneExpressionVariance / geneData0Element.total ) + (geneData1Element.geneExpressionVariance / (geneData1Element.total) )
+  // return  (geneData0Element.geneExpressionMean - geneData1Element.geneExpressionMean) / Math.sqrt(standardError)
 }
 
 /**
