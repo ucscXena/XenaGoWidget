@@ -65,12 +65,16 @@ export class GeneSetInformationColumn extends PureComponent {
     const geneSplit = genes.split(' ')
     console.log('# of genes ',geneSplit.length)
     for(const g of geneSplit){
-      if(count < 1){
+      if(count < 4){
         console.log('gene',g)
         if(count < geneSplit.length-1){
           linkString += ','
         }
         linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Gene expression for ${g}"}`
+        linkString += ','
+        linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"CNV ${g}"}`
+        linkString += ','
+        linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Mutation ${g}"}`
       }
       ++count
     }
