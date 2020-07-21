@@ -163,6 +163,7 @@ GeneSetInformationColumn.propTypes = {
   geneHoverData: PropTypes.any,
   onEditCohorts: PropTypes.any.isRequired,
   open: PropTypes.any.isRequired,
+  pathwayData: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 
