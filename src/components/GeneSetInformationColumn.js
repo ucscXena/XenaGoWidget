@@ -34,7 +34,17 @@ export class GeneSetInformationColumn extends PureComponent {
     // const mutationHost = getHostForGeneData(this.props.cohort[this.props.cohortIndex], this.props.view)
 
     const cohort = this.props.cohort[this.props.cohortIndex]
-    console.log('cohort',cohort)
+    // console.log('cohort',cohort)
+    // console.log('props',this.props)
+    const samples = this.props.pathwayData[this.props.cohortIndex].samples
+
+    const samplesJson = {
+      showWelcome: false,
+      searchSampleList: samples,
+    }
+    // filter: samples,
+
+    // console.log('samples',samples)
     let geneExpressionDataset = cohort.geneExpression.dataset
     let geneExpressionHost = cohort.geneExpression.host
     let cnvDataset = cohort.copyNumberDataSetId
@@ -44,15 +54,15 @@ export class GeneSetInformationColumn extends PureComponent {
 
     let linkString = ''
 
-    console.log('gene expression ',geneExpressionDataset,geneExpressionHost)
-    console.log('cnv dataset',cnvDataset,cnvHost)
-    console.log('mutation dataset',mutationDataSet,mutationHost)
+    // console.log('gene expression ',geneExpressionDataset,geneExpressionHost)
+    // console.log('cnv dataset',cnvDataset,cnvHost)
+    // console.log('mutation dataset',mutationDataSet,mutationHost)
     // add gene link
     // let geneSetName = 'tcga_Kallisto_tpm'
     // let geneSetHost = 'https://toil.xenahubs.net'
     // let genes = 'TP53 FOXM1'
     let genes = this.props.geneDataStats[this.props.cohortIndex].pathways.map( p => p.gene[0]).join(' ')
-    console.log('genes',genes)
+    // console.log('genes',genes)
     linkString += '?columns=['
     linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene Set View","fieldLabel":"${genes.length} genes"}`
     linkString += ','
@@ -63,33 +73,36 @@ export class GeneSetInformationColumn extends PureComponent {
     // show them individually
     let count = 0
     const geneSplit = genes.split(' ')
-    console.log('# of genes ',geneSplit.length)
+    // console.log('# of genes ',geneSplit.length)
     for(const g of geneSplit){
-      if(count < 4){
-        console.log('gene',g)
+      if(count < 1){
+        // console.log('gene',g)
         if(count < geneSplit.length-1){
           linkString += ','
         }
-        linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Gene expression for ${g}"}`
+        linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Individual Gene expression for ${g}"}`
         linkString += ','
-        linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"CNV ${g}"}`
+        linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Individual CNV ${g}"}`
         linkString += ','
-        linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Mutation ${g}"}`
+        linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${g}","columnLabel":"Gene ${g}","fieldLabel":"Individual Mutation ${g}"}`
       }
       ++count
     }
     linkString += ']'
 
     // add gene link
-    console.log('link string: ',linkString)
+    // console.log('link string: ',linkString)
 
     // <a id="link1" href="https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D">Example 1</a>
     // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22:%22Gene%20Details%22,%22host%22:%22https://toil.xenahubs.net%22,%22fields%22:%22TP53%20FOXM1%22%7D%5D
     // https://xenabrowser.net/heatmap/?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D
 
     let encodedUri = encodeURI(linkString)
-    const finalLink = XENA_SS_LINK + encodedUri.replace(/:/g,'%3A').replace(/\//g,'%2F').replace(/,/g,'%2C')
-    console.log(finalLink)
+    // console.log('input samples json',samplesJson)
+    let heatmapUrl = '&heatmap='+encodeURI(JSON.stringify(samplesJson))
+    let finalLink = XENA_SS_LINK + encodedUri.replace(/:/g,'%3A').replace(/\//g,'%2F').replace(/,/g,'%2C')
+    finalLink += heatmapUrl
+    // console.log(finalLink)
     return finalLink
   }
 
