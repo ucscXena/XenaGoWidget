@@ -656,22 +656,12 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
-  handleGeneSetLimit = (limit) => {
+  handleGeneSetLimit = (limit,method) => {
     currentLoadState= LOAD_STATE.LOADED
-    this.setState({
-      geneSetLimit: limit,
-      reloadPathways: true,
-      fetch: true,
-    })
-  }
-
-  handleGeneSetSortBy = (method) => {
-    currentLoadState= LOAD_STATE.LOADED
-
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
-
     this.setState({
       reloadPathways: true,
+      geneSetLimit: limit,
       sortViewByLabel: method,
       sortViewBy,
       sortViewOrder,
@@ -737,7 +727,6 @@ export default class XenaGeneSetApp extends PureComponent {
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
           onChangeGeneSetLimit={this.handleGeneSetLimit}
-          onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
           sortGeneSetBy={this.state.sortViewByLabel}

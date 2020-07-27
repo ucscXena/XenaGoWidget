@@ -38,8 +38,8 @@ export class OpenGeneSetRow extends PureComponent {
                     <div className={BaseStyle.editGeneSetSearch}>Most</div>
                     <select
                       className={BaseStyle.editGeneSetOrder}
-                      onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}
-                      value={this.props.sortGeneSetBy}
+                      onChange={(method) => this.setState({sortGeneSetBy: method.target.value})}
+                      value={this.state.sortGeneSetBy}
                     >
                       {
                         Object.values(SORT_VIEW_BY).map( v =>
@@ -52,8 +52,8 @@ export class OpenGeneSetRow extends PureComponent {
                     <div className={BaseStyle.editGeneSetSearch}>Gene Sets</div>
                     <button
                       className={BaseStyle.refreshButton}
-                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
-                      Fetch <FaSearch/>
+                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,this.state.sortGeneSetBy)}>
+                      Find <FaSearch/>
                     </button>
                   </div>
                 </td>
@@ -94,7 +94,6 @@ export class OpenGeneSetRow extends PureComponent {
 OpenGeneSetRow.propTypes = {
   geneSetLimit: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
-  onChangeGeneSetSort: PropTypes.any.isRequired,
   onGeneEdit: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
 }
