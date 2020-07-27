@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
+import FaEdit from 'react-icons/lib/fa/edit'
+import FaPlus from 'react-icons/lib/fa/plus'
 
 
 export class OpenGeneSetRow extends PureComponent {
@@ -13,18 +15,22 @@ export class OpenGeneSetRow extends PureComponent {
     super(props)
     this.state = {
       geneSetLimit : props.geneSetLimit,
-      sortGeneSetBy : props.sortGeneSetBy
+      sortGeneSetBy : props.sortGeneSetBy,
+      selectedGeneSet: props.selectedGeneSet,
     }
   }
 
   handleGeneSetOption(value){
     console.log('input value',value)
-    if(value.indexOf('Create custom gene set')>=0){
-      this.props.onGeneEdit()
-    }
-    else{
-      console.log('adding input ',value)
-    }
+    this.setState({
+      selectedGeneSet: value
+    })
+
+    // if(value.indexOf('Create custom gene set')>=0){
+    // }
+    // else{
+    //   console.log('adding input ',value)
+    // }
   }
 
   render() {
@@ -34,7 +40,7 @@ export class OpenGeneSetRow extends PureComponent {
           <table>
             <tbody>
               <tr>
-                <td colSpan={2}>
+                <td width={400}>
                   <div className={BaseStyle.findNewGeneSets}
                   >
 
@@ -63,29 +69,36 @@ export class OpenGeneSetRow extends PureComponent {
                     </button>
                   </div>
                 </td>
-                {/*<td>*/}
-                {/*  <button*/}
-                {/*    className={BaseStyle.editGeneSets}*/}
-                {/*    onClick={() =>this.props.onGeneEdit()}*/}
-                {/*  >*/}
-                {/*    <FaEdit style={{fontSize: 'large'}}/>*/}
-                {/*  </button>*/}
-                {/*</td>*/}
                 <td>
                   <select
                     className={BaseStyle.geneSetSelector}
                     onChange={(event) => this.handleGeneSetOption(event.target.value)}
+                    value={this.state.selectedGeneSet}
                   >
                     <option>BPA Gene Set Analysis</option>
-                    {/*<option>BP Gene Set</option>*/}
-                    {/*<option>MF Gene Set</option>*/}
-                    {/*<option>CC Gene Set</option>*/}
-                    <option>+ Create custom gene set</option>
+                    <option>BP Gene Set</option>
+                    <option>MF Gene Set</option>
+                    <option>CC Gene Set</option>
                     <option>----Custom Gene Sets----</option>
-                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 1</option>*/}
-                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 2</option>*/}
-                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 3</option>*/}
+                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>
+                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>
+                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>
                   </select>
+                </td>
+                <td style={{paddingTop: 30}}>
+                  <button
+                    className={BaseStyle.editGeneSets}
+                    onClick={() =>this.props.onGeneEdit()}
+                  >
+                    <FaPlus style={{fontSize: 'large'}}/>
+                  </button>
+                  <button
+                    className={BaseStyle.editGeneSets}
+                    disabled={this.state.selectedGeneSet.indexOf('Custom')<0}
+                    onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSet)}
+                  >
+                    <FaEdit style={{fontSize: 'large'}}/>
+                  </button>
                 </td>
               </tr>
             </tbody>

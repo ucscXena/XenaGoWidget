@@ -381,12 +381,13 @@
 .editGeneSets{
   border-radius: 5px;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  margin-top: 40px;
-  margin-left: 5px;
-  padding: 3px;
+  /*margin-top: 30px;*/
+  /*margin-left: 5px;*/
+  /*padding: 3px;*/
   background-color: lightgoldenrodyellow;
   cursor: pointer;
   outline: 0;
+  display: inline;
 }
 
 .editGeneSetLimits{
@@ -717,6 +718,7 @@ border-radius: 5px;
 }
 
 .geneSetSelector{
+  display: inline;
   margin-top: 35px;
-  margin-left: 25px;
+  /*margin-left: 25px;*/
 }
