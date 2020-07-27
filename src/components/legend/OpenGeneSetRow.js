@@ -16,7 +16,7 @@ export class OpenGeneSetRow extends PureComponent {
     this.state = {
       geneSetLimit : props.geneSetLimit,
       sortGeneSetBy : props.sortGeneSetBy,
-      selectedGeneSet: props.selectedGeneSet,
+      selectedGeneSet: 'BPA Gene Set Analysis',
     }
   }
 
@@ -95,7 +95,7 @@ export class OpenGeneSetRow extends PureComponent {
                   <button
                     className={BaseStyle.editGeneSets}
                     disabled={this.state.selectedGeneSet.indexOf('Custom')<0}
-                    onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSet)}
+                    onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSet.trim())}
                   >
                     <FaEdit style={{fontSize: 'large'}}/>
                   </button>

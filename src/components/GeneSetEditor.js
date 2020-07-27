@@ -1,8 +1,6 @@
 import PureComponent from './PureComponent'
 import React from 'react'
 import BaseStyle from '../css/base.css'
-// import FaSortAsc from 'react-icons/lib/fa/sort-alpha-asc'
-// import FaSortDesc from 'react-icons/lib/fa/sort-alpha-desc'
 import FaArrowCircleORight from 'react-icons/lib/fa/arrow-circle-right'
 import {Button} from 'react-toolbox/lib/button'
 import PropTypes from 'prop-types'
@@ -69,6 +67,7 @@ export default class GeneSetEditor extends PureComponent {
       limit: VIEW_LIMIT,
       newGeneStateName:'',
       showLoading:true,
+      customGeneSetName: this.props.customGeneSetName,
     }
   }
 
@@ -428,7 +427,6 @@ export default class GeneSetEditor extends PureComponent {
           <Input
             name='newGeneSetName'
             onChange={this.handleNewGeneSetNameInput.bind(this,'newGeneSetName')}
-            // onChange={(newName) => this.setState({newGeneStateName:newName})}
             value={this.state.newGeneStateName}
           />
           <Button label='Save' onClick={this.handleNewGeneSetSaveAndStart.bind(this,'newGeneSetName')} primary raised/>
@@ -436,6 +434,11 @@ export default class GeneSetEditor extends PureComponent {
         </Dialog>
         <table>
           <tbody>
+            <tr>
+              <td colSpan={3}>
+                Custom Gene Set Name: <input placeholder={'Custom Gene Set Name'} size={50} style={{marginBottom: 10}} type='text' value={this.state.customGeneSetName} />
+              </td>
+            </tr>
             <tr>
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox}  width={250}>
@@ -535,31 +538,6 @@ export default class GeneSetEditor extends PureComponent {
               {!this.state.editGeneSet &&
               <td className={BaseStyle.geneSetFilterBox} valign='top' width={300}>
                 <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Current Gene Sets</div>
-                {/*{this.state.sortCartOrderLabel === SORT_VIEW_BY.DIFFERENT &&*/}
-                {/*<button*/}
-                {/*  className={BaseStyle.refreshButton}*/}
-                {/*  onClick={() => {*/}
-                {/*    this.setState({*/}
-                {/*      sortCartOrderLabel: SORT_VIEW_BY.SIMILAR,*/}
-                {/*    })*/}
-                {/*  }}*/}
-                {/*>*/}
-                {/*  Score*/}
-                {/*  <FaSortAsc/>*/}
-                {/*</button>*/}
-                {/*}*/}
-                {/*{this.state.sortCartOrderLabel === SORT_VIEW_BY.SIMILAR &&*/}
-                {/*<button*/}
-                {/*  className={BaseStyle.refreshButton}*/}
-                {/*  onClick={() => {*/}
-                {/*    this.setState({*/}
-                {/*      sortCartOrderLabel: SORT_VIEW_BY.DIFFERENT,*/}
-                {/*    })}}*/}
-                {/*>*/}
-                {/*  Score*/}
-                {/*  <FaSortDesc />*/}
-                {/*</button>*/}
-                {/*}*/}
                 <select
                   multiple onChange={(event) => {
                     const selectedEvents = Array.from(event.target.selectedOptions).map(opt => {
@@ -710,6 +688,7 @@ export default class GeneSetEditor extends PureComponent {
 
 GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
+  customGeneSetName: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
