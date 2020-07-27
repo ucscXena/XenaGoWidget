@@ -4,7 +4,6 @@ import BaseStyle from '../../css/base.css'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
-import FaEdit from 'react-icons/lib/fa/edit'
 import FaSearch from 'react-icons/lib/fa/search'
 
 
@@ -15,6 +14,16 @@ export class OpenGeneSetRow extends PureComponent {
     this.state = {
       geneSetLimit : props.geneSetLimit,
       sortGeneSetBy : props.sortGeneSetBy
+    }
+  }
+
+  handleGeneSetOption(value){
+    console.log('input value',value)
+    if(value.indexOf('Create custom gene set')>=0){
+      this.props.onGeneEdit()
+    }
+    else{
+      console.log('adding input ',value)
     }
   }
 
@@ -54,24 +63,28 @@ export class OpenGeneSetRow extends PureComponent {
                     </button>
                   </div>
                 </td>
+                {/*<td>*/}
+                {/*  <button*/}
+                {/*    className={BaseStyle.editGeneSets}*/}
+                {/*    onClick={() =>this.props.onGeneEdit()}*/}
+                {/*  >*/}
+                {/*    <FaEdit style={{fontSize: 'large'}}/>*/}
+                {/*  </button>*/}
+                {/*</td>*/}
                 <td>
-                  <button
-                    className={BaseStyle.editGeneSets}
-                    onClick={() =>this.props.onGeneEdit()}
+                  <select
+                    className={BaseStyle.geneSetSelector}
+                    onChange={(event) => this.handleGeneSetOption(event.target.value)}
                   >
-                    <FaEdit style={{fontSize: 'large'}}/>
-                  </button>
-                </td>
-                <td>
-                  <select onChange={ (event) => alert('changed'+event.target.value)}>
-                    <option>BP Gene Set</option>
-                    <option>MF Gene Set</option>
-                    <option>CC Gene Set</option>
+                    <option>BPA Gene Set Analysis</option>
+                    {/*<option>BP Gene Set</option>*/}
+                    {/*<option>MF Gene Set</option>*/}
+                    {/*<option>CC Gene Set</option>*/}
                     <option>+ Create custom gene set</option>
                     <option>----Custom Gene Sets----</option>
-                    <option>&nbsp;&nbsp;&nbsp;Gene Set 1</option>
-                    <option>&nbsp;&nbsp;&nbsp;Gene Set 2</option>
-                    <option>&nbsp;&nbsp;&nbsp;Gene Set 3</option>
+                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 1</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 2</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Gene Set 3</option>*/}
                   </select>
                 </td>
               </tr>
