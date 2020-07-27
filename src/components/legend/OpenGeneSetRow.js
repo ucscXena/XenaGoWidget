@@ -1,7 +1,6 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
-// import FaEdit from 'react-icons/lib/fa/edit'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
@@ -47,8 +46,6 @@ export class OpenGeneSetRow extends PureComponent {
                         )
                       }
                     </select>
-                    {/*</td>*/}
-                    {/*<td>*/}
                     <div className={BaseStyle.editGeneSetSearch}>Gene Sets</div>
                     <button
                       className={BaseStyle.refreshButton}
@@ -63,7 +60,6 @@ export class OpenGeneSetRow extends PureComponent {
                     - OR -
                     &nbsp;
                   </div>
-                  {/*<div style={{marginTop: 80}}/>*/}
                   <button
                     className={BaseStyle.editGeneSets}
                     onClick={() =>this.props.onGeneEdit()}
