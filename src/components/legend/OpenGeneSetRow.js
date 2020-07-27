@@ -55,28 +55,24 @@ export class OpenGeneSetRow extends PureComponent {
                   </div>
                 </td>
                 <td>
-                  <div className={BaseStyle.geneSetLabelOr}>
-                    &nbsp;
-                    - OR -
-                    &nbsp;
-                  </div>
                   <button
                     className={BaseStyle.editGeneSets}
                     onClick={() =>this.props.onGeneEdit()}
                   >
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                          Set Gene Sets
-                          </td>
-                          <td>
-                            <FaEdit style={{fontSize: 'large'}}/>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <FaEdit style={{fontSize: 'large'}}/>
                   </button>
+                </td>
+                <td>
+                  <select onChange={ (event) => alert('changed'+event.target.value)}>
+                    <option>BP Gene Set</option>
+                    <option>MF Gene Set</option>
+                    <option>CC Gene Set</option>
+                    <option>+ Create custom gene set</option>
+                    <option>----Custom Gene Sets----</option>
+                    <option>&nbsp;&nbsp;&nbsp;Gene Set 1</option>
+                    <option>&nbsp;&nbsp;&nbsp;Gene Set 2</option>
+                    <option>&nbsp;&nbsp;&nbsp;Gene Set 3</option>
+                  </select>
                 </td>
               </tr>
             </tbody>
