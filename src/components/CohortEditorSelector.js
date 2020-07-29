@@ -18,9 +18,17 @@ import {AppStorageHandler} from '../service/AppStorageHandler'
 function calculateCanSave(samples,cohorts){
   // if we have sub cohorts and we must have samples, otherwise we will automatically choose everything anyway
   return (
-    ((cohorts[0].subCohorts.length> 0 && samples[0].length ) || cohorts[0].subCohorts.length===0)
+    (
+      (cohorts[0].subCohorts.length> 0 && samples[0].length ) ||
+      (cohorts[0].subCohorts.length===0) ||
+      (samples[0].length === 0 && cohorts[0].selectedSubCohorts.length===1 && cohorts[0].selectedSubCohorts[0]==='UNASSIGNED')
+    )
     &&
-    ((cohorts[1].subCohorts.length> 1 && samples[1].length ) || cohorts[1].subCohorts.length===0)
+    (
+      (cohorts[1].subCohorts.length> 1 && samples[1].length ) ||
+      (cohorts[1].subCohorts.length===0) ||
+      (samples[1].length === 0 && cohorts[1].selectedSubCohorts.length===1 && cohorts[1].selectedSubCohorts[0]==='UNASSIGNED')
+    )
   )
 }
 
