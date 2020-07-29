@@ -51,14 +51,15 @@ export function generateXenaLink(props){
   }
   if(props.view === VIEW_ENUM.PARADIGM){
     // show selected gene set and all genes in another columns
-    const geneExpressionDataset = cohort.geneExpression.dataset
-    const geneExpressionHost = cohort.geneExpression.host
+    console.log('import cohort',cohort,props)
+    const geneExpressionDataset = cohort.paradigm.dataset
+    const geneExpressionHost = cohort.paradigm.host
     const geneExpressionActivityDataset = cohort.paradigmPathwayActivity.dataset
     const geneExpressionActivityHost = cohort.paradigmPathwayActivity.host
     if(props.open){
       // TODO:
-      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Paradigm IPL","fieldLabel":"${selectedGeneSet}"}`
-      linkString += ','
+      // linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Paradigm IPL","fieldLabel":"${selectedGeneSet}"}`
+      // linkString += ','
       linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes ${genes.length===MAX_GENES  ? '(max)' : ''}"}`
     }
     // show all gene sets
@@ -106,14 +107,16 @@ export function generateXenaLink(props){
     // show selected gene set and all genes in another columns
     const cnvDataset = cohort.copyNumberDataSetId
     const cnvHost = cohort.host
+    // const cnvBackgroundDataset = cohort.genomeBackgroundCopyNumber.dataset
+    // const cnvBackgroundHost = cohort.genomeBackgroundCopyNumber.host
     if(props.open){
-      // TODO:
+      // linkString += `{"name":"${cnvBackgroundDataset}","host":"${cnvBackgroundHost}","fields":"${selectedGeneSet}","columnLabel":"CNV","fieldLabel":"${selectedGeneSet}"}`
+      // linkString += ','
       linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${genes}","columnLabel":"CNV","fieldLabel":"${genes.length} genes"}`
     }
     // show all gene sets
     else{
-      // TODO:
-
+      // not sure what show here
     }
   }
   else
@@ -122,13 +125,11 @@ export function generateXenaLink(props){
     const mutationDataSet= cohort.mutationDataSetId
     const mutationHost = cohort.host
     if(props.open){
-      // TODO:
       linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes"}`
     }
     // show all gene sets
     else{
-      // TODO:
-
+      // not sure what show here
     }
   }
   else
@@ -139,7 +140,6 @@ export function generateXenaLink(props){
     const mutationDataSet= cohort.mutationDataSetId
     const mutationHost = cohort.host
     if(props.open){
-      // TODO:
       linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${genes}","columnLabel":"CNV","fieldLabel":"${genes.length} genes"}`
       linkString += ','
       linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${genes}","columnLabel":"Somatic Mutation","fieldLabel":"${genes.length} genes"}`
