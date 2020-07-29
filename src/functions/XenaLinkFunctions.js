@@ -9,7 +9,7 @@ export function generateXenaLink(props){
 
   const cohort = props.cohort[props.cohortIndex]
   // console.log('cohort',cohort)
-  // console.log('props',props)
+  console.log('props',props)
   const samples = props.pathwayData[props.cohortIndex].samples
 
   let samplesJson = {
@@ -33,6 +33,7 @@ export function generateXenaLink(props){
   let linkString = ''
 
   let genes = props.open ? props.geneDataStats[props.cohortIndex].pathways.map( p => p.gene[0]) : []
+  let pathways = props.open ? [selectedGeneSet] : props.geneDataStats[props.cohortIndex].pathways.map( p => p.golabel )
   // console.log('genes',genes)
   linkString += '?columns=['
   if(props.view === VIEW_ENUM.GENE_EXPRESSION){
@@ -46,6 +47,11 @@ export function generateXenaLink(props){
     // show all gene sets
     else{
       // TODO:
+      for(const pathway of pathways){
+        linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Gene Expression Activity","fieldLabel":"${pathway}"}`
+        linkString += ','
+      }
+      linkString = linkString.substr(0,linkString.length-1)
 
     }
   }
