@@ -5,6 +5,7 @@ import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
+import {generateXenaLink} from '../functions/XenaLinkFunctions'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -24,11 +25,15 @@ export class GeneSetInformationColumn extends PureComponent {
     return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
+  // ?columns=%5B%7B%22name%22%3A%22tcga_Kallisto_tpm%22%2C%22host%22%3A%22https%3A%2F%2Ftoil.xenahubs.net%22%2C%22fields%22%3A%22TP53%20FOXM1%22%7D%5D\">Example 1</a>"
+
+
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
+      const externalLink = generateXenaLink(this.props)
       return (
         <div
           className={BaseStyle.geneSetDetailBox}
@@ -38,14 +43,19 @@ export class GeneSetInformationColumn extends PureComponent {
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >
-          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
+          <div className={BaseStyle.ssInfoBox}>
+            <a
+              href={externalLink}
+              rel="noopener noreferrer"
+              target='_blank'
+              title={externalLink}>Open in Xena</a>
+          </div>
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
           />
-          }
           {this.props.open &&
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}
@@ -75,6 +85,7 @@ GeneSetInformationColumn.propTypes = {
   geneHoverData: PropTypes.any,
   onEditCohorts: PropTypes.any.isRequired,
   open: PropTypes.any.isRequired,
+  pathwayData: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 
