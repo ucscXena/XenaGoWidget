@@ -22,7 +22,6 @@ export class OpenGeneSetRow extends PureComponent {
   }
 
   handleGeneSetOption(value){
-    console.log('input value',value)
     this.setState({
       selectedGeneSet: value
     })
