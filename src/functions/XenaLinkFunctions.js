@@ -1,12 +1,10 @@
 import {VIEW_ENUM} from '../data/ViewEnum'
 
 const XENA_SS_LINK = 'https://xenabrowser.net/heatmap/'
+const MAX_PATHWAYS = 20
+const MAX_GENES = 60
 
 export function generateXenaLink(props){
-  // const geneExpressionHost = getHostForGeneData(props.cohort[props.cohortIndex], this.props.view)
-  // const cnvHost = getHostForGeneData(props.cohort[props.cohortIndex], this.props.view)
-  // const mutationHost = getHostForGeneData(props.cohort[props.cohortIndex], this.props.view)
-
   const cohort = props.cohort[props.cohortIndex]
   // console.log('cohort',cohort)
   console.log('props',props)
@@ -33,8 +31,8 @@ export function generateXenaLink(props){
   let linkString = ''
 
   let genes = props.open ? props.geneDataStats[props.cohortIndex].pathways.map( p => p.gene[0]) : []
+  genes = genes.length > MAX_GENES ? genes.slice(0,MAX_GENES) : genes
   let pathways = props.open ? [selectedGeneSet] : props.geneDataStats[props.cohortIndex].pathways.map( p => p.golabel )
-  // console.log('genes',genes)
   linkString += '?columns=['
   if(props.view === VIEW_ENUM.GENE_EXPRESSION){
     // show selected gene set and all genes in another columns
@@ -42,17 +40,20 @@ export function generateXenaLink(props){
       // TODO:
       linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Gene Expression Activity","fieldLabel":"${selectedGeneSet}"}`
       linkString += ','
-      linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes"}`
+      linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes ${genes.length===MAX_GENES  ? '(max)' : ''}"}`
     }
     // show all gene sets
     else{
       // TODO:
-      for(const pathway of pathways){
-        linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Gene Expression Activity","fieldLabel":"${pathway}"}`
-        linkString += ','
+      for(const pathwayIndex in pathways){
+        if(pathwayIndex < MAX_PATHWAYS){
+          const pathway = pathways[pathwayIndex]
+          linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Gene Expression Activity","fieldLabel":"${pathway}"}`
+        }
+        if(pathwayIndex < pathways.length -1 && pathwayIndex < MAX_PATHWAYS-1 ){
+          linkString += ','
+        }
       }
-      linkString = linkString.substr(0,linkString.length-1)
-
     }
   }
   else
