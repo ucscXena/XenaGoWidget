@@ -57,7 +57,7 @@ export function generateXenaLink(props){
     const geneExpressionActivityHost = cohort.paradigmPathwayActivity.host
     if(props.open){
       // TODO:
-      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Gene Expression Activity","fieldLabel":"${selectedGeneSet}"}`
+      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Paradigm IPL","fieldLabel":"${selectedGeneSet}"}`
       linkString += ','
       linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes ${genes.length===MAX_GENES  ? '(max)' : ''}"}`
     }
@@ -67,7 +67,7 @@ export function generateXenaLink(props){
       for(const pathwayIndex in pathways){
         if(pathwayIndex < MAX_PATHWAYS){
           const pathway = pathways[pathwayIndex]
-          linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Gene Expression Activity","fieldLabel":"${pathway}"}`
+          linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Paradigm IPL","fieldLabel":"${pathway}"}`
         }
         if(pathwayIndex < pathways.length -1 && pathwayIndex < MAX_PATHWAYS-1 ){
           linkString += ','
@@ -84,7 +84,7 @@ export function generateXenaLink(props){
     const geneExpressionActivityHost = cohort.regulonPathwayActivity.host
     if(props.open){
       // TODO:
-      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Gene Expression Activity","fieldLabel":"${selectedGeneSet}"}`
+      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Regulon","fieldLabel":"${selectedGeneSet}"}`
       linkString += ','
       linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes ${genes.length===MAX_GENES  ? '(max)' : ''}"}`
     }
@@ -94,7 +94,7 @@ export function generateXenaLink(props){
       for(const pathwayIndex in pathways){
         if(pathwayIndex < MAX_PATHWAYS){
           const pathway = pathways[pathwayIndex]
-          linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Gene Expression Activity","fieldLabel":"${pathway}"}`
+          linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${pathway}","columnLabel":"Regulon","fieldLabel":"${pathway}"}`
         }
         if(pathwayIndex < pathways.length -1 && pathwayIndex < MAX_PATHWAYS-1 ){
           linkString += ','
