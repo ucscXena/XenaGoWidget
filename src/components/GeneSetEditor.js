@@ -688,7 +688,7 @@ export default class GeneSetEditor extends PureComponent {
 
 GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
-  customGeneSetName: PropTypes.any.isRequired,
+  customGeneSetName: PropTypes.any,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
