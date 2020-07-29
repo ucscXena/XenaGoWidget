@@ -11,7 +11,6 @@ export function generateXenaLink(props){
   // console.log('cohort',cohort)
   // console.log('props',props)
   const samples = props.pathwayData[props.cohortIndex].samples
-  console.log('# of samples',samples.length)
 
   let samplesJson = {
     showWelcome: false,
@@ -21,11 +20,13 @@ export function generateXenaLink(props){
   }
   // filter: samples,
 
-  // console.log('samples',samples)
-  let geneExpressionDataset = cohort.geneExpression.dataset
-  let geneExpressionHost = cohort.geneExpression.host
-  let cnvDataset = cohort.copyNumberDataSetId
-  let cnvHost = cohort.host
+  const geneExpressionDataset = cohort.geneExpression.dataset
+  const geneExpressionHost = cohort.geneExpression.host
+  const geneExpressionActivityDataset = cohort.geneExpressionPathwayActivity.dataset
+  const geneExpressionActivityHost = cohort.geneExpressionPathwayActivity.host
+  const selectedGeneSet = props.open ? props.pathwayData[props.cohortIndex].pathwaySelection.pathway.golabel : null
+  const cnvDataset = cohort.copyNumberDataSetId
+  const cnvHost = cohort.host
   const mutationDataSet= cohort.mutationDataSetId
   const mutationHost = cohort.host
 
@@ -38,6 +39,8 @@ export function generateXenaLink(props){
     // show selected gene set and all genes in another columns
     if(props.open){
       // TODO:
+      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Gene Expression Activity","fieldLabel":"${selectedGeneSet}"}`
+      linkString += ','
       linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes"}`
     }
     // show all gene sets
