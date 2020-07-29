@@ -24,6 +24,9 @@ export function calculateSortingByMethod(method){
     sortViewBy = SORT_ENUM.DIFF
     sortViewOrder = SORT_ORDER_ENUM.ASC
   }
+  else{
+    console.error('error in method',method)
+  }
 
   return {
     sortViewByLabel: method,

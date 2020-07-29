@@ -16,6 +16,7 @@ export class OpenGeneSetRow extends PureComponent {
     this.state = {
       geneSetLimit : props.geneSetLimit,
       sortGeneSetBy : props.sortGeneSetBy,
+      sortGeneSetByLabel: props.sortGeneSetBy+ ' Gene Sets',
       selectedGeneSet: 'BPA Gene Set Analysis',
     }
   }
@@ -52,16 +53,20 @@ export class OpenGeneSetRow extends PureComponent {
                     <div className={BaseStyle.editGeneSetSearch}>Most</div>
                     <select
                       className={BaseStyle.editGeneSetOrder}
-                      onChange={(method) => this.setState({sortGeneSetBy: method.target.value})}
-                      value={this.state.sortGeneSetBy}
+                      onChange={(method) => {
+                        this.setState({
+                          sortGeneSetBy: method.target.options[method.target.options.selectedIndex].getAttribute('data-key'),
+                          sortGeneSetByLabel: method.target.value
+                        })
+                      }}
+                      value={this.state.sortGeneSetByLabel}
                     >
                       {
                         Object.values(SORT_VIEW_BY).map( v =>
-                          (<option key={v}>{v}</option>)
+                          (<option data-key={v} key={v}>{v} Gene Sets</option>)
                         )
                       }
                     </select>
-                    <div className={BaseStyle.editGeneSetSearch}>Gene Sets</div>
                     <button
                       className={BaseStyle.refreshButton}
                       onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,this.state.sortGeneSetBy)}>
