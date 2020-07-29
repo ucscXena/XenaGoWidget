@@ -437,6 +437,16 @@ export default class GeneSetEditor extends PureComponent {
             <tr>
               <td colSpan={3}>
                 Custom Gene Set Name: <input placeholder={'Custom Gene Set Name'} size={50} style={{marginBottom: 10}} type='text' value={this.state.customGeneSetName} />
+                <Button
+                  disabled={false}
+                  floating
+                  mini
+                  onClick={() => alert(`remove gene set ${this.state.customGeneSetName}`)}
+                  raised
+                  style={{marginLeft: 20}}
+                >
+                  <FaTrashO  color='orange'/> Remove
+                </Button>
               </td>
             </tr>
             <tr>
