@@ -83,7 +83,7 @@ export class OpenGeneSetRow extends PureComponent {
                     <option>----Custom Gene Sets----</option>
                     {
                       Object.keys(this.props.customGeneSets).map( gs => {
-                        return <option>{gs}</option>
+                        return <option key={gs}>{gs}</option>
                       })
                     }
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
