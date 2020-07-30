@@ -58,6 +58,7 @@ export const LEGEND_HEIGHT = 175
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
+const MAX_TITLE_LENGTH = 150
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -711,8 +712,9 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
-    let titleText = this.generateTitle()
-    // let titleSize = (45 - (titleText.length * 0.17))
+    let fullTitleText = this.generateTitle()
+    const fullHeaderText = `Visualizing differences using '${this.state.filter}' ${fullTitleText}`
+    let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
@@ -770,9 +772,9 @@ export default class XenaGeneSetApp extends PureComponent {
         <h2
           className={BaseStyle.titleBox}
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
+          title={fullHeaderText}
         >
-          Visualizing differences using '{this.state.filter}'
-          {titleText}
+          {headerText}
         </h2>
 
         <div
@@ -826,7 +828,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 {showCohortEditor: false})}
               onChangeView={this.handleChangeView}
               subCohortCounts={this.state.subCohortCounts}
-              titleText={titleText}
+              titleText={fullTitleText}
               view={this.state.filter}
             />
           </Dialog>
