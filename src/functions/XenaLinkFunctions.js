@@ -55,8 +55,8 @@ export function generateXenaLink(props){
     const geneExpressionActivityHost = cohort.paradigmPathwayActivity.host
     if(props.open){
       // TODO:
-      // linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Paradigm IPL","fieldLabel":"${selectedGeneSet}"}`
-      // linkString += ','
+      linkString += `{"name":"${geneExpressionActivityDataset}","host":"${geneExpressionActivityHost}","fields":"${selectedGeneSet}","columnLabel":"Paradigm IPL","fieldLabel":"${selectedGeneSet}"}`
+      linkString += ','
       linkString += `{"name":"${geneExpressionDataset}","host":"${geneExpressionHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes ${genes.length===MAX_GENES  ? '(max)' : ''}"}`
     }
     // show all gene sets
