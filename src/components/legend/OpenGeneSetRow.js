@@ -28,6 +28,9 @@ export class OpenGeneSetRow extends PureComponent {
   }
 
   render() {
+
+    console.log('input props',this.props,this.props.customGeneSets)
+
     return (
       <tr className={BaseStyle.openGeneSetRow} >
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
@@ -79,9 +82,9 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<option>CC Gene Set</option>*/}
                     <option>----Custom Gene Sets----</option>
                     {
-                      // this.props.customGeneSets.map( gs => {
-                      //   return <option>{gs}</option>
-                      // })
+                      Object.keys(this.props.customGeneSets).map( gs => {
+                        return <option>{gs}</option>
+                      })
                     }
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>*/}

@@ -673,16 +673,27 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
-  getAvailableCustomGeneSets(){
+  getAvailableCustomGeneSets = () => {
     return Object.keys(this.state.customGeneSets)
   }
 
-  getCustomGeneSet(name){
+  getCustomGeneSet = (name) => {
     return this.state.customGeneSets[name]
   }
 
-  storeCustomGeneSet(name,geneSet){
+  removeCustomGeneSet = (name) => {
+    console.log('removing gene set input name',name,this.state.customGeneSets)
+    const newCustomGeneSets = this.state.customGeneSets.filter( f => f.key !== name )
+    this.setState({
+      customGeneSets: newCustomGeneSets
+    })
+
+    this.setActiveGeneSets(newCustomGeneSets)
+  }
+
+  storeCustomGeneSet = (name,geneSet) => {
     // this.state.customGeneSets[name] = geneSet
+    console.log('storing gene set input name',name,geneSet,this.state.customGeneSets)
     const newCustomGeneSets = update(this.state.customGeneSets,{
       [name]: { $set:geneSet}
     })

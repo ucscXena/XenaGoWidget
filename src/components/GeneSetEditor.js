@@ -479,31 +479,6 @@ export default class GeneSetEditor extends PureComponent {
                     </tr>
                     <tr>
                       <td>
-                        {/*{this.state.sortOrder === SORT_ORDER_ENUM.ASC &&*/}
-                        {/*<button*/}
-                        {/*  className={BaseStyle.refreshButton}*/}
-                        {/*  onClick={() => {*/}
-                        {/*    this.setState({*/}
-                        {/*      sortOrder: SORT_ORDER_ENUM.DESC,*/}
-                        {/*    })*/}
-                        {/*  }}*/}
-                        {/*>*/}
-                        {/*  Score*/}
-                        {/*  <FaSortAsc/>*/}
-                        {/*</button>*/}
-                        {/*}*/}
-                        {/*{this.state.sortOrder === SORT_ORDER_ENUM.DESC &&*/}
-                        {/*<button*/}
-                        {/*  className={BaseStyle.refreshButton}*/}
-                        {/*  onClick={() => {*/}
-                        {/*    this.setState({*/}
-                        {/*      sortOrder: SORT_ORDER_ENUM.ASC,*/}
-                        {/*    })}}*/}
-                        {/*>*/}
-                        {/*  Score*/}
-                        {/*  <FaSortDesc />*/}
-                        {/*</button>*/}
-                        {/*}*/}
                         &nbsp;Results: {this.state.totalPathways}
                       </td>
                     </tr>
@@ -676,11 +651,6 @@ export default class GeneSetEditor extends PureComponent {
                     onClick={() => this.handleViewGeneSets()}
                     primary raised
                   />
-                  {/*<Button*/}
-                  {/*  label='Reset' mini*/}
-                  {/*  onClick={() => this.handleResetGeneSets()}*/}
-                  {/*  raised*/}
-                  {/*/>*/}
                   <Button
                     label='Cancel' mini
                     onClick={() => this.handleCancel()}
