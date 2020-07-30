@@ -317,6 +317,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter) ? generateZScoreForBoth(geneExpressionA,
         geneExpressionB) : [geneExpressionA, geneExpressionB]
 
+    console.log('pathways',pathways)
+
     const pathwayDataA = {
       geneList,
       pathways,

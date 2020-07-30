@@ -79,7 +79,6 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<option>CC Gene Set</option>*/}
                     <option>----Custom Gene Sets----</option>
                     {
-                      console.log(this.props.customGeneSets)
                       // this.props.customGeneSets.map( gs => {
                       //   return <option>{gs}</option>
                       // })
