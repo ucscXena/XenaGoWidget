@@ -35,7 +35,7 @@ export class OpenGeneSetRow extends PureComponent {
 
   render() {
     return (
-      <tr className={BaseStyle.geneLegend} >
+      <tr className={BaseStyle.openGeneSetRow} >
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
           <table>
             <tbody>
