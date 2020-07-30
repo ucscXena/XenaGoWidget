@@ -38,8 +38,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/LIHC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -85,8 +85,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/CESC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -132,8 +132,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/SARC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -179,8 +179,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/THYM_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -226,8 +226,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/MESO_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -273,8 +273,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/PAAD_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -320,8 +320,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/UVM_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -367,8 +367,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/READ_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -414,8 +414,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/LUSC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -461,8 +461,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/STAD_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -508,8 +508,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/COAD_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -555,8 +555,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/LGG_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -602,8 +602,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/THCA_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -649,8 +649,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/KICH_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -696,8 +696,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/KIRP_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -743,8 +743,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/CHOL_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -790,8 +790,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/GBM_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -837,8 +837,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/LUAD_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -888,8 +888,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/OV_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -935,8 +935,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/KIRC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -982,8 +982,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/UCEC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1029,8 +1029,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/HSNC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1076,8 +1076,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/ACC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1123,8 +1123,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/PRAD_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1170,8 +1170,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/UCS_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1217,8 +1217,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/SKCM_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1264,8 +1264,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/PCPG_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1311,8 +1311,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/BRCA_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1358,8 +1358,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/TGCT_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1405,8 +1405,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/LAML_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1452,8 +1452,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/DLBC_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1499,8 +1499,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/BLCA_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",
@@ -1546,8 +1546,8 @@
     },
     "viewInPathway": true,
     "PARADIGM pathway activity": {
-      "host": "https://pancanatlas.xenahubs.net",
-      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
+      "host": "https://tcga.xenahubs.net",
+      "dataset": "PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z/ESCA_PanCan33_ssGSEA_1387GeneSets_NonZero_sample_level_Z.txt"
     },
     "PARADIGM": {
       "host": "https://tcga.xenahubs.net",

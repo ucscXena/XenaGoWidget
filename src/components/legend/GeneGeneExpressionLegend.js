@@ -12,7 +12,7 @@ export function getMiddleGeneLabelForView(view){
   case VIEW_ENUM.GENE_EXPRESSION:
     return 'Mean gene exp Z-Score'
   case VIEW_ENUM.PARADIGM:
-    return 'Mean PARADIGM IPL Z-Score'
+    return 'Mean Paradigm IPL Z-Score'
   case VIEW_ENUM.REGULON:
     return 'Mean gene exp Z-Score'
 
@@ -28,7 +28,7 @@ export function getSampleGeneLabelForView(view){
   case VIEW_ENUM.GENE_EXPRESSION:
     return 'Sample gene exp Z-Score'
   case VIEW_ENUM.PARADIGM:
-    return 'Sample PARADIGM IPL Z-Score'
+    return 'Sample Paradigm IPL Z-Score'
   case VIEW_ENUM.REGULON:
     return 'Sample gene exp Z-Score'
 

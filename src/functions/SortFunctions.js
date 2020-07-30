@@ -24,6 +24,10 @@ export function calculateSortingByMethod(method){
     sortViewBy = SORT_ENUM.DIFF
     sortViewOrder = SORT_ORDER_ENUM.ASC
   }
+  else{
+    // eslint-disable-next-line no-console
+    console.error('error in method',method)
+  }
 
   return {
     sortViewByLabel: method,

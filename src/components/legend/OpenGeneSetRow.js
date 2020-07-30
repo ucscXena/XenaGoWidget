@@ -1,12 +1,12 @@
 import React from 'react'
 import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
-// import FaEdit from 'react-icons/lib/fa/edit'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 import {SORT_VIEW_BY} from '../../data/SortEnum'
-import FaEdit from 'react-icons/lib/fa/edit'
 import FaSearch from 'react-icons/lib/fa/search'
+import FaEdit from 'react-icons/lib/fa/edit'
+import FaPlus from 'react-icons/lib/fa/plus'
 
 
 export class OpenGeneSetRow extends PureComponent {
@@ -15,21 +15,28 @@ export class OpenGeneSetRow extends PureComponent {
     super(props)
     this.state = {
       geneSetLimit : props.geneSetLimit,
-      sortGeneSetBy : props.sortGeneSetBy
+      sortGeneSetBy : props.sortGeneSetBy,
+      sortGeneSetByLabel: props.sortGeneSetBy+ ' Gene Sets',
+      selectedGeneSet: 'BPA Gene Set Analysis',
     }
+  }
+
+  handleGeneSetOption(value){
+    this.setState({
+      selectedGeneSet: value
+    })
   }
 
   render() {
     return (
-      <tr className={BaseStyle.geneLegend} >
+      <tr className={BaseStyle.openGeneSetRow} >
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
           <table>
             <tbody>
-              <tr>
-                <td colSpan={2}>
+              <tr style={{height: 30}}>
+                <td style={{height: 30}}>
                   <div className={BaseStyle.findNewGeneSets}
                   >
-
                     <div className={BaseStyle.editGeneSetSearch}>Find</div>
                     <input
                       className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
@@ -38,48 +45,64 @@ export class OpenGeneSetRow extends PureComponent {
                     <div className={BaseStyle.editGeneSetSearch}>Most</div>
                     <select
                       className={BaseStyle.editGeneSetOrder}
-                      onChange={(method) => this.props.onChangeGeneSetSort(method.target.value)}
-                      value={this.props.sortGeneSetBy}
+                      onChange={(method) => {
+                        this.setState({
+                          sortGeneSetBy: method.target.options[method.target.options.selectedIndex].getAttribute('data-key'),
+                          sortGeneSetByLabel: method.target.value
+                        })
+                      }}
+                      value={this.state.sortGeneSetByLabel}
                     >
                       {
                         Object.values(SORT_VIEW_BY).map( v =>
-                          (<option key={v}>{v}</option>)
+                          (<option data-key={v} key={v}>{v} Gene Sets</option>)
                         )
                       }
                     </select>
-                    {/*</td>*/}
-                    {/*<td>*/}
-                    <div className={BaseStyle.editGeneSetSearch}>Gene Sets</div>
                     <button
                       className={BaseStyle.refreshButton}
-                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit)}>
-                      Fetch <FaSearch/>
+                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,this.state.sortGeneSetBy)}>
+                      Find <FaSearch/>
+                      {/*<FaSearch/>*/}
                     </button>
                   </div>
                 </td>
                 <td>
-                  <div className={BaseStyle.geneSetLabelOr}>
-                    &nbsp;
-                    - OR -
-                    &nbsp;
-                  </div>
-                  {/*<div style={{marginTop: 80}}/>*/}
+                  <select
+                    className={BaseStyle.geneSetSelector}
+                    onChange={(event) => this.handleGeneSetOption(event.target.value)}
+                    value={this.state.selectedGeneSet}
+                  >
+                    <option>Default Gene Sets</option>
+                    {/*<option>BP Gene Set</option>*/}
+                    {/*<option>MF Gene Set</option>*/}
+                    {/*<option>CC Gene Set</option>*/}
+                    <option>----Custom Gene Sets----</option>
+                    {
+                      // this.props.customGeneSets.map( gs => {
+                      //   return <option>{gs}</option>
+                      // })
+                    }
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>*/}
+                  </select>
+                </td>
+                <td>
                   <button
                     className={BaseStyle.editGeneSets}
                     onClick={() =>this.props.onGeneEdit()}
                   >
-                    <table>
-                      <tbody>
-                        <tr>
-                          <td>
-                          Set Gene Sets
-                          </td>
-                          <td>
-                            <FaEdit style={{fontSize: 'large'}}/>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <FaPlus style={{fontSize: 'small'}}/>
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className={BaseStyle.editGeneSets}
+                    disabled={this.state.selectedGeneSet.indexOf('Custom')<0}
+                    onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSet.trim())}
+                  >
+                    <FaEdit style={{fontSize: 'small'}}/>
                   </button>
                 </td>
               </tr>
@@ -92,9 +115,9 @@ export class OpenGeneSetRow extends PureComponent {
 }
 
 OpenGeneSetRow.propTypes = {
+  customGeneSets: PropTypes.any,
   geneSetLimit: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
-  onChangeGeneSetSort: PropTypes.any.isRequired,
   onGeneEdit: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
 }

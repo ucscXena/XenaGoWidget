@@ -5,6 +5,10 @@ import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
 import HoverGeneView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
+import {generateXenaLink} from '../functions/XenaLinkFunctions'
+import {isViewGeneExpression} from '../functions/DataFunctions'
+import {Avatar} from 'react-toolbox/lib/avatar'
+import XenaLogo from './xena.png'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -24,11 +28,13 @@ export class GeneSetInformationColumn extends PureComponent {
     return geneHoverData[cohortIndex].tissue !== 'Header'
   }
 
+
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
+      const externalLink = generateXenaLink(this.props)
       return (
         <div
           className={BaseStyle.geneSetDetailBox}
@@ -38,14 +44,32 @@ export class GeneSetInformationColumn extends PureComponent {
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >
-          {this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples &&
+
+          {
+            (isViewGeneExpression(this.props.view)  ||
+            (!isViewGeneExpression(this.props.view) && this.props.open)) &&
+          <div className={BaseStyle.ssInfoBox}>
+            <a
+              className={BaseStyle.externalLink}
+              href={externalLink}
+              rel="noopener noreferrer"
+              target='_blank'
+              title={externalLink}>
+              <Avatar
+                image={XenaLogo}
+              />
+              <div style={{display: 'inline'}}>
+                View in Xena
+              </div>
+            </a>
+          </div>
+          }
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
           />
-          }
           {this.props.open &&
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}
@@ -75,6 +99,7 @@ GeneSetInformationColumn.propTypes = {
   geneHoverData: PropTypes.any,
   onEditCohorts: PropTypes.any.isRequired,
   open: PropTypes.any.isRequired,
+  pathwayData: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 

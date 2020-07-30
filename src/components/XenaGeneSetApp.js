@@ -54,10 +54,11 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 155
+export const LEGEND_HEIGHT = 175
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
+const MAX_TITLE_LENGTH = 150
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -114,6 +115,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      customGeneSets: {},
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
 
@@ -176,10 +178,10 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
-
-  showConfiguration = () => {
+  showConfiguration = (geneSetName) => {
     this.setState({
-      showGeneSetSearch: true
+      showGeneSetSearch: true,
+      selectedGeneSet: geneSetName,
     })
   }
 
@@ -656,22 +658,12 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
-  handleGeneSetLimit = (limit) => {
+  handleGeneSetLimit = (limit,method) => {
     currentLoadState= LOAD_STATE.LOADED
-    this.setState({
-      geneSetLimit: limit,
-      reloadPathways: true,
-      fetch: true,
-    })
-  }
-
-  handleGeneSetSortBy = (method) => {
-    currentLoadState= LOAD_STATE.LOADED
-
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
-
     this.setState({
       reloadPathways: true,
+      geneSetLimit: limit,
       sortViewByLabel: method,
       sortViewBy,
       sortViewOrder,
@@ -680,6 +672,31 @@ export default class XenaGeneSetApp extends PureComponent {
       fetch: true,
     })
   }
+
+  getAvailableCustomGeneSets(){
+    return Object.keys(this.state.customGeneSets)
+  }
+
+  getCustomGeneSet(name){
+    return this.state.customGeneSets[name]
+  }
+
+  storeCustomGeneSet(name,geneSet){
+    // this.state.customGeneSets[name] = geneSet
+    const newCustomGeneSets = update(this.state.customGeneSets,{
+      [name]: { $set:geneSet}
+    })
+    this.setState({
+      customGeneSets: newCustomGeneSets
+    })
+
+    this.setActiveGeneSets(geneSet)
+  }
+
+  isCustomGeneSet(name){
+    return (this.state.customGeneSets[name]!==undefined)
+  }
+
 
   render() {
     const storedPathways = AppStorageHandler.getPathways()
@@ -720,8 +737,9 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
-    let titleText = this.generateTitle()
-    // let titleSize = (45 - (titleText.length * 0.17))
+    let fullTitleText = this.generateTitle()
+    const fullHeaderText = `Visualizing differences using '${this.state.filter}' ${fullTitleText}`
+    let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
@@ -731,13 +749,13 @@ export default class XenaGeneSetApp extends PureComponent {
       <div>
 
         <LegendBox
+          customGeneSets={this.state.customGeneSets}
           geneData={this.state.geneData}
           geneSetLimit={this.state.geneSetLimit}
           handleGeneEdit={this.showConfiguration}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
           onChangeGeneSetLimit={this.handleGeneSetLimit}
-          onChangeGeneSetSort={this.handleGeneSetSortBy}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
           showDiffLabel={this.state.showDiffLabel}
           sortGeneSetBy={this.state.sortViewByLabel}
@@ -780,9 +798,9 @@ export default class XenaGeneSetApp extends PureComponent {
         <h2
           className={BaseStyle.titleBox}
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
+          title={fullHeaderText}
         >
-          Visualizing differences using '{this.state.filter}'
-          {titleText}
+          {headerText}
         </h2>
 
         <div
@@ -836,7 +854,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 {showCohortEditor: false})}
               onChangeView={this.handleChangeView}
               subCohortCounts={this.state.subCohortCounts}
-              titleText={titleText}
+              titleText={fullTitleText}
               view={this.state.filter}
             />
           </Dialog>
@@ -855,9 +873,11 @@ export default class XenaGeneSetApp extends PureComponent {
             <GeneSetEditor
               cancelPathwayEdit={() => this.setState(
                 {showGeneSetSearch: false})}
+              customGeneSetName={this.state.selectedGeneSet}
               pathwayData={this.state.pathwayData}
               pathways={this.state.pathways}
               setPathways={this.setActiveGeneSets}
+              storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
             />
           </Dialog>

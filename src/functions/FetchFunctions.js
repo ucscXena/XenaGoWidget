@@ -125,7 +125,23 @@ export const convertPathwaysToGeneSetLabel = (pathways) => {
   } )
 }
 
-function getHostData(cohort,view) {
+export function getHostForGeneData(cohort, view) {
+  switch (view) {
+  case VIEW_ENUM.PARADIGM:
+  case VIEW_ENUM.GENE_EXPRESSION:
+  case VIEW_ENUM.REGULON:
+    return cohort.geneExpression
+  case VIEW_ENUM.COPY_NUMBER:
+    return cohort.copyNumber
+  case VIEW_ENUM.MUTATION:
+    return cohort.copyNumber
+  default:
+    // eslint-disable-next-line no-console
+    console.error('can not get host data for ',cohort,view)
+  }
+}
+
+export function getHostGeneSetData(cohort, view) {
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return cohort.paradigmPathwayActivity
@@ -154,7 +170,7 @@ export function allFieldMean(cohort, samples,view) {
     '  {:field fields\n' +
     '   :mean (map car (mean data 1))}))'
   const quote = x => '"' + x + '"'
-  const { dataset, host} = getHostData(cohort,view)
+  const { dataset, host} = getHostGeneSetData(cohort,view)
   const query = `(${allFieldMeanQuery} ${quote(dataset)}  [${samples.map(quote).join(' ')}])`
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response))
 }

@@ -10,7 +10,7 @@ export class OpenGeneSetLegend extends PureComponent {
 
   render() {
     return (
-      <tr className={BaseStyle.geneLegend} >
+      <tr className={BaseStyle.openGeneSetLegend} >
         <td colSpan={1} width={DETAIL_WIDTH}/>
         <td colSpan={1} width={LABEL_WIDTH}>
           <div className={BaseStyle.openGeneSet}>
