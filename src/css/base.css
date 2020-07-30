@@ -363,7 +363,7 @@
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   /*margin-top: 40px;*/
   margin-left: 5px;
-  margin-top: 15px;
+  /*margin-top: 15px;*/
   padding: 6px;
   background-color: lightgoldenrodyellow;
   /*cursor: pointer;*/
@@ -391,12 +391,11 @@
 }
 
 .editGeneSetLimits{
-  margin-top: 40px;
   display: inline;
+  margin-top: 0;
 }
 
 .editGeneSetOrder{
-  margin-top: 40px;
   width: 155px;
   display: inline;
 }
@@ -413,7 +412,7 @@
   font-size: small;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   /*font-weight: bold;*/
-  margin: 5px;
+  margin: 2px;
   display: inline;
 }
 
@@ -662,34 +661,37 @@ border-radius: 5px;
 
 .geneSetLegend{
   position: absolute;
-  margin-top: 0;
+  margin-top: 60px;
 }
 
 .openGeneSetLegend{
   position: absolute;
-  margin-top: 50px;
+  margin-top: 110px;
   height: 50px;
 }
 
 .openGeneSetRow{
   position: absolute;
-  margin-top: 50px;
-  height: 50px;
+  /*margin-top: 50px;*/
+  height: 40px;
+  /*padding-top: 0;*/
+  margin-top: 0;
 }
 
 .geneLegend{
   position: absolute;
-  margin-top: 50px;
+  margin-top: 105px;
   height: 50px;
 }
 .diffScaleLegend{
   position: absolute;
-  margin-top: 100px;
+  margin-top: 152px;
 }
 
 .middleSampleLegend{
-  /*position: absolute;*/
-  margin-top: 0;
+  position: absolute;
+  /*margin-top: 0;*/
+  margin-top: 40px;
   /*margin-left: 0;*/
 }
 
@@ -746,6 +748,6 @@ border-radius: 5px;
 
 .geneSetSelector{
   display: inline;
-  margin-top: 35px;
+  /*margin-top: 35px;*/
   /*margin-left: 25px;*/
 }

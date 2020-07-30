@@ -35,7 +35,17 @@ export class LegendBox extends PureComponent {
         }}>
           <table>
             <tbody>
+              {/*Gene Set Editor / Selector controls*/}
+              <OpenGeneSetRow
+                geneSetLimit={this.props.geneSetLimit}
+                onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
+                onGeneEdit={this.props.handleGeneEdit}
+                sortGeneSetBy={this.props.sortGeneSetBy}/>
+
+              {/*legend for middle versus sample */}
               <TopLegend/>
+
+
               {/*Gene set layer*/}
               {isViewGeneExpression(view) &&
             <GeneSetGeneExpressionLegend filter={view} maxValue={maxValue}/>
@@ -46,17 +56,8 @@ export class LegendBox extends PureComponent {
 
 
               {/*Gene layer*/}
-              {/*empty*/}
               {(!geneData || !geneData[0].data) &&
             <OpenGeneSetLegend/>
-              }
-              {/*{(!geneData || !geneData[0].data) && isViewGeneExpression(view) &&*/}
-              {(!geneData || !geneData[0].data) &&
-              <OpenGeneSetRow
-                geneSetLimit={this.props.geneSetLimit}
-                onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
-                onGeneEdit={this.props.handleGeneEdit}
-                sortGeneSetBy={this.props.sortGeneSetBy}/>
               }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
             <GeneGeneExpressionLegend filter={view}/>
@@ -64,6 +65,8 @@ export class LegendBox extends PureComponent {
               {geneData && geneData[0].data && !isViewGeneExpression(view) &&
             <GeneCnvMutationLegend filter={view} maxValue={5}/>
               }
+
+              {/*Diff scale layer*/}
               <DiffScaleLegend
                 maxValue={maxGeneData} minValue={maxGeneData}
                 onShowDiffLabel={this.props.onShowDiffLabel}

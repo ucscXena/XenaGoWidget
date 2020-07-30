@@ -25,12 +25,6 @@ export class OpenGeneSetRow extends PureComponent {
     this.setState({
       selectedGeneSet: value
     })
-
-    // if(value.indexOf('Create custom gene set')>=0){
-    // }
-    // else{
-    //   console.log('adding input ',value)
-    // }
   }
 
   render() {
@@ -39,11 +33,10 @@ export class OpenGeneSetRow extends PureComponent {
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
           <table>
             <tbody>
-              <tr>
-                <td width={400}>
+              <tr style={{height: 30}}>
+                <td style={{height: 30}}>
                   <div className={BaseStyle.findNewGeneSets}
                   >
-
                     <div className={BaseStyle.editGeneSetSearch}>Find</div>
                     <input
                       className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
@@ -70,6 +63,7 @@ export class OpenGeneSetRow extends PureComponent {
                       className={BaseStyle.refreshButton}
                       onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,this.state.sortGeneSetBy)}>
                       Find <FaSearch/>
+                      {/*<FaSearch/>*/}
                     </button>
                   </div>
                 </td>
@@ -89,19 +83,21 @@ export class OpenGeneSetRow extends PureComponent {
                     <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>
                   </select>
                 </td>
-                <td style={{paddingTop: 30}}>
+                <td>
                   <button
                     className={BaseStyle.editGeneSets}
                     onClick={() =>this.props.onGeneEdit()}
                   >
-                    <FaPlus style={{fontSize: 'large'}}/>
+                    <FaPlus style={{fontSize: 'small'}}/>
                   </button>
+                </td>
+                <td>
                   <button
                     className={BaseStyle.editGeneSets}
                     disabled={this.state.selectedGeneSet.indexOf('Custom')<0}
                     onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSet.trim())}
                   >
-                    <FaEdit style={{fontSize: 'large'}}/>
+                    <FaEdit style={{fontSize: 'small'}}/>
                   </button>
                 </td>
               </tr>
