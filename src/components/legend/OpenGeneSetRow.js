@@ -73,14 +73,14 @@ export class OpenGeneSetRow extends PureComponent {
                     onChange={(event) => this.handleGeneSetOption(event.target.value)}
                     value={this.state.selectedGeneSet}
                   >
-                    <option>BPA Gene Set Analysis</option>
-                    <option>BP Gene Set</option>
-                    <option>MF Gene Set</option>
-                    <option>CC Gene Set</option>
+                    <option>Default Gene Set Analysis</option>
+                    {/*<option>BP Gene Set</option>*/}
+                    {/*<option>MF Gene Set</option>*/}
+                    {/*<option>CC Gene Set</option>*/}
                     <option>----Custom Gene Sets----</option>
-                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>
-                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>
-                    <option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>*/}
+                    {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>*/}
                   </select>
                 </td>
                 <td>

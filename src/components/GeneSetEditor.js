@@ -343,7 +343,12 @@ export default class GeneSetEditor extends PureComponent {
 
   // TODO: push back to production pathways
   handleViewGeneSets() {
-    this.props.setPathways(this.getSelectedCartData())
+    if(this.state.customGeneSetName){
+      this.props.setPathways(this.getSelectedCartData())
+    }
+    else{
+      alert('You need to provide a name for the custom gene set view.')
+    }
   }
   // TODO: push back to production pathways
   handleCancel() {
@@ -436,7 +441,17 @@ export default class GeneSetEditor extends PureComponent {
           <tbody>
             <tr>
               <td colSpan={3}>
-                Custom Gene Set Name: <input placeholder={'Custom Gene Set Name'} size={50} style={{marginBottom: 10}} type='text' value={this.state.customGeneSetName} />
+                Custom Gene Set Name:
+                <input
+                  onChange={(input) => {
+                    this.setState({customGeneSetName:input.target.value})
+                  }}
+                  placeholder={'Custom Gene Set Name'}
+                  size={50}
+                  style={{marginBottom: 10}}
+                  type='text'
+                  value={this.state.customGeneSetName}
+                />
                 <Button
                   disabled={false}
                   floating

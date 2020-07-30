@@ -8,8 +8,6 @@ export function generateXenaLink(props){
   const cohort = props.cohort[props.cohortIndex]
   const samples = props.pathwayData[props.cohortIndex].samples
 
-  console.log('cohort',cohort)
-
   let samplesJson = {
     showWelcome: false,
   }
@@ -51,7 +49,6 @@ export function generateXenaLink(props){
   }
   if(props.view === VIEW_ENUM.PARADIGM){
     // show selected gene set and all genes in another columns
-    console.log('import cohort',cohort,props)
     const geneExpressionDataset = cohort.paradigm.dataset
     const geneExpressionHost = cohort.paradigm.host
     const geneExpressionActivityDataset = cohort.paradigmPathwayActivity.dataset
