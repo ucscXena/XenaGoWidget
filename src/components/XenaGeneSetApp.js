@@ -317,8 +317,6 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter) ? generateZScoreForBoth(geneExpressionA,
         geneExpressionB) : [geneExpressionA, geneExpressionB]
 
-    console.log('pathways',pathways)
-
     const pathwayDataA = {
       geneList,
       pathways,
@@ -676,7 +674,6 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getAvailableCustomGeneSets(){
-    console.log('getting available',this.state.customGeneSets)
     return Object.keys(this.state.customGeneSets)
   }
 
@@ -686,11 +683,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
   storeCustomGeneSet(name,geneSet){
     // this.state.customGeneSets[name] = geneSet
-    console.log('custom gene sets stored',this.state.customGeneSets)
     const newCustomGeneSets = update(this.state.customGeneSets,{
       [name]: { $set:geneSet}
     })
-    console.log('update custom gene sets stored',this.state.customGeneSets)
     this.setState({
       customGeneSets: newCustomGeneSets
     })
