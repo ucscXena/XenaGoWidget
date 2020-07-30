@@ -6,6 +6,7 @@ import BaseStyle from '../css/base.css'
 import HoverGeneView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
 import {generateXenaLink} from '../functions/XenaLinkFunctions'
+import {isViewGeneExpression} from '../functions/DataFunctions'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -43,6 +44,9 @@ export class GeneSetInformationColumn extends PureComponent {
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >
+          {
+            (isViewGeneExpression(this.props.view)  ||
+            (!isViewGeneExpression(this.props.view) && this.props.open)) &&
           <div className={BaseStyle.ssInfoBox}>
             <a
               href={externalLink}
@@ -50,6 +54,7 @@ export class GeneSetInformationColumn extends PureComponent {
               target='_blank'
               title={externalLink}>Open in Xena</a>
           </div>
+          }
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
