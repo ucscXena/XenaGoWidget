@@ -9,6 +9,7 @@ import {generateXenaLink} from '../functions/XenaLinkFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {Avatar} from 'react-toolbox/lib/avatar'
 import XenaLogo from './xena.png'
+import FaExternalLink from 'react-icons/lib/fa/external-link'
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -50,7 +51,7 @@ export class GeneSetInformationColumn extends PureComponent {
             (!isViewGeneExpression(this.props.view) && this.props.open)) &&
           <div className={BaseStyle.ssInfoBox}>
             <a
-              className={BaseStyle.externalLink}
+              className={BaseStyle.xenaLinkOut}
               href={externalLink}
               rel="noopener noreferrer"
               target='_blank'
@@ -58,9 +59,10 @@ export class GeneSetInformationColumn extends PureComponent {
               <Avatar
                 image={XenaLogo}
               />
-              <div style={{display: 'inline'}}>
+              <div style={{display: 'inline',margin: 2}}>
                 View in Xena
               </div>
+              <FaExternalLink/>
             </a>
           </div>
           }

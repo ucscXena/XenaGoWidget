@@ -753,10 +753,10 @@ border-radius: 5px;
 }
 
 .xenaLinkOut{
-  /*background-image: '';*/
-  color: red;
-  background-image:url('./xena.png');
-  image:url('./xena.png');
+  border-radius: 10px;
+  border: 2px solid gray;
+  padding: 5px;
+  background-color: lemonchiffon;
 }
 .externalLink:after {
   font-family: FontAwesome;
