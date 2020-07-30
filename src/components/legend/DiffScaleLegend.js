@@ -26,10 +26,10 @@ export class DiffScaleLegend extends PureComponent {
   render() {
     if(!this.props.showScale){
       return (
-        <div/>
-        // <tr className={BaseStyle.diffScaleLegend} style={{height: 24}} >
-        //   <td colSpan={3} style={{height: 24}}/>
-        // </tr>
+        // <div/>
+        <tr className={BaseStyle.diffScaleLegend} style={{height: 24}} >
+          <td colSpan={3} style={{height: 24}}/>
+        </tr>
       )
     }
 
