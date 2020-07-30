@@ -37,6 +37,7 @@ export class LegendBox extends PureComponent {
             <tbody>
               {/*Gene Set Editor / Selector controls*/}
               <OpenGeneSetRow
+                customGeneSets={this.props.customGeneSets}
                 geneSetLimit={this.props.geneSetLimit}
                 onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
                 onGeneEdit={this.props.handleGeneEdit}
@@ -84,6 +85,7 @@ export class LegendBox extends PureComponent {
 }
 
 LegendBox.propTypes = {
+  customGeneSets: PropTypes.any,
   geneData: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,

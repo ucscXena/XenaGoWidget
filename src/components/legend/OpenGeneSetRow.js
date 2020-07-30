@@ -78,6 +78,12 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<option>MF Gene Set</option>*/}
                     {/*<option>CC Gene Set</option>*/}
                     <option>----Custom Gene Sets----</option>
+                    {
+                      console.log(this.props.customGeneSets)
+                      // this.props.customGeneSets.map( gs => {
+                      //   return <option>{gs}</option>
+                      // })
+                    }
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>*/}
                     {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>*/}
@@ -110,6 +116,7 @@ export class OpenGeneSetRow extends PureComponent {
 }
 
 OpenGeneSetRow.propTypes = {
+  customGeneSets: PropTypes.any,
   geneSetLimit: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   onGeneEdit: PropTypes.any.isRequired,

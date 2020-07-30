@@ -115,6 +115,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      customGeneSets: {},
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
 
@@ -176,7 +177,6 @@ export default class XenaGeneSetApp extends PureComponent {
       return  ` ${selectedCohort.selectedSubCohorts.length} sub cohorts `
     }
   }
-
 
   showConfiguration = (geneSetName) => {
     this.setState({
@@ -673,6 +673,34 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
+  getAvailableCustomGeneSets(){
+    console.log('getting available',this.state.customGeneSets)
+    return Object.keys(this.state.customGeneSets)
+  }
+
+  getCustomGeneSet(name){
+    return this.state.customGeneSets[name]
+  }
+
+  storeCustomGeneSet(name,geneSet){
+    // this.state.customGeneSets[name] = geneSet
+    console.log('custom gene sets stored',this.state.customGeneSets)
+    const newCustomGeneSets = update(this.state.customGeneSets,{
+      [name]: { $set:geneSet}
+    })
+    console.log('update custom gene sets stored',this.state.customGeneSets)
+    this.setState({
+      customGeneSets: newCustomGeneSets
+    })
+
+    this.setActiveGeneSets(geneSet)
+  }
+
+  isCustomGeneSet(name){
+    return (this.state.customGeneSets[name]!==undefined)
+  }
+
+
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
@@ -724,6 +752,7 @@ export default class XenaGeneSetApp extends PureComponent {
       <div>
 
         <LegendBox
+          customGeneSets={this.state.customGeneSets}
           geneData={this.state.geneData}
           geneSetLimit={this.state.geneSetLimit}
           handleGeneEdit={this.showConfiguration}
@@ -851,6 +880,7 @@ export default class XenaGeneSetApp extends PureComponent {
               pathwayData={this.state.pathwayData}
               pathways={this.state.pathways}
               setPathways={this.setActiveGeneSets}
+              storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
             />
           </Dialog>

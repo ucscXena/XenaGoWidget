@@ -44,11 +44,9 @@ export default class GeneSetEditor extends PureComponent {
       name: '',
       geneName: '',
       sortOrder: sortingOptions.sortViewOrder,
-      // sortBy: isViewGeneExpression(props.view)  ? SORT_ENUM.CONTRAST_DIFF: SORT_ENUM.ALPHA,
       sortBy: sortingOptions.sortViewBy,
       sortCartOrder:sortingOptions.sortViewOrder,
       sortCartOrderLabel:SORT_VIEW_BY.DIFFERENT,
-      // sortCartBy: isViewGeneExpression(props.view) ? SORT_ENUM.DIFF : SORT_ENUM.ALPHA,
       sortCartBy: sortingOptions.sortViewBy,
       geneSet: '8K',
       newGene: [],
@@ -57,7 +55,6 @@ export default class GeneSetEditor extends PureComponent {
       selectedCohort: [props.pathwayData[0].cohort,props.pathwayData[1].cohort],
       samples: [props.pathwayData[0].samples,props.pathwayData[1].samples],
       filteredPathways : [],
-      // filteredCartPathways : [],
       cartPathways,
       selectedGenesForGeneSet: [],
       selectedFilteredPathways : [],
@@ -145,17 +142,9 @@ export default class GeneSetEditor extends PureComponent {
     })
   };
 
-  // filterCart(){
-  //   this.setState({
-  //     filteredCartPathways: this.getFilteredCart(this.state.cartPathways,this.state.sortCartBy,this.state.sortCartOrder)
-  //   })
-  // }
-
   sortVisibleCartByLabel(sortCartByLabel) {
     const sortingOptions = calculateSortingByMethod(sortCartByLabel)
-    // console.log('sorting visible ',sortCartByLabel,sortingOptions)
     const filteredCart = this.getFilteredCart(this.state.cartPathways,sortingOptions.sortViewBy,sortingOptions.sortViewOrder)
-    // console.log('filtered cart from ',this.state.cartPathways,sortingOptions.sortViewBy,sortingOptions.sortViewOrder)
     this.setState({
       sortCartBy: sortingOptions.sortViewBy,
       sortCartOrder: sortingOptions.sortViewOrder,
@@ -167,7 +156,6 @@ export default class GeneSetEditor extends PureComponent {
 
   sortVisibleCart(sortBy, sortOrder, cartLimit) {
     const filteredCart = this.getFilteredCart(this.state.cartPathways,sortBy,sortOrder)
-    // console.log('filtering by visible cart',filteredCart,sortBy,sortOrder)
     this.setState({
       sortCartBy: sortBy,
       sortCartOrder: sortOrder,
@@ -195,9 +183,7 @@ export default class GeneSetEditor extends PureComponent {
           return (this.state.sortOrder === SORT_ORDER_ENUM.ASC ? 1 : -1 ) * (scoreB-scoreA)
         }
       })
-    // const newCart = filterCart ? filteredPathways.slice(0,this.state.cartPathwayLimit) : this.state.cartPathways
     this.setState({
-      // cartPathways: newCart,
       filteredPathways: filteredPathways,
       totalPathways: filteredPathways.length
     })
@@ -218,7 +204,6 @@ export default class GeneSetEditor extends PureComponent {
     const selectedCartData = update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     })
-    // return selectedCartData.slice(0,this.state.cartPathwayLimit)
     return selectedCartData
   }
 
@@ -344,7 +329,9 @@ export default class GeneSetEditor extends PureComponent {
   // TODO: push back to production pathways
   handleViewGeneSets() {
     if(this.state.customGeneSetName){
-      this.props.setPathways(this.getSelectedCartData())
+      const selectedCartData = this.getSelectedCartData()
+      this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
+      // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
     else{
       alert('You need to provide a name for the custom gene set view.')
@@ -717,5 +704,6 @@ GeneSetEditor.propTypes = {
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
+  storeCustomGeneSets: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }
