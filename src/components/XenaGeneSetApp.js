@@ -887,8 +887,12 @@ export default class XenaGeneSetApp extends PureComponent {
               cancelPathwayEdit={() => this.setState(
                 {showGeneSetSearch: false})}
               customGeneSetName={this.state.selectedGeneSet}
+              getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
+              getCustomGeneSet={this.getCustomGeneSet}
+              isCustomGeneSet={this.isCustomGeneSet}
               pathwayData={this.state.pathwayData}
               pathways={this.state.pathways}
+              removeCustomGeneSet={this.removeCustomGeneSet}
               setPathways={this.setActiveGeneSets}
               storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}

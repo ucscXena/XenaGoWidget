@@ -130,9 +130,21 @@ export default class GeneSetEditor extends PureComponent {
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel)
     // included data from original pathways
-    let cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
-    const cartLabels = cartPathways.map( p => p.golabel)
-    cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )]
+    let cartPathways
+    console.log('loading cart')
+    if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
+      // TODO, may need to interset
+      cartPathways = this.props.getCustomGeneSet(this.state.customGeneSetName)
+      console.log('loaded cart pathways from',this.state.customGeneSetName,cartPathways)
+      // cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
+    }
+    else{
+      cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
+      const cartLabels = cartPathways.map( p => p.golabel)
+      cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )]
+      console.log('loaded cart pathways',cartPathways)
+    }
+
 
 
     this.setState({
@@ -671,8 +683,12 @@ export default class GeneSetEditor extends PureComponent {
 GeneSetEditor.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
   customGeneSetName: PropTypes.any,
+  getAvailableCustomGeneSets: PropTypes.any.isRequired,
+  getCustomGeneSet: PropTypes.any.isRequired,
+  isCustomGeneSet: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
+  removeCustomGeneSet: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
   storeCustomGeneSets: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
