@@ -707,10 +707,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     // this.setActiveGeneSets(newCustomGeneSets)
   }
-  storeAndViewCustomGeneSet = (name,geneSet) => {
-    this.storeCustomGeneSet(name,geneSet)
-    this.setActiveGeneSets(geneSet)
-  }
 
   storeCustomGeneSet = (name,geneSet) => {
     // this.state.customGeneSets[name] = geneSet

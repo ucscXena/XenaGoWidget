@@ -51,7 +51,8 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<div className={BaseStyle.editGeneSetSearch}>Find</div>*/}
                     <button
                       className={BaseStyle.refreshButton}
-                      onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,
+                      onClick={() => this.props.onChangeGeneSetLimit(
+                        this.state.geneSetLimit,
                         this.state.sortGeneSetBy,
                         this.state.selectedGeneSets
                       )
