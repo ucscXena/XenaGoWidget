@@ -38,10 +38,14 @@ export class LegendBox extends PureComponent {
               {/*Gene Set Editor / Selector controls*/}
               { isViewGeneExpression(this.props.view) &&
               <OpenGeneSetRow
-                customGeneSets={this.props.customGeneSets}
+                customGeneSets={this.props.customGeneSets[this.props.view]}
                 geneSetLimit={this.props.geneSetLimit}
+                isCustomGeneSet={this.props.isCustomGeneSet}
                 onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
                 onGeneEdit={this.props.handleGeneEdit}
+                selectedGeneSets={this.props.selectedGeneSets}
+                setActiveGeneSets={this.props.setActiveGeneSets}
+                setGeneSetsOption={this.props.setGeneSetsOption}
                 sortGeneSetBy={this.props.sortGeneSetBy}
               />
               }
@@ -92,10 +96,14 @@ LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
+  isCustomGeneSet: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
+  selectedGeneSets: PropTypes.any,
+  setActiveGeneSets: PropTypes.any.isRequired,
+  setGeneSetsOption: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,

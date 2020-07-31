@@ -101,7 +101,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
 
-
     this.state = {
       associatedData: [],
       selectedCohort: cohorts,
@@ -115,7 +114,8 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
-      customGeneSets: {},
+      selectedGeneSets: urlVariables.selectedGeneSets,
+      customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
 
@@ -156,6 +156,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].selectedSubCohorts,
       this.state.geneSetLimit,
       this.state.sortViewByLabel,
+      this.state.selectedGeneSets,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
@@ -577,11 +578,17 @@ export default class XenaGeneSetApp extends PureComponent {
       fetch: true,
       reloadPathways: this.state.automaticallyReloadPathways,
       showCohortEditor: false,
+      selectedGeneSets: newView!== this.state.filter?  undefined : this.state.selectedGeneSets
     })
   };
 
+  setGeneSetOption = (selectedGeneSets) => {
+    this.setState({
+      selectedGeneSets,
+    })
+  }
 
-  setActiveGeneSets = (newPathways) => {
+  setActiveGeneSets = (newPathways,selectedGeneSets) => {
     AppStorageHandler.storePathways(newPathways)
 
     const defaultPathway = update( newPathways[0],{
@@ -596,9 +603,20 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySelection[0] :
         defaultPathway,
     }
+    //
+    // console.log('filter order',this.state.filterBy,this.state.filterOrder,scorePathway(newPathways[0],this.state.filterBy))
+    // const sortedPathways = newPathways.sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
+    //   1 :
+    //   -1) * (scorePathway(a, this.state.sortViewBy) -
+    //   scorePathway(b, this.state.sortViewBy)))
+    //
+    // console.log('new pathways',newPathways)
+    // console.log('sorted pathways',sortedPathways,sortedPathways.map( s =>  s.firstGeneExpressionPathwayActivity - s.secondGeneExpressionPathwayActivity))
+
     this.setState({
       pathwaySelection,
       showGeneSetSearch: false,
+      selectedGeneSets,
       pathways: newPathways,
       fetch: true,
       reloadPathways: false,
@@ -649,7 +667,14 @@ export default class XenaGeneSetApp extends PureComponent {
         1 :
         -1) * (scorePathway(a, this.state.filterBy) -
         scorePathway(b, this.state.filterBy))).
-      slice(0, this.state.geneSetLimit).
+      filter( (c) => {
+        if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
+          const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+          return currentGeneSets.indexOf(c.golabel)>=0
+        }
+        return true
+      })
+      .slice(0, this.state.geneSetLimit).
       sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
         1 :
         -1) * (scorePathway(a, this.state.sortViewBy) -
@@ -658,10 +683,11 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
-  handleGeneSetLimit = (limit,method) => {
+  handleGeneSetLimit = (limit,method,geneSet) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
     this.setState({
+      selectedGenSet: geneSet,
       reloadPathways: true,
       geneSetLimit: limit,
       sortViewByLabel: method,
@@ -673,28 +699,44 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
-  getAvailableCustomGeneSets(){
-    return Object.keys(this.state.customGeneSets)
+  getAvailableCustomGeneSets = () => {
+    return Object.keys(this.state.customGeneSets[this.state.filter])
   }
 
-  getCustomGeneSet(name){
-    return this.state.customGeneSets[name]
+  getCustomGeneSet = (name) => {
+    return this.state.customGeneSets[this.state.filter][name]
   }
 
-  storeCustomGeneSet(name,geneSet){
-    // this.state.customGeneSets[name] = geneSet
-    const newCustomGeneSets = update(this.state.customGeneSets,{
-      [name]: { $set:geneSet}
+  removeCustomGeneSet = (name) => {
+    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
+    delete customGeneSets[this.state.filter][name]
+    // const newCustomGeneSets = update(this.state.customGeneSets[this.state.filter],{
+    //   $unset: [name]
+    // })
+    const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
+    this.setState({
+      customGeneSets: newCustomGeneSets,
+      showGeneSetSearch: false,
     })
+
+    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
+  }
+
+  storeCustomGeneSet = (name,geneSet) => {
+    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
+    customGeneSets[this.state.filter][name] = geneSet
+    // const newCustomGeneSets = update(this.state.customGeneSets,{
+    //   [this.state.view]:{[name]: { $set:geneSet}}
+    // })
+    const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
     this.setState({
       customGeneSets: newCustomGeneSets
     })
-
-    this.setActiveGeneSets(geneSet)
+    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
   }
 
-  isCustomGeneSet(name){
-    return (this.state.customGeneSets[name]!==undefined)
+  isCustomGeneSet = (name) => {
+    return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
 
 
@@ -717,6 +759,7 @@ export default class XenaGeneSetApp extends PureComponent {
       } else {
         // if its not gene expression just use the canned data
         if (!isViewGeneExpression(this.state.filter)) {
+          // this.getCustomGeneSet(this.state.selectedGeneSets)
           pathways = getGeneSetsForView(this.state.filter)
         }
 
@@ -753,10 +796,14 @@ export default class XenaGeneSetApp extends PureComponent {
           geneData={this.state.geneData}
           geneSetLimit={this.state.geneSetLimit}
           handleGeneEdit={this.showConfiguration}
+          isCustomGeneSet={this.isCustomGeneSet}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
           onChangeGeneSetLimit={this.handleGeneSetLimit}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
+          selectedGeneSets={this.state.selectedGeneSets}
+          setActiveGeneSets={this.setActiveGeneSets}
+          setGeneSetsOption={this.setGeneSetOption}
           showDiffLabel={this.state.showDiffLabel}
           sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}
@@ -809,7 +856,7 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 9
-            const y = ev.clientY + 305 - topClient
+            const y = ev.clientY + 325 - topClient
             // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
             if ( x >= 265 && x <= 853 ) {
               this.setState({mousing: true, x, y})
@@ -874,8 +921,12 @@ export default class XenaGeneSetApp extends PureComponent {
               cancelPathwayEdit={() => this.setState(
                 {showGeneSetSearch: false})}
               customGeneSetName={this.state.selectedGeneSet}
+              getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
+              getCustomGeneSet={this.getCustomGeneSet}
+              isCustomGeneSet={this.isCustomGeneSet}
               pathwayData={this.state.pathwayData}
               pathways={this.state.pathways}
+              removeCustomGeneSet={this.removeCustomGeneSet}
               setPathways={this.setActiveGeneSets}
               storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
