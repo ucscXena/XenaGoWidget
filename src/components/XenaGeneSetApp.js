@@ -704,7 +704,7 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setActiveGeneSets(geneSet)
   }
 
-  isCustomGeneSet(name){
+  isCustomGeneSet = (name) => {
     return (this.state.customGeneSets[name]!==undefined)
   }
 
@@ -764,10 +764,12 @@ export default class XenaGeneSetApp extends PureComponent {
           geneData={this.state.geneData}
           geneSetLimit={this.state.geneSetLimit}
           handleGeneEdit={this.showConfiguration}
+          isCustomGeneSet={this.isCustomGeneSet}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
           onChangeGeneSetLimit={this.handleGeneSetLimit}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
+          setActiveGeneSets={this.setActiveGeneSets}
           showDiffLabel={this.state.showDiffLabel}
           sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}

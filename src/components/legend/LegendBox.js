@@ -40,8 +40,10 @@ export class LegendBox extends PureComponent {
               <OpenGeneSetRow
                 customGeneSets={this.props.customGeneSets}
                 geneSetLimit={this.props.geneSetLimit}
+                isCustomGeneSet={this.props.isCustomGeneSet}
                 onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
                 onGeneEdit={this.props.handleGeneEdit}
+                setActiveGeneSets={this.props.setActiveGeneSets}
                 sortGeneSetBy={this.props.sortGeneSetBy}
               />
               }
@@ -92,10 +94,12 @@ LegendBox.propTypes = {
   geneData: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
+  isCustomGeneSet: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
+  setActiveGeneSets: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
