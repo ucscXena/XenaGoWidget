@@ -38,7 +38,7 @@ export class LegendBox extends PureComponent {
               {/*Gene Set Editor / Selector controls*/}
               { isViewGeneExpression(this.props.view) &&
               <OpenGeneSetRow
-                customGeneSets={this.props.customGeneSets}
+                customGeneSets={this.props.customGeneSets[this.props.view]}
                 geneSetLimit={this.props.geneSetLimit}
                 isCustomGeneSet={this.props.isCustomGeneSet}
                 onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}

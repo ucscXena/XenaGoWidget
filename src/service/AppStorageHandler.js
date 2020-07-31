@@ -81,7 +81,9 @@ export class AppStorageHandler {
 
   static getCustomPathways() {
     const storage = sessionStorage.getItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
-    return storage ? JSON.parse(storage) : {}
+    let DEFAULT_PATHWAYS = {}
+    Object.values(VIEW_ENUM).forEach( v => DEFAULT_PATHWAYS[v] = {} )
+    return storage ? JSON.parse(storage) : DEFAULT_PATHWAYS
   }
 
   static storeCustomPathways(pathways) {

@@ -700,43 +700,43 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getAvailableCustomGeneSets = () => {
-    return Object.keys(this.state.customGeneSets)
+    return Object.keys(this.state.customGeneSets[this.state.filter])
   }
 
   getCustomGeneSet = (name) => {
-    return this.state.customGeneSets[name]
+    return this.state.customGeneSets[this.state.filter][name]
   }
 
   removeCustomGeneSet = (name) => {
-    const newCustomGeneSets = update(this.state.customGeneSets,{
-      $unset: [name]
-    })
+    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
+    delete customGeneSets[this.state.filter][name]
+    // const newCustomGeneSets = update(this.state.customGeneSets[this.state.filter],{
+    //   $unset: [name]
+    // })
+    const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
     this.setState({
       customGeneSets: newCustomGeneSets,
       showGeneSetSearch: false,
     })
 
     AppStorageHandler.storeCustomPathways(newCustomGeneSets)
-    // this.setActiveGeneSets(newCustomGeneSets)
   }
 
   storeCustomGeneSet = (name,geneSet) => {
-    // this.state.customGeneSets[name] = geneSet
-    const newCustomGeneSets = update(this.state.customGeneSets,{
-      [name]: { $set:geneSet}
-    })
+    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
+    customGeneSets[this.state.filter][name] = geneSet
+    // const newCustomGeneSets = update(this.state.customGeneSets,{
+    //   [this.state.view]:{[name]: { $set:geneSet}}
+    // })
+    const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
     this.setState({
       customGeneSets: newCustomGeneSets
     })
     AppStorageHandler.storeCustomPathways(newCustomGeneSets)
   }
 
-  renameCustomGeneSet = (name) => {
-    return (this.state.customGeneSets[name]!==undefined)
-  }
-
   isCustomGeneSet = (name) => {
-    return (this.state.customGeneSets[name]!==undefined)
+    return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
 
 
