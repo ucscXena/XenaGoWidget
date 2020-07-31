@@ -114,7 +114,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
-      selectedGeneSet: undefined,
+      selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
@@ -156,6 +156,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.selectedCohort[1].selectedSubCohorts,
       this.state.geneSetLimit,
       this.state.sortViewByLabel,
+      this.state.selectedGeneSets,
     )
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
