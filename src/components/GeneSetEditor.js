@@ -457,7 +457,11 @@ export default class GeneSetEditor extends PureComponent {
                   disabled={false}
                   floating
                   mini
-                  onClick={() => alert(`remove gene set ${this.state.customGeneSetName}`)}
+                  onClick={() => {
+                    if(confirm(`Remove gene sets ${this.state.customGeneSetName}`)){
+                      this.props.removeCustomGeneSet(this.state.customGeneSetName)
+                    }
+                  }}
                   raised
                   style={{marginLeft: 20}}
                 >
