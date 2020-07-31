@@ -45,9 +45,7 @@ export class OpenGeneSetRow extends PureComponent {
                       className={BaseStyle.refreshButton}
                       onClick={() => this.props.onChangeGeneSetLimit(this.state.geneSetLimit,this.state.sortGeneSetBy)}>
                       Find <FaSearch/>
-                      {/*<FaSearch/>*/}
                     </button>
-                    {/*<div className={BaseStyle.editGeneSetSearch}>Find</div>*/}
                     <div className={BaseStyle.editGeneSetSearch}>the</div>
                     <input
                       className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
