@@ -602,6 +602,15 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySelection[0] :
         defaultPathway,
     }
+    //
+    // console.log('filter order',this.state.filterBy,this.state.filterOrder,scorePathway(newPathways[0],this.state.filterBy))
+    // const sortedPathways = newPathways.sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
+    //   1 :
+    //   -1) * (scorePathway(a, this.state.sortViewBy) -
+    //   scorePathway(b, this.state.sortViewBy)))
+    //
+    // console.log('new pathways',newPathways)
+    // console.log('sorted pathways',sortedPathways,sortedPathways.map( s =>  s.firstGeneExpressionPathwayActivity - s.secondGeneExpressionPathwayActivity))
 
     this.setState({
       pathwaySelection,

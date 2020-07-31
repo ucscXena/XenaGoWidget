@@ -48,7 +48,6 @@ export default class GeneSetEditor extends PureComponent {
       sortCartOrder:sortingOptions.sortViewOrder,
       sortCartOrderLabel:SORT_VIEW_BY.DIFFERENT,
       sortCartBy: sortingOptions.sortViewBy,
-      geneSet: '8K',
       newGene: [],
       geneOptions: [],
       loadedPathways,
@@ -93,9 +92,6 @@ export default class GeneSetEditor extends PureComponent {
       this.sortVisibleCartByLabel(this.state.sortCartOrderLabel)
       // this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
     }
-
-    // if(prevState.sortCartOrder !== this.state.sortCartOrder){
-    // }
   }
 
   showScore(){
@@ -210,10 +206,9 @@ export default class GeneSetEditor extends PureComponent {
       console.warn(alreadyExists.map( f => f.golabel).join(' ')+ ' already in cart' )
     }
 
-    const selectedCartData = update(this.state.cartPathways, {
+    return update(this.state.cartPathways, {
       $push: selectedFilteredPathways
     })
-    return selectedCartData
   }
 
   handleAddSelectedToCart() {
@@ -238,13 +233,13 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
-  handleRefreshView() {
-    const newCart = this.state.filteredPathways.slice(0,this.state.cartPathwayLimit)
-    this.setState({
-      cartPathways: newCart,
-      filteredCartPathways: this.getFilteredCart(newCart,this.state.sortCartBy,this.state.sortCartOrder)
-    })
-  }
+  // handleRefreshView() {
+  //   const newCart = this.state.filteredPathways.slice(0,this.state.cartPathwayLimit)
+  //   this.setState({
+  //     cartPathways: newCart,
+  //     filteredCartPathways: this.getFilteredCart(newCart,this.state.sortCartBy,this.state.sortCartOrder)
+  //   })
+  // }
 
   handleNewGeneSet() {
     const newGeneSet = {
