@@ -101,7 +101,14 @@ export function calculateSelectedSubCohortSamples(availableSamples, cohort){
   }
 }
 
-export const getGeneSetsForView = (view) => {
+export const getGeneSetsForView = (view,selectedGeneSets) => {
+
+  console.log('got gene sets for view',selectedGeneSets)
+
+  if(selectedGeneSets){
+    return selectedGeneSets
+  }
+
   switch (view) {
   case VIEW_ENUM.PARADIGM:
     return ParadigmPathways
