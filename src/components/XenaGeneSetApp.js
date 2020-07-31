@@ -588,7 +588,6 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   setActiveGeneSets = (newPathways,selectedGeneSets) => {
-    console.log('setting new paths',newPathways,selectedGeneSets)
     AppStorageHandler.storePathways(newPathways)
 
     const defaultPathway = update( newPathways[0],{
@@ -603,7 +602,6 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySelection[0] :
         defaultPathway,
     }
-
 
     this.setState({
       pathwaySelection,
@@ -678,9 +676,6 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetLimit = (limit,method,geneSet) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
-    console.log('limit',limit)
-    console.log('method',method)
-    console.log('geneSet',geneSet)
     this.setState({
       selectedGenSet: geneSet,
       reloadPathways: true,
@@ -703,7 +698,6 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   removeCustomGeneSet = (name) => {
-    console.log('removing gene set input name',name,this.state.customGeneSets)
     const newCustomGeneSets = update(this.state.customGeneSets,{
       $unset: [name]
     })
@@ -718,7 +712,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
   storeCustomGeneSet = (name,geneSet) => {
     // this.state.customGeneSets[name] = geneSet
-    console.log('storing gene set input name',name,geneSet,this.state.customGeneSets)
     const newCustomGeneSets = update(this.state.customGeneSets,{
       [name]: { $set:geneSet}
     })
