@@ -346,6 +346,9 @@ export default class GeneSetEditor extends PureComponent {
       if(genesetToShow){
         this.props.setPathways(selectedCartData,genesetToShow)
       }
+      else{
+        this.props.cancelPathwayEdit()
+      }
       // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
     else{
@@ -661,8 +664,8 @@ export default class GeneSetEditor extends PureComponent {
             }
             {!this.state.editGeneSet &&
             <tr>
-              <td colSpan={2}/>
-              <td colSpan={1}>
+              {/*<td colSpan={1}/>*/}
+              <td colSpan={3}>
                 <div style={{marginTop: 10}}>
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
@@ -672,7 +675,7 @@ export default class GeneSetEditor extends PureComponent {
                   />
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
-                    label='Save' mini
+                    label='Save Only and Close' mini
                     onClick={() => this.handleViewGeneSets()}
                     raised
                   />
