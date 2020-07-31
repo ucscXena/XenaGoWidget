@@ -115,6 +115,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      selectedGeneSet: undefined,
       customGeneSets: {},
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
@@ -658,10 +659,14 @@ export default class XenaGeneSetApp extends PureComponent {
       this.state.filter, this.handleCombinedCohortData)
   };
 
-  handleGeneSetLimit = (limit,method) => {
+  handleGeneSetLimit = (limit,method,geneSet) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
+    console.log('limit',limit)
+    console.log('method',method)
+    console.log('geneSet',geneSet)
     this.setState({
+      selectedGenSet: geneSet,
       reloadPathways: true,
       geneSetLimit: limit,
       sortViewByLabel: method,
@@ -831,7 +836,7 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 9
-            const y = ev.clientY + 305 - topClient
+            const y = ev.clientY + 325 - topClient
             // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
             if ( x >= 265 && x <= 853 ) {
               this.setState({mousing: true, x, y})
