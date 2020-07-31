@@ -101,7 +101,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
 
-
     this.state = {
       associatedData: [],
       selectedCohort: cohorts,
@@ -116,7 +115,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       selectedGeneSet: undefined,
-      customGeneSets: {},
+      customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
 
@@ -705,6 +704,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showGeneSetSearch: false,
     })
 
+    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
     // this.setActiveGeneSets(newCustomGeneSets)
   }
 
@@ -717,6 +717,7 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       customGeneSets: newCustomGeneSets
     })
+    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
   }
 
   renameCustomGeneSet = (name) => {

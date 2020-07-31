@@ -8,6 +8,7 @@ import {exception} from 'react-ga'
 // synchronizing gene sorts between pathways
 const LOCAL_APP_STORAGE = 'xena-app-storage'
 const LOCAL_STATE_STORAGE = 'xena-selection-storage'
+const LOCAL_CUSTOM_PATHWAYS_STORAGE = 'xena-custom-pathways-storage'
 const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways'
 const LOCAL_SUBCOHORT_STORAGE = 'default-subcohort-storage'
 
@@ -69,12 +70,22 @@ export class AppStorageHandler {
     sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE)
     sessionStorage.removeItem(LOCAL_STATE_STORAGE)
     sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE)
+    sessionStorage.removeItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
   }
 
   static storePathways(pathways) {
     if (pathways) {
       sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways))
     }
+  }
+
+  static getCustomPathways() {
+    const storage = sessionStorage.getItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
+    return storage ? JSON.parse(storage) : {}
+  }
+
+  static storeCustomPathways(pathways) {
+    sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
   }
 
   static getPathways() {
@@ -168,7 +179,7 @@ export class AppStorageHandler {
       && cohortState.genomeBackgroundCopyNumber
       && cohortState.geneExpression
       && cohortState.geneExpressionPathwayActivity
-    
+
   }
 
   static isValidFilterState(filterState) {
@@ -180,14 +191,14 @@ export class AppStorageHandler {
     case VIEW_ENUM.REGULON:
       return true
     }
-    return false 
+    return false
   }
 
   static storeFilterState(selected) {
     if (!selected) return
     const appState = AppStorageHandler.getAppState()
     if (!appState.filterState) {
-      appState.filterState = undefined 
+      appState.filterState = undefined
     }
     // TODO: remove this hack
     appState.filterState = selected
