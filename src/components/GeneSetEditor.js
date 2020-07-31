@@ -668,13 +668,13 @@ export default class GeneSetEditor extends PureComponent {
               <td colSpan={3}>
                 <div style={{marginTop: 10}}>
                   <Button
-                    disabled={this.state.editGeneSet !== undefined}
+                    disabled={this.state.editGeneSet !== undefined || !this.state.customGeneSetName}
                     label='Save and View' mini
                     onClick={() => this.handleViewGeneSets(this.state.customGeneSetName)}
                     primary raised
                   />
                   <Button
-                    disabled={this.state.editGeneSet !== undefined}
+                    disabled={this.state.editGeneSet !== undefined || !this.state.customGeneSetName}
                     label='Save Only and Close' mini
                     onClick={() => this.handleViewGeneSets()}
                     raised
