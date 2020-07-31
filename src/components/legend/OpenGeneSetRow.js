@@ -20,21 +20,6 @@ export class OpenGeneSetRow extends PureComponent {
     }
   }
 
-  // handleGeneSetOption(value){
-  //
-  //   // this.setState({
-  //   //   selectedGeneSets: value
-  //   // })
-  // }
-
-  // componentDidUpdate(prevProps) {
-  // if(prevProps.selectedGeneSets!==this.props.selectedGeneSets){
-  //   this.setState({
-  //     selectedGeneSets: this.props.selectedGeneSets
-  //   })
-  // }
-  // }
-
   render() {
 
     return (
@@ -89,29 +74,19 @@ export class OpenGeneSetRow extends PureComponent {
                       value={this.props.selectedGeneSets}
                     >
                       <option>Default Gene Sets</option>
-                      {/*<option>BP Gene Set</option>*/}
-                      {/*<option>MF Gene Set</option>*/}
-                      {/*<option>CC Gene Set</option>*/}
                       <option>----Custom Gene Sets----</option>
                       {
                         Object.keys(this.props.customGeneSets).map( gs => {
                           return <option key={gs}>{gs}</option>
                         })
                       }
-                      {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 1</option>*/}
-                      {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 2</option>*/}
-                      {/*<option>&nbsp;&nbsp;&nbsp;Custom Gene Set 3</option>*/}
                     </select>
-                    {/*</td>*/}
-                    {/*<td>*/}
                     <button
                       className={BaseStyle.editGeneSets}
                       onClick={() =>this.props.onGeneEdit()}
                     >
                       <FaPlus style={{fontSize: 'small'}}/>
                     </button>
-                    {/*</td>*/}
-                    {/*<td>*/}
                     <button
                       className={BaseStyle.editGeneSets}
                       disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
