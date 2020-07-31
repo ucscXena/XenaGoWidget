@@ -64,7 +64,7 @@ export default class GeneSetEditor extends PureComponent {
       limit: VIEW_LIMIT,
       newGeneStateName:'',
       showLoading:true,
-      customGeneSetName: this.props.customGeneSetName,
+      customGeneSetName: this.props.customGeneSetName || '',
     }
   }
 
@@ -338,12 +338,13 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
-  handleViewGeneSets(doView) {
+  handleViewGeneSets(genesetToShow) {
+    console.log('viewing ',genesetToShow)
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
       this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
-      if(doView){
-        this.props.setPathways(selectedCartData)
+      if(genesetToShow){
+        this.props.setPathways(selectedCartData,genesetToShow)
       }
       // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
@@ -444,9 +445,9 @@ export default class GeneSetEditor extends PureComponent {
               <td colSpan={3}>
                 Custom Gene Set Name:
                 <input
-                  onChange={(input) => {
+                  onChange={(input) =>
                     this.setState({customGeneSetName:input.target.value})
-                  }}
+                  }
                   placeholder={'Custom Gene Set Name'}
                   size={50}
                   style={{marginBottom: 10}}
@@ -666,7 +667,7 @@ export default class GeneSetEditor extends PureComponent {
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
                     label='Save and View' mini
-                    onClick={() => this.handleViewGeneSets(true)}
+                    onClick={() => this.handleViewGeneSets(this.state.customGeneSetName)}
                     primary raised
                   />
                   <Button

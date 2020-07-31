@@ -581,8 +581,14 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   };
 
+  setGeneSetOption = (selectedGeneSets) => {
+    this.setState({
+      selectedGeneSets,
+    })
+  }
 
-  setActiveGeneSets = (newPathways) => {
+  setActiveGeneSets = (newPathways,selectedGeneSets) => {
+    console.log('setting new paths',newPathways,selectedGeneSets)
     AppStorageHandler.storePathways(newPathways)
 
     const defaultPathway = update( newPathways[0],{
@@ -597,9 +603,12 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySelection[0] :
         defaultPathway,
     }
+
+
     this.setState({
       pathwaySelection,
       showGeneSetSearch: false,
+      selectedGeneSets,
       pathways: newPathways,
       fetch: true,
       reloadPathways: false,
@@ -783,7 +792,9 @@ export default class XenaGeneSetApp extends PureComponent {
           maxValue={maxValue}
           onChangeGeneSetLimit={this.handleGeneSetLimit}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
+          selectedGeneSets={this.state.selectedGeneSets}
           setActiveGeneSets={this.setActiveGeneSets}
+          setGeneSetsOption={this.setGeneSetOption}
           showDiffLabel={this.state.showDiffLabel}
           sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}

@@ -17,19 +17,27 @@ export class OpenGeneSetRow extends PureComponent {
       geneSetLimit : props.geneSetLimit,
       sortGeneSetBy : props.sortGeneSetBy,
       sortGeneSetByLabel: props.sortGeneSetBy+ ' Gene Sets',
-      selectedGeneSets: props.selectedGeneSets,
     }
   }
 
-  handleGeneSetOption(value){
-    this.setState({
-      selectedGeneSets: value
-    })
-  }
+  // handleGeneSetOption(value){
+  //
+  //   // this.setState({
+  //   //   selectedGeneSets: value
+  //   // })
+  // }
+
+  // componentDidUpdate(prevProps) {
+  // if(prevProps.selectedGeneSets!==this.props.selectedGeneSets){
+  //   this.setState({
+  //     selectedGeneSets: this.props.selectedGeneSets
+  //   })
+  // }
+  // }
 
   render() {
 
-    console.log('input props',this.props,this.props.customGeneSets)
+    console.log('input props',this.props,this.props.customGeneSets,this.state.selectedGeneSets,this.props.selectedGeneSets)
 
     return (
       <tr className={BaseStyle.openGeneSetRow} >
@@ -78,8 +86,8 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<td>*/}
                     <select
                       className={BaseStyle.geneSetSelector}
-                      onChange={(event) => this.handleGeneSetOption(event.target.value)}
-                      value={this.state.selectedGeneSets}
+                      onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
+                      value={this.props.selectedGeneSets}
                     >
                       <option>Default Gene Sets</option>
                       {/*<option>BP Gene Set</option>*/}
@@ -107,8 +115,8 @@ export class OpenGeneSetRow extends PureComponent {
                     {/*<td>*/}
                     <button
                       className={BaseStyle.editGeneSets}
-                      disabled={!this.props.isCustomGeneSet(this.state.selectedGeneSets)}
-                      onClick={() =>this.props.onGeneEdit(this.state.selectedGeneSets.trim())}
+                      disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
+                      onClick={() =>this.props.onGeneEdit(this.props.selectedGeneSets.trim())}
                     >
                       <FaEdit style={{fontSize: 'small'}}/>
                     </button>
@@ -131,5 +139,6 @@ OpenGeneSetRow.propTypes = {
   onGeneEdit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,
   setActiveGeneSets: PropTypes.any.isRequired,
+  setGeneSetsOption: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
 }
