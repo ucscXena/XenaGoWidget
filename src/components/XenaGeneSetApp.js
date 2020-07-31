@@ -690,6 +690,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
     this.setActiveGeneSets(newCustomGeneSets)
   }
+  storeAndViewCustomGeneSet = (name,geneSet) => {
+    this.storeCustomGeneSet(name,geneSet)
+    this.setActiveGeneSets(geneSet)
+  }
 
   storeCustomGeneSet = (name,geneSet) => {
     // this.state.customGeneSets[name] = geneSet
@@ -700,8 +704,10 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       customGeneSets: newCustomGeneSets
     })
+  }
 
-    this.setActiveGeneSets(geneSet)
+  renameCustomGeneSet = (name) => {
+    return (this.state.customGeneSets[name]!==undefined)
   }
 
   isCustomGeneSet = (name) => {

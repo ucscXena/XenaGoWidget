@@ -338,11 +338,13 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
-  // TODO: push back to production pathways
-  handleViewGeneSets() {
+  handleViewGeneSets(doView) {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
       this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
+      if(doView){
+        this.props.setPathways(selectedCartData)
+      }
       // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
     else{
@@ -659,9 +661,15 @@ export default class GeneSetEditor extends PureComponent {
                 <div style={{marginTop: 10}}>
                   <Button
                     disabled={this.state.editGeneSet !== undefined}
-                    label='Save View' mini
-                    onClick={() => this.handleViewGeneSets()}
+                    label='Save and View' mini
+                    onClick={() => this.handleViewGeneSets(true)}
                     primary raised
+                  />
+                  <Button
+                    disabled={this.state.editGeneSet !== undefined}
+                    label='Save' mini
+                    onClick={() => this.handleViewGeneSets()}
+                    raised
                   />
                   <Button
                     label='Cancel' mini
