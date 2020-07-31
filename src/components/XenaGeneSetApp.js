@@ -757,7 +757,7 @@ export default class XenaGeneSetApp extends PureComponent {
         // if its not gene expression just use the canned data
         if (!isViewGeneExpression(this.state.filter)) {
           // this.getCustomGeneSet(this.state.selectedGeneSets)
-          pathways = getGeneSetsForView(this.state.filter,this.getCustomPathways(this.state.selectedGeneSets))
+          pathways = getGeneSetsForView(this.state.filter)
         }
 
         fetchCombinedCohorts(this.state.selectedCohort, pathways,
