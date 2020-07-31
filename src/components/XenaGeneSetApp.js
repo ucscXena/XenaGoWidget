@@ -578,6 +578,7 @@ export default class XenaGeneSetApp extends PureComponent {
       fetch: true,
       reloadPathways: this.state.automaticallyReloadPathways,
       showCohortEditor: false,
+      selectedGeneSets: newView!== this.state.filter?  undefined : this.state.selectedGeneSets
     })
   };
 
