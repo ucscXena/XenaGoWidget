@@ -14,7 +14,7 @@ export function generateXenaLink(props){
   if(samples.length < 100 ){
     samplesJson.searchSampleList= samples
     if(props.cohort[0].name===props.cohort[1].name){
-      samplesJson.filter = 'A:'+props.pathwayData[0].samples.join(' OR A:')+props.pathwayData[1].samples.join(' OR A:')
+      samplesJson.filter = 'A:'+props.pathwayData[0].samples.join(' OR A:')+' OR A: '+props.pathwayData[1].samples.join(' OR A:')
     }
   }
 
