@@ -14,6 +14,16 @@ import {OpenGeneSetRow} from './OpenGeneSetRow'
 
 export class LegendBox extends PureComponent {
 
+  shouldComponentUpdate(nextProps) {
+    return nextProps.view !== this.props.view
+      || nextProps.customGeneSets !== this.props.customGeneSets
+      || nextProps.selectedGeneSets !== this.props.selectedGeneSets
+      || nextProps.geneSetLimit !== this.props.geneSetLimit
+      || nextProps.maxValue !== this.props.maxValue
+      || nextProps.maxGeneData !== this.props.maxGeneData
+      || nextProps.showDiffLabel !== this.props.showDiffLabel
+  }
+
   render() {
     const {view,maxValue,geneData,maxGeneData,showDiffLabel } = this.props
     if (geneData) {
@@ -26,12 +36,7 @@ export class LegendBox extends PureComponent {
           zIndex: 8,
           marginTop: HEADER_HEIGHT,
           marginLeft: 250,
-          // border:2,
-          // borderRadius: 15,
-          // borderStyle:'solid',
-          // borderColor: 'black',
           width: 182 + 182 + 222 +30
-          // width: '100%'
         }}>
           <table>
             <tbody>

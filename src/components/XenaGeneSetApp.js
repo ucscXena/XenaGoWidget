@@ -681,21 +681,32 @@ export default class XenaGeneSetApp extends PureComponent {
         scorePathway(b, this.state.sortViewBy)))
     fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
       this.state.filter, this.handleCombinedCohortData)
-  };
+  }
 
-  handleGeneSetLimit = (limit,method,geneSet) => {
+  searchGeneSet = (geneSet,geneSetName) => {
+
+    this.setState({
+      selectedGeneSets: geneSetName,
+      showGeneSetSearch: false,
+      reloadPathways: true,
+      fetch: true,
+    })
+  }
+
+
+  handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
     this.setState({
       selectedGenSet: geneSet,
-      reloadPathways: true,
+      reloadPathways: doSearch,
       geneSetLimit: limit,
       sortViewByLabel: method,
       sortViewBy,
       sortViewOrder,
       filterBy,
       filterOrder,
-      fetch: true,
+      fetch: doSearch,
     })
   }
 
@@ -927,7 +938,7 @@ export default class XenaGeneSetApp extends PureComponent {
               pathwayData={this.state.pathwayData}
               pathways={this.state.pathways}
               removeCustomGeneSet={this.removeCustomGeneSet}
-              setPathways={this.setActiveGeneSets}
+              setPathways={this.searchGeneSet}
               storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
             />
