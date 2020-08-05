@@ -39,24 +39,30 @@ export class OpenGeneSetRow extends PureComponent {
                       onClick={() => this.props.onChangeGeneSetLimit(
                         this.state.geneSetLimit,
                         this.state.sortGeneSetBy,
-                        this.state.selectedGeneSets
+                        this.state.selectedGeneSets,
+                        true,
                       )
                       }>
                       Find <FaSearch/>
                     </button>
                     <div className={BaseStyle.editGeneSetSearch}>the</div>
                     <input
-                      className={BaseStyle.editGeneSetLimits} onChange={(limit) => this.setState({geneSetLimit: limit.target.value})}
+                      className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
+                        this.setState({geneSetLimit: limit.target.value})
+                        this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.state.selectedGeneSets)
+                      }}
                       size={3} type='text'
                       value={this.state.geneSetLimit}/>
                     <div className={BaseStyle.editGeneSetSearch}>most</div>
                     <select
                       className={BaseStyle.editGeneSetOrder}
                       onChange={(method) => {
+                        const sortBy = method.target.options[method.target.options.selectedIndex].getAttribute('data-key')
                         this.setState({
-                          sortGeneSetBy: method.target.options[method.target.options.selectedIndex].getAttribute('data-key'),
+                          sortGeneSetBy: sortBy,
                           sortGeneSetByLabel: method.target.value
                         })
+                        this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.state.selectedGeneSets)
                       }}
                       value={this.state.sortGeneSetByLabel}
                     >
