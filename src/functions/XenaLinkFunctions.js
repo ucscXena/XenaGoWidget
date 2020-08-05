@@ -118,7 +118,13 @@ export function generateXenaLink(props){
     const mutationDataSet= cohort.mutationDataSetId
     const mutationHost = cohort.host
     if(props.open){
-      linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${genes}","columnLabel":"Gene View","fieldLabel":"${genes.length} genes"}`
+      for(const geneIndex in genes){
+        const gene = genes[geneIndex]
+        linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${gene}","columnLabel":"Somatic Mutation","fieldLabel":"Gene ${gene}"}`
+        if(geneIndex < genes.length -1 && geneIndex < MAX_GENES-1 ){
+          linkString += ','
+        }
+      }
     }
     // show all gene sets
     else{
@@ -135,7 +141,13 @@ export function generateXenaLink(props){
     if(props.open){
       linkString += `{"name":"${cnvDataset}","host":"${cnvHost}","fields":"${genes}","columnLabel":"CNV","fieldLabel":"${genes.length} genes"}`
       linkString += ','
-      linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${genes}","columnLabel":"Somatic Mutation","fieldLabel":"${genes.length} genes"}`
+      for(const geneIndex in genes){
+        const gene = genes[geneIndex]
+        linkString += `{"name":"${mutationDataSet}","host":"${mutationHost}","fields":"${gene}","columnLabel":"Somatic Mutation","fieldLabel":"Gene ${gene}"}`
+        if(geneIndex < genes.length -1 && geneIndex < MAX_GENES-1 ){
+          linkString += ','
+        }
+      }
     }
     // show all gene sets
     else{
