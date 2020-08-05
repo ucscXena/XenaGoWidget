@@ -11,11 +11,11 @@ export function generateXenaLink(props){
   let samplesJson = {
     showWelcome: false,
   }
-  // eslint-disable-next-line no-unused-vars
-  const filterString  = 'A:'+samples.join(' OR A:')
   if(samples.length < 100 ){
     samplesJson.searchSampleList= samples
-    // samplesJson.filter = 'A:'+samples.join(' OR A:')
+    if(props.cohort[0].name===props.cohort[1].name){
+      samplesJson.filter = 'A:'+props.pathwayData[0].samples.join(' OR A:')+props.pathwayData[1].samples.join(' OR A:')
+    }
   }
 
   let genes = props.open ? props.geneDataStats[props.cohortIndex].pathways.map( p => p.gene[0]) : []
