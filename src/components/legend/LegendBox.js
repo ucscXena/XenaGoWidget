@@ -17,6 +17,7 @@ export class LegendBox extends PureComponent {
   render() {
     const {view,maxValue,geneData,maxGeneData,showDiffLabel } = this.props
     if (geneData) {
+      console.log('settingg selecte gene sets: ',this.props.selectedGeneSets)
       return (
 
         <div style={{

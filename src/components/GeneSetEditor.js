@@ -330,16 +330,16 @@ export default class GeneSetEditor extends PureComponent {
     })
   }
 
-  handleViewGeneSets(genesetToShow) {
+  handleViewGeneSets() {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
       this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
-      if(genesetToShow){
-        this.props.setPathways(selectedCartData,genesetToShow)
-      }
-      else{
-        this.props.cancelPathwayEdit()
-      }
+      // if(genesetToShow){
+      this.props.setPathways(selectedCartData,this.state.customGeneSetName)
+      // }
+      // else{
+      //   this.props.cancelPathwayEdit()
+      // }
       // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
     else{
