@@ -22,8 +22,6 @@ export class OpenGeneSetRow extends PureComponent {
 
   render() {
 
-    console.log('OGSR props',this.props.selectedGeneSets)
-
     return (
       <tr className={BaseStyle.openGeneSetRow} >
         <td colSpan={3} width={DETAIL_WIDTH+LABEL_WIDTH+DETAIL_WIDTH}>
