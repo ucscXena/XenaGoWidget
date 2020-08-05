@@ -90,18 +90,12 @@ export default class GeneSetEditor extends PureComponent {
     if(prevState.sortCartOrderLabel !== this.state.sortCartOrderLabel
     ){
       this.sortVisibleCartByLabel(this.state.sortCartOrderLabel)
-      // this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder,this.state.cartPathwayLimit)
     }
   }
 
   showScore(){
     return isViewGeneExpression(this.props.view)
   }
-
-
-  // redoFilter() {
-  //   this.sortVisibleCart(this.state.sortCartBy,this.state.sortCartOrder)
-  // }
 
   handleMeanActivityData = (output) => {
     const pathways = getGeneSetsForView(this.props.view)
@@ -130,7 +124,6 @@ export default class GeneSetEditor extends PureComponent {
     if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
       // TODO, may need to interset
       cartPathways = this.props.getCustomGeneSet(this.state.customGeneSetName)
-      // cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
     }
     else{
       cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
@@ -334,13 +327,7 @@ export default class GeneSetEditor extends PureComponent {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
       this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
-      // if(genesetToShow){
       this.props.setPathways(selectedCartData,this.state.customGeneSetName)
-      // }
-      // else{
-      //   this.props.cancelPathwayEdit()
-      // }
-      // this.props.setPathways(this.props.(this.state.customGeneSetName))
     }
     else{
       alert('You need to provide a name for the custom gene set view.')
@@ -470,10 +457,6 @@ export default class GeneSetEditor extends PureComponent {
                 <div style={{fontSize:'larger',fontWeight:'bolder',color: 'black'}}>Available Gene Sets from <br/>'{this.props.view}'</div>
                 <table className={BaseStyle.geneSetFilterBox}>
                   <tbody>
-                    {/*<tr>*/}
-                    {/*  <td>*/}
-                    {/*  </td>*/}
-                    {/*</tr>*/}
                     <tr>
                       <td>
                         <input
@@ -658,12 +641,6 @@ export default class GeneSetEditor extends PureComponent {
               {/*<td colSpan={1}/>*/}
               <td colSpan={3}>
                 <div style={{marginTop: 10}}>
-                  {/*<Button*/}
-                  {/*  disabled={this.state.editGeneSet !== undefined || !this.state.customGeneSetName}*/}
-                  {/*  label='Save and View' mini*/}
-                  {/*  onClick={() => this.handleViewGeneSets(this.state.customGeneSetName)}*/}
-                  {/*  primary raised*/}
-                  {/*/>*/}
                   <Button
                     disabled={this.state.editGeneSet !== undefined || !this.state.customGeneSetName}
                     label='Save' mini

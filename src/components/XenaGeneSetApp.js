@@ -685,63 +685,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
   searchGeneSet = (geneSet,geneSetName) => {
 
-    // AppStorageHandler.storePathways(newPathways)
-    //
-    // const defaultPathway = update( newPathways[0],{
-    //   open: {$set: false},
-    // })
-    // let pathwaySelection = newPathways.filter(
-    //   (p) => this.state.pathwaySelection.pathway.golabel === p.golabel)
-    //
-    // pathwaySelection = {
-    //   tissue: 'Header',
-    //   pathway: pathwaySelection.length > 0 ?
-    //     pathwaySelection[0] :
-    //     defaultPathway,
-    // }
-    //
-    // console.log('filter order',this.state.filterBy,this.state.filterOrder,scorePathway(newPathways[0],this.state.filterBy))
-    // const sortedPathways = newPathways.sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
-    //   1 :
-    //   -1) * (scorePathway(a, this.state.sortViewBy) -
-    //   scorePathway(b, this.state.sortViewBy)))
-    //
-    // console.log('new pathways',newPathways)
-    // console.log('sorted pathways',sortedPathways,sortedPathways.map( s =>  s.firstGeneExpressionPathwayActivity - s.secondGeneExpressionPathwayActivity))
-    //
-    // this.setState({
-    //   pathwaySelection,
-    //   showGeneSetSearch: false,
-    //   selectedGeneSets,
-    //   pathways: newPathways,
-    //   fetch: true,
-    //   reloadPathways: false,
-    // })
-    //
-
-
     this.setState({
       selectedGeneSets: geneSetName,
       showGeneSetSearch: false,
       reloadPathways: true,
       fetch: true,
     })
-
-    // currentLoadState= LOAD_STATE.LOADED
-    // // let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
-    // this.setState({
-    //   selectedGenSet: geneSet,
-    //   reloadPathways: true,
-    //   selectedGeneSets: geneSetName,
-    //   showGeneSetSearch: false,
-    //   // geneSetLimit: limit,
-    //   // sortViewByLabel: method,
-    //   // sortViewBy,
-    //   // sortViewOrder,
-    //   // filterBy,
-    //   // filterOrder,
-    //   fetch: true,
-    // })
   }
 
 
