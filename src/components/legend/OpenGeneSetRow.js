@@ -77,7 +77,7 @@ export class OpenGeneSetRow extends PureComponent {
                       value={this.props.selectedGeneSets}
                     >
                       <option>Default Gene Sets</option>
-                      <option>----Custom Gene Sets----</option>
+                      {/*<option>----Custom Gene Sets----</option>*/}
                       {
                         Object.keys(this.props.customGeneSets).map( gs => {
                           return <option key={gs}>{gs}</option>
