@@ -39,7 +39,6 @@ import {
   calculateGeneSet, calculateSorting,
   generateUrl,
 } from '../functions/UrlFunctions'
-import GeneSetEditor from './GeneSetEditor'
 import {SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
@@ -58,7 +57,6 @@ export const LEGEND_HEIGHT = 175
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
-const MAX_TITLE_LENGTH = 150
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -793,7 +791,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using '${this.state.filter}' ${fullTitleText}`
-    let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
+    // let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
@@ -852,14 +850,24 @@ export default class XenaGeneSetApp extends PureComponent {
           subCohortCounts={this.state.subCohortCounts}
           view={this.state.filter}
         />
-
-        <h2
+        <div
           className={BaseStyle.titleBox}
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
-          {headerText}
-        </h2>
+          <button type='button'>Visualization description</button>
+          <u>Analysis:</u>
+          <button title={fullHeaderText} type='button'>{this.state.filter}</button>
+          {/*{headerText}*/}
+        </div>
+
+        {/*<h2*/}
+        {/*  className={BaseStyle.titleBox}*/}
+        {/*  style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}*/}
+        {/*  title={fullHeaderText}*/}
+        {/*>*/}
+        {/*  {headerText}*/}
+        {/*</h2>*/}
 
         <div
           className="map_wrapper"
@@ -913,33 +921,6 @@ export default class XenaGeneSetApp extends PureComponent {
               onChangeView={this.handleChangeView}
               subCohortCounts={this.state.subCohortCounts}
               titleText={fullTitleText}
-              view={this.state.filter}
-            />
-          </Dialog>
-          }
-          {this.state.pathways && this.state.associatedData &&
-          <Dialog
-            active={this.state.showGeneSetSearch}
-            onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
-            onOverlayClick={() => this.setState({showGeneSetSearch: false})}
-            theme={{
-              dialog: BaseStyle.cohortEditorDialogBase,
-              wrapper: BaseStyle.cohortEditorDialogWrapperBase,
-            }}
-            title="Gene Set Editor"
-          >
-            <GeneSetEditor
-              cancelPathwayEdit={() => this.setState(
-                {showGeneSetSearch: false})}
-              customGeneSetName={this.state.selectedGeneSet}
-              getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
-              getCustomGeneSet={this.getCustomGeneSet}
-              isCustomGeneSet={this.isCustomGeneSet}
-              pathwayData={this.state.pathwayData}
-              pathways={this.state.pathways}
-              removeCustomGeneSet={this.removeCustomGeneSet}
-              setPathways={this.searchGeneSet}
-              storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
             />
           </Dialog>

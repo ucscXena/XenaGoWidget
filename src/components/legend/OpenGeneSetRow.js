@@ -3,10 +3,7 @@ import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
 import PropTypes from 'prop-types'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
-import {SORT_VIEW_BY} from '../../data/SortEnum'
-import FaSearch from 'react-icons/lib/fa/search'
-import FaEdit from 'react-icons/lib/fa/edit'
-import FaPlus from 'react-icons/lib/fa/plus'
+import GeneSetEditorComponent from '../GeneSetEditorComponent'
 
 
 export class OpenGeneSetRow extends PureComponent {
@@ -29,75 +26,9 @@ export class OpenGeneSetRow extends PureComponent {
             <tbody>
               <tr style={{height: 30}}>
                 <td style={{height: 30}}>
-                  <div className={BaseStyle.findNewGeneSets}
-                  >
-                    {/*<div className={BaseStyle.editGeneSetSearch}>Find</div>*/}
-                    <button
-                      className={BaseStyle.refreshButton}
-                      onClick={() => this.props.onChangeGeneSetLimit(
-                        this.state.geneSetLimit,
-                        this.state.sortGeneSetBy,
-                        this.state.selectedGeneSets,
-                        true,
-                      )
-                      }>
-                      Find <FaSearch/>
-                    </button>
-                    <div className={BaseStyle.editGeneSetSearch}>the</div>
-                    <input
-                      className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
-                        this.setState({geneSetLimit: limit.target.value})
-                        this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.state.selectedGeneSets)
-                      }}
-                      size={3} type='text'
-                      value={this.state.geneSetLimit}/>
-                    <div className={BaseStyle.editGeneSetSearch}>most</div>
-                    <select
-                      className={BaseStyle.editGeneSetOrder}
-                      onChange={(method) => {
-                        const sortBy = method.target.options[method.target.options.selectedIndex].getAttribute('data-key')
-                        this.setState({
-                          sortGeneSetBy: sortBy,
-                          sortGeneSetByLabel: method.target.value
-                        })
-                        this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.state.selectedGeneSets)
-                      }}
-                      value={this.state.sortGeneSetByLabel}
-                    >
-                      {
-                        Object.values(SORT_VIEW_BY).map( v =>
-                          (<option data-key={v} key={v}>{v} Gene Sets</option>)
-                        )
-                      }
-                    </select>
-                    <div className={BaseStyle.editGeneSetSearch}>in </div>
-                    <select
-                      className={BaseStyle.geneSetSelector}
-                      onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
-                      value={this.props.selectedGeneSets}
-                    >
-                      <option>Default Gene Sets</option>
-                      {/*<option>----Custom Gene Sets----</option>*/}
-                      {
-                        Object.keys(this.props.customGeneSets).map( gs => {
-                          return <option key={gs}>{gs}</option>
-                        })
-                      }
-                    </select>
-                    <button
-                      className={BaseStyle.editGeneSets}
-                      onClick={() =>this.props.onGeneEdit()}
-                    >
-                      <FaPlus style={{fontSize: 'small'}}/>
-                    </button>
-                    <button
-                      className={BaseStyle.editGeneSets}
-                      disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
-                      onClick={() =>this.props.onGeneEdit(this.props.selectedGeneSets.trim())}
-                    >
-                      <FaEdit style={{fontSize: 'small'}}/>
-                    </button>
-                  </div>
+                  <GeneSetEditorComponent
+                    {...this.props}
+                  />
                 </td>
               </tr>
             </tbody>
