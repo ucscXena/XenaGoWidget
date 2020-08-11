@@ -79,14 +79,14 @@ export default class GeneSetEditorComponent extends PureComponent {
         </select>
         <button
           className={BaseStyle.editGeneSets}
-          onClick={() =>this.props.onGeneEdit()}
+          onClick={() =>this.props.handleGeneEdit()}
         >
           <FaPlus style={{fontSize: 'small'}}/>
         </button>
         <button
           className={BaseStyle.editGeneSets}
           disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
-          onClick={() =>this.props.onGeneEdit(this.props.selectedGeneSets.trim())}
+          onClick={() =>this.props.handleGeneEdit(this.props.selectedGeneSets.trim())}
         >
           <FaEdit style={{fontSize: 'small'}}/>
         </button>
@@ -101,7 +101,7 @@ GeneSetEditorComponent.propTypes = {
   geneSetLimit: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
-  onGeneEdit: PropTypes.any.isRequired,
+  handleGeneEdit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,
   setGeneSetsOption: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
