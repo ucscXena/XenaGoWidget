@@ -4,10 +4,9 @@ import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
 import {Dialog} from 'react-toolbox/lib'
 import Link from 'react-toolbox/lib/link'
-import {Button} from 'react-toolbox'
 import FaEdit from 'react-icons/lib/fa/edit'
 
-const MAX_SUB_COHORTS = 6
+const MAX_SUB_COHORTS = 5
 
 
 export class GeneSetSubCohortBox extends PureComponent {
@@ -59,12 +58,17 @@ export class GeneSetSubCohortBox extends PureComponent {
             </ul>
           </div>
         </Dialog>
-        <div className={BaseStyle.samplesBox}>
-          {samplesLength} samples
-          <Button mini onClick={() => onEditCohorts()}>
-            <FaEdit/>
-          </Button>
+        <hr/>
+        <div>
+          <b>{samplesLength} samples</b>
+          <button
+            className={BaseStyle.editCohorts}
+            onClick={() => onEditCohorts()}
+          >
+            Edit <FaEdit/>
+          </button>
         </div>
+        <hr/>
         { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length <= MAX_SUB_COHORTS &&
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
