@@ -864,9 +864,9 @@ export default class XenaGeneSetApp extends PureComponent {
           <GeneSetEditorComponent
             customGeneSets={this.state.customGeneSets}
             geneSetLimit={this.state.geneSetLimit}
+            handleGeneEdit={this.showConfiguration}
             isCustomGeneSet={this.isCustomGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
-            handleGeneEdit={this.showConfiguration}
             selectedGeneSets={this.state.selectedGeneSets}
             setGeneSetsOption={this.setGeneSetOption}
             sortGeneSetBy={this.state.sortViewByLabel}

@@ -99,9 +99,9 @@ export default class GeneSetEditorComponent extends PureComponent {
 GeneSetEditorComponent.propTypes = {
   customGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
+  handleGeneEdit: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
-  handleGeneEdit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,
   setGeneSetsOption: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
