@@ -46,26 +46,6 @@ export class GeneSetInformationColumn extends PureComponent {
           }}
         >
 
-          {
-            (isViewGeneExpression(this.props.view)  ||
-            (!isViewGeneExpression(this.props.view) && this.props.open)) &&
-          <div className={BaseStyle.ssInfoBox}>
-            <a
-              className={BaseStyle.xenaLinkOut}
-              href={externalLink}
-              rel="noopener noreferrer"
-              target='_blank'
-              title={externalLink}>
-              <Avatar
-                image={XenaLogo}
-              />
-              <div style={{display: 'inline',margin: 2}}>
-                View in Xena
-              </div>
-              <FaExternalLink/>
-            </a>
-          </div>
-          }
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
@@ -76,6 +56,26 @@ export class GeneSetInformationColumn extends PureComponent {
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}
           />
+          }
+          {
+            (isViewGeneExpression(this.props.view)  ||
+              (!isViewGeneExpression(this.props.view) && this.props.open)) &&
+            <div className={BaseStyle.ssInfoBox}>
+              <a
+                className={BaseStyle.xenaLinkOut}
+                href={externalLink}
+                rel="noopener noreferrer"
+                target='_blank'
+                title={externalLink}>
+                <Avatar
+                  image={XenaLogo}
+                />
+                <div style={{display: 'inline',margin: 2}}>
+                  View in Xena
+                </div>
+                <FaExternalLink/>
+              </a>
+            </div>
           }
           {
             this.canShowHover() &&
