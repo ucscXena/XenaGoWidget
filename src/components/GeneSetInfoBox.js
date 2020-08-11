@@ -11,7 +11,7 @@ import {Button} from 'react-toolbox'
 const TooltipLink = Tooltip(Link)
 
 const MAGIC_LENGTH = 28
-const MAX_SUB_COHORTS = 5
+const MAX_SUB_COHORTS = 6
 
 
 export class GeneSetInfoBox extends PureComponent {

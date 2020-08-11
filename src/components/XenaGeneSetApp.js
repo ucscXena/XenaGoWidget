@@ -45,6 +45,9 @@ import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent from './GeneSetEditorComponent'
+import Tooltip from 'react-toolbox/lib/tooltip'
+import Link from 'react-toolbox/lib/link'
+const TooltipLink = Tooltip(Link)
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -856,7 +859,13 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
-          <button type='button'>Visualization description</button>
+          {/*<button type='button'>Visualization description</button>*/}
+          <TooltipLink
+            className={BaseStyle.infoLink} href="#" label={'Visualization Description'}
+            onClick={()=>this.setState({showInfo: true})}
+            tooltip={fullHeaderText}
+          />
+
           <u>Analysis:</u>
           <button title={fullHeaderText} type='button'>{this.state.filter}</button>
           {/*{headerText}*/}
