@@ -52,11 +52,6 @@ export class GeneSetInformationColumn extends PureComponent {
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
           />
-          {this.props.open &&
-          <SelectGeneView
-            data={this.props.geneDataStats[this.props.cohortIndex]}
-          />
-          }
           {
             (isViewGeneExpression(this.props.view)  ||
               (!isViewGeneExpression(this.props.view) && this.props.open)) &&
@@ -76,6 +71,11 @@ export class GeneSetInformationColumn extends PureComponent {
                 <FaExternalLink/>
               </a>
             </div>
+          }
+          {this.props.open &&
+          <SelectGeneView
+            data={this.props.geneDataStats[this.props.cohortIndex]}
+          />
           }
           {
             this.canShowHover() &&
