@@ -40,21 +40,6 @@ export class LegendBox extends PureComponent {
         }}>
           <table>
             <tbody>
-              {/*Gene Set Editor / Selector controls*/}
-              {/*{ isViewGeneExpression(this.props.view) &&*/}
-              {/*<OpenGeneSetRow*/}
-              {/*  customGeneSets={this.props.customGeneSets[this.props.view]}*/}
-              {/*  geneSetLimit={this.props.geneSetLimit}*/}
-              {/*  isCustomGeneSet={this.props.isCustomGeneSet}*/}
-              {/*  onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}*/}
-              {/*  onGeneEdit={this.props.handleGeneEdit}*/}
-              {/*  selectedGeneSets={this.props.selectedGeneSets}*/}
-              {/*  setActiveGeneSets={this.props.setActiveGeneSets}*/}
-              {/*  setGeneSetsOption={this.props.setGeneSetsOption}*/}
-              {/*  sortGeneSetBy={this.props.sortGeneSetBy}*/}
-              {/*/>*/}
-              {/*}*/}
-
               {/*legend for middle versus sample */}
               <TopLegend/>
 
