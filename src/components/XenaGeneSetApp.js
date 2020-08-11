@@ -44,6 +44,7 @@ import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
+import GeneSetEditorComponent from './GeneSetEditorComponent'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -859,6 +860,18 @@ export default class XenaGeneSetApp extends PureComponent {
           <u>Analysis:</u>
           <button title={fullHeaderText} type='button'>{this.state.filter}</button>
           {/*{headerText}*/}
+          {isViewGeneExpression(this.state.filter) &&
+          <GeneSetEditorComponent
+            customGeneSets={this.state.customGeneSets}
+            geneSetLimit={this.state.geneSetLimit}
+            isCustomGeneSet={this.isCustomGeneSet}
+            onChangeGeneSetLimit={this.handleGeneSetLimit}
+            onGeneEdit={this.showConfiguration}
+            selectedGeneSets={this.state.selectedGeneSets}
+            setGeneSetsOption={this.setGeneSetOption}
+            sortGeneSetBy={this.state.sortViewByLabel}
+          />
+          }
         </div>
 
         {/*<h2*/}

@@ -102,7 +102,7 @@ GeneSetEditorComponent.propTypes = {
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   onGeneEdit: PropTypes.any.isRequired,
-  selectedGeneSets: PropTypes.any.isRequired,
+  selectedGeneSets: PropTypes.any,
   setGeneSetsOption: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
 }
