@@ -45,9 +45,10 @@ import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent from './GeneSetEditorComponent'
-import Tooltip from 'react-toolbox/lib/tooltip'
-import Link from 'react-toolbox/lib/link'
-const TooltipLink = Tooltip(Link)
+// import Tooltip from 'react-toolbox/lib/tooltip'
+// import Link from 'react-toolbox/lib/link'
+import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+// import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -116,6 +117,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      showDescription: false,
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
@@ -860,13 +862,30 @@ export default class XenaGeneSetApp extends PureComponent {
           title={fullHeaderText}
         >
           {/*<button type='button'>Visualization description</button>*/}
-          <TooltipLink
-            className={BaseStyle.infoLink} href="#" label={'Visualization Description'}
-            onClick={()=>this.setState({showInfo: true})}
-            tooltip={fullHeaderText}
+
+          <button
+            className={BaseStyle.descriptionLink}
+            onClick={()=>this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            Description
+            <FaInfoCircle/>
+          </button>
+          {/*<Button*/}
+          {/*  className={BaseStyle.infoLink} label='Description'*/}
+          {/*  onClick={()=>this.setState({showDescription: true})}*/}
+          {/*  tooltip={fullHeaderText}*/}
+          {/*/>*/}
+          <Dialog
+            active={this.state.showDescription}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+            title={fullHeaderText}
           />
 
-          <u>Analysis:</u>
+          <u style={{marginLeft: 10}}>Analysis:</u>
           <button title={fullHeaderText} type='button'>{this.state.filter}</button>
           {/*{headerText}*/}
           {isViewGeneExpression(this.state.filter) &&
