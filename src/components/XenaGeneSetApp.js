@@ -147,6 +147,8 @@ export default class XenaGeneSetApp extends PureComponent {
       x: -1,
       y: -1,
     }
+
+    console.log('initial custom gene sets',this.state.customGeneSets)
   }
 
   componentDidUpdate() {
@@ -802,6 +804,7 @@ export default class XenaGeneSetApp extends PureComponent {
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
 
+    console.log('custom gene sets',this.state.customGeneSets)
 
     return (
       <div>
@@ -890,7 +893,7 @@ export default class XenaGeneSetApp extends PureComponent {
           {/*{headerText}*/}
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
-            customGeneSets={this.state.customGeneSets}
+            customGeneSets={this.state.customGeneSets[this.state.filter]}
             geneSetLimit={this.state.geneSetLimit}
             handleGeneEdit={this.showConfiguration}
             isCustomGeneSet={this.isCustomGeneSet}
