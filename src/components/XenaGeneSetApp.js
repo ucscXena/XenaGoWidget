@@ -48,6 +48,7 @@ import GeneSetEditorComponent from './GeneSetEditorComponent'
 // import Tooltip from 'react-toolbox/lib/tooltip'
 // import Link from 'react-toolbox/lib/link'
 import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+import {Button} from 'react-toolbox/lib'
 // import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -863,7 +864,7 @@ export default class XenaGeneSetApp extends PureComponent {
           {/*<button type='button'>Visualization description</button>*/}
 
           <button
-            className={BaseStyle.descriptionLink}
+            className={BaseStyle.analysisTitleSelector}
             onClick={()=>this.setState({showDescription: true})}
             title={fullHeaderText}
           >
@@ -876,16 +877,25 @@ export default class XenaGeneSetApp extends PureComponent {
           {/*  tooltip={fullHeaderText}*/}
           {/*/>*/}
           <Dialog
+            // actions={[{label:'OK', onClick: () => this.setState({showDescription: false})}]}
             active={this.state.showDescription}
+            onEscKeyDown={() => this.setState({showDescription: false})}
+            onOverlayClick={() => this.setState({showDescription: false})}
             theme={{
               dialog: BaseStyle.dialogBase,
               wrapper: BaseStyle.dialogWrapper,
             }}
             title={fullHeaderText}
-          />
+          >
+            <Button icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
+          </Dialog>
 
-          <u style={{marginLeft: 10}}>Analysis:</u>
-          <button title={fullHeaderText} type='button'>{this.state.filter}</button>
+
+          <div
+            className={BaseStyle.findNewGeneSets}>
+            <u style={{margin: 5}}>Analysis:</u>
+            <button title={fullHeaderText} type='button'>{this.state.filter}</button>
+          </div>
           {/*{headerText}*/}
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
