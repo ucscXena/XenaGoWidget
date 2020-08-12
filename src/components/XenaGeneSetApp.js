@@ -61,7 +61,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 145
+export const LEGEND_HEIGHT = 140
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
@@ -888,13 +888,7 @@ export default class XenaGeneSetApp extends PureComponent {
             Description
             <FaInfoCircle/>
           </button>
-          {/*<Button*/}
-          {/*  className={BaseStyle.infoLink} label='Description'*/}
-          {/*  onClick={()=>this.setState({showDescription: true})}*/}
-          {/*  tooltip={fullHeaderText}*/}
-          {/*/>*/}
           <Dialog
-            // actions={[{label:'OK', onClick: () => this.setState({showDescription: false})}]}
             active={this.state.showDescription}
             onEscKeyDown={() => this.setState({showDescription: false})}
             onOverlayClick={() => this.setState({showDescription: false})}
@@ -923,9 +917,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 })
               }
             </select>
-            {/*<button title={fullHeaderText} type='button'>{this.state.filter}</button>*/}
           </div>
           {/*{headerText}*/}
+
+
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
             customGeneSets={this.state.customGeneSets[this.state.filter]}
@@ -940,13 +935,6 @@ export default class XenaGeneSetApp extends PureComponent {
           }
         </div>
 
-        {/*<h2*/}
-        {/*  className={BaseStyle.titleBox}*/}
-        {/*  style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}*/}
-        {/*  title={fullHeaderText}*/}
-        {/*>*/}
-        {/*  {headerText}*/}
-        {/*</h2>*/}
 
         <div
           className="map_wrapper"
