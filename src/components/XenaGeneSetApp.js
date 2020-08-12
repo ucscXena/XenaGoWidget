@@ -51,6 +51,7 @@ import FaInfoCircle from 'react-icons/lib/fa/info-circle'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
+import GeneSetEditorPopup from './GeneSetEditorPopup'
 // import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -864,6 +865,34 @@ export default class XenaGeneSetApp extends PureComponent {
           subCohortCounts={this.state.subCohortCounts}
           view={this.state.filter}
         />
+        {this.state.pathways && this.state.associatedData &&
+        <Dialog
+          active={this.state.showGeneSetSearch}
+          onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
+          onOverlayClick={() => this.setState({showGeneSetSearch: false})}
+          theme={{
+            dialog: BaseStyle.cohortEditorDialogBase,
+            wrapper: BaseStyle.cohortEditorDialogWrapperBase,
+          }}
+          title="Gene Set Editor"
+        >
+          <GeneSetEditorPopup
+            cancelPathwayEdit={() => this.setState(
+              {showGeneSetSearch: false})}
+            customGeneSetName={this.state.selectedGeneSet}
+            getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
+            getCustomGeneSet={this.getCustomGeneSet}
+            isCustomGeneSet={this.isCustomGeneSet}
+            pathwayData={this.state.pathwayData}
+            pathways={this.state.pathways}
+            removeCustomGeneSet={this.removeCustomGeneSet}
+            setPathways={this.searchGeneSet}
+            storeCustomGeneSets={this.storeCustomGeneSet}
+            view={this.state.filter}
+          />
+        </Dialog>
+        }
+
         <div
           className={BaseStyle.titleBox}
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
