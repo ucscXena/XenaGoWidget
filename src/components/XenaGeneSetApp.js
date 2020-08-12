@@ -49,6 +49,8 @@ import GeneSetEditorComponent from './GeneSetEditorComponent'
 // import Link from 'react-toolbox/lib/link'
 import FaInfoCircle from 'react-icons/lib/fa/info-circle'
 import {Button} from 'react-toolbox/lib'
+import {intersection} from '../functions/MathFunctions'
+import {getViewsForCohort} from '../functions/CohortFunctions'
 // import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
@@ -574,6 +576,18 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
+  changeView = (newView) => {
+    this.setState(
+      {
+        filter: newView,
+        fetch: true,
+        reloadPathways: this.state.automaticallyReloadPathways,
+        selectedGeneSets: undefined,
+      }
+    )
+
+  }
+
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -803,6 +817,9 @@ export default class XenaGeneSetApp extends PureComponent {
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
 
+
+    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name))
+
     return (
       <div>
 
@@ -894,7 +911,19 @@ export default class XenaGeneSetApp extends PureComponent {
           <div
             className={BaseStyle.findNewGeneSets}>
             <u style={{margin: 5}}>Analysis:</u>
-            <button title={fullHeaderText} type='button'>{this.state.filter}</button>
+            <select
+              onChange={(event) => this.changeView(event.target.value)}
+              value={this.state.filter}
+            >
+              {
+                Object.entries(allowableViews).map( f => {
+                  return (
+                    <option key={f[1]} value={f[1]}>{f[1]}</option>
+                  )
+                })
+              }
+            </select>
+            {/*<button title={fullHeaderText} type='button'>{this.state.filter}</button>*/}
           </div>
           {/*{headerText}*/}
           {isViewGeneExpression(this.state.filter) &&
