@@ -55,7 +55,7 @@ export default class GeneSetEditorComponent extends PureComponent {
             })
             this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.state.selectedGeneSets)
           }}
-          value={this.state.sortGeneSetByLabel}
+          value={`${this.state.sortGeneSetBy} Gene Sets`}
         >
           {
             Object.values(SORT_VIEW_BY).map( v =>
