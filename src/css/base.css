@@ -378,6 +378,7 @@
   /*margin-right: 10px;*/
   /*margin-top: 5px;*/
   /*vertical-align: top;*/
+  cursor: pointer;
   border-radius: 5px;
   margin: 5px;
   border: solid 2px gray;
@@ -809,6 +810,7 @@ border-radius: 5px;
 .editCohorts{
   margin-left: 8px;
   font-size: larger;
+  cursor: pointer;
   /*padding-left: 5px;*/
 }
 
