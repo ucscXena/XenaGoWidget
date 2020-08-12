@@ -41,37 +41,37 @@ export class GeneSetInformationColumn extends PureComponent {
           className={BaseStyle.geneSetDetailBox}
           style={{
             backgroundColor: cohortColor,
-            marginTop: 70,
+            marginTop: 50,
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >
 
-          {
-            (isViewGeneExpression(this.props.view)  ||
-            (!isViewGeneExpression(this.props.view) && this.props.open)) &&
-          <div className={BaseStyle.ssInfoBox}>
-            <a
-              className={BaseStyle.xenaLinkOut}
-              href={externalLink}
-              rel="noopener noreferrer"
-              target='_blank'
-              title={externalLink}>
-              <Avatar
-                image={XenaLogo}
-              />
-              <div style={{display: 'inline',margin: 2}}>
-                View in Xena
-              </div>
-              <FaExternalLink/>
-            </a>
-          </div>
-          }
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
           />
+          {
+            (isViewGeneExpression(this.props.view)  ||
+              (!isViewGeneExpression(this.props.view) && this.props.open)) &&
+            <div className={BaseStyle.ssInfoBox}>
+              <a
+                className={BaseStyle.xenaLinkOut}
+                href={externalLink}
+                rel="noopener noreferrer"
+                target='_blank'
+                title={externalLink}>
+                <Avatar
+                  image={XenaLogo}
+                />
+                <div style={{display: 'inline',margin: 2}}>
+                  View in Xena
+                </div>
+                <FaExternalLink/>
+              </a>
+            </div>
+          }
           {this.props.open &&
           <SelectGeneView
             data={this.props.geneDataStats[this.props.cohortIndex]}

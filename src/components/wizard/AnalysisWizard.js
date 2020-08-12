@@ -63,17 +63,6 @@ export class AnalysisWizard extends PureComponent {
               analysis={VIEW_ENUM.REGULON}
               onClick={onSelectAnalysis}/>
           }
-          {/*<br/>*/}
-          {/*<br/>*/}
-          {/*<div className={Wizard.advancedOptionsCell} onClick={() => this.setState( {showGeneSetOptions: !this.state.showGeneSetOptions})}>*/}
-          {/*  Advanced Options&nbsp;*/}
-          {/*  {!this.state.showGeneSetOptions &&*/}
-          {/*  <FaRightArrow className={Wizard.advancedOptionsArrow}/>*/}
-          {/*  }*/}
-          {/*  {this.state.showGeneSetOptions &&*/}
-          {/*  <FaDownArrow className={Wizard.advancedOptionsArrow}/>*/}
-          {/*  }*/}
-          {/*</div>*/}
           {this.state.showGeneSetOptions &&
             <table className={Wizard.advancedTable} style={{marginTop: 10}}>
               <tbody>
@@ -109,12 +98,6 @@ export class AnalysisWizard extends PureComponent {
             </table>
           }
         </div>
-        {/*<hr/>*/}
-        {/*<br/>*/}
-        {/*    OR*/}
-        {/*<br/>*/}
-        {/*<br/>*/}
-        {/*<hr/>*/}
         <div className={Wizard.wizardCell}>
           <div className={Wizard.wizardHeader}>Mutation / CNV data<FaQuestion className={Wizard.wizardInfoButton} onClick={this.handleHelpClick}/></div>
           <AnalysisButton analysis={VIEW_ENUM.CNV_MUTATION} onClick={onSelectAnalysis}/>

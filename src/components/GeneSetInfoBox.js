@@ -11,7 +11,7 @@ import {Button} from 'react-toolbox'
 const TooltipLink = Tooltip(Link)
 
 const MAGIC_LENGTH = 28
-const MAX_SUB_COHORTS = 7
+const MAX_SUB_COHORTS = 6
 
 
 export class GeneSetInfoBox extends PureComponent {
@@ -80,7 +80,9 @@ export class GeneSetInfoBox extends PureComponent {
           }
           )}
           <li>
-            <Link  label={this.allSubCohortsStatement(selectedCohort.selectedSubCohorts)} onClick={()=>this.setState({showInfo: true})}/>
+            <Link
+              className={BaseStyle.subGroupButton}
+              label={this.allSubCohortsStatement(selectedCohort.selectedSubCohorts)} onClick={()=>this.setState({showInfo: true})}/>
           </li>
         </ul>
         }

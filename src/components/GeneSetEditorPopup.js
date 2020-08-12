@@ -21,7 +21,7 @@ import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
 const VIEW_LIMIT = 200
 const CART_LIMIT = 1000
 
-export default class GeneSetEditor extends PureComponent {
+export default class GeneSetEditorPopup extends PureComponent {
 
   constructor(props) {
     super(props)
@@ -664,7 +664,7 @@ export default class GeneSetEditor extends PureComponent {
 
 }
 
-GeneSetEditor.propTypes = {
+GeneSetEditorPopup.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
   customGeneSetName: PropTypes.any,
   getAvailableCustomGeneSets: PropTypes.any.isRequired,

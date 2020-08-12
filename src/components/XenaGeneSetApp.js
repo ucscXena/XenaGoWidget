@@ -39,12 +39,20 @@ import {
   calculateGeneSet, calculateSorting,
   generateUrl,
 } from '../functions/UrlFunctions'
-import GeneSetEditor from './GeneSetEditor'
 import {SORT_ORDER_ENUM} from '../data/SortEnum'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
+import GeneSetEditorComponent from './GeneSetEditorComponent'
+// import Tooltip from 'react-toolbox/lib/tooltip'
+// import Link from 'react-toolbox/lib/link'
+import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+import {Button} from 'react-toolbox/lib'
+import {intersection} from '../functions/MathFunctions'
+import {getViewsForCohort} from '../functions/CohortFunctions'
+import GeneSetEditorPopup from './GeneSetEditorPopup'
+// import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -54,11 +62,10 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 175
+export const LEGEND_HEIGHT = 140
 export const HEADER_HEIGHT = 135
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
-const MAX_TITLE_LENGTH = 150
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -114,6 +121,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
@@ -569,6 +577,18 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
+  changeView = (newView) => {
+    this.setState(
+      {
+        filter: newView,
+        fetch: true,
+        reloadPathways: this.state.automaticallyReloadPathways,
+        selectedGeneSets: undefined,
+      }
+    )
+
+  }
+
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -603,15 +623,6 @@ export default class XenaGeneSetApp extends PureComponent {
         pathwaySelection[0] :
         defaultPathway,
     }
-    //
-    // console.log('filter order',this.state.filterBy,this.state.filterOrder,scorePathway(newPathways[0],this.state.filterBy))
-    // const sortedPathways = newPathways.sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
-    //   1 :
-    //   -1) * (scorePathway(a, this.state.sortViewBy) -
-    //   scorePathway(b, this.state.sortViewBy)))
-    //
-    // console.log('new pathways',newPathways)
-    // console.log('sorted pathways',sortedPathways,sortedPathways.map( s =>  s.firstGeneExpressionPathwayActivity - s.secondGeneExpressionPathwayActivity))
 
     this.setState({
       pathwaySelection,
@@ -793,30 +804,23 @@ export default class XenaGeneSetApp extends PureComponent {
 
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using '${this.state.filter}' ${fullTitleText}`
-    let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
+    // let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
 
     // crosshair should be relative to the opened labels
     const crosshairHeight = (( (this.state.pathways ? this.state.pathways.length : 0) + ( (this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length: 0 )) * 22) +200
 
 
+    const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name))
+
     return (
       <div>
 
         <LegendBox
-          customGeneSets={this.state.customGeneSets}
           geneData={this.state.geneData}
-          geneSetLimit={this.state.geneSetLimit}
-          handleGeneEdit={this.showConfiguration}
-          isCustomGeneSet={this.isCustomGeneSet}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
-          onChangeGeneSetLimit={this.handleGeneSetLimit}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
-          selectedGeneSets={this.state.selectedGeneSets}
-          setActiveGeneSets={this.setActiveGeneSets}
-          setGeneSetsOption={this.setGeneSetOption}
           showDiffLabel={this.state.showDiffLabel}
-          sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}
         />
 
@@ -852,14 +856,96 @@ export default class XenaGeneSetApp extends PureComponent {
           subCohortCounts={this.state.subCohortCounts}
           view={this.state.filter}
         />
+        {this.state.pathways && this.state.associatedData &&
+        <Dialog
+          active={this.state.showGeneSetSearch}
+          onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
+          onOverlayClick={() => this.setState({showGeneSetSearch: false})}
+          theme={{
+            dialog: BaseStyle.cohortEditorDialogBase,
+            wrapper: BaseStyle.cohortEditorDialogWrapperBase,
+          }}
+          title="Gene Set Editor"
+        >
+          <GeneSetEditorPopup
+            cancelPathwayEdit={() => this.setState(
+              {showGeneSetSearch: false})}
+            customGeneSetName={this.state.selectedGeneSet}
+            getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
+            getCustomGeneSet={this.getCustomGeneSet}
+            isCustomGeneSet={this.isCustomGeneSet}
+            pathwayData={this.state.pathwayData}
+            pathways={this.state.pathways}
+            removeCustomGeneSet={this.removeCustomGeneSet}
+            setPathways={this.searchGeneSet}
+            storeCustomGeneSets={this.storeCustomGeneSet}
+            view={this.state.filter}
+          />
+        </Dialog>
+        }
 
-        <h2
+        <div
           className={BaseStyle.titleBox}
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
-          {headerText}
-        </h2>
+          {/*<button type='button'>Visualization description</button>*/}
+
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={()=>this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            Description
+            <FaInfoCircle/>
+          </button>
+          <Dialog
+            active={this.state.showDescription}
+            onEscKeyDown={() => this.setState({showDescription: false})}
+            onOverlayClick={() => this.setState({showDescription: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+            title={fullHeaderText}
+          >
+            <Button icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
+          </Dialog>
+
+
+          <div
+            className={BaseStyle.findNewGeneSets}>
+            <u style={{margin: 5}}>Analysis:</u>
+            <select
+              onChange={(event) => this.changeView(event.target.value)}
+              value={this.state.filter}
+            >
+              {
+                Object.entries(allowableViews).map( f => {
+                  return (
+                    <option key={f[1]} value={f[1]}>{f[1]}</option>
+                  )
+                })
+              }
+            </select>
+          </div>
+          {/*{headerText}*/}
+
+
+          {isViewGeneExpression(this.state.filter) &&
+          <GeneSetEditorComponent
+            customGeneSets={this.state.customGeneSets[this.state.filter]}
+            geneSetLimit={this.state.geneSetLimit}
+            handleGeneEdit={this.showConfiguration}
+            isCustomGeneSet={this.isCustomGeneSet}
+            onChangeGeneSetLimit={this.handleGeneSetLimit}
+            selectedGeneSets={this.state.selectedGeneSets}
+            setGeneSetsOption={this.setGeneSetOption}
+            sortGeneSetBy={this.state.sortViewByLabel}
+          />
+          }
+        </div>
+
 
         <div
           className="map_wrapper"
@@ -913,33 +999,6 @@ export default class XenaGeneSetApp extends PureComponent {
               onChangeView={this.handleChangeView}
               subCohortCounts={this.state.subCohortCounts}
               titleText={fullTitleText}
-              view={this.state.filter}
-            />
-          </Dialog>
-          }
-          {this.state.pathways && this.state.associatedData &&
-          <Dialog
-            active={this.state.showGeneSetSearch}
-            onEscKeyDown={() => this.setState({showGeneSetSearch: false})}
-            onOverlayClick={() => this.setState({showGeneSetSearch: false})}
-            theme={{
-              dialog: BaseStyle.cohortEditorDialogBase,
-              wrapper: BaseStyle.cohortEditorDialogWrapperBase,
-            }}
-            title="Gene Set Editor"
-          >
-            <GeneSetEditor
-              cancelPathwayEdit={() => this.setState(
-                {showGeneSetSearch: false})}
-              customGeneSetName={this.state.selectedGeneSet}
-              getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
-              getCustomGeneSet={this.getCustomGeneSet}
-              isCustomGeneSet={this.isCustomGeneSet}
-              pathwayData={this.state.pathwayData}
-              pathways={this.state.pathways}
-              removeCustomGeneSet={this.removeCustomGeneSet}
-              setPathways={this.searchGeneSet}
-              storeCustomGeneSets={this.storeCustomGeneSet}
               view={this.state.filter}
             />
           </Dialog>

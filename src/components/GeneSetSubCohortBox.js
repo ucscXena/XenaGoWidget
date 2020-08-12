@@ -2,17 +2,11 @@ import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../css/base.css'
-// import {IconButton} from 'react-toolbox';
 import {Dialog} from 'react-toolbox/lib'
-import Tooltip from 'react-toolbox/lib/tooltip'
 import Link from 'react-toolbox/lib/link'
-import {Button} from 'react-toolbox'
 import FaEdit from 'react-icons/lib/fa/edit'
 
-const TooltipLink = Tooltip(Link)
-
-const MAGIC_LENGTH = 28
-const MAX_SUB_COHORTS = 7
+const MAX_SUB_COHORTS = 5
 
 
 export class GeneSetSubCohortBox extends PureComponent {
@@ -33,15 +27,10 @@ export class GeneSetSubCohortBox extends PureComponent {
     const {cohortIndex, geneDataStats, onEditCohorts, subCohortCounts} = this.props
     const samplesLength = geneDataStats[cohortIndex].samples.length
     const selectedCohort = geneDataStats[cohortIndex].selectedCohort
-    const label = selectedCohort.name.length>MAGIC_LENGTH ? selectedCohort.name.substr(0,MAGIC_LENGTH-3)+'..' : selectedCohort.name
     if(!subCohortCounts || subCohortCounts.length!==2) return <div>Calculating</div>
     return (
       <div className={BaseStyle.bottomInfoBox}>
-        <TooltipLink
-          className={BaseStyle.infoLink} href="#" label={label}
-          onClick={()=>this.setState({showInfo: true})}
-          tooltip={selectedCohort.name}
-        />
+        <h3 className={BaseStyle.cohortTitle}>{selectedCohort.name}</h3>
         <Dialog
           active={this.state.showInfo}
           onEscKeyDown={() => this.setState({showInfo:false})}
@@ -69,12 +58,17 @@ export class GeneSetSubCohortBox extends PureComponent {
             </ul>
           </div>
         </Dialog>
-        <div className={BaseStyle.samplesBox}>
-          {samplesLength} samples
-          <Button mini onClick={() => onEditCohorts()}>
-            <FaEdit/>
-          </Button>
+        <hr/>
+        <div>
+          <b>{samplesLength} samples</b>
+          <button
+            className={BaseStyle.editCohorts}
+            onClick={() => onEditCohorts()}
+          >
+            Edit <FaEdit/>
+          </button>
         </div>
+        <hr/>
         { selectedCohort.selectedSubCohorts.length < selectedCohort.subCohorts.length && selectedCohort.selectedSubCohorts.length > 0 && selectedCohort.selectedSubCohorts.length <= MAX_SUB_COHORTS &&
           <ul className={BaseStyle.noBullets}>
             {selectedCohort.selectedSubCohorts.sort().map( s => {
@@ -106,7 +100,9 @@ export class GeneSetSubCohortBox extends PureComponent {
           }
           )}
           <li>
-            <Link  label={this.allSubCohortsStatement(selectedCohort.selectedSubCohorts)} onClick={()=>this.setState({showInfo: true})}/>
+            <Link
+              className={BaseStyle.subGroupButton}
+              label={this.allSubCohortsStatement(selectedCohort.selectedSubCohorts)} onClick={()=>this.setState({showInfo: true})}/>
           </li>
         </ul>
         }

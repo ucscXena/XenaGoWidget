@@ -10,15 +10,12 @@ import {DiffScaleLegend} from './DiffScaleLegend'
 import {GeneSetCnvMutationLegend} from './GeneSetCnvMutationLegend'
 import {GeneSetGeneExpressionLegend} from './GeneSetGeneExpressionLegend'
 import {TopLegend} from './TopLegend'
-import {OpenGeneSetRow} from './OpenGeneSetRow'
+// import {OpenGeneSetRow} from './OpenGeneSetRow'
 
 export class LegendBox extends PureComponent {
 
   shouldComponentUpdate(nextProps) {
     return nextProps.view !== this.props.view
-      || nextProps.customGeneSets !== this.props.customGeneSets
-      || nextProps.selectedGeneSets !== this.props.selectedGeneSets
-      || nextProps.geneSetLimit !== this.props.geneSetLimit
       || nextProps.maxValue !== this.props.maxValue
       || nextProps.maxGeneData !== this.props.maxGeneData
       || nextProps.showDiffLabel !== this.props.showDiffLabel
@@ -34,29 +31,16 @@ export class LegendBox extends PureComponent {
           backgroundColor: 'rgba(255,255,255,0.7)',
           position: 'fixed',
           zIndex: 8,
-          marginTop: HEADER_HEIGHT,
+          marginTop: HEADER_HEIGHT-20,
           marginLeft: 250,
           width: 182 + 182 + 222 +30
         }}>
           <table>
             <tbody>
-              {/*Gene Set Editor / Selector controls*/}
-              { isViewGeneExpression(this.props.view) &&
-              <OpenGeneSetRow
-                customGeneSets={this.props.customGeneSets[this.props.view]}
-                geneSetLimit={this.props.geneSetLimit}
-                isCustomGeneSet={this.props.isCustomGeneSet}
-                onChangeGeneSetLimit={this.props.onChangeGeneSetLimit}
-                onGeneEdit={this.props.handleGeneEdit}
-                selectedGeneSets={this.props.selectedGeneSets}
-                setActiveGeneSets={this.props.setActiveGeneSets}
-                setGeneSetsOption={this.props.setGeneSetsOption}
-                sortGeneSetBy={this.props.sortGeneSetBy}
-              />
-              }
-
               {/*legend for middle versus sample */}
+              { maxValue !== 0 &&
               <TopLegend/>
+              }
 
 
               {/*Gene set layer*/}
@@ -69,7 +53,7 @@ export class LegendBox extends PureComponent {
 
 
               {/*Gene layer*/}
-              {(!geneData || !geneData[0].data) &&
+              {(!geneData || !geneData[0].data) && maxValue!==0 &&
             <OpenGeneSetLegend/>
               }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
@@ -97,19 +81,10 @@ export class LegendBox extends PureComponent {
 }
 
 LegendBox.propTypes = {
-  customGeneSets: PropTypes.any,
   geneData: PropTypes.any.isRequired,
-  geneSetLimit: PropTypes.any.isRequired,
-  handleGeneEdit: PropTypes.any.isRequired,
-  isCustomGeneSet: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
-  onChangeGeneSetLimit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
-  selectedGeneSets: PropTypes.any,
-  setActiveGeneSets: PropTypes.any.isRequired,
-  setGeneSetsOption: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
-  sortGeneSetBy: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }
