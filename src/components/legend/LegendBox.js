@@ -16,9 +16,6 @@ export class LegendBox extends PureComponent {
 
   shouldComponentUpdate(nextProps) {
     return nextProps.view !== this.props.view
-      || nextProps.customGeneSets !== this.props.customGeneSets
-      || nextProps.selectedGeneSets !== this.props.selectedGeneSets
-      || nextProps.geneSetLimit !== this.props.geneSetLimit
       || nextProps.maxValue !== this.props.maxValue
       || nextProps.maxGeneData !== this.props.maxGeneData
       || nextProps.showDiffLabel !== this.props.showDiffLabel
@@ -84,19 +81,10 @@ export class LegendBox extends PureComponent {
 }
 
 LegendBox.propTypes = {
-  customGeneSets: PropTypes.any,
   geneData: PropTypes.any.isRequired,
-  geneSetLimit: PropTypes.any.isRequired,
-  handleGeneEdit: PropTypes.any.isRequired,
-  isCustomGeneSet: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,
-  onChangeGeneSetLimit: PropTypes.any.isRequired,
   onShowDiffLabel: PropTypes.any.isRequired,
-  selectedGeneSets: PropTypes.any,
-  setActiveGeneSets: PropTypes.any.isRequired,
-  setGeneSetsOption: PropTypes.any.isRequired,
   showDiffLabel: PropTypes.any.isRequired,
-  sortGeneSetBy: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

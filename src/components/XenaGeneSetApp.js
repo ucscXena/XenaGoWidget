@@ -824,20 +824,11 @@ export default class XenaGeneSetApp extends PureComponent {
       <div>
 
         <LegendBox
-          customGeneSets={this.state.customGeneSets}
           geneData={this.state.geneData}
-          geneSetLimit={this.state.geneSetLimit}
-          handleGeneEdit={this.showConfiguration}
-          isCustomGeneSet={this.isCustomGeneSet}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}
-          onChangeGeneSetLimit={this.handleGeneSetLimit}
           onShowDiffLabel={() => this.setState( { showDiffLabel: !this.state.showDiffLabel})}
-          selectedGeneSets={this.state.selectedGeneSets}
-          setActiveGeneSets={this.setActiveGeneSets}
-          setGeneSetsOption={this.setGeneSetOption}
           showDiffLabel={this.state.showDiffLabel}
-          sortGeneSetBy={this.state.sortViewByLabel}
           view={this.state.filter}
         />
 
