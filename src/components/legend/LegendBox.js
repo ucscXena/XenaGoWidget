@@ -41,7 +41,9 @@ export class LegendBox extends PureComponent {
           <table>
             <tbody>
               {/*legend for middle versus sample */}
+              { maxValue !== 0 &&
               <TopLegend/>
+              }
 
 
               {/*Gene set layer*/}
@@ -54,7 +56,7 @@ export class LegendBox extends PureComponent {
 
 
               {/*Gene layer*/}
-              {(!geneData || !geneData[0].data) &&
+              {(!geneData || !geneData[0].data) && maxValue!==0 &&
             <OpenGeneSetLegend/>
               }
               {geneData && geneData[0].data && isViewGeneExpression(view) &&
