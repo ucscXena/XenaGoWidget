@@ -79,6 +79,7 @@ export class ApplicationWrapper extends PureComponent {
     finalUrl += `&cohort2Color=${this.state.cohort2Color}`
     finalUrl += `&geneSetFilterMethod=${this.state.geneSetFilterMethod}`
     finalUrl += `&geneSetSortMethod=${this.state.geneSetSortMethod}`
+    finalUrl += `&sortViewBy=${SORT_ENUM.DIFF}`
 
     this.openUrl(finalUrl)
     this.setState({
