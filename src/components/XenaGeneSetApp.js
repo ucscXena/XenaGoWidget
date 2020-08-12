@@ -121,7 +121,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
-      showDescription: false,
+      showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
