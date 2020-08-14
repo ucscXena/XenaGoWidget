@@ -180,10 +180,10 @@ export default class XenaGeneSetApp extends PureComponent {
       return ''
     }
     if(selectedCohort.selectedSubCohorts.length===1){
-      return  ` from sub cohort '${selectedCohort.selectedSubCohorts[0]}' `
+      return  ` from Sub Cohort: '${selectedCohort.selectedSubCohorts[0]}' `
     }
     else{
-      return  ` ${selectedCohort.selectedSubCohorts.length} sub cohorts `
+      return  ` ${selectedCohort.selectedSubCohorts.length} Sub Cohorts `
     }
   }
 
@@ -200,16 +200,16 @@ export default class XenaGeneSetApp extends PureComponent {
       returnText += ` to compare within the Cohort:'${this.state.selectedCohort[0].name}' `
       if(this.state.geneData[0].samples ){
         if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        returnText +=  `from Left ${this.generateSubCohortText(this.state.selectedCohort[0])} to `
         if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+        returnText +=  `from Right ${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
       else
       if(this.state.pathwayData[0].samples ){
         if(this.state.pathwayData[0].samples) returnText += ` comparing ${this.state.pathwayData[0].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        returnText +=  `from Left ${this.generateSubCohortText(this.state.selectedCohort[0])} to `
         if(this.state.pathwayData[1].samples) returnText += ` ${this.state.pathwayData[1].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+        returnText +=  `from Right ${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
     }
     // there are two
