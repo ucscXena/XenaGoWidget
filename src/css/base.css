@@ -373,6 +373,14 @@
   font-weight: bold;
 }
 
+.closeDialogButton{
+  font-weight: bold;
+  /*margin-left: 100%;*/
+  float: right;
+  width: 10px;
+
+}
+
 .analysisTitleSelector{
   /*margin-left: 10px;*/
   /*margin-right: 10px;*/

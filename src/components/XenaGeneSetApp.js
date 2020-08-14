@@ -47,12 +47,12 @@ import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent from './GeneSetEditorComponent'
 // import Tooltip from 'react-toolbox/lib/tooltip'
 // import Link from 'react-toolbox/lib/link'
-import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+// import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+import FaQuestionCircle from 'react-icons/lib/fa/question-circle'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-// import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -889,29 +889,6 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
-          {/*<button type='button'>Visualization description</button>*/}
-
-          <button
-            className={BaseStyle.analysisTitleSelector}
-            onClick={()=>this.setState({showDescription: true})}
-            title={fullHeaderText}
-          >
-            Description
-            <FaInfoCircle/>
-          </button>
-          <Dialog
-            active={this.state.showDescription}
-            onEscKeyDown={() => this.setState({showDescription: false})}
-            onOverlayClick={() => this.setState({showDescription: false})}
-            theme={{
-              dialog: BaseStyle.dialogBase,
-              wrapper: BaseStyle.dialogWrapper,
-            }}
-            title={fullHeaderText}
-          >
-            <Button icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
-          </Dialog>
-
 
           <div
             className={BaseStyle.findNewGeneSets}>
@@ -944,6 +921,31 @@ export default class XenaGeneSetApp extends PureComponent {
             sortGeneSetBy={this.state.sortViewByLabel}
           />
           }
+
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={()=>this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            <FaQuestionCircle/><u>Information</u>
+          </button>
+          <Dialog
+            active={this.state.showDescription}
+            onEscKeyDown={() => this.setState({showDescription: false})}
+            onOverlayClick={() => this.setState({showDescription: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+          >
+            {/*<Button className={BaseStyle.closeDialogButton} floating icon='close' mini onClick={() => this.setState({showDescription: false})} primary raised/>*/}
+            <h2><FaQuestionCircle/><u>Information</u></h2>
+            <h3>
+              {fullHeaderText}
+            </h3>
+            <Button className={BaseStyle.closeDialogButton} icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
+          </Dialog>
+
         </div>
 
 
