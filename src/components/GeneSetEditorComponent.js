@@ -5,6 +5,8 @@ import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
 import FaPlus from 'react-icons/lib/fa/plus'
+// import FaCopy from 'react-icons/lib/fa/copy'
+import FaUpload from 'react-icons/lib/fa/upload'
 import FaEdit from 'react-icons/lib/fa/edit'
 
 
@@ -90,6 +92,12 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaEdit style={{fontSize: 'small'}}/>
         </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetUpload()}
+        >
+          <FaUpload style={{fontSize: 'small'}}/>
+        </button>
       </div>
     )
   }
@@ -100,6 +108,7 @@ GeneSetEditorComponent.propTypes = {
   customGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
+  handleGeneSetUpload: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,

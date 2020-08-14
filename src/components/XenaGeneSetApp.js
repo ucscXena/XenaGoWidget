@@ -112,6 +112,7 @@ export default class XenaGeneSetApp extends PureComponent {
       associatedData: [],
       selectedCohort: cohorts,
       subCohortCounts: [],
+      showUploadDialog: false,
       cohortColors,
       fetch: false,
       automaticallyReloadPathways: true,
@@ -191,6 +192,12 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       showGeneSetSearch: true,
       selectedGeneSet: geneSetName,
+    })
+  }
+
+  onUpload = () => {
+    this.setState({
+      showUploadDialog: true,
     })
   }
 
@@ -761,6 +768,10 @@ export default class XenaGeneSetApp extends PureComponent {
     return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
 
+  onUploadFile = (event) => {
+    console.log('uploading file',event)
+    console.log(event.target.files[0])
+  }
 
   render() {
     const storedPathways = AppStorageHandler.getPathways()
@@ -937,6 +948,7 @@ export default class XenaGeneSetApp extends PureComponent {
             customGeneSets={this.state.customGeneSets[this.state.filter]}
             geneSetLimit={this.state.geneSetLimit}
             handleGeneEdit={this.showConfiguration}
+            handleGeneSetUpload={this.onUpload}
             isCustomGeneSet={this.isCustomGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
             selectedGeneSets={this.state.selectedGeneSets}
@@ -1003,6 +1015,21 @@ export default class XenaGeneSetApp extends PureComponent {
             />
           </Dialog>
           }
+          <Dialog
+            active={this.state.showUploadDialog}
+            onEscKeyDown={() => this.setState({showUploadDialog: false})}
+            onOverlayClick={() => this.setState({showUploadDialog: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+            title="Upload Gene Sets"
+          >
+            <input name="file" onChange={this.onUploadFile} type="file"/>
+            <button onClick={() => alert('doing upload')} type='button'>Upload</button>
+
+
+          </Dialog>
           <table style={{marginTop: LEGEND_HEIGHT+5}}>
             <tbody>
               <tr>
@@ -1100,4 +1127,5 @@ export default class XenaGeneSetApp extends PureComponent {
         </div>
       </div>)
   }
+
 }
