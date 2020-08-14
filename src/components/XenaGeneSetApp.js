@@ -197,7 +197,7 @@ export default class XenaGeneSetApp extends PureComponent {
   generateTitle() {
     let returnText = ''
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
-      returnText += ` to compare within the Left Cohort:'${this.state.selectedCohort[0].name}' `
+      returnText += ` to compare within the Cohort:'${this.state.selectedCohort[0].name}' `
       if(this.state.geneData[0].samples ){
         if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
