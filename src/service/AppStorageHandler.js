@@ -11,6 +11,7 @@ const LOCAL_STATE_STORAGE = 'xena-selection-storage'
 const LOCAL_CUSTOM_PATHWAYS_STORAGE = 'xena-custom-pathways-storage'
 const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways'
 const LOCAL_SUBCOHORT_STORAGE = 'default-subcohort-storage'
+const LOCAL_GENESETS_STORAGE = 'default-genesets-storage'
 
 const DefaultAppA = {
   renderOffset: 5,
@@ -71,6 +72,57 @@ export class AppStorageHandler {
     sessionStorage.removeItem(LOCAL_STATE_STORAGE)
     sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE)
     sessionStorage.removeItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
+    sessionStorage.removeItem(LOCAL_GENESETS_STORAGE)
+  }
+
+  static storeGeneSets(geneSets) {
+    if (geneSets) {
+      sessionStorage.setItem(LOCAL_GENESETS_STORAGE, JSON.stringify(geneSets))
+      return true
+    }
+    return false
+  }
+
+  static storeGeneSetsForView(newGeneSets,view) {
+    let geneSets = AppStorageHandler.getGeneSets()
+    if (geneSets) {
+      geneSets[view] = newGeneSets
+      sessionStorage.setItem(LOCAL_GENESETS_STORAGE, JSON.stringify(geneSets))
+      return true
+    }
+    return false
+  }
+
+  static checkGeneSets() {
+    try {
+      const results = JSON.parse(sessionStorage.getItem(LOCAL_GENESETS_STORAGE))
+      console.log('results, ',results)
+      if( results[VIEW_ENUM.GENE_EXPRESSION]){
+        return true
+      }
+      else{
+        return AppStorageHandler.createGeneSets()
+      }
+    } catch (e) {
+      console.log('does not exist so creating')
+      return AppStorageHandler.createGeneSets()
+    }
+  }
+
+  static createGeneSets() {
+    let geneSets = Object.keys(VIEW_ENUM).map( (v) => {
+      let obj = {}
+      obj[v] = {}
+      return obj
+    }
+    )
+    console.log('gene set created',geneSets)
+    return this.storeGeneSets(geneSets)
+  }
+
+  static getGeneSets() {
+    this.checkGeneSets()
+    return JSON.parse(sessionStorage.getItem(LOCAL_GENESETS_STORAGE))
   }
 
   static storePathways(pathways) {

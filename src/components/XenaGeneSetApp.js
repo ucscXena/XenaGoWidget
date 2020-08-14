@@ -122,6 +122,9 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      hasUploadFile: false,
+      uploadFileName: 'bob',
+      uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
@@ -768,9 +771,33 @@ export default class XenaGeneSetApp extends PureComponent {
     return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
 
-  onUploadFile = (event) => {
-    console.log('uploading file',event)
-    console.log(event.target.files[0])
+  handleUploadFileChange = (event) => {
+    console.log('A input file namem ',event.target.files[0])
+    event.preventDefault()
+    console.log('B input file namem ',event.target.files[0])
+    this.setState({
+      hasUploadFile : true,
+      uploadFileName: event.target.files[0].name,
+      uploadFile: event.target.files[0]
+    })
+  }
+
+  handleUploadFile = () => {
+    const reader = new FileReader()
+    let outputText
+    reader.onload = async () => {
+      outputText = (this.state.uploadFile)
+      AppStorageHandler.storeGeneSetsForView(outputText,this.state.filter)
+      console.log('added custom gene set ',this.state.uploadFileName,outputText)
+      this.storeCustomGeneSet(this.state.uploadFileName,outputText)
+      // do analysis
+      // store analysis score somewhere
+      this.setState({
+        hasUploadFile : false,
+        uploadFileName: ''
+      })
+    }
+    reader.readAsText(this.state.uploadFile)
   }
 
   render() {
@@ -1025,8 +1052,21 @@ export default class XenaGeneSetApp extends PureComponent {
             }}
             title="Upload Gene Sets"
           >
-            <input name="file" onChange={this.onUploadFile} type="file"/>
-            <button onClick={() => alert('doing upload')} type='button'>Upload</button>
+            Gene Set Name:
+            <input
+              name="text"
+              onChange={(event) => this.setState({ uploadFileName: event.target.value })}
+              value={this.state.uploadFileName}/>
+            <br/>
+            <br/>
+            <input
+              name="file" onChange={(event) =>
+                this.handleUploadFileChange(event)} type="file"/>
+            <br/>
+            <br/>
+            <button
+              disabled={!this.state.hasUploadFile}
+              onClick={(event) => this.handleUploadFile(event)} type='button'>Upload</button>
 
 
           </Dialog>
