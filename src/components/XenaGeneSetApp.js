@@ -47,12 +47,12 @@ import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent from './GeneSetEditorComponent'
 // import Tooltip from 'react-toolbox/lib/tooltip'
 // import Link from 'react-toolbox/lib/link'
-import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+// import FaInfoCircle from 'react-icons/lib/fa/info-circle'
+import FaQuestionCircle from 'react-icons/lib/fa/question-circle'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-// import FaInfoCircle from 'react-icons/lib/fa/info'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -184,10 +184,10 @@ export default class XenaGeneSetApp extends PureComponent {
       return ''
     }
     if(selectedCohort.selectedSubCohorts.length===1){
-      return  ` from sub cohort '${selectedCohort.selectedSubCohorts[0]}' `
+      return  ` from Sub Cohort: '${selectedCohort.selectedSubCohorts[0]}' `
     }
     else{
-      return  ` ${selectedCohort.selectedSubCohorts.length} sub cohorts `
+      return  ` ${selectedCohort.selectedSubCohorts.length} Sub Cohorts `
     }
   }
 
@@ -207,28 +207,28 @@ export default class XenaGeneSetApp extends PureComponent {
   generateTitle() {
     let returnText = ''
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
-      returnText += ` to compare within cohort '${this.state.selectedCohort[0].name}' `
+      returnText += ` to compare within the Cohort:'${this.state.selectedCohort[0].name}' `
       if(this.state.geneData[0].samples ){
         if(this.state.geneData[0].samples) returnText += ` comparing ${this.state.geneData[0].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        returnText +=  `from Left ${this.generateSubCohortText(this.state.selectedCohort[0])} to `
         if(this.state.geneData[1].samples) returnText += ` ${this.state.geneData[1].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+        returnText +=  `from Right ${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
       else
       if(this.state.pathwayData[0].samples ){
         if(this.state.pathwayData[0].samples) returnText += ` comparing ${this.state.pathwayData[0].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} to `
+        returnText +=  `from Left ${this.generateSubCohortText(this.state.selectedCohort[0])} to `
         if(this.state.pathwayData[1].samples) returnText += ` ${this.state.pathwayData[1].samples.length} samples `
-        returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
+        returnText +=  `from Right ${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
     }
     // there are two
     else{
-      returnText += ` to compare between cohort '${this.state.selectedCohort[0].name}' `
+      returnText += ` to compare between the Left Cohort: '${this.state.selectedCohort[0].name}' `
       if(this.state.geneData.length===2 && this.state.geneData[0].samples && this.state.geneData[1].samples){
         returnText +=  `with ${this.state.geneData[0].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
-        returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
+        returnText +=  ` to the Right Cohort: '${this.state.selectedCohort[1].name}' `
         returnText +=  ` with ${this.state.geneData[1].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
@@ -236,7 +236,7 @@ export default class XenaGeneSetApp extends PureComponent {
       if(this.state.pathwayData.length===2 && this.state.pathwayData[0].samples && this.state.pathwayData[1].samples){
         returnText +=  `with ${this.state.pathwayData[0].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[0])} `
-        returnText +=  ` to cohort '${this.state.selectedCohort[1].name}' `
+        returnText +=  ` to the Right Cohort: '${this.state.selectedCohort[1].name}' `
         returnText +=  ` with ${this.state.pathwayData[1].samples.length} samples `
         returnText +=  `${this.generateSubCohortText(this.state.selectedCohort[1])} `
       }
@@ -841,7 +841,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     let fullTitleText = this.generateTitle()
-    const fullHeaderText = `Visualizing differences using '${this.state.filter}' ${fullTitleText}`
+    const fullHeaderText = `Visualizing differences using Analysis:'${this.state.filter}' ${fullTitleText}`
     // let headerText = fullHeaderText.length > MAX_TITLE_LENGTH ? fullHeaderText.substr(0,this.MAX_TITLE_LENGTH)+ '...' : fullHeaderText
 
     // crosshair should be relative to the opened labels
@@ -927,29 +927,6 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{visibility: this.state.loading===LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
-          {/*<button type='button'>Visualization description</button>*/}
-
-          <button
-            className={BaseStyle.analysisTitleSelector}
-            onClick={()=>this.setState({showDescription: true})}
-            title={fullHeaderText}
-          >
-            Description
-            <FaInfoCircle/>
-          </button>
-          <Dialog
-            active={this.state.showDescription}
-            onEscKeyDown={() => this.setState({showDescription: false})}
-            onOverlayClick={() => this.setState({showDescription: false})}
-            theme={{
-              dialog: BaseStyle.dialogBase,
-              wrapper: BaseStyle.dialogWrapper,
-            }}
-            title={fullHeaderText}
-          >
-            <Button icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
-          </Dialog>
-
 
           <div
             className={BaseStyle.findNewGeneSets}>
@@ -983,6 +960,31 @@ export default class XenaGeneSetApp extends PureComponent {
             sortGeneSetBy={this.state.sortViewByLabel}
           />
           }
+
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={()=>this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            <FaQuestionCircle/><u>Information</u>
+          </button>
+          <Dialog
+            active={this.state.showDescription}
+            onEscKeyDown={() => this.setState({showDescription: false})}
+            onOverlayClick={() => this.setState({showDescription: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+          >
+            {/*<Button className={BaseStyle.closeDialogButton} floating icon='close' mini onClick={() => this.setState({showDescription: false})} primary raised/>*/}
+            <h2><FaQuestionCircle/><u>Information</u></h2>
+            <h3>
+              {fullHeaderText}
+            </h3>
+            <Button className={BaseStyle.closeDialogButton} icon='close' label='OK' onClick={() => this.setState({showDescription: false})} primary raised/>
+          </Dialog>
+
         </div>
 
 
