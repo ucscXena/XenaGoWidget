@@ -8,6 +8,7 @@ import {
   fetchPathwayActivityMeans, getGeneSetsForView,  lookupGeneByName
 } from '../functions/FetchFunctions'
 import FaTrashO from 'react-icons/lib/fa/trash-o'
+import FaDownload from 'react-icons/lib/fa/download'
 import FaCheckSquare from 'react-icons/lib/fa/check-square'
 import FaTrash from 'react-icons/lib/fa/trash'
 import update from 'immutability-helper'
@@ -430,24 +431,28 @@ export default class GeneSetEditorPopup extends PureComponent {
                     this.setState({customGeneSetName:input.target.value})
                   }
                   placeholder={'Custom Gene Set Name'}
-                  size={50}
+                  size={40}
                   style={{marginBottom: 10}}
                   type='text'
                   value={this.state.customGeneSetName}
                 />
                 <Button
-                  disabled={false}
                   floating
                   mini
                   onClick={() => {
-                    if(confirm(`Remove gene sets ${this.state.customGeneSetName}`)){
-                      this.props.removeCustomGeneSet(this.state.customGeneSetName)
-                    }
+                    const gmtFile = this.state.cartPathways.map( c => {
+                      return `${c.golabel}\t${c.goid ? c.goid : ' '}\t${c.gene.join(' ')}`
+                    }).join('\n')
+                    let dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(gmtFile)
+                    const link = document.createElement('a')
+                    link.href = dataStr
+                    link.download = this.state.customGeneSetName+'.gmt'
+                    link.click()
                   }}
                   raised
                   style={{marginLeft: 20}}
                 >
-                  <FaTrashO  color='orange'/> Remove
+                  <FaDownload /> Download Gene Set
                 </Button>
               </td>
             </tr>
@@ -599,7 +604,6 @@ export default class GeneSetEditorPopup extends PureComponent {
                                     style={{marginLeft:10,fontWeight:'bolder'}}
                                     value={this.state.newGene}
                                   />
-
                                   <Button
                                     disabled={this.state.selectedGenesForGeneSet.length===0}
                                     onClick={() => this.handleRemoveGeneFromGeneSet()}
@@ -639,7 +643,7 @@ export default class GeneSetEditorPopup extends PureComponent {
             {!this.state.editGeneSet &&
             <tr>
               {/*<td colSpan={1}/>*/}
-              <td colSpan={3}>
+              <td colSpan={2}>
                 <div style={{marginTop: 10}}>
                   <Button
                     disabled={this.state.editGeneSet !== undefined || !this.state.customGeneSetName}
@@ -652,6 +656,24 @@ export default class GeneSetEditorPopup extends PureComponent {
                     onClick={() => this.handleCancel()}
                     raised
                   />
+                </div>
+              </td>
+              <td>
+                <div style={{marginTop: 10}}>
+                  <Button
+                    disabled={false}
+                    floating
+                    mini
+                    onClick={() => {
+                      if(confirm(`Remove gene sets ${this.state.customGeneSetName}`)){
+                        this.props.removeCustomGeneSet(this.state.customGeneSetName)
+                      }
+                    }}
+                    raised
+                    style={{marginLeft: 50}}
+                  >
+                    <FaTrashO  color='orange'/> Delete Gene Set
+                  </Button>
                 </div>
               </td>
             </tr>
