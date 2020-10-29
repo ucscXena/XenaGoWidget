@@ -123,7 +123,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       hasUploadFile: false,
-      uploadFileName: 'bob',
+      uploadFileName: '',
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
@@ -1058,7 +1058,9 @@ export default class XenaGeneSetApp extends PureComponent {
             <input
               name="text"
               onChange={(event) => this.setState({ uploadFileName: event.target.value })}
+              placeholder='Upload .gmt gene set file.'
               value={this.state.uploadFileName}/>
+
             <br/>
             <br/>
             <input

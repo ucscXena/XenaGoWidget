@@ -139,6 +139,7 @@ export class AppStorageHandler {
   }
 
   static storeCustomPathways(pathways) {
+    console.log('stored the custom pathway: ',pathways)
     sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
   }
 
