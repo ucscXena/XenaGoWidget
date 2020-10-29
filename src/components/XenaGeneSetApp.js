@@ -1062,7 +1062,7 @@ export default class XenaGeneSetApp extends PureComponent {
             <br/>
             <br/>
             <input
-              name="file" onChange={(event) =>
+              accept=".gmt" name="file" onChange={(event) =>
                 this.handleUploadFileChange(event)} type="file"/>
             <br/>
             <br/>
