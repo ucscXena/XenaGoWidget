@@ -53,6 +53,7 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
+import {doBpaAnalysisForCohorts} from '../service/AnalysisService'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -787,11 +788,14 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   handleUploadFile = (e) => {
-    const outputText = e.target.result
-    AppStorageHandler.storeGeneSetsForView(outputText,this.state.filter)
-    this.storeCustomGeneSet(this.state.uploadFileName,outputText)
+    const gmtData = e.target.result
+    AppStorageHandler.storeGeneSetsForView(gmtData,this.state.filter)
+    this.storeCustomGeneSet(this.state.uploadFileName,gmtData)
     //   // do analysis
     //   // store analysis score somewhere
+    // const tpmData = {}
+    let analyzedData = doBpaAnalysisForCohorts(this.state.selectedCohort, gmtData)
+    console.log('analyzed data output',analyzedData)
     // this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
     this.setState({
       hasUploadFile : true,
