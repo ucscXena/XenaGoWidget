@@ -772,32 +772,32 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   handleUploadFileChange = (event) => {
-    console.log('A input file namem ',event.target.files[0])
     event.preventDefault()
-    console.log('B input file namem ',event.target.files[0])
+    const fileData = new FileReader()
+    fileData.onloadend = this.handleUploadFile
+    fileData.readAsText(event.target.files[0])
     this.setState({
-      hasUploadFile : true,
       uploadFileName: event.target.files[0].name,
       uploadFile: event.target.files[0]
     })
   }
 
-  handleUploadFile = () => {
-    const reader = new FileReader()
-    let outputText
-    reader.onload = async () => {
-      outputText = (this.state.uploadFile)
-      AppStorageHandler.storeGeneSetsForView(outputText,this.state.filter)
-      console.log('added custom gene set ',this.state.uploadFileName,outputText)
-      this.storeCustomGeneSet(this.state.uploadFileName,outputText)
-      // do analysis
-      // store analysis score somewhere
-      this.setState({
-        hasUploadFile : false,
-        uploadFileName: ''
-      })
-    }
-    reader.readAsText(this.state.uploadFile)
+  handleStoreFile = () =>{
+
+  }
+
+  handleUploadFile = (e) => {
+    const outputText = e.target.result
+    AppStorageHandler.storeGeneSetsForView(outputText,this.state.filter)
+    this.storeCustomGeneSet(this.state.uploadFileName,outputText)
+    //   // do analysis
+    //   // store analysis score somewhere
+    this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
+    this.setState({
+      hasUploadFile : true,
+      uploadFileName: '',
+      showUploadDialog: false,
+    })
   }
 
   render() {
@@ -1054,11 +1054,12 @@ export default class XenaGeneSetApp extends PureComponent {
             }}
             title="Upload Gene Sets"
           >
-            Gene Set Name:
+            Gene Set Name
             <input
               name="text"
               onChange={(event) => this.setState({ uploadFileName: event.target.value })}
               placeholder='Upload .gmt gene set file.'
+              size={40}
               value={this.state.uploadFileName}/>
 
             <br/>
@@ -1068,9 +1069,10 @@ export default class XenaGeneSetApp extends PureComponent {
                 this.handleUploadFileChange(event)} type="file"/>
             <br/>
             <br/>
-            <button
+            <Button
               disabled={!this.state.hasUploadFile}
-              onClick={(event) => this.handleUploadFile(event)} type='button'>Upload</button>
+              onClick={(event) => this.handleUploadFile(event)}
+              primary raised type='button'>Add</Button>
 
 
           </Dialog>
