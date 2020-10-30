@@ -792,7 +792,7 @@ export default class XenaGeneSetApp extends PureComponent {
     this.storeCustomGeneSet(this.state.uploadFileName,outputText)
     //   // do analysis
     //   // store analysis score somewhere
-    this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
+    // this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
     this.setState({
       hasUploadFile : true,
       uploadFileName: '',
