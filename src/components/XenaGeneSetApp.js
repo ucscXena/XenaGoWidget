@@ -791,8 +791,10 @@ export default class XenaGeneSetApp extends PureComponent {
     //   // store analysis score somewhere
     console.log('doing analysis')
     try {
-      let analyzedData = await doBpaAnalysisForCohorts(selectedCohort, gmtData)
-      console.log(`Analyzed data: ${analyzedData}`)
+      let analyzedData1 = await doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
+      console.log(`Analyzed data 1: ${analyzedData1}`)
+      let analyzedData2 = await doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
+      console.log(`Analyzed data 2: ${analyzedData2}`)
       this.setState({
         showUploadDialog: false
       })
