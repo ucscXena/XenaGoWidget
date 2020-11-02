@@ -1,4 +1,20 @@
 import axios from 'axios'
+import {getCohortDetails} from '../functions/CohortFunctions'
+
+
+export function generateTpmDownloadUrlFromCohorts(cohorts){
+  return [
+    generateTpmFromCohort(cohorts[0]),
+    generateTpmFromCohort(cohorts[1])
+  ]
+}
+
+function generateTpmFromCohort(cohort){
+  console.log('input cohort',cohort)
+  const selectedCohort = getCohortDetails(cohort)
+  console.log('selectec cohorts',selectedCohort)
+  return `${selectedCohort['geneExpression'].host}/download/${selectedCohort['geneExpression'].dataset}.gz`
+}
 
 /**
  * Emulating:  curl -v -F tpmdata=@test-data/TCGA-CHOL_logtpm_forTesting.tsv -F gmtdata=@test-data/Xena_manual_pathways.gmt http://localhost:8000/bpa_analysis
@@ -10,7 +26,7 @@ export async function doBpaAnalysisForCohorts(cohorts, gmtData){
 
   let formData = new FormData()
   formData.append('gmtdata',gmtData)
-  formData.append('tpmdata',[])
+  formData.append('tpmdata',generateTpmDownloadUrlFromCohorts(cohorts).toString())
   formData.append('input','text')
   const response = await axios.post('http://localhost:8000/bpa_analysis',
     formData,{
