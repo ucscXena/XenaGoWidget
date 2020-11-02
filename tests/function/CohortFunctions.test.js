@@ -176,8 +176,18 @@ describe('Test Cohorts', () => {
         name: 'TCGA Bile Duct Cancer (CHOL)'
       }
     ]
-    let output = generateTpmDownloadUrlFromCohorts(selectedCohorts)
-    expect(output).toEqual(['https://xenago.xenahubs.net/download/expr_tpm/TCGA-OV_tpm_tab.tsv.gz', 'https://xenago.xenahubs.net/download/expr_tpm/TCGA-CHOL_tpm_tab.tsv.gz'])
+    const output = generateTpmDownloadUrlFromCohorts(selectedCohorts)
+    const expectedOutput =     [
+      {
+        name: 'TCGA Ovarian Cancer (OV)',
+        url: 'https://xenago.xenahubs.net/download/expr_tpm/TCGA-OV_tpm_tab.tsv.gz'
+      },
+      {
+        name: 'TCGA Bile Duct Cancer (CHOL)',
+        url: 'https://xenago.xenahubs.net/download/expr_tpm/TCGA-CHOL_tpm_tab.tsv.gz'
+      }
+    ]
+    expect(output).toEqual(expectedOutput)
   })
 })
 

@@ -4,8 +4,14 @@ import {getCohortDetails} from '../functions/CohortFunctions'
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
   return [
-    generateTpmFromCohort(cohorts[0]),
-    generateTpmFromCohort(cohorts[1])
+    {
+      name: cohorts[0].name,
+      url: generateTpmFromCohort(cohorts[0]),
+    },
+    {
+      name: cohorts[1].name,
+      url: generateTpmFromCohort(cohorts[1]),
+    },
   ]
 }
 
@@ -24,9 +30,11 @@ function generateTpmFromCohort(cohort){
  */
 export async function doBpaAnalysisForCohorts(cohorts, gmtData){
 
+  const tpmData = generateTpmDownloadUrlFromCohorts(cohorts).toString()
+  console.log('tpmdata',tpmData)
   let formData = new FormData()
   formData.append('gmtdata',gmtData)
-  formData.append('tpmdata',generateTpmDownloadUrlFromCohorts(cohorts).toString())
+  formData.append('tpmdata',tpmData)
   formData.append('input','text')
   const response = await axios.post('http://localhost:8000/bpa_analysis',
     formData,{
@@ -36,7 +44,7 @@ export async function doBpaAnalysisForCohorts(cohorts, gmtData){
       }
     }
   )
-  console.log(response)
+  console.log('response',response)
 
   return response
 
