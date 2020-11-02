@@ -9,8 +9,9 @@ import axios from 'axios'
 export async function doBpaAnalysisForCohorts(cohorts, gmtData){
 
   let formData = new FormData()
-  formData.gmtData = gmtData
-  formData.tpmData = []
+  formData.append('gmtdata',gmtData)
+  formData.append('tpmdata',[])
+  formData.append('input','text')
   const response = await axios.post('http://localhost:8000/bpa_analysis',
     formData,{
       headers: {
