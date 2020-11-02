@@ -783,24 +783,32 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
-  handleStoreFile = () =>{
-
+  handleStoreFile = async () =>{
+    let { gmtData, filter, uploadFileName, selectedCohort} = this.state
+    AppStorageHandler.storeGeneSetsForView(gmtData,filter)
+    this.storeCustomGeneSet(uploadFileName,gmtData)
+    //   // do analysis
+    //   // store analysis score somewhere
+    console.log('doing analysis')
+    try {
+      let analyzedData = await doBpaAnalysisForCohorts(selectedCohort, gmtData)
+      console.log(`Analyzed data: ${analyzedData}`)
+      this.setState({
+        showUploadDialog: false
+      })
+    } catch (e) {
+      alert(e)
+    }
   }
 
   handleUploadFile = (e) => {
     const gmtData = e.target.result
-    AppStorageHandler.storeGeneSetsForView(gmtData,this.state.filter)
-    this.storeCustomGeneSet(this.state.uploadFileName,gmtData)
-    //   // do analysis
-    //   // store analysis score somewhere
-    // const tpmData = {}
-    let analyzedData = doBpaAnalysisForCohorts(this.state.selectedCohort, gmtData)
-    console.log('analyzed data output',analyzedData)
+    console.log('analyzed data output',gmtData)
     // this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
     this.setState({
+      gmtData,
       hasUploadFile : true,
       uploadFileName: '',
-      showUploadDialog: false,
     })
   }
 
@@ -1075,7 +1083,7 @@ export default class XenaGeneSetApp extends PureComponent {
             <br/>
             <Button
               disabled={!this.state.hasUploadFile}
-              onClick={(event) => this.handleUploadFile(event)}
+              onClick={(event) => this.handleStoreFile(event)}
               primary raised type='button'>Add</Button>
 
 
