@@ -31,7 +31,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           onClick={() => this.props.onChangeGeneSetLimit(
             this.state.geneSetLimit,
             this.state.sortGeneSetBy,
-            this.state.selectedGeneSets,
+            this.props.selectedGeneSets,
             true,
           )
           }>

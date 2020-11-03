@@ -721,6 +721,7 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
+    console.log('input gene set',geneSet,'from ',this.state.selectedGeneSets)
     console.log('custom gene sets')
     console.log(this.state.customGeneSets)
     this.setState({
