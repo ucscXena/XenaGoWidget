@@ -59,25 +59,18 @@ export function createMeanMap(analyzedDatum) {
     const values = Object.values(entry[1]).filter( v => {
       return typeof v === 'number'
     })
-    const mean = values.reduce( (a,b) => (a + b) / values.length )
-    returnMap[key] = mean
+    returnMap[key] = values.reduce( (a,b) => (a + b) / values.length )
   }
 
   return returnMap
 }
 
 export function calculateGeneSetActivity(selectedCohort,gmtData,analyzedData){
-  // console.log(selectedCohort)
-  // console.log(gmtData)
-  // console.log(analyzedData)
-
-
   const meanMapA = createMeanMap(analyzedData[0][0])
   const meanMapB = createMeanMap(analyzedData[1][0])
-
-  const baseReturn = gmtData.split('\n').map( line => {
+  return gmtData.split('\n').map( line => {
     const entries = line.split('\t')
-    const key = entries[0]+' ('+entries[1]+')'
+    const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
     return {
       golabel: entries[0],
       goid: entries[1],
@@ -86,9 +79,6 @@ export function calculateGeneSetActivity(selectedCohort,gmtData,analyzedData){
       secondGeneExpressionPathwayActivity: meanMapB[key],
     }
   } )
-  let cohortA = JSON.parse(JSON.stringify(baseReturn))
-  let cohortB = JSON.parse(JSON.stringify(baseReturn))
-  return [ cohortA,cohortB]
 }
 
 

@@ -202,6 +202,7 @@ export default class XenaGeneSetApp extends PureComponent {
   onUpload = () => {
     this.setState({
       showUploadDialog: true,
+      uploadFileName: ''
     })
   }
 
