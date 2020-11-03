@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
 import FaPlus from 'react-icons/lib/fa/plus'
-// import FaCopy from 'react-icons/lib/fa/copy'
 import FaUpload from 'react-icons/lib/fa/upload'
 import FaEdit from 'react-icons/lib/fa/edit'
 

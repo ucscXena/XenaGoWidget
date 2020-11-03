@@ -195,7 +195,7 @@ export default class XenaGeneSetApp extends PureComponent {
   showConfiguration = (geneSetName) => {
     this.setState({
       showGeneSetSearch: true,
-      selectedGeneSet: geneSetName,
+      selectedGeneSets: geneSetName,
     })
   }
 
@@ -614,8 +614,9 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   setGeneSetOption = (selectedGeneSets) => {
+    console.log('setting gene sets optoin',selectedGeneSets,this.state.selectedGeneSets)
     this.setState({
-      selectedGeneSets,
+      selectedGeneSets:selectedGeneSets,
     })
   }
 
@@ -720,7 +721,7 @@ export default class XenaGeneSetApp extends PureComponent {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
     this.setState({
-      selectedGenSet: geneSet,
+      selectedGeneSets: geneSet,
       reloadPathways: doSearch,
       geneSetLimit: limit,
       sortViewByLabel: method,
@@ -924,7 +925,7 @@ export default class XenaGeneSetApp extends PureComponent {
           <GeneSetEditorPopup
             cancelPathwayEdit={() => this.setState(
               {showGeneSetSearch: false})}
-            customGeneSetName={this.state.selectedGeneSet}
+            customGeneSetName={this.state.selectedGeneSets}
             getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
             getCustomGeneSet={this.getCustomGeneSet}
             isCustomGeneSet={this.isCustomGeneSet}
