@@ -47,8 +47,8 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData){
     }
   )
   console.log('response',response)
-
-  return response
+  const { data} = response
+  return data
 
 }
 
