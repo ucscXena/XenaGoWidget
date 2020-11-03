@@ -53,7 +53,7 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-import {doBpaAnalysisForCohorts} from '../service/AnalysisService'
+import {calculateGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -720,6 +720,8 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
+    console.log('custom gene sets')
+    console.log(this.state.customGeneSets)
     this.setState({
       selectedGeneSets: geneSet,
       reloadPathways: doSearch,
@@ -784,13 +786,15 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
+
+
   handleStoreFile = async () =>{
     let { gmtData, filter, uploadFileName, selectedCohort} = this.state
-    AppStorageHandler.storeGeneSetsForView(gmtData,filter)
-    this.storeCustomGeneSet(uploadFileName,gmtData)
+
     //   // do analysis
     //   // store analysis score somewhere
-    console.log('doing analysis')
+    console.log('gmtdata')
+    console.log(gmtData)
     try {
       let analyzedData1 = await doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
       // console.log(`Analyzed data 1: ${analyzedData1}`)
@@ -798,6 +802,14 @@ export default class XenaGeneSetApp extends PureComponent {
       let analyzedData2 = await doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
       // console.log(`Analyzed data 2: ${JSON.stringify(analyzedData2)}`)
       console.log(analyzedData2)
+
+
+      const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData1,analyzedData2)
+      console.log(customGeneSetData)
+
+
+      AppStorageHandler.storeGeneSetsForView(gmtData,filter)
+      this.storeCustomGeneSet(uploadFileName,gmtData)
       this.setState({
         showUploadDialog: false
       })
