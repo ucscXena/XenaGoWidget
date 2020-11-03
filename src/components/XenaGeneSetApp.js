@@ -780,6 +780,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const fileData = new FileReader()
     fileData.onloadend = this.handleUploadFile
     fileData.readAsText(event.target.files[0])
+    console.log('upload file name',event.target.files[0].name)
     this.setState({
       uploadFileName: event.target.files[0].name,
       uploadFile: event.target.files[0]
@@ -828,12 +829,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleUploadFile = (e) => {
     const gmtData = e.target.result
-    console.log('analyzed data output',gmtData)
-    // this.storeCustomGeneSet(this.state.uploadFileName,this.state.filter)
     this.setState({
       gmtData,
       hasUploadFile : true,
-      uploadFileName: '',
     })
   }
 
