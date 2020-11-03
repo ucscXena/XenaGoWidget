@@ -1,6 +1,5 @@
 import expect from 'expect'
 import {AppStorageHandler} from '../../src/service/AppStorageHandler'
-import {VIEW_ENUM} from "../../src/data/ViewEnum";
 
 const addedCohort1 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort1','samples':'TCGA-BR-8384-01,TCGA-BR-4371-01'},{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01'}]
 const addedCohort2 = [{'cohort':'TCGA Stomach Cancer (STAD)','subCohortName':'From_Xena_Cohort2','samples':'TCGA-D7-6822-01,TCGA-BR-8485-01,TCGA-BR-4371-01'}]

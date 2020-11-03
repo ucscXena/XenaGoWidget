@@ -796,13 +796,19 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('gmtdata')
     console.log(gmtData)
     try {
-      let analyzedData1 = await doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
+      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
       // console.log(`Analyzed data 1: ${analyzedData1}`)
       console.log(analyzedData1)
-      let analyzedData2 = await doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
+      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
       // console.log(`Analyzed data 2: ${JSON.stringify(analyzedData2)}`)
       console.log(analyzedData2)
 
+      console.log(JSON.stringify(selectedCohort))
+
+      console.log('awaiting ')
+      const analyzedData = await Promise.all([analyzedData1,analyzedData2])
+      console.log('awaited')
+      console.log(analyzedData)
 
       const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData1,analyzedData2)
       console.log(customGeneSetData)
