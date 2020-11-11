@@ -41,7 +41,7 @@ export default class GeneSetEditorComponent extends PureComponent {
         <input
           className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
             this.setState({geneSetLimit: limit.target.value})
-            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.state.selectedGeneSets)
+            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false)
           }}
           size={3} type='text'
           value={this.state.geneSetLimit}/>
@@ -54,7 +54,7 @@ export default class GeneSetEditorComponent extends PureComponent {
               sortGeneSetBy: sortBy,
               sortGeneSetByLabel: method.target.value
             })
-            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.state.selectedGeneSets)
+            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false)
           }}
           value={`${this.state.sortGeneSetBy} Gene Sets`}
         >

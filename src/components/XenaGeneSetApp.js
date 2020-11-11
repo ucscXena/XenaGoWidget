@@ -724,6 +724,8 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('input gene set',geneSet,'from ',this.state.selectedGeneSets)
     console.log('custom gene sets')
     console.log(this.state.customGeneSets)
+    console.log('input args')
+    console.log(limit,method,geneSet,doSearch)
     this.setState({
       selectedGeneSets: geneSet,
       reloadPathways: doSearch,
