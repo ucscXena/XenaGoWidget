@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
 import FaPlus from 'react-icons/lib/fa/plus'
+import FaUpload from 'react-icons/lib/fa/upload'
 import FaEdit from 'react-icons/lib/fa/edit'
 
 
@@ -30,7 +31,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           onClick={() => this.props.onChangeGeneSetLimit(
             this.state.geneSetLimit,
             this.state.sortGeneSetBy,
-            this.state.selectedGeneSets,
+            this.props.selectedGeneSets,
             true,
           )
           }>
@@ -40,7 +41,7 @@ export default class GeneSetEditorComponent extends PureComponent {
         <input
           className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
             this.setState({geneSetLimit: limit.target.value})
-            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.state.selectedGeneSets)
+            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false)
           }}
           size={3} type='text'
           value={this.state.geneSetLimit}/>
@@ -53,7 +54,7 @@ export default class GeneSetEditorComponent extends PureComponent {
               sortGeneSetBy: sortBy,
               sortGeneSetByLabel: method.target.value
             })
-            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.state.selectedGeneSets)
+            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false)
           }}
           value={`${this.state.sortGeneSetBy} Gene Sets`}
         >
@@ -90,6 +91,12 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaEdit style={{fontSize: 'small'}}/>
         </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetUpload()}
+        >
+          <FaUpload style={{fontSize: 'small'}}/>
+        </button>
       </div>
     )
   }
@@ -100,6 +107,7 @@ GeneSetEditorComponent.propTypes = {
   customGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
+  handleGeneSetUpload: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,

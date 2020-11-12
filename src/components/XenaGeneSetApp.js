@@ -53,6 +53,7 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
+import {calculateGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -112,6 +113,7 @@ export default class XenaGeneSetApp extends PureComponent {
       associatedData: [],
       selectedCohort: cohorts,
       subCohortCounts: [],
+      showUploadDialog: false,
       cohortColors,
       fetch: false,
       automaticallyReloadPathways: true,
@@ -121,6 +123,10 @@ export default class XenaGeneSetApp extends PureComponent {
       showColorEditor: false,
       showCohortEditor: false,
       showDiffLabel: true,
+      hasUploadFile: false,
+      calculatingUpload: false,
+      uploadFileName: '',
+      uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: AppStorageHandler.getCustomPathways(),
@@ -190,7 +196,14 @@ export default class XenaGeneSetApp extends PureComponent {
   showConfiguration = (geneSetName) => {
     this.setState({
       showGeneSetSearch: true,
-      selectedGeneSet: geneSetName,
+      selectedGeneSets: geneSetName,
+    })
+  }
+
+  onUpload = () => {
+    this.setState({
+      showUploadDialog: true,
+      uploadFileName: ''
     })
   }
 
@@ -604,7 +617,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   setGeneSetOption = (selectedGeneSets) => {
     this.setState({
-      selectedGeneSets,
+      selectedGeneSets:selectedGeneSets,
     })
   }
 
@@ -709,7 +722,7 @@ export default class XenaGeneSetApp extends PureComponent {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
     this.setState({
-      selectedGenSet: geneSet,
+      selectedGeneSets: geneSet,
       reloadPathways: doSearch,
       geneSetLimit: limit,
       sortViewByLabel: method,
@@ -761,6 +774,64 @@ export default class XenaGeneSetApp extends PureComponent {
     return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
 
+  handleUploadFileChange = (event) => {
+    event.preventDefault()
+    const fileData = new FileReader()
+    fileData.onloadend = this.handleUploadFile
+    fileData.readAsText(event.target.files[0])
+    this.setState({
+      uploadFileName: event.target.files[0].name,
+      uploadFile: event.target.files[0]
+    })
+  }
+
+
+
+  handleStoreFile = async () =>{
+    let { gmtData, filter, uploadFileName, selectedCohort} = this.state
+
+    if(this.isCustomGeneSet(uploadFileName)){
+      alert(`${uploadFileName} already exists.  Please choose another name`)
+      return
+    }
+
+    try {
+      this.setState({
+        hasUploadFile: false,
+        calculatingUpload: true,
+      })
+
+      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
+      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
+      const analyzedData = await Promise.all([analyzedData1,analyzedData2])
+      const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData)
+
+
+      AppStorageHandler.storeGeneSetsForView(gmtData,filter)
+
+      this.storeCustomGeneSet(uploadFileName,customGeneSetData)
+      this.setState({
+        showUploadDialog: false,
+        calculatingUpload: false,
+        selectedGeneSets:uploadFileName,
+        fetch: true, // triggers fetch here, but may not be
+      })
+    } catch (e) {
+      alert(`There was a problem analyzing the data ${e.toString()}`)
+      this.setState({
+        showUploadDialog: false,
+        calculatingUpload: false,
+      })
+    }
+  }
+
+  handleUploadFile = (e) => {
+    const gmtData = e.target.result
+    this.setState({
+      gmtData,
+      hasUploadFile : true,
+    })
+  }
 
   render() {
     const storedPathways = AppStorageHandler.getPathways()
@@ -870,7 +941,7 @@ export default class XenaGeneSetApp extends PureComponent {
           <GeneSetEditorPopup
             cancelPathwayEdit={() => this.setState(
               {showGeneSetSearch: false})}
-            customGeneSetName={this.state.selectedGeneSet}
+            customGeneSetName={this.state.selectedGeneSets}
             getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
             getCustomGeneSet={this.getCustomGeneSet}
             isCustomGeneSet={this.isCustomGeneSet}
@@ -914,6 +985,7 @@ export default class XenaGeneSetApp extends PureComponent {
             customGeneSets={this.state.customGeneSets[this.state.filter]}
             geneSetLimit={this.state.geneSetLimit}
             handleGeneEdit={this.showConfiguration}
+            handleGeneSetUpload={this.onUpload}
             isCustomGeneSet={this.isCustomGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
             selectedGeneSets={this.state.selectedGeneSets}
@@ -1005,6 +1077,40 @@ export default class XenaGeneSetApp extends PureComponent {
             />
           </Dialog>
           }
+          <Dialog
+            active={this.state.showUploadDialog}
+            onEscKeyDown={() => this.setState({showUploadDialog: false})}
+            onOverlayClick={() => this.setState({showUploadDialog: false})}
+            theme={{
+              dialog: BaseStyle.dialogBase,
+              wrapper: BaseStyle.dialogWrapper,
+            }}
+            title="Upload Gene Sets"
+          >
+            Gene Set Name
+            <input
+              disabled={this.state.calculatingUpload}
+              name="text"
+              onChange={(event) => this.setState({ uploadFileName: event.target.value })}
+              placeholder='Upload .gmt gene set file.'
+              size={40}
+              value={this.state.uploadFileName}/>
+
+            <br/>
+            <br/>
+            <input
+              accept=".gmt"
+              disabled={this.state.calculatingUpload} name="file" onChange={(event) =>
+                this.handleUploadFileChange(event)} type="file"/>
+            <br/>
+            <br/>
+            <Button
+              disabled={!this.state.hasUploadFile}
+              onClick={(event) => this.handleStoreFile(event)}
+              primary raised type='button'>{this.state.calculatingUpload ? 'Analyzing ...' : 'Add' }</Button>
+
+
+          </Dialog>
           <table style={{marginTop: LEGEND_HEIGHT+5}}>
             <tbody>
               <tr>
@@ -1102,4 +1208,5 @@ export default class XenaGeneSetApp extends PureComponent {
         </div>
       </div>)
   }
+
 }

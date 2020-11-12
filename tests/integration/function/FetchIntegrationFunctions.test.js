@@ -8,7 +8,7 @@ describe('Fetch Functions', () => {
   beforeEach(function(done) {
     window.setTimeout(function() {
       done()
-    }, 0)
+    }, 1000)
   })
 
   it('Fetch all samples for cohort', (done) => {
@@ -58,7 +58,7 @@ describe('Fetch Functions', () => {
     }
     const cohortDetails = getCohortDetails(cohort)
     getSamplesForCohortAndView(cohortDetails,VIEW_ENUM.GENE_EXPRESSION).do( (a) => {
-      return a 
+      return a
     }).subscribe( (result) => {
       expect(result.length).toEqual(574)
       done()
