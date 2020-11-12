@@ -124,6 +124,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showCohortEditor: false,
       showDiffLabel: true,
       hasUploadFile: false,
+      calculatingUpload: false,
       uploadFileName: '',
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
@@ -721,6 +722,7 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
+    console.log('calculated sorting method: ',method,sortViewBy,sortViewOrder,filterBy,filterOrder)
     console.log('input gene set',geneSet,'from ',this.state.selectedGeneSets)
     console.log('custom gene sets')
     console.log(this.state.customGeneSets)
@@ -796,35 +798,24 @@ export default class XenaGeneSetApp extends PureComponent {
   handleStoreFile = async () =>{
     let { gmtData, filter, uploadFileName, selectedCohort} = this.state
 
-    //   // do analysis
-    //   // store analysis score somewhere
-    // console.log('gmtdata')
-    // console.log(gmtData)
-    // console.log(JSON.stringify(selectedCohort))
     try {
-      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
-      // console.log(`Analyzed data 1: ${analyzedData1}`)
-      // console.log(analyzedData1)
-      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
-      // console.log(`Analyzed data 2: ${JSON.stringify(analyzedData2)}`)
-      // console.log(analyzedData2)
-      // console.log(JSON.stringify(selectedCohort))
+      this.setState({
+        hasUploadFile: false,
+        calculatingUpload: true,
+      })
 
-      // console.log('awaiting ')
+      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
+      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
       const analyzedData = await Promise.all([analyzedData1,analyzedData2])
-      // console.log('awaited')
-      // console.log(analyzedData)
-      // console.log(JSON.stringify(analyzedData))
       const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData)
-      console.log(customGeneSetData)
-      // console.log(JSON.stringify(customGeneSetData))
 
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
       // this.storeCustomGeneSet(uploadFileName,gmtData)
       this.storeCustomGeneSet(uploadFileName,customGeneSetData)
       this.setState({
-        showUploadDialog: false
+        showUploadDialog: false,
+        calculatingUpload: false,
       })
     } catch (e) {
       alert(e)
@@ -1111,7 +1102,7 @@ export default class XenaGeneSetApp extends PureComponent {
             <Button
               disabled={!this.state.hasUploadFile}
               onClick={(event) => this.handleStoreFile(event)}
-              primary raised type='button'>Add</Button>
+              primary raised type='button'>{this.state.calculatingUpload ? 'Analyzing ...' : 'Add' }</Button>
 
 
           </Dialog>
