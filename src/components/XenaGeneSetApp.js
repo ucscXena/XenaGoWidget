@@ -616,7 +616,6 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   setGeneSetOption = (selectedGeneSets) => {
-    console.log('setting gene sets optoin',selectedGeneSets,this.state.selectedGeneSets)
     this.setState({
       selectedGeneSets:selectedGeneSets,
     })
@@ -722,12 +721,6 @@ export default class XenaGeneSetApp extends PureComponent {
   handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
     currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
-    console.log('calculated sorting method: ',method,sortViewBy,sortViewOrder,filterBy,filterOrder)
-    console.log('input gene set',geneSet,'from ',this.state.selectedGeneSets)
-    console.log('custom gene sets')
-    console.log(this.state.customGeneSets)
-    console.log('input args')
-    console.log(limit,method,geneSet,doSearch)
     this.setState({
       selectedGeneSets: geneSet,
       reloadPathways: doSearch,
@@ -786,7 +779,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const fileData = new FileReader()
     fileData.onloadend = this.handleUploadFile
     fileData.readAsText(event.target.files[0])
-    console.log('upload file name',event.target.files[0].name)
     this.setState({
       uploadFileName: event.target.files[0].name,
       uploadFile: event.target.files[0]
@@ -800,10 +792,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
     if(this.isCustomGeneSet(uploadFileName)){
       alert(`${uploadFileName} already exists.  Please choose another name`)
-      // this.setState({
-      //   showUploadDialog: false,
-      //   calculatingUpload: false,
-      // })
       return
     }
 

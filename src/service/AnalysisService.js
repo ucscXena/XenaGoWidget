@@ -16,9 +16,7 @@ export function generateTpmDownloadUrlFromCohorts(cohorts){
 }
 
 function generateTpmFromCohort(cohort){
-  console.log('input cohort',cohort)
   const selectedCohort = getCohortDetails(cohort)
-  console.log('selectec cohorts',selectedCohort)
   return `${selectedCohort['geneExpression'].host}/download/${selectedCohort['geneExpression'].dataset}.gz`
 }
 
@@ -30,9 +28,7 @@ function generateTpmFromCohort(cohort){
  */
 export async function doBpaAnalysisForCohorts(cohort, gmtData){
 
-  const tpmData = generateTpmFromCohort(cohort)
-  console.log('cohort',cohort.name)
-  console.log('tpmdata',tpmData)
+  // const tpmData = generateTpmFromCohort(cohort)
   let formData = new FormData()
   formData.append('gmtdata',gmtData)
   formData.append('tpmname',cohort.name)
@@ -46,7 +42,6 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData){
       }
     }
   )
-  console.log('response',response)
   const { data} = response
   return data
 

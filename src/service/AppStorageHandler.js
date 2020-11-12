@@ -96,7 +96,6 @@ export class AppStorageHandler {
   static checkGeneSets() {
     try {
       const results = JSON.parse(sessionStorage.getItem(LOCAL_GENESETS_STORAGE))
-      console.log('results, ',results)
       if( results[VIEW_ENUM.GENE_EXPRESSION]){
         return true
       }
@@ -104,7 +103,6 @@ export class AppStorageHandler {
         return AppStorageHandler.createGeneSets()
       }
     } catch (e) {
-      console.log('does not exist so creating')
       return AppStorageHandler.createGeneSets()
     }
   }
@@ -114,9 +112,7 @@ export class AppStorageHandler {
       let obj = {}
       obj[v] = {}
       return obj
-    }
-    )
-    console.log('gene set created',geneSets)
+    })
     return this.storeGeneSets(geneSets)
   }
 
@@ -139,7 +135,6 @@ export class AppStorageHandler {
   }
 
   static storeCustomPathways(pathways) {
-    console.log('stored the custom pathway: ',pathways)
     sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
   }
 
