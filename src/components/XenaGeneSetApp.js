@@ -820,7 +820,11 @@ export default class XenaGeneSetApp extends PureComponent {
         fetch: true, // triggers fetch here, but may not be
       })
     } catch (e) {
-      alert(e)
+      this.setState({
+        showUploadDialog: false,
+        calculatingUpload: false,
+      })
+      alert(`There was a problem analyzing the data ${e.toString()}`)
     }
   }
 
