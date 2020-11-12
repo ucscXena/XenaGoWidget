@@ -811,11 +811,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
-      // this.storeCustomGeneSet(uploadFileName,gmtData)
+
       this.storeCustomGeneSet(uploadFileName,customGeneSetData)
       this.setState({
         showUploadDialog: false,
         calculatingUpload: false,
+        selectedGeneSets:uploadFileName,
+        fetch: true, // triggers fetch here, but may not be
       })
     } catch (e) {
       alert(e)
