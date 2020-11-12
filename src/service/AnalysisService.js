@@ -63,19 +63,19 @@ export function createMeanMap(analyzedDatum) {
 export function calculateGeneSetActivity(selectedCohort,gmtData,analyzedData){
   const meanMapA = createMeanMap(analyzedData[0][0])
   const meanMapB = createMeanMap(analyzedData[1][0])
-  return gmtData.split('\n').filter( l => {
-    return l.split('\t').length > 2
-  }).map( line => {
-    const entries = line.split('\t')
-    const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
-    return {
-      golabel: entries[0],
-      goid: entries[1],
-      gene: entries.slice(2),
-      firstGeneExpressionPathwayActivity: meanMapA[key],
-      secondGeneExpressionPathwayActivity: meanMapB[key],
-    }
-  } )
+  return gmtData.split('\n')
+    .filter( l => l.split('\t').length>2)
+    .map( line => {
+      const entries = line.split('\t')
+      const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
+      return {
+        golabel: entries[0],
+        goid: entries[1],
+        gene: entries.slice(2),
+        firstGeneExpressionPathwayActivity: meanMapA[key],
+        secondGeneExpressionPathwayActivity: meanMapB[key],
+      }
+    } )
 }
 
 
