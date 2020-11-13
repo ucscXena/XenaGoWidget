@@ -300,6 +300,8 @@ export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
   const geneList = getGenesForPathways(pathways)
+  console.log('input pathways',pathways)
+  console.log('genes for pathways',geneList)
   let filterCounts
 
   function fetchDataForRegulon(selectedCohorts, samplesA,samplesB, geneList, geneSetLabels) {
@@ -437,6 +439,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     getSamplesForCohortAndView(selectedCohorts[0],view),
     getSamplesForCohortAndView(selectedCohorts[1],view),
   ).flatMap( (unfilteredSamples) => {
+    console.log('unfiltered samples',unfilteredSamples)
     filterCounts = [
       createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
       createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),

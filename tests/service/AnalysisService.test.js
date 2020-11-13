@@ -13,8 +13,12 @@ describe('Analysis Service Test', () => {
 
   it('Convert gmt and analyzed data into gene set', () => {
     const outputData = calculateGeneSetActivity(TEST_SELECTED_COHORTS,TEST_GMT_DATA,TEST_ANALYZED)
-    console.log(JSON.stringify(outputData))
+    // console.log(JSON.stringify(outputData))
     // expect(outputData!==null)
+  })
+
+  it('Calculate mean maps', () => {
+    const inputValues = [14.1672, 13.9714, 15.1691, 15.449, 14.8068, 13.6556, 15.5381, 14.996, 15.4449, 14.9837, 14.0538, 14.8852, 14.1656, 15.855, 15.0555, 13.7733, 15.1556, 13.6874, 15.0858, 14.8161, 15.8089, 15.9541, 15.3173, 13.1746, 15.4854, 15.8444, 14.5385, 15.5576, 15.0205, 15.0058, 15.8734, 15.1135, 12.8538, 14.615, 13.8569, 14.2372, 14.6272, 14.6241, 15.2983, 15.4395, 14.7171, 14.4599];
   })
 
 })

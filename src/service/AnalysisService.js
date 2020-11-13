@@ -50,11 +50,13 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData){
 export function createMeanMap(analyzedDatum) {
   let returnMap = {}
   for( const entry of Object.entries(analyzedDatum)){
+    console.log('entry',entry)
     const key = entry[1].X.replaceAll('+',' ')
     const values = Object.values(entry[1]).filter( v => {
       return typeof v === 'number'
     })
-    returnMap[key] = values.reduce( (a,b) => (a + b) / values.length )
+    console.log('key / value',key,values)
+    returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
   }
 
   return returnMap
@@ -63,6 +65,7 @@ export function createMeanMap(analyzedDatum) {
 export function calculateGeneSetActivity(selectedCohort,gmtData,analyzedData){
   const meanMapA = createMeanMap(analyzedData[0][0])
   const meanMapB = createMeanMap(analyzedData[1][0])
+  console.log('mean maps',meanMapA,meanMapB,analyzedData)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {

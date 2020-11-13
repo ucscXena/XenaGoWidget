@@ -335,7 +335,9 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
+
     console.log('handle combined cohort pathways',pathways)
+    console.log('handle combined cohort input',input)
 
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
       this.state.filter) ? generateZScoreForBoth(geneExpressionA,
@@ -421,6 +423,7 @@ export default class XenaGeneSetApp extends PureComponent {
     currentLoadState = LOAD_STATE.LOADED
 
     const [minGeneValue,maxGeneValue] = getMaxGeneValue(sortedGeneData)
+    console.log('final pathway data',pathwayDataA,pathwayDataB)
     this.setState({
       associatedData: mergedGeneSetData,
       pathwaySelection: selection,
@@ -811,6 +814,8 @@ export default class XenaGeneSetApp extends PureComponent {
       let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
       const analyzedData = await Promise.all([analyzedData1,analyzedData2])
       const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData)
+      console.log('data to store',gmtData,analyzedData)
+      console.log('custom gene set data',customGeneSetData)
 
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
@@ -862,8 +867,10 @@ export default class XenaGeneSetApp extends PureComponent {
               this.state.filter, this.handleCombinedCohortData)
           }
           else{
+            console.log('fetching regular gene expression pathways')
             fetchBestPathways(this.state.selectedCohort, this.state.filter,
               this.handleMeanActivityData)
+            console.log('FETCJ')
           }
           console.log('reload B')
         } else {
