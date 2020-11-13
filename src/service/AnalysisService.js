@@ -47,22 +47,108 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData){
 
 }
 
-export function createMeanMap(analyzedDatum) {
-  let returnMap = {}
-  for( const entry of Object.entries(analyzedDatum)){
-    console.log('entry',entry)
-    const key = entry[1].X.replaceAll('+',' ')
-    const values = Object.values(entry[1]).filter( v => {
-      return typeof v === 'number'
-    })
-    console.log('key / value',key,values)
-    returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
+// eslint-disable-next-line no-unused-vars
+export function getZValues(analyzedData){
+  // 1. map LHS to values
+  // 1. map RHS to values
+  // 1. reduce to mean and variace
+
+  const mean = 3
+  const variance= 0.7
+
+  return {
+    mean,
+    variance,
   }
+}
+
+// eslint-disable-next-line no-unused-vars
+export function getDataStatistics(analyzedData){
+  // 1. map LHS to values
+  // 1. map RHS to values
+  // 1. reduce to mean and variace
+
+  const mean = 3
+  const variance= 0.7
+
+  return {
+    mean,
+    variance,
+  }
+}
+
+export function getSamples(data){
+  console.log('input sample data',data)
+  const samples = data.map( d => {
+    console.log('d',d)
+    return d.X
+  }  )
+  console.log('samples',samples)
+  return samples
+  // for( const entry of Object.entries(analyzedDatum)){
+  //   console.log('entry',entry)
+  //   const key = entry[1].X.replaceAll('+',' ')
+  //   const values = Object.values(entry[1]).filter( v => {
+  //     return typeof v === 'number'
+  //   })
+  //   console.log('key / value',key,values)
+  //   const mean = values.reduce( (a,b) => (a + b) ,0 )/ values.length
+  //   const variance = values.reduce( (a,b) => (a + Math.pow( (b - mean) ,2)))
+  //   const stdev= Math.sqrt(variance)
+  //   const zScores = values.map( x => (( x - mean ) / variance) )
+  //   returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
+  // }
+}
+
+// eslint-disable-next-line no-unused-vars
+export function getZSampleScores(data,mean,variance){
+
+}
+
+// eslint-disable-next-line no-unused-vars
+export function getZPathwayScores(data,mean,variance){
+
+}
+
+export function createMeanMap(analyzedData) {
+  console.log('input data',analyzedData)
+  console.log('input data string',JSON.stringify(analyzedData))
+  const samplesA = getSamples(analyzedData[0][0])
+  const samplesB = getSamples(analyzedData[1][0])
+  const {mean, variance} = getDataStatistics(analyzedData)
+  const zSampleScoresA = getZSampleScores(analyzedData[0][0],mean,variance)
+  const zSampleScoresB = getZSampleScores(analyzedData[1][0],mean,variance)
+  const zPathwayScoresA = getZPathwayScores(analyzedData[0][0],mean,variance)
+  const zPathwayScoresB = getZPathwayScores(analyzedData[1][0],mean,variance)
+
+  // for( const entry of Object.entries(analyzedDatum)){
+  //   console.log('entry',entry)
+  //   const key = entry[1].X.replaceAll('+',' ')
+  //   const values = Object.values(entry[1]).filter( v => {
+  //     return typeof v === 'number'
+  //   })
+  //   console.log('key / value',key,values)
+  //   const mean = values.reduce( (a,b) => (a + b) ,0 )/ values.length
+  //   const variance = values.reduce( (a,b) => (a + Math.pow( (b - mean) ,2)))
+  //   const stdev= Math.sqrt(variance)
+  //   const zScores = values.map( x => (( x - mean ) / variance) )
+  //   returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
+  // }
+
+  let returnMap = {
+    samplesA,
+    samplesB,
+    zSampleScoresA,
+    zSampleScoresB,
+    zPathwayScoresA,
+    zPathwayScoresB,
+  }
+  console.log('return map',returnMap)
 
   return returnMap
 }
 
-export function calculateGeneSetActivity(selectedCohort,gmtData,analyzedData){
+export function calculateCustomGeneSetActivity(selectedCohort, gmtData, analyzedData){
   const meanMapA = createMeanMap(analyzedData[0][0])
   const meanMapB = createMeanMap(analyzedData[1][0])
   console.log('mean maps',meanMapA,meanMapB,analyzedData)

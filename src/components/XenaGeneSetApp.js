@@ -53,7 +53,7 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-import {calculateGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
+import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -813,7 +813,7 @@ export default class XenaGeneSetApp extends PureComponent {
       let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
       let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
       const analyzedData = await Promise.all([analyzedData1,analyzedData2])
-      const customGeneSetData = calculateGeneSetActivity(selectedCohort,gmtData,analyzedData)
+      const customGeneSetData = calculateCustomGeneSetActivity(selectedCohort,gmtData,analyzedData)
       console.log('data to store',gmtData,analyzedData)
       console.log('custom gene set data',customGeneSetData)
 
