@@ -8,7 +8,7 @@ let reactToolboxVariables = {
 module.exports = {
   type: 'react-component',
   babel: {
-    runtime: false,
+    runtime: 'polyfill',
   },
   karma:{
     // browsers: ['Chrome'],

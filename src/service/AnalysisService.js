@@ -79,12 +79,15 @@ export function getDataStatistics(analyzedData){
 
 export function getSamples(data){
   console.log('input sample data',data)
-  const samples = data.map( d => {
-    console.log('d',d)
-    return d.X
-  }  )
-  console.log('samples',samples)
-  return samples
+  const returnArray = new Array()
+  for( const entry of Object.entries(data)) {
+    console.log('entry',entry)
+    console.log('entry1',entry[1])
+    console.log('entryX',entry[1].X)
+    console.log('entry fin',entry[1].X.replaceAll('+', ' '))
+    returnArray.push(entry[1].X.replaceAll('+', ' '))
+  }
+  return returnArray
   // for( const entry of Object.entries(analyzedDatum)){
   //   console.log('entry',entry)
   //   const key = entry[1].X.replaceAll('+',' ')
