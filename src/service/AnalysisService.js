@@ -77,30 +77,28 @@ export function getDataStatistics(analyzedData){
   }
 }
 
+// export function getGeneSetNames(data){
+//   console.log('length input sample data',data.length)
+//   // console.log('input sample data',data)
+//
+//   let returnArray = []
+//   for( const entry of Object.entries(data)) {
+//     console.log('entry',entry)
+//     console.log('entry1',entry[1])
+//     console.log('entryX',entry[1].X)
+//     const entryX = entry[1].X
+//     if(entryX.indexOf(' ')){
+//       returnArray.push(entryX.split(' ')[0])
+//     }
+//     else{
+//       returnArray.push(entryX.trim())
+//     }
+//   }
+//   return returnArray
+// }
+
 export function getSamples(data){
-  console.log('input sample data',data)
-  const returnArray = new Array()
-  for( const entry of Object.entries(data)) {
-    console.log('entry',entry)
-    console.log('entry1',entry[1])
-    console.log('entryX',entry[1].X)
-    console.log('entry fin',entry[1].X.replaceAll('+', ' '))
-    returnArray.push(entry[1].X.replaceAll('+', ' '))
-  }
-  return returnArray
-  // for( const entry of Object.entries(analyzedDatum)){
-  //   console.log('entry',entry)
-  //   const key = entry[1].X.replaceAll('+',' ')
-  //   const values = Object.values(entry[1]).filter( v => {
-  //     return typeof v === 'number'
-  //   })
-  //   console.log('key / value',key,values)
-  //   const mean = values.reduce( (a,b) => (a + b) ,0 )/ values.length
-  //   const variance = values.reduce( (a,b) => (a + Math.pow( (b - mean) ,2)))
-  //   const stdev= Math.sqrt(variance)
-  //   const zScores = values.map( x => (( x - mean ) / variance) )
-  //   returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
-  // }
+  return Object.keys(data[0]).filter( k => k!=='X' )
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -116,6 +114,7 @@ export function getZPathwayScores(data,mean,variance){
 export function createMeanMap(analyzedData) {
   console.log('input data',analyzedData)
   console.log('input data string',JSON.stringify(analyzedData))
+  // const geneSetNames = getGeneSetNames(analyzedData)
   const samplesA = getSamples(analyzedData[0][0])
   const samplesB = getSamples(analyzedData[1][0])
   const {mean, variance} = getDataStatistics(analyzedData)
