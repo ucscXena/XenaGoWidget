@@ -101,6 +101,10 @@ export function getSamples(data){
   return Object.keys(data[0]).filter( k => k!=='X' )
 }
 
+export function getValues(data){
+  return Object.entries(data[0]).filter( k => k[0]!=='X' ).map( d => d[1])
+}
+
 // eslint-disable-next-line no-unused-vars
 export function getZSampleScores(data,mean,variance){
 
@@ -117,7 +121,10 @@ export function createMeanMap(analyzedData) {
   // const geneSetNames = getGeneSetNames(analyzedData)
   const samplesA = getSamples(analyzedData[0][0])
   const samplesB = getSamples(analyzedData[1][0])
-  const {mean, variance} = getDataStatistics(analyzedData)
+  const valuesA = getValues(analyzedData[0][0])
+  const valuesB = getValues(analyzedData[1][0])
+  const values = valuesA.concat(valuesB)
+  const {mean, variance} = getDataStatistics(values)
   const zSampleScoresA = getZSampleScores(analyzedData[0][0],mean,variance)
   const zSampleScoresB = getZSampleScores(analyzedData[1][0],mean,variance)
   const zPathwayScoresA = getZPathwayScores(analyzedData[0][0],mean,variance)
