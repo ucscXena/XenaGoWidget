@@ -51,7 +51,7 @@ export function getZValues(data,mean,variance){
   return data.map( d => (d - mean) / variance )
 }
 
-export function getDataStatistics(arr){
+export function getDataStatisticsForGeneSet(arr){
   function getVariance(arr, mean) {
     return arr.reduce(function(pre, cur) {
       pre = pre + Math.pow((cur - mean), 2)
@@ -84,12 +84,38 @@ export function getGeneSetNames(data){
   return returnArray
 }
 
+export function getValuesForCohort(data){
+  return data.map( d => getValuesForGeneSet(d))
+}
+
+export function getValues(data){
+  return [getValuesForCohort(data[0]),getValuesForCohort(data[1])]
+}
+
+/**
+ * We assume that both the cohorts have been glued together.
+ * @param data
+ * @returns {*}
+ */
+export function getDataStatisticsPerGeneSet(data){
+  const dataA = data[0]
+  const dataB = data[1]
+  let outputData = []
+  for( const i in dataA){
+    const values = dataA[i].concat(dataB[i])
+    const {mean, variance} = getDataStatisticsForGeneSet(values)
+    outputData.push({mean,variance})
+  }
+  return outputData
+}
+
+
 export function getSamples(data){
   return Object.keys(data[0]).filter( k => k!=='X' )
 }
 
-export function getValues(data){
-  return Object.entries(data[0]).filter( k => k[0]!=='X' ).map( d => d[1])
+export function getValuesForGeneSet(data){
+  return Object.entries(data).filter( k => k[0]!=='X' ).map( d => d[1])
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -98,28 +124,30 @@ export function getZSampleScores(data,mean,variance){
 }
 
 // eslint-disable-next-line no-unused-vars
-export function getZPathwayScores(data,mean,variance){
+export function getZPathwayScores(sampleScores){
 
 }
 
 export function createMeanMap(analyzedData) {
   // console.log('input data',analyzedData)
   // console.log('input data string',JSON.stringify(analyzedData))
-  const samplesA = getSamples(analyzedData[0][0])
-  const samplesB = getSamples(analyzedData[1][0])
-
+  const samples = [getSamples(analyzedData[0][0]),getSamples(analyzedData[1][0])]
 
   const geneSetNames = getGeneSetNames(analyzedData[0])
-  // const geneSetLength = geneSetNames.length
-
-  const valuesA = getValues(analyzedData[0][0])
-  const valuesB = getValues(analyzedData[1][0])
-  const values = valuesA.concat(valuesB)
-  const {mean, variance} = getDataStatistics(values)
-  const zSampleScoresA = getZSampleScores(analyzedData[0][0],mean,variance)
-  const zSampleScoresB = getZSampleScores(analyzedData[1][0],mean,variance)
-  const zPathwayScoresA = getZPathwayScores(analyzedData[0][0],mean,variance)
-  const zPathwayScoresB = getZPathwayScores(analyzedData[1][0],mean,variance)
+  const values = getValues(analyzedData)
+  // console.log('values')
+  // console.log(JSON.stringify(values))
+  const { mean,variance} = getDataStatisticsPerGeneSet(values)
+  console.log('mean')
+  console.log(mean)
+  console.log('variance')
+  console.log(variance)
+  const zSampleScores = getZSampleScores(values,mean,variance)
+  const zPathwayScores = getZPathwayScores(zSampleScores)
+  // const zSampleScoresA = getZSampleScores(analyzedData[0][0],mean,variance)
+  // const zSampleScoresB = getZSampleScores(analyzedData[1][0],mean,variance)
+  // const zPathwayScoresA = getZPathwayScores(analyzedData[0][0],mean,variance)
+  // const zPathwayScoresB = getZPathwayScores(analyzedData[1][0],mean,variance)
 
   // for( const entry of Object.entries(analyzedDatum)){
   //   console.log('entry',entry)
@@ -136,12 +164,9 @@ export function createMeanMap(analyzedData) {
   // }
 
   let returnMap = {
-    samplesA,
-    samplesB,
-    zSampleScoresA,
-    zSampleScoresB,
-    zPathwayScoresA,
-    zPathwayScoresB,
+    samples,
+    zSampleScores,
+    zPathwayScores,
     geneSetNames
   }
   console.log('return map',returnMap)

@@ -2,10 +2,10 @@ import expect from 'expect'
 // import {calculateCustomGeneSetActivity, getSamples} from '../../src/service/AnalysisService'
 import {
   createMeanMap,
-  getDataStatistics,
+  getDataStatisticsForGeneSet, getDataStatisticsPerGeneSet,
   getGeneSetNames,
-  getSamples,
-  getValues
+  getSamples, getValues, getValuesForCohort,
+  getValuesForGeneSet
 } from '../../src/service/AnalysisService'
 import TEST_ANALYZED_DATA from '../data/AnalzedTestData'
 
@@ -44,19 +44,36 @@ describe('Analysis Service Test', () => {
   })
 
   it('Get values', () => {
-    const values = getValues(TEST_ANALYZED_DATA)
+    const values = getValuesForGeneSet(TEST_ANALYZED_DATA[0])
     expect(values.length).toEqual(379)
     expect(values[0]).toEqual(17.5313)
     expect(values[378]).toEqual(16.6648)
   })
 
   it('Get data statistics', () => {
-    const values = getValues(TEST_ANALYZED_DATA)
+    const values = getValuesForGeneSet(TEST_ANALYZED_DATA[0])
     expect(values.length).toEqual(379)
-    const {mean, variance} = getDataStatistics(values)
+    const {mean, variance} = getDataStatisticsForGeneSet(values)
     expect(Math.abs(mean-18.539003693931388)).toBeLessThan(0.0000001)
     expect(Math.abs(variance-2.301772809115643)).toBeLessThan(0.0000001)
   })
+
+  it('Get values per cohort', () => {
+    const valuesForCohort = getValuesForCohort(TEST_ANALYZED_DATA)
+    expect(valuesForCohort.length).toEqual(50)
+    expect(valuesForCohort[0].length).toEqual(379)
+  })
+
+  it('Get data statistics PER Gene set', () => {
+    const values = getValues([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
+    const statisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+    expect(statisticsPerGeneSet.length).toEqual(50)
+    expect(Math.abs(statisticsPerGeneSet[0].mean-18.539003693931388)).toBeLessThan(0.0000001)
+    expect(Math.abs(statisticsPerGeneSet[0].variance-2.301772809115643)).toBeLessThan(0.0000001)
+    expect(Math.abs(statisticsPerGeneSet[49].mean-2.9006319261213696)).toBeLessThan(0.0000001)
+    expect(Math.abs(statisticsPerGeneSet[49].variance-0.22969930929734556)).toBeLessThan(0.0000001)
+  })
+
 
 
   // it('Create mean map', () => {
