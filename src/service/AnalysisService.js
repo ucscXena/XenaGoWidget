@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {getCohortDetails} from '../functions/CohortFunctions'
 
+const mean = sampleScores => (sampleScores.reduce((sume, el) => sume + el, 0) )/sampleScores.length
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
   return [
@@ -118,14 +119,30 @@ export function getValuesForGeneSet(data){
   return Object.entries(data).filter( k => k[0]!=='X' ).map( d => d[1])
 }
 
-// eslint-disable-next-line no-unused-vars
-export function getZSampleScores(data,mean,variance){
+
+export function getZSampleScores(values,dataStatisticsPerGeneSet){
+  let scoreValues = []
+  for( let index in values){
+    const { mean, variance} = dataStatisticsPerGeneSet[index]
+    const array = values[index].map( v => (v - mean)/ variance )
+    scoreValues.push(array)
+  }
+  return scoreValues
+}
+
+export function getZPathwayScoresForCohort(sampleScores){
+  return sampleScores.map( d => {
+    return mean(d)
+  })
 
 }
 
 // eslint-disable-next-line no-unused-vars
 export function getZPathwayScores(sampleScores){
-
+  // console.log('input sample scores ',sampleScores)
+  const returnValues = [getZPathwayScoresForCohort(sampleScores[0]),getZPathwayScoresForCohort(sampleScores[1])]
+  console.log(returnValues[0])
+  return returnValues
 }
 
 export function createMeanMap(analyzedData) {
@@ -137,31 +154,11 @@ export function createMeanMap(analyzedData) {
   const values = getValues(analyzedData)
   // console.log('values')
   // console.log(JSON.stringify(values))
-  const { mean,variance} = getDataStatisticsPerGeneSet(values)
-  console.log('mean')
-  console.log(mean)
-  console.log('variance')
-  console.log(variance)
-  const zSampleScores = getZSampleScores(values,mean,variance)
+  const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+  // calculates cohorts separately
+  const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
+  // uses mean separately
   const zPathwayScores = getZPathwayScores(zSampleScores)
-  // const zSampleScoresA = getZSampleScores(analyzedData[0][0],mean,variance)
-  // const zSampleScoresB = getZSampleScores(analyzedData[1][0],mean,variance)
-  // const zPathwayScoresA = getZPathwayScores(analyzedData[0][0],mean,variance)
-  // const zPathwayScoresB = getZPathwayScores(analyzedData[1][0],mean,variance)
-
-  // for( const entry of Object.entries(analyzedDatum)){
-  //   console.log('entry',entry)
-  //   const key = entry[1].X.replaceAll('+',' ')
-  //   const values = Object.values(entry[1]).filter( v => {
-  //     return typeof v === 'number'
-  //   })
-  //   console.log('key / value',key,values)
-  //   const mean = values.reduce( (a,b) => (a + b) ,0 )/ values.length
-  //   const variance = values.reduce( (a,b) => (a + Math.pow( (b - mean) ,2)))
-  //   const stdev= Math.sqrt(variance)
-  //   const zScores = values.map( x => (( x - mean ) / variance) )
-  //   returnMap[key] = values.reduce( (a,b) => (a + b) ,0 )/ values.length
-  // }
 
   let returnMap = {
     samples,

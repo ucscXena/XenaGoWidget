@@ -5,7 +5,7 @@ import {
   getDataStatisticsForGeneSet, getDataStatisticsPerGeneSet,
   getGeneSetNames,
   getSamples, getValues, getValuesForCohort,
-  getValuesForGeneSet
+  getValuesForGeneSet, getZPathwayScores, getZSampleScores
 } from '../../src/service/AnalysisService'
 import TEST_ANALYZED_DATA from '../data/AnalzedTestData'
 
@@ -74,7 +74,32 @@ describe('Analysis Service Test', () => {
     expect(Math.abs(statisticsPerGeneSet[49].variance-0.22969930929734556)).toBeLessThan(0.0000001)
   })
 
+  it('Get sample Z scores', () => {
+    const values = getValues([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
+    const statisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+    const zSamplesScores = getZSampleScores(values[0],statisticsPerGeneSet)
+    expect(zSamplesScores.length).toEqual(50)
+    expect(zSamplesScores[0].length).toEqual(379)
+    expect(zSamplesScores[49].length).toEqual(379)
+    expect(zSamplesScores[0][0]!==values[0][0][0]).toBeTruthy()
+    expect(zSamplesScores[49][0]!==values[0][49][0]).toBeTruthy()
+    expect(Math.abs(zSamplesScores[0][0]+0.4377945946448785)).toBeLessThan(0.00001)
+    expect(Math.abs(zSamplesScores[49][0]+0.6766756356248463)).toBeLessThan(0.00001)
 
+  })
+
+  it('Get Sample Z pathways', () => {
+    const values = getValues([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
+    const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+    const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
+    const zPathwayScores = getZPathwayScores(zSampleScores)
+    expect(zPathwayScores.length).toEqual(2)
+    expect(zPathwayScores[0].length).toEqual(50)
+    expect(zPathwayScores[1].length).toEqual(50)
+    expect(Math.abs(zPathwayScores[0][0])).toBeLessThan(0.00001)
+    expect(Math.abs(zPathwayScores[0][49])).toBeLessThan(0.00001)
+
+  })
 
   // it('Create mean map', () => {
   //   const returnMap = createMeanMap([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
