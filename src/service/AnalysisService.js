@@ -155,29 +155,28 @@ export function createMeanMap(analyzedData) {
   // uses mean separately
   const zPathwayScores = getZPathwayScores(zSampleScores)
 
-  let returnMap = {
+  return {
     samples,
     zSampleScores,
     zPathwayScores,
     geneSetNames
   }
-
-  return returnMap
 }
 
-export function calculateCustomGeneSetActivity(selectedCohort, gmtData, analyzedData){
+export function calculateCustomGeneSetActivity( gmtData, analyzedData){
   const meanMap = createMeanMap(analyzedData)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
       const entries = line.split('\t')
       const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
+      const keyIndex = meanMap.geneSetNames.indexOf(key)
       return {
         golabel: entries[0],
         goid: entries[1],
         gene: entries.slice(2),
-        firstGeneExpressionPathwayActivity: meanMap[0][key],
-        secondGeneExpressionPathwayActivity: meanMap[1][key],
+        firstGeneExpressionPathwayActivity: meanMap.zPathwayScores[0][keyIndex],
+        secondGeneExpressionPathwayActivity: meanMap.zPathwayScores[1][keyIndex],
       }
     } )
 }
