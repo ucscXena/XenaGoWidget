@@ -812,17 +812,16 @@ export default class XenaGeneSetApp extends PureComponent {
         calculatingUpload: true,
       })
 
-      console.log('input cohort 0')
-      console.log(selectedCohort[0])
-      console.log(gmtData)
+      // console.log('input cohort 0')
+      // console.log(selectedCohort[0])
+      // console.log(gmtData)
       let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
       let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
-      const analyzedData = await Promise.all([analyzedData1,analyzedData2])
-      console.log('analyzedData')
-      console.log(analyzedData)
+      const promisedData = await Promise.all([analyzedData1,analyzedData2])
+      const analyzedData = promisedData.map( d => d[0])
       const customGeneSetData = calculateCustomGeneSetActivity(selectedCohort,gmtData,analyzedData)
-      console.log('custom gene set data')
-      console.log(customGeneSetData)
+      // console.log('custom gene set data')
+      // console.log(customGeneSetData)
 
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
@@ -836,7 +835,7 @@ export default class XenaGeneSetApp extends PureComponent {
       })
     } catch (e) {
       console.error(e)
-      alert(`There was a problem analyzing the data ${e.toString()}`)
+      // alert(`There was a problem analyzing the data ${e.toString()}`)
       this.setState({
         showUploadDialog: false,
         calculatingUpload: false,
