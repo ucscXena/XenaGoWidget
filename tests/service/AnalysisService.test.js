@@ -1,6 +1,12 @@
 import expect from 'expect'
 // import {calculateCustomGeneSetActivity, getSamples} from '../../src/service/AnalysisService'
-import {getDataStatistics, getSamples, getValues} from '../../src/service/AnalysisService'
+import {
+  createMeanMap,
+  getDataStatistics,
+  getGeneSetNames,
+  getSamples,
+  getValues
+} from '../../src/service/AnalysisService'
 import TEST_ANALYZED_DATA from '../data/AnalzedTestData'
 
 
@@ -23,16 +29,14 @@ describe('Analysis Service Test', () => {
   //   const inputValues = [14.1672, 13.9714, 15.1691, 15.449, 14.8068, 13.6556, 15.5381, 14.996, 15.4449, 14.9837, 14.0538, 14.8852, 14.1656, 15.855, 15.0555, 13.7733, 15.1556, 13.6874, 15.0858, 14.8161, 15.8089, 15.9541, 15.3173, 13.1746, 15.4854, 15.8444, 14.5385, 15.5576, 15.0205, 15.0058, 15.8734, 15.1135, 12.8538, 14.615, 13.8569, 14.2372, 14.6272, 14.6241, 15.2983, 15.4395, 14.7171, 14.4599];
   // })
 
-  // it('Get gene set names', () => {
-  //   console.log('input test analysis data',TEST_ANALYZED_DATA)
-  //   const geneSetNames = getGeneSetNames(TEST_ANALYZED_DATA)
-  //   expect(geneSetNames.length).toEqual(50)
-  //   expect(geneSetNames[0]).toEqual('HALLMARK_TNFA_SIGNALING_VIA_NFKB')
-  //   expect(geneSetNames[49]).toEqual('HALLMARK_PANCREAS_BETA_CELLS')
-  // })
+  it('Get gene set names', () => {
+    const geneSetNames = getGeneSetNames(TEST_ANALYZED_DATA)
+    expect(geneSetNames.length).toEqual(50)
+    expect(geneSetNames[0]).toEqual('HALLMARK_TNFA_SIGNALING_VIA_NFKB')
+    expect(geneSetNames[49]).toEqual('HALLMARK_PANCREAS_BETA_CELLS')
+  })
 
   it('Get samples', () => {
-    // console.log('input test analysis data',TEST_ANALYZED_DATA)
     const samples = getSamples(TEST_ANALYZED_DATA)
     expect(samples.length).toEqual(379)
     expect(samples[0]).toEqual('TCGA.04.1331.01')
@@ -40,7 +44,6 @@ describe('Analysis Service Test', () => {
   })
 
   it('Get values', () => {
-    // console.log('input test analysis data',TEST_ANALYZED_DATA)
     const values = getValues(TEST_ANALYZED_DATA)
     expect(values.length).toEqual(379)
     expect(values[0]).toEqual(17.5313)
@@ -48,13 +51,18 @@ describe('Analysis Service Test', () => {
   })
 
   it('Get data statistics', () => {
-    // console.log('input test analysis data',TEST_ANALYZED_DATA)
     const values = getValues(TEST_ANALYZED_DATA)
     expect(values.length).toEqual(379)
     const {mean, variance} = getDataStatistics(values)
     expect(Math.abs(mean-18.539003693931388)).toBeLessThan(0.0000001)
     expect(Math.abs(variance-2.301772809115643)).toBeLessThan(0.0000001)
   })
+
+
+  // it('Create mean map', () => {
+  //   const returnMap = createMeanMap([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
+  //   console.log('return map',returnMap)
+  // })
 })
 
 

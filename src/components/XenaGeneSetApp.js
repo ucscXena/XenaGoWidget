@@ -847,11 +847,11 @@ export default class XenaGeneSetApp extends PureComponent {
   render() {
     const storedPathways = AppStorageHandler.getPathways()
     let pathways = this.state.pathways ? this.state.pathways : storedPathways
-    console.log('input state pathways',this.state.pathways)
-    console.log('stored pathways',storedPathways,pathways)
-    console.log('output pathways',pathways)
-    console.log('selected gene sets',this.state.selectedGeneSets)
-    console.log('custom gene sets',this.state.customGeneSets)
+    // console.log('input state pathways',this.state.pathways)
+    // console.log('stored pathways',storedPathways,pathways)
+    // console.log('output pathways',pathways)
+    // console.log('selected gene sets',this.state.selectedGeneSets)
+    // console.log('custom gene sets',this.state.customGeneSets)
     let maxValue = 0
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING

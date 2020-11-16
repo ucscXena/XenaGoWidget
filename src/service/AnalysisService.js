@@ -47,27 +47,11 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData){
 
 }
 
-// eslint-disable-next-line no-unused-vars
-export function getZValues(analyzedData){
-  // 1. map LHS to values
-  // 1. map RHS to values
-  // 1. reduce to mean and variace
-
-  const mean = 3
-  const variance= 0.7
-
-  return {
-    mean,
-    variance,
-  }
+export function getZValues(data,mean,variance){
+  return data.map( d => (d - mean) / variance )
 }
 
-// eslint-disable-next-line no-unused-vars
 export function getDataStatistics(arr){
-  // 1. map LHS to values
-  // 1. map RHS to values
-  // 1. reduce to mean and variace
-
   function getVariance(arr, mean) {
     return arr.reduce(function(pre, cur) {
       pre = pre + Math.pow((cur - mean), 2)
@@ -86,25 +70,19 @@ export function getDataStatistics(arr){
   }
 }
 
-// export function getGeneSetNames(data){
-//   console.log('length input sample data',data.length)
-//   // console.log('input sample data',data)
-//
-//   let returnArray = []
-//   for( const entry of Object.entries(data)) {
-//     console.log('entry',entry)
-//     console.log('entry1',entry[1])
-//     console.log('entryX',entry[1].X)
-//     const entryX = entry[1].X
-//     if(entryX.indexOf(' ')){
-//       returnArray.push(entryX.split(' ')[0])
-//     }
-//     else{
-//       returnArray.push(entryX.trim())
-//     }
-//   }
-//   return returnArray
-// }
+export function getGeneSetNames(data){
+  let returnArray = []
+  for( const entry of Object.entries(data)) {
+    const entryX = entry[1].X
+    if(entryX.indexOf(' ')){
+      returnArray.push(entryX.split(' ')[0])
+    }
+    else{
+      returnArray.push(entryX.trim())
+    }
+  }
+  return returnArray
+}
 
 export function getSamples(data){
   return Object.keys(data[0]).filter( k => k!=='X' )
@@ -125,11 +103,15 @@ export function getZPathwayScores(data,mean,variance){
 }
 
 export function createMeanMap(analyzedData) {
-  console.log('input data',analyzedData)
-  console.log('input data string',JSON.stringify(analyzedData))
-  // const geneSetNames = getGeneSetNames(analyzedData)
+  // console.log('input data',analyzedData)
+  // console.log('input data string',JSON.stringify(analyzedData))
   const samplesA = getSamples(analyzedData[0][0])
   const samplesB = getSamples(analyzedData[1][0])
+
+
+  const geneSetNames = getGeneSetNames(analyzedData[0])
+  // const geneSetLength = geneSetNames.length
+
   const valuesA = getValues(analyzedData[0][0])
   const valuesB = getValues(analyzedData[1][0])
   const values = valuesA.concat(valuesB)
@@ -160,6 +142,7 @@ export function createMeanMap(analyzedData) {
     zSampleScoresB,
     zPathwayScoresA,
     zPathwayScoresB,
+    geneSetNames
   }
   console.log('return map',returnMap)
 
