@@ -63,17 +63,26 @@ export function getZValues(analyzedData){
 }
 
 // eslint-disable-next-line no-unused-vars
-export function getDataStatistics(analyzedData){
+export function getDataStatistics(arr){
   // 1. map LHS to values
   // 1. map RHS to values
   // 1. reduce to mean and variace
 
-  const mean = 3
-  const variance= 0.7
+  function getVariance(arr, mean) {
+    return arr.reduce(function(pre, cur) {
+      pre = pre + Math.pow((cur - mean), 2)
+      return pre
+    }, 0)
+  }
+
+  var meanTot = arr.reduce(function(pre, cur) {
+    return pre + cur
+  })
+  var total = getVariance(arr, meanTot / arr.length)
 
   return {
-    mean,
-    variance,
+    mean:meanTot / arr.length,
+    variance: total / arr.length,
   }
 }
 

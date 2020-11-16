@@ -300,8 +300,8 @@ export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
   const geneList = getGenesForPathways(pathways)
-  console.log('input pathways',pathways)
-  console.log('genes for pathways',geneList)
+  // console.log('input pathways',pathways)
+  // console.log('genes for pathways',geneList)
   let filterCounts
 
   function fetchDataForRegulon(selectedCohorts, samplesA,samplesB, geneList, geneSetLabels) {

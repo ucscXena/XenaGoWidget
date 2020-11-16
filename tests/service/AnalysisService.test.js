@@ -1,6 +1,6 @@
 import expect from 'expect'
 // import {calculateCustomGeneSetActivity, getSamples} from '../../src/service/AnalysisService'
-import {getGeneSetNames, getSamples, getValues} from '../../src/service/AnalysisService'
+import {getDataStatistics, getSamples, getValues} from '../../src/service/AnalysisService'
 import TEST_ANALYZED_DATA from '../data/AnalzedTestData'
 
 
@@ -44,7 +44,16 @@ describe('Analysis Service Test', () => {
     const values = getValues(TEST_ANALYZED_DATA)
     expect(values.length).toEqual(379)
     expect(values[0]).toEqual(17.5313)
-    expect(values[378]).toEqual(2.686)
+    expect(values[378]).toEqual(16.6648)
+  })
+
+  it('Get data statistics', () => {
+    // console.log('input test analysis data',TEST_ANALYZED_DATA)
+    const values = getValues(TEST_ANALYZED_DATA)
+    expect(values.length).toEqual(379)
+    const {mean, variance} = getDataStatistics(values)
+    expect(Math.abs(mean-18.539003693931388)).toBeLessThan(0.0000001)
+    expect(Math.abs(variance-2.301772809115643)).toBeLessThan(0.0000001)
   })
 })
 
