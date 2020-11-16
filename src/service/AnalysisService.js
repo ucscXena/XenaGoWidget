@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {getCohortDetails} from '../functions/CohortFunctions'
+import {average} from '../functions/DataFunctions'
 
-const mean = sampleScores => (sampleScores.reduce((sume, el) => sume + el, 0) )/sampleScores.length
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
   return [
@@ -132,16 +132,15 @@ export function getZSampleScores(values,dataStatisticsPerGeneSet){
 
 export function getZPathwayScoresForCohort(sampleScores){
   return sampleScores.map( d => {
-    return mean(d)
+    return average(d)
   })
 
 }
 
 // eslint-disable-next-line no-unused-vars
-export function getZPathwayScores(sampleScores){
+export function getZPathwayScores(sampleZScores){
   // console.log('input sample scores ',sampleScores)
-  const returnValues = [getZPathwayScoresForCohort(sampleScores[0]),getZPathwayScoresForCohort(sampleScores[1])]
-  console.log(returnValues[0])
+  const returnValues = [getZPathwayScoresForCohort(sampleZScores[0]),getZPathwayScoresForCohort(sampleZScores[1])]
   return returnValues
 }
 

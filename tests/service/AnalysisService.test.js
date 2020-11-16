@@ -1,13 +1,13 @@
 import expect from 'expect'
 // import {calculateCustomGeneSetActivity, getSamples} from '../../src/service/AnalysisService'
 import {
-  createMeanMap,
   getDataStatisticsForGeneSet, getDataStatisticsPerGeneSet,
   getGeneSetNames,
   getSamples, getValues, getValuesForCohort,
-  getValuesForGeneSet, getZPathwayScores, getZSampleScores
+  getValuesForGeneSet, getZPathwayScores, getZSampleScores,
 } from '../../src/service/AnalysisService'
 import TEST_ANALYZED_DATA from '../data/AnalzedTestData'
+import {average} from '../../src/functions/DataFunctions'
 
 
 describe('Analysis Service Test', () => {
@@ -22,7 +22,7 @@ describe('Analysis Service Test', () => {
   // it('Convert gmt and analyzed data into gene set', () => {
   //   const outputData = calculateGeneSetActivity(TEST_SELECTED_COHORTS,TEST_GMT_DATA,TEST_ANALYZED)
   //   // console.log(JSON.stringify(outputData))
-  //   // expect(outputData!==null)
+  //   expect(outputData!==null)
   // })
   //
   // it('Create mean maps with ZScore', () => {
@@ -88,14 +88,25 @@ describe('Analysis Service Test', () => {
 
   })
 
+  it('Calculate mean', () => {
+    const inputArray = [ -0.9034939058206737, -0.32404070499409926, 0.13394935305966119, -1.2169471774924474, 1.159638114252303, -1.2408915246340415, 1.510096286051997]
+    const outputValue = average(inputArray)
+    console.log('input array',inputArray, outputValue)
+    expect(outputValue).toBeGreaterThan(-0.126)
+    expect(outputValue).toBeLessThan(-0.125)
+  })
+
   it('Get Sample Z pathways', () => {
     const values = getValues([TEST_ANALYZED_DATA,TEST_ANALYZED_DATA])
     const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
     const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
     const zPathwayScores = getZPathwayScores(zSampleScores)
+    console.log('output z scores',zPathwayScores)
     expect(zPathwayScores.length).toEqual(2)
     expect(zPathwayScores[0].length).toEqual(50)
     expect(zPathwayScores[1].length).toEqual(50)
+
+    // these will be close to 0
     expect(Math.abs(zPathwayScores[0][0])).toBeLessThan(0.00001)
     expect(Math.abs(zPathwayScores[0][49])).toBeLessThan(0.00001)
 
