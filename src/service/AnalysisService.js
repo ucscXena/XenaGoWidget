@@ -164,7 +164,11 @@ export function createMeanMap(analyzedData) {
 }
 
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
+  console.log('input analyaized data')
+  console.log(JSON.stringify(analyzedData[1]))
   const meanMap = createMeanMap(analyzedData)
+  console.log('mean map')
+  console.log(meanMap)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
