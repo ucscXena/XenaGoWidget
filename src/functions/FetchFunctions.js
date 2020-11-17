@@ -439,7 +439,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     getSamplesForCohortAndView(selectedCohorts[0],view),
     getSamplesForCohortAndView(selectedCohorts[1],view),
   ).flatMap( (unfilteredSamples) => {
-    console.log('unfiltered samples',unfilteredSamples)
+    // console.log('unfiltered samples',unfilteredSamples)
     filterCounts = [
       createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
       createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),

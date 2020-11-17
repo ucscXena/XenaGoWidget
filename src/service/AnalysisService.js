@@ -164,23 +164,25 @@ export function createMeanMap(analyzedData) {
 }
 
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
-  console.log('input analyaized data')
-  console.log(JSON.stringify(analyzedData[1]))
   const meanMap = createMeanMap(analyzedData)
-  console.log('mean map')
-  console.log(meanMap)
+  console.log('mean map keys',Object.keys(meanMap))
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
       const entries = line.split('\t')
-      const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
-      const keyIndex = meanMap.geneSetNames.indexOf(key)
+      // const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
+      const keyIndex = meanMap.geneSetNames.indexOf(entries[0])
+      // console.log('key',key,'index',keyIndex,'entries',entries[0],'entries 1',entries[1])
       return {
         golabel: entries[0],
         goid: entries[1],
         gene: entries.slice(2),
+        firstSamples: meanMap.samples[0], // TODO: probably a better way to handle this
+        secondSamples: meanMap.samples[1],
         firstGeneExpressionPathwayActivity: meanMap.zPathwayScores[0][keyIndex],
         secondGeneExpressionPathwayActivity: meanMap.zPathwayScores[1][keyIndex],
+        firstGeneExpressionSampleActivity: meanMap.zSampleScores[0][keyIndex],
+        secondGeneExpressionSampleActivity: meanMap.zSampleScores[1][keyIndex],
       }
     } )
 }
