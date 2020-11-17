@@ -821,12 +821,16 @@ export default class XenaGeneSetApp extends PureComponent {
       const analyzedData = promisedData.map( d => d[0])
       // const customGeneSetData = calculateCustomGeneSetActivity(selectedCohort,gmtData,analyzedData)
       const customGeneSetData = calculateCustomGeneSetActivity(gmtData,analyzedData)
-      // console.log('custom gene set data')
-      // console.log(customGeneSetData)
+      console.log('storing custom gene set data')
+      console.log(customGeneSetData)
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
 
       this.storeCustomGeneSet(uploadFileName,customGeneSetData)
+      const testCustomGeneSet = this.getCustomGeneSet(uploadFileName)
+      console.log('test custom gene set')
+      console.log(testCustomGeneSet)
+
       this.setState({
         showUploadDialog: false,
         calculatingUpload: false,
@@ -867,9 +871,12 @@ export default class XenaGeneSetApp extends PureComponent {
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
-          console.log('reloading')
+          console.log('reloading',this.state.selectedGeneSets)
           if(this.state.selectedGeneSets && this.isCustomGeneSet(this.state.selectedGeneSets)){
+            console.log('is a custom gene set ')
             pathways = this.getCustomGeneSet(this.state.selectedGeneSets)
+            console.log('pathways for custom gene set')
+            console.log(pathways)
             fetchCombinedCohorts(this.state.selectedCohort, pathways,
               this.state.filter, this.handleCombinedCohortData)
           }
