@@ -335,13 +335,16 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-
-    console.log('handle combined cohort pathways',pathways)
-    console.log('handle combined cohort input',input)
-
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
       this.state.filter) ? generateZScoreForBoth(geneExpressionA,
         geneExpressionB) : [geneExpressionA, geneExpressionB]
+
+    if(pathways[0].firstGeneExpressionSampleActivity && pathways.length===geneExpressionPathwayActivityA.length){
+      for(let index in pathways){
+        geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
+        geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
+      }
+    }
 
     const pathwayDataA = {
       geneList,
