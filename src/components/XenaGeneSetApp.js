@@ -704,7 +704,9 @@ export default class XenaGeneSetApp extends PureComponent {
         scorePathway(b, this.state.filterBy))).
       filter( (c) => {
         if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
+          // only return custom gene sets with go labels?
           const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+          console.log('current gene sets',currentGeneSets,c.golabel,currentGeneSets.indexOf(c.golabel))
           return currentGeneSets.indexOf(c.golabel)>=0
         }
         return true
@@ -869,17 +871,32 @@ export default class XenaGeneSetApp extends PureComponent {
     let maxValue = 0
     if (this.doRefetch()) {
       currentLoadState = LOAD_STATE.LOADING
-      console.log('doing refetch')
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
-          console.log('reloading',this.state.selectedGeneSets)
           if(this.state.selectedGeneSets && this.isCustomGeneSet(this.state.selectedGeneSets)){
-            console.log('is a custom gene set ')
             pathways = this.getCustomGeneSet(this.state.selectedGeneSets)
-            console.log('pathways for custom gene set')
-            console.log(pathways)
+              .filter((a) => a.firstGeneExpressionPathwayActivity &&
+            a.secondGeneExpressionPathwayActivity)
+              .sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
+                1 :
+                -1) * (scorePathway(a, this.state.filterBy) -
+              scorePathway(b, this.state.filterBy)))
+              .filter( (c) => {
+                if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
+                // only return custom gene sets with go labels?
+                  const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+                  return currentGeneSets.indexOf(c.golabel)>=0
+                }
+                return true
+              })
+              .slice(0, this.state.geneSetLimit)
+              .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
+                1 :
+                -1) * (scorePathway(a, this.state.sortViewBy) -
+              scorePathway(b, this.state.sortViewBy)))
+
             fetchCombinedCohorts(this.state.selectedCohort, pathways,
               this.state.filter, this.handleCombinedCohortData)
           }
