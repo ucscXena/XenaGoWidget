@@ -8,7 +8,7 @@ import {exception} from 'react-ga'
 // synchronizing gene sorts between pathways
 const LOCAL_APP_STORAGE = 'xena-app-storage'
 const LOCAL_STATE_STORAGE = 'xena-selection-storage'
-const LOCAL_CUSTOM_PATHWAYS_STORAGE = 'xena-custom-pathways-storage'
+// const LOCAL_CUSTOM_PATHWAYS_STORAGE = 'xena-custom-pathways-storage'
 const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways'
 const LOCAL_SUBCOHORT_STORAGE = 'default-subcohort-storage'
 const LOCAL_GENESETS_STORAGE = 'default-genesets-storage'
@@ -71,7 +71,7 @@ export class AppStorageHandler {
     sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE)
     sessionStorage.removeItem(LOCAL_STATE_STORAGE)
     sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE)
-    sessionStorage.removeItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
+    // sessionStorage.removeItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
     sessionStorage.removeItem(LOCAL_GENESETS_STORAGE)
   }
 
@@ -127,16 +127,16 @@ export class AppStorageHandler {
     }
   }
 
-  static getCustomPathways() {
-    const storage = sessionStorage.getItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
-    let DEFAULT_PATHWAYS = {}
-    Object.values(VIEW_ENUM).forEach( v => DEFAULT_PATHWAYS[v] = {} )
-    return storage ? JSON.parse(storage) : DEFAULT_PATHWAYS
-  }
-
-  static storeCustomPathways(pathways) {
-    sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
-  }
+  // static getCustomPathways() {
+  //   const storage = sessionStorage.getItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
+  //   let DEFAULT_PATHWAYS = {}
+  //   Object.values(VIEW_ENUM).forEach( v => DEFAULT_PATHWAYS[v] = {} )
+  //   return storage ? JSON.parse(storage) : DEFAULT_PATHWAYS
+  // }
+  //
+  // static storeCustomPathways(pathways) {
+  //   sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
+  // }
 
   static getPathways() {
     const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_PATHWAY_STORAGE))

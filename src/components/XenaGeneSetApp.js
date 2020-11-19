@@ -54,6 +54,9 @@ import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
 import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
+import {addCustomGeneSet, getCustomGeneSetNames, removeCustomGeneSet} from '../service/GeneSetAnalysisStorageService'
+import {VIEW_ENUM} from '../data/ViewEnum'
+// import {getCustomGeneSet} from "../service/GeneSetAnalysisStorageService";
 
 const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
@@ -99,6 +102,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const urlVariables = QueryString.parse(location.hash.substr(1))
 
     const filter = calculateFilter(urlVariables)
+    this.calculateCustomGeneSets(filter)
     const selectedGeneSet = calculateGeneSet(urlVariables, pathways)
     // we have to load the sub cohorts before we load the cohorrts
     AppStorageHandler.storeSubCohorts(
@@ -107,7 +111,8 @@ export default class XenaGeneSetApp extends PureComponent {
     const cohortColors = calculateCohortColors(urlVariables)
     const { sortViewByLabel, filterOrder, filterBy, sortViewOrder, sortViewBy } = calculateSorting(urlVariables)
 
-
+    const defaultCustomGeneSet = {}
+    Object.values(VIEW_ENUM).map( v => defaultCustomGeneSet[v] = {}),
 
     this.state = {
       associatedData: [],
@@ -129,7 +134,7 @@ export default class XenaGeneSetApp extends PureComponent {
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
-      customGeneSets: AppStorageHandler.getCustomPathways(),
+      customGeneSets: defaultCustomGeneSet,
       geneSetLimit: urlVariables.geneSetLimit ?urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       filter,
 
@@ -157,6 +162,13 @@ export default class XenaGeneSetApp extends PureComponent {
       x: -1,
       y: -1,
     }
+  }
+
+  async calculateCustomGeneSets(filter) {
+    const customGeneSets = await getCustomGeneSetNames(filter)
+    this.setState({
+      customGeneSets
+    })
   }
 
   componentDidUpdate() {
@@ -750,7 +762,7 @@ export default class XenaGeneSetApp extends PureComponent {
     return this.state.customGeneSets[this.state.filter][name]
   }
 
-  removeCustomGeneSet = (name) => {
+  removeCustomGeneSet = async (name) => {
     let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
     delete customGeneSets[this.state.filter][name]
     // const newCustomGeneSets = update(this.state.customGeneSets[this.state.filter],{
@@ -762,20 +774,26 @@ export default class XenaGeneSetApp extends PureComponent {
       showGeneSetSearch: false,
     })
 
-    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
+    // AppStorageHandler.storeCustomPathways(newCustomGeneSets)
+    // storeCustomPathways(newCustomGeneSets)
+    await removeCustomGeneSet(this.state.filter,name)
   }
 
-  storeCustomGeneSet = (name,geneSet) => {
+  storeCustomGeneSet = async (name,geneSet) => {
     let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
     customGeneSets[this.state.filter][name] = geneSet
+    console.log('storing custom gene set',name)
+    console.log(geneSet)
     // const newCustomGeneSets = update(this.state.customGeneSets,{
     //   [this.state.view]:{[name]: { $set:geneSet}}
-    // })
+    // }/toreCustomgE
     const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
     this.setState({
       customGeneSets: newCustomGeneSets
     })
-    AppStorageHandler.storeCustomPathways(newCustomGeneSets)
+    // AppStorageHandler.storeCustomPathways(newCustomGeneSets)
+    await addCustomGeneSet(this.state.filter, name, geneSet)
+
   }
 
   isCustomGeneSet = (name) => {
