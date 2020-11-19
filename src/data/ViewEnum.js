@@ -5,4 +5,4 @@ export const VIEW_ENUM = {
   GENE_EXPRESSION:'BPA Gene Expression',
   PARADIGM:'Paradigm IPL',
   REGULON:'Regulon Activity',
-};
+}

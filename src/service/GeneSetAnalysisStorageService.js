@@ -1,9 +1,8 @@
 import axios from 'axios'
 
 export async function getAllCustomGeneSets(){
-  const response = await axios.get('http://localhost:3001/geneset')
-  console.log('response',response)
-  return response
+  const {data} = await axios.get('http://localhost:3001/geneset')
+  return data
 }
 
 export async function getCustomGeneSetNames(method){
@@ -13,9 +12,10 @@ export async function getCustomGeneSetNames(method){
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const response = await axios.get(`http://localhost:3001/geneset/all/${method}`,config)
-  console.log('response',response)
-  return response
+  const {data} = await axios.get(`http://localhost:3001/geneset/all/${method}`,config)
+  console.log('response',data)
+
+  return data
 }
 
 
@@ -29,7 +29,7 @@ export async function getCustomGeneSet(method,geneSetName){
 export async function addCustomGeneSet(method,geneSetName,inputData){
   let formData = new FormData()
   formData.append('data',inputData)
-  const response = await axios.post(`http://localhost:8001/geneset/${method}/${geneSetName}`,
+  const response = await axios.post(`http://localhost:3001/geneset/${method}/${geneSetName}`,
     formData,{
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -43,7 +43,7 @@ export async function addCustomGeneSet(method,geneSetName,inputData){
 }
 
 export async function removeCustomGeneSet(method,geneSetName){
-  const response = await axios.delete(`http://localhost:8001/geneset/${method}/${geneSetName}`)
+  const response = await axios.delete(`http://localhost:3001/geneset/${method}/${geneSetName}`)
   const { data} = response
   return data
 }
