@@ -164,12 +164,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
-  async calculateCustomGeneSets(filter) {
-    const customGeneSets = await getCustomGeneSetNames(filter)
-    this.setState({
-      customGeneSets
-    })
-  }
 
   componentDidUpdate() {
     const generatedUrl = generateUrl(
@@ -187,6 +181,13 @@ export default class XenaGeneSetApp extends PureComponent {
     if (location.hash !== generatedUrl) {
       location.hash = generatedUrl
     }
+  }
+
+  async calculateCustomGeneSets(filter) {
+    const customGeneSets = await getCustomGeneSetNames(filter)
+    this.setState({
+      customGeneSets
+    })
   }
 
   generateSubCohortText(selectedCohort){
