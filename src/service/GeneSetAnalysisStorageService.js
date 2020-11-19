@@ -27,10 +27,15 @@ export async function getCustomGeneSet(method,geneSetName){
 }
 
 export async function addCustomGeneSet(method,geneSetName,inputData){
-  let formData = new FormData()
-  formData.append('data',inputData)
-  const response = await axios.post(`http://localhost:3001/geneset/${method}/${geneSetName}`,
-    formData,{
+  // let formData = new FormData()
+  // formData.append('data',)
+  const response = await axios.post('http://localhost:3001/geneset',
+    {
+      method,
+      geneset:geneSetName,
+      data: inputData
+    }
+    ,{
       headers: {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*'
