@@ -718,15 +718,18 @@ export default class XenaGeneSetApp extends PureComponent {
       sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
         1 :
         -1) * (scorePathway(a, this.state.filterBy) -
-        scorePathway(b, this.state.filterBy))).
-      filter( (c) => {
-        if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
-          // only return custom gene sets with go labels?
-          const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
-          return currentGeneSets.indexOf(c.golabel)>=0
-        }
-        return true
-      })
+        scorePathway(b, this.state.filterBy)))
+      // .filter( (c) => {
+      //   if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
+      //     // only return custom gene sets with go labels?
+      //     // const customGeneSets = async () => await this.getCustomGeneSet(this.state.selectedGeneSets)
+      //     // console.log('custom gene sets',customGeneSets)
+      //     console.log('custom gen set state',JSON.stringify(this.state.customGeneSets))
+      //     const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+      //     return currentGeneSets.indexOf(c.golabel)>=0
+      //   }
+      //   return true
+      // })
       .slice(0, this.state.geneSetLimit).
       sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
         1 :
@@ -886,21 +889,24 @@ export default class XenaGeneSetApp extends PureComponent {
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
           if(this.state.selectedGeneSets && this.isCustomGeneSet(this.state.selectedGeneSets)){
-            pathways = this.getCustomGeneSet(this.state.selectedGeneSets)
+            // console.log('state custom gene sets',this.state.customGeneSets)
+            // console.log('retrieved custom gene sets',this.getCustomGeneSet(this.state.selectedGeneSets))
+            // pathways = this.getCustomGeneSet(this.state.selectedGeneSets)
+            pathways = this.state.customGeneSets[this.state.filter][this.state.selectedGeneSets]
               .filter((a) => a.firstGeneExpressionPathwayActivity &&
             a.secondGeneExpressionPathwayActivity)
               .sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
                 1 :
                 -1) * (scorePathway(a, this.state.filterBy) -
               scorePathway(b, this.state.filterBy)))
-              .filter( (c) => {
-                if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
-                // only return custom gene sets with go labels?
-                  const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
-                  return currentGeneSets.indexOf(c.golabel)>=0
-                }
-                return true
-              })
+              // .filter( (c) => {
+              //   if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
+              //   // only return custom gene sets with go labels?
+              //     const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+              //     return currentGeneSets.indexOf(c.golabel)>=0
+              //   }
+              //   return true
+              // })
               .slice(0, this.state.geneSetLimit)
               .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
                 1 :
@@ -952,8 +958,8 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name),getViewsForCohort(this.state.selectedCohort[1].name))
 
-    console.log('custom gene set')
-    console.log(this.state.customGeneSets)
+    // console.log('custom gene set')
+    // console.log(this.state.customGeneSets)
 
     return (
       <div>

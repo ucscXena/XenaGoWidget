@@ -20,9 +20,9 @@ export async function getCustomGeneSetNames(method){
 
 
 export async function getCustomGeneSet(method,geneSetName){
-  const response = await axios.get(`http://localhost:3001/geneset/${method}/${geneSetName}`)
-  console.log('response',response)
-  return response
+  const {data} = await axios.get(`http://localhost:3001/geneset/${method}/${geneSetName}`)
+  console.log('data',data)
+  return data
 
 }
 
