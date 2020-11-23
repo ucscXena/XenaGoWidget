@@ -165,14 +165,14 @@ export function createMeanMap(analyzedData) {
 
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
   const meanMap = createMeanMap(analyzedData)
-  console.log('mean map keys',Object.keys(meanMap))
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
       const entries = line.split('\t')
-      // const key = entries[0] +  (entries[1]!=='' ? ' ('+entries[1]+')' :'')
-      const keyIndex = meanMap.geneSetNames.indexOf(entries[0])
-      // console.log('key',key,'index',keyIndex,'entries',entries[0],'entries 1',entries[1])
+
+      // we need to handle the space encoding
+      const keyIndex = meanMap.geneSetNames.indexOf(entries[0].replaceAll(' ','+'))
+      // console.log('key index',keyIndex,'entries',entries[0],'entries 1',entries[1])
       return {
         golabel: entries[0],
         goid: entries[1],
