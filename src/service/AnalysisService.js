@@ -171,6 +171,7 @@ export function calculateCustomGeneSetActivity( gmtData, analyzedData){
       const entries = line.split('\t')
 
       // we need to handle the space encoding
+      // this fails test due to an outdated library I think
       const keyIndex = meanMap.geneSetNames.indexOf(entries[0].replaceAll(' ','+'))
       // console.log('key index',keyIndex,'entries',entries[0],'entries 1',entries[1])
       return {
