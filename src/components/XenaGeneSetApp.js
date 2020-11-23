@@ -197,7 +197,8 @@ export default class XenaGeneSetApp extends PureComponent {
         internalCustomGeneSets[this.state.filter][geneSet] = {}
       }
     }
-    currentLoadState = LOAD_STATE.LOADED
+    currentLoadState = LOAD_STATE.UNLOADED
+    console.log('new custom data state',internalCustomGeneSets)
     this.setState({
       customGeneSets:internalCustomGeneSets,
       selectedGeneSets:currentGeneSets,
@@ -806,7 +807,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
   storeCustomGeneSet = async (name,geneSet) => {
     let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
-    customGeneSets[this.state.filter][name] = geneSet
+    customGeneSets[this.state.filter][name] = {
+      method: this.state.filter,
+      geneset: name,
+      result: geneSet,
+    }
     console.log('storing custom gene set',name)
     console.log(geneSet)
     // const newCustomGeneSets = update(this.state.customGeneSets,{
@@ -822,10 +827,16 @@ export default class XenaGeneSetApp extends PureComponent {
 
   isCustomGeneSet = (name) => {
     if(name===undefined) return false
-    console.log('is custom gene set ',name)
     return name.indexOf('Default')<0
     // return (this.state.customGeneSets[this.state.filter][name]!==undefined)
   }
+
+  isExistingCustomGeneSet = (name) => {
+    if(name===undefined) return false
+    // return name.indexOf('Default')<0
+    return (this.state.customGeneSets[this.state.filter][name]!==undefined)
+  }
+
 
   handleUploadFileChange = (event) => {
     event.preventDefault()
@@ -843,7 +854,7 @@ export default class XenaGeneSetApp extends PureComponent {
   handleStoreFile = async () =>{
     let { gmtData, filter, uploadFileName, selectedCohort} = this.state
 
-    if(this.isCustomGeneSet(uploadFileName)){
+    if(this.isExistingCustomGeneSet(uploadFileName)){
       alert(`${uploadFileName} already exists.  Please choose another name`)
       return
     }
@@ -909,6 +920,7 @@ export default class XenaGeneSetApp extends PureComponent {
             }
             else{
               console.log('input custom gene sets then ',this.state.customGeneSets)
+              console.log('filter',this.state.filter,this.state.selectedGeneSets)
               pathways = this.state.customGeneSets[this.state.filter][this.state.selectedGeneSets].result
                 .filter((a) => a.firstGeneExpressionPathwayActivity &&
                   a.secondGeneExpressionPathwayActivity)

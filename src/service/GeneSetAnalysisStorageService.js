@@ -13,15 +13,12 @@ export async function getCustomGeneSetNames(method){
     }
   }
   const {data} = await axios.get(`http://localhost:3001/geneset/all/${method}`,config)
-  console.log('response',data)
-
   return data
 }
 
 
 export async function getCustomGeneSet(method,geneSetName){
   const {data} = await axios.get(`http://localhost:3001/geneset/${method}/${geneSetName}`)
-  console.log('data',data)
   return data
 
 }
