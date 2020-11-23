@@ -871,6 +871,7 @@ export default class XenaGeneSetApp extends PureComponent {
         fetch: true, // triggers fetch here, but may not be
       })
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
       // alert(`There was a problem analyzing the data ${e.toString()}`)
       this.setState({
