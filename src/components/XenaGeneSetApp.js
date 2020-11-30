@@ -851,8 +851,8 @@ export default class XenaGeneSetApp extends PureComponent {
         calculatingUpload: true,
       })
 
-      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData)
-      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData)
+      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData,uploadFileName)
+      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData,uploadFileName)
       const promisedData = await Promise.all([analyzedData1,analyzedData2])
       const analyzedData = promisedData.map( d => d[0])
       // const customGeneSetData = calculateCustomGeneSetActivity(selectedCohort,gmtData,analyzedData)
