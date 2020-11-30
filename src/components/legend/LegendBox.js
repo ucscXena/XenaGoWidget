@@ -31,7 +31,7 @@ export class LegendBox extends PureComponent {
           backgroundColor: 'rgba(255,255,255,0.7)',
           position: 'fixed',
           zIndex: 8,
-          marginTop: HEADER_HEIGHT-20,
+          marginTop: HEADER_HEIGHT-15,
           marginLeft: 250,
           width: 182 + 182 + 222 +30
         }}>
