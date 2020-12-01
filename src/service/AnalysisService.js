@@ -175,6 +175,8 @@ export function createMeanMap(analyzedData) {
 
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
   const meanMap = createMeanMap(analyzedData)
+  // console.log('mean map')
+  // console.log(meanMap)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
@@ -182,8 +184,9 @@ export function calculateCustomGeneSetActivity( gmtData, analyzedData){
 
       // we need to handle the space encoding
       // this fails test due to an outdated library I think
-      const keyIndex = meanMap.geneSetNames.indexOf(entries[0])
-      // console.log('key index',keyIndex,'entries',entries[0],'entries 1',entries[1])
+      let keyIndex = meanMap.geneSetNames.indexOf(entries[0])
+      keyIndex = keyIndex >=0 ? keyIndex : meanMap.geneSetNames.indexOf(`${entries[0]} (${entries[1]})` )
+      // console.log('key index',keyIndex,'entries',entries[0],'entries 1',entries[1],entries[0] + ' ' + entries[1])
       return {
         golabel: entries[0],
         goid: entries[1],
