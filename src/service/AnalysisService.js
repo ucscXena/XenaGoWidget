@@ -55,7 +55,11 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
   )
   console.log('response',response)
   const { data} = response
+  // console.log('lines',data.split('\n').length)
   console.log('data',data)
+
+
+
   return data
 
 }
