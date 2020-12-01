@@ -69,7 +69,6 @@ export function getZValues(data,mean,variance){
 }
 
 export function getDataStatisticsForGeneSet(arr){
-  console.log('arr',arr)
   function getVariance(arr, mean) {
     return arr.reduce(function(pre, cur) {
       pre = pre + Math.pow((cur - mean), 2)
@@ -80,10 +79,7 @@ export function getDataStatisticsForGeneSet(arr){
   const meanTot = arr.reduce(function(pre, cur) {
     return pre + cur
   })
-  console.log('mean Tot',meanTot)
   const total = getVariance(arr, meanTot / arr.length)
-  console.log('arr length',arr.length)
-  console.log('total',total)
 
   return {
     mean:meanTot / arr.length,
@@ -92,11 +88,14 @@ export function getDataStatisticsForGeneSet(arr){
 }
 
 export function getGeneSetNames(data){
-  return data.data.map( d => d[0])
+  return data.data.map( d => {
+    const name = d.geneset
+    const goIndex = name.indexOf('(GO:')
+    return goIndex > 0 ? name.substr(0,goIndex).trim() : name.trim()
+  })
 }
 
 export function getValuesForCohort(data){
-  console.log('input values data ',data)
   return data.data
 }
 
@@ -152,7 +151,6 @@ export function getZPathwayScoresForCohort(sampleScores){
 
 // eslint-disable-next-line no-unused-vars
 export function getZPathwayScores(sampleZScores){
-  // console.log('input sample scores ',sampleScores)
   return [getZPathwayScoresForCohort(sampleZScores[0]),getZPathwayScoresForCohort(sampleZScores[1])]
 }
 
@@ -161,9 +159,7 @@ export function createMeanMap(analyzedData) {
 
   const geneSetNames = getGeneSetNames(analyzedData[0])
   const values = getValues(analyzedData)
-  console.log('values',values)
   const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
-  console.log('output data ',dataStatisticsPerGeneSet)
   // calculates cohorts separately
   const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
   // uses mean separately
@@ -186,7 +182,7 @@ export function calculateCustomGeneSetActivity( gmtData, analyzedData){
 
       // we need to handle the space encoding
       // this fails test due to an outdated library I think
-      const keyIndex = meanMap.geneSetNames.indexOf(entries[0].replaceAll(' ','+'))
+      const keyIndex = meanMap.geneSetNames.indexOf(entries[0])
       // console.log('key index',keyIndex,'entries',entries[0],'entries 1',entries[1])
       return {
         golabel: entries[0],
