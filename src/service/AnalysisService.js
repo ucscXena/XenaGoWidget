@@ -69,6 +69,7 @@ export function getZValues(data,mean,variance){
 }
 
 export function getDataStatisticsForGeneSet(arr){
+  console.log('arr',arr)
   function getVariance(arr, mean) {
     return arr.reduce(function(pre, cur) {
       pre = pre + Math.pow((cur - mean), 2)
@@ -76,10 +77,13 @@ export function getDataStatisticsForGeneSet(arr){
     }, 0)
   }
 
-  var meanTot = arr.reduce(function(pre, cur) {
+  const meanTot = arr.reduce(function(pre, cur) {
     return pre + cur
   })
-  var total = getVariance(arr, meanTot / arr.length)
+  console.log('mean Tot',meanTot)
+  const total = getVariance(arr, meanTot / arr.length)
+  console.log('arr length',arr.length)
+  console.log('total',total)
 
   return {
     mean:meanTot / arr.length,
@@ -88,21 +92,12 @@ export function getDataStatisticsForGeneSet(arr){
 }
 
 export function getGeneSetNames(data){
-  let returnArray = []
-  for( const entry of Object.entries(data)) {
-    const entryX = entry[1].X
-    if(entryX.indexOf(' ')){
-      returnArray.push(entryX.split(' ')[0])
-    }
-    else{
-      returnArray.push(entryX.trim())
-    }
-  }
-  return returnArray
+  return data.data.map( d => d[0])
 }
 
 export function getValuesForCohort(data){
-  return data.map( d => getValuesForGeneSet(d))
+  console.log('input values data ',data)
+  return data.data
 }
 
 export function getValues(data){
@@ -119,7 +114,7 @@ export function getDataStatisticsPerGeneSet(data){
   const dataB = data[1]
   let outputData = []
   for( const i in dataA){
-    const values = dataA[i].concat(dataB[i])
+    const values = dataA[i].data.concat(dataB[i].data)
     const {mean, variance} = getDataStatisticsForGeneSet(values)
     outputData.push({mean,variance})
   }
@@ -128,11 +123,13 @@ export function getDataStatisticsPerGeneSet(data){
 
 
 export function getSamples(data){
-  return Object.keys(data[0]).filter( k => k!=='X' )
+  // return Object.keys(data[0]).filter( k => k!=='X' )
+  return data.samples
 }
 
 export function getValuesForGeneSet(data){
-  return Object.entries(data).filter( k => k[0]!=='X' ).map( d => d[1])
+  // return Object.entries(data).filter( k => k[0]!=='X' ).map( d => d[1])
+  return data.data
 }
 
 
@@ -140,7 +137,7 @@ export function getZSampleScores(values,dataStatisticsPerGeneSet){
   let scoreValues = []
   for( let index in values){
     const { mean, variance} = dataStatisticsPerGeneSet[index]
-    const array = values[index].map( v => (v - mean)/ variance )
+    const array = values[index].data.map( v => (v - mean)/ variance )
     scoreValues.push(array)
   }
   return scoreValues
@@ -164,7 +161,9 @@ export function createMeanMap(analyzedData) {
 
   const geneSetNames = getGeneSetNames(analyzedData[0])
   const values = getValues(analyzedData)
+  console.log('values',values)
   const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+  console.log('output data ',dataStatisticsPerGeneSet)
   // calculates cohorts separately
   const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
   // uses mean separately
