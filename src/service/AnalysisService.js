@@ -31,7 +31,6 @@ function generateTpmFromCohort(cohort){
 export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
 
   // const tpmData = generateTpmFromCohort(cohort)
-  console.log('doBpaAnalysisForCohorts ',cohort,gmtData)
   // let formData = new FormData()
   // formData.append('gmtdata',gmtData)
   // formData.append('tpmname',cohort.name)
@@ -43,7 +42,6 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
   formData['tpmurl'] = generateTpmFromCohort(cohort)
   formData['method'] = 'BPA'
   // formData.append('input','text')
-  console.log('form data',formData)
   const response = await axios.post('http://localhost:3001/analyze',
     formData,
     {
@@ -53,12 +51,7 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
       }
     }
   )
-  console.log('response',response)
   const { data} = response
-  // console.log('lines',data.split('\n').length)
-  console.log('data',data)
-
-
 
   return data
 
