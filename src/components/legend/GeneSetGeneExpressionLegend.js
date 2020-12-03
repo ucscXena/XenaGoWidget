@@ -10,7 +10,7 @@ import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
 export function getMiddleGeneSetLabelForView(view){
   switch (view) {
   case VIEW_ENUM.GENE_EXPRESSION:
-    return 'Mean BPA score'
+    return 'Mean BPA Z-score'
   case VIEW_ENUM.PARADIGM:
     return 'Mean GSEA score'
   case VIEW_ENUM.REGULON:
@@ -26,7 +26,7 @@ export function getMiddleGeneSetLabelForView(view){
 export function getSampleGeneSetLabelForView(view){
   switch (view) {
   case VIEW_ENUM.GENE_EXPRESSION:
-    return 'Sample BPA score'
+    return 'Sample BPA Z-score'
   case VIEW_ENUM.PARADIGM:
     return 'Sample GSEA score'
   case VIEW_ENUM.REGULON:
