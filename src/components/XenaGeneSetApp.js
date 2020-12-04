@@ -75,8 +75,6 @@ const LOAD_STATE = {
   LOADED: 'loaded',
 }
 
-let currentLoadState = LOAD_STATE.UNLOADED
-
 function getMaxGeneValue(geneData) {
 
   if(geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways){
@@ -164,16 +162,12 @@ export default class XenaGeneSetApp extends PureComponent {
 
   componentDidMount() {
     this.handleUrls()
-    console.log('mounted, handdling urlasdfs',this.state.fetch)
     this.fetchData()
-    console.log('mounted, fetch data')
   }
 
   componentDidUpdate() {
     this.handleUrls()
-    console.log('updated, handdling urls',this.state.fetch)
     this.fetchData()
-    console.log('updated, fetching data asdf')
   }
 
   getPathways(){
@@ -182,10 +176,11 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   fetchData(){
-    console.log('fetching data?',this.state.fetch)
     if (this.doRefetch()) {
-      console.log('fetching data!!!')
-      currentLoadState = LOAD_STATE.LOADING
+      // currentLoadState = LOAD_STATE.LOADING
+      this.setState({
+        loading: LOAD_STATE.LOADING
+      })
       let pathways = this.getPathways()
 
       // if gene Expressions
@@ -276,10 +271,11 @@ export default class XenaGeneSetApp extends PureComponent {
         internalCustomGeneSets[this.state.filter][geneSet] = {}
       }
     }
-    currentLoadState = LOAD_STATE.UNLOADED
+    // currentLoadState = LOAD_STATE.UNLOADED
     this.setState({
       customGeneSets:internalCustomGeneSets,
       selectedGeneSets:currentGeneSets,
+      loading: LOAD_STATE.UNLOADED,
       fetch: true,
     })
   }
@@ -530,8 +526,7 @@ export default class XenaGeneSetApp extends PureComponent {
     // populate selection with the appropriate with the statistics loaded correctly
     selection.pathway = pathways.filter( p => p.golabel === selection.pathway.golabel )[0]
 
-    currentLoadState = LOAD_STATE.LOADED
-
+    // currentLoadState = LOAD_STATE.LOADED
     const [minGeneValue,maxGeneValue] = getMaxGeneValue(sortedGeneData)
     this.setState({
       associatedData: mergedGeneSetData,
@@ -684,11 +679,12 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   doRefetch() {
-    if (this.state.fetch && currentLoadState !== LOAD_STATE.LOADING) {
+    // if (this.state.fetch && currentLoadState !== LOAD_STATE.LOADING) {
+    if (this.state.fetch && this.state.loading !== LOAD_STATE.LOADING) {
       return true
     }
 
-    switch (currentLoadState) {
+    switch (this.state.loading) {
     case LOAD_STATE.LOADING:
       return false
     case LOAD_STATE.UNLOADED:
@@ -835,13 +831,14 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
   handleGeneSetLimit = (limit,method,geneSet,doSearch) => {
-    currentLoadState= LOAD_STATE.LOADED
+    // currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy,sortViewOrder,filterBy,filterOrder} = calculateSortingByMethod(method)
     this.setState({
       selectedGeneSets: geneSet,
       reloadPathways: doSearch,
       geneSetLimit: limit,
       sortViewByLabel: method,
+      loading: LOAD_STATE.LOADED,
       sortViewBy,
       sortViewOrder,
       filterBy,
@@ -936,9 +933,6 @@ export default class XenaGeneSetApp extends PureComponent {
       let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData,uploadFileName)
       let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData,uploadFileName)
       const analyzedData = await Promise.all([analyzedData1,analyzedData2])
-      // console.log('promised data',promisedData)
-      // const analyzedData = promisedData.map( d => d[0])
-      // const customGeneSetData = calculateCustomGeneSetActivity(selectedCohort,gmtData,analyzedData)
       const customGeneSetData = calculateCustomGeneSetActivity(gmtData,analyzedData)
 
       AppStorageHandler.storeGeneSetsForView(gmtData,filter)
@@ -1153,7 +1147,8 @@ export default class XenaGeneSetApp extends PureComponent {
             mousing={this.state.mousing} x={this.state.x}
           />
           <Dialog
-            active={currentLoadState === LOAD_STATE.LOADING}
+            // active={currentLoadState === LOAD_STATE.LOADING}
+            active={this.state.loading === LOAD_STATE.LOADING}
             style={{width: 400}}
             title="Loading"
           >
