@@ -1,8 +1,14 @@
 import axios from 'axios'
 
 export async function getAllCustomGeneSets(){
-  const {data} = await axios.get('http://localhost:3001/geneset')
-  return data
+  try {
+    const {data} = await axios.get('http://localhost:3001/geneset')
+    return data
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
+    return []
+  }
 }
 
 export async function getCustomGeneSetNames(method){
