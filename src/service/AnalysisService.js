@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {getCohortDetails} from '../functions/CohortFunctions'
 import {average} from '../functions/DataFunctions'
+import {BASE_URL} from './GeneSetAnalysisStorageService'
 
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
@@ -42,7 +43,7 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
   formData['tpmurl'] = generateTpmFromCohort(cohort)
   formData['method'] = 'BPA'
   // formData.append('input','text')
-  const response = await axios.post('http://localhost:3001/analyze',
+  const response = await axios.post(`${BASE_URL}/result/analyze`,
     formData,
     {
       headers: {

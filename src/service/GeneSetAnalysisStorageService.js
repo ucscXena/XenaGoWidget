@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // TODO: configure to environment
-const BASE_URL = 'http://localhost:8080'
+export const BASE_URL = 'http://localhost:8080'
 
 export async function getAllCustomGeneSets(){
   try {
