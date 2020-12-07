@@ -1,8 +1,11 @@
 import axios from 'axios'
 
+// TODO: configure to environment
+const BASE_URL = 'http://localhost:8080'
+
 export async function getAllCustomGeneSets(){
   try {
-    const {data} = await axios.get('http://localhost:3001/geneset')
+    const {data} = await axios.get(`${BASE_URL}/gmt`)
     return data
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -18,19 +21,19 @@ export async function getCustomGeneSetNames(method){
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const {data} = await axios.get(`http://localhost:3001/geneset/all/${method}`,config)
+  const {data} = await axios.get(`${BASE_URL}/gmt/${method}/all`,config)
   return data
 }
 
 
 export async function getCustomGeneSet(method,geneSetName){
-  const {data} = await axios.get(`http://localhost:3001/geneset/${method}/${geneSetName}`)
+  const {data} = await axios.get(`${BASE_URL}/geneset/${method}/${geneSetName}`)
   return data
 
 }
 
 export async function addCustomGeneSet(method,geneSetName,inputData){
-  const response = await axios.post('http://localhost:3001/geneset',
+  const response = await axios.post(`${BASE_URL}/geneset`,
     {
       method,
       geneset:geneSetName,
@@ -48,7 +51,7 @@ export async function addCustomGeneSet(method,geneSetName,inputData){
 }
 
 export async function removeCustomGeneSet(method,geneSetName){
-  const response = await axios.delete(`http://localhost:3001/geneset/${method}/${geneSetName}`)
+  const response = await axios.delete(`${BASE_URL}/geneset/${method}/${geneSetName}`)
   const { data} = response
   return data
 }
