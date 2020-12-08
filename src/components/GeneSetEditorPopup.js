@@ -18,6 +18,7 @@ import Dialog from 'react-toolbox/lib/dialog'
 import {calculateSortingByMethod, scorePathway} from '../functions/SortFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
+import {getCustomGeneSet} from '../service/GeneSetAnalysisStorageService'
 
 const VIEW_LIMIT = 200
 const CART_LIMIT = 1000
@@ -98,7 +99,7 @@ export default class GeneSetEditorPopup extends PureComponent {
     return isViewGeneExpression(this.props.view)
   }
 
-  handleMeanActivityData = (output) => {
+  handleMeanActivityData = async (output) => {
     const pathways = getGeneSetsForView(this.props.view)
     let loadedPathways = pathways.map( p => {
       p.firstGeneExpressionPathwayActivity = undefined
@@ -124,10 +125,12 @@ export default class GeneSetEditorPopup extends PureComponent {
     let cartPathways
     if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
       // TODO, may need to interset
-      cartPathways = this.props.getCustomGeneSet(this.state.customGeneSetName)
+      cartPathways = await getCustomGeneSet(this.props.view,this.state.customGeneSetName)
+      console.log('custom cart pathways',cartPathways)
     }
     else{
       cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
+      console.log('normal cart pathways',cartPathways)
       const cartLabels = cartPathways.map( p => p.golabel)
       cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )]
     }
@@ -690,7 +693,6 @@ GeneSetEditorPopup.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
   customGeneSetName: PropTypes.any,
   getAvailableCustomGeneSets: PropTypes.any.isRequired,
-  getCustomGeneSet: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,

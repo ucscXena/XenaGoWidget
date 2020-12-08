@@ -5,7 +5,9 @@ export const BASE_URL = 'http://localhost:8080'
 
 export async function getAllCustomGeneSets(){
   try {
+    console.log('getting alll custom gene sets ')
     const {data} = await axios.get(`${BASE_URL}/gmt`)
+    console.log(data)
     return data
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -21,7 +23,7 @@ export async function getCustomGeneSetNames(method){
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const {data} = await axios.get(`${BASE_URL}/gmt/${method}/all`,config)
+  const {data} = await axios.get(`${BASE_URL}/gmt/?method=${method}`,config)
   return data
 }
 
