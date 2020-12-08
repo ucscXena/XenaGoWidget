@@ -27,13 +27,13 @@ export async function getCustomGeneSetNames(method){
 
 
 export async function getCustomGeneSet(method,geneSetName){
-  const {data} = await axios.get(`${BASE_URL}/geneset/${method}/${geneSetName}`)
+  const {data} = await axios.get(`${BASE_URL}/gmt/${method}/${geneSetName}`)
   return data
 
 }
 
 export async function addCustomGeneSet(method,geneSetName,inputData){
-  const response = await axios.post(`${BASE_URL}/geneset`,
+  const response = await axios.post(`${BASE_URL}/gmt`,
     {
       method,
       geneset:geneSetName,
@@ -51,7 +51,7 @@ export async function addCustomGeneSet(method,geneSetName,inputData){
 }
 
 export async function removeCustomGeneSet(method,geneSetName){
-  const response = await axios.delete(`${BASE_URL}/geneset/${method}/${geneSetName}`)
+  const response = await axios.delete(`${BASE_URL}/gmt/${method}/${geneSetName}`)
   const { data} = response
   return data
 }
