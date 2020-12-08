@@ -941,9 +941,11 @@ export default class XenaGeneSetApp extends PureComponent {
       let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData, uploadFileName)
       const analyzedData = await Promise.all([analyzedData1, analyzedData2])
       const customGeneSetData = calculateCustomGeneSetActivity(gmtData, analyzedData)
+      console.log('saved custom gene set data',customGeneSetData)
 
       AppStorageHandler.storeGeneSetsForView(gmtData, filter)
-      this.storeCustomGeneSet(uploadFileName, customGeneSetData)
+      const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
+      console.log( data )
 
       this.setState({
         showUploadDialog: false,

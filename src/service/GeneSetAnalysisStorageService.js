@@ -35,7 +35,7 @@ export async function getCustomGeneSet(method,geneSetName){
 }
 
 export async function addCustomGeneSet(method,geneSetName,inputData){
-  const response = await axios.post(`${BASE_URL}/gmt`,
+  const response = await axios.post(`${BASE_URL}/gmt/save`,
     {
       method,
       geneset:geneSetName,

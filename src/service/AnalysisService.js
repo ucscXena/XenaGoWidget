@@ -104,11 +104,14 @@ export function getValues(data){
  * @returns {*}
  */
 export function getDataStatisticsPerGeneSet(data){
-  const dataA = data[0]
-  const dataB = data[1]
+  console.log('data 0',data[0])
+  console.log('data 0 - test',data[0].map(d => d.data))
+  const dataA = data[0].map(d => d.data).map( e => e.map( f => parseFloat(f)))
+  const dataB = data[1].map(d => d.data).map( e => e.map( f => parseFloat(f)))
+  console.log('data A',dataA)
   let outputData = []
   for( const i in dataA){
-    const values = dataA[i].data.concat(dataB[i].data)
+    const values = dataA[i].concat(dataB[i])
     const {mean, variance} = getDataStatisticsForGeneSet(values)
     outputData.push({mean,variance})
   }
@@ -153,10 +156,14 @@ export function createMeanMap(analyzedData) {
   const samples = [getSamples(analyzedData[0]),getSamples(analyzedData[1])]
 
   const geneSetNames = getGeneSetNames(analyzedData[0])
+  console.log('gene set names ',geneSetNames)
   const values = getValues(analyzedData)
+  console.log('gene set values',values)
   const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+  console.log('data set per gene set',values)
   // calculates cohorts separately
   const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
+  console.log('sample zScores',zSampleScores)
   // uses mean separately
   const zPathwayScores = getZPathwayScores(zSampleScores)
 
@@ -172,8 +179,8 @@ export function calculateCustomGeneSetActivity( gmtData, analyzedData){
   console.log('data to analyze')
   console.log(analyzedData)
   const meanMap = createMeanMap(analyzedData)
-  // console.log('mean map')
-  // console.log(meanMap)
+  console.log('mean map')
+  console.log(meanMap)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
