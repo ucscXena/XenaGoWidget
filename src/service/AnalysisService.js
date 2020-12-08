@@ -52,7 +52,14 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
       }
     }
   )
-  const { data} = response
+  let { data} = response
+  console.log('parse',data.data)
+  const dataObject = JSON.parse(data.data)
+  console.log('data object')
+  console.log(dataObject)
+  data.data = dataObject.data
+  data.samples = dataObject.samples
+  console.log(data)
 
   return data
 
@@ -82,6 +89,8 @@ export function getDataStatisticsForGeneSet(arr){
 }
 
 export function getGeneSetNames(data){
+  console.log(data)
+  console.log(data.data)
   return data.data.map( d => {
     const name = d.geneset
     const goIndex = name.indexOf('(GO:')
@@ -168,6 +177,8 @@ export function createMeanMap(analyzedData) {
 }
 
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
+  console.log('data to analyze')
+  console.log(analyzedData)
   const meanMap = createMeanMap(analyzedData)
   // console.log('mean map')
   // console.log(meanMap)
