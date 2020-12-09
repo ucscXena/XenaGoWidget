@@ -275,11 +275,11 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('calculating custom gene set ', newGeneSet)
     const view = method ? method : VIEW_ENUM.GENE_EXPRESSION
     const customGeneSets = await getCustomGeneSetNames(view)
-    console.log('current gene sets ', customGeneSets)
+    // console.log('current gene sets ', customGeneSets)
     let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
     const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets
     for (const geneSet of customGeneSets) {
-      console.log('gene set', geneSet)
+      // console.log('gene set', geneSet)
       // add an empty result
       if (this.state.selectedGeneSets === geneSet) {
         internalCustomGeneSets[view][geneSet.name] = (await getCustomGeneSet(method, geneSet))[0]
@@ -449,8 +449,8 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    console.log('pathways', pathways)
-    console.log('from input', input)
+    // console.log('pathways', pathways)
+    // console.log('from input', input)
 
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
       this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)

@@ -1,6 +1,10 @@
 import expect from 'expect'
 import {VIEW_ENUM} from '../../src/data/ViewEnum'
-import {getAllCustomGeneSets, getCustomGeneSetNames} from '../../src/service/GeneSetAnalysisStorageService'
+import {
+  addCustomGeneSet,
+  getAllCustomGeneSets,
+  getCustomGeneSetNames
+} from '../../src/service/GeneSetAnalysisStorageService'
 
 
 describe('GeneSet Analysis Storage Service Test', () => {
@@ -12,17 +16,23 @@ describe('GeneSet Analysis Storage Service Test', () => {
     }, 0)
   })
 
-  // it('Find all custom gene sets', async () => {
-  //   const customGeneSetNames = await getAllCustomGeneSets()
-  //   console.log(customGeneSetNames)
-  //   // mostly we want to make sure its just an array
-  // })
+  it('add custom gene set', async () => {
+    const addedCustomGeneSet = await addCustomGeneSet('BPA','test123.gmt',{input:'data'})
+    expect(addedCustomGeneSet).toBeDefined()
+  })
+
+  it('Find all custom gene sets', async () => {
+    const customGeneSetNames = await getAllCustomGeneSets()
+    console.log(customGeneSetNames)
+    expect(addedCustomGeneSet).toBeDefined()
+    // mostly we want to make sure its just an array
+  })
   //
-  // it('Find custom gene sets', async () => {
-  //   const customGeneSetNames = await getCustomGeneSetNames(VIEW_ENUM.GENE_EXPRESSION)
-  //   console.log(customGeneSetNames)
-  //   // mostly we want to make sure its just an array
-  // })
+  it('Find custom gene sets', async () => {
+    const customGeneSetNames = await getCustomGeneSetNames(VIEW_ENUM.GENE_EXPRESSION)
+    console.log(customGeneSetNames)
+    // mostly we want to make sure its just an array
+  })
 })
 
 
