@@ -24,7 +24,7 @@ describe('GeneSet Analysis Storage Service Test', () => {
   it('Find all custom gene sets', async () => {
     const customGeneSetNames = await getAllCustomGeneSets()
     console.log(customGeneSetNames)
-    expect(addedCustomGeneSet).toBeDefined()
+    expect(customGeneSetNames).toBeDefined()
     // mostly we want to make sure its just an array
   })
   //
