@@ -23,8 +23,8 @@ export default class GeneSetEditorComponent extends PureComponent {
 
   render() {
 
-    console.log('custom gene sets')
-    console.log(this.props.customGeneSets)
+    console.log('input gene set component',this.props.customGeneSets)
+
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
@@ -76,7 +76,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           <option>Default Gene Sets</option>
           {/*<option>----Custom Gene Sets----</option>*/}
           {
-            Object.keys(this.props.customGeneSets).map( gs => {
+            this.props.customGeneSets.map( gs => {
               return <option key={gs}>{gs}</option>
             })
           }

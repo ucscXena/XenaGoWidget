@@ -23,13 +23,19 @@ export async function getCustomGeneSetNames(method){
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const {data} = await axios.get(`${BASE_URL}/gmt/?method=${method}`,config)
+  const {data} = await axios.get(`${BASE_URL}/gmt/names/?method=${method}`,config)
   return data
 }
 
 
 export async function getCustomGeneSet(method,geneSetName){
   const {data} = await axios.get(`${BASE_URL}/gmt/${method}/${geneSetName}`)
+  return data
+
+}
+
+export async function getCustomGeneSetResult(method,geneSetName,cohort){
+  const {data} = await axios.get(`${BASE_URL}/result/findResult/${method}/${geneSetName}/${cohort}`)
   return data
 
 }
