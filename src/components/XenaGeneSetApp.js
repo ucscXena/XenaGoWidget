@@ -273,11 +273,13 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
-  async calculateCustomGeneSets(method, newGeneSet,cohortString) {
-    console.log('calculating custom gene set ', method, newGeneSet,cohortString)
+  async calculateCustomGeneSets(method, newGeneSet,cohort) {
+    console.log('calculating custom gene set ', method, newGeneSet,cohort)
     const view = method ? method : VIEW_ENUM.GENE_EXPRESSION
     // const customGeneSets = await getCustomGeneSetNames(view)
-    const customGeneSets = await getCustomGeneSetResult(view,newGeneSet,cohortString)
+    const cohortResultA = getCustomGeneSetResult(view,newGeneSet,cohort[0].name)
+    const cohortResultB = getCustomGeneSetResult(view,newGeneSet,cohort[1].name)
+    const customGeneSets = await Promise.all([cohortResultA,cohortResultB])
     // console.log('current gene sets ', customGeneSets)
     let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
     const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets

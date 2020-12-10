@@ -34,8 +34,17 @@ export async function getCustomGeneSet(method,geneSetName){
 
 }
 
-export async function getCustomGeneSetResult(method,geneSetName,cohort){
-  const {data} = await axios.get(`${BASE_URL}/result/findResult/${method}/${geneSetName}/${cohort}`)
+export async function getCustomGeneSetResult(method,geneSetName,cohortName){
+  console.log('metho',method)
+  console.log('cohort',cohortName)
+  console.log('gene set name',geneSetName)
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
+  const {data} = await axios.get(`${BASE_URL}/result/findResult/?method=${method}&geneSetName=${geneSetName}&cohort=${cohortName}`,config)
   return data
 
 }
