@@ -944,8 +944,8 @@ export default class XenaGeneSetApp extends PureComponent {
       console.log('saved custom gene set data',customGeneSetData)
 
       AppStorageHandler.storeGeneSetsForView(gmtData, filter)
-      const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
-      console.log( data )
+      // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
+      // console.log( data )
 
       this.setState({
         showUploadDialog: false,
