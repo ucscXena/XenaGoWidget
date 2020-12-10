@@ -53,7 +53,7 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts} from '../service/AnalysisService'
+import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts, storeGmt} from '../service/AnalysisService'
 import {
   addCustomGeneSet,
   getCustomGeneSet,
@@ -952,9 +952,10 @@ export default class XenaGeneSetApp extends PureComponent {
         hasUploadFile: false,
         calculatingUpload: true,
       })
+      let gmt = await storeGmt(gmtData,uploadFileName,filter)
 
-      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmtData, uploadFileName)
-      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmtData, uploadFileName)
+      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0],  gmt.name,filter)
+      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1],  gmt.name,filter)
       const analyzedData = await Promise.all([analyzedData1, analyzedData2])
       const customGeneSetData = calculateCustomGeneSetActivity(gmtData, analyzedData)
       console.log('saved custom gene set data',customGeneSetData)

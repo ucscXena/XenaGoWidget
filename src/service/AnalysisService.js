@@ -22,14 +22,33 @@ function generateTpmFromCohort(cohort){
   return `${selectedCohort['geneExpression'].host}/download/${selectedCohort['geneExpression'].dataset}.gz`
 }
 
+export async function storeGmt(gmtData, geneSetName,view){
+
+  let formData = {}
+  formData['gmtdata'] = gmtData
+  formData['gmtname'] = geneSetName
+  formData['method'] = view
+  const response = await axios.post(`${BASE_URL}/gmt/store`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+  )
+  let { data} = response
+  return data
+}
+
 /**
  * Emulating:  curl -v -F tpmdata=@test-data/TCGA-CHOL_logtpm_forTesting.tsv -F gmtdata=@test-data/Xena_manual_pathways.gmt http://localhost:8000/bpa_analysis
  * @param cohort
- * @param gmtData
  * @param geneSetName
+ * @param view
  * @returns {Promise<{msg: ({"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string})[]}>}
  */
-export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
+export async function doBpaAnalysisForCohorts(cohort,  geneSetName,view){
 
   // const tpmData = generateTpmFromCohort(cohort)
   // let formData = new FormData()
@@ -37,11 +56,10 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
   // formData.append('tpmname',cohort.name)
   // formData.append('tpmurl',generateTpmFromCohort(cohort))
   let formData = {}
-  formData['gmtdata'] = gmtData
   formData['gmtname'] = geneSetName
   formData['cohort'] = cohort.name
   formData['tpmurl'] = generateTpmFromCohort(cohort)
-  formData['method'] = 'BPA'
+  formData['method'] = view
   // formData.append('input','text')
   const response = await axios.post(`${BASE_URL}/result/analyze`,
     formData,
