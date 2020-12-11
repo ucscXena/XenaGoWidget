@@ -56,7 +56,6 @@ import GeneSetEditorPopup from './GeneSetEditorPopup'
 import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts, storeGmt} from '../service/AnalysisService'
 import {
   addCustomGeneSet,
-  getCustomGeneSet,
   getCustomGeneSetNames, getCustomGeneSetResult,
   removeCustomGeneSet
 } from '../service/GeneSetAnalysisStorageService'
@@ -178,6 +177,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   componentDidUpdate() {
     this.handleUrls()
+    console.log('component did update!',this.state.fetch,this.state.loading)
     this.fetchData()
   }
 
@@ -188,6 +188,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   fetchData() {
     if (this.doRefetch()) {
+      console.log('REFETCH triggered')
       // currentLoadState = LOAD_STATE.LOADING
       this.setState({
         loading: LOAD_STATE.LOADING
@@ -279,19 +280,32 @@ export default class XenaGeneSetApp extends PureComponent {
     // const customGeneSets = await getCustomGeneSetNames(view)
     const cohortResultA = getCustomGeneSetResult(view,newGeneSet,cohort[0].name)
     const cohortResultB = getCustomGeneSetResult(view,newGeneSet,cohort[1].name)
-    const customGeneSets = await Promise.all([cohortResultA,cohortResultB])
-    // console.log('current gene sets ', customGeneSets)
+    const selectedCustomGeneSet = await Promise.all([cohortResultA,cohortResultB])
+    console.log('current gene sets ', selectedCustomGeneSet)
+    console.log('all custom gene sets', this.state.customGeneSets)
     let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
     const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets
-    for (const geneSet of customGeneSets) {
-      // console.log('gene set', geneSet)
+    console.log('internal current gene sets ', internalCustomGeneSets)
+    console.log('selected gene set ',this.state.selectedGeneSets)
+    console.log('current gene set ',currentGeneSets)
+    for (const geneSet of selectedCustomGeneSet) {
+      console.log('gene set', geneSet)
       // add an empty result
-      if (this.state.selectedGeneSets === geneSet) {
-        internalCustomGeneSets[view][geneSet.name] = (await getCustomGeneSet(method, geneSet))[0]
+      if (this.state.selectedGeneSets === geneSet.gmt) {
+        console.log('matchted gene set',geneSet.gmt)
+        // const selectedGeneSetData = (await getCustomGeneSet(method, geneSet.gmt))
+        // console.log('getting the custom gene set set ',selectedGeneSetData)
+        // internalCustomGeneSets[geneSet.gmt] = selectedGeneSetData[0]
+        internalCustomGeneSets[geneSet.gmt] = selectedCustomGeneSet
       } else {
-        internalCustomGeneSets[view][geneSet.name] = {}
+        console.log('else ',geneSet.gmt)
+        internalCustomGeneSets[geneSet.gmt] = {}
       }
     }
+    console.log('STATE: output internal custom gene sets ',this.state.customGeneSets,internalCustomGeneSets)
+    console.log('STATE: currentGeneSets ',this.state.selectedGeneSets,currentGeneSets)
+    console.log('STATE: fetch',this.state.fetch)
+    console.log('STATE: loading',this.state.loading,LOAD_STATE.UNLOADED)
     // currentLoadState = LOAD_STATE.UNLOADED
     this.setState({
       customGeneSets: internalCustomGeneSets,
@@ -745,6 +759,7 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   setGeneSetOption = (selectedGeneSets) => {
+    console.log('setting GENE SET OPTION')
     this.calculateCustomGeneSets(this.state.filter, selectedGeneSets,this.state.selectedCohort)
     this.setState({
       selectedGeneSets: selectedGeneSets,
@@ -991,6 +1006,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   render() {
     let maxValue = 0
+    console.log('XGSA RENDER')
 
     if (this.state.pathways) {
       if (isViewGeneExpression(this.state.filter)) {
