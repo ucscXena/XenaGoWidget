@@ -307,12 +307,14 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('STATE: fetch',this.state.fetch)
     console.log('STATE: loading',this.state.loading,LOAD_STATE.UNLOADED)
     // currentLoadState = LOAD_STATE.UNLOADED
-    this.setState({
-      customGeneSets: internalCustomGeneSets,
-      selectedGeneSets: currentGeneSets,
-      loading: LOAD_STATE.UNLOADED,
-      fetch: true,
-    })
+    if(!isEqual(this.state.customGeneSets,internalCustomGeneSets) || !isEqual(this.state.loading,LOAD_STATE.LOADING)){
+      this.setState({
+        customGeneSets: internalCustomGeneSets,
+        selectedGeneSets: currentGeneSets,
+        loading: LOAD_STATE.UNLOADED,
+        fetch: true,
+      })
+    }
   }
 
   generateSubCohortText(selectedCohort) {
@@ -1006,7 +1008,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
   render() {
     let maxValue = 0
-    console.log('XGSA RENDER')
 
     if (this.state.pathways) {
       if (isViewGeneExpression(this.state.filter)) {
