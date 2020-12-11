@@ -193,6 +193,25 @@ export function createMeanMap(analyzedData) {
   }
 }
 
+// // TODO:
+// async function getComparisonResult(filter, selectedGeneSets, selectedCohort) {
+//   // let formData = {}
+//   // formData['gmtdata'] = gmtData
+//   // formData['gmtname'] = geneSetName
+//   // formData['method'] = view
+//   // const response = await axios.post(`${BASE_URL}/gmt/store`,
+//   //   formData,
+//   //   {
+//   //     headers: {
+//   //       'Content-Type': 'application/json',
+//   //       'Access-Control-Allow-Origin': '*'
+//   //     }
+//   //   }
+//   // )
+//   // let { data} = response
+//   // return data
+// }
+
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
   console.log('data to analyze')
   console.log(analyzedData)
