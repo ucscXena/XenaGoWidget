@@ -17,7 +17,7 @@ describe('GeneSet Analysis Storage Service Test', () => {
   })
 
   it('add custom gene set', async () => {
-    const addedCustomGeneSet = await addCustomGeneSet('BPA','test123.gmt',{input:'data'})
+    const addedCustomGeneSet = await addCustomGeneSet(VIEW_ENUM.GENE_EXPRESSION,'test123.gmt',{input:'data'})
     expect(addedCustomGeneSet).toBeDefined()
   })
 
