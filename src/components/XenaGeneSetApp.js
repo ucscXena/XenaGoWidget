@@ -818,7 +818,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   setGeneSetOption = (selectedGeneSets) => {
     console.log('setting GENE SET OPTION')
-    this.calculateCustomGeneSets(this.state.filter, selectedGeneSets, this.state.selectedCohort)
+    // this.calculateCustomGeneSets(this.state.filter, selectedGeneSets, this.state.selectedCohort)
     this.setState({
       selectedGeneSets: selectedGeneSets,
     })
