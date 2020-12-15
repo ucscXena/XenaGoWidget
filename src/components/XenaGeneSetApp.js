@@ -1041,7 +1041,11 @@ export default class XenaGeneSetApp extends PureComponent {
       // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
       console.log( data )
       console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
-      const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} )
+      const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
+        if(a.indexOf('Default')===0) return -1
+        if(b.indexOf('Default')===0) return 1
+        return a.toLowerCase()< b.toLowerCase() ? -1 : 1
+      })
       console.log('output custom gene sets',customGeneSets)
 
       this.setState({
