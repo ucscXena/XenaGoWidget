@@ -205,7 +205,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   sortAndFetchPathways(pathways){
     console.log('sorting and fetch',pathways)
-    pathways.filter((a) => a.firstGeneExpressionPathwayActivity &&
+    const sortedPatwhays = pathways.filter((a) => a.firstGeneExpressionPathwayActivity &&
       a.secondGeneExpressionPathwayActivity)
       .sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
         1 :
@@ -224,9 +224,9 @@ export default class XenaGeneSetApp extends PureComponent {
         1 :
         -1) * (scorePathway(a, this.state.sortViewBy) -
         scorePathway(b, this.state.sortViewBy)))
-    console.log('output pathways', pathways)
+    console.log('output pathways', sortedPatwhays)
 
-    fetchCombinedCohorts(this.state.selectedCohort, pathways,
+    fetchCombinedCohorts(this.state.selectedCohort, sortedPatwhays,
       this.state.filter, this.handleCombinedCohortData)
 
   }
@@ -526,12 +526,13 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    // console.log('pathways', pathways)
-    // console.log('from input', input)
+    console.log('handleCombinedCohortData pathways', pathways)
+    console.log('handleCombinedCohortData from input', input)
 
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
       this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
       : [geneExpressionA, geneExpressionB]
+    console.log('generated z scores')
 
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
       for (let index in pathways) {
@@ -568,8 +569,10 @@ export default class XenaGeneSetApp extends PureComponent {
       genomeBackgroundCopyNumber: genomeBackgroundCopyNumberB,
     }
 
+    console.log('calc ass data A')
     const associatedDataA = calculateAssociatedData(pathwayDataA,
       this.state.filter)
+    console.log('calc ass data B')
     const associatedDataB = calculateAssociatedData(pathwayDataB,
       this.state.filter)
 
@@ -585,16 +588,20 @@ export default class XenaGeneSetApp extends PureComponent {
       })
     }
 
+    console.log('sort ass data A')
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
       associatedDataA, this.state.filter)
+    console.log('sort ass data B')
     const sortedAssociatedDataB = sortAssociatedData(selection.pathway,
       associatedDataB, this.state.filter)
+    console.log('output sort ass data B')
 
     const sortedSamplesA = sortedAssociatedDataA[0].map((d) => d.sample)
     const sortedSamplesB = sortedAssociatedDataB[0].map((d) => d.sample)
 
     pathways = calculateAllPathways([pathwayDataA, pathwayDataB],
       [sortedAssociatedDataA, sortedAssociatedDataB], this.state.filter)
+    console.log('calc all pathways')
     pathwayDataA.pathways = pathways
     pathwayDataB.pathways = pathways
     pathwayDataA.pathwaySelection = selection
@@ -604,9 +611,11 @@ export default class XenaGeneSetApp extends PureComponent {
 
     const geneData = selection && selection.open ? generateScoredData(selection, [pathwayDataA, pathwayDataB],
       pathways, this.state.filter, [sortedSamplesA, sortedSamplesB]) : [{}, {}]
+    console.log('gene data')
     const sortedGeneData = isViewGeneExpression(this.state.filter) && selection.open ?
       sortGeneDataWithSamples([sortedSamplesA, sortedSamplesB], geneData) :
       geneData
+    console.log('sorted gene data')
 
     let pathwayIndex = getSelectedGeneSetIndex(selection, pathways)
     const mergedGeneSetData = selection.open ? [

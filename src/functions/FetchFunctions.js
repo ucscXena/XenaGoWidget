@@ -298,7 +298,9 @@ export function fetchSampleData(selectedCohorts,view, handleSampleDataCounts){
 
 // TODO: move into a service as an async method
 export function fetchCombinedCohorts(selectedCohorts, pathways,view, combinationHandler) {
+  console.log('fetch combined with pathways',pathways)
   const geneList = getGenesForPathways(pathways)
+  console.log('gene enes for pathways',geneList)
   let filterCounts
 
   function fetchDataForRegulon(selectedCohorts, samplesA,samplesB, geneList, geneSetLabels) {
@@ -436,14 +438,20 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
     getSamplesForCohortAndView(selectedCohorts[0],view),
     getSamplesForCohortAndView(selectedCohorts[1],view),
   ).flatMap( (unfilteredSamples) => {
+    console.log('got samples for cohort and view')
     filterCounts = [
       createFilterCountForView(unfilteredSamples[0], selectedCohorts[0], view),
       createFilterCountForView(unfilteredSamples[1], selectedCohorts[1], view),
     ]
 
+    console.log('got filter counts')
+
     const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohorts[0])
+    console.log('samples A')
     const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohorts[1])
+    console.log('samples B')
     const geneSetLabels = convertPathwaysToGeneSetLabel(pathways)
+    console.log('gene set labels')
 
     switch (view) {
     case VIEW_ENUM.GENE_EXPRESSION:
@@ -472,6 +480,7 @@ export function fetchCombinedCohorts(selectedCohorts, pathways,view, combination
       geneExpressionB, geneExpressionPathwayActivityB,
       samplesA,samplesB,
     }) => {
+      console.log('data actually returned')
       // TODO: should we just make everything there in terms of activty versus?
       combinationHandler({
         geneList,
