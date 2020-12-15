@@ -1040,9 +1040,11 @@ export default class XenaGeneSetApp extends PureComponent {
       AppStorageHandler.storeGeneSetsForView(gmtData, filter)
       // AppStorageHandler.storePathways(customGeneSetData)
       const samples = [[],[]]
-      const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
+      // const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
+      await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
       // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
-      console.log( data )
+      // console.log( data )
+      // console.log( JSON.stringify(data) )
       console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
       const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
         if(a.indexOf('Default')===0) return -1
