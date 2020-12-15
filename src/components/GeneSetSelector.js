@@ -164,6 +164,8 @@ export class GeneSetSelector extends PureComponent {
   render() {
     let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene} = this.props
 
+    if(!selectedPathway) return <div />
+
     let yOffset = topOffset+4
 
     const layoutLength = pathways.length + (geneData && geneData[0].pathways ? geneData[0].pathways.length : 0)

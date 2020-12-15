@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {getCohortDetails} from '../functions/CohortFunctions'
 import {average} from '../functions/DataFunctions'
+import {BASE_URL} from './GeneSetAnalysisStorageService'
 
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
@@ -21,28 +22,13 @@ function generateTpmFromCohort(cohort){
   return `${selectedCohort['geneExpression'].host}/download/${selectedCohort['geneExpression'].dataset}.gz`
 }
 
-/**
- * Emulating:  curl -v -F tpmdata=@test-data/TCGA-CHOL_logtpm_forTesting.tsv -F gmtdata=@test-data/Xena_manual_pathways.gmt http://localhost:8000/bpa_analysis
- * @param cohort
- * @param gmtData
- * @param geneSetName
- * @returns {Promise<{msg: ({"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string})[]}>}
- */
-export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
+export async function storeGmt(gmtData, geneSetName,view){
 
-  // const tpmData = generateTpmFromCohort(cohort)
-  // let formData = new FormData()
-  // formData.append('gmtdata',gmtData)
-  // formData.append('tpmname',cohort.name)
-  // formData.append('tpmurl',generateTpmFromCohort(cohort))
   let formData = {}
   formData['gmtdata'] = gmtData
   formData['gmtname'] = geneSetName
-  formData['cohort'] = cohort.name
-  formData['tpmurl'] = generateTpmFromCohort(cohort)
-  formData['method'] = 'BPA'
-  // formData.append('input','text')
-  const response = await axios.post('http://localhost:3001/analyze',
+  formData['method'] = view
+  const response = await axios.post(`${BASE_URL}/gmt/store`,
     formData,
     {
       headers: {
@@ -51,8 +37,40 @@ export async function doBpaAnalysisForCohorts(cohort, gmtData, geneSetName){
       }
     }
   )
-  const { data} = response
+  let { data} = response
+  return data
+}
 
+/**
+ * Emulating:  curl -v -F tpmdata=@test-data/TCGA-CHOL_logtpm_forTesting.tsv -F gmtdata=@test-data/Xena_manual_pathways.gmt http://localhost:8000/bpa_analysis
+ * @param cohort
+ * @param geneSetName
+ * @param view
+ * @returns {Promise<{msg: ({"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string}|{"TCGA.3X.AAV9.01A.TCGA.3X.AAVA.01A.TCGA.3X.AAVB.01A.TCGA.3X.AAVC.01A.TCGA.3X.AAVE.01A.TCGA.4G.AAZO.01A.TCGA.4G.AAZT.01A.TCGA.W5.AA2G.01A.TCGA.W5.AA2H.01A.TCGA.W5.AA2I.01A": string})[]}>}
+ */
+export async function doBpaAnalysisForCohorts(cohort,  geneSetName,view){
+
+  // const tpmData = generateTpmFromCohort(cohort)
+  // let formData = new FormData()
+  // formData.append('gmtdata',gmtData)
+  // formData.append('tpmname',cohort.name)
+  // formData.append('tpmurl',generateTpmFromCohort(cohort))
+  let formData = {}
+  formData['gmtname'] = geneSetName
+  formData['cohort'] = cohort.name
+  formData['tpmurl'] = generateTpmFromCohort(cohort)
+  formData['method'] = view
+  // formData.append('input','text')
+  const response = await axios.post(`${BASE_URL}/result/analyze`,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    }
+  )
+  let { data} = response
   return data
 
 }
@@ -81,7 +99,9 @@ export function getDataStatisticsForGeneSet(arr){
 }
 
 export function getGeneSetNames(data){
-  return data.data.map( d => {
+  console.log(data)
+  console.log(data.genesets)
+  return data.genesets.map( d => {
     const name = d.geneset
     const goIndex = name.indexOf('(GO:')
     return goIndex > 0 ? name.substr(0,goIndex).trim() : name.trim()
@@ -89,7 +109,7 @@ export function getGeneSetNames(data){
 }
 
 export function getValuesForCohort(data){
-  return data.data
+  return data.genesets
 }
 
 export function getValues(data){
@@ -102,11 +122,14 @@ export function getValues(data){
  * @returns {*}
  */
 export function getDataStatisticsPerGeneSet(data){
-  const dataA = data[0]
-  const dataB = data[1]
+  console.log('data 0',data[0])
+  console.log('data 0 - test',data[0].map(d => d.data))
+  const dataA = data[0].map(d => d.data).map( e => e.map( f => parseFloat(f)))
+  const dataB = data[1].map(d => d.data).map( e => e.map( f => parseFloat(f)))
+  console.log('data A',dataA)
   let outputData = []
   for( const i in dataA){
-    const values = dataA[i].data.concat(dataB[i].data)
+    const values = dataA[i].concat(dataB[i])
     const {mean, variance} = getDataStatisticsForGeneSet(values)
     outputData.push({mean,variance})
   }
@@ -151,10 +174,14 @@ export function createMeanMap(analyzedData) {
   const samples = [getSamples(analyzedData[0]),getSamples(analyzedData[1])]
 
   const geneSetNames = getGeneSetNames(analyzedData[0])
+  console.log('gene set names ',geneSetNames)
   const values = getValues(analyzedData)
+  console.log('gene set values',values)
   const dataStatisticsPerGeneSet = getDataStatisticsPerGeneSet(values)
+  console.log('data set per gene set',values)
   // calculates cohorts separately
   const zSampleScores = [getZSampleScores(values[0],dataStatisticsPerGeneSet),getZSampleScores(values[1],dataStatisticsPerGeneSet)]
+  console.log('sample zScores',zSampleScores)
   // uses mean separately
   const zPathwayScores = getZPathwayScores(zSampleScores)
 
@@ -166,10 +193,31 @@ export function createMeanMap(analyzedData) {
   }
 }
 
+// // TODO:
+// async function getComparisonResult(filter, selectedGeneSets, selectedCohort) {
+//   // let formData = {}
+//   // formData['gmtdata'] = gmtData
+//   // formData['gmtname'] = geneSetName
+//   // formData['method'] = view
+//   // const response = await axios.post(`${BASE_URL}/gmt/store`,
+//   //   formData,
+//   //   {
+//   //     headers: {
+//   //       'Content-Type': 'application/json',
+//   //       'Access-Control-Allow-Origin': '*'
+//   //     }
+//   //   }
+//   // )
+//   // let { data} = response
+//   // return data
+// }
+
 export function calculateCustomGeneSetActivity( gmtData, analyzedData){
+  console.log('data to analyze')
+  console.log(analyzedData)
   const meanMap = createMeanMap(analyzedData)
-  // console.log('mean map')
-  // console.log(meanMap)
+  console.log('mean map')
+  console.log(meanMap)
   return gmtData.split('\n')
     .filter( l => l.split('\t').length>2)
     .map( line => {
