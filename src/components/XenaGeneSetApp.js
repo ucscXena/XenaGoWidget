@@ -104,7 +104,8 @@ export default class XenaGeneSetApp extends PureComponent {
   constructor(props) {
     super(props)
 
-    const pathways = AppStorageHandler.getPathways()
+    const pathways = AppStorageHandler.getDefaultPathways()
+    console.log('constructor pathways',pathways)
     const urlVariables = QueryString.parse(location.hash.substr(1))
 
     const filter = calculateFilter(urlVariables)
@@ -141,6 +142,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedGeneSets: urlVariables.selectedGeneSets,
       customGeneSets: [],
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
+      pathways,
       filter,
 
       sortViewByLabel,
@@ -196,10 +198,10 @@ export default class XenaGeneSetApp extends PureComponent {
     this.fetchData()
   }
 
-  getPathways() {
-    const storedPathways = AppStorageHandler.getPathways()
-    return this.state.pathways ? this.state.pathways : storedPathways
-  }
+  // getPathways() {
+  //   const storedPathways = AppStorageHandler.getPathways()
+  //   return this.state.pathways ? this.state.pathways : storedPathways
+  // }
 
   sortAndFetchPathways(pathways){
     console.log('sorting and fetch',pathways)
@@ -250,7 +252,8 @@ export default class XenaGeneSetApp extends PureComponent {
       this.setState({
         loading: LOAD_STATE.LOADING
       })
-      let pathways = this.getPathways()
+      // let pathways = this.getPathways()
+      let pathways = this.state.pathways
 
       console.log('INIT pathways', pathways)
 
@@ -569,7 +572,7 @@ export default class XenaGeneSetApp extends PureComponent {
     const associatedDataB = calculateAssociatedData(pathwayDataB,
       this.state.filter)
 
-    AppStorageHandler.storePathways(pathways)
+    // AppStorageHandler.storePathways(pathways)
     let selection = AppStorageHandler.getPathwaySelection()
     if (!selection ||
       !selection.pathway ||
@@ -726,7 +729,7 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     AppStorageHandler.storePathwaySelection(pathwaySelectionWrapper)
-    const geneSetPathways = AppStorageHandler.getPathways()
+    const geneSetPathways = this.state.pathways
     const pureAssociatedData = [pruneGeneSelection(associatedData[0]), pruneGeneSelection(associatedData[1])]
 
     const sortedAssociatedDataA = sortAssociatedData(selection.pathway,
@@ -825,7 +828,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   setActiveGeneSets = (newPathways, selectedGeneSets) => {
-    AppStorageHandler.storePathways(newPathways)
+    // AppStorageHandler.storePathways(newPathways)
 
     const defaultPathway = update(newPathways[0], {
       open: {$set: false},
@@ -1035,7 +1038,7 @@ export default class XenaGeneSetApp extends PureComponent {
       console.log('saved custom gene set data', customGeneSetData)
 
       AppStorageHandler.storeGeneSetsForView(gmtData, filter)
-      AppStorageHandler.storePathways(customGeneSetData)
+      // AppStorageHandler.storePathways(customGeneSetData)
       const samples = [[],[]]
       const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
       // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
@@ -1053,6 +1056,7 @@ export default class XenaGeneSetApp extends PureComponent {
         calculatingUpload: false,
         customGeneSets,
         selectedGeneSets: uploadFileName,
+        pathways: customGeneSetData,
         fetch: true, // triggers fetch here, but may not be
       })
     } catch (e) {
@@ -1093,7 +1097,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const crosshairHeight = (((this.state.pathways ? this.state.pathways.length : 0) + ((this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length : 0)) * 22) + 200
 
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name), getViewsForCohort(this.state.selectedCohort[1].name))
-    let pathways = this.getPathways()
 
 
     return (
@@ -1343,7 +1346,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         geneData={this.state.geneData}
                         labelHeight={22}
                         maxValue={this.state.maxGeneData}
-                        pathways={pathways}
+                        pathways={this.state.pathways}
                         selectedPathway={this.state.pathwaySelection}
                         width={VERTICAL_GENESET_DETAIL_WIDTH}
                       />
@@ -1358,7 +1361,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}
-                            pathways={pathways}
+                            pathways={this.state.pathways}
                             selectedCohort={this.state.selectedCohort[0]}
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}
@@ -1391,7 +1394,7 @@ export default class XenaGeneSetApp extends PureComponent {
                         geneData={this.state.geneData}
                         labelHeight={22}
                         maxValue={this.state.maxGeneData}
-                        pathways={pathways}
+                        pathways={this.state.pathways}
                         selectedPathway={this.state.pathwaySelection}
                         width={VERTICAL_GENESET_DETAIL_WIDTH}
                       />
@@ -1406,7 +1409,7 @@ export default class XenaGeneSetApp extends PureComponent {
                             onClick={this.handlePathwaySelect}
                             onHover={this.handlePathwayHover}
                             onMouseOut={this.handlePathwayHover}
-                            pathways={pathways}
+                            pathways={this.state.pathways}
                             selectedCohort={this.state.selectedCohort[1]}
                             selectedPathway={this.state.pathwaySelection}
                             width={VERTICAL_GENESET_DETAIL_WIDTH}

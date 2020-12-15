@@ -9,7 +9,7 @@ import {exception} from 'react-ga'
 const LOCAL_APP_STORAGE = 'xena-app-storage'
 const LOCAL_STATE_STORAGE = 'xena-selection-storage'
 // const LOCAL_CUSTOM_PATHWAYS_STORAGE = 'xena-custom-pathways-storage'
-const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways'
+// const LOCAL_PATHWAY_STORAGE = 'default-xena-pathways'
 const LOCAL_SUBCOHORT_STORAGE = 'default-subcohort-storage'
 const LOCAL_GENESETS_STORAGE = 'default-genesets-storage'
 
@@ -68,7 +68,7 @@ export class AppStorageHandler {
 
   static resetSessionStorage() {
     sessionStorage.removeItem(LOCAL_APP_STORAGE)
-    sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE)
+    // sessionStorage.removeItem(LOCAL_PATHWAY_STORAGE)
     sessionStorage.removeItem(LOCAL_STATE_STORAGE)
     sessionStorage.removeItem(LOCAL_SUBCOHORT_STORAGE)
     // sessionStorage.removeItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
@@ -121,11 +121,11 @@ export class AppStorageHandler {
     return JSON.parse(sessionStorage.getItem(LOCAL_GENESETS_STORAGE))
   }
 
-  static storePathways(pathways) {
-    if (pathways) {
-      sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways))
-    }
-  }
+  // static storePathways(pathways) {
+  //   if (pathways) {
+  //     sessionStorage.setItem(LOCAL_PATHWAY_STORAGE, JSON.stringify(pathways))
+  //   }
+  // }
 
   // static getCustomPathways() {
   //   const storage = sessionStorage.getItem(LOCAL_CUSTOM_PATHWAYS_STORAGE)
@@ -138,9 +138,14 @@ export class AppStorageHandler {
   //   sessionStorage.setItem(LOCAL_CUSTOM_PATHWAYS_STORAGE,JSON.stringify(pathways))
   // }
 
-  static getPathways() {
-    const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_PATHWAY_STORAGE))
-    return storedPathway || DefaultPathWays
+  /**
+   * For some reason not working locally
+   * @returns {({goid: string, gene: string[], golabel: string}|{goid: string, gene: string[], golabel: string}|{goid: string, gene: string[], golabel: string}|{goid: string, gene: string[], golabel: string}|{goid: string, gene: [string, string, string], golabel: string})[]}
+   */
+  static getDefaultPathways() {
+    // const storedPathway = JSON.parse(sessionStorage.getItem(LOCAL_PATHWAY_STORAGE))
+    // return storedPathway || DefaultPathWays
+    return DefaultPathWays
   }
 
   static getDefaultSelectionPathway() {
