@@ -58,7 +58,7 @@ import {
   addCustomGeneSet,
   getCustomGeneSetNames,
   fetchPathwayResult,
-  getCustomGeneSetResult,
+  // getCustomGeneSetResult,
   removeCustomGeneSet, savePathwayResult
 } from '../service/GeneSetAnalysisStorageService'
 import {VIEW_ENUM} from '../data/ViewEnum'
@@ -317,57 +317,57 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
-  async calculateCustomGeneSets(method, newGeneSet, cohort) {
-    console.log('calculating custom gene set ', method, newGeneSet, cohort)
-    // this.setState({
-    //   loading: LOAD_STATE.LOADING
-    // })
-    const view = method ? method : VIEW_ENUM.GENE_EXPRESSION
-    // const customGeneSets = await getCustomGeneSetNames(view)
-    const cohortResultA = getCustomGeneSetResult(view, newGeneSet, cohort[0].name)
-    const cohortResultB = getCustomGeneSetResult(view, newGeneSet, cohort[1].name)
-    const selectedCustomGeneSet = await Promise.all([cohortResultA, cohortResultB])
-    console.log('current gene sets ', selectedCustomGeneSet)
-    console.log('all custom gene sets', this.state.customGeneSets)
-    const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets
-    const pathways = AppStorageHandler.getPathways()
-    console.log('retrieved pathways', pathways)
-
-
-    // let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
-    // console.log('internal current gene sets ', internalCustomGeneSets)
-    // console.log('selected gene set ', this.state.selectedGeneSets)
-    // console.log('current gene set ', currentGeneSets)
-    // for (const geneSet of selectedCustomGeneSet) {
-    //   console.log('gene set', geneSet)
-    //   // add an empty result
-    //   if (this.state.selectedGeneSets === geneSet.gmt) {
-    //     console.log('matchted gene set', geneSet.gmt)
-    //     // const selectedGeneSetData = (await getCustomGeneSet(method, geneSet.gmt))
-    //     // console.log('getting the custom gene set set ',selectedGeneSetData)
-    //     // internalCustomGeneSets[geneSet.gmt] = selectedGeneSetData[0]
-    //     internalCustomGeneSets[geneSet.gmt] = selectedCustomGeneSet
-    //   } else {
-    //     console.log('else ', geneSet.gmt)
-    //     internalCustomGeneSets[geneSet.gmt] = {}
-    //   }
-    // }
-    //
-
-    // console.log('STATE: output internal custom gene sets ', this.state.customGeneSets, internalCustomGeneSets)
-    console.log('STATE: currentGeneSets ', this.state.selectedGeneSets, currentGeneSets)
-    console.log('STATE: fetch', this.state.fetch)
-    console.log('STATE: loading', this.state.loading, LOAD_STATE.UNLOADED)
-    // currentLoadState = LOAD_STATE.UNLOADED
-    // if (!isEqual(this.state.customGeneSets, internalCustomGeneSets) || !isEqual(this.state.loading, LOAD_STATE.LOADING)) {
-    //   this.setState({
-    //     customGeneSets: internalCustomGeneSets,
-    //     selectedGeneSets: currentGeneSets,
-    //     loading: LOAD_STATE.LOADED,
-    //     fetch: true,
-    //   })
-    // }
-  }
+  // async calculateCustomGeneSets(method, newGeneSet, cohort) {
+  //   console.log('calculating custom gene set ', method, newGeneSet, cohort)
+  //   // this.setState({
+  //   //   loading: LOAD_STATE.LOADING
+  //   // })
+  //   const view = method ? method : VIEW_ENUM.GENE_EXPRESSION
+  //   // const customGeneSets = await getCustomGeneSetNames(view)
+  //   const cohortResultA = getCustomGeneSetResult(view, newGeneSet, cohort[0].name)
+  //   const cohortResultB = getCustomGeneSetResult(view, newGeneSet, cohort[1].name)
+  //   const selectedCustomGeneSet = await Promise.all([cohortResultA, cohortResultB])
+  //   console.log('current gene sets ', selectedCustomGeneSet)
+  //   console.log('all custom gene sets', this.state.customGeneSets)
+  //   const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets
+  //   const pathways = AppStorageHandler.getPathways()
+  //   console.log('retrieved pathways', pathways)
+  //
+  //
+  //   // let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
+  //   // console.log('internal current gene sets ', internalCustomGeneSets)
+  //   // console.log('selected gene set ', this.state.selectedGeneSets)
+  //   // console.log('current gene set ', currentGeneSets)
+  //   // for (const geneSet of selectedCustomGeneSet) {
+  //   //   console.log('gene set', geneSet)
+  //   //   // add an empty result
+  //   //   if (this.state.selectedGeneSets === geneSet.gmt) {
+  //   //     console.log('matchted gene set', geneSet.gmt)
+  //   //     // const selectedGeneSetData = (await getCustomGeneSet(method, geneSet.gmt))
+  //   //     // console.log('getting the custom gene set set ',selectedGeneSetData)
+  //   //     // internalCustomGeneSets[geneSet.gmt] = selectedGeneSetData[0]
+  //   //     internalCustomGeneSets[geneSet.gmt] = selectedCustomGeneSet
+  //   //   } else {
+  //   //     console.log('else ', geneSet.gmt)
+  //   //     internalCustomGeneSets[geneSet.gmt] = {}
+  //   //   }
+  //   // }
+  //   //
+  //
+  //   // console.log('STATE: output internal custom gene sets ', this.state.customGeneSets, internalCustomGeneSets)
+  //   console.log('STATE: currentGeneSets ', this.state.selectedGeneSets, currentGeneSets)
+  //   console.log('STATE: fetch', this.state.fetch)
+  //   console.log('STATE: loading', this.state.loading, LOAD_STATE.UNLOADED)
+  //   // currentLoadState = LOAD_STATE.UNLOADED
+  //   // if (!isEqual(this.state.customGeneSets, internalCustomGeneSets) || !isEqual(this.state.loading, LOAD_STATE.LOADING)) {
+  //   //   this.setState({
+  //   //     customGeneSets: internalCustomGeneSets,
+  //   //     selectedGeneSets: currentGeneSets,
+  //   //     loading: LOAD_STATE.LOADED,
+  //   //     fetch: true,
+  //   //   })
+  //   // }
+  // }
 
   generateSubCohortText(selectedCohort) {
     if (
@@ -1040,10 +1040,14 @@ export default class XenaGeneSetApp extends PureComponent {
       const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
       // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
       console.log( data )
+      console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
+      const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} )
+      console.log('output custom gene sets',customGeneSets)
 
       this.setState({
         showUploadDialog: false,
         calculatingUpload: false,
+        customGeneSets,
         selectedGeneSets: uploadFileName,
         fetch: true, // triggers fetch here, but may not be
       })
