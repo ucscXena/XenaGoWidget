@@ -268,8 +268,9 @@ export default class XenaGeneSetApp extends PureComponent {
 
             fetchPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
               .then( response => {
+                console.log('response',response)
                 if(response!==undefined && !isEmpty(response) ){
-                  pathways = JSON.parse(response.result)
+                  pathways = response
                 }
                 this.sortAndFetchPathways(pathways)
               })
