@@ -57,8 +57,7 @@ import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts, storeGmt} from 
 import {
   addCustomGeneSet,
   getCustomGeneSetNames,
-  fetchPathwayResult,
-  // getCustomGeneSetResult,
+  fetchOrGenerateScoredPathwayResult,
   removeCustomGeneSet, savePathwayResult
 } from '../service/GeneSetAnalysisStorageService'
 import {VIEW_ENUM} from '../data/ViewEnum'
@@ -219,15 +218,25 @@ export default class XenaGeneSetApp extends PureComponent {
       //   return true
       // })
       .slice(0, this.state.geneSetLimit)
-      .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ?
-        1 :
-        -1) * (scorePathway(a, this.state.sortViewBy) -
-        scorePathway(b, this.state.sortViewBy)))
+      .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ? 1 : -1)
+        * (scorePathway(a, this.state.sortViewBy) - scorePathway(b, this.state.sortViewBy)))
     console.log('output pathways', sortedPatwhays)
 
     fetchCombinedCohorts(this.state.selectedCohort, sortedPatwhays,
       this.state.filter, this.handleCombinedCohortData)
 
+  }
+
+  sortPathways(pathways){
+    return pathways.filter((a) => a.firstGeneExpressionPathwayActivity &&
+      a.secondGeneExpressionPathwayActivity)
+      .sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
+        1 :
+        -1) * (scorePathway(a, this.state.filterBy) -
+        scorePathway(b, this.state.filterBy)))
+      .slice(0, this.state.geneSetLimit)
+      .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ? 1 : -1)
+        * (scorePathway(a, this.state.sortViewBy) - scorePathway(b, this.state.sortViewBy)))
   }
 
 
@@ -265,13 +274,24 @@ export default class XenaGeneSetApp extends PureComponent {
             console.log('selected cohort',this.state.selectedCohort)
             const samples = [[],[]]
 
-            fetchPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
+            // fetchPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
+            //   .then( response => {
+            //     console.log('response',response)
+            //     if(response!==undefined && !isEmpty(response) ){
+            //       pathways = response
+            //     }
+            //     this.sortAndFetchPathways(pathways)
+            //   })
+
+            fetchOrGenerateScoredPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
               .then( response => {
                 console.log('response',response)
                 if(response!==undefined && !isEmpty(response) ){
                   pathways = response
                 }
-                this.sortAndFetchPathways(pathways)
+                const sortedPathways = this.sortPathways(pathways)
+                fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
+                  this.state.filter, this.handleCombinedCohortData)
               })
 
           } else {

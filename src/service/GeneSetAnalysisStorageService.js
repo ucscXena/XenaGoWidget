@@ -86,6 +86,20 @@ export async function fetchPathwayResult(method,gmt,selectedCohort,samples){
 
 }
 
+export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
+
+  console.log('getting pathway result',method,gmt,selectedCohort,samples)
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
+  const {data} = await axios.get(`${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}&samples=${samples}`,config)
+  return data
+}
+
+
 export async function savePathwayResult(view,gmt,selectedCohort,samples, customGeneSetData){
   const response = await axios.post(`${BASE_URL}/compareResult/storeResult`,
     {
