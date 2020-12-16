@@ -127,7 +127,6 @@ export default class XenaGeneSetApp extends PureComponent {
       showUploadDialog: false,
       cohortColors,
       fetch: false,
-      automaticallyReloadPathways: true,
       reloadPathways: process.env.NODE_ENV !== 'test',
       loading: LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
@@ -809,7 +808,7 @@ export default class XenaGeneSetApp extends PureComponent {
       {
         filter: newView,
         fetch: true,
-        reloadPathways: this.state.automaticallyReloadPathways,
+        reloadPathways: true,
         selectedGeneSets: undefined,
       }
     )
@@ -823,7 +822,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: updateCohortState,
       filter: newView,
       fetch: true,
-      reloadPathways: this.state.automaticallyReloadPathways,
+      reloadPathways: true,
       showCohortEditor: false,
       selectedGeneSets: newView !== this.state.filter ? undefined : this.state.selectedGeneSets
     })
