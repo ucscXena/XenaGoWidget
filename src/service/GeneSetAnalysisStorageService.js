@@ -95,7 +95,8 @@ export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCoho
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const {data} = await axios.get(`${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}&samples=${samples}`,config)
+  const tpmUrls = this.generateTpmDownloadUrlFromCohorts(selectedCohort)
+  const {data} = await axios.get(`${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}&tpmUrls=${tpmUrls}&samples=${samples}`,config)
   return data
 }
 
