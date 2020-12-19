@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {generateTpmDownloadUrlFromCohorts} from './AnalysisService'
 
 // TODO: configure to environment
 export const BASE_URL = 'http://localhost:8080'
@@ -91,12 +92,20 @@ export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCoho
   console.log('getting pathway result',method,gmt,selectedCohort,samples)
   const config = {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      // 'Content-Type': 'multipart/form-data',
       'Access-Control-Allow-Origin': '*'
     }
   }
-  const tpmUrls = this.generateTpmDownloadUrlFromCohorts(selectedCohort)
-  const {data} = await axios.get(`${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}&tpmUrls=${tpmUrls}&samples=${samples}`,config)
+  console.log('A')
+  const tpmUrls = generateTpmDownloadUrlFromCohorts(selectedCohort)
+  console.log('B',tpmUrls)
+  let inputUrl = `${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}`+
+      `&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}`+
+      `&tpmUrlA=${tpmUrls[0].url}`+
+      `&tpmUrlB=${tpmUrls[1].url}`+
+      `&samples=${samples}`
+  const {data} = await axios.get(inputUrl,config)
+  console.log('C')
   return data
 }
 
