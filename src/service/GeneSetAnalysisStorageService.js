@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {generateTpmDownloadUrlFromCohorts} from './AnalysisService'
 
 // TODO: configure to environment
 export const BASE_URL = 'http://localhost:8080'
@@ -7,7 +8,6 @@ export async function getAllCustomGeneSets(){
   try {
     console.log('getting alll custom gene sets ')
     const {data} = await axios.get(`${BASE_URL}/gmt`)
-    console.log(data)
     return data
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -35,9 +35,6 @@ export async function getCustomGeneSet(method,geneSetName){
 }
 
 export async function getCustomGeneSetResult(method,geneSetName,cohortName){
-  console.log('metho',method)
-  console.log('cohort',cohortName)
-  console.log('gene set name',geneSetName)
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -85,6 +82,26 @@ export async function fetchPathwayResult(method,gmt,selectedCohort,samples){
   return data
 
 }
+
+export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
+
+  console.log('getting pathway result',method,gmt,selectedCohort,samples)
+  const config = {
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
+  const tpmUrls = generateTpmDownloadUrlFromCohorts(selectedCohort)
+  let inputUrl = `${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}`+
+      `&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}`+
+      `&tpmUrlA=${tpmUrls[0].url}`+
+      `&tpmUrlB=${tpmUrls[1].url}`+
+      `&samples=${samples}`
+  const {data} = await axios.get(inputUrl,config)
+  return data
+}
+
 
 export async function savePathwayResult(view,gmt,selectedCohort,samples, customGeneSetData){
   const response = await axios.post(`${BASE_URL}/compareResult/storeResult`,

@@ -67,6 +67,15 @@ export class GeneSetSelector extends PureComponent {
     this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
 
+  calculateColor(selected,open,p){
+    if(selected || !open){
+      return p.firstGeneExpressionPathwayActivity<-1 ? 'white' : 'black'
+    }
+    else{
+      return 'grey'
+    }
+  }
+
   generateGeneSetLabel(p, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
     return [
       <rect
@@ -99,7 +108,7 @@ export class GeneSetSelector extends PureComponent {
       />
       ,
       <text
-        fill={selected || !open ? 'black' : 'gray'}
+        fill={this.calculateColor(selected,open,p)}
         fontFamily='Arial'
         fontSize={12}
         fontWeight={'bold'}
