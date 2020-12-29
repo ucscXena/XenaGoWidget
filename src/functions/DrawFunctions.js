@@ -85,6 +85,7 @@ export const interpolateGenesetScoreFunction = max => {
 
 
 export let interpolateGeneExpression = (score) => score==='NaN' ? 'gray' : interpolateGeneExpressionFunction(score)
+export let interpolateGeneExpressionFont = (score) => score==='NaN' ? 'gray' : ( score < -1 ? 'white' : 'black')
 export let interpolateCnvMutationColor = (score) => score==='NaN' ? 'gray' : interpolateCnvMutationFunction(score)
 
 // function drawGeneWithManyColorTypes(ctx, width, totalHeight, layout, data,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
   interpolateCnvMutationColor,
-  interpolateGeneExpression,
+  interpolateGeneExpression, interpolateGeneExpressionFont,
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getAffectedPathway, getRatio} from '../../functions/HoverFunctions'
@@ -36,7 +36,7 @@ export default class HoverGeneSetLabel extends PureComponent {
         <span
           className={BaseStyle.scoreBoxBlock}
           style={{
-            color: 'black',
+            color: interpolateGeneExpressionFont(score),
             backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
           }}
         >
