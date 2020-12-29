@@ -8,7 +8,6 @@ export async function getAllCustomGeneSets(){
   try {
     console.log('getting alll custom gene sets ')
     const {data} = await axios.get(`${BASE_URL}/gmt`)
-    console.log(data)
     return data
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -36,9 +35,6 @@ export async function getCustomGeneSet(method,geneSetName){
 }
 
 export async function getCustomGeneSetResult(method,geneSetName,cohortName){
-  console.log('metho',method)
-  console.log('cohort',cohortName)
-  console.log('gene set name',geneSetName)
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -96,16 +92,13 @@ export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCoho
       'Access-Control-Allow-Origin': '*'
     }
   }
-  console.log('A')
   const tpmUrls = generateTpmDownloadUrlFromCohorts(selectedCohort)
-  console.log('B',tpmUrls)
   let inputUrl = `${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}`+
       `&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}`+
       `&tpmUrlA=${tpmUrls[0].url}`+
       `&tpmUrlB=${tpmUrls[1].url}`+
       `&samples=${samples}`
   const {data} = await axios.get(inputUrl,config)
-  console.log('C')
   return data
 }
 
