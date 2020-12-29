@@ -69,7 +69,6 @@ export class GeneSetSelector extends PureComponent {
 
   calculateColor(selected,open,p){
     if(selected || !open){
-      console.log('p',p)
       return p.firstGeneExpressionPathwayActivity<-1 ? 'white' : 'black'
     }
     else{
