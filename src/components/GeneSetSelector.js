@@ -67,6 +67,10 @@ export class GeneSetSelector extends PureComponent {
     this.props.onHover(geneSet ? { pathway: geneSet, tissue: 'Header'} : null)
   };
 
+  calculateGeneFontColor(score){
+    return score<-1 ? 'white' : 'black'
+  }
+
   calculateColor(selected,open,p){
     if(selected || !open){
       return p.firstGeneExpressionPathwayActivity<-1 ? 'white' : 'black'
@@ -156,7 +160,7 @@ export class GeneSetSelector extends PureComponent {
       />
       ,
       <text
-        fill={'black'}
+        fill={this.calculateGeneFontColor(gene0.geneExpressionMean)}
         fontFamily='Arial'
         fontSize={12}
         fontWeight={'bold'}
