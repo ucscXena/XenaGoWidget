@@ -1071,8 +1071,21 @@ export default class XenaGeneSetApp extends PureComponent {
           console.log('response',response)
           if(response!==undefined && !isEmpty(response) ){
             const sortedPathways = this.sortPathways(response)
+            const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
+              if(a.indexOf('Default')===0) return -1
+              if(b.indexOf('Default')===0) return 1
+              return a.toLowerCase()< b.toLowerCase() ? -1 : 1
+            })
             fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
               this.state.filter, this.handleCombinedCohortData)
+            this.setState({
+              showUploadDialog: false,
+              calculatingUpload: false,
+              customGeneSets,
+              selectedGeneSets: uploadFileName,
+              pathways: response,
+              // fetch: true, // triggers fetch here, but may not be
+            })
           }
           else{
             alert('No response found')
