@@ -126,11 +126,9 @@ export default class GeneSetEditorPopup extends PureComponent {
     if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
       // TODO, may need to interset
       cartPathways = await getCustomGeneSet(this.props.view,this.state.customGeneSetName)
-      console.log('custom cart pathways',cartPathways)
     }
     else{
       cartPathways = loadedPathways.filter( p =>  pathwayLabels.indexOf(p.golabel)>=0 )
-      console.log('normal cart pathways',cartPathways)
       const cartLabels = cartPathways.map( p => p.golabel)
       cartPathways = [...cartPathways,...this.props.pathways.filter( p => cartLabels.indexOf(p.golabel)<0 )]
     }

@@ -6,7 +6,6 @@ export const BASE_URL = 'http://localhost:8080'
 
 export async function getAllCustomGeneSets(){
   try {
-    console.log('getting alll custom gene sets ')
     const {data} = await axios.get(`${BASE_URL}/gmt`)
     return data
   } catch (e) {
@@ -71,7 +70,6 @@ export async function removeCustomGeneSet(method,geneSetName){
 }
 
 export async function fetchPathwayResult(method,gmt,selectedCohort,samples){
-  console.log('getting pathway result',method,gmt,selectedCohort,samples)
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -84,8 +82,6 @@ export async function fetchPathwayResult(method,gmt,selectedCohort,samples){
 }
 
 export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
-
-  console.log('getting pathway result',method,gmt,selectedCohort,samples)
   const config = {
     headers: {
       // 'Content-Type': 'multipart/form-data',

@@ -104,7 +104,6 @@ export default class XenaGeneSetApp extends PureComponent {
     super(props)
 
     const pathways = AppStorageHandler.getDefaultPathways()
-    console.log('constructor pathways',pathways)
     const urlVariables = QueryString.parse(location.hash.substr(1))
 
     const filter = calculateFilter(urlVariables)
@@ -171,22 +170,15 @@ export default class XenaGeneSetApp extends PureComponent {
 
   componentDidMount() {
     this.handleUrls()
-    console.log('input state', this.state)
-    // this.calculateCustomGeneSets()
     this.getAvailableCustomGeneSets(this.state.filter)
     this.fetchData()
   }
 
   componentDidUpdate(prevProps, prevState) {
     this.handleUrls()
-    // console.log('component did update!', this.state, prevState)
-    // console.log('keys A:', Object.keys(this.state).length)
-    // console.log('keys B:', Object.keys(prevState).length)
     let diffs = []
     for (const key of Object.keys(this.state)) {
       if (!isEqual(this.state[key], prevState[key])) {
-        // console.log(key, isEqual(this.state[key], prevState[key]))
-        // console.log(prevState[key] + ' -> ' + this.state[key])
         diffs.concat(key)
       }
     }
@@ -196,31 +188,16 @@ export default class XenaGeneSetApp extends PureComponent {
     this.fetchData()
   }
 
-  // getPathways() {
-  //   const storedPathways = AppStorageHandler.getPathways()
-  //   return this.state.pathways ? this.state.pathways : storedPathways
-  // }
-
   sortAndFetchPathways(pathways){
-    console.log('sorting and fetch',pathways)
     const sortedPatwhays = pathways.filter((a) => a.firstGeneExpressionPathwayActivity &&
       a.secondGeneExpressionPathwayActivity)
       .sort((a, b) => (this.state.filterOrder === SORT_ORDER_ENUM.ASC ?
         1 :
         -1) * (scorePathway(a, this.state.filterBy) -
         scorePathway(b, this.state.filterBy)))
-      // .filter( (c) => {
-      //   if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
-      //   // only return custom gene sets with go labels?
-      //     const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
-      //     return currentGeneSets.indexOf(c.golabel)>=0
-      //   }
-      //   return true
-      // })
       .slice(0, this.state.geneSetLimit)
       .sort((a, b) => (this.state.sortViewOrder === SORT_ORDER_ENUM.ASC ? 1 : -1)
         * (scorePathway(a, this.state.sortViewBy) - scorePathway(b, this.state.sortViewBy)))
-    console.log('output pathways', sortedPatwhays)
 
     fetchCombinedCohorts(this.state.selectedCohort, sortedPatwhays,
       this.state.filter, this.handleCombinedCohortData)
@@ -240,52 +217,22 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
 
-  // getPathwayResults = async (view,gmt,selectedCohort,samples) => {
-  //   try {
-  //     console.log('a')
-  //     const {data} = await fetchPathwayResult(view, gmt, selectedCohort, samples)
-  //     console.log('b',data)
-  //     return data
-  //   } catch (e) {
-  //     console.log('c',e)
-  //     console.error(e)
-  //     return undefined
-  //   }
-  // }
-
   fetchData() {
     if (this.doRefetch()) {
-      console.log('REFETCH triggered')
-      // currentLoadState = LOAD_STATE.LOADING
       this.setState({
         loading: LOAD_STATE.LOADING
       })
       // let pathways = this.getPathways()
       let pathways = this.state.pathways
 
-      console.log('INIT pathways', pathways)
-
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
-          console.log('reloading pathways')
           if (this.state.selectedGeneSets !== undefined && this.isCustomGeneSet(this.state.selectedGeneSets)) {
-            console.log('selected gene sets',this.state.selectedGeneSets)
-            console.log('selected cohort',this.state.selectedCohort)
             const samples = [[],[]]
-
-            // fetchPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
-            //   .then( response => {
-            //     console.log('response',response)
-            //     if(response!==undefined && !isEmpty(response) ){
-            //       pathways = response
-            //     }
-            //     this.sortAndFetchPathways(pathways)
-            //   })
 
             fetchOrGenerateScoredPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
               .then( response => {
-                console.log('response',response)
                 if(response!==undefined && !isEmpty(response) ){
                   pathways = response
                 }
@@ -307,17 +254,12 @@ export default class XenaGeneSetApp extends PureComponent {
         // if its not gene expression just use the canned data
         if (!isViewGeneExpression(this.state.filter)) {
           pathways = getGeneSetsForView(this.state.filter)
-          console.log('C pathways', pathways)
         }
-        console.log('D pathways', pathways)
 
         fetchCombinedCohorts(this.state.selectedCohort, pathways,
           this.state.filter, this.handleCombinedCohortData)
       }
     }
-    // else {
-    //   console.log('refetch NOT triggered', this.state.loading, this.state.fetch)
-    // }
 
   }
 
@@ -340,57 +282,6 @@ export default class XenaGeneSetApp extends PureComponent {
     }
   }
 
-  // async calculateCustomGeneSets(method, newGeneSet, cohort) {
-  //   console.log('calculating custom gene set ', method, newGeneSet, cohort)
-  //   // this.setState({
-  //   //   loading: LOAD_STATE.LOADING
-  //   // })
-  //   const view = method ? method : VIEW_ENUM.GENE_EXPRESSION
-  //   // const customGeneSets = await getCustomGeneSetNames(view)
-  //   const cohortResultA = getCustomGeneSetResult(view, newGeneSet, cohort[0].name)
-  //   const cohortResultB = getCustomGeneSetResult(view, newGeneSet, cohort[1].name)
-  //   const selectedCustomGeneSet = await Promise.all([cohortResultA, cohortResultB])
-  //   console.log('current gene sets ', selectedCustomGeneSet)
-  //   console.log('all custom gene sets', this.state.customGeneSets)
-  //   const currentGeneSets = newGeneSet !== undefined ? newGeneSet : this.state.selectedGeneSets
-  //   const pathways = AppStorageHandler.getPathways()
-  //   console.log('retrieved pathways', pathways)
-  //
-  //
-  //   // let internalCustomGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
-  //   // console.log('internal current gene sets ', internalCustomGeneSets)
-  //   // console.log('selected gene set ', this.state.selectedGeneSets)
-  //   // console.log('current gene set ', currentGeneSets)
-  //   // for (const geneSet of selectedCustomGeneSet) {
-  //   //   console.log('gene set', geneSet)
-  //   //   // add an empty result
-  //   //   if (this.state.selectedGeneSets === geneSet.gmt) {
-  //   //     console.log('matchted gene set', geneSet.gmt)
-  //   //     // const selectedGeneSetData = (await getCustomGeneSet(method, geneSet.gmt))
-  //   //     // console.log('getting the custom gene set set ',selectedGeneSetData)
-  //   //     // internalCustomGeneSets[geneSet.gmt] = selectedGeneSetData[0]
-  //   //     internalCustomGeneSets[geneSet.gmt] = selectedCustomGeneSet
-  //   //   } else {
-  //   //     console.log('else ', geneSet.gmt)
-  //   //     internalCustomGeneSets[geneSet.gmt] = {}
-  //   //   }
-  //   // }
-  //   //
-  //
-  //   // console.log('STATE: output internal custom gene sets ', this.state.customGeneSets, internalCustomGeneSets)
-  //   console.log('STATE: currentGeneSets ', this.state.selectedGeneSets, currentGeneSets)
-  //   console.log('STATE: fetch', this.state.fetch)
-  //   console.log('STATE: loading', this.state.loading, LOAD_STATE.UNLOADED)
-  //   // currentLoadState = LOAD_STATE.UNLOADED
-  //   // if (!isEqual(this.state.customGeneSets, internalCustomGeneSets) || !isEqual(this.state.loading, LOAD_STATE.LOADING)) {
-  //   //   this.setState({
-  //   //     customGeneSets: internalCustomGeneSets,
-  //   //     selectedGeneSets: currentGeneSets,
-  //   //     loading: LOAD_STATE.LOADED,
-  //   //     fetch: true,
-  //   //   })
-  //   // }
-  // }
 
   generateSubCohortText(selectedCohort) {
     if (
@@ -545,13 +436,9 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    console.log('handleCombinedCohortData pathways', pathways)
-    console.log('handleCombinedCohortData from input', input)
-
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
       this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
       : [geneExpressionA, geneExpressionB]
-    console.log('generated z scores')
 
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
       for (let index in pathways) {
@@ -791,7 +678,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
   doRefetch() {
     // if (this.state.fetch && currentLoadState !== LOAD_STATE.LOADING) {
-    // console.log('do refetch?', this.state.fetch, this.state.loading)
     if (this.state.fetch && this.state.loading !== LOAD_STATE.LOADING) {
       return true
     }
@@ -808,7 +694,8 @@ export default class XenaGeneSetApp extends PureComponent {
     }
 
     // if loading is not defined
-    console.log('LOADING NOT DEFINED')
+    // eslint-disable-next-line no-console
+    console.error('LOADING NOT DEFINED')
 
     if (isEqual(this.state.geneData, [{}, {}])) return true
     if (isEqual(this.state.pathwayData, [{}, {}])) return true
@@ -841,16 +728,12 @@ export default class XenaGeneSetApp extends PureComponent {
   };
 
   setGeneSetOption = (selectedGeneSets) => {
-    console.log('setting GENE SET OPTION')
-    // this.calculateCustomGeneSets(this.state.filter, selectedGeneSets, this.state.selectedCohort)
     this.setState({
       selectedGeneSets: selectedGeneSets,
     })
   }
 
   setActiveGeneSets = (newPathways, selectedGeneSets) => {
-    // AppStorageHandler.storePathways(newPathways)
-
     const defaultPathway = update(newPathways[0], {
       open: {$set: false},
     })
@@ -962,9 +845,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getAvailableCustomGeneSets = async (method) => {
-    // console.log('available custom gene sets', inputGeneSets, method)
     const customGeneSets = await getCustomGeneSetNames(method)
-    console.log('retrieved custom gene sets', customGeneSets)
     this.setState({
       customGeneSets
     })
@@ -1054,7 +935,6 @@ export default class XenaGeneSetApp extends PureComponent {
       const samples = []
       fetchOrGenerateScoredPathwayResult(this.state.filter,gmt.name,selectedCohort,samples)
         .then( response => {
-          console.log('response',response)
           if(response!==undefined && !isEmpty(response) ){
             const sortedPathways = this.sortPathways(response)
             const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
@@ -1062,12 +942,10 @@ export default class XenaGeneSetApp extends PureComponent {
               if(b.indexOf('Default')===0) return 1
               return a.toLowerCase()< b.toLowerCase() ? -1 : 1
             })
-            console.log('fetching')
             let fetchFunction = async (inputPathways)  => {fetchCombinedCohorts(this.state.selectedCohort, inputPathways,
               this.state.filter, this.handleCombinedCohortData)}
 
-            fetchFunction(sortedPathways).then( (data) => {
-              console.log('in fetch then',data)
+            fetchFunction(sortedPathways).then( () => {
               this.setState({
                 showUploadDialog: false,
                 calculatingUpload: false,
@@ -1077,7 +955,6 @@ export default class XenaGeneSetApp extends PureComponent {
                 // fetch: true, // triggers fetch here, but may not be
               })
             })
-            console.log('fetched')
           }
           else{
             alert('No response found')
