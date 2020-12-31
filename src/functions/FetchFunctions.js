@@ -176,23 +176,6 @@ export function allFieldMean(cohort, samples,view) {
   return Rx.Observable.ajax(xenaPost(host, query)).map(xhr => JSON.parse(xhr.response))
 }
 
-export function fetchPathwayActivityBulk(selectedCohorts,samples,geneSetLabels,dataHandler){
-  Rx.Observable.zip(
-    datasetProbeValues(selectedCohorts[0].geneExpressionPathwayActivity.host, selectedCohorts[0].geneExpressionPathwayActivity.dataset, samples[0], geneSetLabels),
-    datasetProbeValues(selectedCohorts[1].geneExpressionPathwayActivity.host, selectedCohorts[1].geneExpressionPathwayActivity.dataset, samples[1], geneSetLabels),
-    (
-      geneExpressionPathwayActivityA, geneExpressionPathwayActivityB
-    ) => ({
-      geneExpressionPathwayActivityA,
-      geneExpressionPathwayActivityB,
-    }),
-  )
-    .subscribe( (output ) => {
-      // get the average activity for each
-      dataHandler(output)
-    })
-
-}
 
 export function lookupGeneByName(geneQuery,callback){
   let subscriber = sparseDataMatchPartialField(REFERENCE.host, 'name2', REFERENCE.name, geneQuery, REFERENCE.limit)
@@ -276,7 +259,7 @@ export function fetchPathwayActivityMeans(selectedCohorts,samples,view,dataHandl
       geneExpressionPathwayActivityB,
     }),
   )
-    .subscribe( (output ) => {
+    .subscribe( (output) => {
       // get the average activity for each
       dataHandler(output)
     })

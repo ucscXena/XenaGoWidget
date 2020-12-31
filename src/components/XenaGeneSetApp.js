@@ -1,4 +1,5 @@
 import React from 'react'
+const Rx = require('ucsc-xena-client/dist/rx')
 import PureComponent from './PureComponent'
 import {AppStorageHandler} from '../service/AppStorageHandler'
 import NavigationBar from './NavigationBar'
@@ -17,11 +18,12 @@ import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
 import {Dialog} from 'react-toolbox'
 import {
+  calculateSelectedSubCohortSamples,
   fetchBestPathways,
   fetchCombinedCohorts,
   fetchSampleData,
   getCohortDataForGeneExpressionView,
-  getGeneSetsForView,
+  getGeneSetsForView, getSamplesForCohortAndView,
 } from '../functions/FetchFunctions'
 import CrossHairH from './crosshair/CrossHairH'
 import CrossHairV from './crosshair/CrossHairV'
@@ -216,6 +218,11 @@ export default class XenaGeneSetApp extends PureComponent {
         * (scorePathway(a, this.state.sortViewBy) - scorePathway(b, this.state.sortViewBy)))
   }
 
+  isPartialCohortSelected(selectedCohort){
+    let selectedSubCohortLength = selectedCohort.selectedSubCohorts.length
+    let  subCohortLength = selectedCohort.subCohorts.length
+    return ( selectedSubCohortLength != subCohortLength && selectedSubCohortLength> 0)
+  }
 
   fetchData() {
     if (this.doRefetch()) {
@@ -223,22 +230,30 @@ export default class XenaGeneSetApp extends PureComponent {
         loading: LOAD_STATE.LOADING
       })
       // let pathways = this.getPathways()
-      let pathways = this.state.pathways
+      let { pathways, filter, selectedGeneSets,selectedCohort} = this.state
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
         if (this.state.reloadPathways) {
           if (this.state.selectedGeneSets !== undefined && this.isCustomGeneSet(this.state.selectedGeneSets)) {
-            const samples = [[],[]]
-
-            fetchOrGenerateScoredPathwayResult(this.state.filter, this.state.selectedGeneSets, this.state.selectedCohort, samples)
-              .then( response => {
-                if(response!==undefined && !isEmpty(response) ){
-                  pathways = response
-                }
-                const sortedPathways = this.sortPathways(pathways)
-                fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
-                  this.state.filter, this.handleCombinedCohortData)
+            Rx.Observable.zip(
+              getSamplesForCohortAndView(selectedCohort[0],filter),
+              getSamplesForCohortAndView(selectedCohort[1],filter),
+            ).flatMap( (unfilteredSamples) => {
+              const samplesA = this.isPartialCohortSelected(selectedCohort[0]) ? calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0]) : []
+              const samplesB = this.isPartialCohortSelected(selectedCohort[1]) ? calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1]) : []
+              return [[samplesA,samplesB]]
+            })
+              .subscribe( (samples) => {
+                fetchOrGenerateScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples)
+                  .then(response => {
+                    if (response !== undefined && !isEmpty(response)) {
+                      pathways = response
+                    }
+                    const sortedPathways = this.sortPathways(pathways)
+                    fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
+                      this.state.filter, this.handleCombinedCohortData)
+                  })
               })
 
           } else {
@@ -932,35 +947,43 @@ export default class XenaGeneSetApp extends PureComponent {
         calculatingUpload: true,
       })
       const gmt = await storeGmt(gmtData, uploadFileName, filter)
-      const samples = []
-      fetchOrGenerateScoredPathwayResult(filter,gmt.name,selectedCohort,samples)
-        .then( response => {
-          if(response!==undefined && !isEmpty(response) ){
-            const sortedPathways = this.sortPathways(response)
-            const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
-              if(a.indexOf('Default')===0) return -1
-              if(b.indexOf('Default')===0) return 1
-              return a.toLowerCase()< b.toLowerCase() ? -1 : 1
+      Rx.Observable.zip(
+        getSamplesForCohortAndView(selectedCohort[0],filter),
+        getSamplesForCohortAndView(selectedCohort[1],filter),
+      ).flatMap( (unfilteredSamples) => {
+        const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0])
+        const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1])
+        return [[samplesA,samplesB]]
+      })
+        .subscribe( (samples) => {
+          fetchOrGenerateScoredPathwayResult(filter, gmt.name, selectedCohort, samples)
+            .then(response => {
+              if (response !== undefined && !isEmpty(response)) {
+                const sortedPathways = this.sortPathways(response)
+                const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
+                  if (a.indexOf('Default') === 0) return -1
+                  if (b.indexOf('Default') === 0) return 1
+                  return a.toLowerCase() < b.toLowerCase() ? -1 : 1
+                })
+                let fetchFunction = async (inputPathways) => {
+                  fetchCombinedCohorts(selectedCohort, inputPathways,
+                    filter, this.handleCombinedCohortData)
+                }
+                fetchFunction(sortedPathways).then(() => {
+                  this.setState({
+                    showUploadDialog: false,
+                    calculatingUpload: false,
+                    customGeneSets,
+                    selectedGeneSets: uploadFileName,
+                    pathways: response,
+                    // fetch: true, // triggers fetch here, but may not be
+                  })
+                })
+              } else {
+                alert('No response found')
+              }
             })
-            let fetchFunction = async (inputPathways)  => {fetchCombinedCohorts(selectedCohort, inputPathways,
-              filter, this.handleCombinedCohortData)}
-
-            fetchFunction(sortedPathways).then( () => {
-              this.setState({
-                showUploadDialog: false,
-                calculatingUpload: false,
-                customGeneSets,
-                selectedGeneSets: uploadFileName,
-                pathways: response,
-                // fetch: true, // triggers fetch here, but may not be
-              })
-            })
-          }
-          else{
-            alert('No response found')
-          }
         })
-
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
