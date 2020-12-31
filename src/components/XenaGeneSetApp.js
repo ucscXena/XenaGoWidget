@@ -933,7 +933,7 @@ export default class XenaGeneSetApp extends PureComponent {
       })
       const gmt = await storeGmt(gmtData, uploadFileName, filter)
       const samples = []
-      fetchOrGenerateScoredPathwayResult(this.state.filter,gmt.name,selectedCohort,samples)
+      fetchOrGenerateScoredPathwayResult(filter,gmt.name,selectedCohort,samples)
         .then( response => {
           if(response!==undefined && !isEmpty(response) ){
             const sortedPathways = this.sortPathways(response)
@@ -942,8 +942,8 @@ export default class XenaGeneSetApp extends PureComponent {
               if(b.indexOf('Default')===0) return 1
               return a.toLowerCase()< b.toLowerCase() ? -1 : 1
             })
-            let fetchFunction = async (inputPathways)  => {fetchCombinedCohorts(this.state.selectedCohort, inputPathways,
-              this.state.filter, this.handleCombinedCohortData)}
+            let fetchFunction = async (inputPathways)  => {fetchCombinedCohorts(selectedCohort, inputPathways,
+              filter, this.handleCombinedCohortData)}
 
             fetchFunction(sortedPathways).then( () => {
               this.setState({

@@ -69,18 +69,6 @@ export async function removeCustomGeneSet(method,geneSetName){
   return data
 }
 
-export async function fetchPathwayResult(method,gmt,selectedCohort,samples){
-  const config = {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
-  const {data} = await axios.get(`${BASE_URL}/compareResult/findResult?method=${method}&geneSetName=${gmt}&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}&samples=${samples}`,config)
-  return data
-
-}
-
 export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
   const config = {
     headers: {
