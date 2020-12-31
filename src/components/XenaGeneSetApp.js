@@ -53,12 +53,12 @@ import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
-import {calculateCustomGeneSetActivity, doBpaAnalysisForCohorts, storeGmt} from '../service/AnalysisService'
+import {storeGmt} from '../service/AnalysisService'
 import {
   addCustomGeneSet,
   getCustomGeneSetNames,
   fetchOrGenerateScoredPathwayResult,
-  removeCustomGeneSet, savePathwayResult
+  removeCustomGeneSet
 } from '../service/GeneSetAnalysisStorageService'
 import {VIEW_ENUM} from '../data/ViewEnum'
 
@@ -1050,38 +1050,69 @@ export default class XenaGeneSetApp extends PureComponent {
         hasUploadFile: false,
         calculatingUpload: true,
       })
-      let gmt = await storeGmt(gmtData, uploadFileName, filter)
+      // let gmt = await storeGmt(gmtData, uploadFileName, filter)
+      await storeGmt(gmtData, uploadFileName, filter)
 
-      let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmt.name, filter)
-      let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmt.name, filter)
-      const analyzedData = await Promise.all([analyzedData1, analyzedData2])
-      const customGeneSetData = calculateCustomGeneSetActivity(gmtData, analyzedData)
-      console.log('saved custom gene set data', customGeneSetData)
+      // let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmt.name, filter)
+      // let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmt.name, filter)
+      // const analyzedData = await Promise.all([analyzedData1, analyzedData2])
+      // const customGeneSetData = calculateCustomGeneSetActivity(gmtData, analyzedData)
+      // console.log('saved custom gene set data', customGeneSetData)
+      //
+      // AppStorageHandler.storeGeneSetsForView(gmtData, filter)
+      // // AppStorageHandler.storePathways(customGeneSetData)
+      // const samples = [[],[]]
+      // // const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
+      // await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
 
-      AppStorageHandler.storeGeneSetsForView(gmtData, filter)
-      // AppStorageHandler.storePathways(customGeneSetData)
-      const samples = [[],[]]
-      // const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
-      await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
+      const samples = []
+      fetchOrGenerateScoredPathwayResult(this.state.filter,this.state.selectedGeneSets,selectedCohort,samples)
+        .then( response => {
+          console.log('response',response)
+          if(response!==undefined && !isEmpty(response) ){
+            const sortedPathways = this.sortPathways(response)
+            const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
+              if(a.indexOf('Default')===0) return -1
+              if(b.indexOf('Default')===0) return 1
+              return a.toLowerCase()< b.toLowerCase() ? -1 : 1
+            })
+            fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
+              this.state.filter, this.handleCombinedCohortData)
+            this.setState({
+              showUploadDialog: false,
+              calculatingUpload: false,
+              customGeneSets,
+              selectedGeneSets: uploadFileName,
+              pathways: response,
+              // fetch: true, // triggers fetch here, but may not be
+            })
+          }
+          else{
+            alert('No response found')
+          }
+        })
+
+
+
       // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
       // console.log( data )
       // console.log( JSON.stringify(data) )
-      console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
-      const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
-        if(a.indexOf('Default')===0) return -1
-        if(b.indexOf('Default')===0) return 1
-        return a.toLowerCase()< b.toLowerCase() ? -1 : 1
-      })
-      console.log('output custom gene sets',customGeneSets)
-
-      this.setState({
-        showUploadDialog: false,
-        calculatingUpload: false,
-        customGeneSets,
-        selectedGeneSets: uploadFileName,
-        pathways: customGeneSetData,
-        fetch: true, // triggers fetch here, but may not be
-      })
+      // console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
+      // const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
+      //   if(a.indexOf('Default')===0) return -1
+      //   if(b.indexOf('Default')===0) return 1
+      //   return a.toLowerCase()< b.toLowerCase() ? -1 : 1
+      // })
+      // console.log('output custom gene sets',customGeneSets)
+      //
+      // this.setState({
+      //   showUploadDialog: false,
+      //   calculatingUpload: false,
+      //   customGeneSets,
+      //   selectedGeneSets: uploadFileName,
+      //   pathways: customGeneSetData,
+      //   fetch: true, // triggers fetch here, but may not be
+      // })
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
