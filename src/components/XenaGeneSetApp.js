@@ -1050,23 +1050,9 @@ export default class XenaGeneSetApp extends PureComponent {
         hasUploadFile: false,
         calculatingUpload: true,
       })
-      // let gmt = await storeGmt(gmtData, uploadFileName, filter)
-      await storeGmt(gmtData, uploadFileName, filter)
-
-      // let analyzedData1 = doBpaAnalysisForCohorts(selectedCohort[0], gmt.name, filter)
-      // let analyzedData2 = doBpaAnalysisForCohorts(selectedCohort[1], gmt.name, filter)
-      // const analyzedData = await Promise.all([analyzedData1, analyzedData2])
-      // const customGeneSetData = calculateCustomGeneSetActivity(gmtData, analyzedData)
-      // console.log('saved custom gene set data', customGeneSetData)
-      //
-      // AppStorageHandler.storeGeneSetsForView(gmtData, filter)
-      // // AppStorageHandler.storePathways(customGeneSetData)
-      // const samples = [[],[]]
-      // // const {data} = await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
-      // await savePathwayResult(filter,gmt,selectedCohort,samples, customGeneSetData)
-
+      const gmt = await storeGmt(gmtData, uploadFileName, filter)
       const samples = []
-      fetchOrGenerateScoredPathwayResult(this.state.filter,this.state.selectedGeneSets,selectedCohort,samples)
+      fetchOrGenerateScoredPathwayResult(this.state.filter,gmt.name,selectedCohort,samples)
         .then( response => {
           console.log('response',response)
           if(response!==undefined && !isEmpty(response) ){
@@ -1076,43 +1062,28 @@ export default class XenaGeneSetApp extends PureComponent {
               if(b.indexOf('Default')===0) return 1
               return a.toLowerCase()< b.toLowerCase() ? -1 : 1
             })
-            fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
-              this.state.filter, this.handleCombinedCohortData)
-            this.setState({
-              showUploadDialog: false,
-              calculatingUpload: false,
-              customGeneSets,
-              selectedGeneSets: uploadFileName,
-              pathways: response,
-              // fetch: true, // triggers fetch here, but may not be
+            console.log('fetching')
+            let fetchFunction = async (inputPathways)  => {fetchCombinedCohorts(this.state.selectedCohort, inputPathways,
+              this.state.filter, this.handleCombinedCohortData)}
+
+            fetchFunction(sortedPathways).then( (data) => {
+              console.log('in fetch then',data)
+              this.setState({
+                showUploadDialog: false,
+                calculatingUpload: false,
+                customGeneSets,
+                selectedGeneSets: uploadFileName,
+                pathways: response,
+                // fetch: true, // triggers fetch here, but may not be
+              })
             })
+            console.log('fetched')
           }
           else{
             alert('No response found')
           }
         })
 
-
-
-      // const {data} = await this.storeCustomGeneSet(uploadFileName, customGeneSetData)
-      // console.log( data )
-      // console.log( JSON.stringify(data) )
-      // console.log('input custom gene set state',this.state.customGeneSets,uploadFileName)
-      // const customGeneSets = update(this.state.customGeneSets , {$push: [uploadFileName]} ).sort( (a,b) => {
-      //   if(a.indexOf('Default')===0) return -1
-      //   if(b.indexOf('Default')===0) return 1
-      //   return a.toLowerCase()< b.toLowerCase() ? -1 : 1
-      // })
-      // console.log('output custom gene sets',customGeneSets)
-      //
-      // this.setState({
-      //   showUploadDialog: false,
-      //   calculatingUpload: false,
-      //   customGeneSets,
-      //   selectedGeneSets: uploadFileName,
-      //   pathways: customGeneSetData,
-      //   fetch: true, // triggers fetch here, but may not be
-      // })
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
