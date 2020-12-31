@@ -77,33 +77,19 @@ export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCoho
     }
   }
   const tpmUrls = generateTpmDownloadUrlFromCohorts(selectedCohort)
-  let inputUrl = `${BASE_URL}/compareResult/generateScoredResult?method=${method}&geneSetName=${gmt}`+
-      `&cohortNameA=${selectedCohort[0].name}&cohortNameB=${selectedCohort[1].name}`+
-      `&tpmUrlA=${tpmUrls[0].url}`+
-      `&tpmUrlB=${tpmUrls[1].url}`+
-      `&samples=${samples}`
-  const {data} = await axios.get(inputUrl,config)
+  let inputUrl = `${BASE_URL}/compareResult/generateScoredResult`
+  const input = {
+    method:method,
+    geneSetName: gmt,
+    cohortNameA: selectedCohort[0].name,
+    cohortNameB: selectedCohort[1].name,
+    tpmUrlA: tpmUrls[0].url,
+    tpmUrlB: tpmUrls[1].url,
+    samples: samples,
+  }
+  const {data} = await axios.post(inputUrl, input, config)
   return data
 }
 
 
-export async function savePathwayResult(view,gmt,selectedCohort,samples, customGeneSetData){
-  const response = await axios.post(`${BASE_URL}/compareResult/storeResult`,
-    {
-      method: view,
-      geneset:gmt.name,
-      cohortA: selectedCohort[0].name,
-      cohortB: selectedCohort[1].name,
-      samples: samples,
-      result:customGeneSetData,
-    }
-    ,{
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    }
-  )
-  const { data} = response
-  return data
-}
 
