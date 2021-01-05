@@ -2,10 +2,7 @@
 
 React widget for analyzing expression of tissue samples within a pathway or set of genes.
 
-
-
-
-![example workflow name](https://github.com/ucscXena/XenoGoWidget/workflows/badge.svg)[![Build Status]()](https://travis-ci.org/ucscXena/XenaGoWidget)
+![Node.js CI](https://github.com/ucscXena/XenaGoWidget/workflows/Node.js%20CI/badge.svg)
 
 [Further documentation](docs/index.md)
 
