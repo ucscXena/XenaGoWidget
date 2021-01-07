@@ -190,7 +190,7 @@ export class GeneSetSelector extends PureComponent {
         cursor: 'pointer',
       }}>
         {pathways.map((p) => {
-          let labelString = '(' + p.gene.length + ') ' + p.golabel
+          let labelString = '(' + p.gene.length + ') ' + p.golabel + (p.goid ? ` (${p.goid})` : '')
           labelString = labelString.replace(/_/g,' ')
           let hovered = hoveredPathway ? p.golabel === hoveredPathway.golabel : false
           let selected = selectedPathway.pathway.golabel === p.golabel
