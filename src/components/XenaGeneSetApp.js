@@ -961,7 +961,6 @@ export default class XenaGeneSetApp extends PureComponent {
             .then(response => {
               if (response !== undefined && !isEmpty(response)) {
                 const sortedPathways = this.sortPathways(response)
-                console.log('custom gene sets to sort',this.state.customGeneSets)
                 const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
                   if (a.name.indexOf('Default') === 0) return -1
                   if (b.name.indexOf('Default') === 0) return 1
