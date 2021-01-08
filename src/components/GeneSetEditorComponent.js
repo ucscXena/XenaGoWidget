@@ -75,7 +75,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           {/*<option>----Custom Gene Sets----</option>*/}
           {
             this.props.customGeneSets.map( gs => {
-              return <option key={gs}>{gs}</option>
+              return <option key={gs.name} value={gs.name}>({gs.geneCount}) {gs.name}</option>
             })
           }
         </select>
