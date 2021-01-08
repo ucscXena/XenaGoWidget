@@ -962,9 +962,9 @@ export default class XenaGeneSetApp extends PureComponent {
               if (response !== undefined && !isEmpty(response)) {
                 const sortedPathways = this.sortPathways(response)
                 const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
-                  if (a.indexOf('Default') === 0) return -1
-                  if (b.indexOf('Default') === 0) return 1
-                  return a.toLowerCase() < b.toLowerCase() ? -1 : 1
+                  if (a.name.indexOf('Default') === 0) return -1
+                  if (b.name.indexOf('Default') === 0) return 1
+                  return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
                 })
                 let fetchFunction = async (inputPathways) => {
                   fetchCombinedCohorts(selectedCohort, inputPathways,
@@ -1193,7 +1193,7 @@ export default class XenaGeneSetApp extends PureComponent {
             style={{width: 400}}
             title="Loading ..."
           >
-            { this.state.loading ? <Loader /> : null } 
+            { this.state.loading ? <Loader /> : null }
             <p>
               {this.state.selectedCohort[0].name} ...
               <br/>
@@ -1249,6 +1249,7 @@ export default class XenaGeneSetApp extends PureComponent {
                 this.handleUploadFileChange(event)} type="file"/>
             <br/>
             <br/>
+            { this.state.calculatingUpload ? <Loader /> : null }
             <Button
               disabled={!this.state.hasUploadFile}
               onClick={(event) => this.handleStoreFile(event)}

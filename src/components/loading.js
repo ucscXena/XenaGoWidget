@@ -4,9 +4,9 @@ import loading_gif from '../images/loading.jpg'
 class Loader extends Component{
 
   render() {
-    return (  
+    return (
       <div>
-        <img height="100" width="100" src={loading_gif} alt=""/>
+        <img alt="" height="100" src={loading_gif} width="100"/>
       </div>
     )
   }
