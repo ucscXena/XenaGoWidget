@@ -19,6 +19,7 @@ import {calculateSortingByMethod, scorePathway} from '../functions/SortFunctions
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {SORT_ENUM, SORT_ORDER_ENUM, SORT_VIEW_BY} from '../data/SortEnum'
 import {getCustomGeneSet} from '../service/GeneSetAnalysisStorageService'
+import Loader from './loading'
 
 const VIEW_LIMIT = 200
 const CART_LIMIT = 1000
@@ -407,7 +408,9 @@ export default class GeneSetEditorPopup extends PureComponent {
           active={this.state.showLoading}
           style={{width: 400}}
           title={`Loading GeneSets for '${this.props.view}'...`}
-        />
+        >
+          { this.state.showLoading ? <Loader /> : null }
+        </Dialog>
         <Dialog
           active={this.state.newGeneStateName!==''}
           onEscKeyDown={() => this.cancelUpdate()}

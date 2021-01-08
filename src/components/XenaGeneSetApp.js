@@ -63,6 +63,7 @@ import {
   removeCustomGeneSet
 } from '../service/GeneSetAnalysisStorageService'
 import {VIEW_ENUM} from '../data/ViewEnum'
+import Loader from './loading'
 
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
 const {sparseDataMatchPartialField, refGene} = xenaQuery
@@ -1190,8 +1191,9 @@ export default class XenaGeneSetApp extends PureComponent {
             // active={currentLoadState === LOAD_STATE.LOADING}
             active={this.state.loading === LOAD_STATE.LOADING}
             style={{width: 400}}
-            title="Loading"
+            title="Loading ..."
           >
+            { this.state.loading ? <Loader /> : null } 
             <p>
               {this.state.selectedCohort[0].name} ...
               <br/>
