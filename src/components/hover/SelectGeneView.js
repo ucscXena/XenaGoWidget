@@ -17,6 +17,7 @@ export default class SelectGeneView extends PureComponent {
           <div className={BaseStyle.boxHeader}>Opened Gene Set</div>
           <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
             {pathwaySelection.golabel.replace(/_/g,' ')}
+            {  pathwaySelection.goid ? ` (${pathwaySelection.goid})`  : ''}
           </div>
           <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
             {pathwaySelection.gene.length} Genes

@@ -22,6 +22,7 @@ export default class HoverGeneSetSample extends PureComponent {
             <span>
               <strong>Gene Set&nbsp;</strong>
               {data.pathway.golabel.replace(/_/g,' ')}
+              {  data.pathway.goid ? ` (${data.pathway.goid})`  : ''}
             </span>
           }
           <br/>

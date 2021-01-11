@@ -21,6 +21,7 @@ export default class HoverGeneSetLabel extends PureComponent {
         <div className={BaseStyle.geneHoverPathway} style={{width:180}}>
           <strong>Gene Set&nbsp;&nbsp;</strong>
           {data.pathway.golabel.replace(/_/g,' ')}
+          { data.pathway.goid ? ` (${data.pathway.goid})` :''  }
         </div>
         {!isViewGeneExpression(view) &&
         [
