@@ -1553,36 +1553,5 @@
       "host": "https://tcga.xenahubs.net",
       "dataset": "merge_merged_reals/ESCA_merge_merged_reals.txt"
     }
-  },
-  "Cancer Cell Line Encyclopedia (Breast)": {
-    "copy number": {
-      "host": "https://ucscpublic.xenahubs.net",
-      "dataset": "ccle/CCLE_copynumber_byGene_2013-12-03_breast"
-    },
-    "simple somatic mutation": {
-      "host": "https://ucscpublic.xenahubs.net",
-      "dataset": "ccle/CCLE_DepMap_18Q2_maf_20180502_breast"
-    },
-    "copy number for pathway view": {
-      "host": "https://ucscpublic.xenahubs.net",
-      "dataset": "ccle/CCLE_copynumber_byGene_2013-12-03_breast",
-      "amplificationThreshold": 2,
-      "deletionThreshold": -2
-    },
-    "genome background": {
-      "copy number": {
-        "host": "https://xenago.xenahubs.net",
-        "dataset": "cnv_sampleEvent",
-        "feature_event_K": "event_K",
-        "feature_total_pop_N": "total_pop_N"
-      },
-      "mutation": {
-        "host": "https://xenago.xenahubs.net",
-        "dataset": "mutation_sampleEvent",
-        "feature_event_K": "event_K",
-        "feature_total_pop_N": "total_pop_N"
-      }
-    },
-    "viewInPathway": true
   }
 }
