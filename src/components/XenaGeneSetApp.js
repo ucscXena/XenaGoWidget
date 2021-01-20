@@ -935,12 +935,13 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
   handleStoreFile = async () => {
-    let {gmtData, filter, uploadFileName, selectedCohort} = this.state
+    let {gmtData, filter, uploadFileName} = this.state
 
     if (this.isExistingCustomGeneSet(uploadFileName)) {
       alert(`${uploadFileName} already exists.  Please choose another name`)
       return
     }
+
 
     try {
       this.setState({
@@ -948,43 +949,57 @@ export default class XenaGeneSetApp extends PureComponent {
         calculatingUpload: true,
       })
       const gmt = await storeGmt(gmtData, uploadFileName, filter)
-      Rx.Observable.zip(
-        getSamplesForCohortAndView(selectedCohort[0],filter),
-        getSamplesForCohortAndView(selectedCohort[1],filter),
-      ).flatMap( (unfilteredSamples) => {
-        const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0])
-        const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1])
-        return [[samplesA,samplesB]]
+
+      console.log('custom gene sets',this.state.customGeneSets,gmt)
+      const updatedCustomGeneSets = update(this.state.customGeneSets, {
+        $push: [gmt]
       })
-        .subscribe( (samples) => {
-          fetchOrGenerateScoredPathwayResult(filter, gmt.name, selectedCohort, samples)
-            .then(response => {
-              if (response !== undefined && !isEmpty(response)) {
-                const sortedPathways = this.sortPathways(response)
-                const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
-                  if (a.name.indexOf('Default') === 0) return -1
-                  if (b.name.indexOf('Default') === 0) return 1
-                  return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
-                })
-                let fetchFunction = async (inputPathways) => {
-                  fetchCombinedCohorts(selectedCohort, inputPathways,
-                    filter, this.handleCombinedCohortData)
-                }
-                fetchFunction(sortedPathways).then(() => {
-                  this.setState({
-                    showUploadDialog: false,
-                    calculatingUpload: false,
-                    customGeneSets,
-                    selectedGeneSets: uploadFileName,
-                    pathways: response,
-                    // fetch: true, // triggers fetch here, but may not be
-                  })
-                })
-              } else {
-                alert('No response found')
-              }
-            })
-        })
+      console.log('udpated ',updatedCustomGeneSets)
+      this.setState({
+        showUploadDialog: false,
+        calculatingUpload: false,
+        customGeneSets: updatedCustomGeneSets,
+        // selectedGeneSets: uploadFileName,
+        // pathways: response,
+        // fetch: true, // triggers fetch here, but may not be
+      })
+      // Rx.Observable.zip(
+      //   getSamplesForCohortAndView(selectedCohort[0],filter),
+      //   getSamplesForCohortAndView(selectedCohort[1],filter),
+      // ).flatMap( (unfilteredSamples) => {
+      //   const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0])
+      //   const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1])
+      //   return [[samplesA,samplesB]]
+      // })
+      // .subscribe( (samples) => {
+      //   fetchOrGenerateScoredPathwayResult(filter, gmt.name, selectedCohort, samples)
+      //     .then(response => {
+      //       if (response !== undefined && !isEmpty(response)) {
+      //         const sortedPathways = this.sortPathways(response)
+      //         const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
+      //           if (a.name.indexOf('Default') === 0) return -1
+      //           if (b.name.indexOf('Default') === 0) return 1
+      //           return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
+      //         })
+      //         let fetchFunction = async (inputPathways) => {
+      //           fetchCombinedCohorts(selectedCohort, inputPathways,
+      //             filter, this.handleCombinedCohortData)
+      //         }
+      //         fetchFunction(sortedPathways).then(() => {
+      //           this.setState({
+      //             showUploadDialog: false,
+      //             calculatingUpload: false,
+      //             customGeneSets,
+      //             selectedGeneSets: uploadFileName,
+      //             pathways: response,
+      //             // fetch: true, // triggers fetch here, but may not be
+      //           })
+      //         })
+      //       } else {
+      //         alert('No response found')
+      //       }
+      //     })
+      // })
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
