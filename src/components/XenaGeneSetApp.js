@@ -948,7 +948,10 @@ export default class XenaGeneSetApp extends PureComponent {
         hasUploadFile: false,
         calculatingUpload: true,
       })
-      const gmt = await storeGmt(gmtData, uploadFileName, filter)
+      let gmt = await storeGmt(gmtData, uploadFileName, filter)
+      gmt.readyCount = 0
+      gmt.ready = false
+      gmt.availableCount = gmt.availableTpmCount
 
       console.log('custom gene sets',this.state.customGeneSets,gmt)
       const updatedCustomGeneSets = update(this.state.customGeneSets, {
