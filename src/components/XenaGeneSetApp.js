@@ -59,7 +59,7 @@ import {storeGmt} from '../service/AnalysisService'
 import {
   addCustomGeneSet,
   getCustomGeneSetNames,
-  fetchOrGenerateScoredPathwayResult,
+  retrieveCustomScoredPathwayResult,
   removeCustomGeneSet
 } from '../service/GeneSetAnalysisStorageService'
 import {VIEW_ENUM} from '../data/ViewEnum'
@@ -246,7 +246,7 @@ export default class XenaGeneSetApp extends PureComponent {
               return [[samplesA,samplesB]]
             })
               .subscribe( (samples) => {
-                fetchOrGenerateScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples)
+                retrieveCustomScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples)
                   .then(response => {
                     if (response !== undefined && !isEmpty(response)) {
                       pathways = response

@@ -69,6 +69,25 @@ export async function removeCustomGeneSet(method,geneSetName){
   return data
 }
 
+export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohort,samples){
+  const config = {
+    headers: {
+      // 'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
+  let inputUrl = `${BASE_URL}/compareResult/retrieveScoredResult`
+  const input = {
+    method:method,
+    geneSetName: gmt,
+    cohortNameA: selectedCohort[0].name,
+    cohortNameB: selectedCohort[1].name,
+    samples: samples,
+  }
+  const {data} = await axios.post(inputUrl, input, config)
+  return data
+}
+
 export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
   const config = {
     headers: {
