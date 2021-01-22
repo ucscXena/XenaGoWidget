@@ -248,8 +248,9 @@ export default class XenaGeneSetApp extends PureComponent {
               .subscribe( (samples) => {
                 retrieveCustomScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples)
                   .then(response => {
-                    if (response !== undefined && !isEmpty(response)) {
-                      pathways = response
+                    console.log('response',response.data)
+                    if (response !== undefined && response.data !== undefined && !isEmpty(response.data)) {
+                      pathways = response.data
                     }
                     const sortedPathways = this.sortPathways(pathways)
                     fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
@@ -258,10 +259,12 @@ export default class XenaGeneSetApp extends PureComponent {
               })
 
           } else {
+            console.log('reloading pathways',pathways)
             fetchBestPathways(this.state.selectedCohort, this.state.filter,
               this.handleMeanActivityData)
           }
         } else {
+          console.log('fetching pathways',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
