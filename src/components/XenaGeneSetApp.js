@@ -8,10 +8,11 @@ import {
   calculateAllPathways,
   calculateAssociatedData,
   generateScoredData,
-  generateZScoreForBoth,
+  // generateZScoreForBoth,
   getSelectedGeneSetIndex,
   isViewGeneExpression,
   mergeGeneSetAndGeneDetailData,
+  convertToPerGeneGlobalZScore,
   pruneGeneSelection,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
@@ -455,9 +456,15 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
+    // const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
+    //   this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
+    //   : [geneExpressionA, geneExpressionB]
+
     const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
-      this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
+      this.state.filter) ? [convertToPerGeneGlobalZScore(geneExpressionA), convertToPerGeneGlobalZScore(geneExpressionB)]
       : [geneExpressionA, geneExpressionB]
+    // console.log('input',geneExpressionA)
+    // console.log('output',geneExpressionZScoreA)
 
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
       for (let index in pathways) {

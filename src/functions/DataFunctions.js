@@ -74,7 +74,19 @@ export function generateZScoreForBoth(inputA, inputB){
   const zScoreB = generateZScore(inputB,geneExpressionStats)
   return [zScoreA,zScoreB]
 }
+const TCGA_ALL_TPM_MEAN = 1.2149232255989761
+const  TCGA_ALL_TPM_VARIANCE = 2.3314200093496904
+const  TCGA_ALL_TPM_STDEV = Math.sqrt(TCGA_ALL_TPM_VARIANCE)
 
+// TODO: lookup gene value
+export function  convertToPerGeneGlobalZScore(data){
+  return  data.map( (ge) => {
+    return ge.map( (e) => {
+      if(isNaN(e))  return e
+      return (e - TCGA_ALL_TPM_MEAN) / TCGA_ALL_TPM_STDEV
+    } )
+  })
+}
 
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
