@@ -1,5 +1,4 @@
 import axios from 'axios'
-import {generateTpmDownloadUrlFromCohorts} from './AnalysisService'
 
 // TODO: configure to environment
 export const BASE_URL = 'http://localhost:8080'
@@ -88,27 +87,6 @@ export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohor
   return data
 }
 
-export async function fetchOrGenerateScoredPathwayResult(method,gmt,selectedCohort,samples){
-  const config = {
-    headers: {
-      // 'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
-  const tpmUrls = generateTpmDownloadUrlFromCohorts(selectedCohort)
-  let inputUrl = `${BASE_URL}/compareResult/generateScoredResult`
-  const input = {
-    method:method,
-    geneSetName: gmt,
-    cohortNameA: selectedCohort[0].name,
-    cohortNameB: selectedCohort[1].name,
-    tpmUrlA: tpmUrls[0].url,
-    tpmUrlB: tpmUrls[1].url,
-    samples: samples,
-  }
-  const {data} = await axios.post(inputUrl, input, config)
-  return data
-}
 
 
 
