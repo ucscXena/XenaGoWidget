@@ -163,7 +163,7 @@ describe('Test Cohorts', () => {
     cohorts = getCohortsForView(VIEW_ENUM.GENE_EXPRESSION)
     expect(cohorts.length).toEqual(33)
     cohorts = getCohortsForView(VIEW_ENUM.COPY_NUMBER)
-    expect(cohorts.length).toEqual(34)
+    expect(cohorts.length).toEqual(33)
 
   })
 
@@ -180,11 +180,11 @@ describe('Test Cohorts', () => {
     const expectedOutput =     [
       {
         name: 'TCGA Ovarian Cancer (OV)',
-        url: 'https://xenago.xenahubs.net/download/expr_tpm/TCGA-OV_tpm_tab.tsv.gz'
+        url: 'https://xenago.xenahubs.net/download/tpm_z/TCGA_Ovarian_Cancer__OV_.z.tpm.gz'
       },
       {
         name: 'TCGA Bile Duct Cancer (CHOL)',
-        url: 'https://xenago.xenahubs.net/download/expr_tpm/TCGA-CHOL_tpm_tab.tsv.gz'
+        url: 'https://xenago.xenahubs.net/download/tpm_z/TCGA_Bile_Duct_Cancer__CHOL_.z.tpm.gz'
       }
     ]
     expect(output).toEqual(expectedOutput)
