@@ -777,6 +777,8 @@ border-radius: 5px;
 
 .geneSetSelector{
   display: inline;
+  max-width: 150px;
+  /*width: 100px;*/
   /*margin-top: 35px;*/
   /*margin-left: 25px;*/
 }
