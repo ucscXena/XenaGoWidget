@@ -25,6 +25,10 @@
       "dataset": "TCGA.LUAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LUAD_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/LUAD_mc3.txt"
@@ -76,6 +80,10 @@
       "dataset": "TCGA.PAAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PAAD_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/PAAD_mc3.txt"
@@ -122,6 +130,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.LIHC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LIHC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -170,6 +182,10 @@
       "dataset": "TCGA.STAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-STAD_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/STAD_mc3.txt"
@@ -216,6 +232,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.COAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-COAD_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -264,6 +284,10 @@
       "dataset": "TCGA.THYM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-THYM_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/THYM_mc3.txt"
@@ -310,6 +334,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.KIRC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KIRC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -358,6 +386,10 @@
       "dataset": "TCGA.KIRP.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KIRP_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/KIRP_mc3.txt"
@@ -404,6 +436,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.ACC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-ACC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -452,6 +488,10 @@
       "dataset": "TCGA.UVM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UVM_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/UVM_mc3.txt"
@@ -498,6 +538,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.LUSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LUSC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -546,6 +590,10 @@
       "dataset": "TCGA.OV.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-OV_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/OV_mc3.txt"
@@ -592,6 +640,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.THCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-THCA_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -640,6 +692,10 @@
       "dataset": "TCGA.UCEC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UCEC_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/UCEC_mc3.txt"
@@ -686,6 +742,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.CESC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-CESC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -734,6 +794,10 @@
       "dataset": "TCGA.KICH.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-KICH_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/KICH_mc3.txt"
@@ -780,6 +844,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.CHOL.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-CHOL_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -828,6 +896,10 @@
       "dataset": "TCGA.UCS.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-UCS_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/UCS_mc3.txt"
@@ -874,6 +946,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.MESO.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-MESO_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -922,6 +998,10 @@
       "dataset": "TCGA.READ.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-READ_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/READ_mc3.txt"
@@ -968,6 +1048,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.HNSC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-HNSC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1016,6 +1100,10 @@
       "dataset": "TCGA.LAML.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LAML_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "TCGA.LAML.sampleMap/mutation_wustl"
@@ -1062,6 +1150,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.BLCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-BLCA_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1110,6 +1202,10 @@
       "dataset": "TCGA.PRAD.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PRAD_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/PRAD_mc3.txt"
@@ -1156,6 +1252,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.DLBC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-DLBC_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1204,6 +1304,10 @@
       "dataset": "TCGA.ESCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-ESCA_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/ESCA_mc3.txt"
@@ -1250,6 +1354,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.GBM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-GBM_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1298,6 +1406,10 @@
       "dataset": "TCGA.LGG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-LGG_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/LGG_mc3.txt"
@@ -1344,6 +1456,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.SKCM.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-SKCM_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1392,6 +1508,10 @@
       "dataset": "TCGA.TGCT.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-TGCT_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/TGCT_mc3.txt"
@@ -1438,6 +1558,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.BRCA.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-BRCA_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
@@ -1486,6 +1610,10 @@
       "dataset": "TCGA.SARC.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
     },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-SARC_tpm_tab.tsv"
+    },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
       "dataset": "mc3/SARC_mc3.txt"
@@ -1532,6 +1660,10 @@
       "amplificationThreshold": 2,
       "dataset": "TCGA.PCPG.sampleMap/Gistic2_CopyNumber_Gistic2_all_thresholded.by_genes",
       "deletionThreshold": -2
+    },
+    "gene expression raw": {
+      "host": "https://xenago.xenahubs.net",
+      "dataset": "expr_tpm/TCGA-PCPG_tpm_tab.tsv"
     },
     "simple somatic mutation": {
       "host": "https://tcga.xenahubs.net",
