@@ -71,7 +71,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
           value={this.props.selectedGeneSets}
         >
-          <option>Default Gene Sets</option>
+          <option>(8281) Default Gene Sets</option>
           {/*<option>----Custom Gene Sets----</option>*/}
           {
             this.props.customGeneSets.map( gs => {
