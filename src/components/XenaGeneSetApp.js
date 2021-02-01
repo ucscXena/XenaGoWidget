@@ -247,7 +247,7 @@ export default class XenaGeneSetApp extends PureComponent {
               return [[samplesA,samplesB]]
             })
               .subscribe( (samples) => {
-                retrieveCustomScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples)
+                retrieveCustomScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples,this.state.filterBy,this.state.filterOrder,this.state.geneSetLimit)
                   .then(response => {
                     console.log('response',response.data)
                     if (response !== undefined && response.data !== undefined && !isEmpty(response.data)) {

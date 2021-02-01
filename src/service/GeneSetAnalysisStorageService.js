@@ -68,7 +68,8 @@ export async function removeCustomGeneSet(method,geneSetName){
   return data
 }
 
-export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohort,samples){
+export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohort,samples,filterBy,filterOrder,geneSetLimit){
+  console.log(filterBy,filterOrder,geneSetLimit)
   const config = {
     headers: {
       // 'Content-Type': 'multipart/form-data',
@@ -82,6 +83,9 @@ export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohor
     cohortNameA: selectedCohort[0].name,
     cohortNameB: selectedCohort[1].name,
     samples: samples,
+    geneSetLimit,
+    filterBy,
+    filterOrder,
   }
   const {data} = await axios.post(inputUrl, input, config)
   return data
