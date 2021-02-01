@@ -10,6 +10,7 @@ import {
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getRatio} from '../../functions/HoverFunctions'
 import {getMiddleGeneLabelForView} from '../legend/GeneGeneExpressionLegend'
+import {GENE_EXPRESSION_MAX} from '../XenaGeneSetApp'
 
 export default class HoverGeneLabel extends PureComponent {
 
@@ -31,7 +32,7 @@ export default class HoverGeneLabel extends PureComponent {
                 key={4}
                 style={{
                   color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
-                  backgroundColor: calculateColorArrayRgb(data.pathway.geneExpressionMean)
+                  backgroundColor: calculateColorArrayRgb(data.pathway.geneExpressionMean,GENE_EXPRESSION_MAX)
                 }}
               >
                 <strong>

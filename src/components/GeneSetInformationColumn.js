@@ -82,6 +82,7 @@ export class GeneSetInformationColumn extends PureComponent {
             <HoverGeneView
               cohortIndex={this.props.cohortIndex}
               data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
+              maxValue={this.props.maxValue}
               view={this.props.view}
             />
           }
@@ -99,6 +100,7 @@ GeneSetInformationColumn.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any,
   geneHoverData: PropTypes.any,
+  maxValue: PropTypes.any.isRequired,
   onEditCohorts: PropTypes.any.isRequired,
   open: PropTypes.any.isRequired,
   pathwayData: PropTypes.any.isRequired,

@@ -3,6 +3,7 @@ import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import {isViewGeneExpression} from '../functions/DataFunctions'
 import {calculateColorArrayRgb, interpolateCnvMutationColor } from '../functions/DrawFunctions'
+import {GENE_EXPRESSION_MAX} from './XenaGeneSetApp'
 
 export class GeneSetSelector extends PureComponent {
 
@@ -206,7 +207,7 @@ export class GeneSetSelector extends PureComponent {
               let gene1 = geneData[1].pathways[index]
               let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
               yOffset += labelHeight
-              let geneEntry =  this.generateGeneEntryLabel(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset,2)
+              let geneEntry =  this.generateGeneEntryLabel(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset,GENE_EXPRESSION_MAX)
               genesToAdd.push(  geneEntry )
             }
             geneSetArray.push(genesToAdd)

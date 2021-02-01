@@ -73,6 +73,7 @@ const VERTICAL_SELECTOR_WIDTH = 220
 export const VERTICAL_GENESET_DETAIL_WIDTH = 180
 const BORDER_OFFSET = 2
 
+export const GENE_EXPRESSION_MAX = 2
 export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
@@ -81,6 +82,7 @@ export const LEGEND_HEIGHT = 140
 export const HEADER_HEIGHT = 120
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
+
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -1077,6 +1079,7 @@ export default class XenaGeneSetApp extends PureComponent {
           cohortIndex={0}
           geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
           geneHoverData={this.state.geneHoverData}
+          maxValue={this.state.maxValue}
           onEditCohorts={this.handleEditCohorts}
           open={(this.state.geneData && this.state.geneData[0].pathwaySelection) ? this.state.geneData[0].pathwaySelection.open : false}
           pathwayData={this.state.pathwayData}
@@ -1090,6 +1093,7 @@ export default class XenaGeneSetApp extends PureComponent {
           cohortIndex={1}
           geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
           geneHoverData={this.state.geneHoverData}
+          maxValue={this.state.maxValue}
           onEditCohorts={this.handleEditCohorts}
           onShowCohortEditor={this.handleEditCohorts}
           open={(this.state.geneData && this.state.geneData[1].pathwaySelection) ? this.state.geneData[1].pathwaySelection.open : false}

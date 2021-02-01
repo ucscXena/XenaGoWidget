@@ -15,7 +15,7 @@ export default class HoverGeneSetLabel extends PureComponent {
 
 
   render() {
-    let {data, cohortIndex, score,view} = this.props
+    let {data, cohortIndex, maxValue,score,view} = this.props
     return (
       <div className={BaseStyle.pathwayChip}>
         <div className={BaseStyle.boxHeader}>Hovering over </div>
@@ -39,7 +39,7 @@ export default class HoverGeneSetLabel extends PureComponent {
           className={BaseStyle.scoreBoxBlock}
           style={{
             color: interpolateGeneExpressionFont(score),
-            backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(score) : interpolateCnvMutationColor(score)
+            backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(score,maxValue) : interpolateCnvMutationColor(score)
           }}
         >
           <strong>

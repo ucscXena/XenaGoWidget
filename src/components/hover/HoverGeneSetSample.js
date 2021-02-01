@@ -14,7 +14,7 @@ export default class HoverGeneSetSample extends PureComponent {
 
 
   render() {
-    let {data, cohortIndex, score,view} = this.props
+    let {data, cohortIndex, maxValue, score,view} = this.props
     return (
       <div>
         <div className={BaseStyle.pathwayChip}>
@@ -33,7 +33,7 @@ export default class HoverGeneSetSample extends PureComponent {
             className={BaseStyle.scoreBoxBlock}
             style={{
               color: interpolateGeneExpressionFont(score),
-              backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(score) : 'white'
+              backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(score,maxValue) : 'white'
             }}
           >
             {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}
@@ -52,6 +52,7 @@ export default class HoverGeneSetSample extends PureComponent {
 HoverGeneSetSample.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
+  maxValue: PropTypes.any.isRequired,
   score: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }
