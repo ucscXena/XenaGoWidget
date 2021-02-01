@@ -251,8 +251,7 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           const buffStart = pxRow + (xPos + r.x) * 4
           const buffEnd = buffStart + (r.x + xPos + img.width * 4 * labelHeight)
           for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-            // const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : getColorArray(interpolateGenesetScoreFunction(maxValue )(geneExpressionScore))
-            const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : calculateColorArray(maxValue ,geneExpressionScore)
+            const colorArray = isNaN(geneExpressionScore) ? [128,128,128] : calculateColorArray(isGene ? 2 : maxValue ,geneExpressionScore)
             img.data[l] = colorArray[0]
             img.data[l + 1] = colorArray[1]
             img.data[l + 2] = colorArray[2]
@@ -348,8 +347,11 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
 }
 
 
+export function calculateColorArrayRgb(maxValue,score){
+  return `rgb(${calculateColorArray(maxValue,score).join(',')})`
+}
 
-function calculateColorArray(maxValue,score){
+export function calculateColorArray(maxValue,score){
   const key = maxValue+'::'+score
   if(!colorArrayGeneExpressionCache[key]){
     colorArrayGeneExpressionCache[key] = getColorArray(interpolateGenesetScoreFunction(maxValue )(score))

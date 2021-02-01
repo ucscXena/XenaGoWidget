@@ -3,8 +3,9 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
+  calculateColorArrayRgb,
   interpolateCnvMutationColor,
-  interpolateGeneExpression, interpolateGeneExpressionFont,
+  interpolateGeneExpressionFont,
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getRatio} from '../../functions/HoverFunctions'
@@ -30,7 +31,7 @@ export default class HoverGeneLabel extends PureComponent {
                 key={4}
                 style={{
                   color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
-                  backgroundColor: interpolateGeneExpression(data.pathway.geneExpressionMean)
+                  backgroundColor: calculateColorArrayRgb(data.pathway.geneExpressionMean)
                 }}
               >
                 <strong>
