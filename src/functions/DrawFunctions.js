@@ -78,7 +78,7 @@ const interpolationTable = {}
 
 export const interpolateGenesetScoreFunction = max => {
   if(!interpolationTable[max]){
-    interpolationTable[max] = d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb.gamma(1.0))
+    interpolationTable[max] = d3.scaleLinear().domain([-max,0,max]).range(['blue','white','red']).interpolate(d3.interpolateRgb)
   }
   return interpolationTable[max]
 }

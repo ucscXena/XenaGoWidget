@@ -42,7 +42,6 @@ export default class HoverGeneSetLabel extends PureComponent {
             backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(maxValue,score) : interpolateCnvMutationColor(score)
           }}
         >
-          {calculateColorArrayRgb(maxValue,score)}
           <strong>
             {/*{ isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}*/}
             { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'χ2 test'}
