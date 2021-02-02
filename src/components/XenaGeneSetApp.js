@@ -268,7 +268,7 @@ export default class XenaGeneSetApp extends PureComponent {
               this.handleMeanActivityData)
           }
         } else {
-          // console.log('fetching pathways with default gene sets GE',pathways)
+          console.log('fetching pathways with default gene sets GE',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
@@ -442,6 +442,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   handleCombinedCohortData = (input) => {
+    console.log('input',input)
     let {
       pathways,
       geneList,
@@ -460,13 +461,19 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
-      for (let index in pathways) {
-        geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
-        geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
-      }
-    }
-
+    console.log('input gene epxression pathway activity A',geneExpressionPathwayActivityA)
+    console.log('input gene epxression pathway activity B',geneExpressionPathwayActivityB)
+    console.log('input pathways',pathways)
+    // if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
+    //   for (let index in pathways) {
+    //     console.log('index',index)
+    //     geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
+    //     geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
+    //   }
+    // }
+    // console.log('output gene epxression pathway activity A',geneExpressionPathwayActivityA)
+    // console.log('output gene epxression pathway activity B',geneExpressionPathwayActivityB)
+    //
     const pathwayDataA = {
       geneList,
       pathways,
@@ -832,6 +839,8 @@ export default class XenaGeneSetApp extends PureComponent {
         1 :
         -1) * (scorePathway(a, this.state.sortViewBy) -
         scorePathway(b, this.state.sortViewBy)))
+
+    console.log('hanlde mean activity data, sorted pathways',sortedPathways)
     fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
       this.state.filter, this.handleCombinedCohortData)
   }
