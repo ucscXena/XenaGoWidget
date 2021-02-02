@@ -7,7 +7,7 @@ import XenaGeneSetApp from '../../../src/components/XenaGeneSetApp'
 describe('Render XenaGeneSet App', () => {
   let node
 
-  beforeEach(() => {
+  beforeEach(async  () => {
     node = document.createElement('div')
     localStorage.clear()
   })
@@ -16,10 +16,10 @@ describe('Render XenaGeneSet App', () => {
     unmountComponentAtNode(node)
   })
 
-  it('Displays main menu', (done) => {
-    render(<XenaGeneSetApp/>, node, () => {
-      expect(node.innerHTML).toContain('Xena Gene Set Viewer')
+  it('Displays main menu', async (done) => {
+    await render(<XenaGeneSetApp/>, node, async () => {
       done()
     })
+    expect(node.innerHTML).toContain('Xena Gene Set Viewer')
   })
 })
