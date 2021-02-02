@@ -236,7 +236,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
-        console.log('is gene expressoino view')
+        // console.log('is gene expressoino view')
         if (this.state.reloadPathways) {
           if (this.state.selectedGeneSets !== undefined && this.isCustomGeneSet(this.state.selectedGeneSets)) {
             console.log('reloading pathways with CUSTOM gene sets',pathways)
@@ -268,7 +268,7 @@ export default class XenaGeneSetApp extends PureComponent {
               this.handleMeanActivityData)
           }
         } else {
-          console.log('fetching pathways with default gene sets GE',pathways)
+          // console.log('fetching pathways with default gene sets GE',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
