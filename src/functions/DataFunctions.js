@@ -67,26 +67,10 @@ export function generateZScore( data,stats){
   })
 }
 
-export function generateZScoreForBoth(inputA, inputB){
-  if(!inputA || !inputB) return [0,0]
-  const geneExpressionStats = generateStats(inputA,inputB)
-  const zScoreA = generateZScore(inputA,geneExpressionStats)
-  const zScoreB = generateZScore(inputB,geneExpressionStats)
-  return [zScoreA,zScoreB]
-}
-const TCGA_ALL_TPM_MEAN = 1.2149232255989761
-const  TCGA_ALL_TPM_VARIANCE = 2.3314200093496904
-const  TCGA_ALL_TPM_STDEV = Math.sqrt(TCGA_ALL_TPM_VARIANCE)
-
-// TODO: lookup gene value
-export function  convertToPerGeneGlobalZScore(data){
-  return  data.map( (ge) => {
-    return ge.map( (e) => {
-      if(isNaN(e))  return e
-      return (e - TCGA_ALL_TPM_MEAN) / TCGA_ALL_TPM_STDEV
-    } )
-  })
-}
+// NOTE: already integrated in the conversion from tpm_tab (raw) to tpm_z (regular) for gene expression
+// const TCGA_ALL_TPM_MEAN = 1.2149232255989761
+// const  TCGA_ALL_TPM_VARIANCE = 2.3314200093496904
+// const  TCGA_ALL_TPM_STDEV = Math.sqrt(TCGA_ALL_TPM_VARIANCE)
 
 
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {

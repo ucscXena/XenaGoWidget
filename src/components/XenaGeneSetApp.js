@@ -8,11 +8,9 @@ import {
   calculateAllPathways,
   calculateAssociatedData,
   generateScoredData,
-  // generateZScoreForBoth,
   getSelectedGeneSetIndex,
   isViewGeneExpression,
   mergeGeneSetAndGeneDetailData,
-  convertToPerGeneGlobalZScore,
   pruneGeneSelection,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
@@ -238,8 +236,10 @@ export default class XenaGeneSetApp extends PureComponent {
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
+        console.log('is gene expressoino view')
         if (this.state.reloadPathways) {
           if (this.state.selectedGeneSets !== undefined && this.isCustomGeneSet(this.state.selectedGeneSets)) {
+            console.log('reloading pathways with CUSTOM gene sets',pathways)
             Rx.Observable.zip(
               getSamplesForCohortAndView(selectedCohort[0],filter),
               getSamplesForCohortAndView(selectedCohort[1],filter),
@@ -256,27 +256,29 @@ export default class XenaGeneSetApp extends PureComponent {
                       pathways = response.data
                     }
                     const sortedPathways = this.sortPathways(pathways)
+                    console.log('sorted pathways',sortedPathways)
                     fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
                       this.state.filter, this.handleCombinedCohortData)
                   })
               })
 
           } else {
-            console.log('reloading pathways',pathways)
+            console.log('reloading pathways with DEFAULT gene sets',pathways)
             fetchBestPathways(this.state.selectedCohort, this.state.filter,
               this.handleMeanActivityData)
           }
         } else {
-          // console.log('fetching pathways',pathways)
+          console.log('fetching pathways with default gene sets GE',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
         }
       } else {
         // if its not gene expression just use the canned data
-        if (!isViewGeneExpression(this.state.filter)) {
-          pathways = getGeneSetsForView(this.state.filter)
-        }
+        console.log('by default, can not be a gene expression view')
+        // if (!isViewGeneExpression(this.state.filter)) {
+        pathways = getGeneSetsForView(this.state.filter)
+        // }
 
         fetchCombinedCohorts(this.state.selectedCohort, pathways,
           this.state.filter, this.handleCombinedCohortData)
@@ -458,16 +460,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    // const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
-    //   this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
-    //   : [geneExpressionA, geneExpressionB]
-
-    const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
-      this.state.filter) ? [convertToPerGeneGlobalZScore(geneExpressionA), convertToPerGeneGlobalZScore(geneExpressionB)]
-      : [geneExpressionA, geneExpressionB]
-    // console.log('input',geneExpressionA)
-    // console.log('output',geneExpressionZScoreA)
-
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
       for (let index in pathways) {
         geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
@@ -482,7 +474,7 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[0],
       filter: this.state.filter,
       filterCounts: filterCounts[0],
-      geneExpression: geneExpressionZScoreA,
+      geneExpression: geneExpressionA,
       geneExpressionPathwayActivity: geneExpressionPathwayActivityA,
       samples: samplesA,
       genomeBackgroundMutation: genomeBackgroundMutationA,
@@ -496,7 +488,7 @@ export default class XenaGeneSetApp extends PureComponent {
       cohort: selectedCohorts[1],
       filter: this.state.filter,
       filterCounts: filterCounts[1],
-      geneExpression: geneExpressionZScoreB,
+      geneExpression: geneExpressionB,
       geneExpressionPathwayActivity: geneExpressionPathwayActivityB,
       samples: samplesB,
       genomeBackgroundMutation: genomeBackgroundMutationB,
