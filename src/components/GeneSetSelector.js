@@ -2,12 +2,13 @@ import React from 'react'
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import {isViewGeneExpression} from '../functions/DataFunctions'
-import {interpolateCnvMutationColor, interpolateGeneExpression} from '../functions/DrawFunctions'
+import {calculateColorArrayRgb, interpolateCnvMutationColor } from '../functions/DrawFunctions'
+import {GENE_EXPRESSION_MAX} from './XenaGeneSetApp'
 
 export class GeneSetSelector extends PureComponent {
 
-  static pillStyleExp (score,selected,labelHeight) {
-    let colorString = interpolateGeneExpression(score)
+  static pillStyleExp (score,selected,labelHeight,maxValue) {
+    const colorString = calculateColorArrayRgb(maxValue,score)
     return {
       top: 0,
       left: 0,
@@ -80,7 +81,7 @@ export class GeneSetSelector extends PureComponent {
     }
   }
 
-  generateGeneSetLabel(p, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
+  generateGeneSetLabel(p, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset, maxValue) {
     return [
       <rect
         height={labelHeight}
@@ -89,7 +90,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOut={this.onMouseOut.bind(this, p)}
         onMouseOver={this.onHover.bind(this, p)}
         style={isViewGeneExpression(this.props.view) ?
-          GeneSetSelector.pillStyleExp(p.firstGeneExpressionPathwayActivity,selected || !open,labelHeight) :
+          GeneSetSelector.pillStyleExp(p.firstGeneExpressionPathwayActivity,selected || !open,labelHeight,maxValue) :
           GeneSetSelector.pillStyle(p.firstChiSquared,selected || !open,labelHeight)
         }
         width={width / 2 - 1} x={0}
@@ -104,7 +105,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOver={this.onHover.bind(this, p)}
         // style={GeneSetSelector.pillStyleExp(p.secondGeneExpressionPathwayActivity,selected || !open,labelHeight)}
         style={isViewGeneExpression(this.props.view) ?
-          GeneSetSelector.pillStyleExp(p.secondGeneExpressionPathwayActivity,selected || !open,labelHeight) :
+          GeneSetSelector.pillStyleExp(p.secondGeneExpressionPathwayActivity,selected || !open,labelHeight,maxValue) :
           GeneSetSelector.pillStyle(p.secondChiSquared,selected || !open,labelHeight)
         }
         width={width / 2} x={width / 2 + 1}
@@ -127,7 +128,7 @@ export class GeneSetSelector extends PureComponent {
     ]
   }
 
-  generateGeneEntryLabel(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset) {
+  generateGeneEntryLabel(gene0, gene1, selected, hovered, width, labelHeight, highlighted, open, labelString, topOffset, maxValue) {
     return [
       <rect
         height={labelHeight}
@@ -136,7 +137,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOut={this.onMouseOut.bind(this, gene0)}
         onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
         style={isViewGeneExpression(this.props.view) ?
-          GeneSetSelector.pillStyleExp(gene0.geneExpressionMean,selected,labelHeight)  :
+          GeneSetSelector.pillStyleExp(gene0.geneExpressionMean,selected,labelHeight, maxValue)  :
           GeneSetSelector.pillStyle(gene0.affected / gene0.total * 50.0,selected,labelHeight)
         }
         width={width / 2 - 1}
@@ -151,7 +152,7 @@ export class GeneSetSelector extends PureComponent {
         onMouseOut={this.onMouseOut.bind(this, gene0)}
         onMouseOver={this.onHoverGene.bind(this, gene0,gene1)}
         style={isViewGeneExpression(this.props.view) ?
-          GeneSetSelector.pillStyleExp(gene1.geneExpressionMean,selected,labelHeight)  :
+          GeneSetSelector.pillStyleExp(gene1.geneExpressionMean,selected,labelHeight, maxValue)  :
           GeneSetSelector.pillStyle(gene1.affected / gene1.total * 50.0,selected,labelHeight)
         }
         width={width / 2}
@@ -175,7 +176,7 @@ export class GeneSetSelector extends PureComponent {
   }
 
   render() {
-    let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene} = this.props
+    let {geneData,pathways, selectedPathway, topOffset, hoveredPathway, width, labelHeight, highlightedGene, maxValue} = this.props
 
     if(!selectedPathway) return <div />
 
@@ -197,7 +198,7 @@ export class GeneSetSelector extends PureComponent {
           const open = selectedPathway.open
           let highlighted = p.gene.indexOf(highlightedGene) >= 0
 
-          let geneSetArray = this.generateGeneSetLabel(p,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset)
+          let geneSetArray = this.generateGeneSetLabel(p,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset,maxValue)
 
           if(selected && geneData[0].pathways){
             let genesToAdd = []
@@ -206,7 +207,7 @@ export class GeneSetSelector extends PureComponent {
               let gene1 = geneData[1].pathways[index]
               let hovered = hoveredPathway ? hoveredPathway.gene === gene0.gene : false
               yOffset += labelHeight
-              let geneEntry =  this.generateGeneEntryLabel(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset)
+              let geneEntry =  this.generateGeneEntryLabel(gene0,gene1,selected,hovered,width,labelHeight, highlighted,open,labelString,yOffset,GENE_EXPRESSION_MAX)
               genesToAdd.push(  geneEntry )
             }
             geneSetArray.push(genesToAdd)

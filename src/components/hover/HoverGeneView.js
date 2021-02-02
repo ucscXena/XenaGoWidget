@@ -13,7 +13,7 @@ export default class HoverGeneView extends PureComponent {
 
 
   render() {
-    let {data, cohortIndex, view} = this.props
+    let {data, cohortIndex, maxValue, view} = this.props
     if (data && data.tissue) {
       const score = findScore(data, cohortIndex,view)
       return (
@@ -22,6 +22,7 @@ export default class HoverGeneView extends PureComponent {
             <HoverGeneSetSample
               cohortIndex={cohortIndex}
               data={data}
+              maxValue={maxValue}
               score={score}
               view={view}
             />
@@ -34,7 +35,7 @@ export default class HoverGeneView extends PureComponent {
           }
           {data.tissue === 'Header' && data.pathway && data.pathway.gene.length > 0 &&
             data.expression && data.expression.allGeneAffected!==undefined && score &&
-          <HoverGeneSetLabel cohortIndex={cohortIndex} data={data} score={score} view={view}/>
+          <HoverGeneSetLabel cohortIndex={cohortIndex} data={data} maxValue={maxValue} score={score} view={view}/>
           }
         </div>
       )
@@ -56,5 +57,6 @@ export default class HoverGeneView extends PureComponent {
 HoverGeneView.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any,
+  maxValue: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

@@ -3,8 +3,9 @@ import PureComponent from '../PureComponent'
 import PropTypes from 'prop-types'
 import BaseStyle from '../../css/base.css'
 import {
+  calculateColorArrayRgb,
   interpolateCnvMutationColor,
-  interpolateGeneExpression, interpolateGeneExpressionFont,
+  interpolateGeneExpressionFont,
 } from '../../functions/DrawFunctions'
 import {isViewGeneExpression} from '../../functions/DataFunctions'
 import {getAffectedPathway, getRatio} from '../../functions/HoverFunctions'
@@ -14,7 +15,7 @@ export default class HoverGeneSetLabel extends PureComponent {
 
 
   render() {
-    let {data, cohortIndex, score,view} = this.props
+    let {data, cohortIndex, maxValue,score,view} = this.props
     return (
       <div className={BaseStyle.pathwayChip}>
         <div className={BaseStyle.boxHeader}>Hovering over </div>
@@ -38,9 +39,10 @@ export default class HoverGeneSetLabel extends PureComponent {
           className={BaseStyle.scoreBoxBlock}
           style={{
             color: interpolateGeneExpressionFont(score),
-            backgroundColor: isViewGeneExpression(view) ? interpolateGeneExpression(score) : interpolateCnvMutationColor(score)
+            backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(maxValue,score) : interpolateCnvMutationColor(score)
           }}
         >
+          {calculateColorArrayRgb(maxValue,score)}
           <strong>
             {/*{ isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'chi-square test χ2'}*/}
             { isViewGeneExpression(view) ? getMiddleGeneSetLabelForView(view) : 'χ2 test'}
