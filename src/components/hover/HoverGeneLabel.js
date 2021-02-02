@@ -32,7 +32,7 @@ export default class HoverGeneLabel extends PureComponent {
                 key={4}
                 style={{
                   color: interpolateGeneExpressionFont(data.pathway.geneExpressionMean),
-                  backgroundColor: calculateColorArrayRgb(data.pathway.geneExpressionMean,GENE_EXPRESSION_MAX)
+                  backgroundColor: calculateColorArrayRgb(GENE_EXPRESSION_MAX,data.pathway.geneExpressionMean)
                 }}
               >
                 <strong>

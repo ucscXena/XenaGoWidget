@@ -33,7 +33,7 @@ export default class HoverGeneSetSample extends PureComponent {
             className={BaseStyle.scoreBoxBlock}
             style={{
               color: interpolateGeneExpressionFont(score),
-              backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(score,maxValue) : 'white'
+              backgroundColor: isViewGeneExpression(view) ? calculateColorArrayRgb(maxValue,score) : 'white'
             }}
           >
             {isViewGeneExpression(view) ? <strong>{getSampleGeneSetLabelForView(view)}</strong> : <strong>Hits in sample</strong>}

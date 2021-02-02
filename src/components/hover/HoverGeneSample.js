@@ -30,7 +30,7 @@ export default class HoverGeneSample extends PureComponent {
           className={BaseStyle.scoreBoxBlock}
           style={{
             color:interpolateGeneExpressionFont(score),
-            backgroundColor: calculateColorArrayRgb(score,GENE_EXPRESSION_MAX)
+            backgroundColor: calculateColorArrayRgb(GENE_EXPRESSION_MAX,score)
           }}
         >
           <strong>{getSampleGeneLabelForView(view)}</strong>

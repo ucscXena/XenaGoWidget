@@ -3,7 +3,7 @@ import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import {GeneSetSubCohortBox} from './GeneSetSubCohortBox'
 import BaseStyle from '../css/base.css'
-import HoverGeneView from './hover/HoverGeneView'
+import HoverFeatureView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
 import {generateXenaLink} from '../functions/XenaLinkFunctions'
 import {isViewGeneExpression} from '../functions/DataFunctions'
@@ -79,7 +79,7 @@ export class GeneSetInformationColumn extends PureComponent {
           }
           {
             this.canShowHover() &&
-            <HoverGeneView
+            <HoverFeatureView
               cohortIndex={this.props.cohortIndex}
               data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
               maxValue={this.props.maxValue}
