@@ -460,16 +460,6 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    // const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
-    //   this.state.filter) ? generateZScoreForBoth(geneExpressionA, geneExpressionB)
-    //   : [geneExpressionA, geneExpressionB]
-
-    // const [geneExpressionZScoreA, geneExpressionZScoreB] = isViewGeneExpression(
-    //   this.state.filter) ? [convertToPerGeneGlobalZScore(geneExpressionA), convertToPerGeneGlobalZScore(geneExpressionB)]
-    //   : [geneExpressionA, geneExpressionB]
-    // console.log('input',geneExpressionA)
-    // console.log('output',geneExpressionZScoreA)
-
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
       for (let index in pathways) {
         geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
