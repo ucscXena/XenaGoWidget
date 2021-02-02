@@ -267,7 +267,7 @@ export default class XenaGeneSetApp extends PureComponent {
               this.handleMeanActivityData)
           }
         } else {
-          console.log('fetching pathways',pathways)
+          // console.log('fetching pathways',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
