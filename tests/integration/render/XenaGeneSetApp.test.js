@@ -23,7 +23,7 @@ describe('Render XenaGeneSet App', () => {
   it('Displays main menu', (done) => {
     render(<XenaGeneSetApp/>, node, () => {
       done()
-      sleep(1000)
+      sleep(4000)
       expect(node.innerHTML).toContain('Xena Gene Set Viewer')
     })
   })
