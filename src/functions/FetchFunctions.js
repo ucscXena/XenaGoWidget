@@ -47,7 +47,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
     console.log('sub cohorts',subCohorts)
     console.log('values',subCohorts)
     const values = Object.values(subCohorts)
-    console.log('values',values)
+    console.log('values',JSON.stringify(values))
     const flatValues = values.flat()
     console.log('flatValues',flatValues)
     console.log('available samples',availableSamples)
