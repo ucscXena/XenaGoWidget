@@ -220,11 +220,15 @@ export default class XenaGeneSetApp extends PureComponent {
         * (scorePathway(a, this.state.sortViewBy) - scorePathway(b, this.state.sortViewBy)))
   }
 
-  isPartialCohortSelected(selectedCohort){
-    let selectedSubCohortLength = selectedCohort.selectedSubCohorts.length
-    let  subCohortLength = selectedCohort.subCohorts.length
-    return ( selectedSubCohortLength != subCohortLength && selectedSubCohortLength> 0)
+  hasSubCohorts(selectedCohort){
+    return selectedCohort.selectedSubCohorts.length > 0
   }
+
+  // isPartialCohortSelected(selectedCohort){
+  //   let selectedSubCohortLength = selectedCohort.selectedSubCohorts.length
+  //   let  subCohortLength = selectedCohort.subCohorts.length
+  //   return ( selectedSubCohortLength != subCohortLength && selectedSubCohortLength> 0)
+  // }
 
   fetchData() {
     if (this.doRefetch()) {
@@ -244,8 +248,8 @@ export default class XenaGeneSetApp extends PureComponent {
               getSamplesForCohortAndView(selectedCohort[0],filter),
               getSamplesForCohortAndView(selectedCohort[1],filter),
             ).flatMap( (unfilteredSamples) => {
-              const samplesA = this.isPartialCohortSelected(selectedCohort[0]) ? calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0]) : []
-              const samplesB = this.isPartialCohortSelected(selectedCohort[1]) ? calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1]) : []
+              const samplesA = this.hasSubCohorts(selectedCohort[0]) ? calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0]) : []
+              const samplesB = this.hasSubCohorts(selectedCohort[1]) ? calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1]) : []
               return [[samplesA,samplesB]]
             })
               .subscribe( (samples) => {
