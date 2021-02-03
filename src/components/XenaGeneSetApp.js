@@ -461,18 +461,15 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohorts,
     } = input
 
-    console.log('input gene epxression pathway activity A',geneExpressionPathwayActivityA)
-    console.log('input gene epxression pathway activity B',geneExpressionPathwayActivityB)
-    console.log('input pathways',pathways)
-    // if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
-    //   for (let index in pathways) {
-    //     console.log('index',index)
-    //     geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
-    //     geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
-    //   }
-    // }
-    // console.log('output gene epxression pathway activity A',geneExpressionPathwayActivityA)
-    // console.log('output gene epxression pathway activity B',geneExpressionPathwayActivityB)
+    if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
+      // note: if a custom gene set, we have to populate the pathway activity
+    //   // note: in the first set we have samples for A and B
+    //   // note: defined samples: pathways[0].samples[0] and pathways[0].samples[1]
+      for (let index in pathways) {
+        geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
+        geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
+      }
+    }
     //
     const pathwayDataA = {
       geneList,
