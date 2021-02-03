@@ -268,7 +268,7 @@ export default class XenaGeneSetApp extends PureComponent {
               this.handleMeanActivityData)
           }
         } else {
-          // console.log('fetching pathways with default gene sets GE',pathways)
+          console.log('fetching pathways with default gene sets GE',pathways)
 
           fetchCombinedCohorts(this.state.selectedCohort, pathways,
             this.state.filter, this.handleCombinedCohortData)
@@ -442,6 +442,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   handleCombinedCohortData = (input) => {
+    console.log('input',input)
     let {
       pathways,
       geneList,
@@ -461,12 +462,15 @@ export default class XenaGeneSetApp extends PureComponent {
     } = input
 
     if (pathways[0].firstGeneExpressionSampleActivity && pathways.length === geneExpressionPathwayActivityA.length) {
+      // note: if a custom gene set, we have to populate the pathway activity
+    //   // note: in the first set we have samples for A and B
+    //   // note: defined samples: pathways[0].samples[0] and pathways[0].samples[1]
       for (let index in pathways) {
         geneExpressionPathwayActivityA[index] = pathways[index].firstGeneExpressionSampleActivity
         geneExpressionPathwayActivityB[index] = pathways[index].secondGeneExpressionSampleActivity
       }
     }
-
+    //
     const pathwayDataA = {
       geneList,
       pathways,
@@ -832,6 +836,8 @@ export default class XenaGeneSetApp extends PureComponent {
         1 :
         -1) * (scorePathway(a, this.state.sortViewBy) -
         scorePathway(b, this.state.sortViewBy)))
+
+    console.log('hanlde mean activity data, sorted pathways',sortedPathways)
     fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
       this.state.filter, this.handleCombinedCohortData)
   }
