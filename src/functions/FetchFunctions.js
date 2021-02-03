@@ -4,6 +4,7 @@ import {
   getSubCohortsForCohort
 } from './CohortFunctions'
 import { intersection} from './MathFunctions'
+import {flatten} from 'underscore'
 
 const Rx = require('ucsc-xena-client/dist/rx')
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
@@ -48,7 +49,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
     console.log('values',subCohorts)
     const values = Object.values(subCohorts)
     console.log('values',JSON.stringify(values))
-    const flatValues = values.flat()
+    const flatValues = flatten(values)
     console.log('flatValues',flatValues)
     console.log('available samples',availableSamples)
     const intersections = intersection(flatValues,availableSamples)
