@@ -45,16 +45,7 @@ export function getSamplesForCohortAndView(cohort, view) {
 export function calculateSubCohortCounts(availableSamples, cohort) {
   const subCohorts = getSubCohortsForCohort(cohort.name)
   if(subCohorts && Object.keys(subCohorts).length > 0){
-    console.log('sub cohorts',subCohorts)
-    console.log('values',subCohorts)
-    const values = Object.values(subCohorts)
-    console.log('values',JSON.stringify(values))
-    const flatValues = flatten(values)
-    console.log('flatValues',flatValues)
-    console.log('available samples',availableSamples)
-    const intersections = intersection(flatValues,availableSamples)
-    console.log('interactions',intersections)
-    const allSubCohortSamples = intersections
+    const allSubCohortSamples = intersection(flatten(Object.values(subCohorts)),availableSamples)
     let returnObject = Object.entries(subCohorts).map( c => {
       return {
         name: c[0],
