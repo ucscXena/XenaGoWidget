@@ -50,7 +50,10 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
     console.log('values',values)
     const flatValues = values.flat()
     console.log('flatValues',flatValues)
-    const allSubCohortSamples = intersection(flatValues,availableSamples)
+    console.log('available samples',availableSamples)
+    const intersections = intersection(flatValues,availableSamples)
+    console.log('interactions',intersections)
+    const allSubCohortSamples = intersections
     let returnObject = Object.entries(subCohorts).map( c => {
       return {
         name: c[0],
