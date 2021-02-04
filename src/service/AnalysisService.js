@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {getCohortDetails} from '../functions/CohortFunctions'
-import {BASE_URL} from './GeneSetAnalysisStorageService'
+import {ANALYSIS_SERVER_URL} from './GeneSetAnalysisStorageService'
 
 
 export function generateTpmDownloadUrlFromCohorts(cohorts){
@@ -27,7 +27,7 @@ export async function storeGmt(gmtData, geneSetName,view){
   formData['gmtdata'] = gmtData
   formData['gmtname'] = geneSetName
   formData['method'] = view
-  const response = await axios.post(`${BASE_URL}/gmt/store`,
+  const response = await axios.post(`${ANALYSIS_SERVER_URL}/gmt/store`,
     formData,
     {
       headers: {

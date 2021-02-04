@@ -55,7 +55,7 @@ export function calculateSubCohortCounts(availableSamples, cohort) {
     // if it contains a final object, then great . . .
     returnObject[Object.keys(subCohorts).length] = {
       name: UNASSIGNED_SUBTYPE.key,
-      count: availableSamples.length - allSubCohortSamples.length
+      count: availableSamples.length - allSubCohortSamples.lengt
     }
     return returnObject
   }
