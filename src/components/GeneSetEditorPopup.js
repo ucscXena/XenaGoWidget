@@ -117,8 +117,10 @@ export default class GeneSetEditorPopup extends PureComponent {
       const field = output.geneExpressionPathwayActivityA.field[index]
       const cleanField = field.indexOf(' (') < 0 ? field :  field.substr(0,field.indexOf(' (')+1).trim()
       const sourceIndex = indexMap[cleanField]
-      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index]
-      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index]
+      if(loadedPathways[sourceIndex]){
+        loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index]
+        loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index]
+      }
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel)
