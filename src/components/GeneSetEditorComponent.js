@@ -6,8 +6,9 @@ import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
 import FaPlus from 'react-icons/lib/fa/plus'
 import FaUpload from 'react-icons/lib/fa/upload'
-import FaEdit from 'react-icons/lib/fa/edit'
+// import FaEdit from 'react-icons/lib/fa/edit'
 
+export const DEFAULT_GENE_SETS = 'Default Gene Sets'
 
 export default class GeneSetEditorComponent extends PureComponent {
 
@@ -22,6 +23,7 @@ export default class GeneSetEditorComponent extends PureComponent {
   }
 
   render() {
+
 
     return (
       <div className={BaseStyle.findNewGeneSets}
@@ -71,10 +73,23 @@ export default class GeneSetEditorComponent extends PureComponent {
           onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
           value={this.props.selectedGeneSets}
         >
-          <option>(8281) Default Gene Sets</option>
-          {/*<option>----Custom Gene Sets----</option>*/}
+          <option>(8281) {DEFAULT_GENE_SETS}</option>
+          {/*<option>----Custom Server Gene Sets----</option>*/}
           {
-            this.props.customGeneSets.map( gs => {
+            this.props.customServerGeneSets.map(gs => {
+              if(gs.ready){
+                return <option key={gs.name} value={gs.name}>({gs.geneCount}) {gs.name}</option>
+              }
+              else{
+                return (<option disabled key={gs.name} value={gs.name}>
+                  Analyzing ( {gs.readyCount} of {gs.availableCount } ready ) –
+                  ({gs.geneCount}) {gs.name}
+                </option>)
+              }
+            })
+          }
+          {
+            this.props.customInternalGeneSets.map(gs => {
               if(gs.ready){
                 return <option key={gs.name} value={gs.name}>({gs.geneCount}) {gs.name}</option>
               }
@@ -93,13 +108,13 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaPlus style={{fontSize: 'small'}}/>
         </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
-          onClick={() =>this.props.handleGeneEdit(this.props.selectedGeneSets.trim())}
-        >
-          <FaEdit style={{fontSize: 'small'}}/>
-        </button>
+        {/*<button*/}
+        {/*  className={BaseStyle.editGeneSets}*/}
+        {/*  disabled={!this.props.isNotCustomDefaultGeneSet(this.props.selectedGeneSets)}*/}
+        {/*  onClick={() =>this.props.handleGeneEdit(this.props.selectedGeneSets.trim())}*/}
+        {/*>*/}
+        {/*  <FaEdit style={{fontSize: 'small'}}/>*/}
+        {/*</button>*/}
         <button
           className={BaseStyle.editGeneSets}
           onClick={() =>this.props.handleGeneSetUpload()}
@@ -113,11 +128,13 @@ export default class GeneSetEditorComponent extends PureComponent {
 }
 
 GeneSetEditorComponent.propTypes = {
-  customGeneSets: PropTypes.any.isRequired,
+  customInternalGeneSets: PropTypes.any.isRequired,
+  customServerGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
   handleGeneSetUpload: PropTypes.any.isRequired,
-  isCustomGeneSet: PropTypes.any.isRequired,
+  isCustomServerGeneSet: PropTypes.any.isRequired,
+  isNotCustomDefaultGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
   selectedGeneSets: PropTypes.any,
   setGeneSetsOption: PropTypes.any.isRequired,

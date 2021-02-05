@@ -126,7 +126,7 @@ export default class GeneSetEditorPopup extends PureComponent {
     const pathwayLabels = this.props.pathways.map( p => p.golabel)
     // included data from original pathways
     let cartPathways
-    if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
+    if(this.props.customGeneSetName && this.props.isNotDefaultGeneSet(this.state.customGeneSetName)){
       // TODO, may need to interset
       cartPathways = await getCustomGeneSet(this.props.view,this.state.customGeneSetName)
     }
@@ -331,7 +331,7 @@ export default class GeneSetEditorPopup extends PureComponent {
   handleViewGeneSets() {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
-      this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
+      this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData,false)
       this.props.setPathways(selectedCartData,this.state.customGeneSetName)
     }
     else{
@@ -696,7 +696,7 @@ GeneSetEditorPopup.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
   customGeneSetName: PropTypes.any,
   getAvailableCustomGeneSets: PropTypes.any.isRequired,
-  isCustomGeneSet: PropTypes.any.isRequired,
+  isNotDefaultGeneSet: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   removeCustomGeneSet: PropTypes.any.isRequired,
