@@ -4,9 +4,9 @@ import BaseStyle from '../css/base.css'
 import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
-import FaPlus from 'react-icons/lib/fa/plus'
 import FaUpload from 'react-icons/lib/fa/upload'
-import FaEdit from 'react-icons/lib/fa/edit'
+// import FaPlus from 'react-icons/lib/fa/plus'
+// import FaEdit from 'react-icons/lib/fa/edit'
 
 
 export default class GeneSetEditorComponent extends PureComponent {
@@ -87,19 +87,19 @@ export default class GeneSetEditorComponent extends PureComponent {
             })
           }
         </select>
-        <button
-          className={BaseStyle.editGeneSets}
-          onClick={() =>this.props.handleGeneEdit()}
-        >
-          <FaPlus style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}
-          onClick={() =>this.props.handleGeneEdit(this.props.selectedGeneSets.trim())}
-        >
-          <FaEdit style={{fontSize: 'small'}}/>
-        </button>
+        {/*<button*/}
+        {/*  className={BaseStyle.editGeneSets}*/}
+        {/*  onClick={() =>this.props.handleGeneEdit()}*/}
+        {/*>*/}
+        {/*  <FaPlus style={{fontSize: 'small'}}/>*/}
+        {/*</button>*/}
+        {/*<button*/}
+        {/*  className={BaseStyle.editGeneSets}*/}
+        {/*  disabled={!this.props.isCustomGeneSet(this.props.selectedGeneSets)}*/}
+        {/*  onClick={() =>this.props.handleGeneEdit(this.props.selectedGeneSets.trim())}*/}
+        {/*>*/}
+        {/*  <FaEdit style={{fontSize: 'small'}}/>*/}
+        {/*</button>*/}
         <button
           className={BaseStyle.editGeneSets}
           onClick={() =>this.props.handleGeneSetUpload()}
