@@ -5,8 +5,11 @@ import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
 import FaSearch from 'react-icons/lib/fa/search'
 import FaUpload from 'react-icons/lib/fa/upload'
+import FaMinus from 'react-icons/lib/fa/minus'
 // import FaPlus from 'react-icons/lib/fa/plus'
 // import FaEdit from 'react-icons/lib/fa/edit'
+
+export const DEFAULT_GENE_SETS = 'Default Gene Sets'
 
 
 export default class GeneSetEditorComponent extends PureComponent {
@@ -71,7 +74,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
           value={this.props.selectedGeneSets}
         >
-          <option>(8281) Default Gene Sets</option>
+          <option>(8281) {DEFAULT_GENE_SETS}</option>
           {/*<option>----Custom Gene Sets----</option>*/}
           {
             this.props.customGeneSets.map( gs => {
@@ -106,6 +109,12 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaUpload style={{fontSize: 'small'}}/>
         </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetDelete()}
+        >
+          <FaMinus style={{fontSize: 'small'}}/>
+        </button>
       </div>
     )
   }
@@ -116,6 +125,7 @@ GeneSetEditorComponent.propTypes = {
   customGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
   handleGeneEdit: PropTypes.any.isRequired,
+  handleGeneSetDelete: PropTypes.any.isRequired,
   handleGeneSetUpload: PropTypes.any.isRequired,
   isCustomGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,

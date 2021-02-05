@@ -340,6 +340,19 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
+  onDeleteGeneSet = (geneSet) => {
+    alert('deleting default gen set',geneSet)
+    // if it is the default, then explain that it is impossible
+    if(geneSet==DEFAULT_GENE_SET_LIMIT){
+      alert('can not delete default gene set')
+      return
+    }
+    // if it is an "available gene set" then remove from state
+
+    // if it is a "custom gene set" then use API to remove it
+
+  }
+
   generateTitle() {
     let returnText = ''
     if (this.state.selectedCohort[0].name === this.state.selectedCohort[1].name) {
@@ -1160,6 +1173,7 @@ export default class XenaGeneSetApp extends PureComponent {
             customGeneSets={this.state.customGeneSets}
             geneSetLimit={this.state.geneSetLimit}
             handleGeneEdit={this.showConfiguration}
+            handleGeneSetDelete={this.onDeleteGeneset}
             handleGeneSetUpload={this.onUpload}
             isCustomGeneSet={this.isCustomGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
