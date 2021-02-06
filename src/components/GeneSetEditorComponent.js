@@ -24,6 +24,8 @@ export default class GeneSetEditorComponent extends PureComponent {
 
   render() {
 
+    console.log('props set',JSON.stringify(this.props))
+    console.log('custom internal gene sets',JSON.stringify(this.props.customInternalGeneSets))
 
     return (
       <div className={BaseStyle.findNewGeneSets}

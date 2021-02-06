@@ -26,7 +26,7 @@ import {
 } from '../functions/FetchFunctions'
 import CrossHairH from './crosshair/CrossHairH'
 import CrossHairV from './crosshair/CrossHairV'
-import {isEqual,isEmpty,uniq} from 'underscore'
+import {isEqual,isEmpty} from 'underscore'
 import update from 'immutability-helper'
 import {
   calculateSortingByMethod,
@@ -897,9 +897,9 @@ export default class XenaGeneSetApp extends PureComponent {
   removeCustomInternalGeneSet = async (name) => {
     let customInternalGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
     delete customInternalGeneSets[this.state.filter][name]
+    console.log('removing custom internal gene sets',name,customInternalGeneSets)
     this.setState({
       customInternalGeneSets: JSON.parse(JSON.stringify(customInternalGeneSets)),
-      showGeneSetSearch: false,
     })
 
     // AppStorageHandler.storeCustomPathways(newCustomGeneSets)
@@ -909,16 +909,24 @@ export default class XenaGeneSetApp extends PureComponent {
 
   // TODO: replace with `result`
   storeCustomInternalGeneSet = (name, geneSet) => {
-    let customInteralGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
-    customInteralGeneSets[name] = {
+    console.log('storing new ones',name,geneSet)
+    let customInternalGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
+    console.log('current gene set',customInternalGeneSets,this.state.customInternalGeneSets)
+    customInternalGeneSets[name] = {
       method: this.state.filter,
       geneset: name,
       result: geneSet,
     }
+    console.log('output set',JSON.stringify(customInternalGeneSets))
     this.setState({
-      customInternalGeneSets: uniq(customInteralGeneSets)
+      customInternalGeneSets: customInternalGeneSets
     })
 
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('managine state',this.state.customInternalGeneSets,nextState.customInternalGeneSets)
+    return super.shouldComponentUpdate(nextProps, nextState)
   }
 
   isNotDefaultGeneSet = (name) => {

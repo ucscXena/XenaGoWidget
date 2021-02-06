@@ -331,7 +331,8 @@ export default class GeneSetEditorPopup extends PureComponent {
   handleViewGeneSets() {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
-      this.props.storeCustomInternalGeneSets(this.state.customGeneSetName,selectedCartData,false)
+      console.log('trying to save',this.state.customGeneSetName,selectedCartData)
+      this.props.storeCustomInternalGeneSets(this.state.customGeneSetName,selectedCartData)
       this.props.setPathways(selectedCartData,this.state.customGeneSetName)
     }
     else{
