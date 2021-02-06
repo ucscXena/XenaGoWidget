@@ -78,7 +78,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           {
             this.props.customServerGeneSets.map(gs => {
               if(gs.ready){
-                return <option key={gs.name} value={gs.name}>({gs.geneCount}) {gs.name}</option>
+                return <option key={gs.name} value={gs.name}>server ({gs.geneCount}) {gs.name}</option>
               }
               else{
                 return (<option disabled key={gs.name} value={gs.name}>
@@ -88,17 +88,10 @@ export default class GeneSetEditorComponent extends PureComponent {
               }
             })
           }
+          {/*<option>----Custom Internal Gene Sets----</option>*/}
           {
             this.props.customInternalGeneSets.map(gs => {
-              if(gs.ready){
-                return <option key={gs.name} value={gs.name}>({gs.geneCount}) {gs.name}</option>
-              }
-              else{
-                return (<option disabled key={gs.name} value={gs.name}>
-                  Analyzing ( {gs.readyCount} of {gs.availableCount } ready ) –
-                  ({gs.geneCount}) {gs.name}
-                </option>)
-              }
+              return <option key={gs.name} value={gs.name}>internal({gs.geneCount}) {gs.name}</option>
             })
           }
         </select>
