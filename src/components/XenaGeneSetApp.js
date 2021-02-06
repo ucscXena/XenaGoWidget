@@ -1030,6 +1030,7 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
+    console.log('render',this.state.customInternalGeneSets)
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using Analysis:'${this.state.filter}' ${fullTitleText}`
     const crosshairHeight = (((this.state.pathways ? this.state.pathways.length : 0) + ((this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length : 0)) * 22) + 200

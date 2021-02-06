@@ -22,6 +22,12 @@ export default class GeneSetEditorComponent extends PureComponent {
 
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('updating',this.props.customInternalGeneSets,nextProps.customInternalGeneSets)
+    console.log('updating / JSON',JSON.stringify(this.props.customInternalGeneSets),JSON.stringify(nextProps.customInternalGeneSets))
+    return super.shouldComponentUpdate(nextProps, nextState)
+  }
+
   render() {
 
     console.log('props set',JSON.stringify(this.props))
