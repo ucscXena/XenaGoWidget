@@ -19,7 +19,7 @@ describe('App Storage Handler', () => {
   })
 
   it('Adding a stored returns a stored', () => {
-    expect(null).toEqual(AppStorageHandler.getSubCohorts())
+    expect([]).toEqual(AppStorageHandler.getSubCohorts())
     expect([]).toEqual(AppStorageHandler.getSubCohortsForCohort(COHORT_1))
 
     // store one and confirm that it works
