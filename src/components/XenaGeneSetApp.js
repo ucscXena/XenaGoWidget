@@ -313,7 +313,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   deleteGeneSet = (geneSetName) =>{
-    if(confirm('Delete Gene Set? ')){
+    if(confirm(`Delete Gene Set '${geneSetName}'? `)){
       console.log('deleting gene set')
       if(this.isExistingCustomServerGeneSet(geneSetName)){
         this.removeCustomServerGeneSet(geneSetName)
@@ -886,8 +886,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   removeCustomServerGeneSet = async (name) => {
-    let customServerGeneSets = JSON.parse(JSON.stringify(this.state.customServerGeneSets))
-    delete customServerGeneSets[this.state.filter][name]
+    let customServerGeneSets = this.state.customServerGeneSets.filter( gs => gs.name != name )
     this.setState({
       customServerGeneSets: JSON.parse(JSON.stringify(customServerGeneSets)),
       showGeneSetSearch: false,
@@ -943,6 +942,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getCustomServerGeneSet = (name) => {
+    console.log('custom server serverlet gene sets',this.state.customServerGeneSets)
     return this.state.customServerGeneSets.find(n => n.name === name)
   }
 

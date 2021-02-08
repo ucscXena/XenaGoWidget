@@ -69,7 +69,7 @@ export async function addCustomGeneSetToServer(method, geneSetName, inputData){
 }
 
 export async function removeCustomServerGeneSet(method, geneSetName){
-  const response = await axios.delete(`${ANALYSIS_SERVER_URL}/gmt/${method}/${geneSetName}`)
+  const response = await axios.delete(`${ANALYSIS_SERVER_URL}/gmt/deleteByMethodAndName/?method=${method}&geneSetName=${geneSetName}`)
   const { data} = response
   return data
 }
