@@ -79,6 +79,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           <option>(8281) {DEFAULT_GENE_SETS}</option>
           {/*<option>----Custom Internal Gene Sets----</option>*/}
           {
+            this.props.customInternalGeneSets[this.props.view] &&
             Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
               return <option key={gs[1].geneset} value={gs[1].geneset}>local ({gs[1].result.length}) {gs[1].geneset}</option>
             })
