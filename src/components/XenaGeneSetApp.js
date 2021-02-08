@@ -140,7 +140,7 @@ export default class XenaGeneSetApp extends PureComponent {
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
-      customInternalGeneSets: [],
+      customInternalGeneSets: defaultCustomGeneSet,
       customServerGeneSets: [],
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       pathways,
@@ -323,6 +323,15 @@ export default class XenaGeneSetApp extends PureComponent {
       return ` from Sub Cohort: '${selectedCohort.selectedSubCohorts[0]}' `
     } else {
       return ` ${selectedCohort.selectedSubCohorts.length} Sub Cohorts `
+    }
+  }
+
+  deleteGeneSet = (geneSetName) =>{
+    if(confirm('Delete Gene Set? ')){
+      console.log('deleting gene set')
+      console.log('custom server gene set',this.isExistingCustomServerGeneSet(geneSetName))
+      console.log('custom internal gene set',this.isExistingCustomInternalGeneSet(geneSetName))
+      alert('implement delete ')
     }
   }
 
@@ -912,7 +921,7 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('storing new ones',name,geneSet)
     let customInternalGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
     console.log('current gene set',customInternalGeneSets,this.state.customInternalGeneSets)
-    customInternalGeneSets[name] = {
+    customInternalGeneSets[this.state.filter][name] = {
       method: this.state.filter,
       geneset: name,
       result: geneSet,
@@ -925,7 +934,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('managine state',this.state.customInternalGeneSets,nextState.customInternalGeneSets)
+    console.log('managine state',JSON.stringify(this.state.customInternalGeneSets),JSON.stringify(nextState.customInternalGeneSets))
     return super.shouldComponentUpdate(nextProps, nextState)
   }
 
@@ -1030,12 +1039,13 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
-    console.log('render',this.state.customInternalGeneSets)
+    console.log('XGSA render',JSON.stringify(this.state.customInternalGeneSets))
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using Analysis:'${this.state.filter}' ${fullTitleText}`
     const crosshairHeight = (((this.state.pathways ? this.state.pathways.length : 0) + ((this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length : 0)) * 22) + 200
 
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name), getViewsForCohort(this.state.selectedCohort[1].name))
+
 
 
     return (
@@ -1141,7 +1151,8 @@ export default class XenaGeneSetApp extends PureComponent {
             customInternalGeneSets={this.state.customInternalGeneSets}
             customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}
-            handleGeneEdit={this.showConfiguration}
+            handleGeneSetDelete={this.deleteGeneSet}
+            handleGeneSetEdit={this.showConfiguration}
             handleGeneSetUpload={this.onUpload}
             isCustomServerGeneSet={this.isExistingCustomServerGeneSet}
             isNotCustomDefaultGeneSet={this.isNotDefaultGeneSet}
@@ -1149,6 +1160,7 @@ export default class XenaGeneSetApp extends PureComponent {
             selectedGeneSets={this.state.selectedGeneSets}
             setGeneSetsOption={this.setGeneSetOption}
             sortGeneSetBy={this.state.sortViewByLabel}
+            view={this.state.filter}
           />
           }
 
