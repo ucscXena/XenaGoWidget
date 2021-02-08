@@ -224,11 +224,14 @@ export default class XenaGeneSetApp extends PureComponent {
       // let pathways = this.getPathways()
       let { pathways, filter, selectedGeneSets,selectedCohort} = this.state
 
+      console.log('pathways ',pathways)
+      console.log('selected gene sets',selectedGeneSets)
+
       // if gene Expressions
-      if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
+      if (getCohortDataForGeneExpressionView(selectedCohort, filter) !== null) {
         // console.log('is gene expressoino view')
         if (this.state.reloadPathways) {
-          if (this.state.selectedGeneSets !== undefined && this.isExistingCustomServerGeneSet(this.state.selectedGeneSets)) {
+          if (this.state.selectedGeneSets !== undefined && this.isExistingCustomServerGeneSet(selectedGeneSets)) {
             console.log('reloading pathways with CUSTOM gene sets',pathways)
             Rx.Observable.zip(
               getSamplesForCohortAndView(selectedCohort[0],filter),
@@ -252,7 +255,19 @@ export default class XenaGeneSetApp extends PureComponent {
                   })
               })
 
-          } else {
+          }
+          else
+          if (this.state.selectedGeneSets !== undefined && this.isExistingCustomInternalGeneSet(selectedGeneSets)) {
+            console.log('handling custom pathways ')
+            const retrievedPathways = this.getCustomInternalGeneSet(this.state.selectedGeneSets).result
+            console.log('retrieved',retrievedPathways)
+            const sortedPathways = this.sortPathways(retrievedPathways)
+            console.log('sorted pathways',sortedPathways)
+            fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
+              this.state.filter, this.handleCombinedCohortData)
+          }
+
+          else {
             console.log('reloading pathways with DEFAULT gene sets',pathways)
             fetchBestPathways(this.state.selectedCohort, this.state.filter,
               this.handleMeanActivityData)
@@ -1028,7 +1043,7 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
-    console.log('XGSA render',JSON.stringify(this.state.customInternalGeneSets))
+    // console.log('XGSA render',JSON.stringify(this.state.customInternalGeneSets))
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using Analysis:'${this.state.filter}' ${fullTitleText}`
     const crosshairHeight = (((this.state.pathways ? this.state.pathways.length : 0) + ((this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length : 0)) * 22) + 200

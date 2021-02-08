@@ -36,7 +36,6 @@ export default class GeneSetEditorComponent extends PureComponent {
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
-        {/*<div className={BaseStyle.editGeneSetSearch}>Find</div>*/}
         <button
           className={BaseStyle.refreshButton}
           onClick={() => this.props.onChangeGeneSetLimit(
