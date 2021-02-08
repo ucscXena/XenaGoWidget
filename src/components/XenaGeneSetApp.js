@@ -12,6 +12,7 @@ import {
   isViewGeneExpression,
   mergeGeneSetAndGeneDetailData,
   pruneGeneSelection,
+  getMaxGeneValue,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
@@ -60,7 +61,6 @@ import {
   retrieveCustomServerScoredPathwayResult,
   removeCustomServerGeneSet
 } from '../service/GeneSetAnalysisStorageService'
-import {VIEW_ENUM} from '../data/ViewEnum'
 import Loader from './loading'
 
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
@@ -87,17 +87,6 @@ const LOAD_STATE = {
   LOADED: 'loaded',
 }
 
-function getMaxGeneValue(geneData) {
-
-  if (geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways) {
-    let maxGeneScore = Math.max(...geneData[0].pathways.map(g => g.diffScore))
-    let minGeneScore = Math.min(...geneData[1].pathways.map(g => g.diffScore))
-    const max = Math.max(Math.abs(maxGeneScore), Math.abs(minGeneScore))
-    return [-max, max]
-  }
-
-  return [-2, 2]
-}
 
 /**
  * refactor that from index
@@ -118,9 +107,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const cohortColors = calculateCohortColors(urlVariables)
     const {sortViewByLabel, filterOrder, filterBy, sortViewOrder, sortViewBy} = calculateSorting(urlVariables)
 
-    const defaultCustomGeneSet = {}
-    Object.values(VIEW_ENUM).map(v => defaultCustomGeneSet[v] = {})
-
     this.state = {
       associatedData: [],
       selectedCohort: cohorts,
@@ -140,7 +126,7 @@ export default class XenaGeneSetApp extends PureComponent {
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
-      customInternalGeneSets: defaultCustomGeneSet,
+      customInternalGeneSets: AppStorageHandler.getCustomInternalGeneSets(),
       customServerGeneSets: [],
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       pathways,
@@ -329,9 +315,16 @@ export default class XenaGeneSetApp extends PureComponent {
   deleteGeneSet = (geneSetName) =>{
     if(confirm('Delete Gene Set? ')){
       console.log('deleting gene set')
-      console.log('custom server gene set',this.isExistingCustomServerGeneSet(geneSetName))
-      console.log('custom internal gene set',this.isExistingCustomInternalGeneSet(geneSetName))
-      alert('implement delete ')
+      if(this.isExistingCustomServerGeneSet(geneSetName)){
+        this.removeCustomServerGeneSet(geneSetName)
+      }
+      else
+      if(this.isExistingCustomInternalGeneSet(geneSetName)){
+        this.removeCustomInternalGeneSet(geneSetName)
+      }
+      else{
+        alert(`Not able to delete gene set ${geneSetName} as not found.`)
+      }
     }
   }
 
@@ -900,7 +893,8 @@ export default class XenaGeneSetApp extends PureComponent {
       showGeneSetSearch: false,
     })
 
-    await removeCustomServerGeneSet(this.state.filter, name)
+    const result = await removeCustomServerGeneSet(this.state.filter, name)
+    console.log('success',result)
   }
 
   removeCustomInternalGeneSet = async (name) => {
@@ -909,11 +903,10 @@ export default class XenaGeneSetApp extends PureComponent {
     console.log('removing custom internal gene sets',name,customInternalGeneSets)
     this.setState({
       customInternalGeneSets: JSON.parse(JSON.stringify(customInternalGeneSets)),
+      showGeneSetSearch: false,
     })
 
-    // AppStorageHandler.storeCustomPathways(newCustomGeneSets)
-    // storeCustomPathways(newCustomGeneSets)
-    await removeCustomServerGeneSet(this.state.filter, name)
+    AppStorageHandler.storeGeneSets(customInternalGeneSets)
   }
 
   // TODO: replace with `result`
@@ -930,12 +923,8 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       customInternalGeneSets: customInternalGeneSets
     })
+    AppStorageHandler.storeGeneSets(customInternalGeneSets)
 
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log('managine state',JSON.stringify(this.state.customInternalGeneSets),JSON.stringify(nextState.customInternalGeneSets))
-    return super.shouldComponentUpdate(nextProps, nextState)
   }
 
   isNotDefaultGeneSet = (name) => {
@@ -944,7 +933,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getCustomInternalGeneSet = (name) => {
-    this.state.customInternalGeneSets.find(n => n.name === name)
+    return this.state.customInternalGeneSets[this.state.filter][name]
   }
 
   isExistingCustomInternalGeneSet = (name) => {
@@ -954,7 +943,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getCustomServerGeneSet = (name) => {
-    this.state.customServerGeneSets.find(n => n.name === name)
+    return this.state.customServerGeneSets.find(n => n.name === name)
   }
 
   isExistingCustomServerGeneSet = (name) => {

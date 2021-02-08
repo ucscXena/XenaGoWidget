@@ -20,16 +20,11 @@ export default class GeneSetEditorComponent extends PureComponent {
       sortGeneSetBy: props.sortGeneSetBy,
       selectedGeneSets: props.selectedGeneSets,
     }
-
   }
 
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // console.log('updating',this.props.customInternalGeneSets,nextProps.customInternalGeneSets)
-    console.log('updating / JSON',JSON.stringify(this.props.customInternalGeneSets),JSON.stringify(nextProps.customInternalGeneSets))
-    const updateValue = super.shouldComponentUpdate(nextProps, nextState)
-    console.log('update value',updateValue)
-    return updateValue
+  isNotCustomInternalGeneSet(selectedGeneSets) {
+    return this.props.customInternalGeneSets[this.props.view][selectedGeneSets]!==undefined
   }
 
   render() {
@@ -137,10 +132,6 @@ export default class GeneSetEditorComponent extends PureComponent {
         </button>
       </div>
     )
-  }
-
-  isNotCustomInternalGeneSet(selectedGeneSets) {
-    return this.props.customInternalGeneSets[this.props.view][selectedGeneSets]!==undefined
   }
 
 }

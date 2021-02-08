@@ -37,8 +37,8 @@ describe('App Storage Handler', () => {
 
   it('Adding a custom gene sets stored', () => {
     expect(true).toBe(AppStorageHandler.checkGeneSets())
-    expect(null).toNotBe(AppStorageHandler.getGeneSets())
-  //   // expect({}).toEqual(AppStorageHandler.getGeneSets(VIEW_ENUM.GENE_EXPRESSION))
+    expect(null).toNotBe(AppStorageHandler.getCustomInternalGeneSets())
+  //   // expect({}).toEqual(AppStorageHandler.getCustomInternalGeneSets(VIEW_ENUM.GENE_EXPRESSION))
   //
   //   // // store one and confirm that it works
   //   // expect(addedCohort1).toEqual(AppStorageHandler.storeSubCohorts(addedCohort1))

@@ -73,6 +73,19 @@ export function generateZScore( data,stats){
 // const  TCGA_ALL_TPM_STDEV = Math.sqrt(TCGA_ALL_TPM_VARIANCE)
 
 
+export function getMaxGeneValue(geneData) {
+
+  if (geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways) {
+    let maxGeneScore = Math.max(...geneData[0].pathways.map(g => g.diffScore))
+    let minGeneScore = Math.min(...geneData[1].pathways.map(g => g.diffScore))
+    const max = Math.max(Math.abs(maxGeneScore), Math.abs(minGeneScore))
+    return [-max, max]
+  }
+
+  return [-2, 2]
+}
+
+
 export function getCopyNumberValue(copyNumberValue, amplificationThreshold, deletionThreshold) {
   return (!isNaN(copyNumberValue) && (copyNumberValue >= amplificationThreshold || copyNumberValue <= deletionThreshold)) ? 1 : 0
 }
