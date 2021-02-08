@@ -82,6 +82,12 @@ export default class GeneSetEditorComponent extends PureComponent {
           value={this.props.selectedGeneSets}
         >
           <option>(8281) {DEFAULT_GENE_SETS}</option>
+          {/*<option>----Custom Internal Gene Sets----</option>*/}
+          {
+            Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
+              return <option key={gs[1].geneset} value={gs[1].geneset}>local ({gs[1].result.length}) {gs[1].geneset}</option>
+            })
+          }
           {/*<option>----Custom Server Gene Sets----</option>*/}
           {
             this.props.customServerGeneSets.map(gs => {
@@ -95,12 +101,6 @@ export default class GeneSetEditorComponent extends PureComponent {
                   ({gs.geneCount}) {gs.name}
                 </option>)
               }
-            })
-          }
-          {/*<option>----Custom Internal Gene Sets----</option>*/}
-          {
-            Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
-              return <option key={gs[1].geneset} value={gs[1].geneset}>internal({gs[1].result.length}) {gs[1].geneset}</option>
             })
           }
         </select>
