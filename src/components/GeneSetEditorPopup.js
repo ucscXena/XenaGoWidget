@@ -66,7 +66,7 @@ export default class GeneSetEditorPopup extends PureComponent {
       limit: VIEW_LIMIT,
       newGeneStateName:'',
       showLoading:true,
-      customGeneSetName: this.props.customGeneSetName || '',
+      customGeneSetName: this.props.customInternalGeneSetName || '',
     }
   }
 
@@ -117,14 +117,16 @@ export default class GeneSetEditorPopup extends PureComponent {
       const field = output.geneExpressionPathwayActivityA.field[index]
       const cleanField = field.indexOf(' (') < 0 ? field :  field.substr(0,field.indexOf(' (')+1).trim()
       const sourceIndex = indexMap[cleanField]
-      loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index]
-      loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index]
+      if(loadedPathways[sourceIndex]){
+        loadedPathways[sourceIndex].firstGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityA.mean[index]
+        loadedPathways[sourceIndex].secondGeneExpressionPathwayActivity = output.geneExpressionPathwayActivityB.mean[index]
+      }
     }
 
     const pathwayLabels = this.props.pathways.map( p => p.golabel)
     // included data from original pathways
     let cartPathways
-    if(this.props.customGeneSetName && this.props.isCustomGeneSet(this.state.customGeneSetName)){
+    if(this.props.customInternalGeneSetName && this.props.isNotDefaultGeneSet(this.state.customGeneSetName)){
       // TODO, may need to interset
       cartPathways = await getCustomGeneSet(this.props.view,this.state.customGeneSetName)
     }
@@ -329,7 +331,8 @@ export default class GeneSetEditorPopup extends PureComponent {
   handleViewGeneSets() {
     if(this.state.customGeneSetName){
       const selectedCartData = this.getSelectedCartData()
-      this.props.storeCustomGeneSets(this.state.customGeneSetName,selectedCartData)
+      console.log('trying to save',this.state.customGeneSetName,selectedCartData)
+      this.props.storeCustomInternalGeneSets(this.state.customGeneSetName,selectedCartData)
       this.props.setPathways(selectedCartData,this.state.customGeneSetName)
     }
     else{
@@ -692,13 +695,13 @@ export default class GeneSetEditorPopup extends PureComponent {
 
 GeneSetEditorPopup.propTypes = {
   cancelPathwayEdit: PropTypes.any.isRequired,
-  customGeneSetName: PropTypes.any,
+  customInternalGeneSetName: PropTypes.any,
   getAvailableCustomGeneSets: PropTypes.any.isRequired,
-  isCustomGeneSet: PropTypes.any.isRequired,
+  isNotDefaultGeneSet: PropTypes.any.isRequired,
   pathwayData: PropTypes.array.isRequired,
   pathways: PropTypes.any.isRequired,
   removeCustomGeneSet: PropTypes.any.isRequired,
   setPathways: PropTypes.any.isRequired,
-  storeCustomGeneSets: PropTypes.any.isRequired,
+  storeCustomInternalGeneSets: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }

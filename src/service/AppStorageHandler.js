@@ -84,7 +84,7 @@ export class AppStorageHandler {
   }
 
   static storeGeneSetsForView(newGeneSets,view) {
-    let geneSets = AppStorageHandler.getGeneSets()
+    let geneSets = AppStorageHandler.getCustomInternalGeneSets()
     if (geneSets) {
       geneSets[view] = newGeneSets
       sessionStorage.setItem(LOCAL_GENESETS_STORAGE, JSON.stringify(geneSets))
@@ -108,6 +108,7 @@ export class AppStorageHandler {
   }
 
   static createGeneSets() {
+    // Object.values(VIEW_ENUM).map(v => defaultCustomGeneSet[v] = {})
     let geneSets = Object.keys(VIEW_ENUM).map( (v) => {
       let obj = {}
       obj[v] = {}
@@ -116,7 +117,7 @@ export class AppStorageHandler {
     return this.storeGeneSets(geneSets)
   }
 
-  static getGeneSets() {
+  static getCustomInternalGeneSets() {
     this.checkGeneSets()
     return JSON.parse(sessionStorage.getItem(LOCAL_GENESETS_STORAGE))
   }

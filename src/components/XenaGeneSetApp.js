@@ -12,6 +12,7 @@ import {
   isViewGeneExpression,
   mergeGeneSetAndGeneDetailData,
   pruneGeneSelection,
+  getMaxGeneValue,
 } from '../functions/DataFunctions'
 import BaseStyle from '../css/base.css'
 import VerticalGeneSetScoresView from './VerticalGeneSetScoresView'
@@ -48,7 +49,7 @@ import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
-import GeneSetEditorComponent from './GeneSetEditorComponent'
+import GeneSetEditorComponent, {DEFAULT_GENE_SETS} from './GeneSetEditorComponent'
 import FaQuestionCircle from 'react-icons/lib/fa/question-circle'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
@@ -56,12 +57,10 @@ import {getViewsForCohort} from '../functions/CohortFunctions'
 import GeneSetEditorPopup from './GeneSetEditorPopup'
 import {storeGmt} from '../service/AnalysisService'
 import {
-  addCustomGeneSet,
-  getCustomGeneSetNames,
-  retrieveCustomScoredPathwayResult,
-  removeCustomGeneSet
+  getCustomServerGeneSetNames,
+  retrieveCustomServerScoredPathwayResult,
+  removeCustomServerGeneSet
 } from '../service/GeneSetAnalysisStorageService'
-import {VIEW_ENUM} from '../data/ViewEnum'
 import Loader from './loading'
 
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
@@ -88,17 +87,6 @@ const LOAD_STATE = {
   LOADED: 'loaded',
 }
 
-function getMaxGeneValue(geneData) {
-
-  if (geneData[0] && geneData[0].pathways && geneData[1] && geneData[1].pathways) {
-    let maxGeneScore = Math.max(...geneData[0].pathways.map(g => g.diffScore))
-    let minGeneScore = Math.min(...geneData[1].pathways.map(g => g.diffScore))
-    const max = Math.max(Math.abs(maxGeneScore), Math.abs(minGeneScore))
-    return [-max, max]
-  }
-
-  return [-2, 2]
-}
 
 /**
  * refactor that from index
@@ -119,9 +107,6 @@ export default class XenaGeneSetApp extends PureComponent {
     const cohortColors = calculateCohortColors(urlVariables)
     const {sortViewByLabel, filterOrder, filterBy, sortViewOrder, sortViewBy} = calculateSorting(urlVariables)
 
-    const defaultCustomGeneSet = {}
-    Object.values(VIEW_ENUM).map(v => defaultCustomGeneSet[v] = {})
-
     this.state = {
       associatedData: [],
       selectedCohort: cohorts,
@@ -141,7 +126,8 @@ export default class XenaGeneSetApp extends PureComponent {
       uploadFile: '',
       showDescription: urlVariables.showDescription ? urlVariables.showDescription : false,
       selectedGeneSets: urlVariables.selectedGeneSets,
-      customGeneSets: [],
+      customInternalGeneSets: AppStorageHandler.getCustomInternalGeneSets(),
+      customServerGeneSets: [],
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       pathways,
       filter,
@@ -238,11 +224,14 @@ export default class XenaGeneSetApp extends PureComponent {
       // let pathways = this.getPathways()
       let { pathways, filter, selectedGeneSets,selectedCohort} = this.state
 
+      console.log('pathways ',pathways)
+      console.log('selected gene sets',selectedGeneSets)
+
       // if gene Expressions
-      if (getCohortDataForGeneExpressionView(this.state.selectedCohort, this.state.filter) !== null) {
+      if (getCohortDataForGeneExpressionView(selectedCohort, filter) !== null) {
         // console.log('is gene expressoino view')
         if (this.state.reloadPathways) {
-          if (this.state.selectedGeneSets !== undefined && this.isCustomGeneSet(this.state.selectedGeneSets)) {
+          if (this.state.selectedGeneSets !== undefined && this.isExistingCustomServerGeneSet(selectedGeneSets)) {
             console.log('reloading pathways with CUSTOM gene sets',pathways)
             Rx.Observable.zip(
               getSamplesForCohortAndView(selectedCohort[0],filter),
@@ -253,7 +242,7 @@ export default class XenaGeneSetApp extends PureComponent {
               return [[samplesA,samplesB]]
             })
               .subscribe( (samples) => {
-                retrieveCustomScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples,this.state.filterBy,this.state.filterOrder,this.state.geneSetLimit)
+                retrieveCustomServerScoredPathwayResult(filter, selectedGeneSets, selectedCohort, samples,this.state.filterBy,this.state.filterOrder,this.state.geneSetLimit)
                   .then(response => {
                     console.log('response',response.data)
                     if (response !== undefined && response.data !== undefined && !isEmpty(response.data)) {
@@ -266,7 +255,19 @@ export default class XenaGeneSetApp extends PureComponent {
                   })
               })
 
-          } else {
+          }
+          else
+          if (this.state.selectedGeneSets !== undefined && this.isExistingCustomInternalGeneSet(selectedGeneSets)) {
+            console.log('handling custom pathways ')
+            const retrievedPathways = this.getCustomInternalGeneSet(this.state.selectedGeneSets).result
+            console.log('retrieved',retrievedPathways)
+            const sortedPathways = this.sortPathways(retrievedPathways)
+            console.log('sorted pathways',sortedPathways)
+            fetchCombinedCohorts(this.state.selectedCohort, sortedPathways,
+              this.state.filter, this.handleCombinedCohortData)
+          }
+
+          else {
             console.log('reloading pathways with DEFAULT gene sets',pathways)
             fetchBestPathways(this.state.selectedCohort, this.state.filter,
               this.handleMeanActivityData)
@@ -323,6 +324,22 @@ export default class XenaGeneSetApp extends PureComponent {
       return ` from Sub Cohort: '${selectedCohort.selectedSubCohorts[0]}' `
     } else {
       return ` ${selectedCohort.selectedSubCohorts.length} Sub Cohorts `
+    }
+  }
+
+  deleteGeneSet = (geneSetName) =>{
+    if(confirm(`Delete Gene Set '${geneSetName}'? `)){
+      console.log('deleting gene set')
+      if(this.isExistingCustomServerGeneSet(geneSetName)){
+        this.removeCustomServerGeneSet(geneSetName)
+      }
+      else
+      if(this.isExistingCustomInternalGeneSet(geneSetName)){
+        this.removeCustomInternalGeneSet(geneSetName)
+      }
+      else{
+        alert(`Not able to delete gene set ${geneSetName} as not found.`)
+      }
     }
   }
 
@@ -830,8 +847,8 @@ export default class XenaGeneSetApp extends PureComponent {
       scorePathway(b, this.state.filterBy)))
       // .filter( (c) => {
       //   if(this.state.selectedGeneSets && this.state.selectedGeneSets.indexOf('Default')<0){
-      //     const customGeneSets = async () => await this.getCustomGeneSet(this.state.selectedGeneSets)
-      //     const currentGeneSets = this.getCustomGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
+      //     const customServerGeneSets = async () => await this.getCustomInternalGeneSet(this.state.selectedGeneSets)
+      //     const currentGeneSets = this.getCustomInternalGeneSet(this.state.selectedGeneSets).map( f => f.golabel )
       //     return currentGeneSets.indexOf(c.golabel)>=0
       //   }
       //   return true
@@ -875,66 +892,79 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getAvailableCustomGeneSets = async (method) => {
-    const customGeneSets = await getCustomGeneSetNames(method)
+    const customServerGeneSets = await getCustomServerGeneSetNames(method)
     this.setState({
-      customGeneSets
+      customServerGeneSets
     })
-    // return this.state.customGeneSets
-    return customGeneSets
+    // return this.state.customServerGeneSets
+    return customServerGeneSets
   }
 
-  removeCustomGeneSet = async (name) => {
-    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
-    delete customGeneSets[this.state.filter][name]
-    // const newCustomGeneSets = update(this.state.customGeneSets[this.state.filter],{
-    //   $unset: [name]
-    // })
-    const newCustomGeneSets = JSON.parse(JSON.stringify(customGeneSets))
+  removeCustomServerGeneSet = async (name) => {
+    let customServerGeneSets = this.state.customServerGeneSets.filter( gs => gs.name != name )
     this.setState({
-      customGeneSets: newCustomGeneSets,
+      customServerGeneSets: JSON.parse(JSON.stringify(customServerGeneSets)),
       showGeneSetSearch: false,
     })
 
-    // AppStorageHandler.storeCustomPathways(newCustomGeneSets)
-    // storeCustomPathways(newCustomGeneSets)
-    await removeCustomGeneSet(this.state.filter, name)
+    const result = await removeCustomServerGeneSet(this.state.filter, name)
+    console.log('success',result)
+  }
+
+  removeCustomInternalGeneSet = async (name) => {
+    let customInternalGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
+    delete customInternalGeneSets[this.state.filter][name]
+    console.log('removing custom internal gene sets',name,customInternalGeneSets)
+    this.setState({
+      customInternalGeneSets: JSON.parse(JSON.stringify(customInternalGeneSets)),
+      showGeneSetSearch: false,
+    })
+
+    AppStorageHandler.storeGeneSets(customInternalGeneSets)
   }
 
   // TODO: replace with `result`
-  storeCustomGeneSet = async (name, geneSet) => {
-    let customGeneSets = JSON.parse(JSON.stringify(this.state.customGeneSets))
-    customGeneSets[name] = {
+  storeCustomInternalGeneSet = (name, geneSet) => {
+    console.log('storing new ones',name,geneSet)
+    let customInternalGeneSets = JSON.parse(JSON.stringify(this.state.customInternalGeneSets))
+    console.log('current gene set',customInternalGeneSets,this.state.customInternalGeneSets)
+    customInternalGeneSets[this.state.filter][name] = {
       method: this.state.filter,
       geneset: name,
       result: geneSet,
     }
-    // const newCustomGeneSets = update(this.state.customGeneSets,{
-    //   [this.state.view]:{[name]: { $set:geneSet}}
-    // }/toreCustomgE
-    const newCustomGeneSets = customGeneSets.unique()
+    console.log('output set',JSON.stringify(customInternalGeneSets))
     this.setState({
-      customGeneSets: newCustomGeneSets
+      customInternalGeneSets: customInternalGeneSets
     })
-    await addCustomGeneSet(this.state.filter, name, geneSet)
+    AppStorageHandler.storeGeneSets(customInternalGeneSets)
 
   }
 
-  isCustomGeneSet = (name) => {
+  isNotDefaultGeneSet = (name) => {
     if (name === undefined) return false
-    return name.indexOf('Default') < 0
-    // return (this.state.customGeneSets[this.state.filter][name]!==undefined)
+    return name.indexOf(DEFAULT_GENE_SETS) < 0
   }
 
-  getCustomGeneSet = (name) => {
-    this.state.customGeneSets.find(n => n.name === name)
+  getCustomInternalGeneSet = (name) => {
+    return this.state.customInternalGeneSets[this.state.filter][name]
   }
 
-  isExistingCustomGeneSet = (name) => {
+  isExistingCustomInternalGeneSet = (name) => {
     if (name === undefined) return false
     // return name.indexOf('Default')<0
-    return (this.getCustomGeneSet(name) !== undefined)
+    return (this.getCustomInternalGeneSet(name) !== undefined)
   }
 
+  getCustomServerGeneSet = (name) => {
+    console.log('custom server serverlet gene sets',this.state.customServerGeneSets)
+    return this.state.customServerGeneSets.find(n => n.name === name)
+  }
+
+  isExistingCustomServerGeneSet = (name) => {
+    if (name === undefined) return false
+    return (this.getCustomServerGeneSet(name) !== undefined)
+  }
 
   handleUploadFileChange = (event) => {
     event.preventDefault()
@@ -951,7 +981,11 @@ export default class XenaGeneSetApp extends PureComponent {
   handleStoreFile = async () => {
     let {gmtData, filter, uploadFileName} = this.state
 
-    if (this.isExistingCustomGeneSet(uploadFileName)) {
+    if (this.isExistingCustomInternalGeneSet(uploadFileName)) {
+      alert(`${uploadFileName} already exists.  Please choose another name`)
+      return
+    }
+    if (this.isExistingCustomServerGeneSet(uploadFileName)) {
       alert(`${uploadFileName} already exists.  Please choose another name`)
       return
     }
@@ -967,56 +1001,16 @@ export default class XenaGeneSetApp extends PureComponent {
       gmt.ready = false
       gmt.availableCount = gmt.availableTpmCount
 
-      console.log('custom gene sets',this.state.customGeneSets,gmt)
-      const updatedCustomGeneSets = update(this.state.customGeneSets, {
+      console.log('custom gene sets',this.state.customServerGeneSets,gmt)
+      const updatedCustomServerGeneSets = update(this.state.customServerGeneSets, {
         $push: [gmt]
       })
-      console.log('udpated ',updatedCustomGeneSets)
+      console.log('udpated ',updatedCustomServerGeneSets)
       this.setState({
         showUploadDialog: false,
         calculatingUpload: false,
-        customGeneSets: updatedCustomGeneSets,
-        // selectedGeneSets: uploadFileName,
-        // pathways: response,
-        // fetch: true, // triggers fetch here, but may not be
+        customServerGeneSets: updatedCustomServerGeneSets,
       })
-      // Rx.Observable.zip(
-      //   getSamplesForCohortAndView(selectedCohort[0],filter),
-      //   getSamplesForCohortAndView(selectedCohort[1],filter),
-      // ).flatMap( (unfilteredSamples) => {
-      //   const samplesA = calculateSelectedSubCohortSamples(unfilteredSamples[0], selectedCohort[0])
-      //   const samplesB = calculateSelectedSubCohortSamples(unfilteredSamples[1], selectedCohort[1])
-      //   return [[samplesA,samplesB]]
-      // })
-      // .subscribe( (samples) => {
-      //   fetchOrGenerateScoredPathwayResult(filter, gmt.name, selectedCohort, samples)
-      //     .then(response => {
-      //       if (response !== undefined && !isEmpty(response)) {
-      //         const sortedPathways = this.sortPathways(response)
-      //         const customGeneSets = update(this.state.customGeneSets, {$push: [uploadFileName]}).sort((a, b) => {
-      //           if (a.name.indexOf('Default') === 0) return -1
-      //           if (b.name.indexOf('Default') === 0) return 1
-      //           return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1
-      //         })
-      //         let fetchFunction = async (inputPathways) => {
-      //           fetchCombinedCohorts(selectedCohort, inputPathways,
-      //             filter, this.handleCombinedCohortData)
-      //         }
-      //         fetchFunction(sortedPathways).then(() => {
-      //           this.setState({
-      //             showUploadDialog: false,
-      //             calculatingUpload: false,
-      //             customGeneSets,
-      //             selectedGeneSets: uploadFileName,
-      //             pathways: response,
-      //             // fetch: true, // triggers fetch here, but may not be
-      //           })
-      //         })
-      //       } else {
-      //         alert('No response found')
-      //       }
-      //     })
-      // })
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e)
@@ -1038,7 +1032,6 @@ export default class XenaGeneSetApp extends PureComponent {
 
   render() {
     let maxValue = 0
-
     if (this.state.pathways) {
       if (isViewGeneExpression(this.state.filter)) {
         const maxValues = this.state.pathways.map((p) =>
@@ -1050,11 +1043,13 @@ export default class XenaGeneSetApp extends PureComponent {
       }
     }
 
+    // console.log('XGSA render',JSON.stringify(this.state.customInternalGeneSets))
     let fullTitleText = this.generateTitle()
     const fullHeaderText = `Visualizing differences using Analysis:'${this.state.filter}' ${fullTitleText}`
     const crosshairHeight = (((this.state.pathways ? this.state.pathways.length : 0) + ((this.state.geneData && this.state.geneData[0].pathways) ? this.state.geneData[0].pathways.length : 0)) * 22) + 200
 
     const allowableViews = intersection(getViewsForCohort(this.state.selectedCohort[0].name), getViewsForCohort(this.state.selectedCohort[1].name))
+
 
 
     return (
@@ -1117,14 +1112,14 @@ export default class XenaGeneSetApp extends PureComponent {
           <GeneSetEditorPopup
             cancelPathwayEdit={() => this.setState(
               {showGeneSetSearch: false})}
-            customGeneSetName={this.state.selectedGeneSets}
+            customInternalGeneSetName={this.state.selectedGeneSets}
             getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
-            isCustomGeneSet={this.isCustomGeneSet}
+            isNotDefaultGeneSet={this.isNotDefaultGeneSet}
             pathwayData={this.state.pathwayData}
             pathways={this.state.pathways}
-            removeCustomGeneSet={this.removeCustomGeneSet}
+            removeCustomGeneSet={this.removeCustomInternalGeneSet}
             setPathways={this.searchGeneSet}
-            storeCustomGeneSets={this.storeCustomGeneSet}
+            storeCustomInternalGeneSets={this.storeCustomInternalGeneSet}
             view={this.state.filter}
           />
         </Dialog>
@@ -1157,15 +1152,19 @@ export default class XenaGeneSetApp extends PureComponent {
 
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
-            customGeneSets={this.state.customGeneSets}
+            customInternalGeneSets={this.state.customInternalGeneSets}
+            customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}
-            handleGeneEdit={this.showConfiguration}
+            handleGeneSetDelete={this.deleteGeneSet}
+            handleGeneSetEdit={this.showConfiguration}
             handleGeneSetUpload={this.onUpload}
-            isCustomGeneSet={this.isCustomGeneSet}
+            isCustomServerGeneSet={this.isExistingCustomServerGeneSet}
+            isNotCustomDefaultGeneSet={this.isNotDefaultGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
             selectedGeneSets={this.state.selectedGeneSets}
             setGeneSetsOption={this.setGeneSetOption}
             sortGeneSetBy={this.state.sortViewByLabel}
+            view={this.state.filter}
           />
           }
 

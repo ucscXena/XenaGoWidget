@@ -18,8 +18,8 @@ export async function getAllCustomGeneSets(){
   }
 }
 
-export async function getCustomGeneSetNames(method){
-  console.log('getting custom names iwth ',ANALYSIS_SERVER_URL,process.env.ANALYSIS_SERVER_URL)
+export async function getCustomServerGeneSetNames(method){
+  console.log('getting custom names with ',ANALYSIS_SERVER_URL,process.env.ANALYSIS_SERVER_URL)
   console.log(process.env)
   const config = {
     headers: {
@@ -50,7 +50,7 @@ export async function getCustomGeneSetResult(method,geneSetName,cohortName){
 
 }
 
-export async function addCustomGeneSet(method,geneSetName,inputData){
+export async function addCustomGeneSetToServer(method, geneSetName, inputData){
   const response = await axios.post(`${ANALYSIS_SERVER_URL}/gmt/save`,
     {
       method,
@@ -68,13 +68,13 @@ export async function addCustomGeneSet(method,geneSetName,inputData){
 
 }
 
-export async function removeCustomGeneSet(method,geneSetName){
-  const response = await axios.delete(`${ANALYSIS_SERVER_URL}/gmt/${method}/${geneSetName}`)
+export async function removeCustomServerGeneSet(method, geneSetName){
+  const response = await axios.delete(`${ANALYSIS_SERVER_URL}/gmt/deleteByMethodAndName/?method=${method}&geneSetName=${geneSetName}`)
   const { data} = response
   return data
 }
 
-export async function retrieveCustomScoredPathwayResult(method,gmt,selectedCohort,samples,filterBy,filterOrder,geneSetLimit){
+export async function retrieveCustomServerScoredPathwayResult(method, gmt, selectedCohort, samples, filterBy, filterOrder, geneSetLimit){
   console.log(filterBy,filterOrder,geneSetLimit)
   const config = {
     headers: {

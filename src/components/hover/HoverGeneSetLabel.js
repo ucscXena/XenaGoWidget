@@ -57,6 +57,7 @@ export default class HoverGeneSetLabel extends PureComponent {
 HoverGeneSetLabel.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
   data: PropTypes.any.isRequired,
+  maxValue: PropTypes.any.isRequired,
   score: PropTypes.any.isRequired,
   view: PropTypes.any.isRequired,
 }
