@@ -6,3 +6,13 @@ export const VIEW_ENUM = {
   PARADIGM:'Paradigm IPL',
   REGULON:'Regulon Activity',
 }
+
+export function findEnumForValue(input){
+  console.log('input',input)
+  const view = Object.entries(VIEW_ENUM).filter( v => {
+    return v[1]===input
+  })
+  console.log('found view',view)
+  if(view) return view[0][0]
+  return null
+}

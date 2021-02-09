@@ -947,6 +947,8 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getCustomInternalGeneSet = (name) => {
+    // const filterValue = findEnumForValue(this.state.filter)
+    // return this.state.customInternalGeneSets[filterValue][name]
     return this.state.customInternalGeneSets[this.state.filter][name]
   }
 

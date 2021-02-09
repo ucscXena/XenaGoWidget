@@ -109,12 +109,12 @@ export class AppStorageHandler {
 
   static createGeneSets() {
     // Object.values(VIEW_ENUM).map(v => defaultCustomGeneSet[v] = {})
-    let geneSets = Object.keys(VIEW_ENUM).map( (v) => {
-      let obj = {}
-      obj[v] = {}
-      return obj
+    let geneSetObject = {}
+    Object.values(VIEW_ENUM).forEach( (v) => {
+      geneSetObject[v] = {}
     })
-    return this.storeGeneSets(geneSets)
+    console.log('gene sets',geneSetObject)
+    return this.storeGeneSets(geneSetObject)
   }
 
   static getCustomInternalGeneSets() {
