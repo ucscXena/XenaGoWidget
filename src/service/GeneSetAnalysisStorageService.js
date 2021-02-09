@@ -5,7 +5,7 @@ import axios from 'axios'
 export const ANALYSIS_SERVER_URL = 'http://localhost:8080'
 
 // NOTE: nwb is bad and reading the environment so we will hardcode per branch
-// export const ANALYSIS_SERVER_URL = 'http://xenademo.berkeleybop.io:8080/'
+// export const ANALYSIS_SERVER_URL = 'https://xenademo.berkeleybop.io/xena-analysis'
 
 export async function getAllCustomGeneSets(){
   try {
