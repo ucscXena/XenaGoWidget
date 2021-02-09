@@ -1031,13 +1031,10 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   render() {
-    let maxValue = 0
+    let maxValue
     if (this.state.pathways) {
       if (isViewGeneExpression(this.state.filter)) {
-        const maxValues = this.state.pathways.map((p) =>
-          Math.max(Math.abs(p.firstGeneExpressionPathwayActivity),
-            Math.abs(p.secondGeneExpressionPathwayActivity)))
-        maxValue = Math.max(...maxValues)
+        maxValue = GENE_EXPRESSION_MAX
       } else {
         maxValue = MAX_CNV_MUTATION_DIFF
       }
