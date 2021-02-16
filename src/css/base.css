@@ -443,6 +443,8 @@
   /*font-weight: bold;*/
   margin: 2px;
   display: inline;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 .inlineSearch{
@@ -772,7 +774,14 @@ border-radius: 5px;
 .refreshButton{
   margin-left: 2px;
   margin-right: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+    font-weight: bolder;
+    color: white;
   cursor: pointer;
+    font-size: large;
+  background-color: green;
+    border-radius: 10px;
 }
 
 .geneSetSelector{

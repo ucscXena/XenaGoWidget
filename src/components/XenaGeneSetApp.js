@@ -1172,7 +1172,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onClick={() => this.setState({showDescription: true})}
             title={fullHeaderText}
           >
-            <FaQuestionCircle/><u>Information</u>
+            <FaQuestionCircle/><u />
           </button>
           <Dialog
             active={this.state.showDescription}
@@ -1183,8 +1183,7 @@ export default class XenaGeneSetApp extends PureComponent {
               wrapper: BaseStyle.dialogWrapper,
             }}
           >
-            {/*<Button className={BaseStyle.closeDialogButton} floating icon='close' mini onClick={() => this.setState({showDescription: false})} primary raised/>*/}
-            <h2><FaQuestionCircle/><u>Information</u></h2>
+            <h2><FaQuestionCircle/><u>Description</u></h2>
             <h3>
               {fullHeaderText}
             </h3>
