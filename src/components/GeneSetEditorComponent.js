@@ -117,20 +117,18 @@ export default class GeneSetEditorComponent extends PureComponent {
           >
             <FaUpload style={{fontSize: 'small'}}/>
           </button>
+          <button
+            className={BaseStyle.refreshButton}
+            onClick={() => this.props.onChangeGeneSetLimit(
+              this.state.geneSetLimit,
+              this.state.sortGeneSetBy,
+              this.props.selectedGeneSets,
+              true,
+            )
+            }>
+                Fetch Results <FaSearch/>
+          </button>
         </div>
-        ,
-        <button
-          className={BaseStyle.refreshButton}
-          onClick={() => this.props.onChangeGeneSetLimit(
-            this.state.geneSetLimit,
-            this.state.sortGeneSetBy,
-            this.props.selectedGeneSets,
-            true,
-          )
-          }>
-          Fetch  Results <FaSearch/>
-        </button>
-        ,
       ]
     )
   }
