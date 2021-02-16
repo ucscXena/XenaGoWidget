@@ -15,7 +15,7 @@ import {
 } from '../../src/functions/DataFunctions'
 import { MIN_FILTER } from '../../src/components/XenaGeneSetApp'
 import {times} from 'underscore'
-import DefaultPathways from '../../src/data/genesets/tgac'
+import DefaultPathways from '../../src/data/genesets/DefaultPathways'
 
 describe('Data Unit Functions', () => {
 

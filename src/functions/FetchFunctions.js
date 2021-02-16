@@ -12,8 +12,9 @@ import {VIEW_ENUM} from '../data/ViewEnum'
 import {UNASSIGNED_SUBTYPE} from '../components/SubCohortSelector'
 import BpaPathways from '../data/genesets/BpaGeneExpressionGeneDataSet'
 import ParadigmPathways from '../data/genesets/ParadigmGeneDataSet'
-import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets'
+// import FlybasePathways from '../data/genesets/FlyBaseGoPanCanGeneSets'
 import RegulonPathways from '../data/genesets/LuadRegulonGeneSets'
+import DefaultPathways from '../data/genesets/DefaultPathways'
 
 // eslint-disable-next-line no-unused-vars
 const { sparseDataMatchPartialField, refGene, datasetSamples, datasetFetch, sparseData , datasetProbeValues , xenaPost } = xenaQuery
@@ -112,7 +113,8 @@ export const getGeneSetsForView = (view) => {
   case VIEW_ENUM.REGULON:
     return RegulonPathways
   default:
-    return FlybasePathways
+    // return FlybasePathways
+    return DefaultPathways
   }
 }
 

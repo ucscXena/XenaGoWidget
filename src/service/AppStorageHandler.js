@@ -1,5 +1,5 @@
 import update from 'immutability-helper'
-import DefaultPathWays from '../data/genesets/tgac'
+import DefaultPathWays from '../data/genesets/DefaultPathways'
 import {fetchCohortData, getSubCohortsOnlyForCohort} from '../functions/CohortFunctions'
 import {VIEW_ENUM} from '../data/ViewEnum'
 import {exception} from 'react-ga'
