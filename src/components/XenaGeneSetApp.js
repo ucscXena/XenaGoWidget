@@ -161,7 +161,8 @@ export default class XenaGeneSetApp extends PureComponent {
   componentDidMount() {
     this.handleUrls()
     this.getAvailableCustomGeneSets(this.state.filter)
-    this.fetchData()
+      .then( () => this.fetchData())
+      .catch( e => console.error('Error fetching names from the server: '+e))
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -225,7 +226,7 @@ export default class XenaGeneSetApp extends PureComponent {
       let { pathways, filter, selectedGeneSets,selectedCohort} = this.state
 
       console.log('pathways ',pathways)
-      console.log('selected gene sets',selectedGeneSets)
+      console.log('fetching data for selected gene sets',selectedGeneSets)
 
       // if gene Expressions
       if (getCohortDataForGeneExpressionView(selectedCohort, filter) !== null) {
