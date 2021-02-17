@@ -31,105 +31,103 @@ export default class GeneSetEditorComponent extends PureComponent {
   render() {
 
     return (
-      [
-        <div className={BaseStyle.findNewGeneSets}
+      <div className={BaseStyle.findNewGeneSets}
+      >
+        <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
+        <select
+          className={BaseStyle.geneSetSelector}
+          onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
+          value={this.props.selectedGeneSets}
         >
-          <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
-          <select
-            className={BaseStyle.geneSetSelector}
-            onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
-            value={this.props.selectedGeneSets}
-          >
-            <option>(8281) {DEFAULT_GENE_SETS}</option>
-            {/*<option>----Custom Internal Gene Sets----</option>*/}
-            {
-              this.props.customInternalGeneSets[this.props.view] &&
+          <option>(8281) {DEFAULT_GENE_SETS}</option>
+          {/*<option>----Custom Internal Gene Sets----</option>*/}
+          {
+            this.props.customInternalGeneSets[this.props.view] &&
             Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
               return <option key={gs[1].geneset} value={gs[1].geneset}>local ({gs[1].result.length}) {gs[1].geneset}</option>
             })
-            }
-            {/*<option>----Custom Server Gene Sets----</option>*/}
-            {
-              this.props.customServerGeneSets.map(gs => {
-                if(gs.ready){
-                  return <option key={gs.name} value={gs.name}>server ({gs.geneCount}) {gs.name}</option>
-                }
-                else{
+          }
+          {/*<option>----Custom Server Gene Sets----</option>*/}
+          {
+            this.props.customServerGeneSets.map(gs => {
+              if(gs.ready){
+                return <option key={gs.name} value={gs.name}>server ({gs.geneCount}) {gs.name}</option>
+              }
+              else{
                 // note: geneCount is the GeneSetCount
-                  return (<option disabled key={gs.name} value={gs.name}>
+                return (<option disabled key={gs.name} value={gs.name}>
                   Analyzing ( {gs.readyCount} of {gs.availableCount } ready ) –
                   ({gs.geneCount}) {gs.name}
-                  </option>)
-                }
-              })
-            }
-          </select>
-          <div className={BaseStyle.editGeneSetSearch}>Limit:</div>
-          <input
-            className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
-              this.setState({geneSetLimit: limit.target.value})
-              this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false)
-            }}
-            size={3} type='text'
-            value={this.state.geneSetLimit}/>
-          <div className={BaseStyle.editGeneSetSearch}>Filter:</div>
-          <select
-            className={BaseStyle.editGeneSetOrder}
-            onChange={(method) => {
-              const sortBy = method.target.options[method.target.options.selectedIndex].getAttribute('data-key')
-              this.setState({
-                sortGeneSetBy: sortBy,
-                sortGeneSetByLabel: method.target.value
-              })
-              this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false)
-            }}
-            value={`${this.state.sortGeneSetBy} Gene Sets`}
-          >
-            {
-              Object.values(SORT_VIEW_BY).map( v =>
-                (<option data-key={v} key={v}>{v} Gene Sets</option>)
-              )
-            }
-          </select>
-          {/*<button*/}
-          {/*  className={BaseStyle.editGeneSets}*/}
-          {/*  disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}*/}
-          {/*  onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}*/}
-          {/*>*/}
-          {/*  <FaEdit style={{fontSize: 'small'}}/>*/}
-          {/*</button>*/}
-          <button
-            className={BaseStyle.editGeneSets}
-            onClick={() =>this.props.handleGeneSetEdit()}
-          >
-            <FaPlus style={{fontSize: 'small'}}/>
-          </button>
-          <button
-            className={BaseStyle.editGeneSets}
-            disabled={!this.props.isNotCustomDefaultGeneSet(this.props.selectedGeneSets)}
-            onClick={() =>this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
-          >
-            <FaMinus style={{fontSize: 'small'}}/>
-          </button>
-          <button
-            className={BaseStyle.editGeneSets}
-            onClick={() =>this.props.handleGeneSetUpload()}
-          >
-            <FaUpload style={{fontSize: 'small'}}/>
-          </button>
-          <button
-            className={BaseStyle.refreshButton}
-            onClick={() => this.props.onChangeGeneSetLimit(
-              this.state.geneSetLimit,
-              this.state.sortGeneSetBy,
-              this.props.selectedGeneSets,
-              true,
+                </option>)
+              }
+            })
+          }
+        </select>
+        <div className={BaseStyle.editGeneSetSearch}>Limit:</div>
+        <input
+          className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
+            this.setState({geneSetLimit: limit.target.value})
+            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false)
+          }}
+          size={3} type='text'
+          value={this.state.geneSetLimit}/>
+        <div className={BaseStyle.editGeneSetSearch}>Filter:</div>
+        <select
+          className={BaseStyle.editGeneSetOrder}
+          onChange={(method) => {
+            const sortBy = method.target.options[method.target.options.selectedIndex].getAttribute('data-key')
+            this.setState({
+              sortGeneSetBy: sortBy,
+              sortGeneSetByLabel: method.target.value
+            })
+            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false)
+          }}
+          value={`${this.state.sortGeneSetBy} Gene Sets`}
+        >
+          {
+            Object.values(SORT_VIEW_BY).map( v =>
+              (<option data-key={v} key={v}>{v} Gene Sets</option>)
             )
-            }>
+          }
+        </select>
+        {/*<button*/}
+        {/*  className={BaseStyle.editGeneSets}*/}
+        {/*  disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}*/}
+        {/*  onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}*/}
+        {/*>*/}
+        {/*  <FaEdit style={{fontSize: 'small'}}/>*/}
+        {/*</button>*/}
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetEdit()}
+        >
+          <FaPlus style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          disabled={!this.props.isNotCustomDefaultGeneSet(this.props.selectedGeneSets)}
+          onClick={() =>this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
+        >
+          <FaMinus style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetUpload()}
+        >
+          <FaUpload style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.refreshButton}
+          onClick={() => this.props.onChangeGeneSetLimit(
+            this.state.geneSetLimit,
+            this.state.sortGeneSetBy,
+            this.props.selectedGeneSets,
+            true,
+          )
+          }>
                 Fetch Results <FaSearch/>
-          </button>
-        </div>
-      ]
+        </button>
+      </div>
     )
   }
 
