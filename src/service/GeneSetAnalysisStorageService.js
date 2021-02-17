@@ -19,8 +19,6 @@ export async function getAllCustomGeneSets(){
 }
 
 export async function getCustomServerGeneSetNames(method){
-  console.log('getting custom names with ',ANALYSIS_SERVER_URL,process.env.ANALYSIS_SERVER_URL)
-  console.log(process.env)
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -75,7 +73,6 @@ export async function removeCustomServerGeneSet(method, geneSetName){
 }
 
 export async function retrieveCustomServerScoredPathwayResult(method, gmt, selectedCohort, samples, filterBy, filterOrder, geneSetLimit){
-  console.log(filterBy,filterOrder,geneSetLimit)
   const config = {
     headers: {
       // 'Content-Type': 'multipart/form-data',
