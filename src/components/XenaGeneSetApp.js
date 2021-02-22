@@ -1130,6 +1130,13 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={() => this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            <FaQuestionCircle/>
+          </button>
 
           <div
             className={BaseStyle.findNewGeneSets}>
@@ -1168,13 +1175,6 @@ export default class XenaGeneSetApp extends PureComponent {
           />
           }
 
-          <button
-            className={BaseStyle.analysisTitleSelector}
-            onClick={() => this.setState({showDescription: true})}
-            title={fullHeaderText}
-          >
-            <FaQuestionCircle/><u />
-          </button>
           <Dialog
             active={this.state.showDescription}
             onEscKeyDown={() => this.setState({showDescription: false})}
