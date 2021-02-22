@@ -237,9 +237,9 @@
   /*background-color: lightsalmon;*/
   /*margin: 5px;*/
   padding: 5px;
-  margin-top: 5px;
+  /*margin-top: 5px;*/
   height: 35px;
-  width: 1100px;
+  width: 1200px;
   font-size:  18px;
 }
 
@@ -386,9 +386,12 @@
   /*margin-right: 10px;*/
   /*margin-top: 5px;*/
   /*vertical-align: top;*/
+    font-size: large;
   cursor: pointer;
   border-radius: 5px;
-  margin: 5px;
+  margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
   border: solid 2px gray;
   display: inline;
 }
@@ -698,7 +701,7 @@ border-radius: 5px;
 .openGeneSetLegend{
   position: absolute;
   margin-top: 110px;
-  height: 50px;
+  height: 42px;
 }
 
 .openGeneSetRow{

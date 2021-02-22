@@ -6,7 +6,7 @@ import BaseStyle from '../css/base.css'
 import HoverFeatureView from './hover/HoverGeneView'
 import SelectGeneView from './hover/SelectGeneView'
 import {generateXenaLink} from '../functions/XenaLinkFunctions'
-import {isViewGeneExpression} from '../functions/DataFunctions'
+import {showXenaViewLink} from '../functions/DataFunctions'
 import {Avatar} from 'react-toolbox/lib/avatar'
 import XenaLogo from './xena.png'
 import FaExternalLink from 'react-icons/lib/fa/external-link'
@@ -53,8 +53,8 @@ export class GeneSetInformationColumn extends PureComponent {
             subCohortCounts={this.props.subCohortCounts}
           />
           {
-            (isViewGeneExpression(this.props.view)  ||
-              (!isViewGeneExpression(this.props.view) && this.props.open)) &&
+            (showXenaViewLink(this.props.view)  ||
+              (!showXenaViewLink(this.props.view) && this.props.open)) &&
             <div className={BaseStyle.ssInfoBox}>
               <a
                 className={BaseStyle.xenaLinkOut}

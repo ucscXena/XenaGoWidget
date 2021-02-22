@@ -412,6 +412,15 @@ export function filterCopyNumbers(copyNumber,returnArray,geneList,pathways){
   return returnArray
 }
 
+export function showXenaViewLink(filter){
+  switch (filter !== undefined ? filter : this.props.filter) {
+  case VIEW_ENUM.GENE_EXPRESSION:
+    return true
+  default:
+    return false
+  }
+}
+
 export function isViewGeneExpression(filter){
   switch (filter !== undefined ? filter : this.props.filter) {
   case VIEW_ENUM.GENE_EXPRESSION:

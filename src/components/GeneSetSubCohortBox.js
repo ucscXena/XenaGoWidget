@@ -50,7 +50,7 @@ export class GeneSetSubCohortBox extends PureComponent {
                 }
                 else{
                   return (
-                    <li key={s}>ASDASFASD {s} ({subCohortCounts[cohortIndex][s]})</li>
+                    <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
                   )
                 }
               }
@@ -79,7 +79,8 @@ export class GeneSetSubCohortBox extends PureComponent {
                   </li>
                 )
               }
-              else{
+              else
+              if(!isNaN(subCohortCounts[cohortIndex][s])) {
                 return (
                   <li key={s}>{s} ({subCohortCounts[cohortIndex][s]})</li>
                 )

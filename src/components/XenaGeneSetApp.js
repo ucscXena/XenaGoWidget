@@ -51,6 +51,7 @@ import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent, {DEFAULT_GENE_SETS} from './GeneSetEditorComponent'
 import FaQuestionCircle from 'react-icons/lib/fa/question-circle'
+import FaLink from 'react-icons/lib/fa/chain'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
@@ -1130,6 +1131,24 @@ export default class XenaGeneSetApp extends PureComponent {
           style={{visibility: this.state.loading === LOAD_STATE.LOADED ? 'visible' : 'hidden'}}
           title={fullHeaderText}
         >
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={() => this.setState({showDescription: true})}
+            title={fullHeaderText}
+          >
+            <FaQuestionCircle/>
+          </button>
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={
+              () => {
+                navigator.clipboard.writeText(location.href)
+              }
+            }
+            title={'Copy Link to Clip Board'}
+          >
+            <FaLink/>
+          </button>
 
           <div
             className={BaseStyle.findNewGeneSets}>
@@ -1168,13 +1187,6 @@ export default class XenaGeneSetApp extends PureComponent {
           />
           }
 
-          <button
-            className={BaseStyle.analysisTitleSelector}
-            onClick={() => this.setState({showDescription: true})}
-            title={fullHeaderText}
-          >
-            <FaQuestionCircle/><u />
-          </button>
           <Dialog
             active={this.state.showDescription}
             onEscKeyDown={() => this.setState({showDescription: false})}
@@ -1202,7 +1214,7 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 9
-            const y = ev.clientY + 275 - topClient
+            const y = ev.clientY + 270 - topClient
             // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
             if (x >= 275 && x <= 865) {
               this.setState({mousing: true, x, y})
