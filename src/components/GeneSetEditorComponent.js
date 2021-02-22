@@ -8,6 +8,7 @@ import FaPlus from 'react-icons/lib/fa/plus'
 import FaUpload from 'react-icons/lib/fa/upload'
 import FaMinus from 'react-icons/lib/fa/minus'
 import FaEdit from 'react-icons/lib/fa/edit'
+import {showXenaViewLink} from '../functions/DataFunctions'
 
 export const DEFAULT_GENE_SETS = 'Default Gene Sets'
 
@@ -52,12 +53,14 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaMinus style={{fontSize: 'small'}}/>
         </button>
+        { showXenaViewLink(this.props.view) &&
         <button
           className={BaseStyle.editGeneSets}
           onClick={() =>this.props.handleGeneSetUpload()}
         >
           <FaUpload style={{fontSize: 'small'}}/>
         </button>
+        }
         <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
         <select
           className={BaseStyle.geneSetSelector}
