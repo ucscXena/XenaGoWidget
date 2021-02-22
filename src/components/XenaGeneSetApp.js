@@ -961,7 +961,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getCustomServerGeneSet = (name) => {
-    console.log('custom server serverlet gene sets',this.state.customServerGeneSets)
+    // console.log('custom server serverlet gene sets',this.state.customServerGeneSets)
     return this.state.customServerGeneSets.find(n => n.name === name)
   }
 
@@ -1115,6 +1115,7 @@ export default class XenaGeneSetApp extends PureComponent {
               {showGeneSetSearch: false})}
             customInternalGeneSetName={this.state.selectedGeneSets}
             getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
+            isExistingCustomInternalGeneSet={this.isExistingCustomInternalGeneSet}
             isNotDefaultGeneSet={this.isNotDefaultGeneSet}
             pathwayData={this.state.pathwayData}
             pathways={this.state.pathways}
