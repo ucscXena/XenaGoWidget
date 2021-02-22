@@ -307,7 +307,7 @@ export class CohortEditorSelector extends PureComponent {
                   <hr/>
                   Selected { selectedSamples[1].length } / { availableSamples[1].length }
                   <ul className={BaseStyle.subCohortList}>
-                    {cohort[1].subCohorts.map(sc => {
+                    {cohort[1].subCohorts.filter( sc => sc!=='UNASSIGNED').map(sc => {
                       return (
                         <li key={sc}>
                           <input
