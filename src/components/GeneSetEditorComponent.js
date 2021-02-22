@@ -3,12 +3,11 @@ import React from 'react'
 import BaseStyle from '../css/base.css'
 import PropTypes from 'prop-types'
 import {SORT_VIEW_BY} from '../data/SortEnum'
-// import FaSearch from 'react-icons/lib/fa/search'
 import FaSearch from 'react-icons/lib/fa/arrow-circle-right'
 import FaPlus from 'react-icons/lib/fa/plus'
 import FaUpload from 'react-icons/lib/fa/upload'
 import FaMinus from 'react-icons/lib/fa/minus'
-// import FaEdit from 'react-icons/lib/fa/edit'
+import FaEdit from 'react-icons/lib/fa/edit'
 
 export const DEFAULT_GENE_SETS = 'Default Gene Sets'
 
@@ -33,6 +32,32 @@ export default class GeneSetEditorComponent extends PureComponent {
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetEdit()}
+        >
+          <FaPlus style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}
+          onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}
+        >
+          <FaEdit style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          disabled={!this.props.isNotCustomDefaultGeneSet(this.props.selectedGeneSets)}
+          onClick={() =>this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
+        >
+          <FaMinus style={{fontSize: 'small'}}/>
+        </button>
+        <button
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetUpload()}
+        >
+          <FaUpload style={{fontSize: 'small'}}/>
+        </button>
         <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
         <select
           className={BaseStyle.geneSetSelector}
@@ -90,32 +115,6 @@ export default class GeneSetEditorComponent extends PureComponent {
             )
           }
         </select>
-        {/*<button*/}
-        {/*  className={BaseStyle.editGeneSets}*/}
-        {/*  disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}*/}
-        {/*  onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}*/}
-        {/*>*/}
-        {/*  <FaEdit style={{fontSize: 'small'}}/>*/}
-        {/*</button>*/}
-        <button
-          className={BaseStyle.editGeneSets}
-          onClick={() =>this.props.handleGeneSetEdit()}
-        >
-          <FaPlus style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={!this.props.isNotCustomDefaultGeneSet(this.props.selectedGeneSets)}
-          onClick={() =>this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
-        >
-          <FaMinus style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          onClick={() =>this.props.handleGeneSetUpload()}
-        >
-          <FaUpload style={{fontSize: 'small'}}/>
-        </button>
         <button
           className={BaseStyle.refreshButton}
           onClick={() => this.props.onChangeGeneSetLimit(
