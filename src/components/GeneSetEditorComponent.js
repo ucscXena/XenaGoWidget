@@ -35,7 +35,7 @@ export default class GeneSetEditorComponent extends PureComponent {
       >
         <button
           className={BaseStyle.editGeneSets}
-          disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}
+          // disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}
           onClick={() =>this.props.handleGeneSetEdit()}
         >
           <FaPlus style={{fontSize: 'small'}}/>
