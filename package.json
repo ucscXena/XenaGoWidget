@@ -44,6 +44,7 @@
     "query-string": "^6.8.3",
     "react-bootstrap": "^0.33.1",
     "react-ga": "^2.5.7",
+    "react-google-login": "^5.2.2",
     "react-helmet": "^5.2.0",
     "react-icons": "^2.2.7",
     "react-material-responsive-grid": "^1.2.1",
@@ -53,7 +54,7 @@
     "underscore": "^1.8.3"
   },
   "peerDependencies": {
-    "react": "15.x"
+    "react": "16.x"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",

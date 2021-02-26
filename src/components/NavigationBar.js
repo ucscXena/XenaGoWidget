@@ -3,6 +3,7 @@ import { Button, AppBar,  Navigation } from 'react-toolbox'
 import PureComponent from '../../src/components/PureComponent'
 import BaseStyle from '../css/base.css'
 import * as PropTypes from 'underscore'
+import GoogleLogin, {GoogleLogout} from 'react-google-login'
 
 
 // eslint-disable-next-line react/no-multi-comp
@@ -21,13 +22,29 @@ const XenaIcon = () => (
   <img alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 30}}/>
 )
 
+export const refreshTokenSetup = (res) => {
+  let refreshTiming = (res.tokenId.expires_in || 3600 - 5 * 60) * 1000
+
+  const refreshToken = async () => {
+    const newAuthRes = await res.reloadAuthResponse()
+    refreshTiming = (newAuthRes.expires_in || 3600 - 5 * 60) * 1000
+    console.log('newAuthRes:', newAuthRes)
+    console.log('new auth token:', newAuthRes.id_token)
+    setTimeout(refreshToken, refreshTiming)
+  }
+  setTimeout(refreshToken, refreshTiming)
+}
+
 // eslint-disable-next-line react/no-multi-comp
 export default class NavigationBar extends PureComponent {
+
 
   constructor(props) {
     super(props)
     this.state = {
       geneNameSearch: '',
+      authorized:'unauthorized',
+      profile:undefined,
     }
   }
 
@@ -47,7 +64,63 @@ export default class NavigationBar extends PureComponent {
               <table>
                 <tbody>
                   <tr>
-                    <td width="30%"/>
+                    <td width="2%">
+                      &nbsp;
+                    </td>
+                    <td width="10%">
+                      {this.state.profile &&
+                      <div>
+                        {this.state.profile.name} {this.state.profile.email}
+                      </div>
+                      }
+                    </td>
+                    <td width="20%" >
+
+                      {this.state.authorized!=='authorized'&&
+                      <GoogleLogin
+                        buttonText="Login"
+                        clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
+                        cookiePolicy={'single_host_origin'}
+                        isSignedIn
+                        onFailure={(err) => console.error('error', err)}
+                        onSuccess={(response) => {
+                          console.log('response', response)
+                          refreshTokenSetup(response)
+                          this.setState({
+                            authorized:'authorized',
+                            profile:response.profileObj,
+                          })
+                          // testA(`authorized:${response.profileObj.email}`).then(
+                          //   (res) => {
+                          //     console.log('follow up response')
+                          //   },
+                          //   (err) => {
+                          //     console.log('follow up err', err)
+                          //   },
+                          // )
+                        }}
+                      />
+                      }
+                      {this.state.authorized==='authorized'&&
+                      <GoogleLogout
+                        buttonText="Logout"
+                        clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
+                        onFailure={(err) => console.error('error', err)}
+                        onLogoutSuccess={() => {
+                          this.setState({
+                            authorized:'unauthorized',
+                            profile:undefined,
+                          })
+                          // setAuthorized('unauthorized')
+                          // setProfile(null)
+                        }}
+                        // onLogoutSuccess={logout}
+                      />
+                      }
+
+
+                        &nbsp;
+                    </td>
                     <td width="10%">
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>
