@@ -50,7 +50,7 @@ import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
 import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent, {DEFAULT_GENE_SETS} from './GeneSetEditorComponent'
-import FaQuestionCircle from 'react-icons/lib/fa/question-circle'
+import FaInfo from 'react-icons/lib/fa/info'
 import FaLink from 'react-icons/lib/fa/chain'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
@@ -1148,7 +1148,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onClick={() => this.setState({showDescription: true})}
             title={fullHeaderText}
           >
-            <FaQuestionCircle/>
+            <FaInfo/>
           </button>
           <button
             className={BaseStyle.analysisTitleSelector}
@@ -1209,7 +1209,7 @@ export default class XenaGeneSetApp extends PureComponent {
               wrapper: BaseStyle.dialogWrapper,
             }}
           >
-            <h2><FaQuestionCircle/><u>Description</u></h2>
+            <h2><FaInfo/><u>Description</u></h2>
             <h3>
               {fullHeaderText}
             </h3>
