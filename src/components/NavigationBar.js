@@ -76,7 +76,7 @@ export default class NavigationBar extends PureComponent {
                     <td width="10%">
                       {this.state.profile &&
                       <div>
-                        {this.state.profile.name} {this.state.profile.email}
+                        {this.state.profile.profileObj.name} {this.state.profile.profileObj.email}
                       </div>
                       }
                     </td>
@@ -92,7 +92,7 @@ export default class NavigationBar extends PureComponent {
                         onSuccess={(response) => {
                           console.log('response', response)
                           refreshTokenSetup(response)
-                          this.setUser(response.profileObj)
+                          this.setUser(response)
                           // testA(`authorized:${response.profileObj.email}`).then(
                           //   (res) => {
                           //     console.log('follow up response')

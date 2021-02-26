@@ -162,7 +162,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   componentDidMount() {
     this.handleUrls()
-    this.getAvailableCustomGeneSets(this.state.filter)
+    this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
       .then( () => this.fetchData())
       .catch( e => console.error('Error fetching names from the server: '+e))
   }
@@ -894,8 +894,8 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
-  getAvailableCustomGeneSets = async (method) => {
-    const customServerGeneSets = await getCustomServerGeneSetNames(method)
+  getAvailableCustomGeneSets = async (method,profile) => {
+    const customServerGeneSets = await getCustomServerGeneSetNames(method,profile)
     this.setState({
       customServerGeneSets
     })
@@ -1039,6 +1039,9 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       profile:profile
     })
+    this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
+      .then( () => this.fetchData())
+      .catch( e => console.error('Error fetching names from the server: '+e))
   }
 
   render() {

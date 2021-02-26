@@ -18,12 +18,15 @@ export async function getAllCustomGeneSets(){
   }
 }
 
-export async function getCustomServerGeneSetNames(method){
+export async function getCustomServerGeneSetNames(method,profile){
+  let headers = {
+    'Access-Control-Allow-Origin': '*',
+  }
+  if(profile){
+    headers['Authorization']= `Bearer jwt=${profile.tokenId}`
+  }
   const config = {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': '*'
-    }
+    headers
   }
   const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/gmt/names/?method=${method}`,config)
   return data
