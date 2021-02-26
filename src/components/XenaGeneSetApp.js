@@ -1155,6 +1155,7 @@ export default class XenaGeneSetApp extends PureComponent {
             onClick={
               () => {
                 navigator.clipboard.writeText(location.href)
+                alert('Link copied!')
               }
             }
             title={'Copy Link to Clip Board'}
