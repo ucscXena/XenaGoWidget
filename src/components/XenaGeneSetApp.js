@@ -115,6 +115,7 @@ export default class XenaGeneSetApp extends PureComponent {
       showUploadDialog: false,
       cohortColors,
       fetch: false,
+      profile: undefined,
       reloadPathways: process.env.NODE_ENV !== 'test',
       loading: LOAD_STATE.UNLOADED,
       pathwaySelection: selectedGeneSet,
@@ -1034,6 +1035,12 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
+  setUser = (profile) => {
+    this.setState({
+      profile:profile
+    })
+  }
+
   render() {
     let maxValue
     if (this.state.pathways) {
@@ -1069,6 +1076,7 @@ export default class XenaGeneSetApp extends PureComponent {
           acceptGeneHandler={this.geneHighlight}
           geneOptions={this.state.geneHits}
           searchHandler={this.searchHandler}
+          setUser={this.setUser}
         />
 
         <GeneSetInformationColumn
@@ -1181,6 +1189,7 @@ export default class XenaGeneSetApp extends PureComponent {
             isCustomServerGeneSet={this.isExistingCustomServerGeneSet}
             isNotCustomDefaultGeneSet={this.isNotDefaultGeneSet}
             onChangeGeneSetLimit={this.handleGeneSetLimit}
+            profile={this.state.profile}
             selectedGeneSets={this.state.selectedGeneSets}
             setGeneSetsOption={this.setGeneSetOption}
             sortGeneSetBy={this.state.sortViewByLabel}

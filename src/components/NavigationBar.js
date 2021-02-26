@@ -43,7 +43,6 @@ export default class NavigationBar extends PureComponent {
     super(props)
     this.state = {
       geneNameSearch: '',
-      authorized:'unauthorized',
       profile:undefined,
     }
   }
@@ -51,6 +50,13 @@ export default class NavigationBar extends PureComponent {
     showHelp = () => {
       window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')
     };
+
+    setUser(profile) {
+      this.props.setUser(profile)
+      this.setState({
+        profile:profile
+      })
+    }
 
     render() {
       return (
@@ -76,7 +82,7 @@ export default class NavigationBar extends PureComponent {
                     </td>
                     <td width="20%" >
 
-                      {this.state.authorized!=='authorized'&&
+                      {this.state.profile===undefined&&
                       <GoogleLogin
                         buttonText="Login"
                         clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
@@ -86,10 +92,7 @@ export default class NavigationBar extends PureComponent {
                         onSuccess={(response) => {
                           console.log('response', response)
                           refreshTokenSetup(response)
-                          this.setState({
-                            authorized:'authorized',
-                            profile:response.profileObj,
-                          })
+                          this.setUser(response.profileObj)
                           // testA(`authorized:${response.profileObj.email}`).then(
                           //   (res) => {
                           //     console.log('follow up response')
@@ -101,20 +104,14 @@ export default class NavigationBar extends PureComponent {
                         }}
                       />
                       }
-                      {this.state.authorized==='authorized'&&
+                      {this.state.profile!==undefined &&
                       <GoogleLogout
                         buttonText="Logout"
                         clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
                         onFailure={(err) => console.error('error', err)}
                         onLogoutSuccess={() => {
-                          this.setState({
-                            authorized:'unauthorized',
-                            profile:undefined,
-                          })
-                          // setAuthorized('unauthorized')
-                          // setProfile(null)
+                          this.setUser()
                         }}
-                        // onLogoutSuccess={logout}
                       />
                       }
 
@@ -142,6 +139,7 @@ export default class NavigationBar extends PureComponent {
     }
 
 
+
 }
 
 NavigationBar.propTypes = {
@@ -149,4 +147,5 @@ NavigationBar.propTypes = {
   // configurationHandler: PropTypes.any,
   geneOptions: PropTypes.any,
   searchHandler: PropTypes.any,
+  setUser: PropTypes.any,
 }

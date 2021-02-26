@@ -54,7 +54,7 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaMinus style={{fontSize: 'small'}}/>
         </button>
-        { showXenaViewLink(this.props.view) &&
+        { showXenaViewLink(this.props.view) && this.props.profile &&
         <button
           className={BaseStyle.editGeneSets}
           onClick={() =>this.props.handleGeneSetUpload()}
@@ -146,6 +146,7 @@ GeneSetEditorComponent.propTypes = {
   isCustomServerGeneSet: PropTypes.any.isRequired,
   isNotCustomDefaultGeneSet: PropTypes.any.isRequired,
   onChangeGeneSetLimit: PropTypes.any.isRequired,
+  profile: PropTypes.any,
   selectedGeneSets: PropTypes.any,
   setGeneSetsOption: PropTypes.any.isRequired,
   sortGeneSetBy: PropTypes.any.isRequired,
