@@ -91,6 +91,7 @@ export default class NavigationBar extends PureComponent {
                         onFailure={(err) => console.error('error', err)}
                         onSuccess={(response) => {
                           console.log('response', response)
+                          console.log(JSON.stringify(response))
                           refreshTokenSetup(response)
                           this.setUser(response)
                           // testA(`authorized:${response.profileObj.email}`).then(

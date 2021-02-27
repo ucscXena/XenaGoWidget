@@ -15,7 +15,6 @@ export async function getCustomServerGeneSetNames(method,profile){
   console.log(profile)
   if(profile){
     headers['Authorization']= `Bearer jwt=${profile.tokenId}`
-    headers['GoogleAccessToken']= `Token access_token=${profile.tokenObj.id_token}`
   }
   const config = {
     headers
