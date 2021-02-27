@@ -80,7 +80,7 @@ export default class GeneSetEditorComponent extends PureComponent {
           {
             this.props.customServerGeneSets.map(gs => {
               if(gs.ready){
-                return <option key={gs.name} value={gs.name}>server ({gs.geneCount}) {gs.name}</option>
+                return <option key={gs.name} value={gs.name}>{gs.public ? 'public' : gs.user } ({gs.geneCount}) {gs.name}</option>
               }
               else{
                 // note: geneCount is the GeneSetCount
