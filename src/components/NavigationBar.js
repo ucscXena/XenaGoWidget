@@ -28,8 +28,6 @@ export const refreshTokenSetup = (res) => {
   const refreshToken = async () => {
     const newAuthRes = await res.reloadAuthResponse()
     refreshTiming = (newAuthRes.expires_in || 3600 - 5 * 60) * 1000
-    console.log('newAuthRes:', newAuthRes)
-    console.log('new auth token:', newAuthRes.id_token)
     setTimeout(refreshToken, refreshTiming)
   }
   setTimeout(refreshToken, refreshTiming)
@@ -90,18 +88,8 @@ export default class NavigationBar extends PureComponent {
                         isSignedIn
                         onFailure={(err) => console.error('error', err)}
                         onSuccess={(response) => {
-                          console.log('response', response)
-                          console.log(JSON.stringify(response))
                           refreshTokenSetup(response)
                           this.setUser(response)
-                          // testA(`authorized:${response.profileObj.email}`).then(
-                          //   (res) => {
-                          //     console.log('follow up response')
-                          //   },
-                          //   (err) => {
-                          //     console.log('follow up err', err)
-                          //   },
-                          // )
                         }}
                       />
                       }
