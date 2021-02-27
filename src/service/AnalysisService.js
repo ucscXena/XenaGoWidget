@@ -3,7 +3,7 @@ import {getCohortDetails} from '../functions/CohortFunctions'
 import {ANALYSIS_SERVER_URL} from './GeneSetAnalysisStorageService'
 
 
-export function generateTpmDownloadUrlFromCohorts(cohorts){
+export function generateTpmDownloadUrlFromCohorts(cohorts) {
   return [
     {
       name: cohorts[0].name,
@@ -16,27 +16,35 @@ export function generateTpmDownloadUrlFromCohorts(cohorts){
   ]
 }
 
-function generateTpmFromCohort(cohort){
+function generateTpmFromCohort(cohort) {
   const selectedCohort = getCohortDetails(cohort)
   return `${selectedCohort['geneExpression'].host}/download/${selectedCohort['geneExpression'].dataset}.gz`
 }
 
-export async function storeGmt(gmtData, geneSetName,view){
+export async function storeGmt(gmtData, geneSetName, view, profile) {
 
+  let headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*'
+  }
+  console.log('profile')
+  console.log(profile)
+  if(profile){
+    headers['Authorization']= `Bearer jwt=${profile.tokenId}`
+    headers['GoogleAccessToken']= `Token access_token=${profile.tokenObj.id_token}`
+  }
+  const config = {
+    headers
+  }
   let formData = {}
   formData['gmtdata'] = gmtData
   formData['gmtname'] = geneSetName
   formData['method'] = view
   const response = await axios.post(`${ANALYSIS_SERVER_URL}/gmt/store`,
     formData,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*'
-      }
-    }
+    config
   )
-  let { data} = response
+  let {data} = response
   return data
 }
 

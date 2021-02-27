@@ -7,17 +7,6 @@ export const ANALYSIS_SERVER_URL = 'http://localhost:8080'
 // NOTE: nwb is bad and reading the environment so we will hardcode per branch
 // export const ANALYSIS_SERVER_URL = 'https://xenademo.berkeleybop.io/xena-analysis'
 
-export async function getAllCustomGeneSets(){
-  try {
-    const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/gmt`)
-    return data
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e)
-    return []
-  }
-}
-
 export async function getCustomServerGeneSetNames(method,profile){
   let headers = {
     'Access-Control-Allow-Origin': '*',
@@ -38,18 +27,6 @@ export async function getCustomServerGeneSetNames(method,profile){
 
 export async function getCustomGeneSet(method,geneSetName){
   const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/gmt/${method}/${geneSetName}`)
-  return data
-
-}
-
-export async function getCustomGeneSetResult(method,geneSetName,cohortName){
-  const config = {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Access-Control-Allow-Origin': '*'
-    }
-  }
-  const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/result/findResult/?method=${method}&geneSetName=${geneSetName}&cohort=${cohortName}`,config)
   return data
 
 }

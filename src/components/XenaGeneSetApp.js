@@ -1001,7 +1001,7 @@ export default class XenaGeneSetApp extends PureComponent {
         hasUploadFile: false,
         calculatingUpload: true,
       })
-      let gmt = await storeGmt(gmtData, uploadFileName, filter)
+      let gmt = await storeGmt(gmtData, uploadFileName, filter,this.state.profile)
       gmt.readyCount = 0
       gmt.ready = false
       gmt.availableCount = gmt.availableTpmCount
