@@ -17,7 +17,7 @@
   "scripts": {
     "build": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component",
     "build:demo": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./demo.nwb.config.js",
-    "build:production": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component ./production.nwb.config.js",
+    "build:production": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./production.nwb.config.js",
     "clean": "nwb clean-module && nwb clean-demo",
     "start": "nwb serve-react-demo --config ./nwb.config.js",
     "start:demo": "nwb serve-react-demo --config ./demo.nwb.config.js",

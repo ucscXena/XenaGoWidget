@@ -34,22 +34,6 @@ export default class GeneSetEditorComponent extends PureComponent {
       return this.props.profile === undefined
     }
     return !this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)
-
-    // if default
-    // NO
-    // if it is a custom internal, then yes
-    // YES
-   
-    // if server
-    //   if logged out
-    //      NO  (only public available)
-    //   if logged in
-    //      YES (user will either be admin, or only able to see their own
-
-    
-    // if it is a server, user must be admin
-    
-    // this.props.profile
   }
 
   render() {
@@ -59,7 +43,6 @@ export default class GeneSetEditorComponent extends PureComponent {
       >
         <button
           className={BaseStyle.editGeneSets}
-          // disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}
           onClick={() =>this.props.handleGeneSetEdit()}
         >
           <FaPlus style={{fontSize: 'small'}}/>
