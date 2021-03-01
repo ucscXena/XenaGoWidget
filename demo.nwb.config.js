@@ -23,7 +23,7 @@ module.exports = {
   },
   webpack: {
     define:{
-      __SERVER__:JSON.stringify('http://localhost:8080'),
+      __SERVER__:JSON.stringify('https://xenademo.berkeleybop.io/xena-analysis'),
       __VERSION__: JSON.stringify(require('./package.json').version)
     },
     styles: {

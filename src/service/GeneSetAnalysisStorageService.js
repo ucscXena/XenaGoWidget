@@ -2,7 +2,11 @@ import axios from 'axios'
 
 // TODO: configure to environment
 // export const ANALYSIS_SERVER_URL = process.env.ANALYSIS_SERVER_URL ? `${process.env.ANALYSIS_SERVER_URL}`:  'http://localhost:8080'
-export const ANALYSIS_SERVER_URL = 'http://localhost:8080'
+// export const ANALYSIS_SERVER_URL = 'http://localhost:8080'
+
+// NOTE: set in <type>.nwb.config.js
+// eslint-disable-next-line no-undef
+export const ANALYSIS_SERVER_URL = __SERVER__
 
 // NOTE: nwb is bad and reading the environment so we will hardcode per branch
 // export const ANALYSIS_SERVER_URL = 'https://xenademo.berkeleybop.io/xena-analysis'

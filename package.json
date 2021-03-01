@@ -16,8 +16,11 @@
   ],
   "scripts": {
     "build": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component",
+    "build:demo": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./demo.nwb.config.js",
+    "build:production": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component ./production.nwb.config.js",
     "clean": "nwb clean-module && nwb clean-demo",
-    "start": "nwb serve-react-demo",
+    "start": "nwb serve-react-demo --config ./nwb.config.js",
+    "start:demo": "nwb serve-react-demo --config ./demo.nwb.config.js",
     "test": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --timeout 20000",
     "lint": "eslint --ignore-pattern src/data src tests/integration/render tests/integration/function tests/function ",
     "test:coverage": "NODE_OPTIONS=--max_old_space_size=4096 nwb test-react --coverage",
