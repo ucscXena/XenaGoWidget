@@ -24,6 +24,7 @@ module.exports = {
   webpack: {
     define:{
       __SERVER__:JSON.stringify('https://xenademo.berkeleybop.io/xena-analysis'),
+      __GOOGLE_APP_ID__:JSON.stringify('654629507592-hckeqsvnnrhhtpo96lkt1f0079rnk64d.apps.googleusercontent.com'),
       __VERSION__: JSON.stringify(require('./package.json').version)
     },
     styles: {

@@ -57,6 +57,8 @@ export default class NavigationBar extends PureComponent {
     }
 
     render() {
+      // eslint-disable-next-line no-undef
+      const GOOGLE_APP_ID = `${__GOOGLE_APP_ID__}`
       return (
         <div>
           <link
@@ -83,7 +85,7 @@ export default class NavigationBar extends PureComponent {
                       {this.state.profile===undefined&&
                       <GoogleLogin
                         buttonText="Login"
-                        clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
+                        clientId={GOOGLE_APP_ID}
                         cookiePolicy={'single_host_origin'}
                         isSignedIn
                         onFailure={(err) => console.error('error', err)}
@@ -96,7 +98,7 @@ export default class NavigationBar extends PureComponent {
                       {this.state.profile!==undefined &&
                       <GoogleLogout
                         buttonText="Logout"
-                        clientId="654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com"
+                        clientId={GOOGLE_APP_ID}
                         onFailure={(err) => console.error('error', err)}
                         onLogoutSuccess={() => {
                           this.setUser()
