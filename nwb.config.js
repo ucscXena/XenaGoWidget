@@ -24,6 +24,7 @@ module.exports = {
   webpack: {
     define:{
       __SERVER__:JSON.stringify('http://localhost:8080'),
+      __GOOGLE_APP_ID__:JSON.stringify('654629507592-9i8vh19esnv2f5is1roofl3c9v7sla54.apps.googleusercontent.com'),
       __VERSION__: JSON.stringify(require('./package.json').version)
     },
     styles: {

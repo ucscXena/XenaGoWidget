@@ -15,8 +15,6 @@ export async function getCustomServerGeneSetNames(method,profile){
   let headers = {
     'Access-Control-Allow-Origin': '*',
   }
-  console.log('profile')
-  console.log(profile)
   if(profile){
     headers['Authorization']= `Bearer jwt=${profile.tokenId}`
   }
