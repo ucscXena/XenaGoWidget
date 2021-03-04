@@ -61,14 +61,13 @@ export default class GeneSetEditorComponent extends PureComponent {
         >
           <FaMinus style={{fontSize: 'small'}}/>
         </button>
-        { showXenaViewLink(this.props.view) && this.props.profile &&
         <button
           className={BaseStyle.editGeneSets}
+          disabled={!showXenaViewLink(this.props.view) || !this.props.profile}
           onClick={() =>this.props.handleGeneSetUpload()}
         >
           <FaUpload style={{fontSize: 'small'}}/>
         </button>
-        }
         <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
         <select
           className={BaseStyle.geneSetSelector}
