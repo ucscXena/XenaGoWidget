@@ -691,6 +691,7 @@ border-radius: 5px;
 
 .legendLabel{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: small;
 }
 
 .geneSetLegend{
