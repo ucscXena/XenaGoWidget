@@ -63,6 +63,7 @@ import {
   removeCustomServerGeneSet
 } from '../service/GeneSetAnalysisStorageService'
 import Loader from './loading'
+import {VIEW_ENUM} from '../data/ViewEnum'
 
 const xenaQuery = require('ucsc-xena-client/dist/xenaQuery')
 const {sparseDataMatchPartialField, refGene} = xenaQuery
@@ -177,6 +178,12 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     if (diffs.length === 1 && diffs.indexOf('loading') >= 0) {
       return
+    }
+    if(prevState.filter !== this.state.filter ){
+      this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
+        .then( () => this.fetchData())
+        .catch( e => console.error('Error fetching names from the server: '+e))
+      
     }
     this.fetchData()
   }
@@ -895,11 +902,10 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
   getAvailableCustomGeneSets = async (method,profile) => {
-    const customServerGeneSets = await getCustomServerGeneSetNames(method,profile)
+    const customServerGeneSets = method===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(method,profile)  : []
     this.setState({
       customServerGeneSets
     })
-    // return this.state.customServerGeneSets
     return customServerGeneSets
   }
 
@@ -1039,7 +1045,7 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState({
       profile:profile
     })
-    this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
+    this.getAvailableCustomGeneSets(this.state.filter,profile)
       .then( () => this.fetchData())
       .catch( e => console.error('Error fetching names from the server: '+e))
   }
