@@ -44,10 +44,10 @@ export class LegendBox extends PureComponent {
 
 
               {/*Gene set layer*/}
-              {isViewGeneExpression(view) &&
+              {(!geneData || !geneData[0].data) && isViewGeneExpression(view) &&
             <GeneSetGeneExpressionLegend filter={view} maxValue={maxValue}/>
               }
-              {!isViewGeneExpression(view) &&
+              {(!geneData || !geneData[0].data) && !isViewGeneExpression(view) &&
             <GeneSetCnvMutationLegend/>
               }
 

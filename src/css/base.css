@@ -696,12 +696,12 @@ border-radius: 5px;
 
 .geneSetLegend{
   position: absolute;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .openGeneSetLegend{
   position: absolute;
-  margin-top: 110px;
+  margin-top: 65px;
   height: 42px;
 }
 
