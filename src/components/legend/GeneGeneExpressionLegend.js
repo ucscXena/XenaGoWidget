@@ -44,7 +44,7 @@ export class GeneGeneExpressionLegend extends PureComponent {
   render() {
     return (
       // <tr style={{height: 50, fixed: 'position'}} >
-      <tr className={BaseStyle.geneLegend} >
+      <tr className={BaseStyle.geneSetLegend} >
         <td colSpan={1} width={DETAIL_WIDTH}>
           <GeneLegendLabel/>
         </td>

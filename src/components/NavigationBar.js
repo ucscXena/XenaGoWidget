@@ -88,7 +88,10 @@ export default class NavigationBar extends PureComponent {
                         clientId={GOOGLE_APP_ID}
                         cookiePolicy={'single_host_origin'}
                         isSignedIn
-                        onFailure={(err) => console.error('error', err)}
+                        onFailure={
+                          // eslint-disable-next-line no-console
+                          (err) => console.error('error', err)
+                        }
                         onSuccess={(response) => {
                           refreshTokenSetup(response)
                           this.setUser(response)
@@ -99,7 +102,10 @@ export default class NavigationBar extends PureComponent {
                       <GoogleLogout
                         buttonText="Logout"
                         clientId={GOOGLE_APP_ID}
-                        onFailure={(err) => console.error('error', err)}
+                        onFailure={
+                          // eslint-disable-next-line no-console
+                          (err) => console.error('error', err)
+                        }
                         onLogoutSuccess={() => {
                           this.setUser()
                         }}

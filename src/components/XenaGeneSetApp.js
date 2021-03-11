@@ -77,7 +77,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 140
+export const LEGEND_HEIGHT = 100
 export const HEADER_HEIGHT = 120
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
@@ -134,7 +134,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       pathways,
       filter,
-
+      showLinkCopiedDialog: false,
       sortViewByLabel,
 
       filterBy,
@@ -1156,12 +1156,32 @@ export default class XenaGeneSetApp extends PureComponent {
           >
             <FaInfo/>
           </button>
+
+          {this.state.showLinkCopiedDialog &&
+          <Dialog
+            actions={[
+              {label:'Close',onClick: () => this.setState({showLinkCopiedDialog: false})}
+            ]}
+            active={this.state.showLinkCopiedDialog}
+            onEscKeyDown={() => this.setState({showLinkCopiedDialog: false})}
+            onOverlayClick={() => this.setState({showLinkCopiedDialog: false})}
+            theme={{
+              dialog: BaseStyle.cohortEditorDialogBase,
+              wrapper: BaseStyle.cohortEditorDialogWrapperBase,
+            }}
+            title="Link Copied to Clipboard!"
+          />
+          }
+
           <button
             className={BaseStyle.analysisTitleSelector}
             onClick={
               () => {
                 navigator.clipboard.writeText(location.href)
-                alert('Link copied!')
+                this.setState({
+                  showLinkCopiedDialog:true
+                })
+                // alert(`Link copied to clipboard: ${location.href}`)
               }
             }
             title={'Copy Link to Clip Board'}
@@ -1234,7 +1254,7 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 9
-            const y = ev.clientY + 270 - topClient
+            const y = ev.clientY + 230 - topClient
             // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
             if (x >= 275 && x <= 865) {
               this.setState({mousing: true, x, y})
@@ -1273,7 +1293,7 @@ export default class XenaGeneSetApp extends PureComponent {
               dialog: BaseStyle.dialogBase,
               wrapper: BaseStyle.dialogWrapper,
             }}
-            title="Cohort Editor"
+            title="Cohort and Sub Group Editor"
           >
             <CohortEditorSelector
               cohort={this.state.selectedCohort}

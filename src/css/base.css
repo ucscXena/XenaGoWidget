@@ -428,7 +428,7 @@
 }
 
 .editGeneSetOrder{
-  width: 155px;
+  width: 85px;
   display: inline;
 }
 
@@ -691,16 +691,17 @@ border-radius: 5px;
 
 .legendLabel{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: small;
 }
 
 .geneSetLegend{
   position: absolute;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .openGeneSetLegend{
   position: absolute;
-  margin-top: 110px;
+  margin-top: 65px;
   height: 42px;
 }
 
@@ -719,7 +720,7 @@ border-radius: 5px;
 }
 .diffScaleLegend{
   position: absolute;
-  margin-top: 122px;
+  margin-top: 80px;
 }
 
 .middleSampleLegend{

@@ -9,6 +9,9 @@ import FaUpload from 'react-icons/lib/fa/upload'
 import FaMinus from 'react-icons/lib/fa/minus'
 import FaEdit from 'react-icons/lib/fa/edit'
 import {showXenaViewLink} from '../functions/DataFunctions'
+import Tooltip from 'react-toolbox/lib/tooltip'
+import Button from 'react-bootstrap/lib/Button'
+
 
 export const DEFAULT_GENE_SETS = 'Default Gene Sets'
 
@@ -38,36 +41,11 @@ export default class GeneSetEditorComponent extends PureComponent {
 
   render() {
 
+    const ToolTipButton = Tooltip(Button)
+
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
-        <button
-          className={BaseStyle.editGeneSets}
-          onClick={() =>this.props.handleGeneSetEdit()}
-        >
-          <FaPlus style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={!this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)}
-          onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}
-        >
-          <FaEdit style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={this.isNotEditable()}
-          onClick={() =>this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
-        >
-          <FaMinus style={{fontSize: 'small'}}/>
-        </button>
-        <button
-          className={BaseStyle.editGeneSets}
-          disabled={!showXenaViewLink(this.props.view) || !this.props.profile}
-          onClick={() =>this.props.handleGeneSetUpload()}
-        >
-          <FaUpload style={{fontSize: 'small'}}/>
-        </button>
         <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
         <select
           className={BaseStyle.geneSetSelector}
@@ -98,6 +76,40 @@ export default class GeneSetEditorComponent extends PureComponent {
             })
           }
         </select>
+        <ToolTipButton
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetEdit()}
+          tooltip={'Add local gene set'}
+        >
+          <FaPlus style={{fontSize: 'small'}}/>
+        </ToolTipButton>
+        { this.isNotCustomInternalGeneSet(this.props.selectedGeneSets) &&
+        <ToolTipButton
+          className={BaseStyle.editGeneSets}
+          onClick={() =>this.props.handleGeneSetEdit(this.props.selectedGeneSets.trim())}
+          tooltip={'Edit local gene set'}
+        >
+          <FaEdit style={{fontSize: 'small'}}/>
+        </ToolTipButton>
+        }
+        {!this.isNotEditable() &&
+        <ToolTipButton
+          className={BaseStyle.editGeneSets}
+          onClick={() => this.props.handleGeneSetDelete(this.props.selectedGeneSets.trim())}
+          tooltip={'Remove gene set'}
+        >
+          <FaMinus style={{fontSize: 'small'}}/>
+        </ToolTipButton>
+        }
+        { showXenaViewLink(this.props.view) && this.props.profile && 
+          <ToolTipButton
+            className={BaseStyle.editGeneSets}
+            onClick={() => this.props.handleGeneSetUpload()}
+            tooltip={'Upload gene set'}
+          >
+            <FaUpload style={{fontSize: 'small'}}/>
+          </ToolTipButton>
+        }
         <div className={BaseStyle.editGeneSetSearch}>Limit:</div>
         <input
           className={BaseStyle.editGeneSetLimits} onChange={(limit) => {

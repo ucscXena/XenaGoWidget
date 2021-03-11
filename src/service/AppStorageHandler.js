@@ -113,7 +113,6 @@ export class AppStorageHandler {
     Object.values(VIEW_ENUM).forEach( (v) => {
       geneSetObject[v] = {}
     })
-    console.log('gene sets',geneSetObject)
     return this.storeGeneSets(geneSetObject)
   }
 
@@ -285,10 +284,8 @@ export class AppStorageHandler {
   }
 
   static storeCohortState(selected, cohortIndex) {
-    // console.log('storing cohort state',selected,cohortIndex)
     if (!selected) return
     const appState = AppStorageHandler.getAppState()
-    // console.log('RETR storing cohort state',appState)
     if (!appState.cohortState) {
       appState.cohortState = []
     }
