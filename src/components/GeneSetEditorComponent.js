@@ -46,6 +46,36 @@ export default class GeneSetEditorComponent extends PureComponent {
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
+        <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
+        <select
+          className={BaseStyle.geneSetSelector}
+          onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
+          value={this.props.selectedGeneSets}
+        >
+          <option>public (8281) {DEFAULT_GENE_SETS}</option>
+          {/*<option>----Custom Internal Gene Sets----</option>*/}
+          {
+            this.props.customInternalGeneSets[this.props.view] &&
+            Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
+              return <option key={gs[1].geneset} value={gs[1].geneset}>local ({gs[1].result.length}) {gs[1].geneset}</option>
+            })
+          }
+          {/*<option>----Custom Server Gene Sets----</option>*/}
+          {
+            this.props.customServerGeneSets.map(gs => {
+              if(gs.ready){
+                return <option key={gs.name} value={gs.name}>{gs.public ? 'public' : gs.user } ({gs.geneCount}) {gs.name}</option>
+              }
+              else{
+                // note: geneCount is the GeneSetCount
+                return (<option disabled key={gs.name} value={gs.name}>
+                  Analyzing ( {gs.readyCount} of {gs.availableCount } ready ) –
+                  ({gs.geneCount}) {gs.name}
+                </option>)
+              }
+            })
+          }
+        </select>
         <ToolTipButton
           className={BaseStyle.editGeneSets}
           onClick={() =>this.props.handleGeneSetEdit()}
@@ -80,36 +110,6 @@ export default class GeneSetEditorComponent extends PureComponent {
             <FaUpload style={{fontSize: 'small'}}/>
           </ToolTipButton>
         }
-        <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
-        <select
-          className={BaseStyle.geneSetSelector}
-          onChange={(event) => this.props.setGeneSetsOption(event.target.value)}
-          value={this.props.selectedGeneSets}
-        >
-          <option>public (8281) {DEFAULT_GENE_SETS}</option>
-          {/*<option>----Custom Internal Gene Sets----</option>*/}
-          {
-            this.props.customInternalGeneSets[this.props.view] &&
-            Object.entries(this.props.customInternalGeneSets[this.props.view]).map ( gs => {
-              return <option key={gs[1].geneset} value={gs[1].geneset}>local ({gs[1].result.length}) {gs[1].geneset}</option>
-            })
-          }
-          {/*<option>----Custom Server Gene Sets----</option>*/}
-          {
-            this.props.customServerGeneSets.map(gs => {
-              if(gs.ready){
-                return <option key={gs.name} value={gs.name}>{gs.public ? 'public' : gs.user } ({gs.geneCount}) {gs.name}</option>
-              }
-              else{
-                // note: geneCount is the GeneSetCount
-                return (<option disabled key={gs.name} value={gs.name}>
-                  Analyzing ( {gs.readyCount} of {gs.availableCount } ready ) –
-                  ({gs.geneCount}) {gs.name}
-                </option>)
-              }
-            })
-          }
-        </select>
         <div className={BaseStyle.editGeneSetSearch}>Limit:</div>
         <input
           className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
