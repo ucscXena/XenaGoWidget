@@ -1273,7 +1273,7 @@ export default class XenaGeneSetApp extends PureComponent {
               dialog: BaseStyle.dialogBase,
               wrapper: BaseStyle.dialogWrapper,
             }}
-            title="Cohort Editor"
+            title="Cohort and Sub Group Editor"
           >
             <CohortEditorSelector
               cohort={this.state.selectedCohort}
