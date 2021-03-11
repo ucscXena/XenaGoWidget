@@ -244,6 +244,7 @@ export class AppStorageHandler {
     case VIEW_ENUM.MUTATION:
     case VIEW_ENUM.CNV_MUTATION:
     case VIEW_ENUM.GENE_EXPRESSION:
+    case VIEW_ENUM.PARADIGM:
     case VIEW_ENUM.REGULON:
       return true
     }
