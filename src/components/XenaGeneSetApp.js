@@ -1254,7 +1254,7 @@ export default class XenaGeneSetApp extends PureComponent {
             const topClient = ev.currentTarget.getBoundingClientRect().top
             // some fudge factors in here
             const x = ev.clientX + 9
-            const y = ev.clientY + 270 - topClient
+            const y = ev.clientY + 230 - topClient
             // if (    ((x >= 265 && x <= 445) || (x >= 673 && x <= 853)) ) {
             if (x >= 275 && x <= 865) {
               this.setState({mousing: true, x, y})
