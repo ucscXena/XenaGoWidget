@@ -134,7 +134,7 @@ export default class XenaGeneSetApp extends PureComponent {
       geneSetLimit: urlVariables.geneSetLimit ? urlVariables.geneSetLimit : DEFAULT_GENE_SET_LIMIT,
       pathways,
       filter,
-
+      showLinkCopiedDialog: false,
       sortViewByLabel,
 
       filterBy,
@@ -1156,12 +1156,32 @@ export default class XenaGeneSetApp extends PureComponent {
           >
             <FaInfo/>
           </button>
+
+          {this.state.showLinkCopiedDialog &&
+          <Dialog
+            actions={[
+              {label:'Close',onClick: () => this.setState({showLinkCopiedDialog: false})}
+            ]}
+            active={this.state.showLinkCopiedDialog}
+            onEscKeyDown={() => this.setState({showLinkCopiedDialog: false})}
+            onOverlayClick={() => this.setState({showLinkCopiedDialog: false})}
+            theme={{
+              dialog: BaseStyle.cohortEditorDialogBase,
+              wrapper: BaseStyle.cohortEditorDialogWrapperBase,
+            }}
+            title="Link Copied to Clipboard!"
+          />
+          }
+
           <button
             className={BaseStyle.analysisTitleSelector}
             onClick={
               () => {
                 navigator.clipboard.writeText(location.href)
-                alert(`Link copied to clipboard: ${location.href}`)
+                this.setState({
+                  showLinkCopiedDialog:true
+                })
+                // alert(`Link copied to clipboard: ${location.href}`)
               }
             }
             title={'Copy Link to Clip Board'}
