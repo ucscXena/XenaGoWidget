@@ -8,9 +8,7 @@ import {
   getCohortDetails,
   getCohortsForView, getSamplesFromSelectedSubCohorts, getSubCohortsForCohort,
   getSubCohortsOnlyForCohort,
-  getViewsForCohort
 } from '../functions/CohortFunctions'
-import {intersection} from '../functions/MathFunctions'
 import update from 'immutability-helper'
 import Link from 'react-toolbox/lib/link'
 import {AppStorageHandler} from '../service/AppStorageHandler'
@@ -91,10 +89,6 @@ export class CohortEditorSelector extends PureComponent {
     this.updateSampleState(newCohortState)
   };
 
-  handleViewChange = (event) => {
-    this.setState({view: event.target.value})
-  };
-
   selectNone(cohortIndex){
     let newCohort = JSON.parse(JSON.stringify(this.state.cohort[cohortIndex]))
     // newCohort.selectedSubCohorts = newCohort.subCohorts ;
@@ -166,7 +160,6 @@ export class CohortEditorSelector extends PureComponent {
     const {  view, cohort , selectedSamples, availableSamples } = this.state
     const cohorts = getCohortsForView(view)
     const availableCohorts = fetchCohortData().filter( c => cohorts.indexOf(c.name)>=0 )
-    const allowableViews = intersection(getViewsForCohort(cohort[0].name),getViewsForCohort(cohort[1].name))
     const maximumSubCohorts = [getSubCohortsForCohort(cohort[0].name),getSubCohortsForCohort(cohort[1].name)]
 
     if(!subCohortCounts){
@@ -178,25 +171,6 @@ export class CohortEditorSelector extends PureComponent {
         <div>
           <table className={BaseStyle.cohortEditorBox}>
             <tbody>
-              <tr>
-                <td>
-                  <div
-                    style={{fontSize:'large',display:'inline',marginRight: 5, fontWeight: 'bolder',marginBottom: 100}}>
-                    Analysis</div>
-                  <select
-                    onChange={this.handleViewChange}
-                    value={view}
-                  >
-                    {
-                      Object.entries(allowableViews).map( f => {
-                        return (
-                          <option key={f[1]} value={f[1]}>{f[1]}</option>
-                        )
-                      })
-                    }
-                  </select>
-                </td>
-              </tr>
               <tr>
                 <td colSpan={3}>
                   <u>Current View:</u>Visualizing differences using '{view}'
