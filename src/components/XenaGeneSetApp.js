@@ -181,11 +181,12 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     if(prevState.filter !== this.state.filter ){
       this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
-        .then( () => this.fetchData())
-        .catch( e => console.error('Error fetching names from the server: '+e))
-      
+      // TODO: should force change of server names
+      // .then( () => this.fetchData())
+      // .catch( e => console.error('Error fetching names from the server: '+e))
+
     }
-    this.fetchData()
+    // this.fetchData()
   }
 
   sortAndFetchPathways(pathways){
@@ -761,8 +762,8 @@ export default class XenaGeneSetApp extends PureComponent {
     this.setState(
       {
         filter: newView,
-        fetch: true,
-        reloadPathways: true,
+        // fetch: true,
+        // reloadPathways: true,
         selectedGeneSets: undefined,
       }
     )
@@ -1189,27 +1190,13 @@ export default class XenaGeneSetApp extends PureComponent {
             <FaLink/>
           </button>
 
-          <div
-            className={BaseStyle.findNewGeneSets}>
-            <u style={{margin: 5}}>Analysis:</u>
-            <select
-              onChange={(event) => this.changeView(event.target.value)}
-              value={this.state.filter}
-            >
-              {
-                Object.entries(allowableViews).map(f => {
-                  return (
-                    <option key={f[1]} value={f[1]}>{f[1]}</option>
-                  )
-                })
-              }
-            </select>
-          </div>
           {/*{headerText}*/}
 
 
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
+            allowableViews={allowableViews}
+            changeView={this.changeView}
             customInternalGeneSets={this.state.customInternalGeneSets}
             customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}

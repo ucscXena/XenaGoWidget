@@ -46,6 +46,22 @@ export default class GeneSetEditorComponent extends PureComponent {
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
+        {/*<div*/}
+        {/*  className={BaseStyle.findNewGeneSets}>*/}
+        <u style={{margin: 5}}>Analysis:</u>
+        <select
+          onChange={(event) => this.props.changeView(event.target.value)}
+          value={this.props.view}
+        >
+          {
+            Object.entries(this.props.allowableViews).map(f => {
+              return (
+                <option key={f[1]} value={f[1]}>{f[1]}</option>
+              )
+            })
+          }
+        </select>
+        {/*</div>*/}
         <div className={BaseStyle.editGeneSetSearch}><u>Gene Set</u>:</div>
         <select
           className={BaseStyle.geneSetSelector}
@@ -155,6 +171,8 @@ export default class GeneSetEditorComponent extends PureComponent {
 }
 
 GeneSetEditorComponent.propTypes = {
+  allowableViews: PropTypes.any.isRequired,
+  changeView: PropTypes.any.isRequired,
   customInternalGeneSets: PropTypes.any.isRequired,
   customServerGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
