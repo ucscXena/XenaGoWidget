@@ -99,7 +99,7 @@ export default class NavigationBar extends PureComponent {
                       <GoogleLogout
                         buttonText="Logout"
                         clientId={GOOGLE_APP_ID}
-                        onFailure={(err) => console.error('error', err)}
+                        onFailure={(err) => console.error('error', err)} // no-console
                         onLogoutSuccess={() => {
                           this.setUser()
                         }}
