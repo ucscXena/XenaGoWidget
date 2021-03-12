@@ -11,6 +11,15 @@ import {Avatar} from 'react-toolbox/lib/avatar'
 import XenaLogo from './xena.png'
 import FaExternalLink from 'react-icons/lib/fa/external-link'
 
+function standardizeColor(str,alpha){
+  let ctx = document.createElement('canvas').getContext('2d')
+  ctx.fillStyle = str
+  ctx.fillRect(0,0,1,1)
+  const colorArray = ctx.getImageData(0,0,1,1).data
+  const rgb = `rgb(${colorArray[0]},${colorArray[1]},${colorArray[2]},${alpha})`
+  return rgb
+}
+
 export class GeneSetInformationColumn extends PureComponent {
 
   constructor(props) {
@@ -33,21 +42,30 @@ export class GeneSetInformationColumn extends PureComponent {
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
+    console.log('cohort color',cohortColor)
+    const standardizedColor = standardizeColor(cohortColor,1)
+    console.log('standardized cohot color',standardizedColor)
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
       const externalLink = generateXenaLink(this.props)
       return (
         <div
-          className={BaseStyle.geneSetDetailBox}
+          className={this.props.cohortIndex===0 ? BaseStyle.geneSetDetailBoxA:  BaseStyle.geneSetDetailBoxB}
           style={{
-            backgroundColor: cohortColor,
+            borderColor: `${standardizedColor}` ,
+            // borderColor: standardizedColor,
+            borderStyle: 'solid' ,
+            // backgroundColor: standardizedColor,
+            borderWidth: '5px',
             marginTop: 50,
+            // zIndex:-20,
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
           }}
         >
 
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
+            color={cohortColor}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
@@ -55,7 +73,7 @@ export class GeneSetInformationColumn extends PureComponent {
           {
             (showXenaViewLink(this.props.view)  ||
               (!showXenaViewLink(this.props.view) && this.props.open)) &&
-            <div className={BaseStyle.ssInfoBox}>
+            <div className={BaseStyle.ssInfoBox} style={{color:cohortColor}}>
               <a
                 className={BaseStyle.xenaLinkOut}
                 href={externalLink}

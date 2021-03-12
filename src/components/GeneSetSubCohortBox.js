@@ -24,12 +24,12 @@ export class GeneSetSubCohortBox extends PureComponent {
   }
 
   render(){
-    const {cohortIndex, geneDataStats, onEditCohorts, subCohortCounts} = this.props
+    const {color,cohortIndex, geneDataStats, onEditCohorts, subCohortCounts} = this.props
     const samplesLength = geneDataStats[cohortIndex].samples.length
     const selectedCohort = geneDataStats[cohortIndex].selectedCohort
     if(!subCohortCounts || subCohortCounts.length!==2) return <div>Calculating</div>
     return (
-      <div className={BaseStyle.bottomInfoBox}>
+      <div className={BaseStyle.bottomInfoBox} style={{borderColor: color}}>
         <h3 className={BaseStyle.cohortTitle}>{selectedCohort.name}</h3>
         <Dialog
           active={this.state.showInfo}
@@ -115,6 +115,7 @@ export class GeneSetSubCohortBox extends PureComponent {
 
 GeneSetSubCohortBox.propTypes = {
   cohortIndex: PropTypes.any.isRequired,
+  color: PropTypes.any.isRequired,
   geneDataStats: PropTypes.any.isRequired,
   onEditCohorts: PropTypes.any.isRequired,
   subCohortCounts: PropTypes.any,
