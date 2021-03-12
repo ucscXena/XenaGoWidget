@@ -23,12 +23,13 @@ export default class GeneSetEditorComponent extends PureComponent {
       geneSetLimit: props.geneSetLimit,
       sortGeneSetBy: props.sortGeneSetBy,
       selectedGeneSets: props.selectedGeneSets,
+      view: props.view,
     }
   }
 
 
   isNotCustomInternalGeneSet(selectedGeneSets) {
-    return this.props.customInternalGeneSets[this.props.view][selectedGeneSets]!==undefined
+    return this.props.customInternalGeneSets[this.state.view][selectedGeneSets]!==undefined
   }
 
   isNotEditable(){
@@ -50,8 +51,8 @@ export default class GeneSetEditorComponent extends PureComponent {
         {/*  className={BaseStyle.findNewGeneSets}>*/}
         <u style={{margin: 5}}>Analysis:</u>
         <select
-          onChange={(event) => this.props.changeView(event.target.value)}
-          value={this.props.view}
+          onChange={(event) => this.setState( { view: event.target.value})}
+          value={this.state.view}
         >
           {
             Object.entries(this.props.allowableViews).map(f => {
@@ -130,7 +131,7 @@ export default class GeneSetEditorComponent extends PureComponent {
         <input
           className={BaseStyle.editGeneSetLimits} onChange={(limit) => {
             this.setState({geneSetLimit: limit.target.value})
-            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false)
+            this.props.onChangeGeneSetLimit(limit.target.value,this.state.sortGeneSetBy,this.props.selectedGeneSets,false,this.state.view)
           }}
           size={3} type='text'
           value={this.state.geneSetLimit}/>
@@ -143,7 +144,7 @@ export default class GeneSetEditorComponent extends PureComponent {
               sortGeneSetBy: sortBy,
               sortGeneSetByLabel: method.target.value
             })
-            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false)
+            this.props.onChangeGeneSetLimit(this.state.geneSetLimit,sortBy,this.props.selectedGeneSets,false,this.state.view)
           }}
           value={`${this.state.sortGeneSetBy} Gene Sets`}
         >
@@ -160,6 +161,7 @@ export default class GeneSetEditorComponent extends PureComponent {
             this.state.sortGeneSetBy,
             this.props.selectedGeneSets,
             true,
+            this.state.view,
           )
           }>
                 Fetch Results <FaSearch/>

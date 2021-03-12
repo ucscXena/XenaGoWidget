@@ -181,12 +181,11 @@ export default class XenaGeneSetApp extends PureComponent {
     }
     if(prevState.filter !== this.state.filter ){
       this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
-      // TODO: should force change of server names
-      // .then( () => this.fetchData())
-      // .catch( e => console.error('Error fetching names from the server: '+e))
+        .then( () => this.fetchData())
+        .catch( e => console.error('Error fetching names from the server: '+e))
 
     }
-    // this.fetchData()
+    this.fetchData()
   }
 
   sortAndFetchPathways(pathways){
@@ -758,18 +757,6 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
-  changeView = (newView) => {
-    this.setState(
-      {
-        filter: newView,
-        // fetch: true,
-        // reloadPathways: true,
-        selectedGeneSets: undefined,
-      }
-    )
-
-  }
-
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -885,7 +872,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
 
-  handleGeneSetLimit = (limit, method, geneSet, doSearch) => {
+  handleGeneSetLimit = (limit, method, geneSet, doSearch,filter) => {
     // currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy, sortViewOrder, filterBy, filterOrder} = calculateSortingByMethod(method)
     this.setState({
@@ -899,6 +886,7 @@ export default class XenaGeneSetApp extends PureComponent {
       filterBy,
       filterOrder,
       fetch: doSearch,
+      filter,
     })
   }
 
@@ -1196,7 +1184,6 @@ export default class XenaGeneSetApp extends PureComponent {
           {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
             allowableViews={allowableViews}
-            changeView={this.changeView}
             customInternalGeneSets={this.state.customInternalGeneSets}
             customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}
