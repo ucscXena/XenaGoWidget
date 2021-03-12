@@ -183,7 +183,7 @@ export default class XenaGeneSetApp extends PureComponent {
       this.getAvailableCustomGeneSets(this.state.filter,this.state.profile)
         .then( () => this.fetchData())
         .catch( e => console.error('Error fetching names from the server: '+e))
-      
+
     }
     this.fetchData()
   }
@@ -757,18 +757,6 @@ export default class XenaGeneSetApp extends PureComponent {
     return !isEqual(this.state.selectedCohort[0], this.state.selectedCohort[1])
   }
 
-  changeView = (newView) => {
-    this.setState(
-      {
-        filter: newView,
-        fetch: true,
-        reloadPathways: true,
-        selectedGeneSets: undefined,
-      }
-    )
-
-  }
-
   handleChangeView = (updateCohortState, newView) => {
     AppStorageHandler.storeCohortState(updateCohortState[0], 0)
     AppStorageHandler.storeCohortState(updateCohortState[1], 1)
@@ -884,7 +872,7 @@ export default class XenaGeneSetApp extends PureComponent {
   }
 
 
-  handleGeneSetLimit = (limit, method, geneSet, doSearch) => {
+  handleGeneSetLimit = (limit, method, geneSet, doSearch,filter) => {
     // currentLoadState= LOAD_STATE.LOADED
     let {sortViewBy, sortViewOrder, filterBy, filterOrder} = calculateSortingByMethod(method)
     this.setState({
@@ -898,11 +886,12 @@ export default class XenaGeneSetApp extends PureComponent {
       filterBy,
       filterOrder,
       fetch: doSearch,
+      filter,
     })
   }
 
-  getAvailableCustomGeneSets = async (method,profile) => {
-    const customServerGeneSets = method===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(method,profile)  : []
+  getAvailableCustomGeneSets = async (view,profile) => {
+    const customServerGeneSets = view===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(view,profile)  : []
     this.setState({
       customServerGeneSets
     })
@@ -1189,30 +1178,15 @@ export default class XenaGeneSetApp extends PureComponent {
             <FaLink/>
           </button>
 
-          <div
-            className={BaseStyle.findNewGeneSets}>
-            <u style={{margin: 5}}>Analysis:</u>
-            <select
-              onChange={(event) => this.changeView(event.target.value)}
-              value={this.state.filter}
-            >
-              {
-                Object.entries(allowableViews).map(f => {
-                  return (
-                    <option key={f[1]} value={f[1]}>{f[1]}</option>
-                  )
-                })
-              }
-            </select>
-          </div>
           {/*{headerText}*/}
 
 
-          {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
+            allowableViews={allowableViews}
             customInternalGeneSets={this.state.customInternalGeneSets}
             customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}
+            getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
             handleGeneSetDelete={this.deleteGeneSet}
             handleGeneSetEdit={this.showConfiguration}
             handleGeneSetUpload={this.onUpload}
@@ -1225,7 +1199,6 @@ export default class XenaGeneSetApp extends PureComponent {
             sortGeneSetBy={this.state.sortViewByLabel}
             view={this.state.filter}
           />
-          }
 
           <Dialog
             active={this.state.showDescription}
