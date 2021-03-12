@@ -14,17 +14,35 @@ export class TopLegend extends PureComponent {
       <tr className={BaseStyle.middleSampleLegend}>
         <td colSpan={1} width={DETAIL_WIDTH}>
           {/*<FaArrowDown style={{marginLeft:60}}/>*/}
-          <span className={BaseStyle.legendLabel}>Samples</span>
+          <span
+            className={BaseStyle.samplesLegendLabel}
+            style={{
+              borderColor:'green',
+            }}
+          >Samples</span>
           {/*<FaArrowDown/>*/}
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
           {/*<FaArrowDown style={{marginLeft:40}}/>*/}
-          <span className={BaseStyle.legendLabel}>Gene Set Summary</span>
+          <span
+            className={BaseStyle.legendLabel}
+            style={{
+              borderColor:'gray',
+              paddingLeft: 10,
+              paddingRight: 10,
+            }}
+          >
+              Gene Set Summary</span>
           {/*<FaArrowDown/>*/}
         </td>
         <td colSpan={1} width={DETAIL_WIDTH}>
           {/*<FaArrowDown style={{marginLeft:60}}/>*/}
-          <span className={BaseStyle.legendLabel}>Samples</span>
+          <span
+            className={BaseStyle.samplesLegendLabel}
+            style={{
+              borderColor:'orange',
+              // backgroundColor:'green'
+            }}>Samples</span>
           {/*<FaArrowDown/>*/}
         </td>
       </tr>
