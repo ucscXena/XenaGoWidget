@@ -659,7 +659,8 @@ div[data-react-toolbox=dialog] > section{
     height: 100%;
     width: 515px;
     z-index: -5;
-    left: -305px;
+    /*top: 178px;*/
+    left: -304px;
     position: fixed;
 }
 
@@ -670,7 +671,8 @@ div[data-react-toolbox=dialog] > section{
   padding-top: 5px;
   padding-bottom: 5px;
   height: 100%;
-  width: 515px;
+  width: 504px;
+    /*top: 178px;*/
   z-index: -5;
   position: fixed;
 }

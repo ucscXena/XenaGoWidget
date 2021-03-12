@@ -28,10 +28,11 @@ export class LegendBox extends PureComponent {
 
         <div style={{
           height: LEGEND_HEIGHT,
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          // backgroundColor: 'rgba(255,255,255,0.7)',
+          // backgroundColor: 'rgba(255,255,255,1)',
           position: 'fixed',
-          zIndex: 8,
-          marginTop: HEADER_HEIGHT-12,
+          zIndex: 10,
+          marginTop: HEADER_HEIGHT-5,
           marginLeft: 250,
           width: 182 + 182 + 222 +30
         }}>
