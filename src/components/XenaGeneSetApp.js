@@ -890,8 +890,8 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
-  getAvailableCustomGeneSets = async (method,profile) => {
-    const customServerGeneSets = method===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(method,profile)  : []
+  getAvailableCustomGeneSets = async (view,profile) => {
+    const customServerGeneSets = view===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(view,profile)  : []
     this.setState({
       customServerGeneSets
     })
@@ -1186,6 +1186,7 @@ export default class XenaGeneSetApp extends PureComponent {
             customInternalGeneSets={this.state.customInternalGeneSets}
             customServerGeneSets={this.state.customServerGeneSets}
             geneSetLimit={this.state.geneSetLimit}
+            getAvailableCustomGeneSets={this.getAvailableCustomGeneSets}
             handleGeneSetDelete={this.deleteGeneSet}
             handleGeneSetEdit={this.showConfiguration}
             handleGeneSetUpload={this.onUpload}

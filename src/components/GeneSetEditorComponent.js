@@ -40,6 +40,11 @@ export default class GeneSetEditorComponent extends PureComponent {
     return !this.isNotCustomInternalGeneSet(this.props.selectedGeneSets)
   }
 
+  changeView = (view,profile) => {
+    this.setState( { view})
+    this.props.getAvailableCustomGeneSets(view,profile)
+  }
+
   render() {
 
     const ToolTipButton = Tooltip(Button)
@@ -61,7 +66,7 @@ export default class GeneSetEditorComponent extends PureComponent {
         </button>
         <u style={{margin: 5}}>Analysis:</u>
         <select
-          onChange={(event) => this.setState( { view: event.target.value})}
+          onChange={(event) => this.changeView( event.target.value,this.props.profile)}
           value={this.state.view}
         >
           {
@@ -181,10 +186,10 @@ export default class GeneSetEditorComponent extends PureComponent {
 
 GeneSetEditorComponent.propTypes = {
   allowableViews: PropTypes.any.isRequired,
-  changeView: PropTypes.any.isRequired,
   customInternalGeneSets: PropTypes.any.isRequired,
   customServerGeneSets: PropTypes.any.isRequired,
   geneSetLimit: PropTypes.any.isRequired,
+  getAvailableCustomGeneSets: PropTypes.any,
   handleGeneSetDelete: PropTypes.any.isRequired,
   handleGeneSetEdit: PropTypes.any.isRequired,
   handleGeneSetUpload: PropTypes.any.isRequired,
