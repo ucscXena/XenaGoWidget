@@ -659,7 +659,7 @@ div[data-react-toolbox=dialog] > section{
     height: 100%;
     width: 205px;
     z-index: -5;
-    /*top: 178px;*/
+    top: 173px;
     left: -305px;
     position: fixed;
 }
@@ -672,7 +672,7 @@ div[data-react-toolbox=dialog] > section{
   padding-bottom: 5px;
   height: 100%;
   width: 504px;
-    /*top: 178px;*/
+    top: 173px;
   z-index: -5;
   position: fixed;
 }
@@ -708,7 +708,12 @@ border-radius: 5px;
 
 .legendLabel{
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-size: small;
+  /*font-size: small;*/
+    font-weight: bold;
+    margin-left: 40px;
+    border-radius: 5px;
+    border: solid;
+    border-width: 5px;
 }
 
 .geneSetLegend{
