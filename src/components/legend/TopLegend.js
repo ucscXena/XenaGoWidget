@@ -14,7 +14,7 @@ export class TopLegend extends PureComponent {
       <tr className={BaseStyle.middleSampleLegend}>
         <td colSpan={1} width={DETAIL_WIDTH}>
           <FaArrowDown style={{marginLeft:60}}/>
-          <span className={BaseStyle.legendLabel}>Sample</span>
+          <span className={BaseStyle.legendLabel}>Samples</span>
           <FaArrowDown/>
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
@@ -24,7 +24,7 @@ export class TopLegend extends PureComponent {
         </td>
         <td colSpan={1} width={DETAIL_WIDTH}>
           <FaArrowDown style={{marginLeft:60}}/>
-          <span className={BaseStyle.legendLabel}>Sample</span>
+          <span className={BaseStyle.legendLabel}>Samples</span>
           <FaArrowDown/>
         </td>
       </tr>
