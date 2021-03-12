@@ -42,9 +42,7 @@ export class GeneSetInformationColumn extends PureComponent {
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
-    console.log('cohort color',cohortColor)
     const standardizedColor = standardizeColor(cohortColor,1)
-    console.log('standardized cohot color',standardizedColor)
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
       const externalLink = generateXenaLink(this.props)
@@ -59,7 +57,7 @@ export class GeneSetInformationColumn extends PureComponent {
             borderWidth: '5px',
             marginTop: 50,
             // zIndex:-20,
-            marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 30
+            marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 10
           }}
         >
 

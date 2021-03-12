@@ -52,6 +52,7 @@ import {LegendBox} from './legend/LegendBox'
 import GeneSetEditorComponent, {DEFAULT_GENE_SETS} from './GeneSetEditorComponent'
 import FaInfo from 'react-icons/lib/fa/info'
 import FaLink from 'react-icons/lib/fa/chain'
+import FaQuestion from 'react-icons/lib/fa/question-circle'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
@@ -1177,6 +1178,12 @@ export default class XenaGeneSetApp extends PureComponent {
             title={'Copy Link to Clip Board'}
           >
             <FaLink/>
+          </button>
+          <button
+            className={BaseStyle.analysisTitleSelector}
+            onClick={() => this.showHelp()}
+          >
+            <FaQuestion/>
           </button>
 
           {/*{headerText}*/}
