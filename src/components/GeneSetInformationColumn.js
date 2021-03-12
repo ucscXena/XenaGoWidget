@@ -33,12 +33,13 @@ export class GeneSetInformationColumn extends PureComponent {
   render() {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
+    console.log('cohort color',cohortColor)
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
       const externalLink = generateXenaLink(this.props)
       return (
         <div
-          className={BaseStyle.geneSetDetailBox}
+          className={this.props.cohortIndex===0 ? BaseStyle.geneSetDetailBoxA:  BaseStyle.geneSetDetailBoxB}
           style={{
             backgroundColor: cohortColor,
             marginTop: 50,
