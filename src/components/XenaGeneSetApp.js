@@ -1062,6 +1062,7 @@ export default class XenaGeneSetApp extends PureComponent {
       <div>
 
         <LegendBox
+          cohortColors={this.state.cohortColors}
           geneData={this.state.geneData}
           maxGeneData={this.state.maxGeneData}
           maxValue={maxValue}

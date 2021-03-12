@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
 // import FaArrowDown from 'react-icons/lib/fa/arrow-down'
@@ -17,7 +18,7 @@ export class TopLegend extends PureComponent {
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
-              borderColor:'green',
+              borderColor:this.props.cohortColors[0],
             }}
           >Samples</span>
           {/*<FaArrowDown/>*/}
@@ -40,7 +41,7 @@ export class TopLegend extends PureComponent {
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
-              borderColor:'orange',
+              borderColor:this.props.cohortColors[1],
               // backgroundColor:'green'
             }}>Samples</span>
           {/*<FaArrowDown/>*/}
@@ -52,4 +53,5 @@ export class TopLegend extends PureComponent {
 }
 
 TopLegend.propTypes = {
+  cohortColors: PropTypes.any.isRequired
 }

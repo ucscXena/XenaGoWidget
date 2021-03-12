@@ -40,7 +40,7 @@ export class LegendBox extends PureComponent {
             <tbody>
               {/*legend for middle versus sample */}
               { maxValue !== 0 &&
-              <TopLegend/>
+              <TopLegend cohortColors={this.props.cohortColors}/>
               }
 
 
@@ -82,6 +82,7 @@ export class LegendBox extends PureComponent {
 }
 
 LegendBox.propTypes = {
+  cohortColors: PropTypes.any.isRequired,
   geneData: PropTypes.any.isRequired,
   maxGeneData: PropTypes.any.isRequired,
   maxValue: PropTypes.any.isRequired,

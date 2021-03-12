@@ -579,8 +579,9 @@ div[data-react-toolbox=dialog] > section{
   padding: 5px 5px 5px 5px;
   font-family: sans-serif;
   font-size:small;
-  box-shadow: 1px 1px 1px 1px gray;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
   border-radius:5px;
+    border: 5px solid;
   /*height: 80px;*/
   overflow: auto;
   text-wrap: normal;
@@ -594,9 +595,10 @@ div[data-react-toolbox=dialog] > section{
   padding: 5px 5px 5px 5px;
   font-family: sans-serif;
   font-size:small;
-  box-shadow: 1px 1px 1px 1px gray;
+  /*box-shadow: 1px 1px 1px 1px gray;*/
   border-radius:5px;
-  /*height: 80px;*/
+  border: 5px solid;
+    /*height: 80px;*/
   overflow: auto;
   text-wrap: normal;
   background-color: white;

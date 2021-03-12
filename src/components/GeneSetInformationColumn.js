@@ -65,6 +65,7 @@ export class GeneSetInformationColumn extends PureComponent {
 
           <GeneSetSubCohortBox
             cohortIndex={this.props.cohortIndex}
+            color={cohortColor}
             geneDataStats={this.props.geneDataStats}
             onEditCohorts={this.props.onEditCohorts}
             subCohortCounts={this.props.subCohortCounts}
@@ -72,7 +73,7 @@ export class GeneSetInformationColumn extends PureComponent {
           {
             (showXenaViewLink(this.props.view)  ||
               (!showXenaViewLink(this.props.view) && this.props.open)) &&
-            <div className={BaseStyle.ssInfoBox}>
+            <div className={BaseStyle.ssInfoBox} style={{color:cohortColor}}>
               <a
                 className={BaseStyle.xenaLinkOut}
                 href={externalLink}
