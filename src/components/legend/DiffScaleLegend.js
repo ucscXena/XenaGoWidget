@@ -41,7 +41,7 @@ export class DiffScaleLegend extends PureComponent {
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
-              points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
+              points={`0,0 0,20 0,12 ${VERTICAL_GENESET_DETAIL_WIDTH},12  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
               stroke={'black'}
               strokeWidth={1}
             />
@@ -78,17 +78,17 @@ export class DiffScaleLegend extends PureComponent {
           </svg>
         </td>
         <td colSpan={1} style={{fontFamily: 'sans-serif',fontSize: 'small',height: 20}} width={LABEL_WIDTH-5}>
-          <span style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</span>
+          {/*<span style={{display: 'inline',paddingLeft: 10,paddingBottom: 0,paddingTop: 0, margin: 0, height: 20}}>Gene Diff Scale</span>*/}
           <input
             checked={this.props.showDiffLabel}
             onChange={this.handleShowDiffLabel}
-            style={{display: 'inline'}} type='checkbox'/> Show
+            style={{verticalAlign: 'middle',display: 'inline'}} type='checkbox'/> Gene Diff Scale
         </td>
         <td colSpan={1} width={DETAIL_WIDTH}>
           <svg style={{visibility: this.props.showDiffLabel ? 'visible': 'hidden', width: '100%', height: 20, borderColor: 'black', borderWidth: 1 }}>
             <polyline
               fill={'none'}
-              points={`0,0 0,20 0,15 ${VERTICAL_GENESET_DETAIL_WIDTH},15  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
+              points={`0,0 0,20 0,12 ${VERTICAL_GENESET_DETAIL_WIDTH},12  ${VERTICAL_GENESET_DETAIL_WIDTH},0   ${VERTICAL_GENESET_DETAIL_WIDTH},20`}
               stroke={'black'}
               strokeWidth={1}
             />
