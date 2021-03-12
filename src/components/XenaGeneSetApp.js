@@ -1181,7 +1181,6 @@ export default class XenaGeneSetApp extends PureComponent {
           {/*{headerText}*/}
 
 
-          {isViewGeneExpression(this.state.filter) &&
           <GeneSetEditorComponent
             allowableViews={allowableViews}
             customInternalGeneSets={this.state.customInternalGeneSets}
@@ -1199,7 +1198,6 @@ export default class XenaGeneSetApp extends PureComponent {
             sortGeneSetBy={this.state.sortViewByLabel}
             view={this.state.filter}
           />
-          }
 
           <Dialog
             active={this.state.showDescription}
