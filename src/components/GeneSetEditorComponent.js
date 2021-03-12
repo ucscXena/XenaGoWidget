@@ -47,8 +47,18 @@ export default class GeneSetEditorComponent extends PureComponent {
     return (
       <div className={BaseStyle.findNewGeneSets}
       >
-        {/*<div*/}
-        {/*  className={BaseStyle.findNewGeneSets}>*/}
+        <button
+          className={BaseStyle.refreshButton}
+          onClick={() => this.props.onChangeGeneSetLimit(
+            this.state.geneSetLimit,
+            this.state.sortGeneSetBy,
+            this.props.selectedGeneSets,
+            true,
+            this.state.view,
+          )
+          }>
+          Fetch Results <FaSearch/>
+        </button>
         <u style={{margin: 5}}>Analysis:</u>
         <select
           onChange={(event) => this.setState( { view: event.target.value})}
@@ -163,18 +173,6 @@ export default class GeneSetEditorComponent extends PureComponent {
           }
         </select>
         }
-        <button
-          className={BaseStyle.refreshButton}
-          onClick={() => this.props.onChangeGeneSetLimit(
-            this.state.geneSetLimit,
-            this.state.sortGeneSetBy,
-            this.props.selectedGeneSets,
-            true,
-            this.state.view,
-          )
-          }>
-                Fetch Results <FaSearch/>
-        </button>
       </div>
     )
   }
