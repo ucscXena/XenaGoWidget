@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, AppBar,  Navigation } from 'react-toolbox'
+import {  AppBar,  Navigation } from 'react-toolbox'
 import PureComponent from '../../src/components/PureComponent'
 import BaseStyle from '../css/base.css'
 import * as PropTypes from 'underscore'
@@ -119,12 +119,6 @@ export default class NavigationBar extends PureComponent {
                       <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}}>
                         <GithubIcon/>
                       </a>
-                    </td>
-                    <td width="5%">
-                      <Button
-                        floating icon='help' mini onClick={() => this.showHelp()}
-                        primary
-                      />
                     </td>
                   </tr>
                 </tbody>
