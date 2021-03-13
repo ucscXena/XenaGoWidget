@@ -2,7 +2,6 @@ import React from 'react'
 const Rx = require('ucsc-xena-client/dist/rx')
 import PureComponent from './PureComponent'
 import {AppStorageHandler} from '../service/AppStorageHandler'
-import NavigationBar from './NavigationBar'
 import {GeneSetSelector} from './GeneSetSelector'
 import {
   calculateAllPathways,
@@ -63,6 +62,7 @@ import {
   retrieveCustomServerScoredPathwayResult,
   removeCustomServerGeneSet
 } from '../service/GeneSetAnalysisStorageService'
+import Header from './Header'
 import Loader from './loading'
 import {VIEW_ENUM} from '../data/ViewEnum'
 
@@ -78,7 +78,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 100
+export const LEGEND_HEIGHT = 120
 export const HEADER_HEIGHT = 120
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
@@ -1072,12 +1072,15 @@ export default class XenaGeneSetApp extends PureComponent {
           view={this.state.filter}
         />
 
-        <NavigationBar
-          acceptGeneHandler={this.geneHighlight}
-          geneOptions={this.state.geneHits}
-          searchHandler={this.searchHandler}
+        <Header
           setUser={this.setUser}
         />
+        {/*<NavigationBar*/}
+        {/*  acceptGeneHandler={this.geneHighlight}*/}
+        {/*  geneOptions={this.state.geneHits}*/}
+        {/*  searchHandler={this.searchHandler}*/}
+        {/*  setUser={this.setUser}*/}
+        {/*/>*/}
 
         <GeneSetInformationColumn
           cohort={this.state.selectedCohort}
@@ -1181,7 +1184,9 @@ export default class XenaGeneSetApp extends PureComponent {
           </button>
           <button
             className={BaseStyle.analysisTitleSelector}
-            onClick={() => this.showHelp()}
+            onClick={() => {
+              window.open('https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about')
+            }}
           >
             <FaQuestion/>
           </button>
