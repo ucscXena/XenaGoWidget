@@ -18,7 +18,9 @@ import FaGithub from 'react-icons/lib/fa/github'
 
 
 const XenaIcon = () => (
-  <img alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico" style={{height: 30,marginRight: 10}}/>
+  <img
+    alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico"
+    style={{verticalAlign:'middle',height: 30,marginBottom:10,padding: 5,marginRight: 10,backgroundColor:'#1a535c'}}/>
 )
 export const refreshTokenSetup = (res) => {
   let refreshTiming = (res.tokenId.expires_in || 3600 - 5 * 60) * 1000
@@ -61,14 +63,18 @@ export default class Header extends PureComponent {
           </div>
           <div
             style={{
-              color: 'mediumaquamarine',
+              // color: 'mediumaquamarine',
+              color: '#1a535c',
               display: 'inline',
               fontSize: 18,
               fontFamily: 'sans-serif',
+              fontWeight: 'bolder'
             }}
 
           >
-            Xena Gene Set Viewer
+            <div style={{paddingBottom: 20,display:'inline'}}>
+                  Xena Gene Set Viewer
+            </div>
             <a href='https://github.com/ucscXena/XenaGoWidget' style={{marginLeft: 20}} target='_blank'>
               <FaGithub style={{fontSize:'xx-large',color:'black',paddingBottom:5}}/>
             </a>
