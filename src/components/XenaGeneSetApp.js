@@ -1075,12 +1075,6 @@ export default class XenaGeneSetApp extends PureComponent {
         <Header
           setUser={this.setUser}
         />
-        {/*<NavigationBar*/}
-        {/*  acceptGeneHandler={this.geneHighlight}*/}
-        {/*  geneOptions={this.state.geneHits}*/}
-        {/*  searchHandler={this.searchHandler}*/}
-        {/*  setUser={this.setUser}*/}
-        {/*/>*/}
 
         <GeneSetInformationColumn
           cohort={this.state.selectedCohort}

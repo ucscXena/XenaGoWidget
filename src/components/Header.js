@@ -20,7 +20,7 @@ import FaGithub from 'react-icons/lib/fa/github'
 const XenaIcon = () => (
   <img
     alt={'Xena'} src="https://raw.githubusercontent.com/ucscXena/XenaGoWidget/develop/src/images/xenalogo_deW_icon.ico"
-    style={{verticalAlign:'middle',height: 30,marginBottom:10,padding: 5,marginRight: 10,backgroundColor:'#1a535c'}}/>
+    style={{verticalAlign:'middle',height: 30,marginBottom:4,padding: 5,marginRight: 10,backgroundColor:'#1a535c'}}/>
 )
 export const refreshTokenSetup = (res) => {
   let refreshTiming = (res.tokenId.expires_in || 3600 - 5 * 60) * 1000
