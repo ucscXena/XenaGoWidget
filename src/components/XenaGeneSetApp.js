@@ -78,7 +78,7 @@ export const MIN_FILTER = 2
 export const MAX_CNV_MUTATION_DIFF = 50
 
 export const DEFAULT_GENE_SET_LIMIT = 45
-export const LEGEND_HEIGHT = 120
+export const LEGEND_HEIGHT = 112
 export const HEADER_HEIGHT = 120
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220

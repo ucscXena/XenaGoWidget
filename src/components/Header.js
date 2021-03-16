@@ -57,7 +57,14 @@ export default class Header extends PureComponent {
       // eslint-disable-next-line no-undef
       const GOOGLE_APP_ID = `${__GOOGLE_APP_ID__}`
       return (
-        <div style={{width:'100%'}}>
+        <div style={{
+          width:'100%'
+          ,borderBottom:'solid'
+          ,borderWidth: 2
+          ,marginBottom: 4
+          ,paddingBottom: 2
+          ,borderColor: 'darkgreen'
+        }}>
           <div style={{display:'inline'}}>
             <XenaIcon/>
           </div>
@@ -68,7 +75,9 @@ export default class Header extends PureComponent {
               display: 'inline',
               fontSize: 18,
               fontFamily: 'sans-serif',
-              fontWeight: 'bolder'
+              fontWeight: 'bolder',
+              borderBottom: 'solid',
+              borderWidth: '2px'
             }}
 
           >
