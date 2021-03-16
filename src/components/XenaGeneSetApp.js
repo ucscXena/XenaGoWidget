@@ -1221,7 +1221,7 @@ export default class XenaGeneSetApp extends PureComponent {
               {fullHeaderText}
             </h3>
             <Button
-              className={BaseStyle.closeDialogButton} icon='close' label='OK'
+              className={BaseStyle.closeDialogButton}  label='close'
               onClick={() => this.setState({showDescription: false})} primary raised/>
           </Dialog>
 
