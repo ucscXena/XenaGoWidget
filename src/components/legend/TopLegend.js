@@ -12,7 +12,6 @@ export class TopLegend extends PureComponent {
 
   render() {
 
-    console.log(this.props.cohortColors)
     const standardizedColorLeft = standardizeColor(this.props.cohortColors[0],1)
     const standardizedBackgroundColorLeft = standardizeColor(this.props.cohortColors[0],0.3)
     const standardizedColorRight = standardizeColor(this.props.cohortColors[1],1)
@@ -21,7 +20,6 @@ export class TopLegend extends PureComponent {
     return (
       <tr className={BaseStyle.middleSampleLegend}>
         <td colSpan={1} width={DETAIL_WIDTH}>
-          {/*<FaArrowDown style={{marginLeft:60}}/>*/}
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
@@ -29,10 +27,8 @@ export class TopLegend extends PureComponent {
               backgroundColor:standardizedBackgroundColorLeft
             }}
           >Samples</span>
-          {/*<FaArrowDown/>*/}
         </td>
         <td colSpan={1} width={LABEL_WIDTH}>
-          {/*<FaArrowDown style={{marginLeft:40}}/>*/}
           <span
             className={BaseStyle.legendLabel}
             style={{
@@ -42,17 +38,14 @@ export class TopLegend extends PureComponent {
             }}
           >
               Gene Set Summary</span>
-          {/*<FaArrowDown/>*/}
         </td>
         <td colSpan={1} width={DETAIL_WIDTH}>
-          {/*<FaArrowDown style={{marginLeft:60}}/>*/}
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
               borderColor:standardizedColorRight,
               backgroundColor:standardizedBackgroundColorRight
             }}>Samples</span>
-          {/*<FaArrowDown/>*/}
         </td>
       </tr>
     )
