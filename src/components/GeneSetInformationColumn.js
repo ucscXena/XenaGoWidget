@@ -10,15 +10,8 @@ import {showXenaViewLink} from '../functions/DataFunctions'
 import {Avatar} from 'react-toolbox/lib/avatar'
 import XenaLogo from './xena.png'
 import FaExternalLink from 'react-icons/lib/fa/external-link'
+import {standardizeColor} from '../functions/ColorFunctions'
 
-function standardizeColor(str,alpha){
-  let ctx = document.createElement('canvas').getContext('2d')
-  ctx.fillStyle = str
-  ctx.fillRect(0,0,1,1)
-  const colorArray = ctx.getImageData(0,0,1,1).data
-  const rgb = `rgb(${colorArray[0]},${colorArray[1]},${colorArray[2]},${alpha})`
-  return rgb
-}
 
 export class GeneSetInformationColumn extends PureComponent {
 
@@ -43,6 +36,7 @@ export class GeneSetInformationColumn extends PureComponent {
 
     const cohortColor = this.props.cohortColor[this.props.cohortIndex]
     const standardizedColor = standardizeColor(cohortColor,1)
+    const standardizedBackgroundColor = standardizeColor(cohortColor,0.3)
 
     if (this.props.geneDataStats && this.props.geneDataStats[this.props.cohortIndex].samples) {
       const externalLink = generateXenaLink(this.props)
@@ -53,6 +47,7 @@ export class GeneSetInformationColumn extends PureComponent {
             borderColor: `${standardizedColor}` ,
             // borderColor: standardizedColor,
             borderStyle: 'solid' ,
+            backgroundColor: `${standardizedBackgroundColor}` ,
             // backgroundColor: standardizedColor,
             borderWidth: '5px',
             marginTop: 50,

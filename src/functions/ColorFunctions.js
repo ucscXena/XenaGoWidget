@@ -70,3 +70,12 @@ export const CNV_MUTATION_GENE_SET_COLOR_MID = [231,142,79]
 export function getGeneSetColorMask(view) {
   return isViewGeneExpression(view) ? GENE_EXPRESSION_GENE_SET_COLOR_MAX : CNV_MUTATION_GENE_SET_COLOR_MAX
 }
+
+export function standardizeColor(str,alpha){
+  let ctx = document.createElement('canvas').getContext('2d')
+  ctx.fillStyle = str
+  ctx.fillRect(0,0,1,1)
+  const colorArray = ctx.getImageData(0,0,1,1).data
+  const rgb = `rgb(${colorArray[0]},${colorArray[1]},${colorArray[2]},${alpha})`
+  return rgb
+}

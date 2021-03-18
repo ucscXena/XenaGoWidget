@@ -4,12 +4,19 @@ import PureComponent from '../PureComponent'
 import BaseStyle from '../../css/base.css'
 // import FaArrowDown from 'react-icons/lib/fa/arrow-down'
 import {DETAIL_WIDTH, LABEL_WIDTH} from '../XenaGeneSetApp'
+import {standardizeColor} from '../../functions/ColorFunctions'
 
 
 export class TopLegend extends PureComponent {
 
 
   render() {
+
+    console.log(this.props.cohortColors)
+    const standardizedColorLeft = standardizeColor(this.props.cohortColors[0],1)
+    const standardizedBackgroundColorLeft = standardizeColor(this.props.cohortColors[0],0.3)
+    const standardizedColorRight = standardizeColor(this.props.cohortColors[1],1)
+    const standardizedBackgroundColorRight = standardizeColor(this.props.cohortColors[1],0.3)
 
     return (
       <tr className={BaseStyle.middleSampleLegend}>
@@ -18,7 +25,8 @@ export class TopLegend extends PureComponent {
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
-              borderColor:this.props.cohortColors[0],
+              borderColor:standardizedColorLeft,
+              backgroundColor:standardizedBackgroundColorLeft
             }}
           >Samples</span>
           {/*<FaArrowDown/>*/}
@@ -41,8 +49,8 @@ export class TopLegend extends PureComponent {
           <span
             className={BaseStyle.samplesLegendLabel}
             style={{
-              borderColor:this.props.cohortColors[1],
-              // backgroundColor:'green'
+              borderColor:standardizedColorRight,
+              backgroundColor:standardizedBackgroundColorRight
             }}>Samples</span>
           {/*<FaArrowDown/>*/}
         </td>
