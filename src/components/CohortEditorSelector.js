@@ -1,8 +1,8 @@
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import React from 'react'
+import {Button} from 'react-toolbox/lib/button'
 import BaseStyle from '../css/base.css'
-import {Button} from 'react-toolbox'
 import {
   fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
