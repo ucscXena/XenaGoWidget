@@ -1,8 +1,8 @@
 import PureComponent from './PureComponent'
 import PropTypes from 'prop-types'
 import React from 'react'
+import {Button} from 'react-toolbox/lib/button'
 import BaseStyle from '../css/base.css'
-import {Button} from 'react-toolbox'
 import {
   fetchCohortData, getAllSubCohortPossibleSamples,
   getCohortDetails,
@@ -12,6 +12,9 @@ import {
 import update from 'immutability-helper'
 import Link from 'react-toolbox/lib/link'
 import {AppStorageHandler} from '../service/AppStorageHandler'
+import FaSwap from 'react-icons/lib/fa/exchange'
+import FaLeft from 'react-icons/lib/fa/arrow-left'
+import FaRight from 'react-icons/lib/fa/arrow-right'
 
 function calculateCanSave(samples,cohorts){
   // if we have sub cohorts and we must have samples, otherwise we will automatically choose everything anyway
@@ -257,11 +260,17 @@ export class CohortEditorSelector extends PureComponent {
                   }
                 </td>
                 <td>
-                  <Button flat floating icon='arrow_right' mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}/>
-                  <br/>
-                  <Button flat floating icon='swap_horiz' mini onClick={() => this.swapCohorts()} style={{display:'inline'}}/>
-                  <br/>
-                  <Button flat floating icon='arrow_left' mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}/>
+                  <Button flat floating mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline',position:'fixed',left:400,top: 180}}>
+                    <FaRight/>
+                  </Button>
+                  {/*<br/>*/}
+                  <Button flat floating mini onClick={() => this.swapCohorts()} style={{display:'inline',position:'fixed',left:400,top: 220}}>
+                    <FaSwap/>
+                  </Button>
+                  {/*<br/>*/}
+                  <Button flat floating mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline',position:'fixed',left:400,top: 260}}>
+                    <FaLeft/>
+                  </Button>
                 </td>
                 <td valign='top'>
                   {cohort[1].subCohorts && cohort[1].subCohorts.length>1 &&

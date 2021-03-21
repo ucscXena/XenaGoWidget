@@ -42,7 +42,7 @@ export class GeneSetInformationColumn extends PureComponent {
       const externalLink = generateXenaLink(this.props)
       return (
         <div
-          className={this.props.cohortIndex===0 ? BaseStyle.geneSetDetailBoxA:  BaseStyle.geneSetDetailBoxB}
+          className={this.props.cohortIndex===0 ? BaseStyle.cohortBackgroundLeft:  BaseStyle.cohortBackgroundRight}
           style={{
             borderColor: `${standardizedColor}` ,
             // borderColor: standardizedColor,
@@ -54,6 +54,10 @@ export class GeneSetInformationColumn extends PureComponent {
             // zIndex:-20,
             marginLeft: this.props.cohortIndex === 0 ? 0 : 182 + 182  + 222 + 250 + 10
           }}
+        />
+        ,
+        <div
+          className={this.props.cohortIndex===0 ? BaseStyle.geneInfoLeft:  BaseStyle.geneInfoRight}
         >
 
           <GeneSetSubCohortBox
@@ -65,38 +69,39 @@ export class GeneSetInformationColumn extends PureComponent {
           />
           {
             (showXenaViewLink(this.props.view)  ||
-              (!showXenaViewLink(this.props.view) && this.props.open)) &&
-            <div className={BaseStyle.ssInfoBox} style={{color:cohortColor}}>
-              <a
-                className={BaseStyle.xenaLinkOut}
-                href={externalLink}
-                rel="noopener noreferrer"
-                target='_blank'
-                title={externalLink}>
-                <Avatar
-                  image={XenaLogo}
-                />
-                <div style={{display: 'inline',margin: 2}}>
-                  View in Xena
+                  (!showXenaViewLink(this.props.view) && this.props.open)) &&
+                <div className={BaseStyle.ssInfoBox} style={{color:cohortColor}}>
+                  <a
+                    className={BaseStyle.xenaLinkOut}
+                    href={externalLink}
+                    rel="noopener noreferrer"
+                    target='_blank'
+                    title={externalLink}>
+                    <Avatar
+                      image={XenaLogo}
+                    />
+                    <div style={{display: 'inline',margin: 2}}>
+                      View in Xena
+                    </div>
+                    <FaExternalLink/>
+                  </a>
                 </div>
-                <FaExternalLink/>
-              </a>
-            </div>
           }
           {this.props.open &&
-          <SelectGeneView
-            data={this.props.geneDataStats[this.props.cohortIndex]}
-          />
+              <SelectGeneView
+                data={this.props.geneDataStats[this.props.cohortIndex]}
+              />
           }
           {
             this.canShowHover() &&
-            <HoverFeatureView
-              cohortIndex={this.props.cohortIndex}
-              data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
-              maxValue={this.props.maxValue}
-              view={this.props.view}
-            />
+                <HoverFeatureView
+                  cohortIndex={this.props.cohortIndex}
+                  data={this.props.geneHoverData ? this.props.geneHoverData[this.props.cohortIndex] : null}
+                  maxValue={this.props.maxValue}
+                  view={this.props.view}
+                />
           }
+
         </div>
       )
     }

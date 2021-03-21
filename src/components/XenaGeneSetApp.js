@@ -44,6 +44,7 @@ import {
   generateUrl,
 } from '../functions/UrlFunctions'
 import {SORT_ORDER_ENUM} from '../data/SortEnum'
+import {GeneSetBackground} from './GeneSetBackground'
 import {GeneSetInformationColumn} from './GeneSetInformationColumn'
 import {CohortEditorSelector} from './CohortEditorSelector'
 import {DiffColumn} from './diff/DiffColumn'
@@ -1053,6 +1054,20 @@ export default class XenaGeneSetApp extends PureComponent {
 
         <Header
           setUser={this.setUser}
+        />
+
+        <GeneSetBackground
+          cohortColor={this.state.cohortColors}
+          cohortIndex={0}
+          geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
+          geneHoverData={this.state.geneHoverData}
+        />
+
+        <GeneSetBackground
+          cohortColor={this.state.cohortColors}
+          cohortIndex={1}
+          geneDataStats={this.state.geneData && this.state.geneData[0].pathwaySelection ? this.state.geneData : this.state.pathwayData}
+          geneHoverData={this.state.geneHoverData}
         />
 
         <GeneSetInformationColumn
