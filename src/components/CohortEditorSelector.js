@@ -260,15 +260,15 @@ export class CohortEditorSelector extends PureComponent {
                   }
                 </td>
                 <td>
-                  <Button flat floating mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline'}}>
+                  <Button flat floating mini onClick={() => this.copyCohorts(0,1)} style={{display:'inline',position:'fixed',left:400,top: 180}}>
                     <FaRight/>
                   </Button>
-                  <br/>
-                  <Button flat floating mini onClick={() => this.swapCohorts()} style={{display:'inline',position:'fixed',left:400}}>
+                  {/*<br/>*/}
+                  <Button flat floating mini onClick={() => this.swapCohorts()} style={{display:'inline',position:'fixed',left:400,top: 220}}>
                     <FaSwap/>
                   </Button>
-                  <br/>
-                  <Button flat floating mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline'}}>
+                  {/*<br/>*/}
+                  <Button flat floating mini onClick={() => this.copyCohorts(1,0)} style={{display:'inline',position:'fixed',left:400,top: 260}}>
                     <FaLeft/>
                   </Button>
                 </td>
