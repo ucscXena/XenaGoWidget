@@ -652,16 +652,6 @@ div[data-react-toolbox=dialog] > section{
   margin: 0;
 }
 
-/*.geneSetDetailBox{*/
-/*    border-radius: 5px;*/
-/*    padding-right: 20px;*/
-/*    padding-left: 20px;*/
-/*    padding-top: 5px;*/
-/*    padding-bottom: 5px;*/
-/*    position: fixed;*/
-/*}*/
-
-
 .cohortBackgroundRight{
     border-radius: 5px;
     padding-right: 20px;
@@ -670,7 +660,7 @@ div[data-react-toolbox=dialog] > section{
     padding-bottom: 5px;
     height: 100%;
     width: 205px;
-    z-index: -2000;
+    z-index: -20;
     top: 173px;
     left: -283px;
     position: fixed;
@@ -685,7 +675,7 @@ div[data-react-toolbox=dialog] > section{
   height: 100%;
   width: 504px;
   top: 173px;
-  z-index: -2000;
+  z-index: -20;
   position: fixed;
 }
 
@@ -696,7 +686,6 @@ div[data-react-toolbox=dialog] > section{
     padding-top: 5px;
     padding-bottom: 5px;
     height: 100%;
-    /*width: 504px;*/
     top: 230px;
     left: 15px;
     z-index: 5;
@@ -706,11 +695,9 @@ div[data-react-toolbox=dialog] > section{
 .geneInfoRight{
     border-radius: 5px;
     padding-right: 20px;
-    /*padding-left: 340px;*/
     padding-top: 5px;
     padding-bottom: 5px;
     height: 100%;
-    /*width: 205px;*/
     z-index: 5;
     top: 230px;
     left: 890px;
