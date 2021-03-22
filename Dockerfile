@@ -12,8 +12,11 @@ COPY demo ./demo
 COPY package.* .
 COPY *.nwb.config.js .
 RUN npm install
-RUN npm run build
+RUN npm run build:demo
+
 RUN mv demo/dist /var/www/html/xena
+RUN service nginx start
 EXPOSE 80
+CMD ["/bin/bash"]
 
 
