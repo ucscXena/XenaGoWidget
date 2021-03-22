@@ -1,15 +1,18 @@
-FROM node:12
+FROM ubuntu:20.04
 
 RUN apt-get -qq update --fix-missing && \
 	apt-get --no-install-recommends -y install \
-	nginx
+	nginx nodejs npm
 
+RUN rm -fr /var/www/html/xena
 
 WORKDIR /usr/src/app
-COPY . .
+COPY src ./src
+COPY demo ./demo
+COPY package.* .
+COPY *.nwb.config.js .
 RUN npm install
 RUN npm run build
-RUN rm -fr /var/www/html/xena
 RUN mv demo/dist /var/www/html/xena
 EXPOSE 80
 
