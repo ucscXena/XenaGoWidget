@@ -324,10 +324,18 @@ function drawGeneSetData(ctx, width, totalHeight, layout, data, labelHeight, col
           else
           if(el.active){
             for (let l = buffStart; l < buffEnd; l += 4 * img.width) {
-              img.data[l] = colorMask[0]
-              img.data[l + 1] = colorMask[1]
-              img.data[l + 2] = colorMask[2]
-              img.data[l + 3] = color
+              if(color===0){
+                img.data[l] = 255
+                img.data[l + 1] = 255
+                img.data[l + 2] = 255
+                img.data[l + 3] = 255
+              }
+              else{
+                img.data[l] = colorMask[0]
+                img.data[l + 1] = colorMask[1]
+                img.data[l + 2] = colorMask[2]
+                img.data[l + 3] = color
+              }
             }
           }
           else{
