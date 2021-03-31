@@ -67,7 +67,7 @@ describe('Data Unit Functions', () => {
   it('Gene Pathway Look', () => {
     let genePathwayLookup = getGenePathwayLookup(DefaultPathways)
     expect([0,3,5,8,9]).toEqual(genePathwayLookup('BRCA1'))
-    expect([0,3,4,5,8,9,11,12]).toEqual(genePathwayLookup('TP53'))
+    expect([0,3,4,5,8,9,11,12,23]).toEqual(genePathwayLookup('TP53'))
     expect([]).toEqual(genePathwayLookup('ATPK1'))
     expect([]).toEqual(genePathwayLookup('CDC1'))
   })
