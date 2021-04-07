@@ -84,6 +84,8 @@ export const HEADER_HEIGHT = 120
 export const DETAIL_WIDTH = 185
 export const LABEL_WIDTH = 220
 
+export const MAX_GMT_LINES = 101
+
 
 const LOAD_STATE = {
   UNLOADED: 'unloaded',
@@ -960,7 +962,23 @@ export default class XenaGeneSetApp extends PureComponent {
 
 
   handleStoreFile = async () => {
-    let {gmtData, filter, uploadFileName} = this.state
+    let {gmtData, filter, uploadFileName,profile} = this.state
+    const isAdmin = profile && profile.profileObj && ['ndunnme@gmail.com','jingchunzhu@gmail.com'].indexOf(profile.profileObj.email)>=0
+    const gmtLineCount = gmtData.split(/\r?\n/).length
+    if( gmtLineCount <= 1 ){
+      alert(`Invalid GMT file need more than 1 lines, not ${gmtLineCount} `)
+      return
+    }
+    else
+    if(
+      gmtLineCount > MAX_GMT_LINES &&
+        !isAdmin
+    // if user is not admin
+    ){
+      alert(`Users are limited to ${MAX_GMT_LINES} entries, not ${gmtLineCount} `)
+      return
+    }
+
 
     if (this.isExistingCustomInternalGeneSet(uploadFileName)) {
       alert(`${uploadFileName} already exists.  Please choose another name`)
