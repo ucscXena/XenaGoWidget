@@ -16,6 +16,7 @@
   ],
   "scripts": {
     "build": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component",
+    "build:xenago": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./xenago.nwb.config.js",
     "build:demo": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./demo.nwb.config.js",
     "build:production": "NODE_OPTIONS=--max_old_space_size=4096 nwb build-react-component --config ./production.nwb.config.js",
     "clean": "nwb clean-module && nwb clean-demo",
