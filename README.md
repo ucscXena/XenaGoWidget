@@ -4,7 +4,7 @@ React widget for analyzing expression of tissue samples within a pathway or set 
 
 ![Node.js CI](https://github.com/ucscXena/XenaGoWidget/workflows/Node.js%20CI/badge.svg)
 
-[Further documentation](docs/index.md)
+[Further documentation](https://ucsc-xena.gitbook.io/project/overview-of-features/gene-sets-about)
 
 ## API / Entry points:
 
@@ -28,6 +28,15 @@ http://xenademo.berkeleybop.io/xena/#cohort1=TCGA%20Stomach%20Cancer%20(STAD)&co
 <a href="docs/images/bladder1.png">
   <img src="docs/images/screenshot1.png" alt="Default Example" height="400">
 </a>
+
+## Analysis Server Software
+
+While not necessary, you can run your own analysis server using R using the analysis server code:
+
+https://github.com/ucscXena/xena-analysis-grails
+
+Its a bit complicated to set up, but requires R, Grails, and a postgresql database. 
+
 
 ## Instructions
 
