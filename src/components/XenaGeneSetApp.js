@@ -963,7 +963,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleStoreFile = async () => {
     let {gmtData, filter, uploadFileName,profile} = this.state
-    const isAdmin = profile && profile.profileObj && ['ndunnme@gmail.com','jingchunzhu@gmail.com'].indexOf(profile.profileObj.email)>=0
+    const isAdmin = profile && profile.profileObj && ['ndunnme@gmail.com','jzhu@soe.ucsc.edu'].indexOf(profile.profileObj.email)>=0
     const gmtLineCount = gmtData.split(/\r?\n/).length
     if( gmtLineCount <= 1 ){
       alert(`Invalid GMT file need more than 1 lines, not ${gmtLineCount} `)
