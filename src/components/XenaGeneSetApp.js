@@ -1321,7 +1321,7 @@ export default class XenaGeneSetApp extends PureComponent {
             <br/>
             <br/>
             {/*<Link href='https://xena-go-data.s3.amazonaws.com/sample.gmt' label={'Sample GMT File'}/>*/}
-            <a href='https://xena-go-data.s3.amazonaws.com/sample.gmt' target='_blank'>Sample GMT file
+            <a href='https://xena-go-data.s3.amazonaws.com/sample.gmt' rel='noopener noreferrer' target='_blank' >Sample GMT file
               <FaDownload />
             </a>
             <br/>
