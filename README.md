@@ -20,10 +20,7 @@ Example link:
 
 http://xenademo.berkeleybop.io/xena/#cohort1=TCGA%20Stomach%20Cancer%20(STAD)&cohort2=TCGA%20Stomach%20Cancer%20(STAD)&filter=BPA%20Gene%20Expression&geneset=IFI6_tf_targets&selectedSubCohorts1=From_Xena_Cohort1&selectedSubCohorts2=From_Xena_Cohort2&subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort1:TCGA-BR-8384-01,TCGA-BR-4371-01&subCohortSamples=TCGA%20Stomach%20Cancer%20(STAD):From_Xena_Cohort2:TCGA-D7-6822-01,TCGA-BR-8485-01&cohort1Color=green&cohort2Color=pink
 
-## Where its running
-
-- Production: https://xenageneset.berkeleybop.io/xena/
-- Demo / New Features: http://xenademo.berkeleybop.io/xena/  
+Running at https://xenagoweb.xenahubs.net/xena/
 
 <a href="docs/images/bladder1.png">
   <img src="docs/images/screenshot1.png" alt="Default Example" height="400">
