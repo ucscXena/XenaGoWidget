@@ -53,6 +53,7 @@ import GeneSetEditorComponent, {DEFAULT_GENE_SETS} from './GeneSetEditorComponen
 import FaInfo from 'react-icons/lib/fa/info'
 import FaLink from 'react-icons/lib/fa/chain'
 import FaQuestion from 'react-icons/lib/fa/question-circle'
+import FaDownload from 'react-icons/lib/fa/download'
 import {Button} from 'react-toolbox/lib'
 import {intersection} from '../functions/MathFunctions'
 import {getViewsForCohort} from '../functions/CohortFunctions'
@@ -1317,6 +1318,12 @@ export default class XenaGeneSetApp extends PureComponent {
               size={40}
               value={this.state.uploadFileName}/>
 
+            <br/>
+            <br/>
+            {/*<Link href='https://xena-go-data.s3.amazonaws.com/sample.gmt' label={'Sample GMT File'}/>*/}
+            <a href='https://xena-go-data.s3.amazonaws.com/sample.gmt' target='_blank'>Sample GMT file
+              <FaDownload />
+            </a>
             <br/>
             <br/>
             <input
