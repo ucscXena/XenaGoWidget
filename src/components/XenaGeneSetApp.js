@@ -62,7 +62,7 @@ import {storeGmt} from '../service/AnalysisService'
 import {
   getCustomServerGeneSetNames,
   retrieveCustomServerScoredPathwayResult,
-  removeCustomServerGeneSet
+  removeCustomServerGeneSet, getUsers
 } from '../service/GeneSetAnalysisStorageService'
 import Header from './Header'
 import Loader from './loading'
@@ -119,6 +119,7 @@ export default class XenaGeneSetApp extends PureComponent {
       selectedCohort: cohorts,
       subCohortCounts: [],
       showUploadDialog: false,
+      adminUsers: [],
       cohortColors,
       fetch: false,
       profile: undefined,
@@ -174,6 +175,14 @@ export default class XenaGeneSetApp extends PureComponent {
         // eslint-disable-next-line no-console
         console.error('Error fetching names from the server: '+e)
       })
+    if(this.state.profile){
+      this.getAdminUser(this.state.profile)
+        .then( () => this.fetchData())
+        .catch( e => {
+          // eslint-disable-next-line no-console
+          console.error('Error fetching admin users from the server: '+e)
+        })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -195,6 +204,14 @@ export default class XenaGeneSetApp extends PureComponent {
           console.error('Error fetching names from the server: '+e)
         })
 
+    }
+    if(prevState.profile !== this.state.profile && this.state.profile){
+      this.getAdminUser(this.state.profile)
+        .then( () => this.fetchData())
+        .catch( e => {
+          // eslint-disable-next-line no-console
+          console.error('Error fetching admin users from the server: '+e)
+        })
     }
     this.fetchData()
   }
@@ -880,6 +897,15 @@ export default class XenaGeneSetApp extends PureComponent {
     })
   }
 
+  getAdminUser = async (profile) => {
+    const users = await getUsers(profile)
+    const adminUsers = users.filter ( u => u.role === 'ADMIN')
+    this.setState({
+      adminUsers
+    })
+    return adminUsers
+  }
+
   getAvailableCustomGeneSets = async (view,profile) => {
     const customServerGeneSets = view===VIEW_ENUM.GENE_EXPRESSION ? await getCustomServerGeneSetNames(view,profile)  : []
     this.setState({
@@ -964,7 +990,7 @@ export default class XenaGeneSetApp extends PureComponent {
 
   handleStoreFile = async () => {
     let {gmtData, filter, uploadFileName,profile} = this.state
-    const isAdmin = profile && profile.profileObj && ['ndunnme@gmail.com','jzhu@soe.ucsc.edu'].indexOf(profile.profileObj.email)>=0
+    const isAdmin = profile && profile.profileObj ? this.state.adminUsers.findIndex( u => u.email === profile.profileObj.email)>=0 : false
     const gmtLineCount = gmtData.split(/\r?\n/).length
     if( gmtLineCount <= 1 ){
       alert(`Invalid GMT file need more than 1 lines, not ${gmtLineCount} `)

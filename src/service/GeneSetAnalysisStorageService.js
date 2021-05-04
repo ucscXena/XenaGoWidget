@@ -25,6 +25,19 @@ export async function getCustomServerGeneSetNames(method,profile){
   return data
 }
 
+export async function getUsers(profile){
+  let headers = {
+    'Access-Control-Allow-Origin': '*',
+  }
+  if(profile){
+    headers['Authorization']= `Bearer jwt=${profile.tokenId}`
+  }
+  const config = {
+    headers
+  }
+  const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/authenticatedUser/index`,config)
+  return data
+}
 
 export async function getCustomGeneSet(method,geneSetName){
   const {data} = await axios.get(`${ANALYSIS_SERVER_URL}/gmt/${method}/${geneSetName}`)
